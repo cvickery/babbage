@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>
+      Snake Cursor
+    </title>
+  <style type="text/css" media="screen">
+  	* {
+      font-family: sans-serif;
+    }
+    h1 {
+      text-align:center;
+    }
+    .spanstyle {
+      position:     absolute;
+      visibility:   visible;
+      top:          500px;
+      left:					500px;
+      font-size:    10pt;
+      font-family:  Verdana;
+      font-weight:  bold;
+      color:        black;
+    }
+  </style>
+  <script type="text/javascript">
+  /*
+   * Cursor Trailor Text- By Peter Gehrig (http://www.24fun.ch/)
+	 * Updated by ccv to use W3C event model; let user change message by
+	 * typing in a replacement.
+   */
+	  var textIndex = 0;
+    var x,y;
+    var step = 30;
+    var mouseHasMovedOnce = false;
+
+    // Your snappy message. Important: the space at the end of the sentence!!!
+    var message = "JavaScript ".split("");
+
+    var xpos = [];
+    for (var i = 0; i <= message.length - 1; i++)
+    {
+      xpos[i] = -50;
+    }
+
+    var ypos = [];
+    for (var i = 0; i <= message.length - 1; i++)
+    {
+      ypos[i] = -50;
+    }
+		
+		var spans = [];
+
+function handleKbd(evt)
+{
+	evt = evt ? evt : document.event;
+	if ((evt.keyCode > 0x1f) && (evt.keyCode < 0x7F) && (textIndex < spans.length))
+	{
+		console.log(textIndex + " : " + (textIndex < (1 + spans.length)));
+		spans[textIndex++].firstChild.nodeValue = String.fromCharCode(evt.shiftKey ? evt.keyCode : (evt.keyCode + 0x20));
+		if (textIndex === 1)
+		{
+			for (var j = 1; j < spans.length; j++)
+			{
+				spans[j].firstChild.nodeValue = ' ';
+			}
+		}
+	}
+	if (evt.keyCode === 13) textIndex = 0;
+}
+function handleMM(evt)
+{
+	evt = evt ? evt : document.event;
+	x = (document.layers) ? evt.pageX : document.body.scrollLeft+evt.clientX;
+	y = (document.layers) ? evt.pageY : document.body.scrollTop+evt.clientY;
+	mouseHasMovedOnce = true;
+}
+
+function makesnake()
+{
+	if (mouseHasMovedOnce)
+	{
+		for (var i = message.length - 1; i >= 1; i--)
+		{
+			xpos[i] = xpos[i - 1] + step;
+			ypos[i] = ypos[i - 1];
+		}
+		xpos[0] = x + step;
+		ypos[0] = y;
+	
+		for (i = 0; i < message.length - 1; i++)
+		{
+			spans[i].style.left = xpos[i]+"px";
+			spans[i].style.top = ypos[i]+"px";
+		}
+	}
+	setTimeout(makesnake, 50);
+}
+
+
+function init()
+{
+	var bodyElement = document.getElementsByTagName('body')[0];
+	for (var i = 0; i <= message.length-1; i++)
+	{
+		var spanNode = document.createElement('span');
+		spanNode.setAttribute("class", "spanstyle");
+		var textNode = document.createTextNode(message[i]);
+		spanNode.appendChild(textNode);
+		bodyElement.appendChild(spanNode);
+		spans.push(spanNode);
+		spans[i].style.left = xpos[i]+"px";
+		spans[i].style.top = ypos[i]+"px";
+	}
+	document.addEventListener('keyup', handleKbd, false);
+	document.addEventListener('mousemove', handleMM, false);
+	setTimeout(makesnake, 30);
+}
+
+    window.onload = init;
+
+	</script>
+  </head>
+  <body>
+     <h1>
+        Snake Cursor
+      </h1>
+    <hr>
+  </body>
+</html>
+

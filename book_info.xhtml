@@ -1,0 +1,95 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head><title>Vickery&rsquo;s Books</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="css/style-print.css" />
+    <style type="text/css">
+      .underline { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>Vickery&rsquo;s Books</h1>
+    </div>
+    
+    <div id="content">
+      <h2>UNIX Shell Programmer&rsquo;s Interactive Workbook</h2>
+    <div class="whitebox">
+      
+        <p><i>UNIX Shell Programmer&rsquo;s Interactive Workbook</i> was a
+        workbook for people who want to learn <i>KornShell</i> programming.
+        It is part of a series of workbooks published by Prentice Hall that
+        are all structured similarly:  Each chapter consists of one or more
+        labs, each lab consists of a set of exercises, and each exercise is
+        structured as a series of questions.  Most of the expository
+        material is embedded in the answers to the exercises.  The idea is
+        for the reader to learn the material by doing the exercises as they
+        go through the book.  It&rsquo;s not my idea of good pedagogy, but the
+        folks at Prentice Hall seem to have had success with the format, and
+        they have continued to publish more books in the series.  There is a
+        companion web site at <a
+        href="http://www.phptr.com/phptrinteractive">http://www.phptr.com/phptrinteractive</a>
+        that includes answers to the end-of-chapter problems and additional
+        instructional material.</p>
+      
+        <p>On an historical note, there was a really stupid typographical
+        error in the Preface of book that listed this web site&rsquo;s URL as
+        <i>ba<span class="underline">gg</span>age.cs.qc.edu</i> instead of
+        <i>ba<span class="underline">bb</span>age.cs.qc.edu</i>.  We had to
+        dummy up a DNS alias for a while so that anyone going to "baggage"
+        would get to "babbage." If you are trying to use the book, tried the
+        link given in the book, and finally found this site only by dint of
+        a Google search, you have my apologies.</p>
+      
+        <p><a href="USPIW/errata.html">Click here</a> for the current list of known
+        errors in the book. Please send me any addional ones that you find
+        <a href="mailto:vickery@babbage.cs.qc.edu.spam?SUBJECT=USPIW%20Errata">using
+        this link</a>. (Omit ".spam" from the address.)</p>
+
+    </div>
+      
+      <h2>Real-Time and Systems Programming for PCs</h2>
+      <div class="whitebox">
+      
+        <p><i>Real-Time and Systems Programming for PCs</i> was a book on the
+        iRMX operating system. There is a <a
+        href="http://babbage.cs.qc.edu/rmxbook/errata.html">Web page with a
+        list of typographical errors</a>. I still have the source code files
+        for the examples in the book; send me email if you need them.</p>
+      
+      </div>
+  
+    </div>
+  
+    <div id="footer">
+    <hr />
+    <p>
+      <a href="./">Vickery Home</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+<?php
+  if ((isset($_SERVER["HTTP_ACCEPT"]) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml")) ||
+      stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+  
+    <title>Landscape Grading Contours</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/style-all.css"
+    />
+  
+  </head>
+  
+  <body>
+  
+    <div id="header">
+      <h1>Landscape Grading Contours</h1>
+    </div>
+  
+    <div id="content" class="whitebox">
+    
+      <h2>Calculate the Slope and Contour Intervals Between Two Spot
+      Elevations</h2>
+  
+      <p>
+        You supply the horizontal distance between two points and the elevations of both end points, and I&rsquo;ll show
+        you the slope between those two points. If there are any contour lines in the interval between the two points,
+        I&rsquo;ll also show a table giving the horizontal distance from the lower endpoint to the point where each
+        contour line crosses the interval.
+      </p>
+  
+      <p><span class="prompt"><span class="accessKey">D</span>istance between endpoints</span>:
+        <input  type="text"
+                id="grid_spacing"
+                tabindex="30"
+                value="20"
+                accesskey="D" /></p>
+  
+      <p><span class="prompt">Elevation Difference Between <span class="accessKey">C</span>ontours</span>:
+        <input  type="text" id="contour_interval"
+                tabindex="40"
+                value="1"
+                accesskey="C" /></p>
+  
+      <p><span class="prompt">Endpoint Elevations:</span>
+        <label for="first_elevation" accesskey="1">
+          <span class="prompt"><span class="accessKey">1</span><span class="superscript">st</span></span>:        </label>
+        <input type="text" id="first_elevation"   tabindex="10" />
+        <label for="second_elevation" accesskey="2">
+          <span class="prompt"><span class="accessKey">2</span><span class="superscript">nd</span></span>: </label>
+        <input type="text" id="second_elevation"  tabindex="20" /></p>
+  
+      <!-- Results -->
+      <noscript>
+        <p><strong>Sorry, this page requires your browser&rsquo;s Javascript
+        feature to be turned on in order to do any calculations.</strong></p>
+      </noscript>
+  
+      <p id="slope" style="display:none">Change values above, and see results
+        here.
+      </p>
+  
+      <p id="num_contours" style="display:none">Nothing computed yet ...</p>
+  
+      <div id="contours" style="display:none">
+        <table>
+          <tr>
+            <th scope="col">Elevation</th>
+            <th scope="col">Proportion</th>
+            <th scope="col">Distance</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  
+    <div id="footer">
+    Copyright &copy; 2007 by Christopher Vickery &mdash;
+    <!--Creative Commons License-->
+    This work is licensed under a <a rel="license"
+    href="http://creativecommons.org/licenses/by-sa/2.5/">Creative Commons
+    Attribution-ShareAlike2.5 License</a>.
+    <!--
+      <rdf:RDF  xmlns="http://web.resource.org/cc/"
+                  xmlns:dc="http://purl.org/dc/elements/1.1/"
+                  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  
+      <Work rdf:about="">
+        <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.5/" />
+        <dc:title>Contours</dc:title>
+        <dc:date>2006</dc:date>
+        <dc:description>A web page for computing contour intervals on a grid
+        of elevation points.</dc:description>
+        <dc:creator><Agent><dc:title>Christopher
+          Vickery</dc:title></Agent></dc:creator>
+        <dc:rights><Agent><dc:title>Christopher
+          Vickery</dc:title></Agent></dc:rights>
+        <dc:type
+          rdf:resource="http://purl.org/dc/dcmitype/InteractiveResource" />
+        <dc:source rdf:resource="http://babbage.cs.qc.edu/Contours" />
+      </Work>
+  
+       <License
+          rdf:about="http://creativecommons.org/licenses/by-sa/2.5/"><permits
+          rdf:resource="http://web.resource.org/cc/Reproduction"/><permits
+          rdf:resource="http://web.resource.org/cc/Distribution"/><requires
+          rdf:resource="http://web.resource.org/cc/Notice"/><requires
+          rdf:resource="http://web.resource.org/cc/Attribution"/><permits
+          rdf:resource="http://web.resource.org/cc/DerivativeWorks"/><requires
+          rdf:resource="http://web.resource.org/cc/ShareAlike"/></License></rdf:RDF>
+    -->
+      Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?> &mdash;
+        <a href="http://validator.w3.org/check?uri=referer" tabindex="0">XHTML</a> &mdash;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer" tabindex="0">CSS</a>
+    </div>
+    <!-- Links to minified source code.
+          core.js is from Yank and Adams: Simply JavaScript (www.sitepoint.com, 2007)
+          My unminified code is in scripts/src/contours.js -->
+    <script type="text/javascript" src="scripts/core.js"></script>
+    <script type="text/javascript" src="scripts/contours.js"></script>
+  </body>
+</html>

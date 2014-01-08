@@ -1,0 +1,101 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head><title>Courses Dr. Vickery Has Taught</title>
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="./courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="./courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="./courses/css/style-print.css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>Courses Dr. Vickery Has Taught</h1>
+    </div>
+    <div id="content">
+      <p>This page provides links to material for all courses for
+      which I have web pages.</p>
+  
+      <p><em>Some of this stuff is ancient history!</em></p>
+  
+      <div class="whitebox">
+        <ul>
+    
+          <li>HTML and Web Programming: <a
+          href="./courses/cs081/">CS-081</a>.</li>
+    
+          <li>Special Topics: <a
+          href="./courses/cs903/">CS-903</a>.</li>
+    
+          <li>Introduction to Computer Science: <a
+            href="./courses/cs101/">CS-101</a>.</li>
+    
+          <li>C and C++ Programming: <a
+          href="./courses/cs200">CS-200</a>.</li>
+    
+          <li>Programming Languages: <a
+            href="./courses/cs300/">CS-300</a>.</li>
+    
+          <li>Computer Organization: <a
+          href="./courses/cs341/">CS-341</a>.</li>
+    
+          <li>Computer Architecture: <a
+          href="./courses/cs343/">CS-343</a>.</li>
+    
+          <li>Hardware Laboratory: <a
+          href="./courses/cs345/">CS-345</a>.</li>
+    
+          <li>Graphical User Interface Design: <a
+          href="./courses/GUIDesign">CS-381/781</a>.</li>
+    
+          <li>C and Unix Programming: <a
+           href="./courses/cs381.2/">CS-381.2</a>.</li>
+    
+          <li>Software Design: <a
+          href="./courses/cs701/index.php">CS-701</a>.</li>
+    
+          <li>Real-Time and Systems Programming: <a
+          href="./courses/cs704">CS-704</a>.</li>
+    
+          <li>Software Practicum: <a
+          href="./courses/cs731">CS-731</a>.</li>
+    
+          <li>Hardware Practicum: <a
+          href="./courses/cs734/Syllabus">CS-734</a>,</li>
+    
+        </ul>
+      </div>
+    </div>
+    <div id="footer">
+      <a href=".">Vickery Home</a>&nbsp;&mdash;&nbsp;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;&mdash;&nbsp;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&nbsp;&mdash;&nbsp;Last updated
+         <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+         ?>.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+<?php
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang="en">
+  <head>
+    <title>My Website</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+  </head>
+  <body>
+    <label for="viewer">Click to Toggle</label><input type="checkbox" id="viewer" />
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur a
+      volutpat urna. Quisque nisl erat, molestie nec volutpat at, egestas nec
+      lorem. Mauris eu risus felis, nec sollicitudin massa. Quisque aliquet,
+      tortor et ultricies laoreet, enim dolor dapibus ligula, eu eleifend arcu
+      justo eu sem. Maecenas vehicula, felis in sollicitudin euismod, velit
+      lacus vestibulum mauris, ut molestie enim est consequat sapien. Class
+      aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+      himenaeos. Morbi massa mauris, rutrum sit amet blandit vitae, imperdiet
+      sed erat. Mauris ullamcorper leo eu ipsum vehicula tincidunt. Suspendisse
+      rutrum, tellus ac tristique vestibulum, tortor nibh scelerisque mi, eget
+      semper diam tortor nec massa. Pellentesque viverra condimentum
+      condimentum. Nunc massa turpis, ornare in commodo id, lacinia id odio.
+      Quisque a libero a augue sagittis dictum. Pellentesque adipiscing leo
+      bibendum dolor sagittis sollicitudin. Nullam a eros velit, quis vulputate
+      odio. Morbi mollis suscipit sem, eu ultricies nulla pretium a. Sed a felis
+      metus. Proin gravida suscipit commodo. Ut semper magna a augue fermentum
+      tempus. </p>
+
+    <p class="important">
+      Quisque vel diam velit. In varius tristique condimentum. Lorem ipsum dolor
+      sit amet, consectetur adipiscing elit. Duis eu nisl a lectus tempor
+      hendrerit. Duis nibh magna, feugiat convallis interdum et, mattis nec
+      ante. Nullam semper augue facilisis ante semper quis faucibus sapien
+      gravida. Aenean lobortis diam non nisl aliquet sed porttitor quam
+      pulvinar. Morbi sodales consequat mi, quis volutpat tellus accumsan eget.
+      Praesent vel augue nec ligula sollicitudin sodales. Suspendisse id
+      pulvinar sapien. Fusce malesuada egestas sem, at lobortis tortor tempus
+      nec. Curabitur condimentum lacinia dui, sit amet luctus magna feugiat sed.
+      Nam lacinia vehicula pharetra. Aenean eu arcu ac ipsum mattis convallis ac
+      et eros. Vestibulum ultricies, orci eget posuere condimentum, sapien nulla
+      feugiat turpis, id semper nisl nunc et eros. Class aptent taciti sociosqu
+      ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas
+      pellentesque erat eget diam rhoncus elementum.
+  </p>
+
+    <p>
+      Aenean ut urna est. Vestibulum ante ipsum primis in faucibus orci luctus
+      et ultrices posuere cubilia Curae; In rhoncus suscipit fringilla. Aenean
+      interdum egestas elit sed imperdiet. Class aptent taciti sociosqu ad
+      litora torquent per conubia nostra, per inceptos himenaeos. Mauris
+      malesuada scelerisque porttitor. Ut aliquam erat in nulla tempor at
+      facilisis nisi convallis. Nam faucibus lectus nec quam sagittis sed
+      iaculis mauris blandit. Curabitur at purus sit amet est mattis ultricies a
+      nec ante. Ut odio quam, eleifend nec lobortis quis, pulvinar non urna.
+      Etiam eros orci, ornare at mattis id, sagittis quis ante. Cras porta
+      bibendum nunc, ac ultricies nunc placerat sed.
+    </p>
+
+    <p>
+      Etiam at leo nulla. Nulla et sapien et justo elementum interdum consequat
+      vel enim. Ut congue pharetra euismod. Pellentesque mi ligula, tempor ac
+      dapibus sit amet, porttitor at augue. Integer feugiat feugiat varius.
+      Pellentesque ac nulla magna, viverra ultricies mi. Donec egestas aliquam
+      odio ac facilisis. Phasellus tristique dapibus purus vel volutpat. Proin
+      vitae convallis erat. Cras tincidunt, velit id auctor varius, metus erat
+      imperdiet turpis, luctus tincidunt mauris metus et orci. Morbi metus
+      neque, congue sed bibendum in, rutrum non elit. Vestibulum scelerisque
+      consectetur orci, a pellentesque lacus blandit in. Sed at dui neque, a
+      blandit odio. Pellentesque dictum malesuada lorem eget hendrerit. Donec
+      ipsum velit, rutrum non tristique nec, tristique id augue. Aliquam at leo
+      odio, vitae consectetur dolor. Integer aliquam pharetra ligula hendrerit
+      dictum. Nunc at massa vel velit dapibus lobortis.
+    </p>
+
+    <p>
+      Pellentesque porttitor interdum augue sed consequat. Phasellus ornare metus
+      vel massa porttitor id fringilla felis consectetur. Cras in tellus sit amet
+      eros porta porttitor in nec dui. In dui est, bibendum ut ullamcorper a,
+      lobortis et elit. Quisque laoreet aliquet lacus, eget vestibulum lacus
+      luctus quis. Pellentesque tristique leo convallis nulla auctor venenatis.
+      Donec sodales nibh enim, at pulvinar ligula. Curabitur sagittis lacinia
+      nibh, ut consectetur quam aliquet sed. Vestibulum ante ipsum primis in
+      faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat
+      volutpat. Nam tincidunt nibh posuere augue dapibus ut laoreet sapien
+      auctor.
+    </p>
+  </body>
+</html>

@@ -1,0 +1,814 @@
+// Spring 2006: Tetris Project
+// by David Edell
+
+#define PAL_TARGET_CLOCK_RATE PAL_PREFERRED_VIDEO_CLOCK_RATE
+#include "pal_master.hch"
+#include "pxs.hch"
+#include <stdlib.hch>
+
+
+// Game Constants and Settings
+    // Grid Position
+    macro expr Xstart    = 192; // Start of Board.  Compile-Time Constant
+    macro expr Ystart    = 96; // Should be defined to center board in screen at current resolution
+
+    // Active Block Position (the moving block)
+    macro expr BlockXstart = 292; // Start of Block (needs to be aligned with game grid co-ord Row0,Col8)
+    macro expr BlockYstart = 96;
+
+    // Next Block Position
+    macro expr BlockNextX = 75; // Preview Location of next Block
+    macro expr BlockNextY = 75;
+
+    // Bonus/Score Values (not yet implemented)
+    macro expr ClearFourBonus = 32;
+    macro expr ClearThreeBonus = 16;
+    macro expr LineClearScore = 8;
+    macro expr LevelBonusScore = 4; // Level Number * Bonus Points * lines cleared
+    macro expr BlockAddScore = 2;
+
+    // Game Speed Constants
+    macro expr GameInterval = 5; // Level-1 Speed.  Resets at level 5, with extra modifier added
+
+/*
+ * Forward declarations
+ */
+static macro proc RunConsole (ConsolePtr);
+macro proc RunGame(VGASync, Console, Block_X, Block_Y, activeBlock, nextBlock);
+macro proc PxsCustom_Rect( In, Out, X0, Y0, X1, Y1, Color1);
+macro proc PxsCust_SevenSeg( In, Out, X, Y, type, Color1, H, W);
+macro proc PxsCust_TetBlock( In, Out, X, Y, block, Color1);
+macro proc PxsCust_TetGrid( In, Out, Xstart, Ystart, TetrisGrid, color );
+macro proc sleep(msec);
+macro proc RunUI(mode);
+macro proc RunBlockMovement(mode,VGASync,randType);
+macro proc TryHorMove(row, col, direction, Block_X,activeBlock);
+macro proc TryVertMovement(row,col,rowsClear,resetBlock, activeBlock);
+macro proc UpdateGameAndScore(rowsCleared);
+static macro expr TetrisBlocks;
+
+// UI
+macro expr TouchScreen = PalTouchScreenCT (0);
+macro expr VideoIn  = PalVideoInCT (0);
+
+/*
+ * Mode macros
+ */
+macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+macro expr Mode      = SyncGen2GetOptimalModeCT   (ClockRate);
+macro expr Width     = SyncGen2GetHActivePixelsCT (Mode);
+macro expr Height    = SyncGen2GetVActiveLinesCT  (Mode);
+
+
+macro expr defRow = 0b1110000000000111; // Default Row Values: Edges must be set = 1
+macro expr bufRow = 0b1111111111111111; // Filled Row: For Buffer Zone on bottom
+
+/* The game Grid: We initialize an MPROM to use as the game grid.  The grid is accessed
+ *   as a RAM in the game's main methods where the contents are read and modified to
+ *   compute the game actions.  A ROM is used within the custom PixelStreams filter for
+ *   displaying the contents of the game board.  The grid is defined globally in this 
+ *   program as it is accessed throughout the program, and MPROMs cannot be easily passed
+ *   as parameters.
+ */
+    mpram TheGrid {
+      ram unsigned 16 game[24];
+      rom unsigned 16 disp[24];
+    } TetrisGrid = {defRow, defRow, defRow, defRow, defRow, defRow, defRow, defRow,
+              defRow, defRow, defRow, defRow, defRow, defRow, defRow, defRow,       // DEBUG
+              defRow, defRow, defRow, defRow, defRow, bufRow, bufRow, bufRow,
+      }; // Initialize all 24 Rows with this value
+
+
+// Get current Col in grid based on coordinate and pre-defined game constants
+macro expr getRow(X,Y) = ((unsigned)(Y - Ystart)) >> 4;
+
+
+// Get current Row in grid based on coordinate and pre-defined game constants
+macro expr getCol(X,Y) = ((unsigned)(X - Xstart)) >> 4;
+
+    // Console Handle: - moved here for debug (to allow extra outptu statements), but it should be in main
+    PxsConsoleHandle Console;
+
+void main (void)
+{
+
+    unsigned 16 NBlock_X, NBlock_Y; // These 2 can be replaced with constants
+    unsigned 16 Block_X, Block_Y;
+    unsigned 16 activeBlock;
+    unsigned 16 nextBlock;
+
+    /*
+     * Streams
+     */
+    PXS_PV_S (VGASync,     PXS_EMPTY);
+    PXS_PV_S (VGASync1,    PXS_EMPTY);
+    PXS_PV_S (VGASync2,    PXS_EMPTY);
+    PXS_PV_S (XOR,         PXS_RGB_U8);
+    PXS_PV_S (Checker,     PXS_RGB_U8);
+    PXS_PV_S (Background,  PXS_RGB_U8);
+    PXS_PV_S (Background2, PXS_RGB_U8);
+    PXS_PV_S (Out,         PXS_RGB_U8);
+    PXS_PV_S (End,         PXS_RGB_U8);
+    PXS_PV_S (Test,        PXS_RGB_U8);
+    PXS_PV_S (Tetris,      PXS_RGB_U8);
+    PXS_PV_S (Next,        PXS_RGB_U8);
+    
+
+
+    PalTouchScreenRequire (1);
+    PalVideoInRequire  (1);
+    PalVideoInRequire  (1);
+
+    par
+    {
+        /*
+         * Network of filters
+         */
+        PxsVGASyncGen       (&VGASync, Mode); 
+        PxsSplit2           (&VGASync, &VGASync1, &VGASync2);
+        PxsCheckerboard     ( &VGASync2, &Checker, 4);
+        PxsXorPattern       (&VGASync1, &XOR);
+        PxsScalarRightShift (&XOR, &Background, 2);       // What is the purpose of the shift?
+                                  // Scalar Shift Appears to Significantly Reduce Image Brightness
+                                  // Without this line, the XorPattern is to bright to be used as a background image
+                                  // Divides all Pixel Values by 2^2=4, reducing intensity
+        PxsScalarRightShift (&Checker, &Background2, 1);
+        PxsAverage          ( &Background, &Background2, &Out );
+
+        PxsConsole          (&Out, &End, &Console, Width, Height);
+        PxsCust_TetBlock    (&End, &Next, Block_X, Block_Y, activeBlock, 1); // X, Y, type, rot, Color1, size
+        PxsCust_TetBlock    (&Next, &Tetris, NBlock_X, NBlock_Y, nextBlock, 1); // Display next block to drop
+        PxsCust_TetGrid     (&Tetris, &Test, Xstart, Ystart, TetrisGrid, 1);
+        PxsVGAOut           (&Test, 0, 0, ClockRate);
+
+        PalTouchScreenRun (TouchScreen, ClockRate);
+        PalVideoInRun (VideoIn, ClockRate);
+
+      seq {
+        PalVideoInEnable (VideoIn);
+        RunGame(VGASync, Console, Block_X, Block_Y, activeBlock, nextBlock);
+      }
+   }
+}
+
+/* RunGame: The main method of the game.  This method is divided into three segments.  The first section
+ *  increments a counter variable and serves as our random number generator in creating new blocks.  The 
+ *  second section provides for the User Interface controls and (will) display various game labels, status,
+ *  and scores.  The third section provides the majority of the game's logic and drives the game.  A mode
+ *  variable (described below) is the primary means of communication between these two methods.  Because
+ *  both sections must run continuously, updating the status using other means (such as channels) is not as
+ *  practical.  An additional 'turbo' variable was added that disabled the VGASync, allowing for blocks to
+ *  quickly drop down.
+ */
+macro proc RunGame(VGASync, Console, Block_X, Block_Y, activeBlock, nextBlock) {
+  unsigned 3 randType; // Random Block Generator
+  unsigned 3 mode; // Current Game Status
+  unsigned 3 type, nextType; // Type of current and next block
+  unsigned 2 rot; // Rotation Status of current block (default=0)
+  unsigned 1 turbo;
+  unsigned 32 score;
+  
+  static rom unsigned 16 tetris_blocks[4 * 7] = TetrisBlocks with {block=1};
+  
+  // Game Status Modes: (Set to 100 after left/right movement completes or game resets)
+    // 000 - No Game in Progress
+    // 001 - Game Over
+    // 010 - Game Paused
+    // 011 - New Game: Set Next block, reset grid, Activate Next Block and generate new next, Reset Status to 100
+    // 100 - Game Active, No Horizontal Movement
+    // 101 - -Game Active, "Drop Piece" (piece drops in rapid time period)
+              // Drop/Turbo Mode simply means we skip the VGASync
+             // This mode now re-defined as rotate
+             // turbo Changed to variable turbo
+    // 110 - Game Active, Move to Left
+    // 111 - Game active, Move to Right
+
+  par {
+  
+    // *** Random Number Generator ***
+    while(1) {
+      if (randType > 5) { // Keep it within the Random-7
+        randType = 0;
+      } else {
+        randType++;
+      }
+    }
+
+    //*** RunUI(mode, type, rot, tetris_blocks); ***
+    seq {
+        unsigned 1 Button0, Button1;
+        unsigned Touch;
+        unsigned tX, tY;
+
+        // Display Identifiers
+        static ram unsigned char Rotate[6]     = "Rotate";
+        static ram unsigned char MoveLeft[9]   = "Move Left";
+        static ram unsigned char MoveRight[10] = "Move Right";
+        static ram unsigned char GameOver[11] = "Game Over  ";
+        static ram unsigned char GamePaused[11] = "Game Paused";
+        static ram unsigned char GameSolo[11] = "Solo Game  ";
+
+        mode = 0b011; // Start New Game immediately
+    
+        while(1) { // Process User Input and Set/Reset game Modes:
+              // The following input actions to be defined:
+                // Move Left
+                // Move Right
+                // Drop
+                // Pause Game
+                // Start/End Game
+
+              PalSwitchRead (PalSwitchCT (0), &Button0);
+              PalSwitchRead (PalSwitchCT (1), &Button1);
+              PalTouchScreenReadScaled (TouchScreen, &tX, &tY, &Touch);
+              
+    
+              if (Button0 && Button1) { // New Game
+                mode = 0b011;
+              } else if (Button0) { // Turbo Button
+                turbo = 1;
+              } else if (Button1) { // Pause/Resume
+                if (mode == 0b010) {
+                  mode = 0b100;
+                } else if (mode[2]) {
+                  mode = 0b010;
+                }
+              }
+
+              if (Touch) {
+                sleep(5);
+                PalTouchScreenReadScaled (TouchScreen, &tX, &tY, &Touch); // And again to be sure
+  
+                // Rotate Button to Rotate
+                if (tY < 300) {
+                  mode = 0b101;
+                  //rot++;
+                  //activeBlock = tetris_blocks[type@rot]; 
+                      // Conflict only if executed at exact time as nextBlock is computed.
+                      // Odds are low, and worst case might just give us an unusual block configuration
+                      // Acceptable: Call this a "cheat" :-)
+                      // Alternative: Would need to signal game thread to update
+                } else if (tY > 320 && tX < 288) {
+                  mode = 0b110;
+                } else if (tY > 320 && tX > 288) {
+                  mode = 0b111;
+                }
+                // Bottom and Left of Board to Move Left
+                // Bottom and Right of Board to Move Right
+               // if tX,tY is at Rotate button, then:
+                // Rotate Piece:
+              }
+
+            // Update Interface (GUI):
+            PxsConsoleSetCursor( &Console, 0); // Turn Cursor Off?
+
+            PxsConsoleMoveCursor( &Console, 60, 9); 
+            PxsConsolePutString( &Console, Rotate);
+ 
+            PxsConsoleMoveCursor( &Console, 10, 20); 
+            PxsConsolePutString( &Console, MoveLeft);
+
+            PxsConsoleMoveCursor( &Console, 60, 20); 
+            PxsConsolePutString( &Console, MoveRight);
+
+            // Add Display for Score and Game Status: In Progress, Paused, No Game Active, Game Over
+            if (mode == 0b001) { // Game Over
+              PxsConsoleMoveCursor( &Console, 35, 2); 
+              PxsConsolePutString( &Console, GameOver);
+            } else if (mode == 0b010) { // Game Paused
+              PxsConsoleMoveCursor( &Console, 35, 2); 
+              PxsConsolePutString( &Console, GamePaused);
+            } else {
+              PxsConsoleMoveCursor( &Console, 35, 2); 
+              PxsConsolePutString( &Console, GameSolo);
+            }
+
+              PxsConsoleMoveCursor( &Console, 40, 4); 
+              PxsConsolePutUInt32( &Console, score);              
+
+
+          sleep(100);
+        }
+    }
+
+    // Block Movement: The main part of the game
+    //RunBlockMovement(mode,VGASync,randType, type, rot, nextType, Block_X, Block_Y, activeBlock, nextBlock);
+    seq {
+      unsigned 3 cycles, interval;
+      unsigned 5 col;
+      unsigned 5 row; // Variables Used for Block Movement - Initialized at start of game
+      unsigned 4 rowsCleared; // When it reaches MAX, increase level
+      unsigned 2 addCount; // This and interval together define a level
+      
+      while(1) {
+        par {
+          row = getRow(Block_X,Block_Y) <- 5;
+          col = getCol(Block_X,Block_Y) <- 5;
+        }
+
+        if (mode == 0b011) { // New Game
+          unsigned 5 temp;
+         par {
+          // Reset Score 
+            // Score not yet implemented
+          // Reset Block Location
+            Block_X = BlockXstart; // Defined by macro
+            Block_Y = BlockYstart;
+            interval = GameInterval;
+            addCount = 1;
+            mode = 0b100; // Set mode to 100
+
+          // Generate new Next and Active Blocks
+            type = randType;
+            nextType = randType+2; // Simplest way of initializing new game since we only have 1 random number
+            rot = 0;
+         } // remaining parts can't be done in par
+            activeBlock = tetris_blocks[type@0];
+            nextBlock = tetris_blocks[nextType@0]; // Psuedo-Random first next block
+          // Reset the game grid
+            temp = 0;
+            while (temp <= 20) { par { // Reset all visible rows to default
+              TetrisGrid.game[temp] = defRow;
+              temp++;
+            } }
+        }
+
+        // If Game is paused, do nothing (delay)
+        if (!mode[2]) { // Game is paused unless mode is 1xx
+          delay;
+        } else {
+          // Advance Position
+          cycles--;
+          if (cycles == 0) { // Move Block Down to next row
+            unsigned 5 temp;
+
+            par {
+              Block_Y += 0@addCount; // Advance Y position
+              cycles = interval; // Reset cycles
+              temp = row; // Save current row #
+            }
+            row = getRow(Block_X,Block_Y) <- 5;// Re-Calculate the Current Row
+
+            
+            // Check if We have reached a new level:
+            if (temp != row) { // we have Advanced to the next row
+              // Check if We can still continue moving, or if we have reached the end
+                unsigned 3 rowsClear;
+                unsigned 1 resetBlock;
+                TryVertMovement(row,col,rowsClear, resetBlock, activeBlock);
+                // Does nothing if Movement Succeeds, otherwise adds to grid
+           
+                if (resetBlock) {
+                  // Check for Lines Cleared and Update Score and Game*** 
+                  par {
+                    turbo = 0; // Disable Turbo for next block
+                    activeBlock = nextBlock;
+                    nextType = randType;
+                    type=nextType;
+                    nextBlock = tetris_blocks[randType@0]; // Set new nextBlock
+                    Block_X = BlockXstart;
+                    Block_Y = BlockYstart;
+
+
+                    /*** ADD SCORE UPDATE CODE HERE ***/
+                    rowsCleared += 0@rowsClear;
+                    score += BlockAddScore; // Add minimum score for having a block drop.
+
+                    // Check for Level Advancement: [If rowsCleared variable resets
+                    if (rowsCleared > 4 && rowsCleared+0@rowsClear < 4) {
+                      interval--;
+                      if (interval == 0) { // Reset interval and increase addCount
+                         interval = GameInterval;
+                         addCount++;
+                      }
+                    }
+
+                    if (rowsClear == 0) {
+                      score += BlockAddScore;
+                    } else if (rowsClear == 1) {
+                      score += BlockAddScore + LineClearScore;
+                    } else if (rowsClear == 2) {
+                      score += BlockAddScore + LineClearScore + LineClearScore;
+                    } else if (rowsClear == 3) {
+                        score += BlockAddScore + LineClearScore + ClearThreeBonus;
+                    } else if (rowsClear == 4) {
+                        score += BlockAddScore + ClearFourBonus;
+                    }
+
+                    // Check for game-over condition
+                    if (col < 3) {
+                      mode = 0b001; // And Set Game Mode Appropriately
+                    }
+                  } // End par
+                } // End if
+                
+            }
+          }
+
+          if(mode == 0b110 || mode == 0b111) { // Move In Specified Direction
+            TryHorMove(row,col,mode[0:0],Block_X,activeBlock);
+            mode = 0b100;
+            // Movement is atomic (although we will delay a few cycles in input thread before/after setting flag)
+            // Resets Status to 100
+            // If movement is possible, does it, otherwise does nothing
+          } else if (mode == 0b101) { // Try to Rotate
+            // Before Committing to the rotation, we must be sure that rotation is in a valid location
+
+            unsigned gridRow0, gridRow1, gridRow2, gridRow3;
+            unsigned row0, row1, row2, row3;
+            unsigned 16 rotatedBlock;
+            rotatedBlock = tetris_blocks[type@(rot+1)];
+              // Convert Each row in activeBlock to row to compare against GridRow
+              row3 = (rotatedBlock[3:0]@(0b000000000000)) >> col;
+              row2 = (rotatedBlock[7:4]@(0b000000000000)) >> col;
+              row1 = (rotatedBlock[11:8]@(0b000000000000)) >> col;
+              row0 = (rotatedBlock[15:12]@(0b000000000000)) >> col;
+
+              // Only one row can be accessed at a time, so this part can't be in par
+              gridRow0 = TetrisGrid.game[row+0];
+              gridRow1 = TetrisGrid.game[row+1];
+              gridRow2 = TetrisGrid.game[row+2];
+              gridRow3 = TetrisGrid.game[row+3];
+
+            // Check if block can be added at row+1 (if & is non-zero, then we can't move it)
+            if (   (row0 & gridRow0) != 0
+                || (row1 & gridRow1) != 0 
+                || (row2 & gridRow2) != 0 
+                || (row3 & gridRow3) != 0 ) {
+                // Rotation disallowed
+                mode = 0b100;
+            } else {
+              activeBlock = rotatedBlock;
+              rot++;
+              mode = 0b100;
+            }
+          }
+        }
+
+        if (!turbo) { // In turbo mode, we skip the VGASync
+          PxsAwaitVSync (&VGASync); // DEBUG - disable this line for debugging in simulation
+        }
+      }
+    }
+  }
+}
+
+/***  Try Vertical Movement: This method is called when a block advances to the next row. 
+ *  The blocks position si checked against the game grid.  If the block cannot move down 
+ *  any further, then the block is saved to its current position and the block is then reset.
+ *  This method will also check if any rows are cleared, and if so remove them, shifting all
+ *  subsequent rows down.
+ ***/
+// rowsClear = signed 3 int (-1 is no change, 0+ is # of rows cleared): -1 replaced by resetBlock flag
+macro proc TryVertMovement(row, col, rowsClear, resetBlock, activeBlock) {
+  // Accessible Variables: TetrisGrid.game[], activeBlock
+  unsigned 2 numClear;
+  unsigned gridRow0, gridRow1, gridRow2, gridRow3;
+  unsigned row0, row1, row2, row3;
+
+    // Convert Each row in activeBlock to row to compare against GridRow
+    row3 = (activeBlock[3:0]@(0b000000000000)) >> col;
+    row2 = (activeBlock[7:4]@(0b000000000000)) >> col;
+    row1 = (activeBlock[11:8]@(0b000000000000)) >> col;
+    row0 = (activeBlock[15:12]@(0b000000000000)) >> col;
+
+    // Only one row can be accessed at a time, so this part can't be in par
+    gridRow0 = TetrisGrid.game[row+1+0];
+    gridRow1 = TetrisGrid.game[row+1+1];
+    gridRow2 = TetrisGrid.game[row+1+2];
+    gridRow3 = TetrisGrid.game[row+1+3];
+
+
+  // Check if block can be added at row+1 (if & is non-zero, then we can't move it)
+  if (   (row0 & gridRow0) != 0
+      || (row1 & gridRow1) != 0 
+      || (row2 & gridRow2) != 0 
+      || (row3 & gridRow3) != 0 ) {
+      // row+1 is occupied, so save block to location row
+      unsigned i;
+      resetBlock = 1;
+      
+      
+      // Get Row values:
+      gridRow0 = TetrisGrid.game[row+0];
+      gridRow1 = TetrisGrid.game[row+1];
+      gridRow2 = TetrisGrid.game[row+2];
+      gridRow3 = TetrisGrid.game[row+3];
+
+      // gridrow = row | gridrow
+      TetrisGrid.game[row+0] = (gridRow0 | row0);
+      TetrisGrid.game[row+1] = (gridRow1 | row1);
+      TetrisGrid.game[row+2] = (gridRow2 | row2);
+      TetrisGrid.game[row+3] = (gridRow3 | row3);
+
+      // Check for Lines Cleared
+      rowsClear = 0; // Block has been saved
+
+      gridRow1 = TetrisGrid.game[row+0];
+      if (gridRow1 == bufRow && row+0 <= 20) {
+        i = row+0;
+        rowsClear++;
+        while(i > 2) {
+          gridRow0 = TetrisGrid.game[i-1];
+          TetrisGrid.game[i] = gridRow0;
+          i--;
+        }
+        TetrisGrid.game[i] = defRow;
+      }
+
+      gridRow1 = TetrisGrid.game[row+1];
+      if (gridRow1 == bufRow && row+1 <= 20) {
+        i = row+1;
+        rowsClear++;
+        while(i > 2) {
+          gridRow0 = TetrisGrid.game[i-1];
+          TetrisGrid.game[i] = gridRow0;
+          i--;
+        }
+        TetrisGrid.game[i] = defRow;
+      }
+
+      gridRow1 = TetrisGrid.game[row+2];
+      if (gridRow1 == bufRow && row+2 <= 20) {
+        i = row+2;
+        rowsClear++;
+        while(i > 2) {
+          gridRow0 = TetrisGrid.game[i-1];
+          TetrisGrid.game[i] = gridRow0;
+          i--;
+        }
+        TetrisGrid.game[i] = defRow;
+      }
+
+      gridRow1 = TetrisGrid.game[row+3];
+      if (gridRow1 == bufRow && row+3 <= 20) {
+        i = row+3;
+        rowsClear++;
+        while(i > 2) {
+          gridRow0 = TetrisGrid.game[i-1];
+          TetrisGrid.game[i] = gridRow0;
+          i--;
+        }
+        TetrisGrid.game[i] = defRow;
+      }
+
+  } // else If clear, we allow movement and do nothing
+  else {
+    resetBlock=0;// Indicate no success
+  }
+}
+
+/*** Try Horizontal Movement:
+ * This method tries horizontal movement in the specified direction.  If movement in that
+ *  direction is not blocked by the game's border or another saved block, then the block
+ *  will immediately be moved.  Otherwis, no action is taken.
+ */
+// direction: 0=left, 1=right
+macro proc TryHorMove(row, col, direction, Block_X, activeBlock) {
+      unsigned gridRow0, gridRow1, gridRow2, gridRow3;
+      unsigned row0, row1, row2, row3;
+
+    if ( (direction == 0 && row < 1) || (direction == 1 && row > 15) ) {
+      // At Edge of Board, do nothing
+      //return;
+      delay;
+    } else {
+      
+      // Compute new Col
+      if (direction == 0) {
+        col--;
+      } else {
+        col++;
+      }
+    
+      // Convert Each row in activeBlock to row to compare against GridRow
+    par {
+      row0 = (activeBlock[3:0]@(0b000000000000)) >> col;
+      row1 = (activeBlock[7:4]@(0b000000000000)) >> col;
+      row2 = (activeBlock[11:8]@(0b000000000000)) >> col;
+      row3 = (activeBlock[15:12]@(0b000000000000)) >> col;
+    }
+
+      // Only one row can be accessed at a time, so this part can't be in par
+      gridRow0 = TetrisGrid.game[row+0]; // We don't need to check row+1, since its moving atomically
+      gridRow1 = TetrisGrid.game[row+1]; // If we have moved partially beyond the row, row should have increased
+      gridRow2 = TetrisGrid.game[row+2]; 
+      gridRow3 = TetrisGrid.game[row+3];
+
+      // Check if Move is Valid (condition was originally negation of what's below)
+      if (   (row0 & gridRow0) == 0
+          && (row1 & gridRow1) == 0 
+          && (row2 & gridRow2) == 0 
+          && (row3 & gridRow3) == 0 ) {
+        // Move Block if ti is- Use loop and delay to animate
+        Block_X = (direction ? (Block_X+16) : (Block_X-16)); // CONFIRM THIS WORKS: DEBUG***
+      } else {
+        delay;
+      }
+
+    }
+}
+
+// Placeholder function
+macro proc UpdateGameAndScore(temp) {
+        activeBlock = nextBlock;
+        nextBlock = tetris_blocks[randType@0]; // Set new nextBlock
+        Block_X = BlockXstart;
+        Block_Y = BlockYstart;
+/* Not yet implemented
+        // Update the Score 
+        gameScore += temp * LineClearScore + BlockAddScore + level * LevelBonusScore * temp;
+        if (temp == 3) { // 3-Line Bonus Score
+          gameScore += ClearThreeBonus;
+        } else if (temp == 4) { // 4-Line Bonus score
+          gameScore += ClearFourBonus;
+        }
+*/
+}
+
+/*********************************** Filters and Utilities **********************************/
+macro proc sleep(msec) { // Define sleep() macro function
+  macro expr ticks = (PAL_ACTUAL_CLOCK_RATE / 1000) * msec;
+
+  unsigned (log2ceil(ticks)) count;
+  count= ticks-1; // -1 to compensate for the time it takes to execute this line
+
+  while (count) {  // Executes for ticks cycles
+    count--;  // This line takes exactly 1 clock cycle
+  }
+}
+
+
+// TetGrid: Contains grid of Tetris_Blocks only, top of grid is top of board
+  // New blocks start offset above the grid, and move down [maybe blocked by overlay rectangle]
+// Xstart,Ystart = co-ordinates for top-left corner of TetGrid
+// size = dimensions for each block (assumming to be square)
+  // Note: border to be printed around all blocks, at edges (where offset=0 or size), giving 2-px border between blocks
+// Grid must be reference to a mpram defined with an available rom called "disp"
+macro proc PxsCust_TetGrid( In, Out, Xstart, Ystart, Grid, Color1 ) {
+      // Calculate if in Border Region
+        // Currently is border of grid, needs to be modified to border of viewable grid later
+      macro expr inBorderRegion() = ((In->Coord.X == Xstart+48 || In->Coord.X == Xstart+208 ) && (In->Coord.Y >= Ystart && In->Coord.Y <= Ystart+320)) || In->Coord.Y == Ystart+384;
+    
+  // Grid is an mpram representing the grid.This macro reads only from Grid.disp[]
+    PXS_DECLARE_BW (Out);
+    PXS_GENERIC (Stage0);
+    PXS_GENERIC (Stage1);
+
+    PXS_EXPECT_COORD (In);
+    PXS_OVERLAY (In, Out);
+
+    // Constants:
+      // numCols = 10, + 3 border on each side
+      // numRows = 20 + 4 border on top
+
+
+   while (1)
+    {
+        par
+        {
+
+            unsigned row; // don't think width size needs to be specified here.-was 16
+            unsigned 16 col;
+            unsigned 1 enable; // True if we are in the game grid
+            unsigned 5 bit_loc; // log2ceil+1 of width(block)=16
+            unsigned 5 bit_index; // Index to grid row
+
+
+          /* Stage 0: Calculate Row/Col and Check if we are in the grid */
+          PxsCopyVCSH (In, &Stage0);
+          col = (((unsigned)(In->Coord.X - (signed)Xstart)) >> 4);
+          row = (((unsigned)(In->Coord.Y - (signed)Ystart)) >> 4);
+
+          /* Stage 1: Select Col from given block type*/
+          PxsCopyVCSH (&Stage0, &Stage1);
+
+          // Need to modify to give border between blocks
+          if (col < 3 || col > 12 || row < 3 || row >20) { // should be? || row <3 or || row > 20) {//DEBUG
+            enable = 0; // Outside viewable playing area
+          } else {
+            enable = 1;
+          }
+
+          // Calculate bit_loc [Number of bits to shift by to get enable]
+          bit_loc = col <- 5;
+          bit_index = row <- 5;
+
+          /* Stage 2: Output */
+          PxsCopyVCSH (&Stage1, Out);
+          if ( inBorderRegion() || (enable && ((Grid.disp[bit_index] << bit_loc)[15:15]) ) ) { // Check if col is enabled if box also enabled
+                par
+                {
+                    Out->Pixel = (Color1 ? PxsWhite : PxsBlack);
+                    Out->Active = !In->Sync.Blank;
+                }
+            }
+            else
+            {
+                par
+                {
+                    Out->Pixel = In->Pixel;
+                    Out->Active = In->Active;
+                }
+            }
+        }
+    }
+}
+
+/* Tetris Block Custom Filter: Displays a tetris block (16x16 in size) on the screen, starting
+ *   at the specified co-ordinates, based on an unsigned 16 block variable, with each bit representing
+ *   an enable/disable value for a position in a moving block grid.
+ */
+macro proc PxsCust_TetBlock( In, Out, X, Y, block, Color1 ) {
+    PXS_DECLARE_BW (Out);
+    PXS_GENERIC (Stage0);
+    PXS_GENERIC (Stage1);
+
+    PXS_EXPECT_COORD (In);
+    PXS_OVERLAY (In, Out);
+
+    while (1)
+    {
+        par
+        {
+            unsigned 16 row; // don't think width size needs to be specified here.
+            unsigned 16 col;
+            unsigned 1 enable; // True if we are in the 4x4 grid
+            unsigned 5 bit_loc; // log2ceil+1 of width(block)=16
+
+            
+
+          /* Stage 0: Calculate Row/Col and Check if we are in the grid */
+          PxsCopyVCSH (In, &Stage0);
+          col = ((unsigned)(In->Coord.X - (signed)X)) >> 4;
+          row = ((unsigned)(In->Coord.Y - (signed)Y)) >> 4;
+
+          /* Stage 1: Select Row from given block type*/
+          PxsCopyVCSH (&Stage0, &Stage1);
+          bit_loc = ((row * 4) + col) <- 5; 
+
+          /* Stage 2: Output */
+          PxsCopyVCSH (&Stage1, Out);
+          if ( row < 4 && col < 4 && ((block << bit_loc)[15:15]) ) { // Check if col is enabled if box also enabled
+                par
+                {
+                    Out->Pixel = (Color1 ? PxsWhite : PxsBlack);
+                    Out->Active = !In->Sync.Blank;
+                }
+            }
+            else
+            {
+                par
+                {
+                    Out->Pixel = In->Pixel;
+                    Out->Active = In->Active;
+                }
+            }
+        }
+    }
+}
+
+     // 4x4 Block Grid: meaning unsigned 16 for each block
+      // 4 forms (rotations) per block, x4 basic blocks
+      // ROM Index = type+(unsigned 2 rotation)
+      // | block =>  0b1000
+          //           1000
+          //           1000
+          //           1000
+static macro expr TetrisBlocks = {
+  0b1000100010001000, // The Line
+  0b1111000000000000,
+  0b1000100010001000,
+  0b1111000000000000,
+
+  0b0100111000000000, // |-
+  0b0100011001000000,
+  0b0000111001000000,
+  0b0100110001000000,
+
+  0b0010111000000000, // __|
+  0b0100010001100000,
+  0b0000111010000000,
+  0b1100010001000000,
+
+  0b1000111000000000, // |__
+  0b0110010001000000,
+  0b0000111000100000,
+  0b0100010011000000,
+
+  0b0110011000000000, // ||
+  0b0110011000000000,
+  0b0110011000000000,
+  0b0110011000000000,
+
+  0b1100011000000000, // -_
+  0b0100110010000000,
+  0b0110001100000000,
+  0b0001001100100000,
+
+  0b0110110000000000, // _-
+  0b1000110001000000,
+  0b0110110000000000,
+  0b1000110001000000,
+
+};

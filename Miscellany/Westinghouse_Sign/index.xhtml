@@ -1,0 +1,44 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Westinghouse Sign</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <script type="text/javascript" src="scripts/core.js.min"></script>
+    <script type="text/javascript" src="scripts/westinghouse_sign.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/westinghouse_sign.css" />
+  </head>
+
+  <body>
+  	
+    <canvas id="the-canvas"></canvas>
+    <ul class="controls">
+  	<li><button id="start-stopButton">Pause</button></li>
+    <li><button id="fasterButton">Faster</button></li>
+    <li id="speedometer"> Current Speed: 1X</li>
+    <li><button id="slowerButton">Slower</button></li>
+    <li><a href="about.xhtml">About &hellip;</a></li>
+    </ul>
+    
+  </body>
+</html>
+

@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Adding Built-In Commands to the KornShell
+    </title>
+  </head>
+  <body>
+    <center>
+      <h1>
+        Adding Built-In Commands to the KornShell
+      </h1>
+
+    </center>
+    <h2>
+      Introduction
+    </h2>
+    
+    You can use the <i>KornShell</i> <code>builtin</code> command
+    to create your own built-in commands. It?s not really as incestuous
+    as it may sound. First, write a function in C that has the same
+    signature as <i>main()</i>, but put a "<code>b_</code>" in front of
+    the function name. In the sample code below I named the function
+    <i>b_george()</i> to create a function that will become the
+    built-in command named <code>george</code>. (My apologies to
+    readers named George; it seemed like a good command name at the
+    time.)<p>
+
+    Next, compile the function and put it in a shared library. If you
+    use the GNU compiler, you do this with the <code>-G</code>
+    command line option:</p>
+
+    <div style="margin-left: 2em">
+      <p>
+        <b><font face="Courier New" size="3">[1000]:</font> gcc -G
+        george.c -o george.so</b>
+      </p>
+
+      <p>
+        <b><font face="Courier New" size="3">[1001]:</font></b>
+      </p>
+    </div>
+    <p align="justify">
+      <font size="3">This example creates the shared library
+      named</font> <font face="Courier New" size=
+      "3">george.so</font><font size="3">, which follows the naming
+      conventions for shared libraries on Solaris.</font>
+
+    </p>
+    <p align="justify">
+      Next, use the <font face="Courier New" size="3">builtin</font>
+      <font size="3">command with the</font> <font face="Courier New"
+      size="3">-f</font> <font size="3">option to load the shared
+      library into the shell:</font>
+    </p>
+
+    <div style="margin-left: 2em">
+      <p>
+        <b><font face="Courier New" size="3">[1001]:</font> builtin -f
+        george.so</b>
+      </p>
+      <p>
+        <b><font face="Courier New" size="3">[1002]:</font></b>
+      </p>
+
+    </div>
+    <p align="justify">
+      <font size="3">Then use the</font> <font face="Courier New" size=
+      "3">builtin</font> <font size="3">command to tell the shell
+      that</font> <font face="Courier New" size="3">george</font>
+      <font size="3">is a built-in command now:</font>
+    </p>
+
+    <div style="margin-left: 2em">
+      <p>
+        <b><font face="Courier New" size="3">[1002]:</font> builtin
+        george</b>
+      </p>
+      <p>
+        <b><font face="Courier New" size="3">[1003]:</font></b>
+      </p>
+
+    </div>
+    <p align="justify">
+      <font size="3">You can have any number of functions in your
+      shared library, and any number of them can be used as built-in
+      commands provided they have names that start with</font>
+      <font face="Courier New" size="3">b_</font><font size=
+      "3">.</font>
+    </p>
+    <p align="justify">
+      Finally, you can invoke the command. This one just echoes its
+      command line arguments in reverse order:
+    </p>
+
+    <div style="margin-left: 2em">
+      <p>
+        <b><font face="Courier New" size="3">[1003]:</font> george
+        hello there</b>
+      </p>
+      <p>
+        <b><font face="Courier New" size="3">[1004]:</font></b> George! there hello george
+      </p>
+
+      <p>
+        <b><font face="Courier New" size="3">[1005]:</font></b>
+      </p>
+    </div>
+    <p align="justify">
+      <font size="3">An interesting experiment is to time how long it
+      takes to run the built-in command compared to running an
+      equivalent external program. You will need to run the command
+      thousands of times, and to discard any output written to the
+      screen, in order to get meaningful data. I tried running</font>
+      <font face="Courier New" size="3">george</font> <font size=
+      "3">and the equivalent external command a thousand times on my
+      Solaris machine (a SPARCstation 20), and got running times of
+      1.92 and 74.44 seconds, respectively, for a speed ratio of
+      38.77.</font>
+
+    </p>
+      <h2>Source Code</h2>
+      <h3>gcc Version</h3>
+    <pre>
+        #include &lt;stdio.h&gt;
+
+        int
+        b_george(int argc, char *argv[])
+        {
+          printf( "George! " );
+          while ( argc &gt; 0 )
+          {
+            printf( "%s ", argv[--argc] );
+          }
+          printf( "\n" );
+          return 0;
+        }
+    </pre>
+
+      <h3>Visual C++ Version</h3>
+      <font size="3">You have to tell the Microsoft compiler that your
+      method is to be exported from a DLL (Windows-talk for a shared
+      library), and then use the Developer Studio to cause it to
+      generate the DLL for you.</font>
+
+    <pre>
+        #include &lt;stdio.h&gt;
+
+        int __declspec( dllexport )
+        b_george(int argc, char *argv[])
+        {
+          printf( "George! " );
+          while ( argc &gt; 0 )
+          {
+            printf( "%s ", argv[--argc] );
+          }
+          printf( "\n" );
+          return 0
+        }
+    </pre>
+  </body>
+</html>

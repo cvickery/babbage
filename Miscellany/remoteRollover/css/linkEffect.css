@@ -1,0 +1,90 @@
+/*  linkEffect.css
+ *
+ *	Displays a list of links to the right of an image. Hovering over
+ *  a link changes the image being displayed. Link text must be inside
+ *  spans, and there must be an extra link at the end of the list that
+ *  will not be displayed.
+ */
+
+/*	Position, size, and style of the list. */
+ul {
+  margin:auto; padding:0;
+  position:relative;
+  top:200px;
+  width:300px;
+  height:150px;
+  background-color:#fff;
+  background-image:url(../images/bg_flower-square.png);
+  background-repeat:no-repeat;
+	list-style-type:none;
+  font-family:Verdana, Arial, Helvetica, sans-serif;
+  letter-spacing:0.1em;
+  }
+
+li {
+  position:absolute;
+  }
+
+/*	The "trick." Anchors are 300x150. Since link positioning is
+ *  absolute (and expand to accommodate the size of their contents),
+ *  each link overlays the entire list. */
+a {
+  display:block;
+  height:125px;
+  width:140px;
+  padding:15px 0 10px 160px;
+	text-decoration:none;
+  color:black;
+  }
+
+/*	Position and size the link contents. */
+li span {
+	position:absolute;
+  top:0;
+  left:150px;
+  height:30px;
+  width:130px;
+  padding:10px;
+  /* Empirical hack: needed to make links hoverable. */
+  z-index:1;
+  }
+li+li span {
+  top:50px;
+  }
+li+li+li span {
+  top:100px;
+  }
+li+li+li+li span {
+	display:none;
+  }
+
+/*	Background images assoicated with the links. */
+a:hover {
+  color:#f66;
+  background-image:url(../images/bg_red-square.png);
+  background-repeat:no-repeat;
+  cursor:pointer; /* ie8b1 requirement */
+  }
+li+li a:hover {
+  color:#6f6;
+  background-image:url(../images/bg_green-square.png);
+  }
+li+li+li a:hover {
+  color:#66f;
+  background-image:url(../images/bg_blue-square.png);
+  }
+
+/*	The dummy link that appears at the end of the list.
+ *  Without this link, hovering over the picture rather than
+ *  any link text causes the image for the last link to be
+ *  displayed.
+ */
+li+li+li+li a {
+  height:150px;
+  width:150px;
+  }
+li+li+li+li a:hover {
+	color:#fff;
+  background-image:url(../images/bg_flower.png);
+  cursor:default;
+  }

@@ -1,0 +1,109 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head><title>Presentations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!--  Screen-only styles  -->
+<style type="text/css" media="screen">
+  body, html
+  {
+    background-color: #ffffcc;
+    font-family:      sans-serif;
+    color:            #606010;
+    margin:           1em;
+  }
+</style>
+
+<!--  Media-independent styles  -->
+<style type="text/css">
+  h1 {text-align: center; }
+  p { margin-left: 1em; margin-right: 1em; }
+  .indent { margin-left: 2em; margin-right: 2em; }
+  .footer { text-align: center; font-size: 0.7em; }
+  .whitebox {
+    background-color: white;
+    color:            #661;
+    border:           solid 1px blue;
+    margin:           1em;
+    padding:          1em;
+    }
+</style>
+
+</head>
+
+<body>
+
+<h1>Christopher Vickery&rsquo;s Presentations</h1>
+
+<div class="whitebox">
+
+  <h2><a href="2010-04-30_Discipline_Council.html">Assessment and the Introductory Course</a></h2>
+  <p>Presentation to the CUNY Computer Science Discipline Council, April 30, 2010.</p>
+  
+  <h2><a href="2006-11-10_Discipline_Council.pdf">Web Design As a Lead-in To
+  Computer Science For Non-majors</a></h2>
+  
+  <p>Presentation to the CUNY Computer Science Discipline Council, November
+  10, 2006.</p>
+
+  <h2><a href="2006-03-01_WRCE_Presentation.pdf">Configware in the Computer
+  Science Curriculum</a></h2>
+  
+  <p class="indent">Presentation at the First Workshop on Reconfigurable
+  Computing Education, Karlsruhe, Germany, March 1, 2006.  Title of
+  submitted paper was &ldquo;Fabricware in the Computer Science
+  Curriculum.&rdquo;</p>
+
+  <h2><a href="./2004-03-11_CityTech.pdf">Queens College
+         Digital Design Laboratory</a></h2>
+
+  <p class="indent">Presentation at New York City College of Technology,
+     March 11, 2004.</p>
+
+  <h2><a href="./2003-10-03_CUNY_Discipline_Council.pdf">Leveraging CS
+  Software Skills in the Digital Design Process</a></h2>
+
+  <p class="indent">Presentation to the CUNY Computer Science
+  Discipline Council, October 3, 2003.</p>
+
+  <h2><a href="./2003-06-08_WCAE_Presentation.pdf">Laboratory Options for
+  Computer Science Majors</a></h2>
+
+  <p class="indent">With Tamara Blain.  Presentation given at the 2003
+  Workshop on Computer Architecture Education (WCAE), San Diego, June 8,
+  2003.</p>
+
+  <h2><a href="./2002-02-25_PJVM_Colloquium.pdf">The Persistent Java
+  Virtual Machine (PJVM)</a></h2>
+
+  <p class="indent">With Eric Shamow.  Presentation to the Queens College
+  Computer Science Department, February 25, 2002.</p>
+
+</div>
+<hr />
+<p class="footer">
+  <a href="http://validator.w3.org/check?uri=referer">
+    <strong>XHTML</strong></a>&nbsp;
+  <a href="http://jigsaw.w3.org/css-validator/check/referer">
+    <strong>CSS</strong></a>
+</p>
+
+</body></html>

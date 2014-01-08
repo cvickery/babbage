@@ -1,0 +1,119 @@
+<?php
+//  babbage.cs.qc.cuny.edu/index.xhtml
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>Christopher Vickery's Web Site</title>
+    <meta name="Keywords"
+          content="Web Design, Computer Architecture, IEEE-754, IEEE-754
+                  Calculators, Handel-C, minimize boolean, JavaScript Canvas" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/home-page.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="css/style-print.css" />
+    <link rel="shortcut icon" href="favicon.ico" />
+  </head>
+
+  <body>
+  <div id="header" class="whitebox">
+    <img src="images/_DSC3135.jpg" alt="My Picture" title="Dr Vickery" />
+    <div>
+      <h1>Dr. Christopher Vickery&rsquo;s Web Site</h1>
+        <div>
+          <p>
+            This site primarily provides supporting material for students taking my
+            courses in the Computer Science Department at Queens College of CUNY.
+          </p>
+          <p>The
+            <ruby>
+              <rb>PURL</rb>
+              <rp>(</rp><rt>Permanent URL</rt><rp>)</rp>
+            </ruby>
+            for this page is
+            <a href="http://www.purl.oclc.org/vickery/">http://www.purl.oclc.org/vickery/</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+    <h2>What&rsquo;s Here</h2>
+    <div class="whitebox">
+      <ul id="links-here">
+        <li><a href="./contact_info.xhtml">Contact Information and Office Hours</a></li>
+        <li><a href="./courses/">This Semester&rsquo;s Courses</a>
+          <ul id="course-links">
+            <li><a href="courses/cs903/2013_02/" title="CS-903">Script Programming
+            For The Web</a></li>
+          </ul>
+        </li>
+        <li><a href="./other_courses.xhtml">Other Courses Taught</a></li>
+        <li><a href="./book_info.xhtml">Books</a></li>
+        <li><a href="./Presentations/">Presentations</a></li>
+        <li><a href="./Miscellany/">Miscellaneous Projects and Instructional Material</a>
+          <ul>
+            <li><a href="Miscellany/Westinghouse_Sign">Westinghouse Sign Animation</a>.
+                Uses JavaScript and the HTML5 &lt;canvas&gt; element.
+            </li>
+            <li>
+              <a href="courses/cs903/setting_up_js_apps.xhtml">Setting Up JavaScript
+              Applications</a>
+            </li>
+            <li><a href="./courses/Minimize">Minimizing Boolean Functions</a></li>
+            <li><a href="./IEEE-754/">Interactive IEEE-754 Floating-Point Analyzer</a></li>
+          </ul>
+        </li>
+        <li><a href="http://christophervickery.com/nftfr">Personal Blog</a></li>
+        <li><a href="./charles_babbage.xhtml">About Charles Babbage</a></li>
+      </ul>
+    </div>
+
+    <h2>What&rsquo;s Elsewhere</h2>
+    <div class="whitebox">
+      <ul id="links-elsewhere">
+        <li><a href="http://www.cs.qc.cuny.edu/">
+          Computer&nbsp;Science&nbsp;Department</a>
+        </li>
+        <li>
+          <a href="http://www.qc.cuny.edu/">
+            Queens&nbsp;College&nbsp;of&nbsp;CUNY</a>
+        </li>
+        <li>
+          <a href="http://www.cuny.edu/">
+            The&nbsp;City&nbsp;University&nbsp;of&nbsp;New&nbsp;York</a>
+        </li>
+        <li><a href="http://christophervickery.com/nftfr">NFTFR (Personal Blog)</a></li>
+      </ul>
+    </div>
+    <div id="footer" class="whitebox">
+      Last&nbsp;updated&nbsp;
+      <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>&mdash;<a
+      href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+      href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>
+

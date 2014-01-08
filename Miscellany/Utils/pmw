@@ -1,0 +1,66 @@
+#! /bin/bash
+
+# Give world read permission to a tree.
+
+# 2006-06-08
+# Preserve executability and owner writeability.
+# Only accurate way to determine writeability is to use the file
+# command, which slows this script down a lot.  Too bad.
+
+# 2006-05-13
+# For each argument:
+#   If it is a directory, process recursively.
+#   Else
+#     If it does not exist, create the file
+#     Permit the file
+
+# If argument is not a directory: create file if it doesn't exist at
+# all, and permit the file.  ccv 2006-03-07
+
+while [[ $# > 0 ]]
+do
+  if [[ ! -d "$1" ]]
+  then
+
+    if [[ ! -e "$1" ]]
+    then
+      echo "Creating:  $1"     > /dev/tty
+      touch "$1"
+#   else
+#     echo "File: $1"       > /dev/tty
+    fi
+    w=1
+    [[ -w "$1" ]] && w=0
+    if [[ $(file "$1"|grep executable) ]]
+    then chmod 555 "$1"
+    else chmod 444 "$1"
+    fi
+    [[ $w ]] && chmod +w "$1"
+
+  else
+
+    echo "Directory: $1"
+    chmod 755 "$1"
+
+    ls -d "$1"/* > /dev/null 2>&1
+    if [[ $? == 0 ]]
+    then
+      for f in "$1"/*
+      do
+        if [[ ! -d "$f" ]]
+          then
+            w=1
+            [[ -w "$f" ]] && w=0
+            if [[ $(file "$f"|grep executable) ]]
+            then chmod 555 "$f"
+            else chmod 444 "$f"
+            fi
+            [[ $w ]] && chmod +w "$f"
+          else  $HOME/bin/pmw "$f" #"${f// /\\ }"
+        fi
+      done
+    fi
+  fi
+  shift
+done
+

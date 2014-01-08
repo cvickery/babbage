@@ -1,0 +1,101 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Chapter Template for PTR Workbooks</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Templates\cv_UNIX.dot">
+</HEAD>
+<BODY>
+
+<H1>The <FONT FACE="Courier New">less</FONT> Command</H1>
+<B><I><FONT FACE="Helvetica" SIZE=3><P>Less is more.</P>
+</B></FONT><FONT FACE="GillSans" SIZE=2><P ALIGN="RIGHT">Ludwig Mies van der Rohe</P>
+</I></FONT><FONT SIZE=3><P>The </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> command has many features that make it a preferable way to view screenfuls of text compared to the standard </FONT><FONT FACE="Courier New" SIZE=3>more</FONT><FONT SIZE=3> command provided with most UNIX systems.  If your system doesn’t already have the </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> command installed, and if you don’t mind compiling and installing a C program, you can get the source code using anonymous </FONT><FONT FACE="Courier New" SIZE=3>ftp</FONT><FONT SIZE=3> to the site, </FONT><FONT FACE="Courier New" SIZE=3>prep.ai.mit.edu</FONT><FONT SIZE=3>.  It’s in the </FONT><FONT FACE="Courier New" SIZE=3>/pub/gnu</FONT><FONT SIZE=3> directory, where the current version at the time of this writing was named </FONT><FONT FACE="Courier New" SIZE=3>less-332.tar.gz</FONT><FONT SIZE=3>.  Once you have retrieved the file, unzip and untar it with the command "</FONT><FONT FACE="Courier New" SIZE=3>zcat less-232*|tar xvf -</FONT><FONT SIZE=3>"  This command will produce a directory named </FONT><FONT FACE="Courier New" SIZE=3>less-232</FONT><FONT SIZE=3>, which will contain several files, one of which will be named </FONT><FONT FACE="Courier New" SIZE=3>README</FONT><FONT SIZE=3>, which will tell you how to build and install the program.</P>
+<P>There are so many ways to customize the behavior of </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> that it can be impractical to specify everything you want to do using command line options.  A long alias might do the trick, but </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> provides a simpler solution, which is to let you put the options you want to use in an environment variable named <I>LESS</I>.  Chapter 1 included a sample </FONT><FONT FACE="Courier New" SIZE=3>.kshrc</FONT><FONT SIZE=3> environment file with the following lines:</P><DIR>
+
+</FONT><FONT FACE="Courier New" SIZE=3><P>PAGER=less</P>
+<P>export LESS='-EaP?n?f%f .?m(File %i of %m) \</P>
+<P>..?lt%lb/%L:?pt%pB\%:?bt%bB/%B:-...?e (end).?x Next\: %x.'</P></DIR>
+
+</FONT><FONT SIZE=3><P>The first line says to use </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> whenever a program references the variable <I>PAGER</I>, the most significant such program being the command-line version of the </FONT><FONT FACE="Courier New" SIZE=3>man</FONT><FONT SIZE=3> command, which uses this variable to determine what program to use do display manual pages a screenful at a time.  If you don’t set this variable, </FONT><FONT FACE="Courier New" SIZE=3>man</FONT><FONT SIZE=3> will use </FONT><FONT FACE="Courier New" SIZE=3>more</FONT><FONT SIZE=3> instead of </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3>.  I also used <I>PAGER</I> to define the alias </FONT><FONT FACE="Courier New" SIZE=3>m</FONT><FONT SIZE=3> to give me a convenient one-letter command for invoking the program directly.</P>
+<P>The next two lines assign a value to the variable <I>LESS</I>, which </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> recognizes as an alternate way to specify command-line options.  The backslash ( </FONT><FONT FACE="Courier New" SIZE=3>\</FONT><FONT SIZE=3> ) at the end of the first line is used to continue the long string being used as the value of the variable onto the next line.  Before dissecting this string, there are three pieces of syntax used for this variable to know about:  1) The dash at the beginning is just like the dash at the beginning of the command-line options of any command.  Without it, </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> would treat what follows as command-line parameters instead of as options.  2) A percent symbol ( </FONT><FONT FACE="Courier New" SIZE=3>%</FONT><FONT SIZE=3> ) introduces the name of a variable that </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> knows about and manages internally; these variable names are single letters, sometimes followed by another letter to refine the meaning of the first letter.  3) The question mark is used to perform tests.  It is followed by the name of one of </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3>’ variables to test, a string to substitute if the variable is true, an optional colon ( </FONT><FONT FACE="Courier New" SIZE=3>:</FONT><FONT SIZE=3> ) followed by a string to substitute if the variable is false, and a dot to end the test.  This might make more sense after you have looked at the table below, which breaks the given value into its components.  You can modify the <I>LESS</I> variable to suit your own preferences by looking at the </FONT><FONT FACE="Courier New" SIZE=3>man</FONT><FONT SIZE=3> page for </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> to get complete definitions of all the possible options.</P></FONT>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=638>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>-</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>Introduces what follows as options.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>E</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>The option that tells </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> to exit the first time it reaches the end of the last input file being processed.  The default behavior is not to exit until you type </FONT><B><FONT FACE="Courier New" SIZE=3>q</B></FONT><FONT SIZE=3>.  Another option is </FONT><FONT FACE="Courier New" SIZE=3>-e</FONT><FONT SIZE=3> which tells </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> to exit the <I>second</I> time it reaches the end of the last input file, for example when you use the spacebar to display &quot;more&quot; when the end is already displayed.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>a</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>When searching for text using the forward slash command, ( </FONT><FONT FACE="Courier New" SIZE=3>/</FONT><FONT SIZE=3> ), start the search after the last line displayed on the screen.  The default is to start with the second line from the top of the screen.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>P</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>What follows is the prompt that </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> displays at the bottom of the screen whenever it has displayed a screenful of text and is waiting for you to press the spacebar to continue.  (Or to type one of the many other characters that </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> recognizes, such as </FONT><B><FONT FACE="Courier New" SIZE=3>q</B></FONT><FONT SIZE=3> to quit or </FONT><B><FONT FACE="Courier New" SIZE=3>b</B></FONT><FONT SIZE=3> to go backward one screenful; see the </FONT><FONT FACE="Courier New" SIZE=3>man</FONT><FONT SIZE=3> page for </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> for a complete list.)  The prompt is actually a cryptic program that </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> interprets to determine what to display in its prompt each time.  What follows is a description of that program.  The </FONT><FONT FACE="Courier New" SIZE=3>P</FONT><FONT SIZE=3> option has to be the last thing in the <I>LESS</I> variable, or must be terminated by a dollar sign.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>?n</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>&quot;If this is the first prompt for a new file.&quot;  Call this &quot;level 1.&quot;</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>?f%f .</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>If there is an input filename ( </FONT><FONT FACE="Courier New" SIZE=3>?f</FONT><FONT SIZE=3> ), print the name of the file followed by a space ( </FONT><FONT FACE="Courier New" SIZE=3>%f </FONT><FONT SIZE=3> ).  The dot marks the end of this &quot;level 2&quot; test.  The test will fail if the input to </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> is coming from a pipeline rather than from a file.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>?m(File %i of %m) .</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>If there were multiple files named on the command line ( </FONT><FONT FACE="Courier New" SIZE=3>?m</FONT><FONT SIZE=3> ), display the string, &quot;</FONT><FONT FACE="Courier New" SIZE=3>(File %i of $m) </FONT><FONT SIZE=3>&quot;  The dot marks the end of this &quot;level 2&quot; test.  Within the string, </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> will display the index of this file in place of the </FONT><FONT FACE="Courier New" SIZE=3>%i</FONT><FONT SIZE=3> and the total number of files in place of the </FONT><FONT FACE="Courier New" SIZE=3>%m</FONT><FONT SIZE=3>.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>.</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>This dot marks the end of the level one test ( </FONT><FONT FACE="Courier New" SIZE=3>?n</FONT><FONT SIZE=3> ).</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>?lt%lb/%L</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>Start a new level-1 test.  </FONT><FONT FACE="Courier New" SIZE=3>?lt</FONT><FONT SIZE=3> is true if the line number of the <U>t</U>op line being displayed on the screen is known.  (</FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> can only count line numbers for real files, not for pipelines.) The true part of this test gives the line number of the <U>b</U>ottom line displayed on the screen ( </FONT><FONT FACE="Courier New" SIZE=3>%lb</FONT><FONT SIZE=3> ), a slash ( </FONT><FONT FACE="Courier New" SIZE=3>/</FONT><FONT SIZE=3> ), and the total number of lines in the file ( </FONT><FONT FACE="Courier New" SIZE=3>%L</FONT><FONT SIZE=3> ).</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>:?pt%pB\%</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>This is the &quot;else&quot; part of the current level-1 test, which introduces a level-2 test. </FONT><FONT FACE="Courier New" SIZE=3>?pt</FONT><FONT SIZE=3> is true if the percentage of the way into the file is known for the <U>t</U>op line displayed on the screen.  If it is true, the percentage of the entire file ( </FONT><FONT FACE="Courier New" SIZE=3>%pB</FONT><FONT SIZE=3> ) is displayed followed by a literal percent character (&nbsp;</FONT><FONT FACE="Courier New" SIZE=3>\%</FONT><FONT SIZE=3>&nbsp;).  It is not really necessary to escape the percent symbol for the <I>KornShell</I>, but doing so makes this string &quot;work&quot; with <I>csh</I> and <I>tcsh</I>, which use the percent symbol to introduce history substitution options.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>:?bt%bB/%B</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>This is the &quot;else&quot; part of the level-2 test, and introduces a level-3 test.  </FONT><FONT FACE="Courier New" SIZE=3>?bt</FONT><FONT SIZE=3> is true if the byte offset of the <U>t</U>op line on the screen is known.  If it is true, the byte offset within the file ( </FONT><FONT FACE="Courier New" SIZE=3>%bB</FONT><FONT SIZE=3> ), followed by a slash ( </FONT><FONT FACE="Courier New" SIZE=3>/</FONT><FONT SIZE=3> )and the total number of bytes in the file ( </FONT><FONT FACE="Courier New" SIZE=3>%B</FONT><FONT SIZE=3> ) will be displayed.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>:-.</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>This is the else part of the level-3 test.  If neither the line number, the percentage of the file, nor the byte offset into the file is known, display a dash ( </FONT><FONT FACE="Courier New" SIZE=3>-</FONT><FONT SIZE=3> ).  The dot marks the end of the level-3 test.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>..</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>These dots mark the end of the level-2 and level-1 tests, respectively.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>?e (end).</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>If the end of the current file is being displayed ( </FONT><FONT FACE="Courier New" SIZE=3>?e</FONT><FONT SIZE=3> ), show the string &quot;</FONT><FONT FACE="Courier New" SIZE=3>(end)</FONT><FONT SIZE=3>&quot;.  In the book, the dot ending this test was at the end of the next test, which works, but putting it here is clearer.</FONT></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Courier New" SIZE=3><P>?x Next\: %x.</FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<FONT SIZE=3><P>If there is another file to display ( </FONT><FONT FACE="Courier New" SIZE=3>?x</FONT><FONT SIZE=3> ), display the string &quot;</FONT><FONT FACE="Courier New" SIZE=3>Next: </FONT><FONT SIZE=3>&quot; followed by the name of the next file ( </FONT><FONT FACE="Courier New" SIZE=3>%x</FONT><FONT SIZE=3> ).  Note that the colon in &quot;</FONT><FONT FACE="Courier New" SIZE=3>Next: </FONT><FONT SIZE=3>&quot; has to be escaped so that </FONT><FONT FACE="Courier New" SIZE=3>less</FONT><FONT SIZE=3> will not interpret it as an &quot;else&quot;.</FONT></TD>
+</TR>
+</TABLE>
+
+<FONT SIZE=3></FONT></BODY>
+</HTML>

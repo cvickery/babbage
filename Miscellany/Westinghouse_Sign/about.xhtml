@@ -1,0 +1,75 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>About The Westinghouse Sign</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="css/westinghouse_sign.css" />
+  </head>
+
+  <body>
+    <h1>About The Westinghouse Sign</h1>
+    <div>
+      <p>
+        <a href="http://www.westinghouse.com" title="Link to corporate web site">The
+        Westinghouse Corporation</a> has used the &ldquo;Circle-W&rdquo; symbol, designed
+        by the well-known graphic designer <a href="http://www.paul-rand.com/" title="Link
+        to Paul Rand web site">Paul Rand</a>, as its corporate logo since 1960.
+      </p>
+      <p>
+        For a number of years, there were animated versions of the logo on billboards. The
+        one I was familiar with had three copies of the logo, and was located by the Long
+        Island Expressway, at the exit for the Queensboro Bridge. Apparently, there was a
+        9-logo sign in Pittsburgh for many years.  There is a <a
+        href="http://en.wikipedia.org/wiki/Westinghouse_Sign" title="Link to
+        Wikipedia">Wikipedia entry for the sign</a> for more information about it&mdash;it
+        seems that I wasn&rsquo;t the only person who found the clever patterns programmed
+        into the animation fun to watch.
+      </p>
+      <p>
+        I originally assigned the animated Westinghouse Sign to a class in &ldquo;GUI
+        Design&rdquo; in the spring of 1997. In December of 2004 I received an email
+        request for information about the code for the sign. Java had changed between 1997
+        and 2004, so the original code no longer compiled (and was a mess anyway). But I
+        kept that message in my email inbox. In April 2009 I finally got around to
+        re-visiting the project, and implemented the sign using JavaScript and the HTML
+        <em>canvas</em> element. The canvas element is supported by virtually all browsers
+        other than Internet Explorer, and is slated to be part of the HTML 5
+        specification. Meanwhile, the sign works only if JavaScript is enabled and the
+        user&rsquo;s browser is Chrome, Firefox, Opera, or Safari.
+      </p>
+      <p>
+        The current animation is semi-random. My “next” project is to construct a visual
+        editor so visitors can edit and save their own animations. Let&rsquo;s see, it
+        took 12 years to get this far &hellip;
+      </p>
+      <p>
+        At least I got that email message out of my inbox.
+      </p>
+    <ul id="nav-controls" class="controls">
+    <li><a href="index.xhtml">Back to the sign &hellip;</a></li>
+    <li><a href="http://babbage.cs.qc.cuny.edu">To My Home Page &hellip;</a></li>
+    </ul>
+    </div>
+  </body>
+</html>
+

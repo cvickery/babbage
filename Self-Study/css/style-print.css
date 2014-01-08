@@ -1,0 +1,269 @@
+/*  style-print.css
+ */
+
+html, body {
+  font-family:        "Times New Roman", "Times", serif;
+  font-size:          10pt;
+  }
+
+p {
+  text-align:         justify;
+	}
+
+h1  {
+  padding-top:         2in;
+  font-family:			  Arial, Helvetica, sans-serif;
+  page-break-after:   avoid;
+  }
+
+h2, h3, h4, h5 {
+  font-family:			  Arial, Helvetica, sans-serif;
+  page-break-after:   avoid;
+	}
+
+dl {
+  text-align:         justify;
+  padding-right:      0.5in;
+  }
+
+td li {
+  list-style:         none;
+  }
+
+button {
+  display:            none;
+  }
+
+caption  {
+  caption-side:         bottom;
+  text-align:           left;
+  font-size:            1em;
+  margin:               0;
+  padding:              0.5em 0 0.5em 0;
+  }
+
+
+noscript {
+  display:            none;
+  }
+
+thead {
+  page-break-after:   avoid;
+  }
+tbody {
+  page-break-inside:  avoid;
+  }
+tfoot {
+	page-break-before:	avoid;
+	}
+
+#front-page {
+  display:            block;
+  margin-top:         4.5in;
+  font-family:        Arial, Helvetica, sans-serif;
+  font-size:          12pt;
+  }  
+  
+#nav {
+  display:            none;
+  }
+
+#toc {
+  width:              100%;
+  margin:             0;
+  padding:            0;
+  page-break-before:  always;
+  font:               110%/190% Arial, Helvetica, sans-serif;
+  }
+
+#toc h2 {
+  text-align:         center;
+  padding-bottom:     1in;
+  }
+
+#toc table {
+  table-layout:       fixed;
+  width:              80%;
+  margin:             auto;
+  }
+
+#notes {
+  display:            none;
+  }
+
+#content {
+  position:           relative;
+  top:                0;
+  border:             none;
+  margin:             0;
+  padding:            0;
+  }
+
+#introduction {
+  page-break-before:  always;
+  }
+
+#mission-page {
+  page-break-before:  always;
+  }
+
+#faculty_interests {
+  width:              6in;
+  margin:             auto;
+  padding:            0.1in 0 0 0;
+  }
+
+#references_table td {
+  padding:            0 0 0 1em;
+  }
+
+#validate {
+  display:            none;
+  }
+
+#appendix_b, #appendix_c {
+  display:            none;
+  }
+#vitae-div, #survey-div {
+  display:            none;
+  }
+
+.break-before {
+  page-break-before:  always;
+  }
+
+.sec-name {
+  width:              95%;
+  text-align:         left;
+  border-bottom:      1pt dashed black;
+  }
+
+.page-num {
+  text-align:         right;
+  }
+
+.whitebox {
+  width:              6.5in;
+  border:             none;
+  margin:             auto;
+  padding:            0.25in;
+  }
+
+.block_indent {
+	page-break-inside:	avoid;
+	}
+
+.xx {
+  display:            none;
+  }
+
+.figure_caption {
+  page-break-before:  avoid;
+  page-break-inside:  avoid;
+  }
+
+.appendix {
+  page-break-before:  always;
+  }
+
+/* CSS3 and/or Prince page formatter required */
+a.fig-ref:after { content: target-counter(attr(href), figures); }
+a.tab-ref:after { content: target-counter(attr(href), tables);  }
+a.toc-ref:after { content: target-counter(attr(href), page);    }
+
+@page {
+  size:               8.5in 11in;
+	margin:             0.5in;
+	}
+
+@page introduction {
+  @top-left {
+    content:        "Introduction";
+    border-bottom:  solid black;
+    }
+  @bottom {
+    content:          "- " counter(page) " -";
+    }
+  }
+@page mission {
+  @top-left {
+    content:        "Mission Statement";
+    border-bottom:  solid black;
+    }
+  @bottom {
+    content:          "- " counter(page) " -";
+    }
+  }
+@page resources {
+  @top-left {
+    content:        "Resources";
+    border-bottom:  solid black;
+    }
+  @bottom {
+    content:          "- " counter(page) " -";
+    }
+  }
+@page faculty {
+  @top-left {
+    content:        "Full-Time Faculty";
+    border-bottom:  solid black;
+    }
+  @bottom {
+    content:          "- " counter(page) " -";
+    }
+  }
+@page adjuncts {
+  @top-left {
+    content:        "Adjunct Faculty";
+    border-bottom:  solid black;
+    }
+  @bottom {
+    content:          "- " counter(page) " -";
+    }
+  }
+@page curriculum {
+  @top-left {
+    content:        "Curriculum and Enrollments";
+    border-bottom:  solid black;
+    }
+  @bottom {
+    content:          "- " counter(page) " -";
+    }
+  }
+@page students {
+  @top-left {
+    content:        "Students";
+    border-bottom:  solid black;
+    }
+  @bottom {
+    content:          "- " counter(page) " -";
+    }
+  }
+@page analysis {
+  @top-left {
+    content:        "Self-Analysis and Plans";
+    border-bottom:  solid black;
+    }
+  @bottom {
+    content:          "- " counter(page) " -";
+    }
+  }
+
+@page backmatter {
+  @bottom {
+    content:          "- " counter(page) " -";
+    }
+  }
+
+div#introduction {
+  counter-reset:    page 1;
+  page: introduction;
+  }
+div#mission-page    { page: mission       }
+div#resources       { page: resources     }
+div#faculty         { page: faculty       }
+div#adjuncts        { page: adjuncts      }
+div#curriculum      { page: curriculum    }
+div#students        { page: students      }
+div#analysis        { page: analysis      }
+div#backmatter      { page: backmatter    }

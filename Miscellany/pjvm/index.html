@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>PJVM Project</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #404020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+  </style>
+</head>
+
+<body>
+<center>
+<h1>The Persistent Java Virtual Machine Project</h1>
+</center>
+
+<h2>Links</h2>
+
+<ul>
+  <li><a href="./man_pages.html">Man Pages</a>
+  <li><a href="./pjvm.tgz">Download Source Code (tar.gz)</a>
+  <li><a href="./pjvm.zip">Download Source Code (.zip)</a>
+  <li><a href="./PJVM_Colloquium.pdf">Colloquium Slides (.pdf)</a>
+ 
+</ul>
+
+<h2>Introduction</h2>
+
+  <p>The Persistent Java Virtual Machine (PJVM) project began as an
+  attempt to reduce the overhead involved in the compile-test-edit
+  cycle during the development of Java applications.  The idea was to
+  keep a single JVM "alive" across iterations of the development cycle
+  in order to eliminate the overhead of loading and initializing a new
+  JVM during each time.  An analogy would be the use of the "++" option
+  with IBM's Jikes compiler, which keeps the compiler process running,
+  with automatic recompilation of only those source files that have
+  changed when the user presses the Enter key.  Similarly with PJVM:
+  only those classes that have been modified would need to be reloaded
+  into the jvm during an iteration of the development cycle.</p>
+
+  <p>But in developing the PJVM facility, we soon realized that the
+  tool we are developing is far more useful than simply a mechanism for
+  streamlining the development cycle.  Java's "Reflection Mechanism,"
+  which is a key feature needed to support PJVM, provides both
+  professional and student developers and with key insights about the
+  structure and operation of code running in the JVM environment. Using
+  the PJVM interface, the user can not only create JVMs and load
+  classes into them, but also instantiate classes, invoke methods, and
+  get lists of objects, methods and classes currently residing in each
+  JVM.  Right now, PJVM is not a full-featured debugger, but with the
+  addition of standard debugging facilities for tracing code will, we
+  think, make PJVM the development platform of choice for serious Java
+  developers.</p>
+
+<h2>PJVM Structure</h2>
+
+  <p>PJVM currently consists of three modules, which we call the
+  server, the user manager, and a set of clients.  The three modules
+  run as independent processes that communicate with each other by
+  passing messages over standard TCP/IP stream sockets.</p>
+
+  <p>A single host (local or remote) normally runs a single server
+  process, which may be thought of as a standard Unix daemon process. 
+  Its job is to create all the JVMs for that host, regardless of how
+  many different users might be using that host for development.  Each
+  JVM runs in it's own process independent of all others running on the
+  same host.  The server uses the Java Native Interface (JNI) mechanism
+  to launch each JVM in response to a request from one of the manager
+  processes.</p>
+
+  <p>Each user runs a background manager process for the duration of a
+  development session.  Each manager process keeps track of the JVMs
+  that the user has created, locally and/or remotely.  The manager
+  process acts as the intermediary between a server and the client
+  processes that the user invokes to interact with the PJVM development
+  environment.  The manager process may at first seem like unnecessary
+  overhead, since PJVM client applications could in principle
+  communicate with jvm processes directly.  The per-user manager
+  processes, however, keep track of the communication parameters for
+  each PJVM, simplifying the user's interactions with the clients.</p>
+
+  <p>When a PJVM server starts, it listens for manager requests on its
+  well-known socket (specified as a command-line option or as an entry
+  in /etc/services).  A user then launches a manager process, typically
+  to run as a background job.  If a user then issues client commands to
+  manipulate persistent JVMs.  For example, the requestjvm command
+  creates a new persistent JVM for the user if possible.  The user's
+  manager process keeps track of the communication port for each PJVM
+  created so that subsequent commands, to load classes, etc. can refer
+  to JVMs using small index numbers.  The manager processes also
+  isolate users from one another in a shared server environment.</p>
+
+<h2>PJVM Project Development</h2>
+
+  <p>Our primary development environment is Linux, but we have
+  endeavored to make sure all our code adheres to POSIX standards so it
+  can easily be ported to other Unix systems as well as other operating
+  systems that claim POSIX compatibility, such as Windows XP/2000.</p>
+
+  <p>We have been using the Sun JVM for our work, with Sun's current
+  JDK providing the JNI and Reflection class libraries.</p>
+
+<h2>Current Status</h2>
+
+  <p>We currently have developed and tested initial versions of the
+  server and manager processes, and have implemented commands for
+  creating, listing, and deleting jvms, and for loading class files
+  into individual jvms and listing them.  Previous work has verified
+  that we can instantiate classes, invoke methods, pass objects as
+  parameters to static and instance methods, etc.  We are in the
+  process of writing a suite of commands to perform these operations as
+  well.  The commands are designed to use standard I/O facilities in
+  such a way that pipelines and I/O redirection will be able to link
+  commands together either through scripts or interactive invocation. 
+  For example, using POSIX shell notation for command substitution
+  (i.e., $(...) instead of `...`), one could create a new JVM, load
+  class Foo into it, and invoke Foo's main() method using a command
+  line something like the following:</p>
+
+<pre>
+    $ invokemethod $(loadclass Foo $(requestjvm) ) hello world
+</pre>
+
+  <p>With the command line interface developed, we next plan to
+  implement a GUI version that frees the user from some of the arcane
+  aspects of command line scripting.</p>
+
+<h2>Issues</h2>
+
+  <p>As currently implemented, each JVM creates over a dozen processes
+  on Linux systems.  (We are aware of
+  <a
+  href="http://www-106.ibm.com/developerworks/library/java2/index.html">work
+  at IBM DevleoperWorks</a>, which discusses the impact of Linux'
+  threading model on Java applications.)  This issue will need to be
+  resolved if we hope to deploy PJVM on large timesharing systems, such
+  as the one used for student accounts at Queens College, since a few
+  dozen concurrent users could have a serious impact on the number of
+  available processes on the system.</p>
+
+  <p>Currently, PJVM provides user access to information only about
+  those classes loaded and those objects created by PJVM commands.  But
+  to make the system most useful, the classloader needs to be augmented
+  to enable PJVM also to track classes loaded and objects created as a
+  result of code executed by the user's applications.  There are
+  technical matters here that we need to explore before proceeding with
+  this issue.</p>
+
+  <p>As mentioned above, we need to augment the PJVM system with the
+  ability to trace the execution of methods invoked directly or
+  indirectly from the user interface, including the ability to
+  single-step, set breakpoints, and other standard debugging
+  features.</p>
+
+  <p>Also as mentioned above, we need to provide a graphical user
+  interface to maximize user productivity.</p>
+
+<h2>Past and Future Support</h2>
+
+  <p>The PJVM project has benefitted from a grant from CISDD (CUNY
+  Institute for Software Design and Development), which has financed
+  some of the coding and has provided a development system for the
+  project.</p>
+  
+  <p>We have applied to the City University of New York's PSC-CUNY
+  awards program for funding to further development of this
+  project.</p>
+
+<h2>Contacts</h2>
+
+Omit spam from the following addresses.
+
+<ul>
+
+  <li><a href="mailto:vickery at babbage.cs.qc.edu.spam">Dr. Christopher
+  Vickery</a> (Fix the email address manually.)
+  <br><i>Computer Science Department
+  <br>Queens College of CUNY
+  <br>Flushing, NY 11367</i>
+
+  <li><a href="mailto:eric at forbin.qc.edu.spam">Eric J. Shamow</a>
+  (Fix the email address manually.)
+  <br><i>Office of Information Technology
+  <br>Queens College of CUNY
+  <br>Flushing, NY 11367</i>
+
+
+</ul>
+<hr>
+</body>
+</html>
+

@@ -1,0 +1,2832 @@
+--
+-- PostgreSQL database dump
+--
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+
+SET search_path = public, pg_catalog;
+
+ALTER TABLE ONLY public.submissions DROP CONSTRAINT submissions_discipline_id_fkey;
+ALTER TABLE ONLY public.submission_other DROP CONSTRAINT submission_other_submission_id_fkey;
+ALTER TABLE ONLY public.submission_other DROP CONSTRAINT submission_other_other_requirement_id_fkey;
+ALTER TABLE ONLY public.submission_people DROP CONSTRAINT submission_id;
+ALTER TABLE ONLY public.submission_contexts DROP CONSTRAINT submission_contexts_submission_id_fkey;
+ALTER TABLE ONLY public.submission_contexts DROP CONSTRAINT submission_contexts_context_id_fkey;
+ALTER TABLE ONLY public.submission_area DROP CONSTRAINT submission_areas_submission_id_fkey;
+ALTER TABLE ONLY public.submission_area DROP CONSTRAINT submission_areas_area_id_fkey;
+ALTER TABLE ONLY public.disciplines DROP CONSTRAINT disciplines_department_id_fkey;
+ALTER TABLE ONLY public.disciplines DROP CONSTRAINT disciplines_dean_id_fkey;
+ALTER TABLE ONLY public.class_meetings DROP CONSTRAINT class_meetings_section_code_id_fkey;
+ALTER TABLE ONLY public.class_meetings DROP CONSTRAINT class_meetings_meeting_time_id_fkey;
+ALTER TABLE ONLY public.submissions DROP CONSTRAINT submissions_pkey;
+ALTER TABLE ONLY public.submission_people DROP CONSTRAINT submission_people_pkey;
+ALTER TABLE ONLY public.submission_other DROP CONSTRAINT submission_other_pkey;
+ALTER TABLE ONLY public.submission_contexts DROP CONSTRAINT submission_contexts_pkey;
+ALTER TABLE ONLY public.submission_area DROP CONSTRAINT submission_areas_pkey;
+ALTER TABLE ONLY public.section_codes DROP CONSTRAINT section_codes_section_code_key;
+ALTER TABLE ONLY public.section_codes DROP CONSTRAINT section_codes_pkey;
+ALTER TABLE ONLY public.people DROP CONSTRAINT people_pkey;
+ALTER TABLE ONLY public.people DROP CONSTRAINT people_last_name_key;
+ALTER TABLE ONLY public.other_requirements DROP CONSTRAINT other_requirements_pkey;
+ALTER TABLE ONLY public.meeting_times DROP CONSTRAINT meeting_times_pkey;
+ALTER TABLE ONLY public.meeting_times DROP CONSTRAINT meeting_times_meeting_time_key;
+ALTER TABLE ONLY public.disciplines DROP CONSTRAINT disciplines_pkey;
+ALTER TABLE ONLY public.disciplines DROP CONSTRAINT disciplines_abbreviation_key;
+ALTER TABLE ONLY public.departments DROP CONSTRAINT departments_pkey;
+ALTER TABLE ONLY public.deans DROP CONSTRAINT deans_pkey;
+ALTER TABLE ONLY public.contexts_of_experience DROP CONSTRAINT contexts_of_experience_pkey;
+ALTER TABLE ONLY public.class_meetings DROP CONSTRAINT class_meetings_pkey;
+ALTER TABLE ONLY public.areas_of_knowledge DROP CONSTRAINT areas_of_knowledge_pkey;
+ALTER TABLE public.submissions ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.section_codes ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.people ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.other_requirements ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.meeting_times ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.disciplines ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.deans ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.contexts_of_experience ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.class_meetings ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.areas_of_knowledge ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE public.submissions_id_seq;
+DROP TABLE public.submissions;
+DROP TABLE public.submission_people;
+DROP TABLE public.submission_other;
+DROP TABLE public.submission_contexts;
+DROP TABLE public.submission_area;
+DROP SEQUENCE public.section_codes_id_seq;
+DROP TABLE public.section_codes;
+DROP SEQUENCE public.people_id_seq;
+DROP TABLE public.people;
+DROP SEQUENCE public.other_requirements_id_seq;
+DROP TABLE public.other_requirements;
+DROP SEQUENCE public.meeting_times_id_seq;
+DROP TABLE public.meeting_times;
+DROP SEQUENCE public.disciplines_id_seq;
+DROP TABLE public.disciplines;
+DROP TABLE public.departments;
+DROP SEQUENCE public.deans_id_seq;
+DROP TABLE public.deans;
+DROP SEQUENCE public.contexts_of_experience_id_seq;
+DROP TABLE public.contexts_of_experience;
+DROP SEQUENCE public.class_meetings_id_seq;
+DROP TABLE public.class_meetings;
+DROP SEQUENCE public.areas_of_knowledge_id_seq;
+DROP TABLE public.areas_of_knowledge;
+DROP SCHEMA public;
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA public IS 'Standard public schema';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: areas_of_knowledge; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE areas_of_knowledge (
+    id integer NOT NULL,
+    area_name text NOT NULL,
+    abbreviation text NOT NULL
+);
+
+
+ALTER TABLE public.areas_of_knowledge OWNER TO vickery;
+
+--
+-- Name: areas_of_knowledge_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE areas_of_knowledge_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.areas_of_knowledge_id_seq OWNER TO vickery;
+
+--
+-- Name: areas_of_knowledge_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE areas_of_knowledge_id_seq OWNED BY areas_of_knowledge.id;
+
+
+--
+-- Name: areas_of_knowledge_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('areas_of_knowledge_id_seq', 6, true);
+
+
+--
+-- Name: class_meetings; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE class_meetings (
+    id integer NOT NULL,
+    section_code_id integer NOT NULL,
+    meeting_time_id integer NOT NULL
+);
+
+
+ALTER TABLE public.class_meetings OWNER TO vickery;
+
+--
+-- Name: class_meetings_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE class_meetings_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.class_meetings_id_seq OWNER TO vickery;
+
+--
+-- Name: class_meetings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE class_meetings_id_seq OWNED BY class_meetings.id;
+
+
+--
+-- Name: class_meetings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('class_meetings_id_seq', 1515, true);
+
+
+--
+-- Name: contexts_of_experience; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE contexts_of_experience (
+    id integer NOT NULL,
+    context_name text NOT NULL,
+    context_abbreviation text NOT NULL
+);
+
+
+ALTER TABLE public.contexts_of_experience OWNER TO vickery;
+
+--
+-- Name: contexts_of_experience_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE contexts_of_experience_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.contexts_of_experience_id_seq OWNER TO vickery;
+
+--
+-- Name: contexts_of_experience_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE contexts_of_experience_id_seq OWNED BY contexts_of_experience.id;
+
+
+--
+-- Name: contexts_of_experience_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('contexts_of_experience_id_seq', 3, true);
+
+
+--
+-- Name: deans; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE deans (
+    id integer NOT NULL,
+    dean_title text NOT NULL,
+    division_abbreviation text DEFAULT 'No Division'::text NOT NULL
+);
+
+
+ALTER TABLE public.deans OWNER TO vickery;
+
+--
+-- Name: deans_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE deans_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.deans_id_seq OWNER TO vickery;
+
+--
+-- Name: deans_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE deans_id_seq OWNED BY deans.id;
+
+
+--
+-- Name: deans_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('deans_id_seq', 1, false);
+
+
+--
+-- Name: departments; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE departments (
+    id smallint NOT NULL,
+    department_name text
+);
+
+
+ALTER TABLE public.departments OWNER TO vickery;
+
+--
+-- Name: disciplines; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE disciplines (
+    id integer NOT NULL,
+    discipline_abbreviation text NOT NULL,
+    discipline_name text NOT NULL,
+    dean_id smallint NOT NULL,
+    department_id smallint NOT NULL
+);
+
+
+ALTER TABLE public.disciplines OWNER TO vickery;
+
+--
+-- Name: disciplines_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE disciplines_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.disciplines_id_seq OWNER TO vickery;
+
+--
+-- Name: disciplines_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE disciplines_id_seq OWNED BY disciplines.id;
+
+
+--
+-- Name: disciplines_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('disciplines_id_seq', 939, true);
+
+
+--
+-- Name: meeting_times; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE meeting_times (
+    id integer NOT NULL,
+    meeting_time text NOT NULL,
+    "day" character(1),
+    start_time time without time zone,
+    end_time time without time zone
+);
+
+
+ALTER TABLE public.meeting_times OWNER TO vickery;
+
+--
+-- Name: meeting_times_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE meeting_times_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.meeting_times_id_seq OWNER TO vickery;
+
+--
+-- Name: meeting_times_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE meeting_times_id_seq OWNED BY meeting_times.id;
+
+
+--
+-- Name: meeting_times_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('meeting_times_id_seq', 2275, true);
+
+
+--
+-- Name: other_requirements; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE other_requirements (
+    id integer NOT NULL,
+    requirement_name text NOT NULL,
+    requirement_abbreviation text NOT NULL
+);
+
+
+ALTER TABLE public.other_requirements OWNER TO vickery;
+
+--
+-- Name: other_requirements_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE other_requirements_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.other_requirements_id_seq OWNER TO vickery;
+
+--
+-- Name: other_requirements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE other_requirements_id_seq OWNED BY other_requirements.id;
+
+
+--
+-- Name: other_requirements_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('other_requirements_id_seq', 2, true);
+
+
+--
+-- Name: people; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE people (
+    id integer NOT NULL,
+    last_name text NOT NULL,
+    first_name text NOT NULL,
+    title text,
+    affiliation text,
+    email text DEFAULT ''::text NOT NULL,
+    alternate_email text
+);
+
+
+ALTER TABLE public.people OWNER TO vickery;
+
+--
+-- Name: people_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE people_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.people_id_seq OWNER TO vickery;
+
+--
+-- Name: people_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE people_id_seq OWNED BY people.id;
+
+
+--
+-- Name: people_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('people_id_seq', 146, true);
+
+
+--
+-- Name: section_codes; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE section_codes (
+    id integer NOT NULL,
+    section_code text NOT NULL,
+    contact_hours smallint
+);
+
+
+ALTER TABLE public.section_codes OWNER TO vickery;
+
+--
+-- Name: section_codes_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE section_codes_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.section_codes_id_seq OWNER TO vickery;
+
+--
+-- Name: section_codes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE section_codes_id_seq OWNED BY section_codes.id;
+
+
+--
+-- Name: section_codes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('section_codes_id_seq', 1327, true);
+
+
+--
+-- Name: submission_area; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE submission_area (
+    submission_id smallint NOT NULL,
+    area_id smallint NOT NULL
+);
+
+
+ALTER TABLE public.submission_area OWNER TO vickery;
+
+--
+-- Name: submission_contexts; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE submission_contexts (
+    submission_id smallint NOT NULL,
+    context_id smallint NOT NULL
+);
+
+
+ALTER TABLE public.submission_contexts OWNER TO vickery;
+
+--
+-- Name: submission_other; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE submission_other (
+    submission_id smallint NOT NULL,
+    other_requirement_id smallint NOT NULL
+);
+
+
+ALTER TABLE public.submission_other OWNER TO vickery;
+
+--
+-- Name: submission_people; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE submission_people (
+    submission_id integer NOT NULL,
+    person_id integer NOT NULL,
+    is_primary_contact boolean DEFAULT true NOT NULL
+);
+
+
+ALTER TABLE public.submission_people OWNER TO vickery;
+
+--
+-- Name: submissions; Type: TABLE; Schema: public; Owner: vickery; Tablespace: 
+--
+
+CREATE TABLE submissions (
+    id integer NOT NULL,
+    passcode text,
+    discipline_id integer NOT NULL,
+    course_number numeric NOT NULL,
+    writing_intensive text DEFAULT 'never'::text NOT NULL,
+    authors text NOT NULL,
+    geac_approval_date date,
+    status text DEFAULT 'Submitted'::text NOT NULL,
+    course_description text NOT NULL,
+    course_credits numeric NOT NULL,
+    contact_hours numeric,
+    course_prerequisites text DEFAULT 'None'::text NOT NULL,
+    is_existing_course boolean NOT NULL,
+    course_periodicity text,
+    other_course_periodicity text NOT NULL,
+    anticipated_sections_per_offering text NOT NULL,
+    anticipated_seats_per_section text NOT NULL,
+    course_title text NOT NULL,
+    CONSTRAINT submissions_writing_intensive_check CHECK ((((writing_intensive = 'never'::text) OR (writing_intensive = 'sometimes'::text)) OR (writing_intensive = 'always'::text)))
+);
+
+
+ALTER TABLE public.submissions OWNER TO vickery;
+
+--
+-- Name: COLUMN submissions.id; Type: COMMENT; Schema: public; Owner: vickery
+--
+
+COMMENT ON COLUMN submissions.id IS 'Should match SoftConf submission number';
+
+
+--
+-- Name: COLUMN submissions.writing_intensive; Type: COMMENT; Schema: public; Owner: vickery
+--
+
+COMMENT ON COLUMN submissions.writing_intensive IS 'Must be ''always'', ''sometimes'', or ''never''';
+
+
+--
+-- Name: COLUMN submissions.geac_approval_date; Type: COMMENT; Schema: public; Owner: vickery
+--
+
+COMMENT ON COLUMN submissions.geac_approval_date IS 'NULL means not approved (yet).';
+
+
+--
+-- Name: COLUMN submissions.status; Type: COMMENT; Schema: public; Owner: vickery
+--
+
+COMMENT ON COLUMN submissions.status IS 'Might be ''Submitted'', ''Withdrawn'', ''Old'' (meaning ''Replaced''), ''Review'', ''Liaison'', ''Tabled'', a textual representation of the GEAC approval date, or maybe something else.';
+
+
+--
+-- Name: submissions_id_seq; Type: SEQUENCE; Schema: public; Owner: vickery
+--
+
+CREATE SEQUENCE submissions_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.submissions_id_seq OWNER TO vickery;
+
+--
+-- Name: submissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vickery
+--
+
+ALTER SEQUENCE submissions_id_seq OWNED BY submissions.id;
+
+
+--
+-- Name: submissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vickery
+--
+
+SELECT pg_catalog.setval('submissions_id_seq', 1, true);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE areas_of_knowledge ALTER COLUMN id SET DEFAULT nextval('areas_of_knowledge_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE class_meetings ALTER COLUMN id SET DEFAULT nextval('class_meetings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE contexts_of_experience ALTER COLUMN id SET DEFAULT nextval('contexts_of_experience_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE deans ALTER COLUMN id SET DEFAULT nextval('deans_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE disciplines ALTER COLUMN id SET DEFAULT nextval('disciplines_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE meeting_times ALTER COLUMN id SET DEFAULT nextval('meeting_times_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE other_requirements ALTER COLUMN id SET DEFAULT nextval('other_requirements_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE people ALTER COLUMN id SET DEFAULT nextval('people_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE section_codes ALTER COLUMN id SET DEFAULT nextval('section_codes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE submissions ALTER COLUMN id SET DEFAULT nextval('submissions_id_seq'::regclass);
+
+
+--
+-- Data for Name: areas_of_knowledge; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY areas_of_knowledge (id, area_name, abbreviation) FROM stdin;
+1	Appreciating and Participating in the Arts	AP
+2	Analyzing Social Structures	SS
+3	Culture and Values	CV
+4	Reading Literature	RL
+5	Natural Science	NS
+6	Natural Science Lab	NS-L
+\.
+
+
+--
+-- Data for Name: class_meetings; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY class_meetings (id, section_code_id, meeting_time_id) FROM stdin;
+759	886	1516
+760	887	1517
+761	888	1518
+762	889	1519
+763	890	1520
+764	891	1521
+765	892	1522
+766	893	1523
+767	894	1524
+768	895	1525
+769	896	1526
+770	897	1527
+771	898	1528
+772	899	1529
+773	900	1530
+774	901	1531
+775	902	1532
+776	903	1533
+777	904	1534
+778	905	1535
+779	906	1536
+780	907	1537
+781	908	1538
+782	909	1539
+783	910	1540
+784	911	1541
+785	912	1542
+786	913	1543
+787	914	1544
+788	915	1545
+789	916	1546
+790	917	1547
+791	918	1548
+792	919	1549
+793	920	1550
+794	921	1551
+795	922	1552
+796	923	1553
+797	924	1554
+798	925	1555
+799	926	1556
+800	927	1557
+801	928	1558
+802	929	1559
+803	930	1560
+804	931	1561
+805	932	1562
+806	933	1563
+807	934	1564
+808	935	1565
+809	936	1566
+810	937	1567
+811	938	1568
+812	939	1569
+813	940	1570
+814	941	1571
+815	942	1572
+816	943	1573
+817	944	1574
+818	945	1575
+819	946	1576
+820	947	1577
+821	948	1578
+822	949	1579
+823	950	1580
+824	951	1581
+825	952	1582
+826	953	1583
+827	954	1584
+828	955	1516
+829	955	1531
+830	956	1517
+831	956	1532
+832	957	1518
+833	957	1533
+834	958	1519
+835	958	1534
+836	959	1520
+837	959	1535
+838	960	1521
+839	960	1536
+840	961	1522
+841	961	1537
+842	962	1516
+843	962	1538
+844	963	1517
+845	963	1539
+846	964	1518
+847	964	1540
+848	965	1519
+849	965	1541
+850	966	1520
+851	966	1543
+852	967	1521
+853	967	1544
+854	968	1522
+855	968	1545
+856	969	1523
+857	969	1538
+858	970	1524
+859	970	1539
+860	971	1525
+861	971	1540
+862	972	1526
+863	972	1541
+864	973	1527
+865	973	1542
+866	974	1528
+867	974	1543
+868	975	1529
+869	975	1544
+870	976	1530
+871	976	1545
+872	977	1523
+873	977	1546
+874	978	1524
+875	978	1547
+876	979	1525
+877	979	1548
+878	980	1526
+879	980	1549
+880	981	1527
+881	981	1550
+882	982	1528
+883	982	1551
+884	983	1529
+885	983	1552
+886	984	1530
+887	984	1553
+888	985	1531
+889	985	1546
+890	986	1532
+891	986	1547
+892	987	1533
+893	987	1548
+894	988	1534
+895	988	1549
+896	989	1535
+897	989	1551
+898	990	1536
+899	990	1552
+900	991	1537
+901	991	1553
+902	992	1659
+903	993	1660
+904	994	1661
+905	995	1662
+906	996	1663
+907	997	1664
+908	998	1665
+909	999	1666
+910	1000	1667
+911	1001	1668
+912	1002	1669
+913	1003	1670
+914	1004	1671
+915	1005	1672
+916	1006	1673
+917	1007	1674
+918	1008	1675
+919	1009	1676
+920	1010	1677
+921	1011	1678
+922	1012	1679
+923	1013	1680
+924	1014	1517
+925	1014	1682
+926	1015	1556
+927	1015	1533
+928	1016	1519
+929	1016	1568
+930	1017	1520
+931	1017	1569
+932	1018	1558
+933	1018	1537
+934	1019	1691
+935	1019	1692
+936	1020	1555
+937	1020	1540
+938	1021	1518
+939	1021	1573
+940	1022	1521
+941	1022	1577
+942	1023	1524
+943	1023	1692
+944	1024	1561
+945	1024	1540
+946	1025	1526
+947	1025	1573
+948	1026	1528
+949	1026	1576
+950	1027	1565
+951	1027	1545
+952	1028	1709
+953	1028	1710
+954	1029	1560
+955	1029	1548
+956	1030	1525
+957	1030	1580
+958	1031	1529
+959	1031	1584
+960	1032	1717
+961	1032	1718
+962	1033	1719
+963	1033	1720
+964	1034	1721
+965	1034	1722
+966	1035	1723
+967	1035	1724
+968	1036	1725
+969	1036	1726
+970	1037	1717
+971	1037	1728
+972	1038	1719
+973	1038	1730
+974	1039	1721
+975	1039	1732
+976	1040	1723
+977	1040	1734
+978	1041	1725
+979	1041	1736
+980	1042	1717
+981	1042	1738
+982	1043	1719
+983	1043	1740
+984	1044	1721
+985	1044	1742
+986	1045	1723
+987	1045	1744
+988	1046	1725
+989	1046	1746
+990	1047	1747
+991	1047	1728
+992	1048	1749
+993	1048	1730
+994	1049	1751
+995	1049	1732
+996	1050	1753
+997	1050	1754
+998	1051	1755
+999	1051	1734
+1000	1052	1757
+1001	1052	1736
+1002	1053	1747
+1003	1053	1738
+1004	1054	1749
+1005	1054	1740
+1006	1055	1751
+1007	1055	1742
+1008	1056	1753
+1009	1056	1766
+1010	1057	1755
+1011	1057	1744
+1012	1058	1757
+1013	1058	1746
+1014	1059	1718
+1015	1059	1738
+1016	1060	1720
+1017	1060	1740
+1018	1061	1722
+1019	1061	1742
+1020	1062	1724
+1021	1062	1744
+1022	1063	1726
+1023	1063	1746
+1024	1064	1516
+1025	1064	1523
+1026	1064	1538
+1027	1065	1517
+1028	1065	1524
+1029	1065	1539
+1030	1066	1518
+1031	1066	1525
+1032	1066	1540
+1033	1067	1519
+1034	1067	1526
+1035	1067	1541
+1036	1068	1520
+1037	1068	1528
+1038	1068	1543
+1039	1069	1521
+1040	1069	1529
+1041	1069	1544
+1042	1070	1522
+1043	1070	1530
+1044	1070	1545
+1045	1071	1516
+1046	1071	1531
+1047	1071	1538
+1048	1072	1517
+1049	1072	1532
+1050	1072	1539
+1051	1073	1518
+1052	1073	1533
+1053	1073	1540
+1054	1074	1519
+1055	1074	1534
+1056	1074	1541
+1057	1075	1520
+1058	1075	1535
+1059	1075	1543
+1060	1076	1521
+1061	1076	1536
+1062	1076	1544
+1063	1077	1522
+1064	1077	1537
+1065	1077	1545
+1066	1078	1523
+1067	1078	1531
+1068	1078	1546
+1069	1079	1524
+1070	1079	1532
+1071	1079	1547
+1072	1080	1525
+1073	1080	1533
+1074	1080	1548
+1075	1081	1526
+1076	1081	1534
+1077	1081	1549
+1078	1082	1528
+1079	1082	1535
+1080	1082	1551
+1081	1083	1529
+1082	1083	1536
+1083	1083	1552
+1084	1084	1530
+1085	1084	1537
+1086	1084	1553
+1087	1085	1523
+1088	1085	1538
+1089	1085	1546
+1090	1086	1524
+1091	1086	1539
+1092	1086	1547
+1093	1087	1525
+1094	1087	1540
+1095	1087	1548
+1096	1088	1526
+1097	1088	1541
+1098	1088	1549
+1099	1089	1753
+1100	1089	1754
+1101	1089	1766
+1102	1090	1528
+1103	1090	1543
+1104	1090	1551
+1105	1091	1529
+1106	1091	1544
+1107	1091	1552
+1108	1092	1530
+1109	1092	1545
+1110	1092	1553
+1111	1093	1868
+1112	1094	1869
+1113	1095	1870
+1114	1096	1871
+1115	1097	1872
+1116	1098	1873
+1117	1099	1874
+1118	1100	1875
+1119	1101	1876
+1120	1102	1877
+1121	1103	1878
+1122	1104	1879
+1123	1105	1880
+1124	1106	1881
+1125	1107	1882
+1126	1108	1883
+1127	1109	1884
+1128	1109	1682
+1129	1110	1555
+1130	1110	1567
+1131	1111	1556
+1132	1111	1568
+1133	1112	1557
+1134	1112	1569
+1135	1113	1558
+1136	1113	1570
+1137	1114	1884
+1138	1114	1692
+1139	1115	1555
+1140	1115	1572
+1141	1116	1556
+1142	1116	1573
+1143	1117	1557
+1144	1117	1576
+1145	1118	1558
+1146	1118	1577
+1147	1119	1904
+1148	1119	1692
+1149	1120	1560
+1150	1120	1572
+1151	1121	1561
+1152	1121	1573
+1153	1122	1562
+1154	1122	1574
+1155	1123	1563
+1156	1123	1575
+1157	1124	1564
+1158	1124	1576
+1159	1125	1565
+1160	1125	1577
+1161	1126	1904
+1162	1126	1710
+1163	1127	1560
+1164	1127	1579
+1165	1128	1561
+1166	1128	1580
+1167	1129	1562
+1168	1129	1581
+1169	1130	1563
+1170	1130	1582
+1171	1131	1564
+1172	1131	1583
+1173	1132	1565
+1174	1132	1584
+1175	1133	1682
+1176	1133	1710
+1177	1134	1567
+1178	1134	1579
+1179	1135	1568
+1180	1135	1580
+1181	1136	1569
+1182	1136	1583
+1183	1137	1570
+1184	1137	1584
+1185	1138	1516
+1186	1138	1523
+1187	1138	1531
+1188	1138	1538
+1189	1139	1517
+1190	1139	1524
+1191	1139	1532
+1192	1139	1539
+1193	1140	1518
+1194	1140	1525
+1195	1140	1533
+1196	1140	1540
+1197	1141	1519
+1198	1141	1526
+1199	1141	1534
+1200	1141	1541
+1201	1142	1520
+1202	1142	1528
+1203	1142	1535
+1204	1142	1543
+1205	1143	1521
+1206	1143	1529
+1207	1143	1536
+1208	1143	1544
+1209	1144	1522
+1210	1144	1530
+1211	1144	1537
+1212	1144	1545
+1213	1145	1516
+1214	1145	1531
+1215	1145	1538
+1216	1145	1546
+1217	1146	1517
+1218	1146	1532
+1219	1146	1539
+1220	1146	1547
+1221	1147	1518
+1222	1147	1533
+1223	1147	1540
+1224	1147	1548
+1225	1148	1519
+1226	1148	1534
+1227	1148	1541
+1228	1148	1549
+1229	1149	1520
+1230	1149	1535
+1231	1149	1543
+1232	1149	1551
+1233	1150	1521
+1234	1150	1536
+1235	1150	1544
+1236	1150	1552
+1237	1151	1522
+1238	1151	1537
+1239	1151	1545
+1240	1151	1553
+1241	1152	1516
+1242	1152	1523
+1243	1152	1538
+1244	1152	1546
+1245	1153	1517
+1246	1153	1524
+1247	1153	1539
+1248	1153	1547
+1249	1154	1518
+1250	1154	1525
+1251	1154	1540
+1252	1154	1548
+1253	1155	1519
+1254	1155	1526
+1255	1155	1541
+1256	1155	1549
+1257	1156	1520
+1258	1156	1528
+1259	1156	1543
+1260	1156	1551
+1261	1157	1521
+1262	1157	1529
+1263	1157	1544
+1264	1157	1552
+1265	1158	1522
+1266	1158	1530
+1267	1158	1545
+1268	1158	1553
+1269	1159	1516
+1270	1159	1523
+1271	1159	1531
+1272	1159	1546
+1273	1160	1517
+1274	1160	1524
+1275	1160	1532
+1276	1160	1547
+1277	1161	1518
+1278	1161	1525
+1279	1161	1533
+1280	1161	1548
+1281	1162	1519
+1282	1162	1526
+1283	1162	1534
+1284	1162	1549
+1285	1163	1520
+1286	1163	1528
+1287	1163	1535
+1288	1163	1551
+1289	1164	1521
+1290	1164	1529
+1291	1164	1536
+1292	1164	1552
+1293	1165	1522
+1294	1165	1530
+1295	1165	1537
+1296	1165	1553
+1297	1166	1523
+1298	1166	1531
+1299	1166	1538
+1300	1166	1546
+1301	1167	1524
+1302	1167	1532
+1303	1167	1539
+1304	1167	1547
+1305	1168	1525
+1306	1168	1533
+1307	1168	1540
+1308	1168	1548
+1309	1169	1526
+1310	1169	1534
+1311	1169	1541
+1312	1169	1549
+1313	1170	1528
+1314	1170	1535
+1315	1170	1543
+1316	1170	1551
+1317	1171	1529
+1318	1171	1536
+1319	1171	1544
+1320	1171	1552
+1321	1172	1530
+1322	1172	1537
+1323	1172	1545
+1324	1172	1553
+1325	1173	2082
+1326	1174	2083
+1327	1175	2084
+1328	1176	2085
+1329	1177	2086
+1330	1178	2087
+1331	1179	2088
+1332	1180	2089
+1333	1181	2090
+1334	1182	2091
+1335	1183	2092
+1336	1184	2093
+1337	1185	2094
+1338	1186	2095
+1339	1187	2096
+1340	1188	2097
+1341	1189	2098
+1342	1190	2099
+1343	1191	2100
+1344	1192	2101
+1345	1193	2102
+1346	1194	2103
+1347	1195	2104
+1348	1196	2105
+1349	1197	2106
+1350	1198	2107
+1351	1199	2108
+1352	1200	2109
+1353	1201	2110
+1354	1202	2111
+1355	1203	2112
+1356	1204	2113
+1357	1205	2114
+1358	1206	2115
+1359	1207	2116
+1360	1208	2117
+1361	1209	2118
+1362	1210	2119
+1363	1211	2120
+1364	1212	2121
+1365	1213	2122
+1366	1214	2123
+1367	1215	2124
+1368	1216	2125
+1369	1217	2126
+1370	1218	2127
+1371	1219	2128
+1372	1220	2129
+1373	1221	2130
+1374	1222	2131
+1375	1223	2132
+1376	1224	2133
+1377	1225	2134
+1378	1226	2135
+1379	1227	2136
+1380	1228	2082
+1381	1228	2094
+1382	1229	2083
+1383	1229	2095
+1384	1230	2141
+1385	1230	2142
+1386	1231	2084
+1387	1231	2096
+1388	1232	2085
+1389	1232	2097
+1390	1233	2086
+1391	1233	2098
+1392	1234	2087
+1393	1234	2099
+1394	1235	2088
+1395	1235	2100
+1396	1236	2089
+1397	1236	2101
+1398	1237	2155
+1399	1237	2156
+1400	1238	2090
+1401	1238	2102
+1402	1239	2091
+1403	1239	2103
+1404	1240	2092
+1405	1240	2104
+1406	1241	2093
+1407	1241	2105
+1408	1242	2165
+1409	1243	2166
+1410	1244	2167
+1411	1245	2168
+1412	1246	2169
+1413	1247	2170
+1414	1248	2171
+1415	1249	2172
+1416	1250	2173
+1417	1251	2174
+1418	1253	2175
+1419	1254	2176
+1420	1257	2177
+1421	1258	2178
+1422	1261	2179
+1423	1262	2180
+1424	1265	2181
+1425	1266	2182
+1426	1269	2183
+1427	1270	2184
+1428	1272	2185
+1429	1272	2186
+1430	1273	2187
+1431	1273	2188
+1432	1274	2189
+1433	1274	2190
+1434	1275	2191
+1435	1275	2192
+1436	1276	2193
+1437	1276	2194
+1438	1277	2195
+1439	1277	2196
+1440	1278	2197
+1441	1278	2198
+1442	1279	2199
+1443	1279	2200
+1444	1280	2201
+1445	1280	2202
+1446	1281	2203
+1447	1281	2204
+1448	1282	2205
+1449	1282	2206
+1450	1283	2207
+1451	1283	2208
+1452	1284	2209
+1453	1284	2210
+1454	1285	2211
+1455	1285	2212
+1456	1286	2213
+1457	1287	2214
+1458	1288	2215
+1459	1289	2216
+1460	1290	2217
+1461	1291	2218
+1462	1292	2219
+1463	1293	2220
+1464	1294	2221
+1465	1295	2222
+1466	1296	2223
+1467	1296	2224
+1468	1297	2225
+1469	1297	2226
+1470	1298	2227
+1471	1298	2228
+1472	1299	2229
+1473	1299	2230
+1474	1300	2114
+1475	1300	2124
+1476	1301	2115
+1477	1301	2125
+1478	1302	2235
+1479	1302	2236
+1480	1303	2116
+1481	1303	2126
+1482	1304	2239
+1483	1304	2240
+1484	1305	2241
+1485	1305	2242
+1486	1306	2243
+1487	1306	2244
+1488	1307	2245
+1489	1307	2246
+1490	1308	2119
+1491	1308	2129
+1492	1309	2120
+1493	1309	2130
+1494	1310	2251
+1495	1310	2252
+1496	1311	2121
+1497	1311	2131
+1498	1312	2255
+1499	1313	2256
+1500	1314	2257
+1501	1315	2258
+1502	1316	2259
+1503	1317	2260
+1504	1318	2261
+1505	1319	2262
+1506	1320	2263
+1507	1320	2264
+1508	1321	2265
+1509	1322	2266
+1510	1323	2267
+1511	1324	2268
+1512	1325	2269
+1513	1326	2270
+1514	1327	2267
+1515	1327	2272
+\.
+
+
+--
+-- Data for Name: contexts_of_experience; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY contexts_of_experience (id, context_name, context_abbreviation) FROM stdin;
+1	United States	US
+2	European Traditions	ET
+3	World Cultures	WC
+\.
+
+
+--
+-- Data for Name: deans; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY deans (id, dean_title, division_abbreviation) FROM stdin;
+0	Miscellaneous	No Division
+1	Provost	No Division
+2	Associate Provost	No Division
+30	Experimental Program	No Division
+40	Graduate Studies	No Division
+61	Associate Dean	No Division
+70	School of General Studies	No Division
+71	Associate Dean	No Division
+90	Special Program SEEK	No Division
+10	Arts & Humanities	AH
+50	Mathematics & Natural Sciences	MNS
+60	School of Education	Ed
+80	Social Sciences	SS
+20	Dean of Students	No Division
+\.
+
+
+--
+-- Data for Name: departments; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY departments (id, department_name) FROM stdin;
+1	No Department
+0	Missing Department
+2	Accounting & Info. Systems
+4	Anthropology
+6	Art
+8	Biology
+9	Business Administration
+10	Chemistry & Biochemistry
+14	Communication Arts & Sciences
+16	Comparative Literature
+18	Computer Science
+20	Drama, Theatre & Dance
+22	Economics
+28	English
+36	Health & Physical Education
+37	Hispanic Lang & Literatures
+38	History
+40	Home Economics
+42	Library
+44	Linguistics
+46	Mathematics
+47	Media Studies
+50	Philosophy
+52	Physics
+54	Political Science
+56	Psychology
+58	Romance Languages
+62	Sociology
+66	Student Personnel
+68	Urban Studies
+70	Studies & Special Programs
+75	Provost’s Office
+81	Law School
+12	Classical, Middle Eastern, and Asian Languages and Cultures
+34	Graduate School of Library and Information Studies
+48	Aaron Copland School of Music
+60	Secondary Education & Youth Services
+64	Special Programs/SEEK
+32	German, Slavic & East European Languages
+24	Educational and Community Programs
+26	Elementary & Early Childhood Education
+27	European Languages & Literatures
+29	Family, Nutrition, and Exercise Science
+30	Earth & Environmental Sciences
+\.
+
+
+--
+-- Data for Name: disciplines; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY disciplines (id, discipline_abbreviation, discipline_name, dean_id, department_id) FROM stdin;
+908	MNSCI	Math & Natural Sciences	50	1
+821	ACE	Adult Collegiate Education Program	2	70
+822	ACSKL	Academic Skills	2	70
+823	ADMIN	Graduate Degree Req Met	0	0
+824	AFST	Africana Studies	2	70
+825	AMST	American Studies	10	70
+826	ANTH	Anthropology	80	4
+827	ARAB	Arabic	10	12
+828	ARTH	Art History	10	6
+829	ARTS	Art Studio	10	6
+830	ASTR	Astronomy	50	52
+831	B-CH	Biochemistry	0	70
+832	BALA	Business & Liberal Arts (BALA)	80	70
+833	BASS	Bachelor-Applied Soc Sci	2	70
+834	BIOCH	Bio-chemistry	50	10
+835	BIOL	Biology	50	8
+836	BUS	Business	80	9
+837	CEP	Continuing Ed Programs	0	70
+838	CERT	Certified Full Time	0	70
+839	CESL	College English As A Sec Lang	2	70
+840	CHC	CUNY Honors College	0	70
+841	CHEM	Chemistry	50	10
+842	CHIN	Chinese	10	12
+843	CLAS	Classics	10	12
+844	CLUBS	Clubs	0	70
+845	CMAL	Class & Mid East Lang	10	12
+846	CMLIT	Comparative Literature	10	16
+847	CO-OP	Cooperative Education	1	70
+848	CPI	College Preparatory Initiative	0	70
+849	CSCI	Computer Science	50	18
+850	CUNBA	CUNY BA	0	70
+851	DANCE	Theatre-Dance	10	20
+852	DRAF	Drafting	50	52
+853	DRAM	Drama, Theatre and Dance	10	20
+854	EAST	East Asian Studies	10	12
+855	ECON	Economics	80	22
+856	ECP	Educational & Community Programs	60	24
+857	ECPCE	Counselor Education	60	24
+858	ECPEL	Educ Community Prog-Leadershp	60	24
+859	ECPLE	Literacy Education	60	24
+860	ECPSE	Special Education	60	24
+861	ECPSP	School Psychology	60	24
+862	EDUC	Education	60	70
+863	EECE	Elem & Early Childhood Education	60	26
+864	ELI	Engl Language Institute	0	70
+865	ENGL	English	10	28
+866	ENSCI	Environmental Science	50	30
+867	ENSTD	Environmental Studies	50	30
+868	ESL	Engl as a Second Language	0	70
+869	EURO	European Languages & Literatures	10	27
+870	FLMST	Film Studies	10	70
+871	FNES	Family, Nutrition, and Exercise Sciences	50	29
+872	FREN	French	10	27
+873	GEOG	Geography	80	22
+874	GEOL	Geology/Enviromental Sciences	50	30
+875	GERM	German	10	27
+876	GREEK	Greek	10	12
+877	GRKMD	Modern Greek	10	27
+878	GRKST	Byz & Mod Grk Studies	2	70
+879	HEBRW	Hebrew	10	12
+880	HIST	History	80	38
+881	HMNS	Honors In Math & Nat Sciences	50	75
+882	HNRS	Honors College	71	70
+883	HSS	Honors In The Social Sciences	80	75
+884	HTH	Honors In The Humanities	10	75
+885	HWT	Honors In Western Tradition	10	70
+886	IRST	Irish Studies	2	75
+887	ITAL	Italian	10	27
+888	ITAST	Italian-American Studies	2	70
+889	JEWST	Jewish Studies	2	70
+890	JOURN	Journalism	80	70
+891	JPNS	Japanese	10	12
+892	KOR	Korean	10	12
+893	LABST	Labor Studies	80	70
+894	LAE	Lib Arts Elective	0	70
+895	LALS	Latin American/latino Studies	2	70
+896	LANG	Foreign Language Exempt	0	70
+897	LASAR	Lasar Exemptions	10	70
+898	LATIN	Latin	10	12
+899	LBLST	Liberal Studies	1	75
+900	LBSCI	Library Science	80	34
+901	LCD	Linguistics & Comm Disorders	10	44
+902	LEAP	Labor Educ Advancement Project	80	70
+903	LIBR	Library	10	42
+904	MAM	Maintaining Matriculation	0	70
+905	MATH	Mathematics	50	46
+906	MEDST	Media Studies	10	47
+907	MES	Middle Eastern Studies	10	12
+909	MUSIC	Music	10	48
+910	NLAE	Non Lib Arts Elect	0	70
+911	ONFIL	On File	0	70
+912	PERM	QC Student On Permit	0	70
+913	PHIL	Philosophy	80	50
+914	PHYED	Physical Education	50	36
+915	PHYS	Physics	50	52
+916	PLAS	PLAS Exemptions	0	70
+917	POL	Polish	10	32
+918	PORT	Portuguese	10	37
+919	PSCI	Political Science	80	54
+920	PSYCH	Psychology	50	56
+921	RLGST	Religious Studies	80	70
+922	RUSS	Russian	10	27
+923	SEEK	SEEK	90	64
+924	SEYS	Secondary Ed & Youth Services	60	24
+925	SEYSG	Secondary Ed: Generalist Sp Ed	60	24
+926	SEYSL	Secondary Ed: Literacy Edu.	60	24
+927	SOC	Sociology	80	62
+928	SPAN	Spanish	10	37
+929	SPST	Special Studies	71	75
+930	STABD	Study Abroad	0	70
+931	STPER	Student Personnel	80	66
+932	TRANS	Advanced Standing Credits	0	70
+933	UPBND	Upward Bound	0	70
+934	URBST	Urban Studies	80	68
+935	WLDST	World Studies	80	70
+936	WOMST	Women’s Studies	10	70
+937	YIDD	Yiddish	10	12
+938	ACCT	Accounting	80	2
+939	NONE	No Discipline	0	1
+\.
+
+
+--
+-- Data for Name: meeting_times; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY meeting_times (id, meeting_time, "day", start_time, end_time) FROM stdin;
+2199	T16:30-17:45	T	16:30:00	17:45:00
+2200	R16:30-17:45	R	16:30:00	17:45:00
+2201	T16:55-18:10	T	16:55:00	18:10:00
+2202	R16:55-18:10	R	16:55:00	18:10:00
+2203	T17:00-18:15	T	17:00:00	18:15:00
+2204	R17:00-18:15	R	17:00:00	18:15:00
+2205	T18:30-19:45	T	18:30:00	19:45:00
+2206	R18:30-19:45	R	18:30:00	19:45:00
+2207	T20:00-21:15	T	20:00:00	21:15:00
+2208	R20:00-21:15	R	20:00:00	21:15:00
+2209	T20:10-21:25	T	20:10:00	21:25:00
+2210	R20:10-21:25	R	20:10:00	21:25:00
+2211	T21:30-22:45	T	21:30:00	22:45:00
+2212	R21:30-22:45	R	21:30:00	22:45:00
+2213	M16:00-19:20	M	16:00:00	19:20:00
+2214	M18:30-22:20	M	18:30:00	22:20:00
+2215	T16:00-19:20	T	16:00:00	19:20:00
+2216	T18:30-22:20	T	18:30:00	22:20:00
+2217	W16:00-19:20	W	16:00:00	19:20:00
+2218	W18:30-22:20	W	18:30:00	22:20:00
+2219	R16:00-19:20	R	16:00:00	19:20:00
+2220	R18:30-22:20	R	18:30:00	22:20:00
+2221	F16:00-19:20	F	16:00:00	19:20:00
+2222	F18:30-22:20	F	18:30:00	22:20:00
+2223	M16:00-17:40	M	16:00:00	17:40:00
+2224	W16:00-17:40	W	16:00:00	17:40:00
+2225	M16:30-18:20	M	16:30:00	18:20:00
+2226	W16:30-18:20	W	16:30:00	18:20:00
+2227	M17:30-19:20	M	17:30:00	19:20:00
+2228	W17:30-19:20	W	17:30:00	19:20:00
+2229	M18:15-19:55	M	18:15:00	19:55:00
+2230	W18:15-19:55	W	18:15:00	19:55:00
+2235	M20:10-21:50	M	20:10:00	21:50:00
+2236	W20:10-21:50	W	20:10:00	21:50:00
+2239	T16:00-17:40	T	16:00:00	17:40:00
+2240	R16:00-17:40	R	16:00:00	17:40:00
+2241	T16:30-18:20	T	16:30:00	18:20:00
+2242	R16:30-18:20	R	16:30:00	18:20:00
+2243	T17:30-19:20	T	17:30:00	19:20:00
+2244	R17:30-19:20	R	17:30:00	19:20:00
+2245	T18:15-19:55	T	18:15:00	19:55:00
+2246	R18:15-19:55	R	18:15:00	19:55:00
+2251	T20:10-21:50	T	20:10:00	21:50:00
+2252	R20:10-21:50	R	20:10:00	21:50:00
+2255	S08:30-10:20	S	08:30:00	10:20:00
+2256	S08:30-12:00	S	08:30:00	12:00:00
+2257	U08:30-10:20	U	08:30:00	10:20:00
+2258	U08:30-12:00	U	08:30:00	12:00:00
+2259	S09:00-12:40	S	09:00:00	12:40:00
+2260	U09:00-12:40	U	09:00:00	12:40:00
+2261	S09:20-12:05	S	09:20:00	12:05:00
+2262	U09:20-12:05	U	09:20:00	12:05:00
+2263	S10:00-11:50	S	10:00:00	11:50:00
+2264	U10:00-11:50	U	10:00:00	11:50:00
+2265	S10:30-12:20	S	10:30:00	12:20:00
+2266	U10:30-12:20	U	10:30:00	12:20:00
+2267	S13:00-15:40	S	13:00:00	15:40:00
+2268	S13:00-16:40	S	13:00:00	16:40:00
+2269	U13:00-15:40	U	13:00:00	15:40:00
+2270	U13:00-16:40	U	13:00:00	16:40:00
+2272	U10:00-12:00	U	10:00:00	12:00:00
+2082	M16:40-17:30	M	16:40:00	17:30:00
+2083	M17:00-17:50	M	17:00:00	17:50:00
+2084	M18:30-19:20	M	18:30:00	19:20:00
+2085	M19:30-20:20	M	19:30:00	20:20:00
+2086	M20:30-21:20	M	20:30:00	21:20:00
+2087	M21:30-22:20	M	21:30:00	22:20:00
+2088	T16:40-17:30	T	16:40:00	17:30:00
+2089	T17:00-17:50	T	17:00:00	17:50:00
+2090	T18:30-19:20	T	18:30:00	19:20:00
+2091	T19:30-20:20	T	19:30:00	20:20:00
+2092	T20:30-21:20	T	20:30:00	21:20:00
+2093	T21:30-22:20	T	21:30:00	22:20:00
+2094	W16:40-17:30	W	16:40:00	17:30:00
+2095	W17:00-17:50	W	17:00:00	17:50:00
+2096	W18:30-19:20	W	18:30:00	19:20:00
+2097	W19:30-20:20	W	19:30:00	20:20:00
+2098	W20:30-21:20	W	20:30:00	21:20:00
+2099	W21:30-22:20	W	21:30:00	22:20:00
+2100	R16:40-17:30	R	16:40:00	17:30:00
+2101	R17:00-17:50	R	17:00:00	17:50:00
+2102	R18:30-19:20	R	18:30:00	19:20:00
+2103	R19:30-20:20	R	19:30:00	20:20:00
+2104	R20:30-21:20	R	20:30:00	21:20:00
+2105	R21:30-22:20	R	21:30:00	22:20:00
+2106	F16:40-17:30	F	16:40:00	17:30:00
+2107	F17:00-17:50	F	17:00:00	17:50:00
+2108	F18:30-19:20	F	18:30:00	19:20:00
+2109	F19:30-20:20	F	19:30:00	20:20:00
+2110	F20:30-21:20	F	20:30:00	21:20:00
+2111	F21:30-22:20	F	21:30:00	22:20:00
+2112	M16:00-17:50	M	16:00:00	17:50:00
+2113	M17:00-18:50	M	17:00:00	18:50:00
+2114	M18:30-20:20	M	18:30:00	20:20:00
+2115	M19:30-21:20	M	19:30:00	21:20:00
+2116	M20:30-22:20	M	20:30:00	22:20:00
+2117	T16:00-17:50	T	16:00:00	17:50:00
+2118	T17:00-18:50	T	17:00:00	18:50:00
+2119	T18:30-20:20	T	18:30:00	20:20:00
+2120	T19:30-21:20	T	19:30:00	21:20:00
+2121	T20:30-22:20	T	20:30:00	22:20:00
+2122	W16:00-17:50	W	16:00:00	17:50:00
+2123	W17:00-18:50	W	17:00:00	18:50:00
+2124	W18:30-20:20	W	18:30:00	20:20:00
+2125	W19:30-21:20	W	19:30:00	21:20:00
+2126	W20:30-22:20	W	20:30:00	22:20:00
+2127	R16:00-17:50	R	16:00:00	17:50:00
+2128	R17:00-18:50	R	17:00:00	18:50:00
+2129	R18:30-20:20	R	18:30:00	20:20:00
+2130	R19:30-21:20	R	19:30:00	21:20:00
+2131	R20:30-22:20	R	20:30:00	22:20:00
+2132	F16:00-17:50	F	16:00:00	17:50:00
+2133	F17:00-18:50	F	17:00:00	18:50:00
+2134	F18:30-20:20	F	18:30:00	20:20:00
+2135	F19:30-21:20	F	19:30:00	21:20:00
+2136	F20:30-22:20	F	20:30:00	22:20:00
+2141	M17:30-18:20	M	17:30:00	18:20:00
+2142	W17:30-18:20	W	17:30:00	18:20:00
+2155	T17:30-18:20	T	17:30:00	18:20:00
+2156	R17:30-18:20	R	17:30:00	18:20:00
+2165	M16:30-19:00	M	16:30:00	19:00:00
+2166	M19:10-21:40	M	19:10:00	21:40:00
+2167	T16:30-19:00	T	16:30:00	19:00:00
+2168	T19:10-21:40	T	19:10:00	21:40:00
+2169	W16:30-19:00	W	16:30:00	19:00:00
+2170	W19:10-21:40	W	19:10:00	21:40:00
+2171	R16:30-19:00	R	16:30:00	19:00:00
+2172	R19:10-21:40	R	19:10:00	21:40:00
+2173	F16:30-19:00	F	16:30:00	19:00:00
+2174	F19:10-21:40	F	19:10:00	21:40:00
+2175	M17:30-20:20	M	17:30:00	20:20:00
+2176	M18:30-21:20	M	18:30:00	21:20:00
+2177	T17:30-20:20	T	17:30:00	20:20:00
+2178	T18:30-21:20	T	18:30:00	21:20:00
+2179	W17:30-20:20	W	17:30:00	20:20:00
+2180	W18:30-21:20	W	18:30:00	21:20:00
+2181	R17:30-20:20	R	17:30:00	20:20:00
+2182	R18:30-21:20	R	18:30:00	21:20:00
+2183	F17:30-20:20	F	17:30:00	20:20:00
+2184	F18:30-21:20	F	18:30:00	21:20:00
+2185	M16:30-17:45	M	16:30:00	17:45:00
+2186	W16:30-17:45	W	16:30:00	17:45:00
+2187	M16:55-18:10	M	16:55:00	18:10:00
+2188	W16:55-18:10	W	16:55:00	18:10:00
+2189	M17:00-18:15	M	17:00:00	18:15:00
+2190	W17:00-18:15	W	17:00:00	18:15:00
+2191	M18:30-19:45	M	18:30:00	19:45:00
+2192	W18:30-19:45	W	18:30:00	19:45:00
+2193	M20:00-21:15	M	20:00:00	21:15:00
+2194	W20:00-21:15	W	20:00:00	21:15:00
+2195	M20:10-21:25	M	20:10:00	21:25:00
+2196	W20:10-21:25	W	20:10:00	21:25:00
+2197	M21:30-22:45	M	21:30:00	22:45:00
+2198	W21:30-22:45	W	21:30:00	22:45:00
+1904	T08:15-10:05	T	08:15:00	10:05:00
+1728	R08:00-09:15	R	08:00:00	09:15:00
+1730	R09:25-10:40	R	09:25:00	10:40:00
+1732	R10:50-12:05	R	10:50:00	12:05:00
+1734	R13:40-14:55	R	13:40:00	14:55:00
+1736	R15:05-16:20	R	15:05:00	16:20:00
+1738	F08:00-09:15	F	08:00:00	09:15:00
+1740	F09:25-10:40	F	09:25:00	10:40:00
+1742	F10:50-12:05	F	10:50:00	12:05:00
+1744	F13:40-14:55	F	13:40:00	14:55:00
+1746	F15:05-16:20	F	15:05:00	16:20:00
+1747	T08:00-09:15	T	08:00:00	09:15:00
+1749	T09:25-10:40	T	09:25:00	10:40:00
+1751	T10:50-12:05	T	10:50:00	12:05:00
+1753	T12:15-13:30	T	12:15:00	13:30:00
+1754	R12:15-13:30	R	12:15:00	13:30:00
+1755	T13:40-14:55	T	13:40:00	14:55:00
+1757	T15:05-16:20	T	15:05:00	16:20:00
+1766	F12:15-13:30	F	12:15:00	13:30:00
+1868	M08:15-12:05	M	08:15:00	12:05:00
+1869	T08:15-12:05	T	08:15:00	12:05:00
+1870	T09:15-13:05	T	09:15:00	13:05:00
+1871	T10:15-14:05	T	10:15:00	14:05:00
+1872	T11:15-15:05	T	11:15:00	15:05:00
+1873	T12:40-16:30	T	12:40:00	16:30:00
+1874	R08:15-12:05	R	08:15:00	12:05:00
+1875	R09:15-13:05	R	09:15:00	13:05:00
+1876	R10:15-14:05	R	10:15:00	14:05:00
+1877	R11:15-15:05	R	11:15:00	15:05:00
+1878	R12:40-16:30	R	12:40:00	16:30:00
+1879	F08:15-12:05	F	08:15:00	12:05:00
+1880	F09:15-13:05	F	09:15:00	13:05:00
+1881	F10:15-14:05	F	10:15:00	14:05:00
+1882	F11:15-15:05	F	11:15:00	15:05:00
+1883	F12:40-16:30	F	12:40:00	16:30:00
+1884	M08:15-10:05	M	08:15:00	10:05:00
+1571	R08:00-09:50	R	08:00:00	09:50:00
+1572	R09:15-11:05	R	09:15:00	11:05:00
+1573	R10:15-12:05	R	10:15:00	12:05:00
+1574	R11:15-13:05	R	11:15:00	13:05:00
+1575	R12:40-14:30	R	12:40:00	14:30:00
+1576	R13:40-15:30	R	13:40:00	15:30:00
+1577	R14:40-16:30	R	14:40:00	16:30:00
+1578	F08:00-09:50	F	08:00:00	09:50:00
+1579	F09:15-11:05	F	09:15:00	11:05:00
+1580	F10:15-12:05	F	10:15:00	12:05:00
+1581	F11:15-13:05	F	11:15:00	13:05:00
+1582	F12:40-14:30	F	12:40:00	14:30:00
+1583	F13:40-15:30	F	13:40:00	15:30:00
+1584	F14:40-16:30	F	14:40:00	16:30:00
+1659	M08:00-10:50	M	08:00:00	10:50:00
+1660	M09:15-12:05	M	09:15:00	12:05:00
+1661	M13:40-16:30	M	13:40:00	16:30:00
+1662	T08:00-10:50	T	08:00:00	10:50:00
+1663	T09:15-12:05	T	09:15:00	12:05:00
+1664	T10:15-13:05	T	10:15:00	13:05:00
+1665	T11:25-14:15	T	11:25:00	14:15:00
+1666	T12:40-15:30	T	12:40:00	15:30:00
+1667	T13:40-16:30	T	13:40:00	16:30:00
+1668	W08:00-10:50	W	08:00:00	10:50:00
+1669	W09:15-12:05	W	09:15:00	12:05:00
+1670	W13:40-16:30	W	13:40:00	16:30:00
+1671	R10:15-13:05	R	10:15:00	13:05:00
+1672	R11:25-14:15	R	11:25:00	14:15:00
+1673	R12:40-15:30	R	12:40:00	15:30:00
+1674	R13:40-16:30	R	13:40:00	16:30:00
+1675	F08:00-10:50	F	08:00:00	10:50:00
+1676	F09:15-12:05	F	09:15:00	12:05:00
+1677	F10:15-13:05	F	10:15:00	13:05:00
+1678	F11:25-14:15	F	11:25:00	14:15:00
+1679	F12:40-15:30	F	12:40:00	15:30:00
+1680	F13:40-16:30	F	13:40:00	16:30:00
+1682	W08:15-10:05	W	08:15:00	10:05:00
+1691	M08:15-09:05	M	08:15:00	09:05:00
+1692	R08:15-10:05	R	08:15:00	10:05:00
+1709	T08:15-09:05	T	08:15:00	09:05:00
+1710	F08:15-10:05	F	08:15:00	10:05:00
+1717	M08:00-09:15	M	08:00:00	09:15:00
+1718	W08:00-09:15	W	08:00:00	09:15:00
+1719	M09:25-10:40	M	09:25:00	10:40:00
+1720	W09:25-10:40	W	09:25:00	10:40:00
+1721	M10:50-12:05	M	10:50:00	12:05:00
+1722	W10:50-12:05	W	10:50:00	12:05:00
+1723	M13:40-14:55	M	13:40:00	14:55:00
+1724	W13:40-14:55	W	13:40:00	14:55:00
+1725	M15:05-16:20	M	15:05:00	16:20:00
+1726	W15:05-16:20	W	15:05:00	16:20:00
+1516	M08:00-08:50	M	08:00:00	08:50:00
+1517	M09:15-10:05	M	09:15:00	10:05:00
+1518	M10:15-11:05	M	10:15:00	11:05:00
+1519	M11:15-12:05	M	11:15:00	12:05:00
+1520	M13:40-14:30	M	13:40:00	14:30:00
+1521	M14:40-15:30	M	14:40:00	15:30:00
+1522	M15:40-16:30	M	15:40:00	16:30:00
+1523	T08:00-08:50	T	08:00:00	08:50:00
+1524	T09:15-10:05	T	09:15:00	10:05:00
+1525	T10:15-11:05	T	10:15:00	11:05:00
+1526	T11:15-12:05	T	11:15:00	12:05:00
+1527	T12:40-13:30	T	12:40:00	13:30:00
+1528	T13:40-14:30	T	13:40:00	14:30:00
+1529	T14:40-15:30	T	14:40:00	15:30:00
+1530	T15:40-16:30	T	15:40:00	16:30:00
+1531	W08:00-08:50	W	08:00:00	08:50:00
+1532	W09:15-10:05	W	09:15:00	10:05:00
+1533	W10:15-11:05	W	10:15:00	11:05:00
+1534	W11:15-12:05	W	11:15:00	12:05:00
+1535	W13:40-14:30	W	13:40:00	14:30:00
+1536	W14:40-15:30	W	14:40:00	15:30:00
+1537	W15:40-16:30	W	15:40:00	16:30:00
+1538	R08:00-08:50	R	08:00:00	08:50:00
+1539	R09:15-10:05	R	09:15:00	10:05:00
+1540	R10:15-11:05	R	10:15:00	11:05:00
+1541	R11:15-12:05	R	11:15:00	12:05:00
+1542	R12:40-13:30	R	12:40:00	13:30:00
+1543	R13:40-14:30	R	13:40:00	14:30:00
+1544	R14:40-15:30	R	14:40:00	15:30:00
+1545	R15:40-16:30	R	15:40:00	16:30:00
+1546	F08:00-08:50	F	08:00:00	08:50:00
+1547	F09:15-10:05	F	09:15:00	10:05:00
+1548	F10:15-11:05	F	10:15:00	11:05:00
+1549	F11:15-12:05	F	11:15:00	12:05:00
+1550	F12:40-13:30	F	12:40:00	13:30:00
+1551	F13:40-14:30	F	13:40:00	14:30:00
+1552	F14:40-15:30	F	14:40:00	15:30:00
+1553	F15:40-16:30	F	15:40:00	16:30:00
+1554	M08:00-09:50	M	08:00:00	09:50:00
+1555	M09:15-11:05	M	09:15:00	11:05:00
+1556	M10:15-12:05	M	10:15:00	12:05:00
+1557	M13:40-15:30	M	13:40:00	15:30:00
+1558	M14:40-16:30	M	14:40:00	16:30:00
+1559	T08:00-09:50	T	08:00:00	09:50:00
+1560	T09:15-11:05	T	09:15:00	11:05:00
+1561	T10:15-12:05	T	10:15:00	12:05:00
+1562	T11:15-13:05	T	11:15:00	13:05:00
+1563	T12:40-14:30	T	12:40:00	14:30:00
+1564	T13:40-15:30	T	13:40:00	15:30:00
+1565	T14:40-16:30	T	14:40:00	16:30:00
+1566	W08:00-09:50	W	08:00:00	09:50:00
+1567	W09:15-11:05	W	09:15:00	11:05:00
+1568	W10:15-12:05	W	10:15:00	12:05:00
+1569	W13:40-15:30	W	13:40:00	15:30:00
+1570	W14:40-16:30	W	14:40:00	16:30:00
+\.
+
+
+--
+-- Data for Name: other_requirements; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY other_requirements (id, requirement_name, requirement_abbreviation) FROM stdin;
+2	Pre-Industrial Society	PI
+1	Abstract or Quantitative Reasoning	QR
+\.
+
+
+--
+-- Data for Name: people; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY people (id, last_name, first_name, title, affiliation, email, alternate_email) FROM stdin;
+1	Adams	Richard	Mr.	ACE	ace@qc.edu	\N
+2	Attar	Karina	Dr.	European Languages and Literatures		\N
+3	Bertolino	Joseph	Dr.	Student Personnel		\N
+4	Blumenfrucht	Israel	Dr.	Accounting		\N
+5	Burnett	Henry	Prof.	School of Music		\N
+7	Callis	Cathy	Dr.			\N
+8	Carroll	Clare	Prof.	Comparative Literature/Irish Studies		\N
+9	Cassvan	jeffrey	Prof.	English		\N
+10	Celello	Kristin	Prof.	History/Honors in the Social Sciences		\N
+11	Chetrit	Sami S.	Dr.	Classical, Middle Eastern, and Asian Languages and Cultures		\N
+12	Coch	Nicholas	Dr.	School of Earth and Environmental Sciences		\N
+13	Collins	John		Anthropology		\N
+14	Covington	Sarah		History		\N
+15	Critchell	Yin Mei	Prof.	Drama, Theatre, and Dance		\N
+16	Croll	Susan	Dr.	Mathematics & Natural Science Divisional Course - Croll, Psychology		\N
+17	De Jong	Cornelia	Dr.	Linguistics & Communication Disorders		\N
+18	Dennehy	John		Biology		\N
+19	Deych	Lev	Dr.	Physics		\N
+20	Eaton	Timothy	Dr.	School of Earth and Environmental Sciences		\N
+21	Eisenberg	Martin		Sociology		\N
+22	Evans	Cherice	Dr.	Chemistry and Biochemistry		\N
+23	Faherty	Duncan	Dr.	English		\N
+24	Fath	Karl	Prof.	Biology		\N
+25	Feiner	Harry		Drama, Theatre, and Dance		\N
+26	Feliciano	Zadia		Economics		\N
+27	Frosch	Thomas		English	tfrosch@nyc.rr.com	\N
+28	Gabel	David		Economics		\N
+30	Gangji	Al-Karim	Mr.	Physics		\N
+31	Gardaphe	Fred	Dr.	English		\N
+32	Genack	Azriel		Physics		\N
+33	Glass	Peter	Mr.	Physics		\N
+34	Greet	Van Belle		European Languages and Literatures		\N
+35	Grover	Stephen	Prof.	Philosophy (Religious Studies)		\N
+36	Haller	Hermann W.	Prof.	European Languages and Literatures		\N
+37	Healey	Meghan	Prof.	Drama, Theatre, and Dance		\N
+38	Herzog	Amy	Dr.	Media Studies		\N
+39	Hicks	Steven	Prof.	Philosophy		\N
+40	Jasti	Sunitha	Dr.	Family, Nutrition and Exercise Sciences		\N
+41	Jones	David Andrew	Dr.	European Languages and Literatures		\N
+42	Katsan	Gerasimus	Dr.	European Languages and Literatures		\N
+43	Koeppl	Gerald		Chemistry and Biochemistry		\N
+44	Kuskovsky	Igor	Prof.	Physics		\N
+45	Li	Andrea		Psychology		\N
+46	Lidov	Joel	Prof.	Classical, Middle Eastern, and Asian Languages and Cultures		\N
+47	Lisyansky	Alexander	Prof.	Physics		\N
+48	Ludman	Allan	Prof.	Earth & Environmental Sciences		\N
+49	Ma	PoKay		Biology		\N
+50	Makihara	Miki		Anthropology		\N
+51	Maxwell	Richard	Prof.	Media Studies		\N
+52	McClure	William		Classical, Middle Eastern, and Asian Languages and Cultures		\N
+53	McCurley	Dallas		Drama, Theatre, and Dance		\N
+54	McHugh	Cecilia	Prof.	School of Earth and Environmental Sciences		\N
+55	Menken	Kate	Dr.	Linguistics & Communication Disorders		\N
+56	Menon	Vinod	Prof.	Physics		\N
+57	Michels	Corinne		Biology		\N
+58	Mills	Joseph	Dr.	Drama, Theatre and Dance		\N
+59	Moreland	Wayne	Mr.	English	waphalpa@aol.com	\N
+60	Newman	Michael		Linguistics & Communication Disorders		\N
+61	Paulicelli	Eugenia	Dr.	ELL		\N
+62	Plummer	Thomas	Prof.	Anthropology		\N
+63	Repole	Charles	Prof.	Drama, Theatre, and Dance		\N
+64	Robila	Mihaela	Dr.	Family, Nutrition and Exercise Sciences		\N
+65	Rodberg	Leonard	Dr.	Urban Studies		\N
+66	Roistacher	Elizabeth	Prof.	Economics		\N
+67	Rollins	Joe	Prof.	Political Science		\N
+68	Saini	Sajan	Prof.	Physics	sajan.saini@gmail.com	\N
+69	Saslow	James	Prof.			\N
+70	Savage	Dean		sociology		\N
+71	Shu	Yunzhong		Classical, Middle Eastern, and Asian Languages and Cultures		\N
+72	Silyn Roberts	Sian	Dr.	English		\N
+73	Simerka	Barbara	Dr.	Hispanic Languages and Literatures	simerkabarbara@gmail.com	\N
+74	Smaldone	Edward	Prof.	School of Music		\N
+75	Smyth	Peggy		Art		\N
+76	Spreizer	Christa	Prof.	European Languages and Literatures		\N
+77	Spring	Joel	Prof.	EECE		\N
+78	Stinson	Sara		Anthropology		\N
+79	Strickland	Suzanne	Ms.	Sociology		\N
+80	Sullivan	Karen	Dr.	European Languages and Literatures		\N
+81	Tang	Joyce	Dr.	Sociology		\N
+82	Vago	Robert	Prof.	Linguistics & Communication Disorders		\N
+83	Waldinger	Barbara	Prof.	Drama, Theatre, and Dance	bmwald@aol.com	\N
+84	Walters	Francis S.		Linguistics & Communication Disorders		\N
+85	Warren	Frank	Prof.	History		\N
+86	Wheeler	Ross	Dr.	Honors College		\N
+87	Winks	Christopher		Comparative Literature		\N
+88	Yi	Chuixiang	Prof.	School of Earth and Environmental Sciences		\N
+89	Zheng	Yan	Dr.	School of Earth and Environmental Sciences		\N
+6	Caamaño	Juan	Dr.			\N
+29	Gagné	David		School of Music		\N
+129	Cohen	Bernard		Sociology	strickmcaul@msn.com	\N
+131	Miller	Joanne		Sociology	strickmcaul@msn.com	\N
+133	Seiler	Lauren		Sociology	strickmcaul@msn.com	\N
+140	Rosales	Kristine		Sociology	strickmcaul@msn.com	\N
+142	Fernandes	Sujatha		Sociology	strickmcaul@msn.com	\N
+\.
+
+
+--
+-- Data for Name: section_codes; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY section_codes (id, section_code, contact_hours) FROM stdin;
+926	10M2	2
+927	1M2	2
+928	2M2	2
+929	8T2	2
+930	9T2	2
+931	10T2	2
+932	11T2	2
+933	12T2	2
+934	1T2	2
+935	2T2	2
+936	8W2	2
+937	9W2	2
+938	10W2	2
+939	1W2	2
+940	2W2	2
+941	8R2	2
+942	9R2	2
+943	10R2	2
+944	11R2	2
+945	12R2	2
+946	1R2	2
+947	2R2	2
+948	8F2	2
+949	9F2	2
+950	10F2	2
+951	11F2	2
+952	12F2	2
+953	1F2	2
+954	2F2	2
+955	8M2W	2
+956	9M2W	2
+957	AM2W	2
+958	BM2W	2
+959	1M2W	2
+960	2M2W	2
+961	3M2W	2
+962	8M2R	2
+963	9M2R	2
+964	AM2R	2
+965	BM2R	2
+966	1M2R	2
+967	2M2R	2
+968	3M2R	2
+969	8T2R	2
+970	9T2R	2
+971	AT2R	2
+972	BT2R	2
+973	CT2R	2
+974	1T2R	2
+975	2T2R	2
+976	3T2R	2
+977	8T2F	2
+978	9T2F	2
+979	AT2F	2
+980	BT2F	2
+981	CT2F	2
+982	1T2F	2
+983	2T2F	2
+984	3T2F	2
+985	8W2F	2
+986	9W2F	2
+987	AW2F	2
+988	BW2F	2
+989	1W2F	2
+990	2W2F	2
+991	3W2F	2
+992	8M3	3
+993	9M3	3
+994	1M3	3
+995	8T3	3
+996	9T3	3
+997	10T3	3
+998	11T3	3
+999	12T3	3
+1000	1T3	3
+1001	8W3	3
+1002	9W3	3
+1003	1W3	3
+1004	10R3	3
+1005	11R3	3
+1006	12R3	3
+1007	1R3	3
+1008	8F3	3
+1009	9F3	3
+1010	10F3	3
+1011	11F3	3
+1012	12F3	3
+1013	1F3	3
+1014	9MYW	3
+1015	AMZW	3
+1016	BMYW	3
+1017	1MYW	3
+1018	2MZW	3
+1019	8MYR	3
+1020	9MZR	3
+1021	AMYR	3
+1022	2MYR	3
+1023	9TYR	3
+1024	ATZR	3
+1025	BTYR	3
+1026	1TYR	3
+1027	2TZR	3
+1028	8TYF	3
+1029	9TZF	3
+1030	ATYF	3
+1031	2TYF	3
+1032	8M3W	3
+1033	9M3W	3
+1034	AM3W	3
+1035	1M3W	3
+1036	3M3W	3
+1037	8M3R	3
+1038	9M3R	3
+1039	AM3R	3
+1040	1M3R	3
+1041	3M3R	3
+1042	8M3F	3
+1043	9M3F	3
+1044	AM3F	3
+1045	1M3F	3
+1046	3M3F	3
+1047	8T3R	3
+1048	9T3R	3
+1049	AT3R	3
+1050	CT3R	3
+1051	1T3R	3
+1052	3T3R	3
+1053	8T3F	3
+1054	9T3F	3
+1055	AT3F	3
+1056	CT3F	3
+1057	1T3F	3
+1058	3T3F	3
+1059	8W3F	3
+1060	9W3F	3
+1061	AW3F	3
+1062	1W3F	3
+1063	3W3F	3
+1064	8M3B	3
+1065	9M3B	3
+1066	AM3B	3
+1067	BM3B	3
+1068	1M3B	3
+1069	2M3B	3
+1070	3M3B	3
+1071	8M3C	3
+1072	9M3C	3
+1073	AM3C	3
+1074	BM3C	3
+1075	1M3C	3
+1076	2M3C	3
+1077	3M3C	3
+1078	8T3D	3
+1079	9T3D	3
+1080	AT3D	3
+1081	BT3D	3
+1082	1T3D	3
+1083	2T3D	3
+1084	3T3D	3
+1085	8T3E	3
+1086	9T3E	3
+1087	AT3E	3
+1088	BT3E	3
+1089	CT3E	3
+1090	1T3E	3
+1091	2T3E	3
+1092	3T3E	3
+1093	8M4	4
+1094	8T4	4
+1095	9T4	4
+1096	10T4	4
+1097	11T4	4
+1098	12T4	4
+1099	8R4	4
+1100	9R4	4
+1101	10R4	4
+1102	11R4	4
+1103	12R4	4
+1104	8F4	4
+1105	9F4	4
+1106	10F4	4
+1107	11F4	4
+1108	12F4	4
+1109	8M4W	4
+1110	9M4W	4
+1119	8T4R	4
+1120	9T4R	4
+1121	AT4R	4
+1122	BT4R	4
+1123	CT4R	4
+1124	1T4R	4
+1125	2T4R	4
+1126	8T4F	4
+1127	9T4F	4
+1128	AT4F	4
+1129	BT4F	4
+1130	CT4F	4
+1131	1T4F	4
+1132	2T4F	4
+1133	8W4F	4
+1134	9W4F	4
+1135	AW4F	4
+1136	1W4F	4
+1137	2W4F	4
+1138	8X4F	4
+1139	9X4F	4
+1140	AX4F	4
+1141	BX4F	4
+1142	1X4F	4
+1143	2X4F	4
+1144	3X4F	4
+1145	8X4T	4
+1146	9X4T	4
+1147	AX4T	4
+1148	BX4T	4
+1149	1X4T	4
+1150	2X4T	4
+1151	3X4T	4
+1152	8X4W	4
+1153	9X4W	4
+1154	AX4W	4
+1155	BX4W	4
+1156	1X4W	4
+1157	2X4W	4
+1158	3X4W	4
+1159	8X4R	4
+1160	9X4R	4
+1161	AX4R	4
+1162	BX4R	4
+1163	1X4R	4
+1164	2X4R	4
+1165	3X4R	4
+1166	8X4M	4
+1167	9X4M	4
+1168	AX4M	4
+1169	BX4M	4
+1170	1X4M	4
+1171	2X4M	4
+1172	3X4M	4
+1173	E4M1	1
+1174	E5M1	1
+1175	E6M1	1
+1176	E7M1	1
+1177	E8M1	1
+1178	E9M1	1
+1179	E4T1	1
+1180	E5T1	1
+1181	E6T1	1
+1182	E7T1	1
+1183	E8T1	1
+1184	E9T1	1
+1185	E4W1	1
+1186	E5W1	1
+1187	E6W1	1
+1188	E7W1	1
+1189	E8W1	1
+1190	E9W1	1
+1191	E4R1	1
+1192	E5R1	1
+1193	E6R1	1
+1194	E7R1	1
+1195	E8R1	1
+1196	E9R1	1
+1197	E4F1	1
+1198	E5F1	1
+1199	E6F1	1
+1200	E7F1	1
+1201	E8F1	1
+1202	E9F1	1
+1203	E4M2	2
+1204	E5M2	2
+1205	E6M2	2
+1206	E7M2	2
+1207	E8M2	2
+1208	E4T2	2
+1209	E5T2	2
+1210	E6T2	2
+1211	E7T2	2
+1212	E8T2	2
+1213	E4W2	2
+1214	E5W2	2
+1215	E6W2	2
+1216	E7W2	2
+1217	E8W2	2
+1218	E4R2	2
+1219	E5R2	2
+1220	E6R2	2
+1221	E7R2	2
+1222	E8R2	2
+1223	E4F2	2
+1224	E5F2	2
+1225	E6F2	2
+1226	E7F2	2
+1227	E8F2	2
+1228	E4MJ	2
+1229	E5MJ	2
+1230	E5QW	2
+1231	E6MJ	2
+1232	E7MJ	2
+1233	E8MJ	2
+1234	E9MJ	2
+1235	E4TJ	2
+1236	E5TJ	2
+1237	E5QR	2
+1238	E6TJ	2
+1239	E7TJ	2
+1240	E8TJ	2
+1241	E9TR	2
+1242	E4M3	3
+1253	E5M3	3
+1254	E6M3	3
+1243	E7M3	3
+1244	E4T3	3
+1257	E5T3	3
+1258	E6T3	3
+1245	E7T3	3
+1246	E4W3	3
+1261	E5W3	3
+1262	E6W3	3
+1247	E7W3	3
+1248	E4R3	3
+1265	E5R3	3
+1266	E6R3	3
+1249	E7R3	3
+1250	E4F3	3
+1269	E5F3	3
+1270	E6F3	3
+1251	E7F3	3
+1272	E4MB	3
+1273	E4QW	3
+1274	E5MB	3
+1275	E6MB	3
+1276	E8MB	3
+1277	E8QW	3
+1278	E9MB	3
+1279	E4TB	3
+1280	E4QR	3
+1281	E5TB	3
+1282	E6TB	3
+1283	E8TB	3
+1284	E8QR	3
+1285	E9TB	3
+1286	E4M4	4
+1287	E6M4	4
+1288	E4T4	4
+1289	E6T4	4
+1290	E4W4	4
+1291	E6W4	4
+1292	E4R4	4
+1293	E6R4	4
+1294	E4F4	4
+1295	E6F4	4
+886	8M1	1
+887	9M1	1
+888	10M1	1
+889	11M1	1
+890	1M1	1
+891	2M1	1
+892	3M1	1
+893	8T1	1
+894	9T1	1
+895	10T1	1
+896	11T1	1
+897	12T1	1
+898	1T1	1
+899	2T1	1
+900	3T1	1
+901	8W1	1
+902	9W1	1
+903	10W1	1
+904	11W1	1
+905	1W1	1
+906	2W1	1
+907	3W1	1
+908	8R1	1
+909	9R1	1
+910	10R1	1
+911	11R1	1
+912	12R1	1
+913	1R1	1
+914	2R1	1
+915	3R1	1
+916	8F1	1
+917	9F1	1
+918	10F1	1
+919	11F1	1
+920	12F1	1
+921	1F1	1
+922	2F1	1
+923	3F1	1
+924	8M2	2
+925	9M2	2
+1111	AM4W	4
+1112	1M4W	4
+1113	2M4W	4
+1114	8M4R	4
+1115	9M4R	4
+1116	AM4R	4
+1117	1M4R	4
+1118	2M4R	4
+1312	8S2	\N
+1313	8S4	\N
+1314	8U2	\N
+1315	8U4	\N
+1316	9S4	\N
+1317	9U4	\N
+1318	9S3	\N
+1319	9U3	\N
+1320	10S4U	\N
+1321	10S2	\N
+1322	10U2	\N
+1323	1S3	\N
+1324	1S4	\N
+1325	1U3	\N
+1326	1U4	\N
+1327	1S6U	\N
+1296	E4QM	4
+1297	E4MP	4
+1298	E5MP	4
+1299	E6QM	4
+1300	E6MP	4
+1301	E7MP	4
+1302	E8QM	4
+1303	E8MP	4
+1304	E4QT	4
+1305	E4TP	4
+1306	E5TP	4
+1307	E6QT	4
+1308	E6TP	4
+1309	E7TP	4
+1310	E8QT	4
+1311	E8TP	4
+\.
+
+
+--
+-- Data for Name: submission_area; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY submission_area (submission_id, area_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: submission_contexts; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY submission_contexts (submission_id, context_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: submission_other; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY submission_other (submission_id, other_requirement_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: submission_people; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY submission_people (submission_id, person_id, is_primary_contact) FROM stdin;
+\.
+
+
+--
+-- Data for Name: submissions; Type: TABLE DATA; Schema: public; Owner: vickery
+--
+
+COPY submissions (id, passcode, discipline_id, course_number, writing_intensive, authors, geac_approval_date, status, course_description, course_credits, contact_hours, course_prerequisites, is_existing_course, course_periodicity, other_course_periodicity, anticipated_sections_per_offering, anticipated_seats_per_section, course_title) FROM stdin;
+\.
+
+
+--
+-- Name: areas_of_knowledge_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY areas_of_knowledge
+    ADD CONSTRAINT areas_of_knowledge_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: class_meetings_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY class_meetings
+    ADD CONSTRAINT class_meetings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: contexts_of_experience_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY contexts_of_experience
+    ADD CONSTRAINT contexts_of_experience_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: deans_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY deans
+    ADD CONSTRAINT deans_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: departments_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY departments
+    ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: disciplines_abbreviation_key; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY disciplines
+    ADD CONSTRAINT disciplines_abbreviation_key UNIQUE (discipline_abbreviation);
+
+
+--
+-- Name: disciplines_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY disciplines
+    ADD CONSTRAINT disciplines_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: meeting_times_meeting_time_key; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY meeting_times
+    ADD CONSTRAINT meeting_times_meeting_time_key UNIQUE (meeting_time);
+
+
+--
+-- Name: meeting_times_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY meeting_times
+    ADD CONSTRAINT meeting_times_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: other_requirements_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY other_requirements
+    ADD CONSTRAINT other_requirements_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: people_last_name_key; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY people
+    ADD CONSTRAINT people_last_name_key UNIQUE (last_name, first_name);
+
+
+--
+-- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY people
+    ADD CONSTRAINT people_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: section_codes_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY section_codes
+    ADD CONSTRAINT section_codes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: section_codes_section_code_key; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY section_codes
+    ADD CONSTRAINT section_codes_section_code_key UNIQUE (section_code);
+
+
+--
+-- Name: submission_areas_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY submission_area
+    ADD CONSTRAINT submission_areas_pkey PRIMARY KEY (submission_id, area_id);
+
+
+--
+-- Name: submission_contexts_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY submission_contexts
+    ADD CONSTRAINT submission_contexts_pkey PRIMARY KEY (submission_id, context_id);
+
+
+--
+-- Name: submission_other_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY submission_other
+    ADD CONSTRAINT submission_other_pkey PRIMARY KEY (submission_id, other_requirement_id);
+
+
+--
+-- Name: submission_people_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY submission_people
+    ADD CONSTRAINT submission_people_pkey PRIMARY KEY (submission_id, person_id);
+
+
+--
+-- Name: submissions_pkey; Type: CONSTRAINT; Schema: public; Owner: vickery; Tablespace: 
+--
+
+ALTER TABLE ONLY submissions
+    ADD CONSTRAINT submissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: class_meetings_meeting_time_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY class_meetings
+    ADD CONSTRAINT class_meetings_meeting_time_id_fkey FOREIGN KEY (meeting_time_id) REFERENCES meeting_times(id);
+
+
+--
+-- Name: class_meetings_section_code_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY class_meetings
+    ADD CONSTRAINT class_meetings_section_code_id_fkey FOREIGN KEY (section_code_id) REFERENCES section_codes(id);
+
+
+--
+-- Name: disciplines_dean_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY disciplines
+    ADD CONSTRAINT disciplines_dean_id_fkey FOREIGN KEY (dean_id) REFERENCES deans(id);
+
+
+--
+-- Name: disciplines_department_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY disciplines
+    ADD CONSTRAINT disciplines_department_id_fkey FOREIGN KEY (department_id) REFERENCES departments(id);
+
+
+--
+-- Name: submission_areas_area_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY submission_area
+    ADD CONSTRAINT submission_areas_area_id_fkey FOREIGN KEY (area_id) REFERENCES areas_of_knowledge(id);
+
+
+--
+-- Name: submission_areas_submission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY submission_area
+    ADD CONSTRAINT submission_areas_submission_id_fkey FOREIGN KEY (submission_id) REFERENCES submissions(id);
+
+
+--
+-- Name: submission_contexts_context_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY submission_contexts
+    ADD CONSTRAINT submission_contexts_context_id_fkey FOREIGN KEY (context_id) REFERENCES contexts_of_experience(id);
+
+
+--
+-- Name: submission_contexts_submission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY submission_contexts
+    ADD CONSTRAINT submission_contexts_submission_id_fkey FOREIGN KEY (submission_id) REFERENCES submissions(id);
+
+
+--
+-- Name: submission_id; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY submission_people
+    ADD CONSTRAINT submission_id FOREIGN KEY (submission_id) REFERENCES submissions(id);
+
+
+--
+-- Name: submission_other_other_requirement_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY submission_other
+    ADD CONSTRAINT submission_other_other_requirement_id_fkey FOREIGN KEY (other_requirement_id) REFERENCES other_requirements(id);
+
+
+--
+-- Name: submission_other_submission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY submission_other
+    ADD CONSTRAINT submission_other_submission_id_fkey FOREIGN KEY (submission_id) REFERENCES submissions(id);
+
+
+--
+-- Name: submissions_discipline_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vickery
+--
+
+ALTER TABLE ONLY submissions
+    ADD CONSTRAINT submissions_discipline_id_fkey FOREIGN KEY (discipline_id) REFERENCES disciplines(id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

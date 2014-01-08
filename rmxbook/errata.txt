@@ -1,0 +1,227 @@
+Real-Time and Systems Programming for PCs
+Christopher Vickery
+McGraw-Hill, 1993
+
+      This is a list of errors found in the first printing of the book,
+      Real-Time and Systems Programming for PCs by Christopher Vickery.
+      (McGraw-Hill, 1993).  I am offering a "bounty" of $1.00 to the
+      first person who reports each error.  Submit errors to me by email:
+      vickery@ipc1.cs.qc.edu.
+
+      There are two copies of this document, a plain text file
+      (errata.txt) and a PostScript file (errata.ps).  The advantage of
+      the latter is that it shows the desired fonts to be used as well as
+      the content.
+
+      This list was last updated on October 27, 1993.
+
+TITLE PAGE
+
+      Add author's affiliation under author's name: "Queens College of
+      CUNY"
+
+DEDICATION (page missing)
+
+      "This book is dedicated to the memory of my father, Roger P.
+      Vickery."
+
+INTRODUCTION
+
+xi:   Line 1.  Change "and little discipline existed" to "and little
+      discipline have existed".
+
+xii:  End of second paragraph: Add "Stevens (1990), " after "Rochkind
+      (1985), ".
+
+xiv:  Second full paragraph, line 11: Add footnote 1 after "guaranteed to
+      do so." Footnote text to read "Readers may obtain a copy of all
+      code from this book as well as related files by anonymous ftp from
+      ipc1.cs.qc.edu or by sending a diskette to the author at Computer
+      Science Dept., Queens College of CUNY, Flushing, NY 11367-0904.
+
+CHAPTER 1
+
+13:   Change entire text for footnote 2 to read "See note in the
+      Introduction."
+
+CHAPTER 2
+
+35:   Line 18.  Change "eight" to "seven".
+
+37:   Delete "the" from the phrase "but the less memory" in line 1.
+
+38:   Line 24 (command line [17]).  Change "#3" to "#2".
+
+40:   Line -11.  Change ":configilang386.als" to ":config:lang386.als".
+
+43:   Line 1.  Change "Instet ad" to "Instead".
+
+48:   Line 14.  Change "sd:" to ":sd:".
+
+CHAPTER 3
+
+67:   The footnote should be number 1 rather than an asterisk, and all
+      other footnote numbers in the chapter should be incremented by one.
+      Change the entire text for the footnote to read "See note in the
+      Introduction."
+
+69:   Insert "3.5." before each digit in brackets on this page.  Sentence
+      two of the first full paragraph thus starts "Lines [3.5.1] and
+      [3.5.2] of the figure use the editor ..." There are six changes in
+      this paragraph and six changes in Figure 3.5.
+
+73:   Change [3] to [3.5.3] two places in lines 4-5 from bottom of the
+      page.
+
+77:   Change [3] to [1] at the end of para 2 of section 3.4.3.
+
+77:   Para 3 of section 3.4.3.  "Aedit running on some early versions of
+      DOS[CCV1] does not support this form of command line.  If you try
+      it, only hellormx.lst will be loaded for editing and you will have
+      to use the command sequence other, quit, init to load hellormx.plm
+      into ..."
+
+81:   Top of page.  Change [4] to [3.5.4].  Delete the sentence, "Note that
+      this is the same [4] as in Figure 3.5."
+
+81:   Change [5] to [2] and [6] to [3] on lines 11 and 15 respectively.
+
+81:   Line 11.  Change "iRMX<" to "iRMX>".
+
+86:   Line -1.  Change "consants" to "constants".
+
+90:   Change [6] to [4] and [7] to [5] on lines 12 and 15 respectively.
+
+91:   Line 4.  Change "l$endif" to "$endif".  Better yet, substitute the
+      following code for the listing that starts at the end of page 90:
+
+          ;      ESUBMIT version of "compile,load,go"
+          $reset eok
+          $reset quit
+          $ifexist %0.plm
+          run86 -fixplm /intel/bin/plm386.exe %0.plm compact debug
+          $if not commandexcep = eok
+          $set quit
+          $endif
+          $endif
+          $ifexist %1.plm
+          run86 -fixplm /intel/bin/plm386.exe %1.plm compact debug
+          $if not commandexcep = eok
+          $set quit
+          $endif
+          $endif
+          $ifexist %2.plm
+          run86 -fixplm /intel/bin/plm386.exe %2.plm compact debug
+          $if not commandexcep = eok
+          $set quit
+          $endif
+          $endif
+          $if not quit
+          run86 /intel/bin/bnd386.exe %0.obj, &
+          $ifexist %1.obj
+            %1.obj, &
+          $endif
+          $ifexist %2.obj
+            %2.obj, &
+          $endif
+          :sd:rmx386/lib/rmxifc32.lib rc(dm(0,0FFFFFFFFh)) ss(stack(8192)) &
+            rn(code32 to code)
+          $endif
+
+      Then change the last sentence before the listing on page 90 from
+      "either one or two" to "up to three".
+
+92:   Change [8] to [6] and [9] to [7] on lines 21 and 37 respectively.
+
+93:   Change [10] to [8] on line 25.
+
+98:   Change [11] to [9] on line 34.
+
+99:   Change [12] to [10], [13] to [11], and [14] to [12] on lines 6, 8,
+      and 11 respectively.  Change [12] to [10] and [13] to [11] on line
+      7.  Change (agr[Q]) to (argv[0]) on line 14.
+
+100:  Line 4.  Change [15] to [13].
+
+CHAPTER 4
+
+130:  Change "#pragma noalign (dosub)" to "#pragma fixedparams (dosub)" in
+      both Fig.  4.14 and Fig.  4.15.  Change "Fig.  4.10" to "Fig.  4.9"
+      in the caption for Fig.  4.15.  Change "extern unsigned char
+      *prompt;" to "extern unsigned char prompt[];" in Fig 4.15.
+
+CHAPTER 5
+
+154:  Add "Reprinted by permission of Intel Corporation, {SYMBOL 227 \f
+      "Symbol"} Intel Corp.  1989." to the caption for Figure 5.5.
+
+165:  Line 25.  Change "VM886" to "VM86".
+
+CHAPTER 6
+
+208:  Line 8.  Change "exists" to "exits".
+
+CHAPTER 7
+
+226:  Line 17.  Change "certain are 16-bit" to "certain 16-bit".
+
+CHAPTER 9
+
+343:  Line 8.  Do not italicize the word "system."
+
+APPENDIX B
+
+531:  Line 13.  Change "<esc]>" to "<esc>]"
+
+APPENDIX C
+
+543:  Line 19.  Change "<\Z" to "<^Z>"
+
+INDEX--Change "I/O" to "IO" in many places:
+
+      There are many incorrect insertions of a slash between the capital
+      letters I and O throughout the Index.
+
+584:  Change BI/OS to BIOS four places, and cancelI/O() to cancelIO() one
+      time.
+
+586:  Change BI/OS to BIOS one time, EI/OS to EIOS one time, and I/ORS to
+      IORS one time.
+
+588:  Change BI/OS to BIOS two times.
+
+589:  Change BI/OS to BIOS one time and finishI/O() to finishIO() one
+      time.
+
+590:  Change initializeI/O() to initializeIO() one time, BI/OS to BIOS one
+      time, EI/OS to EIOS three times, and I/ORS to IORS one time.
+
+596:  Change EI/OS to EIOS one time
+
+600:  Change EI/OS to EIOS two times, VERSI/ON to VERSION one time, BI/OS
+      to BIOS one time, I/ORS to IORS one time, and queueI/O() to
+      queueIO() one time.
+
+601:  Change BI/OS to BIOS one time and EI/OS to EIOS one time.
+
+602:  Change BI/OS to BIOS one time.  Change systeminitializeI/O to
+      systeminitializeIO one time.
+
+603:  Lines 15-18 change I/O() to IO() 4 times.  Change BI/OS to BIOS one
+      time, VERSI/ON to VERSION one time.
+
+INDEX--Other Changes
+
+585:  Second column, line 11.  Change CICS to CISC.
+
+586:  First column, line 27.  Change the page number from 560 to 562.
+
+586:  First column, line 28.  Change "mailboxes" to "mailbox." Add pages
+      404-406 for deletion mailbox.
+
+596:  Second column, line -5.  Change R?CU@YRR$APP to R?CURR$APP
+
+597:  First column, line 7.  Change CICS to CISC.
+
+598:  Second column, line 17.  Change the page number from 541 to 542.
+

@@ -1,0 +1,52 @@
+2006-03-13
+
+  Added Recognition of Enter key to trigger calculations.
+
+  Added IE event handling set up.
+
+  Added noscript handling.
+
+  Added accesskey values for all four inputs.  (Opera uses Shift+Esc-k
+  to trigger access key k.)
+
+  IE requires a non-empty paragraph to be able to alter contents, so I
+  made all results hidden until the first set of calculations are
+  complete to avoid gratutious messages about no results yet.
+
+  Stupid hack:  If the user agent is the W3C Validatior, generate the
+  application/xhtml+xml MIME type header.  Posted a msg on an old XML
+  user's group at o'reilly about this.
+
+2006-03-12
+
+  This was an exercise in DOM processing, using an assignment in
+  contour-finding as a pretext.  Dynamically reconfiguring a table
+  should be straightforward, but proved not to be.
+
+  As of now:
+
+  1.  This is Mozilla/Opera only, but with Opera you have to tab out
+  of an input box to update the display.  (With firefox, you can just
+  hit Enter.) IE uses a different event-handling setup, which I didn't
+  bother to implement.
+  
+  2.  There is an issue with tab order in Firefox.  The two elevations
+  are given tab indices of 10 and 20, but after the first time they
+  are encounterd, they are skipped over by the tab key. ?? Opera and
+  IE handle them fine.
+
+  2a. I should put in access keys for the input fields anyway.
+
+  3.  I had lots of trouble getting the table to update correctly,
+  which all went away when I used document.createElement() instead of
+  document.createElementNS(), which I read you are supposed to do for
+  xhtml served as application/xhtml+xml.  Did not sort this problem
+  out.  But I ended up putting the table in its own div, deleting the
+  entire table, and rebuilding the entire table again for each entry.
+  Before, I was just deleting and inserting rows, and that approach
+  might work now that I'm using createElement() instead of
+  createElementNS(), but I didn't try it.  Also, I'm not sure the
+  tbody element is necessary; I put it in while trying to fix
+  problems because of createElementNS(), and I didn't try without it
+  once the page started working.
+

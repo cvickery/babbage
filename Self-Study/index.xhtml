@@ -1,0 +1,126 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Computer Science Department Self Study</title>
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="css/style-screen.css" />
+  </head>
+  <body>
+
+  <div id="header">
+    <h1>2006 Computer Science Department Self Study</h1>
+  </div>
+
+  <div id="content">
+    <h2>What&rsquo;s Here</h2>
+
+    <div class="whitebox">
+
+      <p>This site is for faculty and administrators to review the the
+      department's self-study report and related documents.
+      <br />Send comments about the web site to Chris Vickery.</p>
+
+      <ul>
+
+       <li><a href="./working_draft.php">Browsable
+       Version</a> of the final draft of <cite>The Computer
+       Science Department&rsquo;s Self Study Report</cite>.
+       Does not include faculty vitae.<br />Some of the
+       layout features do not work right when using Internet
+       Explorer 6, but the document is fully viewable.
+       Other browsers display the document properly, as will
+       Internet Explorer 7, when it is released. <br
+       /><strong>Last updated <?php echo date("Y-m-d",
+       filemtime("working_draft.php")); ?></strong></li>
+
+        <li><img src="../images/pdf16.gif" alt="PDF"
+        style="border:none;" /> (<?php echo sprintf("%.1f
+        MB", filesize("working_draft.pdf")/(1024*1024)); ?>)
+        <a href="./working_draft.pdf">Printable
+        Version</a> of the final draft of <cite>The Computer
+        Science Department&rsquo;s Self Study Report</cite>.
+        Includes proper table and figure numbers in cross
+        references. Does not include faculty vitae.<br
+        /><strong>Last updated <?php echo date("Y-m-d",
+        filemtime("working_draft.pdf")); ?></strong></li>
+
+        <li><img src="../images/pdf16.gif" alt="PDF"
+        style="border:none;" /> (<?php echo sprintf("%.1f
+        MB",
+        filesize("Final_Draft/self-study.pdf")/(1024*1024));
+        ?>) <a href="./Final_Draft/self-study.pdf">Full
+        version of <cite>The Computer Science
+        Department&rsquo;s Self Study Report</cite></a>.
+        Includes faculty vitae.  Restricted Access<br
+        /><strong>Last updated <?php echo date("Y-m-d",
+        filemtime("Final_Draft/self-study.pdf"));
+        ?></strong></li>
+
+         <li><a href="outline.html">Outline of the self-study
+        document</a>, derived from the <a
+        href="http://qcpages.qc.cuny.edu/provost/Prog_rev/Outline%2003.htm">
+        Provost's annotated outline</a>.</li>
+
+        <li><img src="../images/pdf16.gif" alt="PDF" style="border:none;" />
+        ACM/AIS/IEEE-CS &ldquo;<a
+        href="http://www.acm.org/education/curric_vols/CC2005-March06Final.pdf">Computing
+        Curricula 2005 Overview Report</a>.&rdquo;</li>
+
+        <li><img src="../images/pdf16.gif" alt="PDF" style="border:none;" /> <a
+        href="2004-11-22_tables.pdf">Tables 3.1 and 3.2</a> from a draft
+        version of the ACM/AIS/IEEE-CS report, with sums for the columns of
+        weights.  (Also available as an <a
+        href="2004-11-22_tables.xls">Excel spreadsheet</a>.)</li>
+
+        <li>The latest CS curriculum recommendations from the ACM:
+
+          <ul>
+            <li><a
+            href="http://www.computer.org/education/cc2001/final/">Computing
+            Curricula 2001</a></li>
+            <li>From Chapter 5: <a
+            href="http://www.computer.org/education/cc2001/final/chapter05.htm#Summary">
+            Summary of the CS body of knowledge</a>.</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <hr />
+  <div id="footer">
+    <p>Validate:&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+        <strong>XHTML</strong>
+      </a>&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        <strong>CSS</strong>
+      </a>
+    </p>
+    <p><i>This page was last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.</i>
+    </p>
+  </div>
+  </body>
+</html>
+

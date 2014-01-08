@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+                          "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>instantiate.1</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body {
+        background-color: #ffc;
+        font-family:      sans-serif;
+        color:            #661;
+        margin:           2em;
+        }
+      h1 {
+        text-align:       center;
+        }
+      pre {
+        background-color: #fff;
+        color:            #111;
+        margin:           1em;
+        border:           1px solid red;
+        }
+      #footer {
+        text-align:       center;
+        font-size:        0.7em;
+        }
+  </style>
+</head>
+<h1>instantiate.1</h1>
+<hr>
+<pre>
+.\"  $Id: instantiate.1,v 1.1 2001/12/06 16:01:50 eric Exp $
+.\"
+.\"  Man page for Instantiate.
+.\"
+.\"
+.\"  $Log: instantiate.1,v $
+.\"  Revision 1.1  2001/12/06 16:01:50  eric
+.\"  Initial revision
+.\"
+.\"
+.\"
+.TH instantiate 1 "December 4, 2001" "Instantiate"
+.SH "NAME"
+instantiate \- Create an instance of a class loaded by JVM
+.SH "SYNOPSIS"
+.BI "instantiate [" options ]
+.BI "-j " jvmnumber
+.BI "-c " classnumber
+.BI "-o " constructor
+--
+.I arguments
+.sp
+Options:
+.BI "[\-h " host ]
+.BI "[\-s " service ]
+.B [-g] [-f]
+.br
+.SH DESCRIPTION
+The program
+.B instantiate
+contacts a PJVM manager which in turn contacts the specific JVM
+requested with the
+.B -j
+option, and then attempts to instantiate the class specified
+by the
+.B -c
+option using the constructor indicated by
+.BR "-o" .
+Class and constructor numbers can be obtained using
+.BR "listclass " and
+.B listconstructors
+respectively.
+.sp
+Arguments are passed to the constructor using a flag followed by an
+argument.  In most cases that argument is a string that is to be
+converted by Java's constructors into the primitive in question.  In the
+case of Objects, an object must be specified by PJVM's internal object
+number (see
+.BR "listobjects" ).
+Arguments can also be created on the fly using your command shell's
+procedure for command nesting in combination with another instantiation,
+or with
+.BR "callmethod" .
+A flag for strings is provided as a
+convenience.
+.sp
+Any object created by
+.B instantiate
+can be marked for PJVM internal "garbage collection" using the garbage
+collection and finalizer flags (see
+.B OPTIONS
+below).
+.sp
+A sample call to
+.B instantiate
+asking PJVM to instantiate the first class loaded into the second JVM,
+using the second listed constructor, and passing a string, a float, and
+the third object recognized by the JVM:
+.sp
+.RS
+# instantiate -j 1 -c 0 -o 1 -- -t \\"Hi there\\" -f 321.224 -o 2
+.RE
+.sp
+Alternatively,
+.B instantiate
+can recognize the output of other
+.BR "instantiate " or
+.B callmethod
+commands, allowing you to nest commands:
+.sp
+.RS
+# instantiate -j 1 -c 0 -o 1 -- -t \\"Hi there\\" -f 321.224 -o
+$(instantiate -j 0 -c 0 -o 0 -- -i 324)
+.RE
+.sp
+And using the garbage collection and finalization methods,
+.B instantiate
+can be made to store only the main Object, creating and then discarding
+the Object used as an argument:
+.sp
+.RS
+# instantiate -j 1 -c 0 -o 1 -f -- -t \\"Hi there\\" -f 321.224 -o
+$(instantiate -j 0 -c 0 -o 0 -g -- -i 324)
+.RE
+.sp
+After issuing this command, a call to
+.B listobjects
+will display only the Object created by the first call to instantiate,
+not the second, which was marked for garbage collection with the
+.B \-g
+flag and collected when the finalizer was called with the
+.BR "\-f " directive.
+.sp
+.B ARGUMENT FLAGS:
+.TP
+.BI "\-z " boolean
+This value must equal
+.B true
+or
+.BR "false" .
+.TP
+.BI "\-b " byte
+Signed 8-bit value.
+.TP
+.BI "\-c " char
+16-bit character value.
+.TP
+.BI "\-s " short
+Signed 16-bit numeric value.
+.TP
+.BI "\-i " int
+Signed 32-bit numeric value.
+.TP
+.BI "\-j " long
+Signed 64-bit numeric value.
+.TP
+.BI "\-f " float
+32-bit floating point value.
+.TP
+.BI "\-d " double
+64-bit double-precision floating point value.
+.TP
+.BI "\-t " String
+Java String value.  Each string must begin and end with a
+backslash-quote mark (\\").
+.TP
+.BI "\-o " Object
+Java Object.  Specify an object number as determined by
+.B listobjects
+or the output of the
+.B instantiate
+or
+.B callmethod
+commands.
+.SH OPTIONS
+.TP
+.BI "\-h " host
+The host on which a PJVM Manager
+is running.  If this is a remote
+server, specify a hostname.  Default is
+.BR "localhost" .
+.TP
+.BI "\-s " service
+The port number or service name at which a PJVM Manager
+can be contacted on the
+.B hostname
+specified.  Default is
+.BR "pjvmmanager" .
+.TP
+.BI "\-j " jvm\ number
+The internal identification number of a JVM registered with a PJVM
+Manager.  A list of these identification numbers can be determined with
+the use of
+.BR "listjvm" .
+.TP
+.BI "\-c " class\ number
+The internal identification number of a class registered with a JVM
+recognized by the PJVM Manager.  A list of these identification numbers
+can be determined with the use of
+.BR "listclass" .
+.TP
+.BI "\-o " constructor\ number
+The internal identification number of a constructor for a class
+registered with a JVM recognized by the PJVM Manager.  A list of these
+identification numbers can be determined with the use of
+.BR "listconstructors" .
+.TP
+.B "\-g"
+Flag to mark the instantiated object for garbage collection.  This sets
+a flag within the PJVM's internal object array.  When the finalizer is
+called by another call to
+.BR "instantiate " or
+.B callmethod
+all objects marked for garbage collection are de-referenced and removed
+from the array.
+.TP
+.B "\-f"
+Flag to call the PJVM finalizer.  This will delete all objects marked
+for garbage collection from the PJVM's internal object array.
+.SH "SEE ALSO"
+.BR pjvms (1),
+.BR manager (1),
+.BR requestjvm (1),
+.BR listjvm (1),
+.BR killjvm (1),
+.BR loadclass (1),
+.BR listconstructors (1),
+.BR listmethods (1),
+.BR listclass (1)
+</pre>
+<div id="footer">
+  <p>Generated by <cite>mkhtml</cite> 2006-09-05
+    <br />
+    <a href="http://validator.w3.org/check?uri=referer">HTML</a> -
+    <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+  </p>
+</div>
+</body></html>

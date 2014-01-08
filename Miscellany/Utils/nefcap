@@ -1,0 +1,153 @@
+#! /bin/bash
+
+#  nefcap - Capture NEF files
+
+#   Copies new NEFs from memory card to Incoming_NEFs.
+#   C. Vickery
+#   July 2005
+
+#   Adjust parameters below for different configurations
+#   Options:
+#     s Source drive  e
+#     p source Path   /DCIM/*NCD70/
+#     e Extension     NEF
+#     t Target drive  f
+#     x Target Path   My\ Pictures\Incoming_NEFs
+
+# 2007-04-22
+# Added conversion of incoming NEFs to incoming DNGs.  The pathname
+# for saving the DNGs is hard coded in DOS format for use with the
+# Adobe DNG converter.
+
+dng_convert='/cygdrive/f/Program Files/Adobe/Adobe Photoshop CS2/Adobe DNG Converter.exe'
+sourceDrive=e
+sourcePath="DCIM"
+targetDrive=f
+targetPath="My Pictures/Incoming_NEFs"
+extension="NEF" # Nikon raw images
+
+# Process options
+# 2006-05-07: getopt disappeard from Cygwin ... ???
+#set -- `getopt -n nefcap -- s:p:e:t:x: $*`
+#
+#while [[ $1 != -- ]]
+#do
+#  case $1 in
+#  -s)
+#    sourceDrive=$2
+#    shift;;
+#  -p)
+#    sourcePath=$2
+#    shift;;
+#  -e)
+#    extension=$2
+#    shift;;
+#  -t)
+#    targetDrive=$2
+#    shift;;
+#  -x)
+#    targetPath=$2
+#    shift;;
+#  esac
+#  shift  # next flag
+#done
+usage="Usage: nefcap [options]
+             -s Source drive letter (e)
+             -p Source path         (DCIM)
+             -e Extension           (NEF)
+             -t Target drive letter (f)
+             -x Target path         (My Pictures/Incomming_NEFs)"
+while getopts "s:p:e:t:x:" opt
+do
+  case $opt in
+  s) sourceDrive=$OPTARG  ;;
+  p) sourcePath=$OPTARG   ;;
+  e) extension=$OPTARG    ;;
+  t) targetDrive=$OPTARG  ;;
+  x) targetPath=$OPTARG   ;;
+  ?) echo "$usage" > /dev/tty
+  exit                    ;;
+  esac 
+done
+
+shift $(($OPTIND -1))
+if [[ $# != 0 ]]
+then  echo "$1: Unrecognized option" > /dev/tty
+      echo "$usage" > /dev/tty
+      exit
+fi
+
+echo "sourceDrive: $sourceDrive"
+echo "sourcePath:  $sourcePath"
+echo "extension:   $extension"
+echo "targetDrive: $targetDrive"
+echo "targetPath : $targetPath"
+
+targetDir="/cygdrive/$targetDrive/$targetPath"
+winTargetDir="${targetDrive}:\\${targetPath//\//\\}"
+if [[ ! -d $targetDir ]]
+then  echo "$targetDir: No such directory"
+      exit 1
+fi
+
+while [[ 1==1 ]]
+do
+  sourceDir="/cygdrive/$sourceDrive/$sourcePath"
+  echo "Scanning ${sourceDir}/* for ${extension}s ..."
+  total="$(ls -l ${sourceDir}/*/*.${extension} | wc -l)"
+  if [[ $total == 0 ]]
+  then
+    echo "No images to process in ${sourceDir}/*"
+    echo -n "Enter different drive letter (d=?), path (p=?), or nothing to exit: "
+    IFS='=' read name value
+    
+    case $name in
+      d)  sourceDrive=$value
+          ;;
+      p)  sourcePath=$value
+          ;;
+      *)  exit
+          ;;
+    esac
+  else break;
+  fi
+done
+
+let width=${#total}
+let current=1
+let copied=0
+let skipped=0
+
+for subDir in ${sourceDir}/*
+do
+  if [[ -d ${subDir} ]]
+  then
+    echo "Processing ${sourceDir}/${subDir}/*.$extension to $targetDir"
+    for f in ${subDir}/*.$extension
+    do
+      fileName=`basename ${f}`
+      if [[ ! -e ${subDir}/${fileName} ]]
+      then  print -- "${subDir}/${fileName} is not a file!"
+            continue
+      fi
+      if [[ -e $targetDir/$fileName ]]
+      then
+        printf "[%*s/%s] Skipping: %s\n" $width $current $total $fileName
+        let skipped=skipped+1
+      else
+        printf "[%*s/%s]  Copying: %s\n" $width $current $total $fileName
+        cp "${f}" "$targetDir"
+        "$dng_convert" -e -p0 -d "F:\\My Pictures\\Incoming_DNGs" "$winTargetDir\\$fileName"
+        let copied=copied+1
+      fi
+      let current=current+1
+    done
+  else
+  echo "${subDir} is not a directory!"
+  fi
+done
+chmod 644 /cygdrive/f/My\ Pictures/Incoming_DNGs/*
+beep
+echo "$copied copied; $skipped skipped."
+java -cp 'F:\Cygwin\home\vickery\classes' Oops "NefCap" "Your NEFs are cap't"
+

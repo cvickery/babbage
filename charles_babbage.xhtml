@@ -1,0 +1,151 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Charles Babbage</title>
+    <style type="text/css">
+    html, body  { background: #ffc; color: #663; margin:0;padding:0;}
+    td
+    {
+      padding-left:   1em;
+      padding-right:  2em;
+      padding-bottom: 0.5em;
+      vertical-align: bottom;
+    }
+    p.copyright
+    {
+      font-style: italic;
+      font-size:  smaller;
+    }
+    h1    { text-align: center;  }
+    p     { margin-left: 1em; margin-right: 2em; }
+    img { 
+      float:left;
+      margin:-0.5em 0.5em 0 1em;
+      border:3px outset blue;
+      }
+    img+p+p {clear:both;padding-top:1em;}
+    div.whitebox
+    {
+      background:   white;
+      border:       solid thin blue;
+      margin-left:  2em;
+      margin-right: 3em;
+      padding:      1em;
+    }
+    .replaced {
+      text-decoration: line-through;
+      }
+    #footer {
+      position:fixed;
+      bottom:0;
+      text-align:center;
+      width:100%;
+      font-size:0.7em;
+      background-color:#663;
+      color:#ffc;
+      padding:0.1em;
+      }
+    a {padding:0 0.1em;}
+    #footer a, #footer a:visited {color:#ffc;}
+    a:hover {
+      text-decoration: none;
+      color:white;
+      background-color:#f99;
+      }
+    </style>
+    <style type="text/css" media="screen">
+      body { font-family: sans-serif }
+    </style>
+  </head>
+
+  <body>
+  <h1>About Charles Babbage</h1>
+    <div id="content">
+      <img src="images/babbage.gif" alt="Picture of Charles Babbage" />
+       
+       <p>
+        The computer in my office, <span class="replaced" title="Replaced January 2009">a Sun
+        Microsystems SunBlade 150</span> an Apple MacPro, is named <strong>babbage</strong> in honor
+        of Charles Babbage, the inventor of the Analytical Engine. You can find out more about
+        Charles at <a href="http://ei.cs.vt.edu/~history/Babbage.html">his page</a> at the <a
+        href="http://ei.cs.vt.edu/">Computer Science Department of Virginia Polytechnic Institute
+        and State University</a>.  This picture of him, which I copied from his page at Virginia
+        Tech, was originally from the <i>AFIPS Annals of the History of Computing</i>, Vol. 2, No.
+        4.
+      </p>
+
+      <p>
+        There is a good collection of <a
+        href="http://www.sciencemuseum.org.uk/onlinestuff/stories/babbage.aspx">material on
+        Babbage</a> at <a href="http://www.sciencemuseum.org.uk/">The Science Museum Website</a> of
+        the <a href="http://www.nmsi.ac.uk">British National Museum of Science and Industry</a>.
+      </p>
+
+      <p>
+        Charles also has <a href="http://www.cbi.umn.edu/about/babbage.html">his own page</a> at the
+        <a href="http://www.cbi.umn.edu/index.html">Charles Babbage Institute at the University of
+        Minnesota.</a>
+      </p>
+      
+      <p>
+        Another place to go for more information about Charles is <a
+        href="http://www.usa-people-search.com/content-the-biography-of-charles-babbage.aspx">his
+        page on USA People Search</a>
+      </p>
+
+      <p>
+        There is another biography, with more links to information about Babbage, at<a
+        href="http://www.hostingreviews.com/the-life-of-charles-babbage/">Hosting Reviews</a>
+      </p>
+      <p>
+        Here is part of the entry from the <a href="http://www.eb.com/">Encyclopaedia Britannica</a>
+        on Charles Babbage:
+      </p>
+
+      <div class="whitebox">
+        <p>
+          During the mid-1830’s Babbage developed plans for the so-called analytical engine, the
+          forerunner of the modern digital computer. In this device he envisioned the capability of
+          performing any arithmetical operation on the basis of instructions from punched cards, a
+          memory unit in which to store numbers, sequential control, and most of the other basic
+          elements of the present-day computer. The analytical engine, however, was never completed.
+          Babbage’s design was forgotten until his unpublished notebooks were discovered in 1937. In
+          1991 British scientists built Difference Engine No. 2&mdash;accurate to 31 digits&mdash;to
+          Babbage&rsquo;s specifications.
+        </p>
+        <p class="copyright">
+          Copyright &copy; 1995 Encyclopaedia Britannica, Inc. All Rights Reserved</p>
+      </div>
+
+      <p>
+        Charles T. Babbage is a present-day west coast artist who is related to &ldquo;the
+        original&rdquo; Charles Babbage.  There are some examples of his interesting work <a
+        href="http://babbagepatch.com">on the web</a>.
+      </p>
+    </div>
+    <div id="footer">
+        <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash; <a
+           href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+        <i>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</i>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,183 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Vickery Miscellany</title>
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../css/style-screen.css" />
+    <style type='text/css'>
+		  body { padding:1em; max-width: 800px; }
+      li { margin:1em; }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>Miscellany</h1>
+    </div>
+    <h2>Stuff</h2>
+    <div class="whitebox">
+
+      <ul>
+
+        <li>
+          <p>
+            <a href="Westinghouse_Sign/index.xhtml" title="Animated Westinghouse
+            Logo">Westinghouse Sign</a> This is a re-creation of a billboard that used to
+            be in Pittsburgh; a smaller (3-logo) version of it was outside the Midtown
+            Tunnel to Manhattan.
+          </p>
+          <p>
+            This one is a semi-random pattern, but the program is set up to be scripted
+            &hellip; one of these days.
+          </p>
+          <p>
+            The program uses the HTML &ldquo;canvas&rdquo; element, which is suppored by
+            all browsers except Internet Explorer at this time. And it uses JavaScript to
+            draw the animation.
+          </p>
+        </li>
+        <li>
+          <a href='Scheduling_Matrix'>Scheduling Matrix</a> Uses the &lt;canvas&gt;
+          element to show the course scheduling matrix used at Queens College (at the time
+          it written). Click and hover everything to explore.
+        </li>
+        <li>
+          <p><a href="remoteRollover/index.xhtml">Remote Rollover</a> Demonstrates the use
+          of CSS for a &ldquo;remote rollover&rdquo; effect. <em>Uses no JavaScript,
+          Flash, or whatever.</em> Just CSS.</p>
+        </li>
+        <li>
+          <a href='CSS-not-JavaScript'>Another CSS Demo</a>. This one demonstrates how
+          to disguise a checkbox so it looks like a button, and using its
+          checked/unchecked state to control the visibility of another element on the
+          page.
+        </li>
+        <li>
+          <a href="../courses/Audio_Sampling">Application to demonstrate some of the
+          principles of audio sampling.</a>
+        </li>
+        <li>
+          <a href="../courses/Fourier_Synthesis">Fourier Synthesis</a>: Build your own
+          complex waveform: explore analog parameters such as frequency and phase, and
+          digital sampling parameters as well.
+        </li>
+        <li>
+          <a href="../courses/Minimize">Boolean Minimization:</a> tutorial on boolean
+          minimization (algebraic, Karnaugh Map, and Quine-McClusky) with a program to do
+          the work for you.
+        </li>
+        <li>
+          <a href="GenerateID/index.xhtml">Generate ID</a> JavaScript application that
+          uses an anonymous self-executing function and a static local variable to
+          generate a sequence of numbers with zero global variables.
+        </li>
+
+        <li>
+          Student David Edell&rsquo;s <a href="Handel-C_Tetris">Tetris Game</a> using
+          Celoxica&rsquo;s PixelStreams and Handel-C.
+        </li>
+
+        <li>
+          Student Eric Shamow&rsquo;s <a href="pjvm/index.html">Persistent Java Virtual
+          Machine</a> project, an exercise using the Java reflection mechanisms.
+        </li>
+        <li>
+          <a href="Contours">Landscape Contours</a>: a web page that generates a table
+          dynamically using JavaScript.  The page is XHTML 1.1 served as
+          application/xhtml+xml if the user&rsquo;s browser will accept that media type.
+          Both the XHTML and CSS validate properly. Like everything else here, it uses
+          PHP to generate the correct MIME type header and to put the Last Updated
+          timestamp at the bottom.
+        </li>
+
+      </ul>
+    </div>
+
+    <h2>Utilities</h2>
+    <div class="whitebox">
+
+      <p>
+        Scripts and small programs I have used regularly in the past.  Most of the links
+        are to code listings that can be cut and pasted into a text editor.
+      </p>
+
+      <dl>
+
+        <dt><a href="Utils/mkhtml.html">mkhtml</a></dt>
+        <dd>Bash script that generates web pages from source code
+        files. Used to generate the web pages for the three utilities given here.</dd>
+
+        <dt><a href="Utils/pmw.html">pmw</a></dt>
+        <dd>Bash script to gives the word read access to its arguments.
+        Recurses through directories.  Requires Cygwin and the <span
+        class="fileName">file</span> command to run on Windows.</dd>
+
+        <dt><a href="Utils/chkformat_cc.html">chkformat</a></dt>
+        <dd>A C program to check whether file arguments contain tabs and/or
+        lines wider than a given width (default: 80).  Output is suitable
+        for pasting into grading reports for student projects.</dd>
+
+      </dl>
+    </div>
+
+    <div id="footer">
+      &copy; 1997-<?php echo date("Y", time()); ?> Christopher Vickery.
+      This work is licensed under a <a rel="license"
+      href="http://creativecommons.org/licenses/by-sa/2.5/">Creative Commons
+      Attribution-ShareAlike 2.5 License</a>.
+      <!--/Creative Commons License-->
+      <!-- <rdf:RDF xmlns="http://web.resource.org/cc/"
+                    xmlns:dc="http://purl.org/dc/elements/1.1/"
+                    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <Work rdf:about="">
+        <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.5/" />
+        <dc:title>Vickery Utilities</dc:title>
+        <dc:date>2006</dc:date>
+        <dc:description>Small programs and scripts that I use regularly.</dc:description>
+        <dc:creator><Agent><dc:title>Christopher Vickery</dc:title></Agent></dc:creator>
+        <dc:rights><Agent><dc:title>Christopher Vickery</dc:title></Agent></dc:rights>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+        <dc:source rdf:resource="http://babbage.cs.qc.edu/Projects/Utilities" />
+      </Work>
+      <License rdf:about="http://creativecommons.org/licenses/by-sa/2.5/">
+        <permits rdf:resource="http://web.resource.org/cc/Reproduction"/>
+        <permits rdf:resource="http://web.resource.org/cc/Distribution"/>
+        <requires rdf:resource="http://web.resource.org/cc/Notice"/>
+        <requires rdf:resource="http://web.resource.org/cc/Attribution"/>
+        <permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/>
+        <requires rdf:resource="http://web.resource.org/cc/ShareAlike"/>
+      </License>
+      </rdf:RDF> -->
+
+    <a href="/">Vickery Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo gmdate("Y-m-d",
+                        filemtime($_SERVER["SCRIPT_FILENAME"])); ?>.
+    </div>
+  </body>
+</html>
+

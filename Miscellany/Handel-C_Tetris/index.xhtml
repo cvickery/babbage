@@ -1,0 +1,108 @@
+<?php
+  if (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+  <title>Tetris in Handel-C</title>
+
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="../../courses/css/style-all.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="screen"
+        href="../../courses/css/style-screen.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="print"
+        href="../../courses/css/style-print.css"
+  />        
+
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>Tetris in Handel-C</h1>
+    <h2>Student: David Edell</h2>
+    <h3>Spring 2006</h3>
+  </div>
+
+  <div id="content">
+    <h2>Project Description</h2>
+    <div class="whitebox">
+
+      <p>This project was to implement the Tetris game using a touchscreen
+      for input/output and an FPGA to implement the algorithms.</p>
+
+      <p>The reason for doing the project was to investigate the use of
+      Celoxica&rsquo;s PixelStreams library by using it to implement a game
+      animation.  The result is a &ldquo;playable&rdquo; game of Tetris, a
+      good understanding of PixelStreams, and some insight into data
+      structure manipulations in Handel-C.</p>
+      
+      <p>The playability of the game is limited by the nature of the
+      touchscreen on the target platform, Celoxica&rsquo;s RC-200E.  We do
+      not know how to make it respond both quickly and accurately without
+      generating occasional spurious inputs.  We are aware of an error that
+      leads to a stray line on the long tetragram after it has been rotated.
+      Other anomalies seem to be the results of touchscreen noise.</p>
+      
+      <p>David prepared two documents for the project (see below).  The
+      project description tells how the game was implemented and how to play
+      it on RC-200E.  (It has also been tested on an RC-300.)  The
+      PixelStreams tutorial gives an overview of using PixelStreams.</p>
+
+    </div>
+    
+    <h2>Resources</h2>
+    <div class="whitebox">
+    
+      <ul>
+      
+        <li><img src="../../images/pdf16.gif" alt="PDF" /> <a
+        href="GNT.pdf">David&rsquo;s paper describing the project</a>.</li>
+        
+        <li><img src="../../images/pdf16.gif" alt="PDF" /> <a
+        href="PixelStreams_and_Tetris.pdf">David&rsquo;s PixelStreams
+        tutorial</a>.</li>
+
+        <li><a href="tetris_hcc.html">Handel-C source code listing</a>.</li>
+      
+      </ul>
+    
+    </div>
+  </div>
+
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="../../">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>
+    </p>
+    <p><em>Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.</em>
+    </p>
+  </div>
+</body>
+</html>
