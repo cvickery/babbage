@@ -275,13 +275,14 @@ select  *
 from    view_enrollments
 where   term_code = 2014020
 and     status = 'A'
-and     course_id not in (select course_id from view_multiple_components)
-or      component = 'LEC'
+and     (course_id not in (select course_id from view_multiple_components)
+or      component = 'LEC')
 EOD;
         $result = pg_query($curric_db, $query);
         $data = array();
         while ($row = pg_fetch_assoc($result))
         {
+
           $date = $row['date'];
           if (! isset($data[$date]))
           {
