@@ -44,6 +44,19 @@ while ($row = pg_fetch_assoc($result))
   $discipline_names[$row['discipline']] = $row['discipline_full_name'];
 }
 
+//  Class Data
+//  -------------------------------------------------------------------------------------
+class Data
+{
+  public $sections, $seats, $enrollment;
+  function __construct($seats, $enrollment)
+  {
+    $this->sections   = 1;
+    $this->seats      = $seats;
+    $this->enrollment = $enrollment;
+  }
+}
+
 //  Global arrays for identifying designations
 //  -------------------------------------------------------------------------------------
   //  Designation Sets
@@ -231,20 +244,80 @@ while ($row = pg_fetch_assoc($result))
   $spreadsheet_date = date('F j, Y', filemtime('enrollment.xlsx'));
   echo <<<EOD
     <h1>Enrollment History</h1>
-    <p><em>
-      Approval data last updated $approved_courses_update_date.
-      <br/>
-      CUNYfirst catalog data last updated $cf_catalog_update_date.
-      <br/>
-      Enrollment data last gathered $course_enrollments_update_date.
-      <br/>
-      Enrollment spreadsheet constructed $spreadsheet_date.
-    </em></p>
+    <p>
+      <em>
+        Approval data last updated $approved_courses_update_date.
+        <br/>
+        CUNYfirst catalog data last updated $cf_catalog_update_date.
+        <br/>
+        Enrollment data last gathered $course_enrollments_update_date.
+        <br/>
+        Enrollment spreadsheet constructed $spreadsheet_date.
+      </em>
+    </p>
     <p>
       <a href='./spreadsheet.php'>Download Spreadsheet</a>
     </p>
 EOD;
 ?>
+    <!--
+      Need to select what to show: What term(s), what divisions, what requirements,
+      what disciplines, what courses, what sections. Or what rooms or what times.
+      Then you have to select level of detail. For example when by-course, do you
+      want each section plotted separately? When by department, do you want each course
+      plotted separately? etc.
+
+      Start with all data for Spring 2014, and get one graph to work.
+      -->
+      <?php
+        $query = <<<EOD
+select  *
+from    view_enrollments
+where   term_code = 2014020
+and     status = 'A'
+and     (course_id not in (select course_id from view_multiple_components)
+or      component = 'LEC')
+EOD;
+        $result = pg_query($curric_db, $query);
+        $data = array();
+        while ($row = pg_fetch_assoc($result))
+        {
+
+          $date = $row['date'];
+          if (! isset($data[$date]))
+          {
+            $data[$date] = new Data($row['seats'], $row['enrollment']);
+          }
+          else
+          {
+            $data[$date]->sections++;
+            $data[$date]->seats += $row['seats'];
+            $data[$date]->enrollment += $row['enrollment'];
+          }
+        }
+        ksort($data);
+        echo <<<EOD
+        <table>
+          <tr>
+            <th>Date</th>
+            <th>Sections</th>
+            <th>Seats</th>
+            <th>Enrollment</th>
+          </tr>
+EOD;
+        foreach ($data as $date =>$values)
+        {
+          echo <<<EOD
+          <tr>
+            <td>$date</td>
+            <td>{$values->sections}</td>
+            <td>{$values->seats}</td>
+            <td>{$values->enrollment}</td>
+          </tr>
+EOD;
+        }
+      ?>
+      </table>
   </body>
 </html>
 
