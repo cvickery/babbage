@@ -242,6 +242,16 @@ class Data
   <body>
 <?php
   $spreadsheet_date = date('F j, Y', filemtime('enrollment.xlsx'));
+  $spreadsheet_size = filesize('enrollment.xlsx');
+  $suffixes = array('KB', 'MB', 'TB', 'PB');
+  $index = 0;
+  $suffix = 'bytes';
+  while ($spreadsheet_size > 1024)
+  {
+    $suffix = $suffixes[$index++];
+    $spreadsheet_size /= 1024;
+  }
+  $spreadsheet_size_str = sprintf('%0.1f %s', $spreadsheet_size, $suffix);
   echo <<<EOD
     <h1>Enrollment History</h1>
     <p>
@@ -256,7 +266,7 @@ class Data
       </em>
     </p>
     <p>
-      <a href='./spreadsheet.php'>Download Spreadsheet</a>
+      <a href='./spreadsheet.php'>Download Spreadsheet</a> ($spreadsheet_size_str)
     </p>
 EOD;
 ?>
