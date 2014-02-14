@@ -22,6 +22,6 @@
   </head>
   <body>
     <p>... to tell you how much ...</p>
-    <p><a href='ily.html'><img src='images/heart.png' alt='press-me'/></a></p>
+    <p><a href='ily.html'><img src='images/hearts.png' alt='press-me'/></a></p>
   </body>
 </html>
