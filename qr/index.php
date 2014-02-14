@@ -9,7 +9,7 @@ set_include_path("qrlib");
 require_once("qrlib.php");
 
 $page_path  = '';
-$img_file   = '';
+$img_file   = './images/noname.png';
 $url_base   = "http://{$_SERVER['SERVER_NAME']}";
 $level      = 'H';
 $size       = 4;
