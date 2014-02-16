@@ -18,10 +18,23 @@
         border-radius: 12px;
         text-align:center;
       }
+      #press-me {
+        transition-property: opacity;
+        transition-duration: 5s;
+        opacity: 0;
+        position:relative;
+        top:-220px;
+      }
     </style>
+    <script type='text/javascript'>
+      window.onload = function()
+      {
+        window.setTimeout(function(){document.getElementById('press-me').style.opacity = '0.6';}, 3000);
+      };
+    </script>
   </head>
   <body>
     <p>... to tell you how much ...</p>
-    <p><a href='ily.html'><img src='images/hearts.png' alt='press-me'/></a></p>
+    <p><a href='ily.html'><img src='images/hearts.png' alt='press-me'/></a><span id='press-me'>Press Me</span></p>
   </body>
 </html>
