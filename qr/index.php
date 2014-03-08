@@ -25,8 +25,7 @@ foreach ($_GET as $name => $value)
     case 'path':
       $path_parts = pathinfo($value);
       $extension  = '';
-      if (! $path_parts['extension']) $extension = '.php';
-      $page_path = "$value$extension";
+      $page_path = "$value";
       $img_file = "./images/{$path_parts['filename']}.png";
       break;
 
