@@ -26,7 +26,10 @@
     </script>
   </head>
   <body>
-    <h1>Happy Birthday</h1>
-    <div></div>
+    <h1>It’s Carl’s Birthday!</h1>
+    <div>
+      <img src='images/carl.jpg' alt='Carl'>
+      <h2>Live it up!!</h2>
+    </div>
   </body>
 </html>
