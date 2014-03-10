@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head>
     <title>Happy Birthday Carl!</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel='stylesheet' type='text/css' href='./css/carl.css'/>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script>
