@@ -11,7 +11,7 @@ if (isset($_POST['From']) && isset($_POST['Body']))
   $sms = $client->account->sms_messages->create('+13472897949', '+17182883809', $alert_msg);
   $sms = $client->account->sms_messages->create('+13472897949', '+17182883809', $body_msg);
 }
-if (! mail('vickeryqc@gmail.com', 'SMS Received', "$alert_msg\n$body_msg",
+if (! mail('cvickery@gmail.com', 'SMS Received', "$alert_msg\n$body_msg",
     "From: SMS on Babbage <Christopher.Vickery@qc.cuny.edu>"))
 {
   error_log("Failed to send email about $alert_msg");
