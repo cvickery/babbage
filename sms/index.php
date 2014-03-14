@@ -1,6 +1,7 @@
 <?php
 require_once("Services/Twilio.php");
 
+error_log('Test ccv');
 foreach ($_POST as $key => $value)
   error_log("$key => $value");
 
