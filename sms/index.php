@@ -1,7 +1,7 @@
 <?php
 require_once("Services/Twilio.php");
 
-foeach $_POST as $key => $value
+foeach ($_POST as $key => $value)
   error_log("$key => $value");
 
 $client = new Services_Twilio('ACc5146b2225441a0866c093e1eed457f0',
