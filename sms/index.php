@@ -1,7 +1,7 @@
 <?php
 require_once("Services/Twilio.php");
 
-if (isset($_POST['From']) && issset($_POST['Body']))
+if (isset($_POST['From']) && isset($_POST['Body']))
 {
   $from       = $_POST['From'];
   $body_msg   = $_POST['Body'];
