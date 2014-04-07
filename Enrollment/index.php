@@ -262,7 +262,7 @@ class Data
         <br/>
         Enrollment data last gathered $course_enrollments_update_date.
         <br/>
-        Enrollment spreadsheet constructed $zipfile_date.
+        Enrollment CSV files generated $zipfile_date.
       </em>
     </p>
     <p>
