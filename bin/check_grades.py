@@ -24,16 +24,56 @@ args = cgi.FieldStorage()
 
 sys.stdout.buffer.write("Content-Type: text/html; charset=utf-8\r\n\r".encode('utf-8'))
 
+""" Check/Extract arguments
+"""
 if 'course' not in args: oops('Missing course')
-if 'semester' not in args: oops('Missing term')
-if 'student_id' not in args: oops('Missing student')
-workbook_file = '../../Grades/' + args['semester'].value + '.xls'
-if not os.path.isfile(workbook_file): oops("Missing file: {}.xls".
-                                            format(args['semester'].value))
-stats = os.stat(workbook_file)
-mtime = stats.st_mtime
-modtime = datetime.datetime.fromtimestamp(mtime).strftime('%B %d, %Y at %I:%M %p')
+course = args['course'].value
+sheet_name = course.lower().replace('csci', 'cs').replace('-', '')
 
+if 'semester' not in args: oops('Missing term')
+semester = args['semester'].value
+
+if 'student_id' not in args: oops('Missing student')
+student_id = int(args['student_id'].value)
+
+""" Locate and open workbook
+"""
+workbook_file = '../../Grades/{}.xls'.format(semester)
+if not os.path.isfile(workbook_file): oops("Missing file: {}.xls".format(semester))
+
+modtime = datetime.datetime.fromtimestamp(os
+                                          .stat(workbook_file)
+                                          .st_mtime).strftime('%B %d, %Y at %I:%M %p')
+try:
+  wbk = xlrd.open_workbook(workbook_file)
+  sheet = wbk.sheet_by_name(sheet_name)
+except:
+  oops('Error accessing sheet {} in {}.xls'.format(sheet_name, semester))
+
+""" Find the student
+"""
+student_row = -1
+for rowx in range(sheet.nrows):
+  if sheet.cell(rowx, 0).ctype == xlrd.XL_CELL_NUMBER:
+    if  int(sheet.cell(rowx, 0).value) == student_id:
+      student_row = rowx
+      break
+if student_row == -1: oops('Student ID {} not found in {}'.format(student_id, course))
+row = sheet.row(student_row)
+fname = row[1].value
+lname = row[2].value
+
+table = '<table>'
+for col in range(3, len(row)):
+  if sheet.cell(0, col).ctype != xlrd.XL_CELL_BLANK:
+    value = row[col].value
+    if row[col].ctype == xlrd.XL_CELL_NUMBER and value == int(value): value = int(value)
+    table = table + '<tr><th>{}</th><td>{}</td></tr>'.format(sheet.cell(0, col).value, value)
+table = table + '</table>'
+
+""" Generate the web page
+      Note: this will become the email message body later
+"""
 sys.stdout.buffer.write("""
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE html>
@@ -42,9 +82,10 @@ sys.stdout.buffer.write("""
     <title>Check My Grades</title>
   </head>
   <body>
-    <h1>“Hello World!”</h1>
+    <h1>“Grades for {} {} in {}”</h1>
     <p>Grades were last updated {}</p>
+    {}
   </body>
 </html>
-""".format(modtime)
+""".format(fname, lname, course, modtime, table)
    .encode('utf-8'))
