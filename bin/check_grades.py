@@ -25,7 +25,7 @@ def oops(msg):
   """
   sys.stdout.buffer.write("""
  <h1>Unable To Check Grades</h1>
- <p>{}</p>
+ <h2>{}</h2>
                           """.format(msg).encode('utf-8'))
   exit()
 
@@ -44,7 +44,7 @@ sheet_name = course.lower().replace('csci', 'cs').replace('-', '')
 if 'semester' not in args: oops('Missing term')
 semester = args['semester'].value
 
-if 'student_id' not in args: oops('Missing student')
+if 'student_id' not in args: oops('Missing student ID')
 student_id = int(args['student_id'].value)
 
 include_data = ''
