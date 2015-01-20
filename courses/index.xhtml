@@ -1,0 +1,65 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <title>Dr. Vickery&rsquo;s Courses This Semester</title>
+  <link rel="shortcut icon" href="../favicon.ico" />
+  <link rel="stylesheet" type="text/css" media="all"
+        href="./css/style-all.css" />
+  <link rel="stylesheet" type="text/css" media="screen"
+        href="./css/style-screen.css" />
+  <link rel="stylesheet" type="text/css" media="print"
+        href="./css/style-print.css" />
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>Dr. Vickery&rsquo;s Courses This Semester</h1>
+  </div>
+
+  <div id="content">
+    <h2>Spring 2015</h2>
+      <div class="whitebox">
+        <h3><img src="cs100/favicon.ico" alt="" height="16" /> Information and Intelligence</h3>
+          <ul>
+            <li><a href="cs100/2015_02/syllabus.php">Syllabus</a></li>
+            <li><a href="cs100/2015_02">Assignments</a></li>
+          </ul>
+      </div>
+  </div>
+
+  <div id="footer">
+    <hr />
+    <p>
+      <a href="..">Vickery Home</a>&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+    </p>
+    <p><i>Last updated
+      <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.</i>
+    </p>
+  </div>
+
+</body>
+</html>
