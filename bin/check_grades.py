@@ -4,15 +4,24 @@ import sys
 import os
 from stat import *
 import datetime
-import cgi
+
+# excel stuff
 import xlrd
-# enable debugging
+
+# email stuff
+import  smtplib
+from    email.headerregistry  import Address
+from    email.message         import EmailMessage
+from    email.utils           import formatdate
+
+# CGI stuff -- with debugging
+import cgi
 import cgitb
 import pprint
 cgitb.enable()
 
 def oops(msg):
-  """ Die because something went oops
+  """ Die because something went oops.
   """
   sys.stdout.buffer.write("""
  <h1>Unable To Check Grades</h1>
@@ -20,11 +29,13 @@ def oops(msg):
                           """.format(msg).encode('utf-8'))
   exit()
 
+# Get form data
 args = cgi.FieldStorage()
 
+# HTTP header(s)
 sys.stdout.buffer.write("Content-Type: text/html; charset=utf-8\r\n\r".encode('utf-8'))
 
-""" Check/Extract arguments
+""" Check/Extract form data
 """
 if 'course' not in args: oops('Missing course')
 course = args['course'].value
@@ -35,6 +46,11 @@ semester = args['semester'].value
 
 if 'student_id' not in args: oops('Missing student')
 student_id = int(args['student_id'].value)
+
+include_data = ''
+if 'include-file' in args:
+  with open('../courses/{}/{}/{}'.format(sheet_name, semester, args['include-file'].value)) as inc:
+    include_data = inc.read()
 
 """ Locate and open workbook
 """
@@ -82,10 +98,11 @@ sys.stdout.buffer.write("""
     <title>Check My Grades</title>
   </head>
   <body>
-    <h1>“Grades for {} {} in {}”</h1>
-    <p>Grades were last updated {}</p>
+    <h1>{} Grades for {} {}</h1>
+    <h2>Grades were last updated {}</h2>
+    {}
     {}
   </body>
 </html>
-""".format(fname, lname, course, modtime, table)
+""".format(course, fname, lname, modtime, table, include_data)
    .encode('utf-8'))
