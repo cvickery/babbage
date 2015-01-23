@@ -24,16 +24,18 @@ def oops(msg):
   """ Die because something went oops.
   """
   sys.stdout.buffer.write("""
- <h1>Unable To Check Grades</h1>
- <h2>{}</h2>
+   <h1>Unable To Check Grades</h1>
+   <h2>{}</h2>
                           """.format(msg).encode('utf-8'))
   exit()
 
-# Get form data
+""" Get form data
+"""
 args = cgi.FieldStorage()
 
-# HTTP header(s)
-sys.stdout.buffer.write("Content-Type: text/html; charset=utf-8\r\n\r".encode('utf-8'))
+""" Web page headers
+"""
+sys.stdout.buffer.write("Content-Type: text/html; charset=utf-8\r\n\r\n".encode('utf-8'))
 
 """ Check/Extract form data
 """
@@ -62,47 +64,98 @@ modtime = datetime.datetime.fromtimestamp(os
                                           .st_mtime).strftime('%B %d, %Y at %I:%M %p')
 try:
   wbk = xlrd.open_workbook(workbook_file)
-  sheet = wbk.sheet_by_name(sheet_name)
+  grades_sheet  = wbk.sheet_by_name(sheet_name)
+  sheet_name    = sheet_name + '_emails'
+  emails_sheet  = wbk.sheet_by_name(sheet_name)
 except:
   oops('Error accessing sheet {} in {}.xls'.format(sheet_name, semester))
 
 """ Find the student
 """
 student_row = -1
-for rowx in range(sheet.nrows):
-  if sheet.cell(rowx, 0).ctype == xlrd.XL_CELL_NUMBER:
-    if  int(sheet.cell(rowx, 0).value) == student_id:
+for rowx in range(grades_sheet.nrows):
+  if grades_sheet.cell(rowx, 0).ctype == xlrd.XL_CELL_NUMBER:
+    if  int(grades_sheet.cell(rowx, 0).value) == student_id:
       student_row = rowx
       break
 if student_row == -1: oops('Student ID {} not found in {}'.format(student_id, course))
-row = sheet.row(student_row)
+
+row = grades_sheet.row(student_row)
 fname = row[1].value
 lname = row[2].value
+if row[0].value != emails_sheet.row(student_row)[0].value:
+  oops('ID error: {} is not {}'.format(row[0].value, emails_sheet.row(student_row)[0].value))
+emails = [ emails_sheet.row(student_row)[3].value ]
+email_info = '<h2>Email would go to:</h2><blockquote><p>' + emails[0]
+if len(emails_sheet.row(student_row)) > 4:
+  emails.append(emails_sheet.row(student_row)[4].value)
+  email_info = email_info + '<br/>' + emails[1]
+  emails_info = '</blockquote>'
 
-table = '<table>'
+""" Construct the HTML table of grades
+"""
+table = """
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th><th>Your Score</th>
+      </tr>
+    </thead>
+    <tbody>
+"""
 for col in range(3, len(row)):
-  if sheet.cell(0, col).ctype != xlrd.XL_CELL_BLANK:
+  if grades_sheet.cell(0, col).ctype != xlrd.XL_CELL_BLANK:
     value = row[col].value
     if row[col].ctype == xlrd.XL_CELL_NUMBER and value == int(value): value = int(value)
-    table = table + '<tr><th>{}</th><td>{}</td></tr>'.format(sheet.cell(0, col).value, value)
-table = table + '</table>'
+    table = table + '<tr><th>{}</th><td>{}</td></tr>'.format(grades_sheet.cell(0, col).value, value)
+table = table + '</tbody></table>'
 
-""" Generate the web page
-      Note: this will become the email message body later
+""" Style the table
 """
-sys.stdout.buffer.write("""
+css = """
+<style type='text/css'>
+  * {font-family: sans-serif;}
+  table {
+  border-collapse: collapse;
+  border: 1px solid lightgray;
+  }
+  th, td {
+    padding: 0.1em 0.5em;
+    border: 1px solid lightgray;
+  }
+  tbody th {
+    text-align: right;
+  }
+  thead {
+    background-color: lightgray;
+  }
+  thead th {
+    border: 1px solid black;
+  }
+</style>
+"""
+
+""" Localhost page: show the grades table and notes
+"""
+xhtml_page = """
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE html>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
   <head>
     <title>Check My Grades</title>
+    {}
   </head>
   <body>
     <h1>{} Grades for {} {}</h1>
     <h2>Grades were last updated {}</h2>
     {}
     {}
+    {}
   </body>
 </html>
-""".format(course, fname, lname, modtime, table, include_data)
-   .encode('utf-8'))
+""".format(css, course, fname, lname, modtime, email_info, table, include_data).encode('utf-8')
+
+if 'localhost' in os.environ['SERVER_NAME']:
+  sys.stdout.buffer.write(xhtml_page)
+else:
+  sys.stdout.buffer.write('Not localhost: {}'.format(os.environ).encode('UTF-8'))
