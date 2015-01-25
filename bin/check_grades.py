@@ -13,6 +13,7 @@ import  smtplib
 from    email.headerregistry  import Address
 from    email.message         import EmailMessage
 from    email.utils           import formatdate
+from    email.utils           import make_msgid
 
 # CGI stuff -- with debugging
 import cgi
@@ -212,9 +213,9 @@ Grades were last updated {}
   msg['From']       = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
   msg['To']         = to_list
   msg['Bcc']        = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
-  msg.add_header('Reply-To', 'christopher.vickery@qc.cuny.edu')
-  msg.add_header('Date', formatdate(localtime=True))
-  msg.add_header('Message-ID', email.utils.make_msgid())
+  msg.add_header('Reply-To',    'christopher.vickery@qc.cuny.edu')
+  msg.add_header('Date',        formatdate(localtime=True))
+  msg.add_header('Message-ID',  make_msgid())
   msg.set_content(text_content)
   msg.add_alternative(html_content, subtype='html')
   mailer = smtplib.SMTP('smtp.qc.cuny.edu')
