@@ -168,7 +168,7 @@ else:
 Grades were last updated {}
 {}
 {}
-""".format(course, fname, lname, modtime, table, include_data)
+""".format(course, fname, lname, modtime, text_table, include_data)
   html_content  = """
 
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
@@ -182,7 +182,7 @@ Grades were last updated {}
     {}
   </body>
 </html>
-""".format(css, course, fname, lname, modtime, table, include_data).encode('utf-8')
+""".format(css, course, fname, lname, modtime, html_table, include_data).encode('utf-8')
 
   msg               = EmailMessage()
   msg['Subject']    = 'Your CSCI-100 Grades'
