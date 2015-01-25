@@ -199,13 +199,13 @@ Grades were last updated {}
     {}
   </head>
   <body>
-    <h1>{} Grades for {} {}</h1>
+    <h1>{} Grades for {}</h1>
     <h2>Grades were last updated {}</h2>
     {}
     {}
   </body>
 </html>
-""".format(css, course, fname, lname, modtime, html_table, include_data)
+""".format(css, course, student_name, modtime, html_table, include_data)
 
   msg               = EmailMessage()
   msg['Subject']    = 'Your CSCI-100 Grades'
@@ -214,6 +214,7 @@ Grades were last updated {}
   msg['Bcc']        = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
   msg.add_header('Reply-To', 'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date', formatdate(localtime=True))
+  msg.add_header('Message-ID', email.utils.make_msgid())
   msg.set_content(text_content)
   msg.add_alternative(html_content, subtype='html')
   mailer = smtplib.SMTP('smtp.qc.cuny.edu')
