@@ -41,7 +41,7 @@ def html2text(str):
   """
   return_str = str.replace('<p>', '\n')
   return_str = re.sub(r'<.*?>', '', return_str)
-  return return_str
+  return return_str.replace('\n\n', '\n')
 
 
 """ Get form data
