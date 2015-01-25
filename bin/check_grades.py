@@ -92,9 +92,10 @@ if len(emails_sheet.row(student_row)) > 4:
   email_info = email_info + '<br/>' + emails[1]
   emails_info = '</blockquote>'
 
-""" Construct the HTML table of grades
+""" Construct the HTML and text tables of grades
 """
-table = """
+text_table = ''
+html_table = """
   <table>
     <thead>
       <tr>
@@ -105,12 +106,14 @@ table = """
 """
 for col in range(3, len(row)):
   if grades_sheet.cell(0, col).ctype != xlrd.XL_CELL_BLANK:
+    name  = grades_sheet.cell(0, col).value
     value = row[col].value
     if row[col].ctype == xlrd.XL_CELL_NUMBER and value == int(value): value = int(value)
-    table = table + '<tr><th>{}</th><td>{}</td></tr>'.format(grades_sheet.cell(0, col).value, value)
-table = table + '</tbody></table>'
+    html_table = html_table + '<tr><th>{}</th><td>{}</td></tr>'.format(name, value)
+    text_table = text_table + '{:<15} {}\n'.format(name,value)
+html_table = html_table + '</tbody></table>'
 
-""" Style the table
+""" Style the HTML table
 """
 css = """
 <style type='text/css'>
@@ -153,9 +156,44 @@ xhtml_page = """
     {}
   </body>
 </html>
-""".format(css, course, fname, lname, modtime, email_info, table, include_data).encode('utf-8')
+""".format(css, course, fname, lname, modtime, email_info, html_table, include_data).encode('utf-8')
 
 if 'localhost' in os.environ['SERVER_NAME']:
   sys.stdout.buffer.write(xhtml_page)
 else:
-  sys.stdout.buffer.write('Not localhost: {}'.format(os.environ).encode('UTF-8'))
+  student_name = '{} {}'.format(fname, lname)
+  to_list = [Address(student_name, addr_spec = x) for x in emails]
+  text_content  = """
+{} Grades for {}{}
+Grades were last updated {}
+{}
+{}
+""".format(course, fname, lname, modtime, table, include_data)
+  html_content  = """
+
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
+  <head>
+    {}
+  </head>
+  <body>
+    <h1>{} Grades for {} {}</h1>
+    <h2>Grades were last updated {}</h2>
+    {}
+    {}
+  </body>
+</html>
+""".format(css, course, fname, lname, modtime, table, include_data).encode('utf-8')
+
+  msg               = EmailMessage()
+  msg['Subject']    = 'Your CSCI-100 Grades'
+  msg['From']       = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
+  ## Tuples allow for multiple Address() items, but single Address() items work too
+  msg['To']         = to_list
+  msg['Bcc']        = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
+  msg.add_header('Reply-To', 'christopher.vickery@qc.cuny.edu')
+  msg.add_header('Date', formatdate(localtime=True))
+  msg.set_content(text_content)
+  msg.add_alternative(html_content, subtype='html')
+  mailer = smtplib.SMTP('smtp.qc.cuny.edu')
+  mailer.send_message(msg)
+  mailer.quit()
