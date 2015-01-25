@@ -88,11 +88,8 @@ student_name = '{} {}'.format(fname, lname)
 if row[0].value != emails_sheet.row(student_row)[0].value:
   oops('ID error: {} is not {}'.format(row[0].value, emails_sheet.row(student_row)[0].value))
 emails = [ emails_sheet.row(student_row)[3].value ]
-email_info = '<h2>Email would go to:</h2><blockquote><p>' + emails[0]
 if len(emails_sheet.row(student_row)) > 4:
   emails.append(emails_sheet.row(student_row)[4].value)
-  email_info = email_info + '<br/>' + emails[1]
-  emails_info = '</blockquote>'
 
 """ Construct the HTML and text tables of grades
 """
@@ -143,6 +140,10 @@ css = """
 """ Localhost page: show the grades table and notes
 """
 if 'localhost' in os.environ['SERVER_NAME']:
+  email_info = '<h2>Email would go to:</h2><blockquote><p>' + emails[0]
+  if len(emails) > 1: email_info = email_info + '<br/>' + emails[1]
+  emails_info = email_info + '</blockquote>'
+
   xhtml_page = """
   <?xml version='1.0' encoding='UTF-8'?>
   <!DOCTYPE html>
@@ -156,33 +157,35 @@ if 'localhost' in os.environ['SERVER_NAME']:
       <h2>Grades were last updated {}</h2>
       {}
       {}
-      {}
-    </body>
-  </html>
-  """.format(css, course, student_name, modtime, email_info, html_table, include_data).encode('utf-8')
-else:
-  syntax = ' has'
-  if len(emails) != 1: syntax = 's have'
-  xhtml_page = """
-  <?xml version='1.0' encoding='UTF-8'?>
-  <!DOCTYPE html>
-  <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
-    <head>
-      <title>Check My Grades</title>
-      {}
-    </head>
-    <body>
-      <h1>{} Grades for {}</h1>
-      <h2>Grades were last updated {}</h2>
-      <p>Email{} been sent to</p>
-      <blockquote>
-      {}
-      </blockquote>
       {}
     </body>
   </html>
   """.format(css, course, student_name, modtime,
-             syntax, email_info, html_table, include_data).encode('utf-8')
+             email_info, html_table, include_data).encode('utf-8')
+else:
+  email_info  = '<blockquote><p>' + emails[0]
+  syntax      = ' has'
+  if len(emails) > 1:
+    email_info  = email_info + '<br/>' + emails[1]
+    syntax      = 's have'
+  email_info = '<h2>Email{} been sent to:</h2>{}</blockquote>'.format(syntax, email_info)
+  xhtml_page = """
+  <?xml version='1.0' encoding='UTF-8'?>
+  <!DOCTYPE html>
+  <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
+    <head>
+      <title>Check My Grades</title>
+      {}
+    </head>
+    <body>
+      <h1>{} Grades for {}</h1>
+      <h2>Grades were last updated {}</h2>
+      {}
+      {}
+    </body>
+  </html>
+  """.format(css, course, student_name, modtime,
+             email_info, include_data).encode('utf-8')
   to_list = [Address(student_name, addr_spec = x) for x in emails]
   text_content  = """
 {} Grades for {}{}
