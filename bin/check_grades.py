@@ -189,7 +189,7 @@ Grades were last updated {}
   msg['Subject']    = 'Your CSCI-100 Grades'
   msg['From']       = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
   msg['To']         = to_list
-  xmsg['Bcc']        = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
+  msg['Bcc']        = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
   msg.add_header('Reply-To', 'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date', formatdate(localtime=True))
   msg.set_content(text_content)
