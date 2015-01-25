@@ -169,6 +169,7 @@ Grades were last updated {}
 {}
 {}
 """.format(course, fname, lname, modtime, text_table, include_data)
+
   html_content  = """
 
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
@@ -182,14 +183,13 @@ Grades were last updated {}
     {}
   </body>
 </html>
-""".format(css, course, fname, lname, modtime, html_table, include_data).encode('utf-8')
+""".format(css, course, fname, lname, modtime, html_table, include_data)
 
   msg               = EmailMessage()
   msg['Subject']    = 'Your CSCI-100 Grades'
   msg['From']       = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
-  #msg['To']         = to_list
-  msg['To'] = Address('me', addr_spec = 'vickery@babbage.cs.qc.cuny.edu')
-  msg['Bcc']        = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
+  msg['To']         = to_list
+  xmsg['Bcc']        = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
   msg.add_header('Reply-To', 'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date', formatdate(localtime=True))
   msg.set_content(text_content)
