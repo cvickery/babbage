@@ -83,6 +83,8 @@ if student_row == -1: oops('Student ID {} not found in {}'.format(student_id, co
 row = grades_sheet.row(student_row)
 fname = row[1].value
 lname = row[2].value
+student_name = '{} {}'.format(fname, lname)
+
 if row[0].value != emails_sheet.row(student_row)[0].value:
   oops('ID error: {} is not {}'.format(row[0].value, emails_sheet.row(student_row)[0].value))
 emails = [ emails_sheet.row(student_row)[3].value ]
@@ -140,28 +142,47 @@ css = """
 
 """ Localhost page: show the grades table and notes
 """
-xhtml_page = """
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html>
-<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
-  <head>
-    <title>Check My Grades</title>
-    {}
-  </head>
-  <body>
-    <h1>{} Grades for {} {}</h1>
-    <h2>Grades were last updated {}</h2>
-    {}
-    {}
-    {}
-  </body>
-</html>
-""".format(css, course, fname, lname, modtime, email_info, html_table, include_data).encode('utf-8')
-
 if 'localhost' in os.environ['SERVER_NAME']:
-  sys.stdout.buffer.write(xhtml_page)
+  xhtml_page = """
+  <?xml version='1.0' encoding='UTF-8'?>
+  <!DOCTYPE html>
+  <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
+    <head>
+      <title>Check My Grades</title>
+      {}
+    </head>
+    <body>
+      <h1>{} Grades for {}</h1>
+      <h2>Grades were last updated {}</h2>
+      {}
+      {}
+      {}
+    </body>
+  </html>
+  """.format(css, course, student_name, modtime, email_info, html_table, include_data).encode('utf-8')
 else:
-  student_name = '{} {}'.format(fname, lname)
+  syntax = ' has'
+  if len(emails) != 1: syntax = 's have'
+  xhtml_page = """
+  <?xml version='1.0' encoding='UTF-8'?>
+  <!DOCTYPE html>
+  <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
+    <head>
+      <title>Check My Grades</title>
+      {}
+    </head>
+    <body>
+      <h1>{} Grades for {}</h1>
+      <h2>Grades were last updated {}</h2>
+      <p>Email{} been sent to</p>
+      <blockquote>
+      {}
+      </blockquote>
+      {}
+    </body>
+  </html>
+  """.format(css, course, student_name, modtime,
+             syntax, email_info, html_table, include_data).encode('utf-8')
   to_list = [Address(student_name, addr_spec = x) for x in emails]
   text_content  = """
 {} Grades for {}{}
@@ -171,8 +192,6 @@ Grades were last updated {}
 """.format(course, fname, lname, modtime, text_table, include_data)
 
   html_content  = """
-
-<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
   <head>
     {}
   </head>
@@ -197,3 +216,4 @@ Grades were last updated {}
   mailer = smtplib.SMTP('smtp.qc.cuny.edu')
   mailer.send_message(msg)
   mailer.quit()
+sys.stdout.buffer.write(xhtml_page)
