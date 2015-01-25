@@ -1,7 +1,7 @@
 #! /usr/local/bin/python3
 
 import sys
-import os
+import oops
 import re
 import datetime
 from stat import *
@@ -40,7 +40,7 @@ def html2text(str):
       Change <p> to \n, then get rid of all other tags.
   """
   return_str = str.replace('<p>', '\n')
-  return_str = re.sub(r'<.*>', '', return_str)
+  return_str = re.sub(r'<.*?>', '', return_str)
   return return_str
 
 
