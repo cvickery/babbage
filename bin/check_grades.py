@@ -186,10 +186,10 @@ Grades were last updated {}
 
   msg               = EmailMessage()
   msg['Subject']    = 'Your CSCI-100 Grades'
-  msg['From']       = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
-  ## Tuples allow for multiple Address() items, but single Address() items work too
+  msg['From']       = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
   msg['To']         = to_list
-  msg['Bcc']        = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
+  msg['To'] = Address('me', addr_spec = 'vickery@babbage.cs.qc.cuny.edu')
+  msg['Bcc']        = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
   msg.add_header('Reply-To', 'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date', formatdate(localtime=True))
   msg.set_content(text_content)
