@@ -2,8 +2,9 @@
 
 import sys
 import os
-from stat import *
+import re
 import datetime
+from stat import *
 
 # excel stuff
 import xlrd
@@ -21,6 +22,8 @@ import cgitb
 import pprint
 cgitb.enable()
 
+# oops()
+# ---------------------------------------------------------
 def oops(msg):
   """ Die because something went oops.
   """
@@ -29,6 +32,17 @@ def oops(msg):
    <h2>{}</h2>
                           """.format(msg).encode('utf-8'))
   exit()
+
+# html2str()
+# ---------------------------------------------------------
+def html2text(str):
+  """ Convert HTML to plain text.
+      Change <p> to \n, then get rid of all other tags.
+  """
+  return_str = str.replace('<p>', '\n')
+  return_str = re.sub(r'<.*>', '', return_str)
+  return return_str
+
 
 """ Get form data
 """
@@ -165,10 +179,10 @@ if 'localhost' in os.environ['SERVER_NAME']:
              email_info, html_table, include_data).encode('utf-8')
 else:
   email_info  = '<blockquote><p>' + emails[0]
-  syntax      = ' has'
+  syntax      = ' with your grades has'
   if len(emails) > 1:
     email_info  = email_info + '<br/>' + emails[1]
-    syntax      = 's have'
+    syntax      = 's with your grades have'
   email_info = '<h2>Email{} been sent to:</h2>{}</blockquote>'.format(syntax, email_info)
   xhtml_page = """
   <?xml version='1.0' encoding='UTF-8'?>
@@ -189,11 +203,11 @@ else:
              email_info, include_data).encode('utf-8')
   to_list = [Address(student_name, addr_spec = x) for x in emails]
   text_content  = """
-{} Grades for {}{}
+{} Grades for {}
 Grades were last updated {}
 {}
 {}
-""".format(course, fname, lname, modtime, text_table, include_data)
+""".format(course, student_name, modtime, text_table, html2text(include_data))
 
   html_content  = """
   <head>
