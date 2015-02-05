@@ -102,8 +102,9 @@ student_name = '{} {}'.format(fname, lname)
 
 if row[0].value != emails_sheet.row(student_row)[0].value:
   oops('ID error: {} is not {}'.format(row[0].value, emails_sheet.row(student_row)[0].value))
+
 emails = [ emails_sheet.row(student_row)[3].value ]
-if len(emails_sheet.row(student_row)) > 4:
+if emails_sheet.row(student_row)[4].ctype != xlrd.XL_CELL_EMPTY :
   emails.append(emails_sheet.row(student_row)[4].value)
 
 """ Construct the HTML and text tables of grades
