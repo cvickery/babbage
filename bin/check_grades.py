@@ -66,7 +66,8 @@ student_id = int(args['student_id'].value)
 
 include_data = ''
 if 'include-file' in args:
-  with open('../courses/{}/{}/{}'.format(sheet_name, semester, args['include-file'].value)) as inc:
+  with open('../courses/{}/{}/{}'.format(sheet_name, semester, args['include-file'].value),
+            encoding='utf-8') as inc:
     include_data = inc.read()
 
 """ Locate and open workbook
