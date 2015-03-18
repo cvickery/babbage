@@ -97,8 +97,8 @@ for rowx in range(grades_sheet.nrows):
 if student_row == -1: oops('Student ID {} not found in {}'.format(student_id, course))
 
 row = grades_sheet.row(student_row)
-fname = row[1].value
-lname = row[2].value
+fname = row[2].value
+lname = row[1].value
 student_name = '{} {}'.format(fname, lname)
 
 if row[0].value != emails_sheet.row(student_row)[0].value:
@@ -120,7 +120,8 @@ html_table = """
     </thead>
     <tbody>
 """
-for col in range(3, len(row)):
+# Skip columns 0-3: ID, Last Name, First Name, Exam ID
+for col in range(4, len(row)):
   if grades_sheet.cell(0, col).ctype != xlrd.XL_CELL_BLANK:
     name  = grades_sheet.cell(0, col).value
     value = row[col].value
