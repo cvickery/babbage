@@ -122,7 +122,7 @@ html_table = """
 """
 # Skip columns 0-3: ID, Last Name, First Name, Exam ID
 for col in range(4, len(row)):
-  if grades_sheet.cell(0, col).ctype != xlrd.XL_CELL_BLANK:
+  if grades_sheet.cell(0, col).ctype not in  (xlrd.XL_CELL_BLANK, xlrd.XL_CELL_EMPTY):
     name  = grades_sheet.cell(0, col).value
     value = row[col].value
     if row[col].ctype == xlrd.XL_CELL_NUMBER and value == int(value): value = int(value)
