@@ -126,6 +126,10 @@ for col in range(4, len(row)):
     name  = grades_sheet.cell(0, col).value
     value = row[col].value
     if row[col].ctype == xlrd.XL_CELL_NUMBER and value == int(value): value = int(value)
+    # Round fractions if heading says to
+    rounding = re.match(r'.*round.*(\d+).*place', name, flags = re.IGNORECASE)
+    if rounding:
+      value = round(row[col].value, int(rounding.group(1)))
     html_table = html_table + '<tr><th>{}</th><td>{}</td></tr>'.format(name, value)
     text_table = text_table + '{:<15} {}\n'.format(name,value)
 html_table = html_table + '</tbody></table>'
