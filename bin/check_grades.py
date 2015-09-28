@@ -126,10 +126,10 @@ headers = takeaways['headers']
 data    = takeaways['data']
 text = 'Takeaways: {}'.format(round(data[3].value, 1))
 text_message = text_message + text + '\n'
-html_message = html_message + '<h3>{}</h3>'.format(text)
+html_message = html_message + '<h3>{}</h3><table><tr>'.format(text)
 text_1 = 'Date:  '
 text_2 = 'Score: '
-html = '<div class="scores"><strong>Date:<br/>Score:</strong></div>'
+html = '<th><strong>Date:<br/>Score:</strong></th>'
 num_cols = 0
 for col in range(4,len(headers)):
   if headers[col].ctype == xlrd.XL_CELL_EMPTY: continue
@@ -139,12 +139,12 @@ for col in range(4,len(headers)):
     text_2 = text_2 + '\n'
 
   date_str = datetime.datetime(*xlrd.xldate_as_tuple(headers[col].value, wbk.datemode)).strftime('%b %d')
-  text_1 = text_1 + '{:6}'.format(date_str)
-  text_2 = text_2 + '{:6}'.format(data[col].value)
-  html = html + '<div class="scores">{}<br/>{}</div>'.format(date_str, data[col].value)
+  text_1 = text_1 + '{:8}'.format(date_str)
+  text_2 = text_2 + '{:8}'.format(data[col].value)
+  html = html + '<td>{}<br/>{}</td>'.format(date_str, data[col].value)
 
 text_message = text_message + text_1 + '\n' + text_2 + '\n'
-html_message = html_message + html
+html_message = html_message + html + '</tr></table>'
 
 # Skip columns 0-3: ID, Last Name, First Name, Exam ID
 # for col in range(4, len(row)):
