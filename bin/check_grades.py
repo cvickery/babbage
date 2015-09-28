@@ -43,6 +43,25 @@ def html2text(str):
   return_str = re.sub(r'<.*?>', '', return_str)
   return return_str.replace('\n\n', '\n')
 
+# get_student()
+# ---------------------------------------------------------
+def get_student(wbk, sheet_name, student_id):
+  """ Get the header row and student data from a named sheet in a
+      workbook. Die if the student isn't there.
+  """
+  try:
+    sheet = wbk.sheet_by_name(sheet_name)
+  except:
+    oops('Workbook sheet {} not found')
+
+  for row in range(sheet.nrows):
+    if sheet.cell(row, 0).value == '{}'.format(student_id):
+      # sys.stdout.buffer.write('{}: found {}'.format(sheet_name, student_id).encode('utf-8'))
+      return {'headers':sheet.row(0), 'data':sheet.row(row)}
+    # else:
+    #  sys.stdout.buffer.write('<p>{}: %{}% ({}) does not equal %{}%</p>'.format(sheet_name, sheet.cell(row, 0).value, sheet.cell(row,0).ctype, student_id).encode('utf-8'))
+  oops('Student ID {} not found in {}'.format(student_id, sheet_name))
+
 
 """ Get form data
 """
@@ -79,62 +98,69 @@ modtime = datetime.datetime.fromtimestamp(os
                                           .stat(workbook_file)
                                           .st_mtime).strftime('%B %d, %Y at %I:%M %p')
 try:
-  wbk = xlrd.open_workbook(workbook_file)
-  grades_sheet  = wbk.sheet_by_name(sheet_name)
-  sheet_name    = sheet_name + '_emails'
-  emails_sheet  = wbk.sheet_by_name(sheet_name)
+  wbk           = xlrd.open_workbook(workbook_file)
 except:
-  oops('Error accessing sheet {} in {}.xls'.format(sheet_name, semester))
+  oops('Unable to open', workbook_file)
+roster        = get_student(wbk, 'Roster', student_id)
+takeaways     = get_student(wbk, 'Takeaways', student_id)
+brief_quizzes = get_student(wbk, 'Brief Quizzes', student_id)
+assignments   = get_student(wbk, 'Assignments', student_id)
+exams         = get_student(wbk, 'Exams', student_id)
 
-""" Find the student
-"""
-student_row = -1
-for rowx in range(grades_sheet.nrows):
-  if grades_sheet.cell(rowx, 0).ctype == xlrd.XL_CELL_NUMBER:
-    if  int(grades_sheet.cell(rowx, 0).value) == student_id:
-      student_row = rowx
-      break
-if student_row == -1: oops('Student ID {} not found in {}'.format(student_id, course))
-
-row = grades_sheet.row(student_row)
-fname = row[2].value
-lname = row[1].value
+data = roster['data']
+fname = data[2].value
+lname = data[1].value
 student_name = '{} {}'.format(fname, lname)
 
-if row[0].value != emails_sheet.row(student_row)[0].value:
-  oops('ID error: {} is not {}'.format(row[0].value, emails_sheet.row(student_row)[0].value))
+emails = [ data[4].value ]
+if data[5].ctype != xlrd.XL_CELL_EMPTY :
+  emails.append(data[5].value)
 
-emails = [ emails_sheet.row(student_row)[3].value ]
-if emails_sheet.row(student_row)[4].ctype != xlrd.XL_CELL_EMPTY :
-  emails.append(emails_sheet.row(student_row)[4].value)
+# Construct the HTML and text tables of grades
+# --------------------------------------------
+text_message = ''
+html_message = ''
 
-""" Construct the HTML and text tables of grades
-"""
-text_table = ''
-html_table = """
-  <table>
-    <thead>
-      <tr>
-        <th>Item</th><th>Your Score</th>
-      </tr>
-    </thead>
-    <tbody>
-"""
+#  Takeaways
+headers = takeaways['headers']
+data    = takeaways['data']
+text = 'Takeaways: {}'.format(round(data[3].value, 1))
+text_message = text_message + text + '\n'
+html_message = html_message + '<h3>{}</h3>'.format(text)
+text_1 = 'Date:  '
+text_2 = 'Score: '
+html = '<div class="scores"><strong>Date:<br/>Score:</strong></div>'
+num_cols = 0
+for col in range(4,len(headers)):
+  if headers[col].ctype == xlrd.XL_CELL_EMPTY: continue
+  num_cols = num_cols + 1
+  if (num_cols % 6) == 0:
+    text_1 = text_1 + '\n'
+    text_2 = text_2 + '\n'
+
+  date_str = datetime.datetime(*xlrd.xldate_as_tuple(headers[col].value, wbk.datemode)).strftime('%b %d')
+  text_1 = text_1 + '{:6}'.format(date_str)
+  text_2 = text_2 + '{:6}'.format(data[col].value)
+  html = html + '<div class="scores">{}<br/>{}</div>'.format(date_str, data[col].value)
+
+text_message = text_message + text_1 + '\n' + text_2 + '\n'
+html_message = html_message + html
+
 # Skip columns 0-3: ID, Last Name, First Name, Exam ID
-for col in range(4, len(row)):
-  if grades_sheet.cell(0, col).ctype not in  (xlrd.XL_CELL_BLANK, xlrd.XL_CELL_EMPTY):
-    name  = grades_sheet.cell(0, col).value
-    value = row[col].value
-    if row[col].ctype == xlrd.XL_CELL_NUMBER and value == int(value): value = int(value)
-    # Round fractions if heading says to
-    rounding = re.match(r'.*round.*(\d+).*place', name, flags = re.IGNORECASE)
-    if rounding:
-      value = round(row[col].value, int(rounding.group(1)))
-    html_table = html_table + '<tr><th>{}</th><td>{}</td></tr>'.format(name, value)
-    text_table = text_table + '{:<15} {}\n'.format(name,value)
-html_table = html_table + '</tbody></table>'
+# for col in range(4, len(row)):
+#   if grades_sheet.cell(0, col).ctype not in  (xlrd.XL_CELL_BLANK, xlrd.XL_CELL_EMPTY):
+#     name  = grades_sheet.cell(0, col).value
+#     value = row[col].value
+#     if row[col].ctype == xlrd.XL_CELL_NUMBER and value == int(value): value = int(value)
+#     # Round fractions if heading says to
+#     rounding = re.match(r'.*round.*(\d+).*place', name, flags = re.IGNORECASE)
+#     if rounding:
+#       value = round(row[col].value, int(rounding.group(1)))
+#     html_table = html_table + '<tr><th>{}</th><td>{}</td></tr>'.format(name, value)
+#     text_table = text_table + '{:<15} {}\n'.format(name,value)
+# html_table = html_table + '</tbody></table>'
 
-""" Style the HTML table
+""" Style the HTML message
 """
 css = """
 <style type='text/css'>
@@ -155,6 +181,14 @@ css = """
   }
   thead th {
     border: 1px solid black;
+  }
+  h3 {
+    margin:1em 0 0 0;
+  }
+  .scores {
+    display: inline-block;
+    width: 5em;
+    padding:0.1em;
   }
 </style>
 """
@@ -183,7 +217,7 @@ if 'localhost' in os.environ['SERVER_NAME']:
     </body>
   </html>
   """.format(css, course, student_name, modtime,
-             email_info, html_table, include_data).encode('utf-8')
+             email_info, html_message, include_data).encode('utf-8')
 else:
   email_info  = '<blockquote><p>' + emails[0]
   syntax      = ' with your grades has'
@@ -214,7 +248,7 @@ else:
 Grades were last updated {}
 {}
 {}
-""".format(course, student_name, modtime, text_table, html2text(include_data))
+""".format(course, student_name, modtime, text_message, html2text(include_data))
 
   html_content  = """
   <head>
@@ -227,7 +261,7 @@ Grades were last updated {}
     {}
   </body>
 </html>
-""".format(css, course, student_name, modtime, html_table, include_data)
+""".format(css, course, student_name, modtime, html_message, include_data)
 
   msg               = EmailMessage()
   msg['Subject']    = 'Your CSCI-100 Grades'
@@ -237,7 +271,7 @@ Grades were last updated {}
   msg.add_header('Reply-To',    'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date',        formatdate(localtime=True))
   msg.add_header('Message-ID',  make_msgid())
-  msg.set_content(text_content)
+  msg.set_content(text_message)
   msg.add_alternative(html_content, subtype='html')
   mailer = smtplib.SMTP('smtp.qc.cuny.edu')
   mailer.send_message(msg)
