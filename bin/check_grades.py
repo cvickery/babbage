@@ -62,6 +62,40 @@ def get_student(wbk, sheet_name, student_id):
     #  sys.stdout.buffer.write('<p>{}: %{}% ({}) does not equal %{}%</p>'.format(sheet_name, sheet.cell(row, 0).value, sheet.cell(row,0).ctype, student_id).encode('utf-8'))
   oops('Student ID {} not found in {}'.format(student_id, sheet_name))
 
+# do_sheet()
+# ----------------------------------------------------------
+def do_sheet(h3, sheet, text_message, html_message):
+  headers = sheet['headers']
+  data    = sheet['data']
+  value   = ''
+  if len(data) > 3 and data[3].ctype == xlrd.XL_CELL_NUMBER:
+    value = round(data[3].value, 1)
+  text = '{}: {}'.format(h3, value)
+  text_message = text_message + text + '\n'
+  html_message = html_message + '<h3>{}</h3>'.format(text)
+  if len(data) < 5:
+    return (text_message + 'No data\n', html_message + '<p>No data</p>')
+  text_1 = 'Date:  '
+  text_2 = 'Score: '
+  html = '<table><tr><th><strong>Date:<br/>Score:</strong></th>'
+  num_cols = 0
+  for col in range(4,len(headers)):
+    if headers[col].ctype == xlrd.XL_CELL_EMPTY: continue
+    num_cols = num_cols + 1
+    if (num_cols % 6) == 0:
+      text_1 = text_1 + '\n'
+      text_2 = text_2 + '\n'
+    header_str = headers[col].value
+    if headers[col].ctype == xlrd.XL_CELL_DATE:
+      header_str = datetime.datetime(*xlrd.xldate_as_tuple(headers[col].value, wbk.datemode)).strftime('%b %d')
+    text_1 = text_1 + '{:8}'.format(header_str)
+    text_2 = text_2 + '{:8}'.format(data[col].value)
+    html = html + '<td>{}<br/>{}</td>'.format(header_str, data[col].value)
+
+  text_message = text_message + text_1 + '\n' + text_2 + '\n'
+  html_message = html_message + html + '</tr></table>'
+  return (text_message, html_message)
+
 
 """ Get form data
 """
@@ -105,7 +139,7 @@ roster        = get_student(wbk, 'Roster', student_id)
 takeaways     = get_student(wbk, 'Takeaways', student_id)
 brief_quizzes = get_student(wbk, 'Brief Quizzes', student_id)
 assignments   = get_student(wbk, 'Assignments', student_id)
-exams         = get_student(wbk, 'Exams', student_id)
+other_grades  = get_student(wbk, 'Other Grades', student_id)
 
 data = roster['data']
 fname = data[2].value
@@ -122,29 +156,10 @@ text_message = ''
 html_message = ''
 
 #  Takeaways
-headers = takeaways['headers']
-data    = takeaways['data']
-text = 'Takeaways: {}'.format(round(data[3].value, 1))
-text_message = text_message + text + '\n'
-html_message = html_message + '<h3>{}</h3><table><tr>'.format(text)
-text_1 = 'Date:  '
-text_2 = 'Score: '
-html = '<th><strong>Date:<br/>Score:</strong></th>'
-num_cols = 0
-for col in range(4,len(headers)):
-  if headers[col].ctype == xlrd.XL_CELL_EMPTY: continue
-  num_cols = num_cols + 1
-  if (num_cols % 6) == 0:
-    text_1 = text_1 + '\n'
-    text_2 = text_2 + '\n'
-
-  date_str = datetime.datetime(*xlrd.xldate_as_tuple(headers[col].value, wbk.datemode)).strftime('%b %d')
-  text_1 = text_1 + '{:8}'.format(date_str)
-  text_2 = text_2 + '{:8}'.format(data[col].value)
-  html = html + '<td>{}<br/>{}</td>'.format(date_str, data[col].value)
-
-text_message = text_message + text_1 + '\n' + text_2 + '\n'
-html_message = html_message + html + '</tr></table>'
+text_message, html_message = do_sheet('Takeaways',     takeaways,      text_message, html_message)
+text_message, html_message = do_sheet('Brief Quizzes', brief_quizzes,  text_message, html_message)
+text_message, html_message = do_sheet('Assignments',   assignments,    text_message, html_message)
+text_message, html_message = do_sheet('Other Grades',  other_grades,   text_message, html_message)
 
 # Skip columns 0-3: ID, Last Name, First Name, Exam ID
 # for col in range(4, len(row)):
