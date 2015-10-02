@@ -68,8 +68,11 @@ def do_sheet(h3, sheet, text_message, html_message):
   headers = sheet['headers']
   data    = sheet['data']
   value   = ''
-  if len(data) > 3 and data[3].ctype == xlrd.XL_CELL_NUMBER:
-    value = round(data[3].value, 1)
+  if len(data) > 3:
+    if data[3].ctype == xlrd.XL_CELL_NUMBER:
+      value = round(data[3].value, 1)
+    else:
+      value = data[3].value
   text = '{}: {}'.format(h3, value)
   text_message = text_message + text + '\n'
   html_message = html_message + '<h3>{}</h3>'.format(text)
