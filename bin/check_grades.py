@@ -55,7 +55,7 @@ def get_student(wbk, sheet_name, student_id):
     oops('Workbook sheet {} not found')
 
   for row in range(sheet.nrows):
-    if sheet.cell(row, 0).value == '{}'.format(student_id):
+    if sheet.cell(row, 0).value == '{:05}'.format(student_id):
       # sys.stdout.buffer.write('{}: found {}'.format(sheet_name, student_id).encode('utf-8'))
       return {'headers':sheet.row(0), 'data':sheet.row(row)}
     # else:
