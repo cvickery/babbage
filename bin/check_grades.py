@@ -64,7 +64,7 @@ def get_student(wbk, sheet_name, student_id):
 
 # do_sheet()
 # ----------------------------------------------------------
-def do_sheet(h3, sheet, text_message, html_message):
+def do_sheet(h3, sheet, text_message, html_message, header_1 = 'Date'):
   headers = sheet['headers']
   data    = sheet['data']
   value   = ''
@@ -78,9 +78,9 @@ def do_sheet(h3, sheet, text_message, html_message):
   html_message = html_message + '<h3>{}</h3>'.format(text)
   if len(data) < 5:
     return (text_message + 'No data\n', html_message + '<p>No data</p>')
-  text_1 = 'Date:  '
-  text_2 = 'Score: '
-  html = '<table><tr><th><strong>Date:<br/>Score:</strong></th>'
+  text_1 = '{:<7}:'.format(header_1)
+  text_2 = '{:<7}:'.format('Score')
+  html = '<table><tr><th><strong>{}:<br/>Score:</strong></th>'.format(header_1)
   num_cols = 0
   for col in range(4,len(headers)):
     if headers[col].ctype == xlrd.XL_CELL_EMPTY: continue
@@ -149,9 +149,9 @@ fname = data[2].value
 lname = data[1].value
 student_name = '{} {}'.format(fname, lname)
 
-emails = [ data[4].value ]
-if data[5].ctype != xlrd.XL_CELL_EMPTY :
-  emails.append(data[5].value)
+emails = [ data[3].value ]
+if data[4].ctype != xlrd.XL_CELL_EMPTY :
+  emails.append(data[4].value)
 
 # Construct the HTML and text tables of grades
 # --------------------------------------------
@@ -159,10 +159,23 @@ text_message = ''
 html_message = ''
 
 #  Takeaways
-text_message, html_message = do_sheet('Takeaways',     takeaways,      text_message, html_message)
-text_message, html_message = do_sheet('Brief Quizzes', brief_quizzes,  text_message, html_message)
-text_message, html_message = do_sheet('Assignments',   assignments,    text_message, html_message)
-text_message, html_message = do_sheet('Other Grades',  other_grades,   text_message, html_message)
+text_message, html_message = do_sheet('Takeaways',
+                                      takeaways,
+                                      text_message,
+                                      html_message)
+text_message, html_message = do_sheet('Brief Quizzes',
+                                      brief_quizzes,
+                                      text_message,
+                                      html_message)
+text_message, html_message = do_sheet('Assignments',
+                                      assignments,
+                                      text_message,
+                                      html_message)
+text_message, html_message = do_sheet('Other Grades',
+                                      other_grades,
+                                      text_message,
+                                      html_message,
+                                      header_1 = 'Item')
 
 # Skip columns 0-3: ID, Last Name, First Name, Exam ID
 # for col in range(4, len(row)):
