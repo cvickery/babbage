@@ -96,7 +96,7 @@ def do_sheet(h3, sheet, text_message, html_message, header_1 = 'Date'):
       header_str = datetime.datetime(*xlrd.xldate_as_tuple(headers[col].value, wbk.datemode)).strftime('%b %d')
     text_1 = text_1 + '{:8}'.format(header_str)
     text_2 = text_2 + '{:8}'.format(data[col].value)
-    html = html + '<td>{}<br/>{}</td>'.format(header_str.replace(' ','&nbsp;'), data[col].value)
+    html = html + '<td>{}<br/><strong>{}</strong></td>'.format(header_str.replace(' ','&nbsp;'), data[col].value)
 
   text_message = text_message + text_1 + '\n' + text_2 + '\n'
   html_message = html_message + html + '</tr></table>'
@@ -173,7 +173,8 @@ text_message, html_message = do_sheet('Brief Quizzes',
 text_message, html_message = do_sheet('Assignments',
                                       assignments,
                                       text_message,
-                                      html_message)
+                                      html_message,
+                                      header_1 = 'Date/Item')
 text_message, html_message = do_sheet('Other Grades',
                                       other_grades,
                                       text_message,
