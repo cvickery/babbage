@@ -84,16 +84,19 @@ def do_sheet(h3, sheet, text_message, html_message, header_1 = 'Date'):
   num_cols = 0
   for col in range(4,len(headers)):
     if headers[col].ctype == xlrd.XL_CELL_EMPTY: continue
+    if num_cols > 0:
+      if (num_cols % 6) == 0:
+        text_1 = text_1 + '\n'
+        text_2 = text_2 + '\n'
+      if (num_cols % 10) == 0:
+        html = html + '</tr><tr><th><strong>{}:<br/>Score:</strong></th>'.format(header_1)
     num_cols = num_cols + 1
-    if (num_cols % 6) == 0:
-      text_1 = text_1 + '\n'
-      text_2 = text_2 + '\n'
     header_str = headers[col].value
     if headers[col].ctype == xlrd.XL_CELL_DATE:
       header_str = datetime.datetime(*xlrd.xldate_as_tuple(headers[col].value, wbk.datemode)).strftime('%b %d')
     text_1 = text_1 + '{:8}'.format(header_str)
     text_2 = text_2 + '{:8}'.format(data[col].value)
-    html = html + '<td>{}<br/>{}</td>'.format(header_str, data[col].value)
+    html = html + '<td>{}<br/>{}</td>'.format(header_str.replace(' ','&nbsp;'), data[col].value)
 
   text_message = text_message + text_1 + '\n' + text_2 + '\n'
   html_message = html_message + html + '</tr></table>'
@@ -203,6 +206,7 @@ css = """
   th, td {
     padding: 0.1em 0.5em;
     border: 1px solid lightgray;
+    text-align: center;
   }
   tbody th {
     text-align: right;
