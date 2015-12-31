@@ -52,10 +52,10 @@ def get_student(wbk, sheet_name, student_id):
   try:
     sheet = wbk.sheet_by_name(sheet_name)
   except:
-    oops('Workbook sheet {} not found')
+    oops('Workbook sheet {} not found'.format(sheet_name))
 
   for row in range(sheet.nrows):
-    if sheet.cell(row, 0).value == '{:05}'.format(student_id):
+    if sheet.cell(row, 0).value.strip() == student_id:
       # sys.stdout.buffer.write('{}: found {}'.format(sheet_name, student_id).encode('utf-8'))
       return {'headers':sheet.row(0), 'data':sheet.row(row)}
     # else:
@@ -121,7 +121,6 @@ if 'semester' not in args: oops('Missing term')
 semester = args['semester'].value
 
 if 'student_id' not in args: oops('Missing student ID')
-student_id = int(args['student_id'].value)
 
 include_data = ''
 if 'include-file' in args:
@@ -140,7 +139,23 @@ modtime = datetime.datetime.fromtimestamp(os
 try:
   wbk           = xlrd.open_workbook(workbook_file)
 except:
-  oops('Unable to open', workbook_file)
+  oops('Unable to open ' + workbook_file)
+
+# Be sure Student ID supplied is an unambiguous sequence of digits.
+student_id = args['student_id'].value.strip()
+student_ids = []
+try:
+    sheet = wbk.sheet_by_name('Roster')
+except:
+    oops('Workbook sheet "Roster" not found')
+
+for row in range(sheet.nrows):
+  if student_id in '{}'.format(sheet.cell(row, 0).value):
+    student_ids.append(sheet.cell(row, 0).value)
+if len(student_ids) == 0: oops('Student ID "{}" not in Roster'.format(student_id))
+if len(student_ids)  > 1: oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
+student_id = student_ids[0].strip()
+
 roster        = get_student(wbk, 'Roster', student_id)
 takeaways     = get_student(wbk, 'Takeaways', student_id)
 brief_quizzes = get_student(wbk, 'Brief Quizzes', student_id)
