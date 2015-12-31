@@ -55,7 +55,7 @@ def get_student(wbk, sheet_name, student_id):
     oops('Workbook sheet {} not found'.format(sheet_name))
 
   for row in range(sheet.nrows):
-    if sheet.cell(row, 0).value.strip() == student_id:
+    if sheet.cell(row, 0).ctype == xlrd.XL_CELL_NUMBER and int(sheet.cell(row, 0).value) == student_id:
       # sys.stdout.buffer.write('{}: found {}'.format(sheet_name, student_id).encode('utf-8'))
       return {'headers':sheet.row(0), 'data':sheet.row(row)}
     # else:
@@ -150,11 +150,12 @@ except:
     oops('Workbook sheet "Roster" not found')
 
 for row in range(sheet.nrows):
-  if student_id in '{}'.format(sheet.cell(row, 0).value):
-    student_ids.append(sheet.cell(row, 0).value)
+  if sheet.cell(row, 0).ctype == xlrd.XL_CELL_NUMBER and \
+     student_id in '{:08}'.format(int(sheet.cell(row, 0).value)):
+    student_ids.append(int(sheet.cell(row, 0).value))
 if len(student_ids) == 0: oops('Student ID "{}" not in Roster'.format(student_id))
 if len(student_ids)  > 1: oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
-student_id = student_ids[0].strip()
+student_id = student_ids[0]
 
 roster        = get_student(wbk, 'Roster', student_id)
 takeaways     = get_student(wbk, 'Takeaways', student_id)
