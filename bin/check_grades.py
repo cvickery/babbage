@@ -159,7 +159,7 @@ student_id = student_ids[0]
 
 roster        = get_student(wbk, 'Roster', student_id)
 takeaways     = get_student(wbk, 'Takeaways', student_id)
-brief_quizzes = get_student(wbk, 'Brief Quizzes', student_id)
+quizzes       = get_student(wbk, 'Quizzes', student_id)
 assignments   = get_student(wbk, 'Assignments', student_id)
 other_grades  = get_student(wbk, 'Other Grades', student_id)
 
@@ -182,8 +182,8 @@ text_message, html_message = do_sheet('Takeaways',
                                       takeaways,
                                       text_message,
                                       html_message)
-text_message, html_message = do_sheet('Brief Quizzes',
-                                      brief_quizzes,
+text_message, html_message = do_sheet('Quizzes',
+                                      quizzes,
                                       text_message,
                                       html_message)
 text_message, html_message = do_sheet('Assignments',
@@ -196,20 +196,6 @@ text_message, html_message = do_sheet('Other Grades',
                                       text_message,
                                       html_message,
                                       header_1 = 'Item')
-
-# Skip columns 0-3: ID, Last Name, First Name, Exam ID
-# for col in range(4, len(row)):
-#   if grades_sheet.cell(0, col).ctype not in  (xlrd.XL_CELL_BLANK, xlrd.XL_CELL_EMPTY):
-#     name  = grades_sheet.cell(0, col).value
-#     value = row[col].value
-#     if row[col].ctype == xlrd.XL_CELL_NUMBER and value == int(value): value = int(value)
-#     # Round fractions if heading says to
-#     rounding = re.match(r'.*round.*(\d+).*place', name, flags = re.IGNORECASE)
-#     if rounding:
-#       value = round(row[col].value, int(rounding.group(1)))
-#     html_table = html_table + '<tr><th>{}</th><td>{}</td></tr>'.format(name, value)
-#     text_table = text_table + '{:<15} {}\n'.format(name,value)
-# html_table = html_table + '</tbody></table>'
 
 """ Style the HTML message
 """
