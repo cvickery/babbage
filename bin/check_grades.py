@@ -137,7 +137,7 @@ modtime = datetime.datetime.fromtimestamp(os
                                           .stat(workbook_file)
                                           .st_mtime).strftime('%B %d, %Y at %I:%M %p')
 try:
-  wbk           = xlrd.open_workbook(workbook_file)
+  wbk = xlrd.open_workbook(workbook_file)
 except:
   oops('Unable to open ' + workbook_file)
 
