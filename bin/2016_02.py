@@ -7,7 +7,8 @@ import datetime
 from stat import *
 
 # excel stuff
-import xlrd
+from openpyxl import load_workbook
+from openpyxl.cell.cell import Cell
 
 # email stuff
 import  smtplib
@@ -27,10 +28,10 @@ cgitb.enable()
 def oops(msg):
   """ Die because something went oops.
   """
-  sys.stdout.buffer.write("""
+  print("""
    <h1>Unable To Check Grades</h1>
    <h2>{}</h2>
-                          """.format(msg).encode('utf-8'))
+                          """.format(msg))
   exit()
 
 # html2str()
@@ -43,23 +44,45 @@ def html2text(str):
   return_str = re.sub(r'<.*?>', '', return_str)
   return return_str.replace('\n\n', '\n')
 
+# eval_cell()
+# ---------------------------------------------------------
+def eval_cell(cell):
+  """ Return the value of a cell, even if it contains a
+      reference to a cell in another sheet. But formulas
+      of other sorts won’t work.
+  """
+  if cell.data_type == Cell.TYPE_FORMULA:
+    sheet, loc = cell.value.split('!')
+    sheet = sheet.strip(" ='")
+    return wb.get_sheet_by_name(sheet)[loc].value
+  return cell.value
+
+
 # get_student()
 # ---------------------------------------------------------
-def get_student(wbk, sheet_name, student_id):
+def get_student(wb, sheet_name, student_id):
   """ Get the header row and student data from a named sheet in a
       workbook. Die if the student isn't there.
   """
   try:
-    sheet = wbk.sheet_by_name(sheet_name)
+    ws = wb.get_sheet_by_name(sheet_name)
   except:
     oops('Workbook sheet {} not found'.format(sheet_name))
 
-  for row in range(sheet.nrows):
-    if sheet.cell(row, 0).ctype == xlrd.XL_CELL_NUMBER and int(sheet.cell(row, 0).value) == student_id:
-      # sys.stdout.buffer.write('{}: found {}'.format(sheet_name, student_id).encode('utf-8'))
-      return {'headers':sheet.row(0), 'data':sheet.row(row)}
-    # else:
-    #  sys.stdout.buffer.write('<p>{}: %{}% ({}) does not equal %{}%</p>'.format(sheet_name, sheet.cell(row, 0).value, sheet.cell(row,0).ctype, student_id).encode('utf-8'))
+  headers = []
+  c = 1
+  while ws.cell(row=1, column=c).data_type != Cell.TYPE_NULL:
+    headers.append(ws.cell(row=1, column=c).value)
+    c += 1
+
+  # find the student
+  for r in range(2, ws.max_row):
+    if int(eval_cell(ws.cell(row=r, column=1))) == student_id:
+      data = [eval_cell(ws.cell(row=r, column=c+1)) for c in range(len(headers))]
+      print('get_student: returning ', headers, data)
+      return {'headers':headers, 'data':data}
+    else:
+      print('{}: %{}% does not equal %{}%<br/>'.format(sheet_name, eval_cell(ws.cell(row=r, column=1)), student_id))
   oops('Student ID {} not found in {}'.format(student_id, sheet_name))
 
 # do_sheet()
@@ -128,16 +151,19 @@ if 'include-file' in args:
             encoding='utf-8') as inc:
     include_data = inc.read()
 
-""" Locate and open workbook
+""" Locate and open workbook.
+    To provide impenetrable security, we do not reveal the location of the spreadsheet, only its
+    name, in error messages.
 """
-workbook_file = '../../Grades/{}.xls'.format(semester)
-if not os.path.isfile(workbook_file): oops("Missing file: {}.xls".format(semester))
+workbook_file = '{}.xlsx'.format(semester)
+workbook_path = '../../Grades/' + workbook_file
+if not os.path.isfile(workbook_path): oops('Missing file: ' + workbook_file)
 
 modtime = datetime.datetime.fromtimestamp(os
-                                          .stat(workbook_file)
+                                          .stat(workbook_path)
                                           .st_mtime).strftime('%B %d, %Y at %I:%M %p')
 try:
-  wbk = xlrd.open_workbook(workbook_file)
+  wb = load_workbook(workbook_path, data_only=True)
 except:
   oops('Unable to open ' + workbook_file)
 
@@ -145,23 +171,25 @@ except:
 student_id = args['student_id'].value.strip()
 student_ids = []
 try:
-    sheet = wbk.sheet_by_name('Roster')
+    ws = wb.get_sheet_by_name('Roster')
 except:
     oops('Workbook sheet "Roster" not found')
 
-for row in range(sheet.nrows):
-  if sheet.cell(row, 0).ctype == xlrd.XL_CELL_NUMBER and \
-     student_id in '{:08}'.format(int(sheet.cell(row, 0).value)):
-    student_ids.append(int(sheet.cell(row, 0).value))
+for row in range(1, ws.max_row):
+  cell = ws.cell(row=row, column=1)
+  if cell.data_type == Cell.TYPE_FORMULA:
+    this_id = eval_cell(cell)
+    if student_id in '{:08}'.format(int(this_id)):
+      student_ids.append(this_id)
 if len(student_ids) == 0: oops('Student ID "{}" not in Roster'.format(student_id))
 if len(student_ids)  > 1: oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
 student_id = student_ids[0]
 
-roster        = get_student(wbk, 'Roster', student_id)
-takeaways     = get_student(wbk, 'Takeaways', student_id)
-quizzes       = get_student(wbk, 'Quizzes', student_id)
-assignments   = get_student(wbk, 'Assignments', student_id)
-other_grades  = get_student(wbk, 'Other Grades', student_id)
+roster        = get_student(wb, 'Roster', student_id)
+takeaways     = get_student(wb, 'Takeaways', student_id)
+quizzes       = get_student(wb, 'Quizzes', student_id)
+assignments   = get_student(wb, 'Assignments', student_id)
+other_grades  = get_student(wb, 'Other Grades', student_id)
 
 data = roster['data']
 fname = data[2].value
