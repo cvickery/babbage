@@ -69,42 +69,59 @@ def get_student(wb, sheet_name, student_id):
   except:
     oops('Workbook sheet {} not found'.format(sheet_name))
 
+  # Get list of active headers
+  #   Assume TYPE_NUMERIC is a datetime reference and evaluate it
   headers = []
   c = 1
-  while ws.cell(row=1, column=c).data_type != Cell.TYPE_NULL:
-    headers.append(ws.cell(row=1, column=c).value)
+  while ws.cell(row=1, column=c).value:
+    if ws.cell(row=1, column=c).data_type == Cell.TYPE_NUMERIC:
+      headers.append(ws.cell(row=1, column=c).value.strftime('%b %e').replace('  ', ' '))
+    else:
+      headers.append(ws.cell(row=1, column=c).value)
     c += 1
   # find the student
   for r in range(2, ws.max_row+1):
-    if int(eval_cell(ws.cell(row=r, column=1))) == student_id:
+    if ws.cell(row=r, column=1).value == student_id:
       data = [ws.cell(row=r, column=c+1) for c in range(len(headers))]
-      print('get_student: returning ', headers, data)
+      # print('get_student: returning ', headers, data)
       return {'headers':headers, 'data':data}
-    else:
-      print('{}: %{}% does not equal %{}%<br/>'.format(sheet_name, eval_cell(ws.cell(row=r, column=1)), student_id))
+    # else:
+    #   print('{}: %{}% does not equal %{}%<br/>'.format(sheet_name, eval_cell(ws.cell(row=r, column=1)), student_id))
   oops('Student ID {} not found in {}'.format(student_id, sheet_name))
 
 # do_sheet()
 # ----------------------------------------------------------
-def do_sheet(h3, sheet, text_message, html_message, header_1 = 'Date'):
+def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
+  """ Generate the email content for one page of the workbook.
+      Formatting tends to vary from term to term.
+      Col 1: student_id
+      Col 2: last_name
+      Col 3: first_name
+      Col 4-5: If headings are Points and Max, display points/max;
+      Remaining columns: display heading and value if heading is not '--'
+  """
   headers = sheet['headers']
   data    = sheet['data']
-  value   = ''
-  if len(data) > 3:
-    if data[3].data_type == Cell.TYPE_NUMERIC:
-      value = round(data[3].value, 1)
-    else:
-      value = data[3].value
-  text = '{}: {}'.format(h3, value)
+  h3_value  = ''
+  if len(headers) > 4 and headers[3] == 'Points' and headers[4] == 'Max':
+    h3_value = '{}/{}'.format(data[3].value, data[4].value)
+    start_at = 5
+  else:
+    start_at = 3
+
+  if DEBUG: print(h3_leadin, h3_value, headers, data)
+
+  text = '{}: {}'.format(h3_leadin, h3_value)
   text_message = text_message + text + '\n'
   html_message = html_message + '<h3>{}</h3>'.format(text)
-  if len(data) < 5:
-    return (text_message + 'No data\n', html_message + '<p>No data</p>')
+  if len(data) <= start_at:
+    return (text_message + 'No information yet\n', html_message + '<p>No information yet</p>')
   text_1 = '{:<7}:'.format(header_1)
   text_2 = '{:<7}:'.format('Score')
   html = '<table><tr><th><strong>{}:<br/>Score:</strong></th>'.format(header_1)
+
   num_cols = 0
-  for col in range(4,len(headers)):
+  for col in range(start_at, len(headers)):
     if headers[col] == '--': continue
     if num_cols > 0:
       if (num_cols % 6) == 0:
@@ -114,11 +131,13 @@ def do_sheet(h3, sheet, text_message, html_message, header_1 = 'Date'):
         html = html + '</tr><tr><th><strong>{}:<br/>Score:</strong></th>'.format(header_1)
     num_cols = num_cols + 1
     header_str = headers[col]
-    # if headers[col].ctype == xlrd.XL_CELL_DATE:
-    #   header_str = datetime.datetime(*xlrd.xldate_as_tuple(headers[col].value, wbk.datemode)).strftime('%b %d')
     text_1 = text_1 + '{:8}'.format(header_str)
-    text_2 = text_2 + '{:8}'.format(data[col].value)
-    html = html + '<td>{}<br/><strong>{}</strong></td>'.format(header_str.replace(' ','&nbsp;'), data[col].value)
+    if data[col].value:
+      text_2 = text_2 + '{:8}'.format(data[col].value)
+      html = html + '<td>{}<br/>{}</td>'.format(header_str.replace(' ','&nbsp;'), data[col].value)
+    else:
+      text_2 = text_2 + '        '
+      html = html + '<td>{}<br/>{}</td>'.format(header_str.replace(' ','&nbsp;'), '&nbsp;')
 
   text_message = text_message + text_1 + '\n' + text_2 + '\n'
   html_message = html_message + html + '</tr></table>'
@@ -144,6 +163,10 @@ semester = args['semester'].value
 
 if 'student_id' not in args: oops('Missing student ID')
 
+if 'debug' in args:
+  DEBUG = True
+else:
+  DEBUG = False
 include_data = ''
 if 'include-file' in args:
   with open('../courses/{}/{}/{}'.format(sheet_name, semester, args['include-file'].value),
@@ -173,13 +196,12 @@ try:
     ws = wb.get_sheet_by_name('Roster')
 except:
     oops('Workbook sheet "Roster" not found')
-
 for row in range(1, ws.max_row):
   cell = ws.cell(row=row, column=1)
-  if cell.value and \
-      cell.data_type == Cell.TYPE_NUMERIC and \
+  if cell.data_type == Cell.TYPE_STRING and \
+      cell.value.isdigit() and \
       student_id in '{:08}'.format(int(cell.value)):
-    student_ids.append(int(cell.value))
+    student_ids.append('{:08}'.format(int(cell.value)))
 if len(student_ids) == 0: oops('Student ID "{}" not in Roster'.format(student_id))
 if len(student_ids)  > 1: oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
 student_id = student_ids[0]
@@ -195,8 +217,8 @@ fname = data[2].value
 lname = data[1].value
 student_name = '{} {}'.format(fname, lname)
 
-emails = [ data[3].value ]
-if data[4].data_type == Cell.TYPE_STRING:
+emails = [data[3].value]
+if data[4].value:
   emails.append(data[4].value)
 
 # Construct the HTML and text tables of grades
@@ -339,6 +361,6 @@ Grades were last updated {}
   msg.set_content(text_message)
   msg.add_alternative(html_content, subtype='html')
   mailer = smtplib.SMTP('smtp.qc.cuny.edu')
-  #mailer.send_message(msg)
+  mailer.send_message(msg)
   mailer.quit()
 sys.stdout.buffer.write(xhtml_page)
