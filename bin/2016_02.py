@@ -74,11 +74,10 @@ def get_student(wb, sheet_name, student_id):
   while ws.cell(row=1, column=c).data_type != Cell.TYPE_NULL:
     headers.append(ws.cell(row=1, column=c).value)
     c += 1
-
   # find the student
-  for r in range(2, ws.max_row):
+  for r in range(2, ws.max_row+1):
     if int(eval_cell(ws.cell(row=r, column=1))) == student_id:
-      data = [eval_cell(ws.cell(row=r, column=c+1)) for c in range(len(headers))]
+      data = [ws.cell(row=r, column=c+1) for c in range(len(headers))]
       print('get_student: returning ', headers, data)
       return {'headers':headers, 'data':data}
     else:
@@ -92,7 +91,7 @@ def do_sheet(h3, sheet, text_message, html_message, header_1 = 'Date'):
   data    = sheet['data']
   value   = ''
   if len(data) > 3:
-    if data[3].ctype == xlrd.XL_CELL_NUMBER:
+    if data[3].data_type == Cell.TYPE_NUMERIC:
       value = round(data[3].value, 1)
     else:
       value = data[3].value
@@ -106,7 +105,7 @@ def do_sheet(h3, sheet, text_message, html_message, header_1 = 'Date'):
   html = '<table><tr><th><strong>{}:<br/>Score:</strong></th>'.format(header_1)
   num_cols = 0
   for col in range(4,len(headers)):
-    if headers[col].ctype == xlrd.XL_CELL_EMPTY: continue
+    if headers[col] == '--': continue
     if num_cols > 0:
       if (num_cols % 6) == 0:
         text_1 = text_1 + '\n'
@@ -114,9 +113,9 @@ def do_sheet(h3, sheet, text_message, html_message, header_1 = 'Date'):
       if (num_cols % 10) == 0:
         html = html + '</tr><tr><th><strong>{}:<br/>Score:</strong></th>'.format(header_1)
     num_cols = num_cols + 1
-    header_str = headers[col].value
-    if headers[col].ctype == xlrd.XL_CELL_DATE:
-      header_str = datetime.datetime(*xlrd.xldate_as_tuple(headers[col].value, wbk.datemode)).strftime('%b %d')
+    header_str = headers[col]
+    # if headers[col].ctype == xlrd.XL_CELL_DATE:
+    #   header_str = datetime.datetime(*xlrd.xldate_as_tuple(headers[col].value, wbk.datemode)).strftime('%b %d')
     text_1 = text_1 + '{:8}'.format(header_str)
     text_2 = text_2 + '{:8}'.format(data[col].value)
     html = html + '<td>{}<br/><strong>{}</strong></td>'.format(header_str.replace(' ','&nbsp;'), data[col].value)
@@ -177,10 +176,10 @@ except:
 
 for row in range(1, ws.max_row):
   cell = ws.cell(row=row, column=1)
-  if cell.data_type == Cell.TYPE_FORMULA:
-    this_id = eval_cell(cell)
-    if student_id in '{:08}'.format(int(this_id)):
-      student_ids.append(this_id)
+  if cell.value and \
+      cell.data_type == Cell.TYPE_NUMERIC and \
+      student_id in '{:08}'.format(int(cell.value)):
+    student_ids.append(int(cell.value))
 if len(student_ids) == 0: oops('Student ID "{}" not in Roster'.format(student_id))
 if len(student_ids)  > 1: oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
 student_id = student_ids[0]
@@ -197,7 +196,7 @@ lname = data[1].value
 student_name = '{} {}'.format(fname, lname)
 
 emails = [ data[3].value ]
-if data[4].ctype != xlrd.XL_CELL_EMPTY :
+if data[4].data_type == Cell.TYPE_STRING:
   emails.append(data[4].value)
 
 # Construct the HTML and text tables of grades
@@ -340,6 +339,6 @@ Grades were last updated {}
   msg.set_content(text_message)
   msg.add_alternative(html_content, subtype='html')
   mailer = smtplib.SMTP('smtp.qc.cuny.edu')
-  mailer.send_message(msg)
+  #mailer.send_message(msg)
   mailer.quit()
 sys.stdout.buffer.write(xhtml_page)
