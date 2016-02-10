@@ -226,7 +226,7 @@ if data[4].value:
 text_message = ''
 html_message = ''
 
-#  Takeaways
+#  Takeaways, Quizzes, Assignments, and Other Grades
 text_message, html_message = do_sheet('Takeaways',
                                       takeaways,
                                       text_message,
