@@ -219,8 +219,7 @@ student_name = '{} {}'.format(fname, lname)
 
 emails = [data[3].value]
 if data[4].value:
-  emails.append(data[3].value)
-  emails[0] = data[4].value
+  emails.append(data[4].value)
 
 # Construct the HTML and text tables of grades
 # --------------------------------------------
