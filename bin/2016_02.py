@@ -353,9 +353,9 @@ Grades were last updated {}
   msg               = EmailMessage()
   msg['Subject']    = 'Your CSCI-100 Grades'
   msg['From']       = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
-  msg['To']         = to_list[0]
+  msg['To']         = Address('{} {}'.format(fname, lname), addr_spec=to_list[0])
   if len(to_list) > 1:
-    msg['Cc']       = to_list[1]
+    msg['Cc']       = Address('{} {}'.format(fname, lname), addr_spec=to_list[1])
   msg['Bcc']        = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
   msg.add_header('Reply-To',    'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date',        formatdate(localtime=True))
