@@ -219,7 +219,8 @@ student_name = '{} {}'.format(fname, lname)
 
 emails = [data[3].value]
 if data[4].value:
-  emails.append(data[4].value)
+  emails.append(data[3].value)
+  emails[0] = data[4].value
 
 # Construct the HTML and text tables of grades
 # --------------------------------------------
@@ -352,11 +353,9 @@ Grades were last updated {}
 
   msg               = EmailMessage()
   msg['Subject']    = 'Your CSCI-100 Grades'
-  msg['From']       = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
-  msg['To']         = Address('{} {}'.format(fname, lname), addr_spec=to_list[0])
-  if len(to_list) > 1:
-    msg['Cc']       = Address('{} {}'.format(fname, lname), addr_spec=to_list[1])
-  msg['Bcc']        = Address('Christopher Vickery', addr_spec = 'christopher.vickery@qc.cuny.edu')
+  msg['From']       = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
+  msg['To']         = to_list
+  msg['Bcc']        = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
   msg.add_header('Reply-To',    'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date',        formatdate(localtime=True))
   msg.add_header('Message-ID',  make_msgid())
