@@ -160,17 +160,14 @@ This is your text test message.
   msg               = EmailMessage()
   msg['Subject']    = 'Your Python email test'
   msg['From']       = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
-  msg['To']         = to_list[0]
-  msg['Bcc']        = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
+  msg['To']         = 'Christopher.Vickery@qc.cuny.edu'
+  #msg['Bcc']        = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
   msg.add_header('Reply-To',    'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date',        formatdate(localtime=True))
   msg.add_header('Message-ID',  make_msgid())
   msg.set_content(text_message)
   msg.add_alternative(html_content, subtype='html')
-  mailer = smtplib.SMTP('smtp.qc.cuny.edu')
-  mailer.ehlo()
-  mailer.starttls()
-  mailer.ehlo()
-  mailer.send_message(msg)
-  mailer.quit()
+  server = smtplib.SMTP('smtp.qc.cuny.edu')
+  server.send_message(msg)
+  server.quit()
 sys.stdout.buffer.write(xhtml_page)
