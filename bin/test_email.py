@@ -141,7 +141,7 @@ else:
     </body>
   </html>
   """.format(css, email_info).encode('utf-8')
-  to_list = [Address(student_name, addr_spec = x) for x in emails]
+  to_list = [Address('Christopher Vickery', addr_spec = x) for x in emails]
   text_content  = """
 This is your text test message.
 {}
