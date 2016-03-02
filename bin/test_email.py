@@ -78,8 +78,7 @@ def html2text(str):
 sys.stdout.buffer.write("Content-Type: text/html; charset=utf-8\r\n\r\n".encode('utf-8'))
 
 
-emails = ['christopher.vickery@qc.cuny.edu',
-          'cvickery@gmail.com']
+emails = ['cvickery@gmail.com']
 
 # Construct the test message
 # --------------------------------------------
