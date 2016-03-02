@@ -121,11 +121,11 @@ if 'localhost' in os.environ['SERVER_NAME']:
   """.format(css, email_info, html_message).encode('utf-8')
 else:
   email_info  = '<blockquote><p>' + emails[0]
-  syntax      = ' with your grades has'
+  syntax      = ' has'
   if len(emails) > 1:
     email_info  = email_info + '<br/>' + emails[1]
-    syntax      = 's with your grades have'
-  email_info = '<h2>Email{} been sent to:</h2>{}</blockquote>'.format(syntax, email_info)
+    syntax      = 's have'
+  email_info = '<h2>Test email{} been sent to:</h2>{}</blockquote>'.format(syntax, email_info)
   xhtml_page = """
   <?xml version='1.0' encoding='UTF-8'?>
   <!DOCTYPE html>
@@ -160,7 +160,7 @@ This is your text test message.
   msg               = EmailMessage()
   msg['Subject']    = 'Your Python email test'
   msg['From']       = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
-  msg['To']         = to_list
+  msg['To']         = to_list[0]
   msg['Bcc']        = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
   msg.add_header('Reply-To',    'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date',        formatdate(localtime=True))
