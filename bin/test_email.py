@@ -55,7 +55,7 @@ css = """
 msg               = EmailMessage()
 msg['Subject']    = 'Your Python email test'
 msg['From']       = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
-msg['To']         = 'cvickery@qc.cuny.edu'
+msg['To']         = 'cvickery@gmail.com'
 msg.add_header('Date',        formatdate(localtime=True))
 msg.add_header('Message-ID',  make_msgid())
 
