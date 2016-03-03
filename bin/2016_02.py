@@ -220,6 +220,7 @@ student_name = '{} {}'.format(fname, lname)
 emails = [data[3].value]
 if data[4].value:
   emails.append(data[4].value)
+to_list = [Address(student_name, addr_spec=x) for x in emails]
 
 # Construct the HTML and text tables of grades
 # --------------------------------------------
@@ -353,7 +354,7 @@ Grades were last updated {}
   msg               = EmailMessage()
   msg['Subject']    = 'Your CSCI-100 Grades'
   msg['From']       = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
-  msg['To']         = emails
+  msg['To']         = to_list
   msg['Bcc']        = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
   msg.add_header('Reply-To',    'christopher.vickery@qc.cuny.edu')
   msg.add_header('Date',        formatdate(localtime=True))
