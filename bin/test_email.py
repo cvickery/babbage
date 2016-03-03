@@ -13,7 +13,7 @@ from    email.message         import EmailMessage
 from    email.utils           import formatdate
 from    email.utils           import make_msgid
 
-emails = ['cvickery@gmail.com']
+emails = ['cvickery@gmail.com', 'christopher.vickery@qc.cuny.edu']
 to_list = [Address('Christopher Vickery', addr_spec=x) for x in emails]
 
 # Construct the test messages
@@ -28,7 +28,7 @@ html_message = """
 msg               = EmailMessage()
 msg['Subject']    = 'Your Python email test'
 msg['From']       = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
-msg['To']         = emails
+msg['To']         = to_list
 msg.add_header('Date',        formatdate(localtime=True))
 msg.add_header('Message-ID',  make_msgid())
 msg.set_content(text_message)
