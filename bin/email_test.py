@@ -14,7 +14,7 @@ from    email.utils           import formatdate
 from    email.utils           import make_msgid
 
 emails = ['cvickery@qc.cuny.edu', 'cvickery@gmail.com']
-to_list = [Address(student_name, addr_spec=x) for x in emails]
+to_list = [Address('Christopher Vickery', addr_spec=x) for x in emails]
 
 # Construct the test messages
 # --------------------------------------------
