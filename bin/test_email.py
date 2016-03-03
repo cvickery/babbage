@@ -78,7 +78,7 @@ This is your text test message.
 {}
 """.format(text_message)
 
-  html_content  = """
+html_content  = """
   <head>
     {}
   </head>
@@ -89,9 +89,9 @@ This is your text test message.
 </html>
 """.format(css, html_message)
 
-  msg.set_content(text_message)
-  msg.add_alternative(html_content, subtype='html')
-  server = smtplib.SMTP('smtp.qc.cuny.edu')
-  server.send_message(msg)
-  server.quit()
+msg.set_content(text_message)
+msg.add_alternative(html_content, subtype='html')
+server = smtplib.SMTP('smtp.qc.cuny.edu')
+server.send_message(msg)
+server.quit()
 sys.stdout.buffer.write(xhtml_page)
