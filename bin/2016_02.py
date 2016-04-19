@@ -118,7 +118,7 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
     return (text_message + 'No information yet\n', html_message + '<p>No information yet</p>')
   text_1 = '{:<7}:'.format(header_1)
   text_2 = '{:<7}:'.format('Score')
-  html = '<table><tr><th><strong>{}:<br/>Score:</strong></th>'.format(header_1)
+  html = '<table><tr><th><strong>{}:<hr/>Score:</strong></th>'.format(header_1)
 
   num_cols = 0
   for col in range(start_at, len(headers)):
@@ -128,16 +128,16 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
         text_1 = text_1 + '\n'
         text_2 = text_2 + '\n'
       if (num_cols % 10) == 0:
-        html = html + '</tr><tr><th><strong>{}:<br/>Score:</strong></th>'.format(header_1)
+        html = html + '</tr><tr><td colspan="11"</td></tr><tr><th><strong>{}:<hr/>Score:</strong></th>'.format(header_1)
     num_cols = num_cols + 1
     header_str = headers[col]
     text_1 = text_1 + '{:8}'.format(header_str)
     if data[col].value:
       text_2 = text_2 + '{:8}'.format(data[col].value)
-      html = html + '<td>{}<br/>{}</td>'.format(header_str.replace(' ','&nbsp;'), data[col].value)
+      html = html + '<td>{}<hr/>{}</td>'.format(header_str.replace(' ','&nbsp;'), data[col].value)
     else:
       text_2 = text_2 + '        '
-      html = html + '<td>{}<br/>{}</td>'.format(header_str.replace(' ','&nbsp;'), '&nbsp;')
+      html = html + '<td>{}<hr/>{}</td>'.format(header_str.replace(' ','&nbsp;'), '&nbsp;')
 
   text_message = text_message + text_1 + '\n' + text_2 + '\n'
   html_message = html_message + html + '</tr></table>'
@@ -260,6 +260,7 @@ css = """
     padding: 0.1em 0.5em;
     border: 1px solid lightgray;
     text-align: center;
+    vertical-align: top;
   }
   tbody th {
     text-align: right;
