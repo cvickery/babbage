@@ -1,5 +1,6 @@
 #! /usr/local/bin/python3
-
+""" Check Grades: Spring 2016 version.
+"""
 import sys
 import os
 import re
@@ -216,7 +217,11 @@ data = roster['data']
 fname = data[2].value
 lname = data[1].value
 student_name = '{} {}'.format(fname, lname)
-
+course_score = data[11].value
+course_grade = data[12].value
+course_message = """
+  Your grade for the course is <strong>{}</strong>, which is a <strong>{}</strong>
+  """.format(course_score, course_grade)
 emails = [data[3].value]
 if data[4].value:
   emails.append(data[4].value)
@@ -227,7 +232,7 @@ to_list = [Address(student_name, addr_spec=x) for x in emails]
 text_message = ''
 html_message = ''
 
-#  Takeaways, Quizzes, Assignments, and Other Grades
+#  Takeaways, Quizzes, Assignments, and Exams
 text_message, html_message = do_sheet('Takeaways',
                                       takeaways,
                                       text_message,
@@ -241,7 +246,7 @@ text_message, html_message = do_sheet('Assignments',
                                       text_message,
                                       html_message,
                                       header_1 = 'Date/Item')
-text_message, html_message = do_sheet('Other Grades',
+text_message, html_message = do_sheet('Exams',
                                       other_grades,
                                       text_message,
                                       html_message,
