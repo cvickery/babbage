@@ -220,7 +220,7 @@ student_name = '{} {}'.format(fname, lname)
 course_score = data[11].value
 course_grade = data[12].value
 course_message = """
-  Your grade for the course is <strong>{}</strong>, which is a <strong>{}</strong>
+  Your grade for the course is <em>{}</em>, which is <em>{}</em>.
   """.format(course_score, course_grade)
 emails = [data[3].value]
 if data[4].value:
@@ -304,13 +304,14 @@ if 'localhost' in os.environ['SERVER_NAME']:
     </head>
     <body>
       <h1>{} Grades for {}</h1>
+      <h2>{}</h2>
       <h2>Grades were last updated {}</h2>
       {}
       {}
       {}
     </body>
   </html>
-  """.format(css, course, student_name, modtime,
+  """.format(css, course, student_name, course_message, modtime,
              email_info, html_message, include_data).encode('utf-8')
 else:
   email_info  = '<blockquote><p>' + emails[0]
@@ -350,12 +351,13 @@ Grades were last updated {}
   </head>
   <body>
     <h1>{} Grades for {}</h1>
+    <h2>{}</h2>
     <h2>Grades were last updated {}</h2>
     {}
     {}
   </body>
 </html>
-""".format(css, course, student_name, modtime, html_message, include_data)
+""".format(css, course, student_name, course_message, modtime, html_message, include_data)
 
   msg               = EmailMessage()
   msg['Subject']    = 'Your CSCI-100 Grades'
