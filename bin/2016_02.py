@@ -217,15 +217,20 @@ data = roster['data']
 fname = data[2].value
 lname = data[1].value
 student_name = '{} {}'.format(fname, lname)
-course_score = data[11].value
-course_grade = data[12].value
-course_message = """
-  Your grade for the course is <em>{}</em>, which is <em>{}</em>.
-  """.format(course_score, course_grade)
+
 emails = [data[3].value]
 if data[4].value:
   emails.append(data[4].value)
 to_list = [Address(student_name, addr_spec=x) for x in emails]
+
+course_score = data[11].value
+course_grade = data[12].value
+course_message = """
+  <span id='course_message'>Your grade for the course is <em>{}</em>, which is <em>{}</em></span>.
+  """.format(course_score, course_grade)
+pass_fail = '#228B22'
+if course_grade == 'F' or course_grade == 'WU':
+  pass_fail = '#8b2500'
 
 # Construct the HTML and text tables of grades
 # --------------------------------------------
@@ -252,8 +257,8 @@ text_message, html_message = do_sheet('Exams',
                                       html_message,
                                       header_1 = 'Item')
 
-""" Style the HTML message
-"""
+# Style the HTML message
+#
 css = """
 <style type='text/css'>
   * {font-family: sans-serif;}
@@ -284,11 +289,14 @@ css = """
     width: 5em;
     padding:0.1em;
   }
+  #course_message {
+    color: #228B22;
+  }
 </style>
 """
 
-""" Localhost page: show the grades table and notes
-"""
+# Localhost page: show the grades table and notes
+#
 if 'localhost' in os.environ['SERVER_NAME']:
   email_info = '<h2>Email would go to:</h2><blockquote><p>' + emails[0]
   if len(emails) > 1: email_info = email_info + '<br/>' + emails[1]
