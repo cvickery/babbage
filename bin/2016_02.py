@@ -261,39 +261,39 @@ text_message, html_message = do_sheet('Exams',
 #
 css = """
 <style type='text/css'>
-  * {font-family: sans-serif;}
-  table {
+  * {{font-family: sans-serif;}}
+  table {{
   border-collapse: collapse;
   border: 1px solid lightgray;
-  }
-  th, td {
+  }}
+  th, td {{
     padding: 0.1em 0.5em;
     border: 1px solid lightgray;
     text-align: center;
     vertical-align: top;
-  }
-  tbody th {
+  }}
+  tbody th {{
     text-align: right;
-  }
-  thead {
+  }}
+  thead {{
     background-color: lightgray;
-  }
-  thead th {
+  }}
+  thead th {{
     border: 1px solid black;
-  }
-  h3 {
+  }}
+  h3 {{
     margin:1em 0 0 0;
-  }
-  .scores {
+  }}
+  .scores {{
     display: inline-block;
     width: 5em;
     padding:0.1em;
-  }
-  #course_message {
-    color: #228B22;
-  }
+  }}
+  #course_message {{
+    color: {};
+  }}
 </style>
-"""
+""".format(pass_fail)
 
 # Localhost page: show the grades table and notes
 #
