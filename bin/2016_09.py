@@ -1,5 +1,5 @@
 #! /usr/local/bin/python3
-""" Check Grades: Spring 2016 version.
+""" Check Grades: Fall 2016 version.
 """
 import sys
 import os
