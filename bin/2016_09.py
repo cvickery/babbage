@@ -228,7 +228,7 @@ to_list = [Address(student_name, addr_spec=x) for x in emails]
 ## course_message = """
 ##   <span id='course_message'>Your grade for the course is <em>{}</em>, which is <em>{}</em></span>.
 ##   """.format(course_score, course_grade)
-## pass_fail = '#228B22'
+pass_fail = '#228B22'
 ## if course_grade == 'F' or course_grade == 'WU':
 ##   pass_fail = '#8b2500'
 
