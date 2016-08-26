@@ -223,14 +223,14 @@ if data[4].value:
   emails.append(data[4].value)
 to_list = [Address(student_name, addr_spec=x) for x in emails]
 
-course_score = data[11].value
-course_grade = data[12].value
-course_message = """
-  <span id='course_message'>Your grade for the course is <em>{}</em>, which is <em>{}</em></span>.
-  """.format(course_score, course_grade)
-pass_fail = '#228B22'
-if course_grade == 'F' or course_grade == 'WU':
-  pass_fail = '#8b2500'
+## course_score = data[11].value
+## course_grade = data[12].value
+## course_message = """
+##   <span id='course_message'>Your grade for the course is <em>{}</em>, which is <em>{}</em></span>.
+##   """.format(course_score, course_grade)
+## pass_fail = '#228B22'
+## if course_grade == 'F' or course_grade == 'WU':
+##   pass_fail = '#8b2500'
 
 # Construct the HTML and text tables of grades
 # --------------------------------------------
