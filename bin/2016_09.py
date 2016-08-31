@@ -24,6 +24,8 @@ import cgitb
 import pprint
 cgitb.enable()
 
+DEBUG = False
+
 # oops()
 # ---------------------------------------------------------
 def oops(msg):
@@ -62,6 +64,7 @@ def eval_cell(cell):
 # get_student()
 # ---------------------------------------------------------
 def get_student(wb, sheet_name, student_id):
+  if DEBUG: print('<p>',sheet_name, student_id,'</p>')
   """ Get the header row and student data from a named sheet in a
       workbook. Die if the student isn't there.
   """
@@ -164,10 +167,6 @@ semester = args['semester'].value
 
 if 'student_id' not in args: oops('Missing student ID')
 
-if 'debug' in args:
-  DEBUG = True
-else:
-  DEBUG = False
 include_data = ''
 if 'include-file' in args:
   with open('../courses/{}/{}/{}'.format(sheet_name, semester, args['include-file'].value),
@@ -197,8 +196,11 @@ try:
     ws = wb.get_sheet_by_name('Roster')
 except:
     oops('Workbook sheet "Roster" not found')
+if DEBUG: print('<p>{}</p>'.format(ws.max_row+1))
 for row in range(1, ws.max_row):
   cell = ws.cell(row=row, column=1)
+  if DEBUG: print('<p>{}: {}</p>'.format(row, cell.data_type))
+  if cell.value == None: break
   if cell.data_type == Cell.TYPE_STRING and \
       cell.value.isdigit() and \
       student_id in '{:08}'.format(int(cell.value)):
@@ -207,11 +209,11 @@ if len(student_ids) == 0: oops('Student ID "{}" not in Roster'.format(student_id
 if len(student_ids)  > 1: oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
 student_id = student_ids[0]
 
-roster        = get_student(wb, 'Roster', student_id)
-takeaways     = get_student(wb, 'Takeaways', student_id)
-quizzes       = get_student(wb, 'Quizzes', student_id)
-assignments   = get_student(wb, 'Assignments', student_id)
-other_grades  = get_student(wb, 'Other Grades', student_id)
+roster = get_student(wb, 'Roster', student_id)
+takeaways = get_student(wb, 'Takeaways', student_id)
+quizzes = get_student(wb, 'Quizzes', student_id)
+assignments = get_student(wb, 'Assignments', student_id)
+other_grades = get_student(wb, 'Other Grades', student_id)
 
 data = roster['data']
 fname = data[2].value
