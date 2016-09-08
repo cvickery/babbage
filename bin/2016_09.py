@@ -253,7 +253,7 @@ text_message, html_message = do_sheet('Assignments',
                                       assignments,
                                       text_message,
                                       html_message,
-                                      header_1 = 'Date/Item')
+                                      header_1 = 'Item')
 text_message, html_message = do_sheet('Exams',
                                       other_grades,
                                       text_message,
@@ -294,6 +294,9 @@ css = """
   }}
   #course_message {{
     color: {};
+  }}
+  #key-table th, #key-table td {{
+    text-align:left;
   }}
 </style>
 """.format(pass_fail)
