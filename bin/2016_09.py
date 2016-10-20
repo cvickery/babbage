@@ -346,11 +346,10 @@ else:
       <h1>{} Grades for {}</h1>
       <h2>Grades were last updated {}</h2>
       {}
-      {}
     </body>
   </html>
   """.format(css, course, student_name, modtime,
-             email_info, include_data).encode('utf-8')
+             email_info).encode('utf-8')
   to_list = [Address(student_name, addr_spec = x) for x in emails]
   text_content  = """
 {} Grades for {}
