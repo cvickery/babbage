@@ -254,7 +254,7 @@ text_message, html_message = do_sheet('Assignments',
                                       text_message,
                                       html_message,
                                       header_1 = 'Item')
-text_message, html_message = do_sheet('Exams and Course Grade',
+text_message, html_message = do_sheet('Exams and Final Course Grade',
                                       other_grades,
                                       text_message,
                                       html_message,
