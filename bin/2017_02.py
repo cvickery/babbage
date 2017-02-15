@@ -24,7 +24,7 @@ import cgitb
 import pprint
 cgitb.enable()
 
-DEBUG = True
+DEBUG = False
 
 # oops()
 # ---------------------------------------------------------
