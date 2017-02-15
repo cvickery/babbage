@@ -87,10 +87,11 @@ def get_student(wb, sheet_name, student_id):
   for r in range(2, ws.max_row+1):
     if ws.cell(row=r, column=1).value == student_id:
       data = [ws.cell(row=r, column=c+1) for c in range(len(headers))]
-      # print('get_student: returning ', headers, data)
+      if DEBUG: print('get_student: returning ', headers, data)
       return {'headers':headers, 'data':data}
-    # else:
-    #   print('{}: %{}% does not equal %{}%<br/>'.format(sheet_name, eval_cell(ws.cell(row=r, column=1)), student_id))
+    else:
+      if DEBUG: print('{}: %{}% does not equal %{}%<br/>'
+                      .format(sheet_name, eval_cell(ws.cell(row=r, column=1)), student_id))
   oops('Student ID {} not found in {}'.format(student_id, sheet_name))
 
 # do_sheet()
@@ -196,15 +197,21 @@ try:
     ws = wb.get_sheet_by_name('Roster')
 except:
     oops('Workbook sheet "Roster" not found')
-if DEBUG: print('<p>{}</p>'.format(ws.max_row+1))
+if DEBUG: print('<p>Roster has {} rows. Cell.TYPE_STRING is {}. Cell.TYPE_NUMBER is {}.</p>'
+                .format(ws.max_row + 1,
+                        Cell.TYPE_STRING,
+                        Cell.TYPE_NUMERIC))
 for row in range(1, ws.max_row):
   cell = ws.cell(row=row, column=1)
-  if DEBUG: print('<p>{}: {}</p>'.format(row, cell.data_type))
+  if DEBUG: print('<p>row {}: data_type is {}</p>'.format(row, cell.data_type))
   if cell.value == None: break
-  if cell.data_type == Cell.TYPE_STRING and \
-      cell.value.isdigit() and \
-      student_id in '{:08}'.format(int(cell.value)):
-    student_ids.append('{:08}'.format(int(cell.value)))
+  if cell.data_type == Cell.TYPE_NUMERIC or \
+     (cell.data_type == Cell.TYPE_STRING and cell.value.isdigit()):
+    if student_id in '{:08}'.format(int(cell.value)):
+      student_ids.append('{:08}'.format(int(cell.value)))
+      if DEBUG: print('Match {:08}'.format(int(cell.value)))
+    else:
+      if DEBUG: print('No match {:08}'.format(int(cell.value)))
 if len(student_ids) == 0: oops('Student ID "{}" not in Roster'.format(student_id))
 if len(student_ids)  > 1: oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
 student_id = student_ids[0]
