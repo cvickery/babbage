@@ -24,7 +24,7 @@ import cgitb
 import pprint
 cgitb.enable()
 
-DEBUG = False
+DEBUG = True
 
 # oops()
 # ---------------------------------------------------------
@@ -64,7 +64,9 @@ def eval_cell(cell):
 # get_student()
 # ---------------------------------------------------------
 def get_student(wb, sheet_name, student_id):
-  if DEBUG: print('<p>',sheet_name, student_id,'</p>')
+  if isinstance(student_id, int):
+    student_id = '{:08}'.format(student_id)
+  if DEBUG: print('<p>get_student({}, {})</p>'.format(sheet_name, student_id))
   """ Get the header row and student data from a named sheet in a
       workbook. Die if the student isn't there.
   """
@@ -84,14 +86,17 @@ def get_student(wb, sheet_name, student_id):
       headers.append(ws.cell(row=1, column=c).value)
     c += 1
   # find the student
-  for r in range(2, ws.max_row+1):
-    if ws.cell(row=r, column=1).value == student_id:
+  for r in range(2, ws.max_row + 1):
+    row_id = ws.cell(row=r, column=1).value
+    if isinstance(row_id, int):
+      row_id = '{:08}'.format(row_id)
+    if row_id == student_id:
       data = [ws.cell(row=r, column=c+1) for c in range(len(headers))]
       if DEBUG: print('get_student: returning ', headers, data)
       return {'headers':headers, 'data':data}
     else:
       if DEBUG: print('{}: %{}% does not equal %{}%<br/>'
-                      .format(sheet_name, eval_cell(ws.cell(row=r, column=1)), student_id))
+                      .format(sheet_name, ws.cell(row=r, column=1).value, student_id))
   oops('Student ID {} not found in {}'.format(student_id, sheet_name))
 
 # do_sheet()
