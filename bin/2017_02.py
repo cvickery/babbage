@@ -21,7 +21,7 @@ from    email.utils           import make_msgid
 # CGI stuff -- with debugging
 import cgi
 import cgitb
-import pprint
+from pprint import pprint
 cgitb.enable()
 
 DEBUG = False
@@ -112,6 +112,7 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
   """
   headers = sheet['headers']
   data    = sheet['data']
+
   h3_value  = ''
   if len(headers) > 4 and headers[3] == 'Points' and headers[4] == 'Max':
     h3_value = '{}/{}'.format(data[3].value, data[4].value)
@@ -142,9 +143,18 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
     num_cols = num_cols + 1
     header_str = headers[col]
     text_1 = text_1 + '{:8}'.format(header_str)
+    # round floating-point strings to one decimal place
+    val = data[col].value
+    if type(val) is str or type(val) is float:
+      try:
+        y = float(val)
+        val = '{:0.1f}'.format(y)
+      except:
+        pass
+
     if data[col].value:
       text_2 = text_2 + '{:8}'.format(data[col].value)
-      html = html + '<td>{}<hr/>{}</td>'.format(header_str.replace(' ','&nbsp;'), data[col].value)
+      html = html + '<td>{}<hr/>{}</td>'.format(header_str.replace(' ','&nbsp;'), val)
     else:
       text_2 = text_2 + '        '
       html = html + '<td>{}<hr/>{}</td>'.format(header_str.replace(' ','&nbsp;'), '&nbsp;')
