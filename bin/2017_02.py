@@ -152,8 +152,8 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
       except:
         pass
 
-    if data[col].value:
-      text_2 = text_2 + '{:8}'.format(data[col].value)
+    if val:
+      text_2 = text_2 + '{:8}'.format(val)
       html = html + '<td>{}<hr/>{}</td>'.format(header_str.replace(' ','&nbsp;'), val)
     else:
       text_2 = text_2 + '        '
