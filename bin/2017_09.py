@@ -92,7 +92,7 @@ def get_student(wb, sheet_name, student_id):
       row_id = '{:08}'.format(row_id)
     if row_id == student_id:
       data = [ws.cell(row=r, column=c+1) for c in range(len(headers))]
-      if DEBUG: print('get_student: returning ', headers, data)
+      if DEBUG: print('get_student: {} returning {}<br/>{}<br/>'.format(sheet_name, headers, data))
       return {'headers':headers, 'data':data}
     else:
       if DEBUG: print('{}: %{}% does not equal %{}%<br/>'
@@ -143,6 +143,7 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
     num_cols = num_cols + 1
     header_str = headers[col]
     text_1 = text_1 + '{:8}'.format(header_str)
+
     # round floating-point strings to one decimal place
     val = data[col].value
     if type(val) is str or type(val) is float:
@@ -212,14 +213,16 @@ try:
     ws = wb.get_sheet_by_name('Roster')
 except:
     oops('Workbook sheet "Roster" not found')
-if DEBUG: print('<p>Roster has {} rows. Cell.TYPE_STRING is {}. Cell.TYPE_NUMBER is {}.</p>'
+if DEBUG: print('<p>Roster has {} rows. Cell.TYPE_STRING is {}. Cell.TYPE_NUMERIC is {}.</p>'
                 .format(ws.max_row + 1,
                         Cell.TYPE_STRING,
                         Cell.TYPE_NUMERIC))
-for row in range(1, ws.max_row):
+for row in range(1, ws.max_row + 1):
   cell = ws.cell(row=row, column=1)
   if DEBUG: print('<p>row {}: data_type is {}</p>'.format(row, cell.data_type))
-  if cell.value == None: break
+  if cell.value == None:
+    if DEBUG: print('Cell has no value, so quit')
+    break
   if cell.data_type == Cell.TYPE_NUMERIC or \
      (cell.data_type == Cell.TYPE_STRING and cell.value.isdigit()):
     if student_id in '{:08}'.format(int(cell.value)):
