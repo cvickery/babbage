@@ -17,16 +17,6 @@ else
   error_log('sms: unable to open ./valid_senders');
 }
 
-foreach($valid_senders as $key => $value)
-{
-  error_log($key . ' => ' . $value);
-}
-
-$keys = array_keys($_POST);
-foreach ($keys as $key)
-{
-  error_log($key . ': ' . $_POST[$key]);
-}
 if (isset($_POST['From']) && isset($_POST['Body']))
 {
   $from = $_POST['From'];
