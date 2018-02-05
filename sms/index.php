@@ -14,7 +14,7 @@ if ($file = file('./valid_senders', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINE
 $keys = array_keys($_POST)
 for ($key in $keys)
 {
-  error_log($key . ': ' . $_POST[$key])
+  error_log($key . ': ' . $_POST[$key]);
 }
 if (isset($_POST['From']) && isset($_POST['Body']))
 {
