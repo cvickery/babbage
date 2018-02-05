@@ -11,8 +11,8 @@ if ($file = file('./valid_senders', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINE
   }
 }
 
-$keys = array_keys($_POST)
-for ($key in $keys)
+$keys = array_keys($_POST);
+foreach ($keys as $key)
 {
   error_log($key . ': ' . $_POST[$key]);
 }
