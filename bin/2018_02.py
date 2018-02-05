@@ -389,8 +389,6 @@ else:
     <body>
       <h1>{} Grades for {}</h1>
       <h2>Grades were last updated {}</h2>
-      <h2>These are the grades I have recorded for you to date. If there are any mistakes, you must
-      report them to me immediately after they are posted if you want me to fix them.</h2>
       {}
     </body>
   </html>
