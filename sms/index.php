@@ -7,8 +7,15 @@ if ($file = file('./valid_senders', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINE
   foreach($file as $line)
   {
     if (substr($line, 0, 2) === '+1')
+    {
       $valid_senders[substr($line, 0, 12)] = trim(substr($line, 13));
+    }
   }
+}
+
+foreach($valid_senders as $key => $value)
+{
+  error_log($key . ' => ' . $value);
 }
 
 $keys = array_keys($_POST);
