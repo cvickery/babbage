@@ -12,6 +12,10 @@ if ($file = file('./valid_senders', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINE
     }
   }
 }
+else
+{
+  error_log('sms: unable to open ./valid_senders');
+}
 
 foreach($valid_senders as $key => $value)
 {
