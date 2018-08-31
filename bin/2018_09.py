@@ -13,11 +13,14 @@ from openpyxl import load_workbook
 from openpyxl.cell.cell import Cell
 
 # email stuff
-import  smtplib
-from    email.headerregistry  import Address
-from    email.message         import EmailMessage
-from    email.utils           import formatdate
-from    email.utils           import make_msgid
+import smtplib
+from email.headerregistry import Address
+from email.message import EmailMessage
+from email.utils import formatdate
+from email.utils import make_msgid
+
+# For unit testing
+import argparse
 
 # CGI stuff -- with debugging
 import cgi
@@ -26,6 +29,7 @@ from pprint import pprint
 cgitb.enable()
 
 DEBUG = False
+
 
 # oops()
 # ---------------------------------------------------------
@@ -38,6 +42,7 @@ def oops(msg):
                           """.format(msg))
   exit()
 
+
 # html2str()
 # ---------------------------------------------------------
 def html2text(str):
@@ -47,6 +52,7 @@ def html2text(str):
   return_str = str.replace('<p>', '\n')
   return_str = re.sub(r'<.*?>', '', return_str)
   return return_str.replace('\n\n', '\n')
+
 
 # eval_cell()
 # ---------------------------------------------------------
@@ -58,7 +64,7 @@ def eval_cell(cell):
   if cell.data_type == Cell.TYPE_FORMULA:
     sheet, loc = cell.value.split('!')
     sheet = sheet.strip(" ='")
-    return wb.get_sheet_by_name(sheet)[loc].value
+    return wb[sheet][loc].value
   return cell.value
 
 
@@ -67,12 +73,13 @@ def eval_cell(cell):
 def get_student(wb, sheet_name, student_id):
   if isinstance(student_id, int):
     student_id = '{:08}'.format(student_id)
-  if DEBUG: print('<p>get_student({}, {})</p>'.format(sheet_name, student_id))
+  if DEBUG:
+    print('<p>get_student({}, {})</p>'.format(sheet_name, student_id))
   """ Get the header row and student data from a named sheet in a
       workbook. Die if the student isn't there.
   """
   try:
-    ws = wb.get_sheet_by_name(sheet_name)
+    ws = wb[sheet_name]
   except:
     oops('Workbook sheet {} not found'.format(sheet_name))
 
@@ -84,11 +91,11 @@ def get_student(wb, sheet_name, student_id):
     if ws.cell(row=1, column=c).data_type == Cell.TYPE_NUMERIC:
       headers.append(ws.cell(row=1, column=c).value.strftime('%b %e').replace('  ', ' '))
     else:
-      headers.append(ws.cell(row=1, column=c).value)
+      headers.append(f'{ws.cell(row=1, column=c).value}')
     c += 1
 
   # Lower-case headings and convert non-identifier chars to underscores
-  header_names = [re.sub('\W+', '_', h.lower()) for h in headers]
+  header_names = [re.sub(r'\W+', '_', h.lower()) for h in headers]
   Headers = namedtuple('Headers', header_names)
 
   # find the student
@@ -97,20 +104,23 @@ def get_student(wb, sheet_name, student_id):
     if isinstance(row_id, int):
       row_id = '{:08}'.format(row_id)
     if row_id == student_id:
-      data = [ws.cell(row=r, column=c+1).value for c in range(len(headers))]
+      data = [ws.cell(row=r, column=c + 1).value for c in range(len(headers))]
       if DEBUG:
-        print('get_student: {} returns <br/>  headers: {}<br/>  header_names: {}<br/>  data: {}<br/>'.
+        print("""get_student: {} returns <br/>
+                   headers: {}<br/>  header_names: {}<br/>  data: {}<br/>""".
               format(sheet_name, headers, header_names, data))
 
-      return {'headers':headers, 'data':data, 'record':Headers._make(data)}
+      return {'headers': headers, 'data': data, 'record': Headers._make(data)}
     else:
-      if DEBUG: print('{}: %{}% does not equal %{}%<br/>'
-                      .format(sheet_name, ws.cell(row=r, column=1).value, student_id))
+      if DEBUG:
+        print('{}: %{}% does not equal %{}%<br/>'
+              .format(sheet_name, ws.cell(row=r, column=1).value, student_id))
   oops('Student ID {} not found in {}'.format(student_id, sheet_name))
+
 
 # do_sheet()
 # ----------------------------------------------------------
-def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
+def do_sheet(h3_leadin, sheet, text_message, html_message, header_1='Date'):
   """ Generate the email content for one page of the workbook.
       Formatting tends to vary from term to term.
       Col 1: student_id
@@ -123,14 +133,15 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
   data = sheet['data']
   record = sheet['record']
 
-  h3_value  = ''
+  h3_value = ''
   if len(record) > 4 and 'points' in record._fields and 'max' in record._fields:
     h3_value = '{}/{}'.format(record.points, record.max)
     start_at = 5
   else:
     start_at = 3
 
-  if DEBUG: print(h3_leadin, h3_value, headers, data)
+  if DEBUG:
+    print(h3_leadin, h3_value, headers, data)
 
   text = '{}: {}'.format(h3_leadin, h3_value)
   text_message = text_message + text + '\n'
@@ -143,7 +154,8 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
 
   num_cols = 0
   for col in range(start_at, len(headers)):
-    if headers[col] == 'ignore': continue
+    if headers[col] == 'ignore':
+      continue
     if num_cols > 0:
       if (num_cols % 6) == 0:
         text_1 = text_1 + '\n'
@@ -182,28 +194,52 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1 = 'Date'):
   return (text_message, html_message)
 
 
-""" Get form data
-"""
-args = cgi.FieldStorage()
-
+# EXECUTION STARTS HERE
+# ================================================================
+# Get form data ... from command line if unit testing.
 """ Web page headers
 """
 sys.stdout.buffer.write("Content-Type: text/html; charset=utf-8\r\n\r\n".encode('utf-8'))
-
+if sys.stdin.isatty():
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--debug', '-d', action='store_true')
+  parser.add_argument('--semester', '-s')
+  parser.add_argument('--student_id', '-i')
+  parser.add_argument('--course', '-c')
+  parser.add_argument('--include-file', '-f')
+  args = parser.parse_args()
+else:
+  args_dict = cgi.FieldStorage()
+  print(f'<p>args_dict<br>{args_dict}</p>')
+  # convert from dict to namedtuple for consistency with cmd line version
+  #  Convert dict keys to identifiers (no spaces, no hyphens)
+  dict_keys = [key.replace('-', '_')
+                  .replace(' ', '_')
+                  .lower() for key in args_dict.keys()]
+  print(f'<p>dict_keys<br>{dict_keys}</p>')
+  Arguments = namedtuple('Arguments', dict_keys)
+  Arguments.__new__.__defaults__ = (None,) * len(Arguments._fields)
+  args = Arguments([args_dict[arg] for arg in args_dict])
+print(f'<p>args<br>{args}</p>')
+print(f'<p>args.course<br>{args.course}</p>')
+print(f'<p>args.student_id<br>{args.student_id}</p>')
 """ Check/Extract form data
 """
-if 'course' not in args: oops('Missing course')
-course = args['course'].value
+if args.course is None:
+  oops('Missing course')
+course = args.course
 sheet_name = course.lower().replace('csci', 'cs').replace('-', '')
 
-if 'semester' not in args: oops('Missing term')
-semester = args['semester'].value
+if args.semester is None:
+  oops('Missing term')
+semester = args.semester
 
-if 'student_id' not in args: oops('Missing student ID')
+if args.student_id is None:
+  oops('Missing student ID')
 
 include_data = ''
-if 'include-file' in args:
-  with open('../courses/{}/{}/{}'.format(sheet_name, semester, args['include-file'].value),
+if args.include_file is not None:
+  with open('../courses/{}/{}/{}'.format(sheet_name, semester, args.include_file),
             encoding='utf-8') as inc:
     include_data = inc.read()
 
@@ -213,7 +249,8 @@ if 'include-file' in args:
 """
 workbook_file = '{}.xlsx'.format(semester)
 workbook_path = '../../Grades/' + workbook_file
-if not os.path.isfile(workbook_path): oops('Missing file: ' + workbook_file)
+if not os.path.isfile(workbook_path):
+  oops('Missing file: ' + workbook_file)
 
 modtime = datetime.datetime.fromtimestamp(os
                                           .stat(workbook_path)
@@ -227,33 +264,39 @@ except:
 student_id = args['student_id'].value.strip()
 student_ids = []
 try:
-    ws = wb.get_sheet_by_name('Roster')
+    ws = wb['Roster']
 except:
     oops('Workbook sheet "Roster" not found')
-if DEBUG: print('<p>Roster has {} rows. Cell.TYPE_STRING is {}. Cell.TYPE_NUMERIC is {}.</p>'
-                .format(ws.max_row + 1,
-                        Cell.TYPE_STRING,
-                        Cell.TYPE_NUMERIC))
+if DEBUG:
+  print('<p>Roster has {} rows. Cell.TYPE_STRING is {}. Cell.TYPE_NUMERIC is {}.</p>'
+        .format(ws.max_row + 1, Cell.TYPE_STRING, Cell.TYPE_NUMERIC))
 for row in range(1, ws.max_row + 1):
   cell = ws.cell(row=row, column=1)
-  if DEBUG: print('<p>row {}: data_type is {}</p>'.format(row, cell.data_type))
-  if cell.value == None:
-    if DEBUG: print('Cell has no value, so quit')
+  if DEBUG:
+    print('<p>row {}: data_type is {}</p>'.format(row, cell.data_type))
+  if cell.value is None:
+    if DEBUG:
+      print('Cell has no value, so quit')
     break
   if cell.data_type == Cell.TYPE_NUMERIC or \
      (cell.data_type == Cell.TYPE_STRING and cell.value.isdigit()):
     if student_id in '{:08}'.format(int(cell.value)):
       student_ids.append('{:08}'.format(int(cell.value)))
-      if DEBUG: print('Match {:08}'.format(int(cell.value)))
+      if DEBUG:
+        print('Match {:08}'.format(int(cell.value)))
     else:
-      if DEBUG: print('No match {:08}'.format(int(cell.value)))
-if len(student_ids) == 0: oops('Student ID "{}" not in Roster'.format(student_id))
-if len(student_ids)  > 1: oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
+      if DEBUG:
+        print('No match {:08}'.format(int(cell.value)))
+if len(student_ids) == 0:
+  oops('Student ID "{}" not in Roster'.format(student_id))
+if len(student_ids)  > 1:
+  oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
 student_id = student_ids[0]
 
 roster = get_student(wb, 'Roster', student_id)
 roster = roster['record']
-if DEBUG: print(roster)
+if DEBUG:
+  print(roster)
 takeaways = get_student(wb, 'Takeaways', student_id)
 quizzes = get_student(wb, 'Quizzes', student_id)
 assignments = get_student(wb, 'Assignments', student_id)
@@ -266,18 +309,20 @@ student_name = '{} {}'.format(fname, lname)
 emails = [roster.primary_email]
 if roster.secondary_email:
   emails.append(roster.secondary_email)
-if DEBUG: print(emails)
+if DEBUG:
+  print(emails)
 to_list = [Address(student_name, addr_spec=x) for x in emails]
 
-## course_score = data[11].value
-## course_grade = data[12].value
-## course_message = """
-##   <span id='course_message'>Your grade for the course is <em>{}</em>, which is <em>{}</em></span>.
-##   """.format(course_score, course_grade)
+# # course_score = data[11].value
+# # course_grade = data[12].value
+# # course_message = """
+# #   <span id='course_message'>
+#      Your grade for the course is <em>{}</em>, which is <em>{}</em></span>.
+# #   """.format(course_score, course_grade)
 course_message = ''
 pass_fail = '#228B22'
-## if course_grade == 'F' or course_grade == 'WU':
-##   pass_fail = '#8b2500'
+# # if course_grade == 'F' or course_grade == 'WU':
+# #   pass_fail = '#8b2500'
 
 # Construct the HTML and text tables of grades
 # --------------------------------------------
@@ -297,12 +342,12 @@ text_message, html_message = do_sheet('Assignments',
                                       assignments,
                                       text_message,
                                       html_message,
-                                      header_1 = 'Item')
+                                      header_1='Item')
 text_message, html_message = do_sheet('Exams and Final Course Grade',
                                       other_grades,
                                       text_message,
                                       html_message,
-                                      header_1 = 'Item')
+                                      header_1='Item')
 
 # Style the HTML message
 #
@@ -349,7 +394,8 @@ css = """
 #
 if 'localhost' in os.environ['SERVER_NAME']:
   email_info = '<h2>Email would go to:</h2><blockquote><p>' + emails[0]
-  if len(emails) > 1: email_info = email_info + '<br/>' + emails[1]
+  if len(emails) > 1:
+    email_info = email_info + '<br/>' + emails[1]
   emails_info = email_info + '</blockquote>'
 
   xhtml_page = """
@@ -372,11 +418,11 @@ if 'localhost' in os.environ['SERVER_NAME']:
   """.format(css, course, student_name, course_message, modtime,
              email_info, html_message, include_data).encode('utf-8')
 else:
-  email_info  = '<blockquote><p>' + emails[0]
-  syntax      = ' with your grades has'
+  email_info = '<blockquote><p>' + emails[0]
+  syntax = ' with your grades has'
   if len(emails) > 1:
-    email_info  = email_info + '<br/>' + emails[1]
-    syntax      = 's with your grades have'
+    email_info = email_info + '<br/>' + emails[1]
+    syntax = 's with your grades have'
   email_info = '<h2>Email{} been sent to:</h2>{}</blockquote>'.format(syntax, email_info)
   xhtml_page = """
   <?xml version='1.0' encoding='UTF-8'?>
@@ -394,8 +440,8 @@ else:
   </html>
   """.format(css, course, student_name, modtime,
              email_info).encode('utf-8')
-  to_list = [Address(student_name, addr_spec = x) for x in emails]
-  text_content  = """
+  to_list = [Address(student_name, addr_spec=x) for x in emails]
+  text_content = """
 {} Grades for {}
 Grades were last updated {}
 These are the grades I have recorded for you to date.
@@ -405,7 +451,7 @@ after they are posted if you want me to fix them.
 {}
 """.format(course, student_name, modtime, text_message, html2text(include_data))
 
-  html_content  = """
+  html_content = """
   <head>
     {}
   </head>
@@ -419,17 +465,18 @@ after they are posted if you want me to fix them.
 </html>
 """.format(css, course, student_name, course_message, modtime, html_message, include_data)
 
-  msg               = EmailMessage()
-  msg['Subject']    = 'Your CSCI-100 Grades'
-  msg['From']       = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
-  msg['To']         = to_list
-  msg['Bcc']        = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
-  msg.add_header('Reply-To',    'christopher.vickery@qc.cuny.edu')
-  msg.add_header('Date',        formatdate(localtime=True))
-  msg.add_header('Message-ID',  make_msgid())
+  msg = EmailMessage()
+  msg['Subject'] = 'Your CSCI-100 Grades'
+  msg['From'] = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
+  msg['To'] = to_list
+  msg['Bcc'] = Address('Christopher Vickery', addr_spec='christopher.vickery@qc.cuny.edu')
+  msg.add_header('Reply-To', 'christopher.vickery@qc.cuny.edu')
+  msg.add_header('Date', formatdate(localtime=True))
+  msg.add_header('Message-ID', make_msgid())
   msg.set_content(text_message)
   msg.add_alternative(html_content, subtype='html')
   mailer = smtplib.SMTP('smtp.qc.cuny.edu')
   mailer.send_message(msg)
   mailer.quit()
 sys.stdout.buffer.write(xhtml_page)
+
