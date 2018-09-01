@@ -8,10 +8,6 @@ import datetime
 from stat import *
 from collections import namedtuple
 
-# excel stuff
-from openpyxl import load_workbook
-from openpyxl.cell.cell import Cell
-
 # email stuff
 import smtplib
 from email.headerregistry import Address
@@ -21,6 +17,11 @@ from email.utils import make_msgid
 
 # For unit testing
 import argparse
+
+# excel stuff
+# sys.path.insert(0, '/Users/vickery/openpyxl/')
+from openpyxl import load_workbook
+from openpyxl.cell.cell import Cell
 
 # CGI stuff -- with debugging
 import cgi
@@ -38,8 +39,7 @@ def oops(msg):
   """
   print("""
    <h1>Unable To Check Grades</h1>
-   <h2>{}</h2>
-                          """.format(msg))
+   <h2>{}</h2>""".format(msg))
   exit()
 
 
@@ -69,33 +69,33 @@ def eval_cell(cell):
 
 
 # get_student()
-# ---------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 def get_student(wb, sheet_name, student_id):
+  """ Get the header row and student data from a named sheet in a
+      workbook. Die if the student isn't there.
+  """
   if isinstance(student_id, int):
     student_id = '{:08}'.format(student_id)
   if DEBUG:
     print('<p>get_student({}, {})</p>'.format(sheet_name, student_id))
-  """ Get the header row and student data from a named sheet in a
-      workbook. Die if the student isn't there.
-  """
   try:
     ws = wb[sheet_name]
-  except:
-    oops('Workbook sheet {} not found'.format(sheet_name))
+  except Exception:
+    oops('Workbook sheet {} not found.'.format(sheet_name))
 
   # Get list of active headers
   #   Assume TYPE_NUMERIC is a datetime reference and evaluate it
   headers = []
   c = 1
   while ws.cell(row=1, column=c).value:
-    if ws.cell(row=1, column=c).data_type == Cell.TYPE_NUMERIC:
+    if ws.cell(row=1, column=c).data_type == 'd':
       headers.append(ws.cell(row=1, column=c).value.strftime('%b %e').replace('  ', ' '))
     else:
       headers.append(f'{ws.cell(row=1, column=c).value}')
     c += 1
-
   # Lower-case headings and convert non-identifier chars to underscores
   header_names = [re.sub(r'\W+', '_', h.lower()) for h in headers]
+
   Headers = namedtuple('Headers', header_names)
 
   # find the student
@@ -195,7 +195,7 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1='Date'):
 
 
 # EXECUTION STARTS HERE
-# ================================================================
+# =================================================================================================
 # Get form data ... from command line if unit testing.
 """ Web page headers
 """
@@ -208,40 +208,45 @@ if sys.stdin.isatty():
   parser.add_argument('--course', '-c')
   parser.add_argument('--include-file', '-f')
   args = parser.parse_args()
+  if args.course is None:
+    oops('Missing course')
+  course = args.course
+  sheet_name = course.lower().replace('csci', 'cs').replace('-', '')
+
+  if args.semester is None:
+    oops('Missing term')
+  semester = args.semester
+
+  if args.student_id is None:
+    oops('Missing student ID')
+  student_id = args.student_id.strip()
+
+  include_data = ''
+  if args.include_file is not None:
+    with open('../courses/{}/{}/{}'.format(sheet_name, semester, args.include_file),
+              encoding='utf-8') as inc:
+      include_data = inc.read()
 else:
-  args_dict = cgi.FieldStorage()
-  print(f'<p>args_dict<br>{args_dict}</p>')
-  # convert from dict to namedtuple for consistency with cmd line version
-  #  Convert dict keys to identifiers (no spaces, no hyphens)
-  dict_keys = [key.replace('-', '_')
-                  .replace(' ', '_')
-                  .lower() for key in args_dict.keys()]
-  print(f'<p>dict_keys<br>{dict_keys}</p>')
-  Arguments = namedtuple('Arguments', dict_keys)
-  Arguments.__new__.__defaults__ = (None,) * len(Arguments._fields)
-  args = Arguments([args_dict[arg] for arg in args_dict])
-print(f'<p>args<br>{args}</p>')
-print(f'<p>args.course<br>{args.course}</p>')
-print(f'<p>args.student_id<br>{args.student_id}</p>')
-""" Check/Extract form data
-"""
-if args.course is None:
-  oops('Missing course')
-course = args.course
-sheet_name = course.lower().replace('csci', 'cs').replace('-', '')
+  args = cgi.FieldStorage()
+  if args['course'] is None:
+    oops('Missing course')
+  course = args['course'].value
+  sheet_name = course.lower().replace('csci', 'cs').replace('-', '')
 
-if args.semester is None:
-  oops('Missing term')
-semester = args.semester
+  if args['semester'] is None:
+    oops('Missing term')
+  semester = args['semester'].value
 
-if args.student_id is None:
-  oops('Missing student ID')
+  if args['student_id'] is None:
+    oops('Missing student ID')
+  student_id = args['student_id'].value.strip()
 
-include_data = ''
-if args.include_file is not None:
-  with open('../courses/{}/{}/{}'.format(sheet_name, semester, args.include_file),
-            encoding='utf-8') as inc:
-    include_data = inc.read()
+  include_data = ''
+  if 'include_file' in args:
+    print(f"<p>{args['include_file']} :: {args['include_file'].value}</p>")
+    with open('../courses/{}/{}/{}'.format(sheet_name, semester, args['include_file'].value),
+              encoding='utf-8') as inc:
+      include_data = inc.read()
 
 """ Locate and open workbook.
     To provide impenetrable security, we do not reveal the location of the spreadsheet, only its
@@ -255,21 +260,23 @@ if not os.path.isfile(workbook_path):
 modtime = datetime.datetime.fromtimestamp(os
                                           .stat(workbook_path)
                                           .st_mtime).strftime('%B %d, %Y at %I:%M %p')
+
 try:
   wb = load_workbook(workbook_path, data_only=True)
-except:
-  oops('Unable to open ' + workbook_file)
+except ImportError as e:
+  oops(f'Unable to open {workbook_file}: {e}')
 
 # Be sure Student ID supplied is an unambiguous sequence of digits.
-student_id = args['student_id'].value.strip()
 student_ids = []
 try:
     ws = wb['Roster']
 except:
     oops('Workbook sheet "Roster" not found')
+
 if DEBUG:
   print('<p>Roster has {} rows. Cell.TYPE_STRING is {}. Cell.TYPE_NUMERIC is {}.</p>'
         .format(ws.max_row + 1, Cell.TYPE_STRING, Cell.TYPE_NUMERIC))
+
 for row in range(1, ws.max_row + 1):
   cell = ws.cell(row=row, column=1)
   if DEBUG:
@@ -287,9 +294,10 @@ for row in range(1, ws.max_row + 1):
     else:
       if DEBUG:
         print('No match {:08}'.format(int(cell.value)))
+
 if len(student_ids) == 0:
   oops('Student ID "{}" not in Roster'.format(student_id))
-if len(student_ids)  > 1:
+if len(student_ids) > 1:
   oops('Student ID "{}" is ambiguous. Use more digits.'.format(student_id))
 student_id = student_ids[0]
 
