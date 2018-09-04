@@ -33,7 +33,7 @@ DEBUG = False
 
 
 # oops()
-# ---------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 def oops(msg):
   """ Die because something went oops.
   """
@@ -44,7 +44,7 @@ def oops(msg):
 
 
 # html2str()
-# ---------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 def html2text(str):
   """ Convert HTML to plain text.
       Change <p> to \n, then get rid of all other tags.
@@ -55,7 +55,7 @@ def html2text(str):
 
 
 # eval_cell()
-# ---------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 def eval_cell(cell):
   """ Return the value of a cell, even if it contains a
       reference to a cell in another sheet. But formulas
@@ -119,7 +119,7 @@ def get_student(wb, sheet_name, student_id):
 
 
 # do_sheet()
-# ----------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 def do_sheet(h3_leadin, sheet, text_message, html_message, header_1='Date'):
   """ Generate the email content for one page of the workbook.
       Formatting tends to vary from term to term.
@@ -179,7 +179,7 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1='Date'):
       try:
         y = float(val)
         val = '{:0.1f}'.format(y)
-      except:
+      except ValueError:
         pass
 
     if val:
@@ -200,53 +200,25 @@ def do_sheet(h3_leadin, sheet, text_message, html_message, header_1='Date'):
 """ Web page headers
 """
 sys.stdout.buffer.write("Content-Type: text/html; charset=utf-8\r\n\r\n".encode('utf-8'))
-if sys.stdin.isatty():
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--debug', '-d', action='store_true')
-  parser.add_argument('--semester', '-s')
-  parser.add_argument('--student_id', '-i')
-  parser.add_argument('--course', '-c')
-  parser.add_argument('--include-file', '-f')
-  args = parser.parse_args()
-  if args.course is None:
-    oops('Missing course')
-  course = args.course
-  sheet_name = course.lower().replace('csci', 'cs').replace('-', '')
+args = cgi.FieldStorage()
+if args['course'] is None:
+  oops('Missing course')
+course = args['course'].value
+course_dir = course.lower().replace('csci', 'cs').replace('-', '')
 
-  if args.semester is None:
-    oops('Missing term')
-  semester = args.semester
+if args['semester'] is None:
+  oops('Missing term')
+semester = args['semester'].value
 
-  if args.student_id is None:
-    oops('Missing student ID')
-  student_id = args.student_id.strip()
+if args['student_id'] is None:
+  oops('Missing student ID')
+student_id = args['student_id'].value.strip()
 
-  include_data = ''
-  if args.include_file is not None:
-    with open('../courses/{}/{}/{}'.format(sheet_name, semester, args.include_file),
-              encoding='utf-8') as inc:
-      include_data = inc.read()
-else:
-  args = cgi.FieldStorage()
-  if args['course'] is None:
-    oops('Missing course')
-  course = args['course'].value
-  sheet_name = course.lower().replace('csci', 'cs').replace('-', '')
-
-  if args['semester'] is None:
-    oops('Missing term')
-  semester = args['semester'].value
-
-  if args['student_id'] is None:
-    oops('Missing student ID')
-  student_id = args['student_id'].value.strip()
-
-  include_data = ''
-  if 'include_file' in args:
-    print(f"<p>{args['include_file']} :: {args['include_file'].value}</p>")
-    with open('../courses/{}/{}/{}'.format(sheet_name, semester, args['include_file'].value),
-              encoding='utf-8') as inc:
-      include_data = inc.read()
+include_data = ''
+if 'include-file' in args:
+  with open('../courses/{}/{}/{}'.format(course_dir, semester, args['include-file'].value),
+            encoding='utf-8') as inc:
+    include_data = inc.read()
 
 """ Locate and open workbook.
     To provide impenetrable security, we do not reveal the location of the spreadsheet, only its
