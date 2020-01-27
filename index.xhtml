@@ -1,26 +1,21 @@
 <?php
-//  Home page on babbage.cs.qc.cuny.edu
   date_default_timezone_set('America/New_York');
-  $mime_type = "text/html";
-  $html_attributes="lang=\"en\"";
-  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
-        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
-         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
-       ||
-       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
-        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
-     )
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
   {
-    $mime_type = "application/xhtml+xml";
-    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
-    header("Content-type: $mime_type");
-    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
   }
   else
   {
-    header("Content-type: $mime_type; charset=utf-8");
+    header("Content-type: text/html; charset=utf-8");
   }
-?>
+ ?>
 <!DOCTYPE html>
 <html <?php echo $html_attributes;?>>
   <head>
