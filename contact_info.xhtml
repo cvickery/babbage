@@ -49,7 +49,20 @@
     <div>
       <h1><a href=".">Dr. Christopher Vickery</a></h1><h1>Contact Information</h1>
         <div>
-          <h2>Spring 2020 Office Hours</h2>
+          <h2>
+            <?php
+              $year = date("Y");
+              $month = date("M");
+              if ($month < 9)
+              {
+                echo "Spring $year";
+              }
+              else
+              {
+                echo "Fall $year";
+              }
+            ?>
+            Office Hours</h2>
           <p>
             I’m not teaching any classes this semester, so I don’t have regularly-scheduled office
             hours. But you can contact me by email or phone using the information below.
@@ -65,7 +78,7 @@
         <p>
           I have two offices, one in room A-222 of the Science Building (down the hall from the
           Computer Science Departent office) and one in Kiely Hall, Room 209. The telephone number
-          below (718 997-3508) rings in both offices if you need to reach me by phone.
+          below rings in both offices if you need to reach me by phone.
         </p>
 
         <div id="hcard-Christopher-Vickery" class="vcard">
