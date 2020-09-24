@@ -1,0 +1,112 @@
+Vickery's Photo Gallery
+December 2004
+
+INTRODUCTION
+
+  This was an exercise to generate a photo gallery for the
+  web such that once the framework is in place one would
+  need only to supply the images to be displayed and
+  everything else would happen automagically.  Side
+  constraints were that the code had to pass the XHTML 1.1
+  and CSS validation tests of w3.org and that the code has
+  to work with both Internet Explorer and Mozilla Firefox.
+  (It should work with other browsers, but I used only the
+  latest released versions of those two for testing.)
+  
+  The project uses a mix of hand-coded XHTML, PHP code to
+  generate the XHTML for the parts that depend on what
+  images are found in the server-side directory, and
+  javascript for the client-side interactions.  Rather than
+  reload the entire page for each picture, it uses DHTML
+  ("innerHTML") to change the image being displayed.
+
+SETTING UP
+
+  To set up a photo gallery, create three sets of image
+  files: thumbnails, regular images, and smaller images for
+  dial-up access.  Put them in subdirectories named thumbs,
+  images, and images-smaller respectively.  I make the
+  maximum dimension (height or width) 800 pixels, but the
+  code doesn't demand it.  I save the high-resolution images
+  with a jpeg quality of 100 and the lower-resolution images
+  with a quality of 60 using Photoshop's "optimize for web"
+  feature.  The smaller images are about 1/3 the size of the
+  larger ones.  I think you could do the same thing with
+  ImageMagick's convert routine if you specify a resolution
+  of 72 pixels per inch.
+
+  Optionally, prepare a text file named "image_list" with
+  the names of the image files in the sequence you want them
+  to appear, one file per line.  If image_list is missing,
+  the images will be prepared in the order in which they are
+  found in the thumbs directory.
+
+  Files that must be in this directory:
+
+    header.jpg    The header that will appear at the top of
+                  the page.  The alternate text is the name
+                  of the directory holding everything.
+                  Internet Explorer displays the alt text in
+                  a small font next to a broken image icon;
+                  Firefox shows it as a level 1 header that
+                  could be customized in the style sheet
+                  (see below).
+
+    image_list    See above.
+
+    index.php     PHP script to generate the valid XHTML 1.1
+                  web page.  The web server must be
+                  configured to support PHP scripting for
+                  this whole thing to work.  Also, the web
+                  server must recognize "index.php" as a
+                  default file to serve when a URL ends at
+                  the directory level.  In apache, this is
+                  done with a DirectoryIndex entry in the
+                  server's configuration file.  Otherwise,
+                  the user has to type /index.php at the end
+                  of the URL.
+
+    photos.css    The style sheet that determines what the
+                  generated page looks like.  If missing or
+                  unreadable, the page will have a white
+                  background and everything will be squashed
+                  to the left.
+
+    photos.js     Javascript functions to handle user
+                  interactions once the page is loaded.
+
+TODO
+
+    I'd like to avoid the need to click for each image, but
+    haven't figured out how to get javascript timing
+    functions to work yet.  That is, I want to do a standard
+    "image preload" operation so the images will pop onto
+    the screen after being loaded by the browser, rather
+    than incrementally.  Then I would provide an option for
+    loading images on a time interval, sort of like the
+    standard "slide-show" feature.
+
+    The buttons should have nice images instead of plain
+    text on them.
+
+    There should be options for a title and descriptive text
+    to be extracted from the jpegs and displayed under the
+    images.
+
+ISSUES
+
+    Internet explorer doesn't recognize <script .... />; you
+    have to have a separate </script> tag.  Tracking that
+    down was the "last bug."
+
+    Internet explorer doesn't understand css div
+    positioning, so that whole approach had to be chucked.
+
+    I could get neither ie nor firefox to understand
+    <![CDATA[ ... ]]> to protect javascript from xhtml
+    parsing.  (It may be possible with html comment tags??)
+    As a result, I had to move the non-php-generated
+    javascript code into a separate script file (photos.js),
+    which is a cleaner design anyway.  But still ...
+
+
