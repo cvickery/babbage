@@ -1,0 +1,119 @@
+<html><head><title>CS-701 Assignment 2</title>
+<style type="text/css" media="screen">
+<!--
+  body
+  {
+    background:   "#ffffc0";
+    font-family:  "sans-serif";
+  }
+  -->
+</style>
+</head>
+<body>
+<center>
+<h1>CS-701 Assignment 2</h1>
+</center>
+
+<h2>Introduction</h2>
+
+This is an exercise in "coding to specifications."  Following the
+[&nbsp;<a href="../../Handouts/coding_guidelines.html">Coding
+Guidelines for this Course</a>&nbsp;], you are to write a C++ program
+which exactly mimics the Unix <i>wc</i> command.
+
+<h2>Requirements</h2>
+
+Read the <i>man</i> page for the <i>wc</i> command, and experiment with
+it to make sure you understand what the program does.  Then, write a
+single source module named <code>wc.cc</code> which performs exactly
+the same operations as the wc command.<p>
+
+<h3>Command Line Options</h3>
+
+Use the <i>getopt_long()</i> function to process the following command
+line options:<p>
+
+<table align=center cellpadding=5 border=1>
+<tr><td><th>Option
+    <th>Interpretation
+<tr><td><td>-c <i>or</i> --chars
+    <td> Print the number of characters only.
+<tr><td><td>-l <i>or</i> --lines
+    <td> Print the number of lines only.
+<tr><td><td>-w <i>or</i> --words
+    <td> Print the number of words only.
+<tr><td><td>-L <i>or</i> --max-line-length
+    <td> Print the length of the longest line only.
+<tr><td><td>-? <i>or</i> --help
+    <td> Print a "usage" message and exit.
+</table><p>
+
+Options may be combined, so that "-c -w" (or -cw) will print the
+counts for both the number of characters and the number of words.<p>
+
+Until we have our Linux virtual machines, you will have to use Forbin,
+which does not support the getopt_long() function.  So if you start
+working on forbin, ignore the long versions of the options and process
+only the short versions (-c, -l, -w, and -L) using the <i>getopt()</i>
+function.  You can add the code for the long options later.<p>
+
+<h3>Other Requirements</h3>
+
+<ul>
+
+  <li>If an input file cannot be opened using <i>fopen()</i>, use
+<i>perror()</i> to print an appropriate error message, and then
+process all other files named on the command line.<p>
+
+  <li>Use the <i>strtok()</i> function to break each line of text into
+"words."<p>
+
+  <li>Each counter is to be right-justified in a seven-character field,
+  followed by a single space.<p>
+
+  <li>Do not deal with wide characters or any environment variables.<p>
+
+  <li>Results for non-text files are "undefined."
+
+</ul>
+
+<h3>Testing</h3>
+
+Test your program to be sure it handles all combinations of options
+and any number of input file names (including zero).  Except for error
+messages for files that can't be read, your progam's output should be
+exactly the same as the output of the system's <i>wc</i> command.  You
+should use the <i>diff</i> command to check for this.  For example,
+one of your tests might be run as follows:
+<pre>
+    ./wc -lw file1 file2 file3 > out1
+    /usr/bin/wc -lw file1 file2 file3 > out2
+    diff out1 out2
+</pre>
+(The above <i>diff</i> command should produce no output.)
+
+<h3>Due Date and Project Submission</h3>
+
+This assignment is due by midnight February 26, 2002.<p>
+
+Follow the instructions in the Coding Guidelines web page for creating
+a tar file of your "clean" project directory.  For this assignment,
+you will not be using <i>make</i> or <i>rcs</i> for project
+management, so your tar file should contain just the following: your
+project directory, which is to contain only the file named wc.cc and
+an empty subdirectory named <code>RCS</code>.  There must be no other
+files in the tar file.<p>
+
+When your assignment has been coded and tested on your linux virtual
+machine, send me an email message with the subject line, "701:
+Assignment 2".  Put your name and id number in the body of the
+message, and include your tar file as an attachment.  Send the
+assignment to me from your linux virtual machine, using the pine email
+program to send it.  (Attach a file by typing Control-J while the
+cursor is in the heading part of your message.)<p>
+
+Submit the assignment to me using my account (<i>vickery</i>) on the
+linux virtual machine.
+
+<hr></body></html>
+

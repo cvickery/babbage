@@ -1,0 +1,174 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 2</title>
+<meta name=Description content="3-Feb-01: The File System">
+<link rel=next href=slide0010.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0009.htm');   
+  else
+    parent.location.href = "../701_Lecture_02.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=93 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=210 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=103 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=133 height=33 colspan=2></td>
+  <td width=210 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=210 height=33 align=center><font face="Times New Roman" size=5>The
+    File System</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=132 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=28 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=188></td>
+  <td width=406 height=188 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=114 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=77 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=80 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=21 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=10 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=347 height=21 colspan=13><font face="Times New Roman" size=3>“Everything
+    is a file” in Unix, even if it isn’t</font><br>
+    </td>
+    <td width=41 height=21 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=406 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=50 height=21 colspan=8><font face="Times New Roman" size=3>really.</font><br>
+    </td>
+    <td width=338 height=21 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=406 height=5 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=241 height=21 colspan=10><font face="Times New Roman" size=3>There
+    is just one root node ( / )</font><br>
+    </td>
+    <td width=147 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=406 height=5 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=300 height=18 colspan=8><font face="Times New Roman" size=2>Multiple
+    volumes may appear within the tree</font><br>
+    </td>
+    <td width=67 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=406 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=339 height=16 colspan=9><font face="Times New Roman" size=1>E.g.,
+    /mnt/floppy might be the path to the root of your floppy</font><br>
+    </td>
+    <td width=7 height=16></td>
+   </tr>
+   <tr>
+    <td width=60 height=16 colspan=7></td>
+    <td width=300 height=16 colspan=6><font face="Times New Roman" size=1>disk,
+    unlike the “A: drive” concept of DOS/Windows.</font><br>
+    </td>
+    <td width=46 height=16 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=406 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=336 height=18 colspan=11><font face="Times New Roman" size=2>Device
+    drivers (code in the kernel), processes, and</font><br>
+    </td>
+    <td width=31 height=18 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=406 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=367 height=18 colspan=13><font face="Times New Roman" size=2>sockets
+    are all examples of non-files that look like files</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=406 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=143 height=18 colspan=6><font face="Times New Roman" size=2>in a
+    Unix file system.</font><br>
+    </td>
+    <td width=224 height=18 colspan=7></td>
+   </tr>
+  </table>
+  </td>
+  <td width=29 height=188></td>
+ </tr>
+ <tr>
+  <td width=475 height=61 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+<HTML>
+<HEAD>
+<TITLE>Windows and Widgets on the WWW</TITLE>
+</HEAD>
+
+<BODY>
+
+<H2>Mapping, Managing, and Realizing Widgets</H2>
+
+<H3><A NAME="Windows">Windows</A></H3>
+
+<P>
+This document defines some of the terms associated with widgets
+and windows under the X Window System. Taking a bottom-up approach,
+we begin by defining a <I>window</I> as a rectangular region of
+pixels. There are many important attributes of windows, such as
+their geometry and capabilities for displaying different colors,
+but this document deals with just those attributes that have to
+do with what I will call &quot;housekeeping&quot; aspects of windows.
+Windows are created by a server in response to client requests.
+The window exists as a data structure created by the server in
+the memory of the server's workstation. Each window has a unique
+identifier that the server returns to the client when the window
+is created. The client passes this identifier back to the server
+in subsequent requests that need to reference the window.
+<P>
+Windows on a screen have a rooted-tree relationship to each other.
+A distinguished window, the <I>root window</I> is created automatically
+by the server when it starts up. The root window covers the entire
+screen of the display. Every window is a child of another window,
+and if a window is a direct child of the root window, it has the
+special properties that we will see below in the section on <A HREF="#ManagingWindows">Managing Windows</A>.
+All windows are constrained to exist within the boundaries of
+its parent. When you see a pop-up dialog box that appears (or
+can be moved) outside the boundaries of an application, you know
+that the window that contains the dialog box is actually a child
+of the root window, not of the application's top-level window.
+
+<H4><A NAME="MappingWindows">Mapping Windows</A></H4>
+
+<P>
+Creating a window does not make anything appear on the screen.
+To do that, the window must be <I>mapped,</I> which happens when
+a client makes a mapping request to the server. There are two
+reasons for separating window creation from window mapping:.
+<OL>
+<LI>Applications start up &quot;cleaner.&quot; Typically, there
+are many adjustments that have to be made to windows between the
+time they are created and the time they are ready for viewing
+by the user. For example, one window might act as a container
+for several other windows (a menu that contains a number of buttons,
+perhaps). Rather than display first the empty parent window, then
+the parent with one child, then the parent with two children,
+etc. it is better to create the parent and all the children, and
+then map them all at once so the user sees just one coherent image
+rather than all the intermediate steps leading to its construction.
+<LI>A window can be made to appear, disappear, and reappear by
+mapping, unmapping, and remapping it, so the server does not have
+to discard and reconstruct the window each time the client wants
+it to disappear and reappear. Also, a single request from a client
+to a server is enough to cause a window and all its descendants
+to be mapped. Thus mapping and unmapping are efficient, both in
+terms of computational load and network overhead
+</OL>
+
+<P>
+Widget programmers (programmers who use widgets to write applications)
+do not typically map an unmap windows; that is handled by the
+Intrinsics as described in the section on <A HREF="#RealizingWidgets">realizing widgets</A>.
+That is, mapping is an X Protocol or Xlib concept, not a toolkit
+concept.
+
+<H4><A NAME="ManagingWindows">Managing Windows</A></H4>
+
+<P>
+Although it is not necessary, most users run a special client
+program called a <I>window manager</I> when they are using X.
+Among other things, the window manager provides the &quot;decorations&quot;
+that surround top-level windows like resize bars, minimize, maximize,
+and dismiss buttons, etc. Without a window manager, users would
+have no way to move and resize applications on the screen, to
+cut and paste between applications, or to iconify applications.
+The user could change the geometry of subwindows within an application
+if the application is programmed to support that, but there would
+be no way to change the geometry of windows that are direct children
+of the root window. The X protocol defines certain requests and
+replies that a window manager may exchange with the server that
+normal clients do not use. For example, a window manager may request
+the server to notify it if any client creates a window that is
+a child of the root window, and the window manager can then make
+a &quot;reparent&quot; request to make such a window a child of
+a window belonging to the window manager rather than a child of
+the root.
+<P>
+The server provides a mechanism called <I>properties</I> which
+clients can use for communicating with each other. Properties
+are name-value pairs that a client can attach to a window, typically
+its own top-level window. Any client can find out the value of
+any named property on a window provided only that it knows that
+window's id (token). Since a window manager has the tokens for
+all the windows that it manages, properties are used for communication
+between normal clients and a window manager. Just to give and
+example, a client might add a property to its top-level window
+with the name equal to &quot;<CODE>WM_TITLE</CODE>&quot; and a
+value equal to the string the client would like the window manager
+to display in the title bar for the application. (For network
+efficiency, there is an integer called an <I>atom</I> that is
+used to identify property names so that arbitrarily long strings
+of bytes won't have to be sent over the network every time a client
+wants to reference a particular property.) It's easy for clients
+to access the root window of a screen, so there is a lot of general-purpose
+information that is stored as properties on that window. You can
+type &quot;xprop -root&quot; to see for yourself.
+
+<H3><A NAME="Widgets">Widgets</A></H3>
+
+<P>
+Widgets are objects that can be used to construct a graphical
+user interface.  Examples can be as simple as a button that the
+user can point to and click on and as complex as a window the
+user can use for entering and editing text.
+<P>
+Whereas the implementation of a window is an object that is created
+and manipulated by an X server, the implementation of a widget
+is an object that is created and manipulated by an X client. We
+sometimes say that a client creates a window, but if we want to
+speak pedantically, we should say that a client requests the server
+to create a window for it. There is a data structure that holds
+all the information about a widget, but a widget's data structure
+is part of the client process' address space, not the server's.
+A widget's data structure contains a copy of the identifier for
+the widget's window, so there is a window associated with each
+widget. But a widget's data structure contains other information
+as well, including pointers to the code that is to be executed
+when the widget is created or when the user interacts with it,
+and name-value pairs of <I>resources</I> that specify the parameters
+that affect the widget's appearance and operation. There is <U>no</U>
+relationship between a widget's resources and a window's properties,
+even though both are sets of name-value pairs.
+<H4><A NAME="ManagedWidgets">Managed Widgets</A></H4>
+
+<P>
+Just as there is a tree structure relating windows on a screen,
+there is also a tree structure relating the widgets in an application.
+The root of an application's widget tree is called a <I>top-level</I>
+or <I>shell</I> widget, and an application is allowed to create
+more than one of these top-level widgets if it wants to. The window
+associated with each top-level widget is created as a child of
+the server's root window, which makes these top-level widgets
+subject to management by the user's window manager.
+<P>
+A &quot;managed widget&quot; is different from a &quot;managed
+window,&quot; although there is an analogy between the two. Whereas
+a top-level window would be managed by a window manager client,
+a managed widget is one which is managed by its parent widget
+within the application. A managed widget's window size and position
+on the screen is computed (managed) by its parent widget. It is
+possible to create unmanaged widgets, but their windows will not
+be allocated screen space within their parent and will not be
+visible on the screen. A client could make an unmanaged widget
+appear by making Xlib calls to map its window, but the Intrinsics
+provide another mechanism for mapping and unmapping a widget's
+window, which will be described below. It is possible to manage
+and unmanage a widget dynamically as an application runs, but
+there is considerable behind-the-scenes overhead for this because
+the managing parent has to recompute the geometry of all its children
+whenever one of them is unmanaged or managed again.
+
+<H4><A NAME="RealizingWidgets">Realizing Widgets</A></H4>
+
+<P>
+Just as creating and mapping are separate operations for windows,
+creating and <I>realizing</I> are separate operations for widgets.
+No window is created for a widget until it is realized, but when
+a window is realized, all its managed children are also recursively
+realized automatically. The window that is created when a widget
+is realized is normally mapped at the same time, although this
+can be overridden by setting the value of one of the widget's
+resources, <CODE>XtNmappedWhenManaged</CODE>, to False. Once all
+the child widgets of a container widget have been created, the
+container widget can compute how large each child's window should
+be and where it should be placed so each managed widget's window
+is created with its proper geometry with no need for extra requests
+to the server to change the geometry of the managed widgets' windows
+as the application starts up.
+<P>
+Because of the <CODE>XtNmappedWhenManaged</CODE> resource, a realized
+widget can be in any of three states:
+<DL>
+<DT><I>Mapped and Managed</I> 
+<DD>The widget is allocated screen space by its parent and is
+visible on the screen within the parent's boundaries.
+<DT><I>Unmapped but Managed</I> 
+<DD>The widget is allocated screen space by its parent but it
+does not appear on the screen. The space for the widget is filled
+in with the parent's background color.
+<DT><I>Unmanaged</I> 
+<DD>No space is allocated for the widget, and the parent's geometry
+layout routine places the other widgets under its management wherever
+it wishes without regard for the unmanaged widget.
+</DL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>

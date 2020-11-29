@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>RCS Keywords</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>RCS Keywords</h1>
+</center>
+
+<h2>Introduction</h2>
+
+The following is a list of various RCS Keywords (macros) that can be
+placed in text files, and a description of how they are expanded when
+the file is checked out.<p>
+
+For our course, the <b>$Id$</b> macro is to appear in a single-line
+comment as the first line of each Makefile, <i>man</i> page, or source
+file that you write.  The <b>$Log$</b> macro is to appear in the file
+summary comment block of each Makefile and source file.<p>
+
+These keywords can also appear in object modules and executable files by
+embedding them in string literals.  For example:
+
+<pre>
+  static const char *Version = "$Revision$";
+</pre>
+
+The <i>ident</i> command will display RCS macros that have been embedded
+in binary files in this manner.  (The <i>strings</i> command will show
+all strings found in a binary file, including both RCS macros and other
+string literals.)<p>
+
+<h2>The Keywords</h2>
+
+<pre>
+     <b>$Author$</b>
+          The login name of the user who checked in the revision.
+
+     <b>$Date$</b>
+          The date and time (UTC) the revision was checked in.
+</pre>
+
+<table align=center width=70% border=1 cellpadding=5><tr><td>
+          <i>Note: UTC is not the same as your local time of day.  See 
+          "<a href="http://www.ghcc.msfc.nasa.gov/utc.html">What is
+          UTC?</a>" for more information.  By using UTC, people around
+          the world can work on a project and not have to deal with
+          time zones.
+</table><p>
+
+<pre>
+     <b>$Header$</b>
+          A standard header containing the full pathname  of  the
+          RCS  file,  the  revision  number,  the date (UTC), the
+          author, the state, and the locker (if locked).
+
+     <b>$Id$</b> Same as <i>$Header$</i>,  except  that  the  RCS 
+          filename  is without a path.
+
+     <b>$Locker$</b>
+          The login name of the  user  who  locked  the  revision
+          (empty if not locked).
+
+     <b>$Log$</b>
+          The log message supplied during checkin, preceded by  a
+          header   containing  the  RCS  filename,  the  revision
+          number, the author, and the date (UTC).   Existing  log
+          messages  are  not replaced.  Instead, the new log mes-
+          sage is inserted after $Log:...$.  This is  useful  for
+          accumulating a complete change log in a source file.
+
+     <b>$RCSfile$</b>
+          The name of the RCS file without a path.
+
+     <b>$Revision$</b>
+          The revision number assigned to the revision.
+
+     <b>$Source$</b>
+          The full pathname of the RCS file.
+
+     <b>$State$</b>
+          The state assigned to the revision with the -s option
+          of <i>rcs(1)</i> or <i>ci(1)</i>.
+</pre>
+
+<hr></body></html>

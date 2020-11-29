@@ -1,0 +1,407 @@
+<HTML><HEAD><TITLE>Knight's Tour Project</TITLE></HEAD>
+
+<BODY BGCOLOR = #FFFFFF>
+
+<H1 ALIGN=CENTER>Knight's Tour Project</H1>
+
+<h2>Contents of This Web Page</h2>
+<ul>
+<li><a href="#description">Project Description</a>
+<li><a href="#files">Files Supplied to You</a>
+<li><a href="#strategy">Development Strategy</a>
+<li><a href="#documentation">Documentation Required</a>
+<li><a href="#report">Project Report</a>
+<li><a href="#submit">Submit the Project</a>
+</ul>
+
+<h2>What and When</h2>
+<dl>
+
+<dt><b>Due Date:</b><dd>This assignment is due on the date of
+<A href="../Syllabus/class_7.html">Class 7</a> for your section.
+Consult that syllabus page for your section's meeting date.<P>
+
+Note that the due date is the class following your first exam
+for the course.  The exam will be based in part on the project,
+in the sense that working on the project is a good way to review
+for the exam.<P>
+
+<dt><b>Deliverables:</b><dd>Send a <i>tar</i> file of your "clean"
+project directory, containing a Makefile, your source code files, and a
+text file containing a project report.  See the <a
+href="../using_unix/project.html">Project Management</a> web page for
+information on making a clean project directory and submitting the
+assignment.  See the <a href="#report"> Project Report</a> section
+below for information about the report.
+
+</dl>
+
+<h2><a name="description">Project Description</a></h2>
+
+This project is based on, but is not the same as, Exercises 4.24 and
+4.25 in the textbook.  Read those two exercises carefully before working
+on the project.<P>
+
+You are to write two functions that use different algorithms to solve
+the chess problem known as the <i>Knight's Tour</i> and a driver
+program that exercises the two algorithms.  One function, which is to
+be named <i>brute()</i>, is to implement the brute-force algorithm
+described in Exercise 4.25, and the other function, which is to be
+named <i>heuristic()</i>, is to implement the algorithm described in
+Exercise 4.24c.  You may also implement the algorithm described in
+Exercise 4.24d if you wish, but it is not expected, and is not
+required.<P>
+
+The two functions for the two algorithms are both to take an <i>int</i>
+between 0 and 63 indicating the square on which to start the tour, and
+are to return an <i>int</i> between 0 and 63 telling how many moves were
+made before the tour could continue no further.  You may map the starting
+square number to a particular cell on the board any way you wish as long
+as each value maps onto a different square.<P>
+
+The main program is to call each algorithm some large number of times,
+such as 64,000, and is to count how many tours of each length each algorithm
+makes.  Each tour should start on a different square, so the
+number of times each function is called should be a multiple of 64.<P>
+
+The main program is also to determine the average time it takes the
+two algorithms to perform a tour and to make a single move.  We are
+providing you with two functions, <i>startTiming()</i> and <i>stopTiming()</i>,
+for you to use to make the timing measurements.<P>
+
+The functions <i>main()</i>, <i>brute()</i>, and <i>heuristic()</i>
+must each be defined in its own source file.  The names of the source
+files must be <code>tour.cc</code>, <code>brute.cc</code>, and
+<code>heuristic.cc</code> respectively.<P>
+
+<h2><a name="files">Files Supplied to You</a></h2>
+
+The directory <code>~vickery/CS-200/Project_1</code> contains several
+files you will use to help develop the project.  Begin work on the project
+by creating your own project directory and copying all the files in Dr.
+Vickery's project directory into it.  If you type the command, <i>make</i>,
+a complete executable version of the project will be built.  The name
+of the executable file will be <i>tour</i>.<P>
+
+This <i>tour</i> program outputs more than a screenful of information, so
+you might want to capture its output in a file:
+
+<pre>
+     $ tour > tour.out
+</pre>
+
+In this case, the output from the <i>tour</i> command has been
+redirected to the file named <code>tour.out</code>, which you can
+examine with <i>more</i> or a text editor.  Refer to the <a
+href="../using_unix/commands.html#redirection">Using Unix</a> web
+page if you are not familiar with I/O redirection.<p>
+
+Also, this <i>tour</i> program accepts the number of tours each algorithm
+is to run as an optional command line argument:
+
+<pre>
+     $ tour 64 > tour.out
+</pre>
+
+Your program is <i>not required</i> to take a command line argument.<P>
+
+Each of the files given to you is described here:
+
+<dl>
+
+<dt><code>Makefile</code><dd>This is a copy of the default
+<code>Makefile</code> for this course
+(<code>~vickery/CS-200/Makefile</code>) which has been tailored to this
+project.<p>
+
+You do not need to modify this file, but it needs to be present for
+the <i>make</i> command to work properly as you work on the project.<p>
+
+Here is an overview of what <i>make</i> will do when this Makefile is
+in your project directory:<p>
+
+<blockquote>
+
+Among other things, the Makefile contains a
+list of <i>targets</i>, which are the names of files or operations that
+you might want to "make."  The targets in this Makefile are named <i>tour</i>,
+<i>testTiming</i>, <i>clean</i>, and <i>depend</i>.  Since <i>tour</i> is
+the first target specified in the Makefile, that is the one that is made
+by default when you type the <i>make</i> command with nothing else on
+the command line.<p>
+
+The rule for making <i>tour</i> in the Makefile is to execute the command:
+
+<blockquote>
+<pre>
+g++ -g tour.o board.o brute.o heuristic.o timing.o -o tour
+</pre>
+</blockquote>
+
+Remember, you don't type in this command, you type "<i>make</i>" and
+<i>make</i> executes this command for you.<p>
+
+As you should know from class, this command doesn't cause anything
+to be compiled because only <code>.o</code> files are listed.  The
+compiler driver just links all the files listed with the standard
+library and produces an executable file named <code>tour</code>.<p>
+
+The power of <i>make</i> is that before executing the command above it
+will check if there are any files with <code>.cc</code> extensions that
+might might need to be compiled to produce any of the indicated
+<code>.o</code> files.  Thus, when you create your own
+<code>brute.cc</code> file in the project directory and execute
+<i>make</i>, it will find your file and will also determine that your
+file was edited more recently than <code>brute.o</code> was compiled,
+and <i>make</i> will automatically create a new <code>brute.o</code> file by
+executing this command for you:
+
+<blockquote>
+<pre>
+g++ -g -c brute.cc
+</pre>
+</blockquote>
+
+<i>Make</i> will then execute the <i>g++</i> command given earlier to
+link all the <code>.o</code> files together.  At this point, the
+<code>brute.o</code> file that we supplied to you (see below) will be
+replaced by your own file with the same name.  Of course you can always
+get another copy of the one we supplied from
+<code>~vickery/CS-200/Project_1</code> if you want to.<p>
+
+As you might guess, this description of how <i>make</i> handles
+<code>brute.cc</code> and <code>brute.o</code> applies to all the files
+in the project.  Since you won't create files named
+<code>board.cc</code> or <code>timing.cc</code>, <i>make</i>  will
+always link the <code>board.o</code> and <code>timing.o</code> files
+that we supplied you.  But as you work on the project (See the <a
+href="#strategy">Development Strategy</a> section below), you will
+create your own versions of <code>tour.cc</code> and
+<code>heuristic.cc</code>, and <i>make</i> will compile and link your
+new code as you develop it, even though the only command you ever give
+for building the project is just plain <i>make</i>.<p>
+
+</blockquote>
+
+
+<dt><code>tour.h</code><dd>This header file contains the function
+prototypes for <i>heuristic()</i> and <i>brute()</i>.<p>
+
+<b>Note:</b> You <i>must</i> include this file in all three of your
+source code files using the <code>#include</code> preprocessor
+command.<p>
+
+<dt><code>timing.h</code><dd>This header file contains the function
+prototypes for two functions, <i>startTiming()</i> and <i>stopTiming()</i>.
+You do not have to write eather of these functions, but you need to call
+them from your driver program to do the timing analysis required for this
+assignment.  (If you want to look at the source code for these function
+definitions, it is available in <code>~vickery/CS-200/timing.cc</code>.)<p>
+
+<b>Note:</b>  You can find out how long a section of code takes to execute
+by calling <i>startTiming()</i> before entering the code to be measured
+and by calling <i>stopTiming()</i> after the section finishes.  The value
+returned by <i>stopTiming()</i> is given in microseconds (millionths of
+a second), but the granularity of the clock on qcunix1 is 1/1024 second
+(976.56 microseconds), so you will not get a meaningful value unless you
+execute a lot of code between the point where you start timing and the
+point at which you stop.  For example, if you try to find out time the
+execution of one call to your <i>brute()</i> function, you will almost
+always get a value of 0.00, and sometimes will get a value of 976.56,
+neither of which is correct.  (The correct answer is undoubtedly somewhere
+in between.)  On the other hand, if you measure the time it takes to
+call <i>brute()</i> 10,000 times and divide the result by 10,000 you
+will get a good estimate of the <i>average</i> time per call.<p>
+
+<dt><code>board.h</code><dd>We are supplying some utility functions that
+you may or may not choose to use.  If you do use them, you will need this
+header file for the function prototypes.  These utilities assume there
+are global arrays of <code>int</code> named <code>chessBoard[8][8]</code>
+and <code>accessibility[8][8]</code>.  The function <i>clearBoard()</i>
+sets each element of <code>chessBoard</code> to zero, the function
+<i>printBoard()</i> (which is included only as a debugging aid) prints
+the <code>chessBoard</code> array, and the function <i>initAccess()</i>
+initializes the <code>accessibility</code> array to the values given
+in Exercise 4.24c.<p>
+
+<b>Note:</b>  The functions <i>brute()</i>  and <i>heuristic()</i> that
+we are supplying both call <i>clearBoard()</i>, and <i>heuristic()</i> also
+calls <i>initAccess()</i>.  Thus, to use the object modules we supply,
+you must be sure to link <code>board.o</code> with them.  The main function
+that we supply will not call either of these two functions for you, so you
+will either have to call them from your own <i>brute()</i> and
+<i>heuristic()</i> functions or do those two operations yourself somehow.<p>
+
+<dt><code>tour.o</code><dd>
+<dt><code>brute.o</code><dd>
+<dt><code>heuristic.o</code><dd>These are pre-compiled versions of the driver
+program and the two functions you are to code.  Don't look for the source
+code for these modules; writing that is your assignment!
+
+<dt><code>board.o</code><dd>
+<dt><code>timing.o</code><dd>These are the object modules for the chessboard
+and timing utility functions that you will link to your own object modules.
+
+<dt><code>timingTest.cc</code><dd>This is not really part of the project, it
+is a sample program that illustrates the use of the timing utilities.
+</dl>
+
+<h2><a name="strategy">Development Strategy</a></h2>
+
+The main reason we are supplying you with object modules is so you won't
+have to write all the code for the project at once, which makes debugging
+extremely difficult.  Instead, you will develop your program in a
+sequence of steps.  During each step you will work on just one source
+module at a time, so that you will always have just one place to look
+for bugs.  (The other reason for supplying you with object modules is
+to give you real-world experience in integrating your code with that
+written by other people.)<P>
+
+The first module you should work on is <code>brute.cc</code> because
+<i>brute()</i> is simpler to implement than either <i>main()</i> or
+<i>heuristic()</i>.  You might want to have your <i>brute()</i> call
+<i>printBoard()</i> just before it returns to make sure the tour looks
+correct while you are debugging your code.  Your function should use
+the global variables <code>chessBoard</code>, <code>horizontal</code>,
+and <code>vertical</code> (see below).  <P>
+
+<blockquote>
+It is a project requirement that the file containing your <i>brute()</i>
+function definition is named <code>brute.cc</code> and that your
+<code>brute.o</code> links with the other object modules we provided to
+produce an executable program named <i>tour</i>.<P>
+</blockquote>
+
+Once you have <i>brute()</i> working, you should write your own version of
+<code>tour.cc</code> that exercises both <i>brute()</i> and <i>heuristic()</i>.
+You will still use our copy of <code>heuristic.o</code> at this stage.<P>
+
+<blockquote>
+As mentioned earlier, your <code>tour.o</code> must
+work with our <code>brute.o</code> and <code>heuristic.o</code>, and
+your <code>heuristic.o</code> must work with our <code>tour.o</code>.
+(If I missed any permutations here, they are required too!)
+</blockquote>
+
+<b>NOTE:</b> Your <code>tour.cc</code> will have to define the
+following global variables:
+
+<pre>
+<blockquote>
+int             chessBoard[8][8];
+int             accessibility[8][8];
+const int       horizontal[8] = {  2,  1, -1, -2, -2, -1, 1, 2 };
+const int       vertical[8] =   { -1, -2, -2, -1,  1,  2, 2, 1 };
+</blockquote>
+</pre> 
+
+Finally, write your own version of <code>heuristic.cc</code>.  You can
+receive a passing grade for the project even if you do not complete this
+part of the assignment.<P>
+
+<h2><a name="documentation">Documentation Required</a></h2>
+
+There are no strict guidelines for how to document your code.  You must
+put some comments at the very beginning that identify the file, what
+function(s) is (are) defined in it, and your name.  Beyond that, write
+your code so it is neat and easy to read.  Use meaningful variable
+names.  Provide comments that introduce the various sections of your
+functions, but you do not need to supply line-by-line comments, and you
+generally do not need comments about your data.  You can look at
+<code>~vickery/CS-200/timing.cc</code> for an idea of how I like to
+document code.<p>
+
+Don't forget that you are required to provide a text file that tells
+users what your program does and how to use it.  If you have not
+already done so, you should look at the <a
+href="/courses/cs200/using_unix/project.html">Project Management</a>
+web page for information on writing this file, and the <a
+href="/courses/cs200/using_unix/project.html#project files">Project
+Files</a> section of that page in particular.
+
+<h2><a name="report">Project Report</a></h2>
+
+Let's start with what the Project Report is not.  It is <i>not</i>
+a report on programming or on C++.  It is a report that compares
+the performance of the two algorithms you implemented for doing
+Knight's Tours.<P>
+
+The project report is to be based on the data you collected from your
+program.  Even if you are unable to complete the programming assignment
+successfully, you will still be able to construct a working program
+from the object modules we supplied you and to write your report based
+on that.<P>
+
+Write your report in the format of a research paper.  It is to be
+submitted as a text file, and should be formatted so it will be easy to
+read on the screen.  Do not try to submit a document that you prepared
+with a word processor unless you are careful to convert it to the
+format of a Unix text file.<P>
+
+The report will be graded on English usage as well as on content, so be
+sure to use complete sentences that are gramatically correct with words
+spelled correctly.  (You can use the <i>spell</i> command to check your
+file for spelling errors.)<P>
+
+The report is not to be very long.  A few sentences for each of the
+sections listed below is enough.<P>
+
+<h4>Report Format</h4>
+
+Give the report a meaningful title, which should be centered in the
+first line of the file.  Put your name centered on the second line,
+and put the day of the week your section meets centered on the third
+line.<P>
+
+The report is to have the following sections, each of which is to be
+labeled as indicated here:
+
+<dl>
+
+<dt><i>Introduction</i><dd>Describe the purpose of the project in your
+own words.  Remember, the purpose of the project as far as the report
+is concerned is to measure the performance of the two algorithms.  It
+has nothing to do with programming or C++.
+
+<dt><i>Method</i><dd>Summarize the two algorithms and tell how your
+main program tested the two algorithms.
+
+<dt><i>Results</i><dd>Summarize the data you collected, but do not interpret
+the data.  If you want to get fancy and prepare a table or graph, you may
+do so, but nothing like that is required or expected.
+
+<dt><i>Discussion</i><dd>Discuss the results you obtained and draw any
+conclusions that are supported by your data.
+
+</dl>
+
+<h2><a name="submit">Submit the Project</a></h2>
+
+You are to submit this assignment by following the instructions given
+in the <a href="../using_unix/project.html#submit">Project Management</a>
+Web page.  The only files that are to be in your project directory when
+you <i>tar</i> it are the <code>.cc</code> files that you wrote, your
+<code>tour.1</code> user documentation file, and the text file containing
+your report.  It's all right if there is a copy of our <code>Makefile</code>
+is there too, since the <i>make clean</i> command will not remove it
+automatically.<p>
+
+From this project on, we would like you to use the name of your Unix
+account (like "abcqc") as the name of your <i>tar</i> file and to
+indicate what assignment you are submitting in the
+<code>Subject:</code> line of your mail message.<p>
+
+<HR>
+
+<ul>
+<li><a href="../Syllabus/index.html">CS-200 Course Syllabus</a>
+<li><a href="../index.html">CS-200 Home Page</a>
+</ul>
+
+<HR>
+<address>Dr. Christopher Vickery<br>
+Mr. Ruben Lusiniants<br>
+Queens College of CUNY</address>
+<a href="/">Dr. Vickery's Home Page</a>
+<hr>
+</BODY></HTML>

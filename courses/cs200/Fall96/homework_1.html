@@ -1,0 +1,98 @@
+<HTML> <HEAD> <TITLE>After-the-fact Notes on Homework 1</TITLE>
+</HEAD>
+
+<BODY>
+<H1 ALIGN=center>After-the-fact Notes on Homework 1</H1>
+
+<h3>Notes:</h3>
+
+<UL>
+ 
+<LI>Strictly speaking, you don't have to declare that <EM>main()</EM>
+returns an <EM>int,</EM> but good programming practice dictates that you
+should do so anyway.
+ 
+<LI>Exercise 1.26 raises some interesting questions about how to write code that
+ is both clear and efficient.  For example, it is both more clear and more effic
+ent to write this:<BR><BR>
+<BQ><TT>
+cout &lt;&lt; "The product is " &lt;&lt; num_1 * num_2 * num_3 &lt;&lt; endl;<BR
+>
+</TT></BQ>
+<BR>than this:<BR><BR>
+<Q><TT>
+int product;<BR>
+product = num_1 * num_2 * num_3;<BR>
+cout &lt;&lt; "The product is " &lt;&lt; product &lt;&lt; end;<BR>
+</TT></Q><BR>
+ 
+because the first way uses fewer lines of code (easier to understand)
+and saves the memory needed for one variable (more efficient).  But what
+about the sum and average?  It may seem surprising, but it is just as
+efficient to use:<BR><BR>
+ 
+<BQ><TT>
+cout &lt;&lt; "The sum is " &lt;&lt; num_1 + num_2 + num_3 &lt;&lt; endl;<BR>
+cout &lt;&lt; "The average is " &lt;&lt; (num_1 + num_2 + num_3) / 3 &lt;&lt; en
+d;<BR>
+</TT></BQ>
+ 
+<BR>as it would be introduce a variable named <CODE>sum</CODE> that gets
+the sum of the three numbers, and then to do something like
+this:<BR><BR>
+ 
+<CODE>
+cout &lt;&lt; "The sum is " &lt;&lt; sum &lt;&lt; endl;<BR>
+cout &lt;&lt; "The average is " &lt;&lt; sum / 3 &lt;&lt; endl;<BR><BR>
+</CODE>
+ 
+The reason is that almost any compiler will recognize that the sum of
+the three numbers is needed twice and will generate the code to
+calculate the sum just once and preserve the value to use in the second
+statement automatically.  Thus, avoiding the variable <CODE>sum</CODE>
+gives your reader less code to read while still making the meaning of
+the program clear, and it produces an equally efficient program.<P>
+ 
+Computing the minimum and maximum values can be done in a number of
+ways.  This is probably the simplest one, because it avoids the need for
+extra variables:<BR><BR>
+ 
+<PRE>
+cout &lt;&lt; "The smallest is ";
+if ((num_1 &lt; num_2) &amp;&amp; (num_1 &lt; num_3))
+  cout &lt;&lt; num_1 &lt;&lt; endl;
+if ((num_2 &lt; num_1) &amp;&amp; (num_2 &lt; num_3))
+  cout &lt;&lt; num_2 &lt;&lt; endl;
+if ((num_3 &lt; num_1) &amp;&amp; (num_3 &lt; num_2))
+  cout &lt;&lt; num_3 &lt;&lt; endl;
+</PRE>
+ 
+Unfortunately, you wouldn't know about "<code>&amp;&amp;</code>" when
+you finished reading Chapter 1, so you might use auxiliary variables for
+the minimum and maximum, like this:
+ 
+<PRE>
+int minimum = num_1;
+  if (num_2 &lt; minimum) minimum = num_2;
+  if (num_3 &lt; minimum) minimum = num_3;
+  cout &lt;&lt; "Minimum is " &lt;&lt; minimum &lt;&lt; endl;
+</PRE>
+</UL>
+ 
+
+<HR>
+<UL>
+<LI><A HREF="index.html"> Fall 1996 Syllabus and Assignments</A>
+<LI><A HREF="../index.html"> CS-200 Home Page </A>
+</UL>
+
+<HR>
+<ADDRESS>
+Dr. Christopher Vickery<BR>
+Computer Science Department<BR>
+Queens College of CUNY<BR>
+<A HREF="/"> Home Page </A> 
+</ADDRESS>
+<HR>
+</BODY>
+</HTML>

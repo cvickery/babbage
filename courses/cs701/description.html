@@ -1,0 +1,178 @@
+<HTML> <HEAD>
+<TITLE>CS-701 Course Description</TITLE>
+<META NAME="AUTHOR" CONTENT="Christopher Vickery">
+</HEAD> <BODY BGCOLOR=#ffffcc>
+
+<H1 ALIGN=center>CS-701 Software Design</H1>
+<H1 ALIGN=center>Course Description</H1>
+<H2>Introduction</H2>
+
+CS-701 introduces you to the standard tools
+for developing and managing large software projects. There is
+some chicanery involved in this effort, since we do not have time
+in one semester both to introduce the tools and actually to implement
+large projects. The compromise is to learn enough about the tools to use
+them in a few "medium-sized" projects.<p>
+
+Each student works individually in the course.  There is some
+practice in writing code that must interface with existing code written
+by others, but you do not work as part of a group for any of the
+assignments.<p>
+
+You will work with well-known industry standards: Unix System V (Solaris
+version 2.5) running on Sun SPARC workstations, the C programming
+language (or C++ if you prefer), the Motif window manager and toolkit
+for the X Window System, and TCP/IP-based client-server computing.  All
+development tools are from the Free Software Foundataion (Project GNU): The
+<i>gcc</i> or <i>g++</i> compiler, the gdb debugger, the GNU
+<i>make</i> utility, and the RCS project management tool.  You will
+also have the use of the <i>ddd</i> X Window interface to <i>gdb,</i>
+which comes from the Technische Universitaet Braunschweig, Germany.<p>
+
+<H2>Your Background</H2>
+
+The prerequisite for the course is satisfactory completion of CS-700.  Your background
+must include a course in principles of operating systems and a working
+knowledge of the C language.  You must also know how to use Unix
+commands to log in and perform basic file manipulations (create and list
+directories; edit, move, and copy files).<P>
+
+The course assumes that you already know how to program in C.
+To give you an idea of the degree of programming competence I
+expect, here is a list of some of the things you should be able
+to do in C before you start the course:<p>
+
+<UL>
+<LI>Process command line arguments.
+<LI>Perform basic file operations (open, read, write, close).
+<LI>Create a data structure that contains various data types,
+including pointers to functions and pointers to structures.
+<LI>Build and traverse a linked list using <I>malloc()</I> to
+allocate the nodes dynamically.
+<LI>Be familiar with string processing functions from the standard
+library (<I>strcmp(), strcat(), strtok(), strtol(), etc.</I>).
+<LI>Be familiar with the use of header files.
+<LI>Be able to put functions in different source code files, link
+them together, and share information between the functions.
+</UL>
+
+Remember that each graduate student in the Computer Science Department
+has an account on the Academic Computer Center's timesharing system
+running Unix, <I>qcunix,</I> which you can use to bring your C
+programming up to speed before the course begins.<p>
+
+<H2>Course Description</H2>
+
+This course uses a sequence of programming exercises to illustrate
+the use of library and system calls, process management, interprocess
+communication, and graphical user interface programming. Exercises
+in recent semesters have included a program to study algorithm
+timings, an interactive shell program, a World Wide Web server,
+a World Wide Web browser, and a text annotation system.<P>
+
+Writing documentation is an important part of this course. You
+will write separate documentation for each of the three nominal
+parties of a software project:<p>
+
+<ul>
+<li>Systems Administrators, the people who install the software that you
+develop.
+<li>Users, the people who use the software that you develop.
+<li>Programmers, the people who maintain the software that you develop.
+</ul>
+
+All documentation will be
+graded on the basis of proper English usage as well as on content
+and structure.  You should consult a standard style manual, such as <A HREF="http://www.cc.columbia.edu/acis/bartleby/strunk/">Strunk's
+<EM>Elements of Style</EM></A>, which is available on-line.<p>
+
+For material used in this course this term, go to the <A
+HREF="index.html">CS-701 Home Page.</A><p>
+
+<A NAME="textbooks"><H3>Textbooks</H3></A>
+
+Curry, D. A. <I>Unix Systems Programming</i>,
+<A HREF="http://www.ora.com">O'Reilly &amp; Associates</A>, 1996. <B>Required.</B>
+
+<BLOCKQUOTE>You will be responsible for the material in all Chapters
+except 12, 15, and 16.</BLOCKQUOTE>
+
+<P> Sobell, M. G. <I>Unix System V: A Practical Guide, Third
+Edition,</I> <A HREF="http://www.aw.com">Benjamin Cummings</A>, 1995.
+<B>Highly Recommended.</B> <BLOCKQUOTE>You will need this book or its
+equivalent to know how to use the Unix operating system in the
+laboratory, especially if you are not too familiar with Unix yet. 
+There are chapters on the editor, the shell, using the file system, and
+various utility programs you will be using.  Be sure your book is for
+Unix "SVR4" (System V Release 4) rather than some other Unix variant,
+such as SunOS, BSD, Coherent, or Linux.</BLOCKQUOTE>
+
+UNIX <I>man</I> pages.<B> Required.</B> Access these on-line.<P>
+
+<A NAME="harbison">Harbison, S. P. and Steele, G. L. Jr. <I>C: A
+Reference Manual, Fourth Edition,</I></A> <A
+HREF="http://www.prenhall.com">Prentice-Hall</A>, 1995.<B>Recommended.</B>
+
+<BLOCKQUOTE>Everybody needs a C reference manual, and this is the one I
+use.  Alternatively, you might prefer to use a C++ reference manual,
+such as one of the volumes by Stroustrup:
+<ul>
+  <li>Stroustrup, B.  <i>The C++ Programming Language, Second Edition</i>
+  <li> Ellis, M. and Stroustrup, B.  <i>The Annotated C++ Reference Manual</i>
+</ul>
+Both of these are published by <A
+HREF="http://www.aw.com">Addison-Wesley</A>.
+</BLOCKQUOTE>
+
+<P> Nye, A. and O'Reilly, T. <I>X Toolkit Intrinsics Programming
+Manual:  OSF/Motif 1.2 Edition,</I> Volume 4 in &quot;The Definitive
+Guides to the X Window System,&quot; <A
+HREF="http://www.ora.com">O'Reilly &amp; Associates</A>, 1993.  This
+volume may also be called "Volume 4M" rather than "Volume Four: Motif
+Edition."  In any case, the ISBN is 1-56592-013-9.
+<B>Highly Recommended.</B>
+
+<BLOCKQUOTE>In past semesters we have not had enough time to do proper
+justice to Motif programming, and students have been able to complete
+their assignments without buying this book.  In those semesters I gave
+out sample code for a Motif application, and students learned just
+enough about Motif to be able to modify it.  I plan to follow the same
+strategy this semester.  However, you will learn more from the sample
+code if you have this book available than if you just rely on what I
+say about it in class.  Also, this book or its equiavalent will be
+essential to you if you ever do any Motif programming beyond this
+course.</BLOCKQUOTE>
+
+<P> Heller, D. and Ferguson, P. M. <I>Motif Programming Manual for
+OSF/Motif Release 1.2,</I> Volume 6A in &quot;The Definitive Guides to
+the X Window System,&quot; <A HREF="http://www.ora.com">O'Reilly &amp;
+Associates</A>, 1994.<B> Recommended.</B>
+
+<BLOCKQUOTE>The same material is available on-line, so this one is not
+so important to buy.</BLOCKQUOTE>
+
+<P> Oram, A. and Talbott, S. <I>make,</I> <A
+HREF="http://www.ora.com">O'Reilly &amp; Associates</A>, 1991.<B>
+Recommended.</B>
+
+<BLOCKQUOTE>More than you will need to know about <i>make</i> for this
+course, but an excellent source if you really want to master this
+utility.</BLOCKQUOTE>
+
+<P> van der Linden, P. <I>Expert C Programming: Deep C Secrets,</I> <A
+HREF="http://www.prenhall.com">Prentice-Hall</A>, 1994.
+<B>Recommended.</B>
+
+<BLOCKQUOTE>Read this if you want to learn the tricks of the trade used
+by professional C programmers.  Some of the material is oriented
+towards Sun systems, but the vast majority applies to all systems.  You
+could call this book, "Things you should have learned in school but
+probably didn't."  It's very entertaining as well as
+informative.</BLOCKQUOTE>
+
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+<A HREF="/">Home Page</A>
+<HR>
+</BODY>
+</HTML>

@@ -1,0 +1,219 @@
+#! /usr/local/bin/ksh
+
+# Usage: grade [<directory>]
+
+# If a directory is specified, use it.
+#  Otherwise, Process all .dir directories.
+
+dirs=$1
+if [[ $dirs == "" ]]
+then
+  dirs="*.dir"
+fi
+
+# Grading loop starts here
+
+for f in $dirs
+do
+  f=${f%.dir}
+  report=${PWD}/$f.grade
+  clear
+  grep $f ../Roster
+
+  if [[ -e $report ]]
+  then
+    print "Note: $f.grade already exists!"
+    read oas?"Overwrite, Append, or Skip? [oaS] "
+    case $oas in
+      [oO]*)  rm -f $f.grade
+              in=yes
+              ;;
+      [aA]*)  in=yes
+              ;;
+      *)      in=no
+              ;;
+    esac
+  else
+    read in?"Do it? "
+  fi
+
+  if [[ $in == "" || $in == y* ]]
+  then
+    if [[ ! -e $report ]]
+    then
+      grep $f ../Roster > $report
+      cat boilerplate >> $report
+    fi
+
+    cd $f.dir/*
+    if [[ $? != 0 ]]
+    then
+      cat <<!!! >> $report
+*** Your tar file did not contain a project subdirectory.  
+*** Unable to process.
+!!!
+      exit 1
+    fi
+
+    rm -f vickery_*
+    if [[ $(basename $PWD) == [vV]ickery ]]
+    then
+      cat <<!!! >> $report
+
+*** Your tar file was made from within the project subdirectory
+    instead of from the directory above it.
+
+Files Submitted
+===============
+!!!
+
+    else cat <<!!! >> $report
+
+Contents of your Project Subdirectory
+=====================================
+
+!!!
+    fi
+
+    /bin/ls -lG >> $report
+    /bin/ls -ldG RCS
+    if [[ $? != 0 ]]
+    then
+      cat <<!!! >> $report
+*** There is no RCS subdirectory.
+*** Unable to proceed with evaluation.
+!!!
+      exit
+    fi
+
+    cat <<!!! >> $report
+
+Building your program using make:
+=================================
+
+!!!
+make clean
+
+co -l Makefile
+make depend > /dev/null
+ci Makefile
+print -- "extern char**environ;" >|out
+cat out ouch.h >| tmp
+mv -f tmp ouch.h
+rm -f out
+
+# Basic make
+print "make" >> $report 2>&1
+/usr/bin/make >> $report 2>&1
+
+    cat <<!!! >> $report
+
+RCS/make Project Management
+===========================
+
+  Did the make clean, make depend, and make rules work
+  correctly?
+
+    Yes.
+
+Code Formatting
+===============
+$(chk_format *.cc *.h)
+!!!
+
+  chk_format *.cc *.h > /dev/null
+  if [[ $? != 0 ]]
+  then
+    cat <<!!! >> $report
+*** There are formatting errors in your code.  There should be no tab
+    characters and no lines longer than 72 characters.
+!!!
+  fi
+
+cat <<!!! >> $report
+
+
+Testing the program:
+=====================
+
+  The grading script did the following, with output (not input) shown
+  below.  Note that output written to stderr comes out before output
+  written to stdout.
+
+      Create man and man/man1 subdirectories if not present
+      Check out ouch.1 and install it in man/man1
+      Run "man ouch"
+      Run ouch, with the following commands entered automatically:
+        ls -l junk
+        print The previous exit code was $? (should be 1)
+        print The previous exit code was $? (should be 9)
+        ls -l > out ; cat < out
+        date >> out
+        cat < out
+        print " Simple test of string      handling."
+        cd ..
+        pwd
+        exit
+
+=================================================
+--- Checking man page ---
+!!!
+
+rm -f out
+mkdirhier ./man/man1
+co ouch.1
+cp -f ouch.1 ./man/man1
+man -M ./man ouch
+
+print -- "--- Running ouch ---" >> $report
+
+PS1='Grading> ' ./ouch <<!!! >> $report 2>&1
+ls -l junk
+print The previous exit code was \$? (should be 1)
+print The previous exit code was \$? (should be 9)
+ls -l > out ; cat < out
+date >> out
+cat < out
+print "Simple test of string      handling."
+cd ..
+pwd
+exit
+!!!
+
+
+cat <<!!! >> $report
+
+=================================================
+
+  Was the man page okay?
+
+    Yes.
+
+  Did the program run correctly?
+
+    Yes.
+
+
+Assignment Grade: 5.0/5.0
+=========================
+
+!!!
+
+    xterm -geometry 80x50+10+10 -e vim  $report ouch.1 &
+    
+    print Quit this shell to continue to next student.
+    ENV=~/.kshrc ksh
+    
+#   in=n
+#   while [[ $in == n* ]]
+#   do
+#     read in?"Finished? "
+#     [[ $in == n* ]] && ENV=~/.kshrc ksh
+#   done
+    make clean
+    rm -f ouch.h tmp out
+    cd ~/Courses/cs701/2001_09/Assignment_05
+
+  fi
+
+done

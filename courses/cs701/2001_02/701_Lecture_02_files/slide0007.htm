@@ -1,0 +1,173 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 2</title>
+<meta name=Description content="3-Feb-01: Kernel Calls">
+<link rel=next href=slide0008.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0007.htm');   
+  else
+    parent.location.href = "../701_Lecture_02.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=117 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=161 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=128 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=157 height=33 colspan=2></td>
+  <td width=161 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=161 height=33 align=center><font face="Times New Roman" size=5>Kernel
+    Calls</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=157 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=28 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=198></td>
+  <td width=406 height=198 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=41 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=187 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=36 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=36 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=21 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=386 height=21 colspan=12><font face="Times New Roman" size=3>The
+    kernel provides a set of functions, like <i>fork(),</i></font><br>
+    </td>
+    <td width=2 height=21></td>
+   </tr>
+   <tr>
+    <td width=406 height=1 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=282 height=21 colspan=8><font face="Times New Roman" size=3>that
+    can be called from applications.</font><br>
+    </td>
+    <td width=106 height=21 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=406 height=5 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=365 height=21 colspan=11><font face="Times New Roman" size=3>When
+    kernel functions execute, the CPU is put</font><br>
+    </td>
+    <td width=23 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=406 height=2 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=318 height=21 colspan=9><font face="Times New Roman" size=3>into
+    a special mode so that it can execute</font><br>
+    </td>
+    <td width=70 height=21 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=406 height=1 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=250 height=21 colspan=6><font face="Times New Roman" size=3>privileged
+    machine instructions.</font><br>
+    </td>
+    <td width=138 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=406 height=4 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=333 height=18 colspan=7><font face="Times New Roman" size=2>It
+    takes a lot of time to switch in and out of kernel</font><br>
+    </td>
+    <td width=34 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=406 height=1 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=42 height=18 colspan=2><font face="Times New Roman" size=2>mode.</font><br>
+    </td>
+    <td width=325 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=406 height=5 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=367 height=18 colspan=10><font face="Times New Roman" size=2>Library
+    functions contain machine language code to do</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=406 height=1 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=254 height=18 colspan=4><font face="Times New Roman" size=2>the
+    actual switching into kernel mode.</font><br>
+    </td>
+    <td width=113 height=18 colspan=6></td>
+   </tr>
+  </table>
+  </td>
+  <td width=29 height=198></td>
+ </tr>
+ <tr>
+  <td width=475 height=51 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

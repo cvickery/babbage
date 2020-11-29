@@ -1,0 +1,199 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 2</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:34497152-6D65-4BF3-A23E-AD6CDDEFDB44'>
+
+    <h1>CS-90.3 Assignment 2</h1>
+
+    <div id="content">
+      <h2>Reading</h2>
+      <div>
+        We are still working on material from Chapters 1 and 2 of the Simply JavaScript book, but have also started on
+        the material in Chapter 3. We haven’t covered Objects, the last topic in Chapter 2 yet in class, but will be
+        doing so next. We also haven’t covered conditions (if statements) and loops (for/while statements) yet; learn as
+        much as you can about them from the text, because we will not spend a lot of class time on them despite their
+        being critical parts of JavaScript.
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <h3>Introduction</h3>
+        <p>
+          This is an exercise in working with various elements of the JavaScript language: literal values, variables,
+          expressions, functions, and arrays. The emphasis of this assignment is on identifying <em>types</em> of
+          information.
+        </p>
+        <p>
+          There are three parts to the assignment, just two of which are “deliverables” to be submitted for grading:
+        </p>
+        <ol>
+          <li>
+            Write a JavaScript program to generate the answers to a sequence of questions
+            (<em>deliverable</em>)
+          </li>
+          <li>
+            Use the <span class="program-name">Firebug</span> console to view the output from your program
+            (<em>not deliverable</em>).
+          </li>
+          <li>
+            Write out the answers to the questions for which your program generated the answers
+            (<em>deliverable</em>).
+          </li>
+        </ol>
+        <h3>Changes To Your Web Site</h3>
+        <p>
+          The only change to make to your <span class="file-name">index.xhtml</span> file from Assignment 1 is to change
+          the link to <span class="file-name">assignment_01.js</span> into a link to another file named <span
+          class="file-name">assignment_02.js</span>.
+        </p>
+        <p>
+          Create the file <span class="file-name">assignment_02.js</span> in your <span
+          class="directory-name">scripts</span> directory, and add a sequence of statements to it that will generate the
+          answers to the following list of questions.
+        </p>
+        <p class="standout-block">Be sure the outputs from the program
+          include the question numbers, as shown in the sample answers to the first two questions.
+        </p>
+        <h3>The Questions</h3>
+        <p>
+          I have provided you with the answer to the first two questions to provide models for doing the
+          assignment.
+        </p>
+        <ol>
+          <li>
+            <h4>What type of information is <span class="code-snippet">3</span>?</h4>
+            <p>The code you write might look like this:</p>
+            <div class="code-block">
+console.log("1. 3 is a " + typeof 3 + ".");
+            </div>
+            <p>
+              The program output should be <span class="code-snippet">1. 3 is a number.</span>&mdash;which would be
+              the answer you type into your email for the first question.
+            </p>
+          </li>
+          <li>
+            <h4>Assign the value <span class="code-snippet">"3"</span> to a variable named
+            <span class="variable-name">xanadu</span>, and tell what type of information the variable holds.</h4>
+            <div class="code-block">
+var xanadu = "3";
+console.log("2. xanadu is a " + typeof xanadu + ".");
+            </div>
+            <p>
+              The program output should be “<span class="code-snippet">2. xanadu is a string.</span>”&mdash;which
+              would be the answer you type for the second question.
+            </p>
+          </li>
+          <li>
+            <h4>
+              Assign the value <span class="code-snippet">"3" + 3</span> to the same variable,
+              <span class="variable-name">xanadu</span>, and tell what type of information the variable holds now.
+            </h4>
+          </li>
+          <li>
+            <h4>
+              Assign the value <span class="code-snippet">"3" - 3</span> to <span class="variable-name">xanadu</span>,
+              and tell what type of information the variable holds now.
+            </h4>
+          </li>
+          <li><h4>Explain the difference between the effects of the + and - operators in the previous
+          two questions.</h4> There is no JavaScript code to write for this question.</li>
+          <li>
+            <h4>
+              Assign the value <span class="code-snippet">3 - xanadu</span> to <span class="variable-name">xanadu</span>,
+              and tell both the new value of <span class="variable-name">xanadu</span> and its type.
+            </h4>
+          </li>
+          <li>
+            <h4>
+              Assign the value <span class="code-snippet">3 - "xanadu"</span> to <span class="variable-name">xanadu</span>,
+              and tell both the new value of <span class="variable-name">xanadu</span> and its type.
+            </h4>
+          </li>
+          <li><h4>Explain the difference between the previous
+          two questions.</h4> There is no JavaScript code to write for this question.</li>
+          <li>
+            <h4>
+              Assign the value <span class="code-snippet">[ ]</span> to a variable named
+              <span class="code-snippet">Nan</span>. What are the values and types of the variables,
+              <span class="code-snippet">NaN</span>, <span class="code-snippet">"NaN"</span>, and
+              <span class="code-snippet">Nan</span>?
+            </h4>Explain your answers.
+          </li>
+          <li>
+            <h4>What is the type of <span class="code-snippet">Nan</span>?</h4>
+            <em>Hint: the answer is not what you probably expected.</em>
+          </li>
+          <li>
+            <h4>
+              What value could you assign to <span class="code-snippet">Nan[0]</span> so its type would
+              be <span class="code-snippet">"number"</span>?
+            </h4>
+          </li>
+          <li>
+            <h4>
+              What are the value and type of <span class="code-snippet">1.23E2</span>?
+            </h4>
+          </li>
+          <li>
+            <h4>Assign the value <span class="code-snippet">function(){}</span> to
+              <span class="code-snippet">Nan[3]</span>; tell the type of this value; tell the value of
+              <span class="code-snippet">Nan.length</span>.
+            </h4>
+          </li>
+          <li>
+            <h4>What is the type of the value, <span class="code-snippet">{ }</span>?</h4>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you have tested your code and determined the answers to the questions, type your answers into the
+          <strong>body</strong> (not an attachment) of an email message, and send it to me.  I’ll copy your entire web
+          site to my computer (babbage) and check out your code and will check your email to be sure you answered the
+          questions correctly.
+        </p>
+        <p>
+          Send your email message to me at: vickery<span class="at" title="Change to @">at</span>babbage.cs.qc.cuny.edu
+          by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-90.3 Assignment 2.”
+        </p>
+        <p>
+          Don’t forget to put your name in your email message!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

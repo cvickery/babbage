@@ -1,0 +1,180 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 6</title>
+<meta name=Description content="21-Feb-01: More Points About Pointers">
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0013.htm');   
+  else
+    parent.location.href = "../701_Lecture_06.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=358 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=59 height=33 colspan=2></td>
+  <td width=358 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=358 height=33 align=center><font face="Times New Roman" size=5>More
+    Points About Pointers</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=58 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=27 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=159></td>
+  <td width=392 height=159 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=89 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=103 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=96 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=143 height=18 colspan=9><font face="Times New Roman" size=2>char
+    msg[] = “hello”;</font><br>
+    </td>
+    <td width=232 height=18 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=393 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=354 height=16 colspan=13><font face="Times New Roman" size=1>Now,
+    msg and &amp;msg[0] are both pointers to the first byte of the</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=39 height=16 colspan=4></td>
+    <td width=33 height=16 colspan=5><font face="Times New Roman" size=1>array.</font><br>
+    </td>
+    <td width=321 height=16 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=393 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=351 height=16 colspan=12><font face="Times New Roman" size=1>Both
+    *msg = ‘J’; and msg[0] = ‘J’; change the string to “Jello”.</font><br>
+    </td>
+    <td width=3 height=16></td>
+   </tr>
+   <tr>
+    <td width=393 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=255 height=16 colspan=11><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span>*(msg + 4) = ‘a’; is the same as msg[4] =
+    ‘a’;</font><br>
+    </td>
+    <td width=99 height=16 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=393 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=230 height=16 colspan=9><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span>msg[2] = ‘\0’; changes the string to
+    “Je”.</font><br>
+    </td>
+    <td width=124 height=16 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=393 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=204 height=14 colspan=4><font face="Times New Roman" size=1>Memory
+    ends up with 4A 65 00 6c 6f 00</font><br>
+    </td>
+    <td width=129 height=14 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=60 height=14 colspan=7></td>
+    <td width=206 height=14 colspan=5><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes">                                      
+    </span>J<span style="mso-spacerun: yes">   </span>e<span
+    style="mso-spacerun: yes">   </span>\0<span style="mso-spacerun: yes"> 
+    </span>l<span style="mso-spacerun: yes">    </span>o<span
+    style="mso-spacerun: yes">  </span>\0</font><br>
+    </td>
+    <td width=127 height=14 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=393 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=229 height=14 colspan=7><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span>printf(“%s\n”, &amp;msg[3]);<span
+    style="mso-spacerun: yes">  </span>// would print “lo”</font><br>
+    </td>
+    <td width=104 height=14 colspan=3></td>
+   </tr>
+  </table>
+  </td>
+  <td width=43 height=159></td>
+ </tr>
+ <tr>
+  <td width=475 height=91 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

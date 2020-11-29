@@ -1,0 +1,100 @@
+<HTML><HEAD><TITLE>qshell.c</TITLE></HEAD><BODY>
+<CENTER><H1>qshell.c</H1></CENTER><HR><PRE>
+/* qshell.c
+ *
+ *    Writing a shell in C
+ *    C. Vickery
+ *
+ *        First step: Recognize and interpret built-in commands.
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+/*  New Types
+ *  -------------------------------------------------------------------
+ */
+typedef enum { false, true } bool;
+
+typedef int procfun( char * );
+
+
+/*  Built-in commands
+ *  -------------------------------------------------------------------
+ */
+int terminate( char *code ) {
+
+  exit( code ? atoi(code) : 0 );
+  
+  }
+
+/*  Dispatch Table for built-in commands
+ *  -------------------------------------------------------------------
+ */
+typedef struct {
+  char      *name;
+  procfun   *do_builtin;
+  } dt;
+
+dt builtins[] = { { "exit", terminate },
+                };
+
+const int numBuiltins = sizeof builtins / sizeof builtins[0];
+
+/*  Shell Variables
+ *  -------------------------------------------------------------------
+ */
+ 
+char      *PS1 = "q! ";
+int       cmd_status;
+
+
+/*  Function main()
+ *  -------------------------------------------------------------------
+ *
+ *      Reads command lines and executes built-ins.
+ */
+int
+main( int argc, char *argv[], char *envp[] ) {
+
+char    inBuf[1024],
+       *cmd_name;
+int     i;
+bool    found;
+
+  for ( ;; ) {
+  
+    printf( "%s", PS1 );
+    gets( inBuf );
+    cmd_name = strtok( inBuf, "\t\n " );
+
+    if (cmd_name) {
+
+      found = false;
+      for ( i = 0; i < numBuiltins; i++ ) {
+
+          if ( !strcmp( cmd_name, builtins[i].name ) ) {
+            cmd_status = builtins[i].do_builtin(
+                                      strtok( NULL, "\t\n " ) );
+            found = true;
+            break;
+
+          }
+
+        }
+        
+      if ( !found ) {
+        printf( "%s: %s: unrecognized command\n", argv[0], cmd_name );
+        }
+        
+      }
+      
+    }
+  
+  return 0;
+
+  }
+
+  
+</PRE><HR></BODY></HTML>

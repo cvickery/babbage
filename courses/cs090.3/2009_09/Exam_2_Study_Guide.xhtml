@@ -1,0 +1,136 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-090.3 Final Exam</title>
+
+    <link rel="shortcut icon" href="../../cs081/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <style media="all" type="text/css">
+      td {text-align:center;}
+      table {margin: 1em auto;}
+    </style>
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:64427FC0-CFE4-4B09-9AD2-E6994189CC57'>
+    <h1>CS-090.3 Final Exam</h1>
+    <h2>Introduction</h2>
+    <div>
+    	This document might help you prepare for the final exam on December 15.
+    </div>
+    <h2>Topics</h2>
+    <div>
+    	<p>
+      	I have still not received working copies of Assignment 6 from everyone in the course, and I decided not to
+        assign a PHP project for Assignment 8. So the final exam will test your JavaScript skills and will include
+        only conceptual questions on PHP.
+      </p>
+      <p class='standout-block'>
+      	<strong>Disclaimer: </strong> the following is a list of topics you can expect to be tested on, but I cannot guarantee
+        that it is complete.
+      </p>
+			<ul>
+      	<li>
+        	JavaScript data structures: objects and arrays.
+        </li>
+        <li>
+        	JavaScript regular expressions: be able to write code that tests the value a user has typed into an
+          <span class="tag-name">input</span> element.
+        </li>
+        <li>
+        	Types of event listeners: keyup, change, and submit in particular.
+        </li>
+        <li>
+        	Using the <span class="function-name">Core.start()</span> function to set up an <span class="function-name">init()</span>
+          method. Remember: you are supposed to be able to reproduce the Core.start() function&rsquo;s code, found on page 385 of the
+          text.
+        </li>
+        <li>
+        	Setting up application-global variables and accessing them from within event listener functions (including
+          <span class="function-name">init()</span>, which is an event listener for the 
+          <span class="variable-name">window.onload</span> event).
+        </li>
+        <li>
+        	Using JavaScript to change the value of an element&rsquo;t text content.
+        </li>
+        <li>
+        	Using the <span class="function-name">element.setAttribute()</span> function and CSS to change the appearance of
+          XHTML elements.
+        </li>
+        <li>
+        	Using <span class="function-name">Core.addClass()</span> and <span class="function-name">Core.removeClass()</span>
+          with appropriate CSS rules to change the appearance of elements. 
+        </li>
+        <li>
+        	How to use <span class="function-name">Core.preventDefault()</span> and what it does. (<strong>Note: </strong>
+          it can be used in other event listeners besides submit listeners.)
+        </li>
+        <li>
+        	Use of the <span class="function-name">console.log()</span> function for debugging.
+        </li>
+        <li>
+        	Explain how form data is transmitted to the server using the GET and POST methods.
+        </li>
+        <li>
+        	Explain how the server passes HTTP requests to the PHP processor if approptiate.
+        </li>
+        <li>
+        	Explain the role of the $_GET and $_POST arrays in PHP programs that receive form data, including the use of strings
+          as subscripts into PHP arrays.
+        </li>
+        <li>
+        	Explain what PHP scripts do with the code between <span class="variable-name">&lt;?php</span> and 
+          <span class="variable-name">?&gt;</span> tags, including the role of the <span class="function-name">echo</span> statement.
+        </li>
+      </ul>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href=".././">Course Home Page</a>&mdash;<a
+         href="./">This Semester&rsquo;s Schedule Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

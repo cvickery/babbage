@@ -1,0 +1,76 @@
+<HTML><HEAD><TITLE>main.c</TITLE></HEAD><BODY>
+<CENTER><H1>main.c</H1></CENTER><HR><PRE>
+/*  $Id: main.c,v 1.1 1999/03/23 14:15:26 vickery Exp $
+ *
+ *    Driver program for the new strtok().
+ *
+ *    C. Vickery
+ *    CS-381.2
+ *    Spring 99
+ *
+ *    $Log: main.c,v $
+ * Revision 1.1  1999/03/23  14:15:26  vickery
+ * Initial revision
+ *
+ */
+
+#include &lt;stdio.h>
+#include &lt;stdlib.h>
+
+#include "strtok.h"
+
+char *
+strchr( const char *, int c );
+size_t
+strspn( const char *, const char * );
+
+int
+main( int argc, char *argv[], char *envp[] ) {
+
+int   cmdNo;
+char  *token;
+char  inBuf[1024];
+char  *continuation;
+char  termChar[3];
+
+
+  for (;;) {
+
+    printf( "Enter command: " );
+    gets( inBuf );
+
+    continuation = inBuf;
+    continuation += strspn( continuation, " \t" );
+    if ( ! *continuation ) continue;
+    if ( strchr( "&;|", *continuation ) ){
+      fprintf( stderr, "Syntax error: \'%c\' unexpected at beginning "
+                       "of line.\n", *continuation );
+      continue;
+      }
+
+    cmdNo = 1;
+    while ( (token = strtok(  continuation,
+                              ";|&",
+                              &continuation,
+                              termChar ) ) != NULL) {
+    termChar[1] = '\0';
+    if ( ((*termChar == '&') && (*continuation == '&')) ||
+         ((*termChar == '|') && (*continuation == '|')) ||
+         ((*termChar == ';') && (*continuation == ';')) ) {
+      termChar[1] = *continuation++;
+      termChar[2] = '\0';
+      }
+    if ( *continuation && strchr( "&|;", *continuation) ) {
+      fprintf( stderr, "Syntax error: \'%c\' unexpected after "
+                "\"%s %s\"\n", *continuation, token, termChar );
+      break;
+      }
+    else {
+      printf( "  Command %d was: \"%s\"\n", cmdNo++, token );
+      printf( "  It was terminated by \'%s\'\n", termChar );
+      }
+
+    }
+  }
+}
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,27 @@
+
+
+  For Assignment 4, one task is to prevent form submission
+  when the form has not been filled out properly. In class,
+  I think I said that you can prevent form submission by
+  having the submit event handler return false, which is
+  technically correct, but misleading because you should be
+  using event listeners (set up with
+  Core.addEventListener()) instead of event handlers (set
+  up by assigning a function reference to the form's
+  onsubmit property). For event listeners, you prevent form
+  submission by calling Core.preventDefault(event) -- which
+  handles the fact that IE handles this process differently
+  from all other browsers. Note also, that event listeners
+  don't need to return a value, and if they do it won't do
+  anything.
+
+  As an added feature, input elements (the submit button in
+  particular) have a disabled property that you can use to
+  prevent the user from trying to click it until all the
+  form fields have been verified. But for this assignment, I
+  suggest that you leave the submit button enabled and use
+  the event listener to decide whether to allow the form to
+  be submitted or not.
+
+  Hope this helps,
+  Dr. Vickery

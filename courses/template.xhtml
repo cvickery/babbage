@@ -1,0 +1,78 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    . date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- template.xhtml
+
+  This template is designed to work as the first page for a course. To use it
+  from Dreamweaver: Make a copy; drag the copy to the course site; rename to
+  template.xhtml.  At this point, the links in the head point to favicon and
+  stylesheets in the course's directory; at least favicon should be updated. Add
+  links to the semester's css and scripts directories. Update all occurrences of
+  '#' in the footer. Now you have the template for pages for that course.
+
+-->
+  <head>
+
+    <title>Template</title>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Template</h1>
+    </div>
+
+    <div id="content">
+      <h2>Topic</h2>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.<br />
+      <a 
+        href="../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="#">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="##">CSCI-#### Home Page</a><br /><a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>
+    </div>
+  </body>
+</html>

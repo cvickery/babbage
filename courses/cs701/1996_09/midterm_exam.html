@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<TITLE>Midterm Exam</TITLE>
+
+<META NAME="GENERATOR" CONTENT="Internet Assistant for Microsoft Word 2.04z">
+</HEAD>
+<BODY>
+<P>
+1. For each of the following system calls or library functions,
+tell what arguments the function receives, what value it returns,
+and what the function accomplishes.
+<OL>
+<LI>fork
+<LI>exec
+<LI>wait
+<LI>signal
+<LI>kill
+<LI>alarm
+<LI>open
+<LI>read
+<LI>fopen
+<LI>fread
+</OL>
+<P>
+2. This question is the same as #1 for <I>mmap(),</I> but I am
+giving you &quot;the format of the call&quot; as it is given in
+the man page:
+<P>
+ <TT><FONT SIZE=2 FACE="Courier New">pa = mmap(addr, len, prot,
+flags, fildes, off);</FONT></TT>
+<P>
+3. Draw a diagram that shows the segments of a process' virtual
+memory, then answer the following questions about:
+<UL>
+<LI>the variables <TT><FONT SIZE=2 FACE="Courier New">u, v, w,
+x, y, z</FONT></TT>
+<LI>the memory pointed to by <TT><FONT SIZE=2 FACE="Courier New">z</FONT></TT>
+</UL>
+<P>
+in the program below:
+<OL>
+<LI>What virtual memory segment does it occupy.
+</OL>
+<OL>
+<LI>What is its scope.  (i.e., what parts of the program can access
+it.)
+<LI>When does it come into existence.
+<LI>When does it go out of existence.
+</OL>
+<P>
+<TT><FONT SIZE=2 FACE="Courier New">#include &lt;stdlib&gt;</FONT></TT>
+<P>
+<TT><FONT SIZE=2 FACE="Courier New">int   u</FONT></TT>
+<P>
+<TT><FONT SIZE=2 FACE="Courier New">static int  v<BR>
+</FONT></TT>
+<P>
+<TT><FONT SIZE=2 FACE="Courier New">int foo(int w) {</FONT></TT>
+<P>
+<TT><FONT SIZE=2 FACE="Courier New">  int   x;</FONT></TT>
+<P>
+<TT><FONT SIZE=2 FACE="Courier New">  static int y;</FONT></TT>
+<P>
+<TT><FONT SIZE=2 FACE="Courier New">  int*  z = malloc(sizeof(int));</FONT></TT>
+<P>
+<TT><FONT SIZE=2 FACE="Courier New">  }</FONT></TT>
+<P>
+4. Describe what is found in the <TT><FONT SIZE=2 FACE="Courier New">/proc</FONT></TT>
+and <TT><FONT SIZE=2 FACE="Courier New">/usr/proc/bin</FONT></TT>
+directories.
+<HR>
+Christopher Vickery<BR>
+Queens College of CUNY<BR>
+<HR>
+</BODY>
+</HTML>

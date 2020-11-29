@@ -1,0 +1,113 @@
+<HTML> <HEAD> <title> Editing Text Files </title> </HEAD>
+<BODY BGCOLOR=#ffffff>
+
+<H1 ALIGN=center>Editing Text Files</H1>
+
+<H2>Introduction</H2>
+
+This page tells you how to edit text files for this course.  It covers
+these options:
+
+<ol>
+<li>Use <i>pico</i>
+<li>Use <i>vi</i>
+<li>Use <i>emacs</i>
+<li>Use a Graphical User Interface (GUI) Editor
+<li>Use a DOS editor
+</ol>
+
+<H2><A NAME="pico">pico</A></H2>
+
+Your easiest option is to use <i>pico</i>, the same editor that you will
+use to compose e-mail messages in <i>pine</i>.  It's primary virtue is that
+there is virtually nothing to learn because it is so simple and because
+it always displays a menu of possible commands at the bottom of the screen.<P>
+
+The disadvantages to using Pico are (1) it doesn't include any features to
+make it easier to edit program files, (2) it does automatic word-wrap, which
+can mess up single line comments without your noticing it, and (3) it
+responds slowly to cursor movement keys.<P>
+
+<H2><A NAME="vi">vi</A></H2>
+
+Whatever Unix system you use, you will find <i>vi</i> there.  It's much more
+powerful than <i>pico</i>, but you have to learn its commands.  There is
+a tutorial program on qcunix1 to teach you the basics of <i>vi</i>: type
+"<code>learn vi</code>" at the shell prompt and follow the instructions.<P>
+
+There is a configuration option for <i>pine</i> that will let you use
+<i>vi</i> either as the default editor for composing messages or as an
+alternative editor that is invoked when you type "<code>^_</code>" in
+the Message Text part of the screen.
+
+<H2><A NAME="emacs">emacs</A></H2>
+
+<i>emacs</i> is a very powerful editor that has the virtue of being
+programmable.  You can program it to do just about everything you might
+want to do with a computer, it seems.  The price you pay for all this
+power is a ton of complexity.  Unless you already know it, I don't
+recommend trying to use it for this course.<P>
+
+<H2><A NAME="gui">GUI Editors</A></H2>
+
+One disadvantage of <i>pico</i>, <i>vi</i>, and <i>emacs</i> is that
+you can't use the mouse to navigate through your text.  If you run one
+of the X Window system editors, you can overcome that problem.  On
+qcunix1, the X Window editor is called <i>dxnotepad</i>.  How to use it
+is pretty self-evident once you get it started.  In addition, if you
+start <i>emacs</i> when you are running the X Window System, it runs in
+its own window.  (On some other Unix systems, such as Solaris,
+<i>emacs</i> under X has a full GUI interface, including drop down
+menus, a scroll bar, and full mouse support.  This interface does not
+seem to be available on qcunix1 at the time of this writing.)<P>
+
+<H2><A NAME="dos">DOS Editors</A></H2>
+
+You could use a DOS or Windows editor on a PC to edit your text files,
+and then transfer the files to your qcunix1 account using Kermit or
+(if you have Internet access from your PC) <i>ftp</i>.  If you use this
+option, you need to know about the difference between how DOS and Unix
+store text files.  Generally speaking, the differences will not effect
+your programs, but it is good to know about them anyway, just in case.<P>
+
+A Unix text file is a stream of bytes, with each byte containing the
+ASCII code for one character.  The end of each line of text is the
+ASCII linefeed character <code>&lt;lf&gt;</code>, which has the numeric
+value of decimal ten (written in C++ as the character constant
+<code>'\n'</code> or as the hexadecimal constant <code>0x0A</code>).
+Strictly speaking <code>&lt;lf&gt;</code> is a control code that causes
+the cursor to move down one line on the screen.  There is another ASCII
+control code, carriage return <code>&lt;cr&gt;</code> (written
+<code>13</code>, <code>'\r'</code>, or <code>0x0D</code> in C++) that
+moves the cursor to the left side of the screen.  When you look at a
+text file on the screen, the operating system knows enough to output a
+carriage return every time is comes to a linefeed in order to make each
+line start at the left margin.  DOS uses a different convention for
+storing text files.  When you press <code>&lt;Enter&gt;</code>, a DOS editor
+puts both <code>&lt;cr&gt;</code> and <code>&lt;lf&gt;</code> into the
+file.  (Macintosh, by the way uses the only other possible combination:
+it puts just the <code>&lt;cr&gt;</code> into the file when you press
+<code>&lt;Enter&gt;</code>.)<P>
+
+DOS editors normally mark the end of a text file with <code>^Z</code>
+(hexadecimal 0x1A), but Unix programs such as the compiler normally
+ignore <code>^Z</code> and <code>&lt;cr&gt;</code> characters when they
+encounter them.  The only thing is, Unix editors try to display the
+carriage returns, and they show up as <code>^M</code> characters on the
+screen.  You can either delete them manually or ignore them if you
+encounter this problem.  (In <i>vi</i> you can remove all
+<code>&lt;cr&gt;</code>s from a file by typing
+"<code>:%s/^V^M//g</code>" where <code>^V</code> and <code>^M</code>
+are control characters.)<P>
+
+<HR>
+<UL>
+<LI><A HREF="index.html">Using Your Unix Account - Contents</A>
+<LI><A HREF="/courses/cs200/index.html">CS-200 Home Page</A>
+</UL>
+
+<hr>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+<A HREF="/">My Home Page</A>
+<hr>
+</BODY> </HTML>

@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Getting Started With Circuit Maker</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p
+    {
+      margin-left:        1em;
+    }
+    p.indent
+    {
+      margin-left:        2em;
+      margin-right:       2em;
+      padding:            1em;
+      background:         #ccffcc;
+    }
+  </style>
+</head>
+
+<body>
+<center>
+<h1>Getting Started With Circuit Maker</h1>
+</center>
+
+<h2>Introduction</h2>
+
+<p>In this course, we will be using the free student edition of a
+commercial program, <a
+href="http://www.microcode.com/downloads/student.htm">CircuitMaker</a>,
+to design and simulate logic circuits.  You can also get a copy of the
+student version of CircuitMaker from my office using this link: <a
+href="./circuitmaker_student.exe">Download CircuitMaker from my
+office</a>.  Note that this software is avaialbe only for student use
+on their own computers; it is not available for use on college
+computers.  The file you download (3,400,151 bytes) is a
+self-installing package for Windows; just click on it to start the
+installation process.  Let me know if you do not have access to a
+computer on which you can install this software.</p>
+
+<a name="help"></a>
+<h2>Using the Program</h2>
+
+<p>The program is very well designed, but it is not something that you
+can just pick up and start using without some instruction.  That's
+because it assumes you already know how to design digital logic, and
+does not provide real tutorial material.</p>
+
+<p>What follows are some pointers to help you get started and to help
+you avoid some common problems.  There is also help that comes with
+the program, but it tends to be sketchy.</p>
+
+<ol>
+
+  <li><p>The first thing to realize is that CircuitMaster can be used to
+  design and simulate both analog and digital signals.  (Wherever you
+  see "Spice" in the help system, it's talking about analog
+  simulation.)  You can build your circuit with out concern for this
+  fact, but when you simulate it (run it), you must be sure to do so in
+  digital mode.  If you don't, you'll get a cryptic message, probably
+  telling you that you need a ground node "before a valid spice netlist
+  can be generated".  To avoid this problem click on the toolbar button
+  with the symbol for a transistor on it; it's exactly in the middle,
+  12 buttons in from both ends of the toolbar.</p>
+  
+  <p>Just get in the habit of clicking on the transistor button (it
+  turns into an AND gate) everytime you start running CircuitMaker.</p>
+
+  <p class="indent">If you get a message about "missing ground" when you
+  try to simulate your circuit, read the above paragraphs!</p>
+
+  <li><p>If you care about the neatness of your diagrams, select
+  <i>Grid</i> under the Options menu, and select the "Snap to grid"
+  option.  I personally find it distracting to display the grid itself,
+  but that's a choice you can make from the same menu.</p>
+
+  <li><p>Use the <i>Devices</i> menu to select gates, etc. to add to
+  your circuit.  Many simple gates and devices are listed on the
+  Hotkey submenu without the need to browse through device and parts
+  lists.  Use the Wire Tool (the toolbar button that looks like
+  a plus sign) to connect inputs and outputs together.</p>
+
+  <li><p>A common input device is the digital logic switch,
+  which alternates between outputting 0 or 1 each time you click on
+  in.  You can type a lower-case 's' to get one, or look for it in
+  Hotkeys2 under the Devices menu, or select browse from the Devices
+  menu, and select Digital -&gt; Power.</p>
+  
+  <li><p>The Hex Keypad device is very useful when you need to set
+  several inputs at once.  It has four outputs that you can control by
+  typing a hex digit while the keypad is selected.  Or click on it to
+  make it step up by one.</p>
+
+  <li><p>You can simulate your circuit one step (propagation delay) at
+  a time, or let it run at "full speed."   EIther way, you can use the
+  probe tool (the 8th button from the right end of the toolbar, next to
+  the button that has an inverter on it) to look at the logic value of
+  any part of your circuit.  The probe will show H ("high"), L ("low"),
+  or Z (indeterminate) as you make it hover over various parts of the
+  circuit.</p>
+  
+  <p>Better yet, turn on the trace option (under simulation options, or
+  press F11).  With this option on, the wires are colored to show their
+  logic state and you don't need a probe.</p>
+
+  <li><p>You will want to look at the waveforms for various parts of
+  the circuit as you run your simulations.  Use F12 to turn this option
+  on, or press the toolbar button to the right of the one with the
+  inverter on it.  The waveforms are displayed in a separate window, so
+  select "tile" from the Window menu to get them both to show on the
+  screen.</p>
+
+  <li><p>The most common way to add traces to the waveforms window is to
+  attach the Scope tool to the wires you want to look at.  Type
+  captial T to get a Scope tool, or select it from the Hotkeys2 menu
+  under the Devices menu.  To give meaningful names to your waveforms,
+  double-click on the scope tool and type in the name you want to
+  use.</p>
+
+  <li><p>You can move waveforms up and down by dragging their names in
+  the waveforms window.  The white boxes to the left of the names are
+  used for setting breakpoints.  You can learn how to use breakpoints
+  from the on-line help.</p>
+
+  <li><p>The simplest clock source is the Pulser device.  Ignore the
+  inputs, and just use either output (one is the complement of the
+  other) as your clock signal.</p>
+
+  <li><p>Another way to get a clock signal to generate it using a
+  <i>Data Sequencer</i>.  Type captial G to get one, or browse to it
+  under Digital/Instruments under the Devices menu.  Here's how to set
+  it up so that pin 1 on the right side can be used as a clock
+  signal:</p>
+
+  <p>Double click on the device, and you will get an "Edit Data
+  Sequencer" dialog box.  First of all, resist the temptation to turn
+  on the "Use External Clock" option; it generates values at the
+  proper rate for simulation (one propagation delay per step) all by
+  itself.  Edit the first 8 rows of the "Address - Data" box so that
+  addresses 1, 2, 3, 4 contain 00, and addresses 5, 6, 7, 8 contain 01.
+  Set the Start and Stop Addresses to 1 and 8 respectively.</p>
+
+  <p>When the simulation runs, the sequencer will output 0 on output
+  No. 1 for four propagation delays, then will output 1 on the same
+  output pin for another four propagation delays.  The process repeats
+  as long as the simulation runs.  Connect a scope tool to the output
+  to add this waveform to your waveform window.</p>
+  
+  <p>This device can be used to generate any sequence of arbitrary 8-bit
+  values, which makes it useful for testing certain complex
+  circuits.</p>
+
+</ol>
+
+<hr>
+</body>
+</html>

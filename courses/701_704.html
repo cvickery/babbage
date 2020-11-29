@@ -1,0 +1,198 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>Information About CS-701 & CS-704 for Fall 1995</TITLE>
+
+<META NAME="AUTHOR" CONTENT="Christopher Vickery">
+</HEAD>
+
+<BODY>
+
+<H2>Overview</H2>
+
+<P>
+I will be offering two programming courses in the Fall 1995 semester,
+CS-701 and CS-704. This page introduces you to both of those courses
+to help you decide which of them you might want to take. (Take
+both!)
+<P>
+The focus of CS-701 is to introduce you to the standard tools
+for developing and managing large software projects. There is
+some chicanery involved in this effort, since we do not have time
+in one semester both to introduce the tools and actually to implement
+large projects. The compromise is to learn the tools and to use
+them in several smaller projects.
+<P>
+The focus of CS-704 is to introduce you to systems programming
+using a real-time operating system. The development tools available
+to us are more primitive than the ones used in CS-701, but in
+exchange we get to write programs that genuinely perform such
+low-level operations as interrupt, process, and memory management.
+<P>
+CS-701 is generally the more popular of the two courses because
+you get to work with well-known industry standards: Unix running
+on Sun SPARC workstations, C (or C++ if you prefer), the X Window
+System, and TCP/IP-based client-server computing. In contrast,
+CS-704 uses a relatively obscure real-time operating system (Intel's
+iRMX) running on PCs, but it is gaining in importance as the multimedia
+revolution makes the issues of real-time computing more visible
+to the computing public. We will <I>not</I> be doing multimedia
+computing in CS-704, but we will be dealing with fundamental issues
+of real-time computing methodology.
+<H2>Your Background</H2>
+
+<P>
+Students who take either CS-701 or CS-704 are expected to have
+completed the equivalent of a Queens College undergraduate major
+in computer science. For many Master's students, this requirement
+is met by taking our CS-601, CS-602, and CS-640 courses. In addition,
+CS-700 is a prerequisite for both of these courses.
+<P>
+Both courses assume that you already know how to program in C.
+To give you an idea of the degree of programming competence I
+expect, here is a list of some of the things you should be able
+to do in C before you start either course:
+<UL>
+<LI>Process command line arguments.
+<LI>Perform basic file operations (open, read, write, close).
+<LI>Create a data structure that contains various data types,
+including pointers to functions and pointers to structures.
+<LI>Build and traverse a linked list using <I>malloc()</I> to
+allocate the nodes dynamically.
+<LI>Be familiar with string processing functions from the standard
+library (<I>strcmp(), strcat(), strtok(), strtol(), etc.</I>).
+<LI>Be familiar with the use of header files.
+<LI>Be able to put functions in different source code files, link
+them together, and share information between the functions.
+</UL>
+
+<P>
+In addition, I will expect you to have studied operating system
+principles, including process scheduling, process synchronization,
+memory management, and I/O design before taking either course.
+<P>
+Remember that each graduate student in the Computer Science Department
+has an account on the Academic Computer Center's timesharing system
+running Unix, <I>qcunix,</I> which you can use to bring your C
+programming up to speed before the course begins.
+<H2>CS701</H2>
+
+<P>
+This course uses a sequence of programming exercises to illustrate
+the use of library and system calls, process management, interprocess
+communication, and graphical user interface programming. Exercises
+in recent semesters have included a program to study algorithm
+timings, an interactive shell program, a World Wide Web server,
+a World Wide Web browser, and a text annotation system.
+<P>
+Programming exercises are implemented using standard software
+development tools: <I>SCCS </I>or <I>RCS </I>for software version
+control, <I>make</I> for automating the construction and installation
+of multi-module programs, and <I>gdb</I>/<I>ddd </I>for interactive
+debugging.
+<P>
+Written documentation is an important part of this course. You
+will write separate documentation for each of the three nominal
+parties of a software project: <I>man </I>pages for end-users,
+installation guides for program owners, and code documentation
+for program developers/maintainers. All documentation will be
+graded on the basis of proper English usage as well as on content
+and structure.
+<H3>Reference Material</H3>
+
+<P>
+Stevens, W. R. <I>Advanced Programming in the Unix Environment,
+<A HREF="http://www.aw.com">Addison-Wesley</A>, 1992.</I> <B>Required.</B>
+<P>
+Sobell, M. G. <I>Unix System V: A Practical Guide, Third Edition,</I>
+<A HREF="http://www.aw.com">Benjamin Cummings</A>, 1995. <B>Required.</B>
+<P>
+UNIX <I>man</I> pages.<B> Required; Access these on-line.</B>
+<P>
+Harbison, S. P. and Steele, G. L. Jr. <I>C: A Reference Manual,
+Fourth Edition,</I> <A HREF="http://www.prenhall.com">Prentice-Hall</A>,
+1995.<B> Highly Recommended.</B>
+<P>
+Nye, A. and O'Reilly, T. <I>X Toolkit Intrinsics Programming Manual:
+OSF/Motif 1.2 Edition,</I> Volume 4 in &quot;The Definitive Guides
+to the X Window System,&quot; <A HREF="http://www.ora.com">O'Reilly &amp; Associates</A>,
+1993. <B>Highly Recommended.</B>
+<P>
+Heller, D. and Ferguson, P. M. <I>Motif Programming Manual for
+OSF/Motif Release 1.2,</I> Volume 6A in &quot;The Definitive Guides
+to the X Window System,&quot; <A HREF="http://www.ora.com">O'Reilly &amp; Associates</A>,
+1994.<B> Recommended; The same material is available on-line.</B>
+<P>
+Oram, A. and Talbott, S. <I>make,</I> <A HREF="http://www.ora.com">O'Reilly &amp; Associates</A>,
+1991.<B> Recommended.</B>
+<P>
+van der Linden, P. <I>Expert C Programming: Deep C Secrets,</I>
+<A HREF="http://www.prenhall.com">Prentice-Hall</A>, 1994. <B>Recommended.</B>
+<H2>CS704</H2>
+
+<P>
+The programming environment for this course will be Intel's iRMX
+real-time operating system. Real-time systems must support traditional
+systems programming operations, such as concurrency control and
+memory management, by application developers. Thus, the resources
+that are available for real-time development are ideal for studying
+systems programming techniques.
+<P>
+iRMX for Windows is an extended version of iRMX III that runs
+on any machine that runs DOS (provided it has an 80386 or higher
+processor, at least 6 MB of RAM, and 15 MB of disk space). Copies
+of iRMX for Windows will be available for students to install
+on their own computers if they wish. There will also be computers
+running iRMX for Windows in the OS Lab. Microsoft Windows is not
+required in order to run iRMX for Windows, but may be run if desired.
+To use iRMX for Windows, you boot DOS, and then load iRMX, which
+encapsulates DOS as an iRMX task. Both operating systems share
+the same DOS file system.
+<P>
+Projects will be done in C using standard development tools: Intel's
+C compiler and linker, (<I>iC386 </I>and<I> BND386),</I>the<I>
+make </I>utility<I>, </I>and <I>SoftScope</I>, the iRMX debugger.
+The development tools may be run under either iRMX or DOS, and
+there is a version of <I>SoftScope</I> that runs under Windows,
+so you can code and build projects without access to iRMX, although
+you have to have an iRMX system to run and test your code.  Standard
+DOS/Windows development tools (Borland or Microsoft C, for example)
+are <I>not</I> compatible with iRMX at the present time, although
+a new release of the operating system due during the Fall will
+support both Borland and Microsoft C when it becomes available.
+ The C++ language is <I>not</I> compatible with iRMX and will
+not be supported in the next release either.  iRMX for Windows
+is not compatible with Windows95 either.
+<P>
+Projects will emphasize I/O, concurrency, and object management
+in a networked environment. Students will work individually on
+all projects. Students will be expected to be reasonably familiar
+with DOS and Unix<I> before</I> starting the course. Programming
+projects will include complete documentation of the code, and
+at least one project will consist of a set of experiments that
+will be written up as a research report.
+<H3>Reference Material</H3>
+
+<P>
+Vickery, C. <I>Real-Time and Systems Programming,</I> <A HREF="http://www.mcgraw-hill.com">McGraw-Hill</A>,
+1993.  <B>Required</B>
+<P>
+Harbison, S. P. and Steele, G. L. Jr. <I>C: A Reference Manual,
+Fourth Edition,</I> <A HREF="http://www.prenhall.com">Prentice-Hall</A>,
+1995.  <B>Highly Recommended</B>
+<P>
+Oram, A. and Talbott, S. <I>make,</I> <A HREF="http://www.ora.com">O'Reilly &amp; Associates</A>,
+1991.  <B>Recommended</B>
+<P>
+van der Linden, P. <I>Expert C Programming: Deep C Secrets,</I>
+<A HREF="http://www.prenhall.com">Prentice-Hall</A>, 1994.  <B>Recommended</B>
+<P>
+Documentation Set for the iRMX Operating System, <A HREF="http://www.intel.com">Intel Corporation</A>,
+1994.  <B>You may take a complete iRMX documentation set home
+for the semester, courtesy of Intel Corporation.</B>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>
+

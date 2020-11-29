@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Make Implicit Rules</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+  </style>
+
+</head>
+
+<body>
+
+<h2 align=center>Some of GNU <I>make</I>'s Implicit Rules</h2>
+
+This is an edited excerpt from the <a
+href="using_make.html#info"><i>info</i></a> documentation for GNU
+<i>make</i>.
+
+<pre>
+<b>Catalogue of Implicit Rules</b>
+===========================
+ 
+Here is a catalogue of predefined implicit rules which are always
+available unless the makefile explicitly overrides or cancels them. The
+`-r' or `--no-builtin-rules' option cancels all predefined rules.
+
+Not all of these rules will always be defined, even when the `-r'
+option is not given.  Many of the predefined implicit rules are
+implemented in `make' as suffix rules, so which ones will be defined
+depends on the "suffix list" (the list of dependencies of the special
+target `.SUFFIXES').  The default suffix list is: `.out', `.a', `.ln',
+`.o', `.c', `.cc', `.C', `.p', `.f', `.F', `.r', `.y', `.l', `.s',
+`.S', `.mod', `.sym', `.def', `.h', `.info', `.dvi', `.tex',
+`.texinfo', `.texi', `.txinfo', `.w', `.ch' `.web', `.sh', `.elc',
+`.el'.  All of the implicit rules described below whose dependencies
+have one of these suffixes are actually suffix rules.  If you modify
+the suffix list, the only predefined suffix rules in effect will be
+those named by one or two of the suffixes that are on the list you
+specify; rules whose suffixes fail to be on the list are disabled.
+
+
+<b>Compiling C programs</b>
+     `N.o' is made automatically from `N.c' with a command of the form
+     `$(CC) -c $(CPPFLAGS) $(CFLAGS)'.
+
+<b>Compiling C++ programs</b>
+     `N.o' is made automatically from `N.cc' or `N.C' with a command of
+     the form `$(CXX) -c $(CPPFLAGS) $(CXXFLAGS)'.  We encourage you to
+     use the suffix `.cc' for C++ source files instead of `.C'.
+ 
+<b>Assembling and preprocessing assembler programs</b>
+     `N.o' is made automatically from `N.s' by running the assembler,
+     `as'.  The precise command is `$(AS) $(ASFLAGS)'.
+ 
+     `N.s' is made automatically from `N.S' by running the C
+     preprocessor, `cpp'.  The precise command is `$(CPP) $(CPPFLAGS)'.
+ 
+<b>Linking a single object file</b>
+     `N' is made automatically from `N.o' by running the linker
+     (usually called `ld') via the C compiler.  The precise command
+     used is `$(CC) $(LDFLAGS) N.o $(LDLIBS)'.
+ 
+     This rule does the right thing for a simple program with only one
+     source file.  It will also do the right thing if there are multiple
+     object files (presumably coming from various other source files),
+     one of which has a name matching that of the executable file.
+
+     <i>In more complicated cases, such as when there is no object file
+     whose name derives from the executable file name, you must write
+     an explicit command for linking.</i>
+
+<b>RCS</b>
+     Any file `N' is extracted if necessary from an RCS file named
+     either `N,v' or `RCS/N,v'.  The precise command used is `$(CO)
+     $(COFLAGS)'.  `N' will not be extracted from RCS if it already
+     exists, even if the RCS file is newer.  The rules for RCS are
+     terminal, so RCS files cannot be generated from another source;
+     they must actually exist.
+
+</pre>
+
+<hr>
+<i>Christopher Vickery<br>
+Computer Science Department<br>Queens College of CUNY</i>
+<hr></body></html>

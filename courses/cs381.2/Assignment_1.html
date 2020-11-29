@@ -1,0 +1,97 @@
+<HTML><HEAD><TITLE>Assignment 1</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Assignment 1</H1>
+</center>
+
+<H2>Due Date and Deliverables</H2>
+
+This assignment is due by <B>midnight, February 16</B>.<p>
+
+You are to submit three files, consisting of one KornShell script
+and two C source files.  Send them as <I>attachments</I> to an email
+message.  The contents are described below.
+
+<H2>The Shell Script</H2>
+
+Write a shell script named printargs that prints four lines.  The first
+line tells the name that was used to invoke the script, the second line
+tells how many parameters there were, the third line tells what the
+last parameter was, and the fourth line tells what the first parameter
+was.<p>
+
+For example:
+
+<PRE>
+    <B>$ </B>printargs a b c
+    <B>My name is printargs.
+    There were 3 parameters.
+    The last one was c.
+    The first one was a.
+    $ </B>
+</PRE>
+
+You may use the <I>shift</I> command, but you are not to use any loops.
+Read about the <I>shift</I> command in Chapter 5, and look it up in
+Appendix B.
+
+<H2>The C Program</H2>
+
+The first source file is to be named printargs.c, and is to
+<CODE>#include</CODE> a header file named do_print.h.  It is to contain
+a definition of the method <I>main()</I>, which is to receive the
+standard three arguments.  <I>main()</I> is to pass the first two
+arguments to a function named <I>do_print()</I>, and then it is to
+print each of the environment variables, one per line.<p>
+
+The second source file is to be named do_print.c.  It must also
+<CODE>#include</CODE> do_print.h, and is to contain the definition of
+<I>do_print()</I>, which is to print each of the command line arguments
+in reverse order before it returns.<p>
+
+For example:
+
+<PRE>
+    <B>$ </B>gcc -g -Wall printargs.c do_print.c -o printargs
+    <B>$ </B>./printargs you? are How there. Hello,
+    <B>The command line arguments are: Hello, there. How are you? ./printargs
+       _=./printargs
+       TZ=
+       PATH=/usr/users/vickery/bin:/sbin:/usr/sbin:/usr/bin:/usr/ccs/bin:/usr/bin/X11
+     :/usr/local/:/usr/local/bin:.
+       WINDOWID=4194317
+       EDITOR=vim
+       LOGNAME=vickery
+       ENV=.kshrc
+       SHELL=/usr/local/bin/ksh
+       DISPLAY=149.4.38.2:0.0
+       LESS=-EaP?n?f%f .?m(File %i of %m) \
+     ..?lt%lb/%L:?pt%pB\%:?bt%bB/%B:-...?e (end)? x Next\: %x..
+       PRINTER=i2
+       PAGER=less
+       LOGHOST=qcunix1.acc.qc.edu
+       FPATH=:/usr/users/vickery/fun
+      &lt;<I>A long list follows</I>&gt;
+</PRE>
+
+<H2>Document Your Code</H2>
+
+There are few formal rules for documenting your KornShell programs this
+semester.  Just be sure to put the name of the file and your name in the
+first few lines, and use comments elsewhere to indicate logical sections
+of the code.<p>
+
+For C programs, you are to follow the [&nbsp;<a
+HREF="Coding_Guidelines.html">Coding Guidelines</A>&nbsp;] web page for
+this course.
+
+<HR>
+<UL>
+      <LI>[&nbsp;<a HREF="index.html">Course Home Page</A>&nbsp;]
+
+      <LI>[&nbsp;<a HREF="http://babbage.cs.qc.edu">Dr. Vickery's Home
+      Page</A>&nbsp;]
+
+</UL>
+
+<HR></BODY></HTML>

@@ -1,0 +1,94 @@
+<html><head><title>midterm.cc</title></head>
+<body><center><h1>midterm.cc</h1></center><hr><pre>
+      //  $Id$
+      
+      /*  Satisfies the requirements for Question 4 on the Spring 2002
+       *  midterm exam.
+       *
+       *    $Log$
+       */
+      #include &lt;stdio.h&gt;
+      #include &lt;getopt.h&gt;
+      
+      //  Globals
+      static const char *optstring = "ao:?";
+      static const option longopts[] =
+      {
+        { "append",   0,  0,  'a' },
+        { "outfile",  1,  0,  'o' },
+        { "help",     0,  0,  '?' },
+        {0, 0, 0, 0},
+      };
+      
+      //  main()
+      //  ------------------------------------------------------------------
+      /*
+       *    Process command line options, read input files, and write output
+       *    messages giving line counts for input files.
+       */
+      int
+      main(int argc, char *argv[], char *envp[])
+      {
+        int         longindex;
+        //  Default option value
+        bool        append  = false;
+        const char *outfile = "midterm.out";
+      
+        //  Process options
+        int optchar = -1;
+        while ( -1 != (optchar = getopt_long(argc, argv, optstring,
+                longopts, &longindex ) ) )
+        {
+          switch ( optchar )
+          {
+          case 'a':
+            append = true;
+            break;
+          case 'o':
+            outfile = optarg;
+            break;
+          default:
+            fprintf( stderr,  "Usage: midterm [options] file...n"
+                              "  Options:n"
+                              "   -a | --append   Do not overwrite outputn"
+                              "   -o | --outfile  Name of output filen"
+                              "                   Default is midterm.outn"
+                              "   -? | --help     Display this messagen" );
+            exit( 1 );
+          }
+        }
+      
+        //  Prepare the output file for writing
+        FILE  *msgfile = fopen( outfile, append ? "a" : "w" );
+        if ( 0 == msgfile )
+        {
+          perror( outfile );
+          exit( 1 );
+        }
+      
+        //  Process input files
+        while ( optind &lt; argc )
+        {
+          FILE *in = fopen( argv[ optind ], "r" );
+          if ( 0 == in )
+          {
+            // Print error message and continue for unreadable files.
+            perror( argv[ optind++ ] );
+            continue;
+          }
+      
+          //  Count the lines in the file.
+          int   numLines = 0;
+          char inBuf[ 8192 ];
+          for ( ;; )
+          {
+            fgets( inBuf, sizeof inBuf, in );
+            if ( feof( in ) )
+              break;
+            numLines++;
+          }
+          fprintf( msgfile, "%s: %d linesn", argv[optind++], numLines );
+        }
+      }
+      
+</pre><hr></body></html>

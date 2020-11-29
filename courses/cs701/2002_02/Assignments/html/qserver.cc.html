@@ -1,0 +1,430 @@
+<html><head><title>qserver.cc</title></head>
+<body><center><h1>qserver.cc</h1></center><hr><pre>
+      //  $Id: qserver.cc,v 2.6 2002/05/18 22:13:02 vickery Exp $
+      /*
+       *      This is the server's main module for the qrsh project
+       *      developed in CS-701 Spring 2002.
+       *
+       *      Functions:  signal_handler()    Handle signals.
+       *                  do_exit()           Do orderly shutdown.
+       *                  main()              Main function.
+       *
+       *  $Log: qserver.cc,v $
+       *  Revision 2.6  2002/05/18 22:13:02  vickery
+       *  Reformatted two of the messages written to the log file.
+       *
+       *  Revision 2.5  2002/05/14 04:17:54  vickery
+       *  Changed the signal for killing managers from SIGTERM
+       *  to SIGUSR1.
+       *
+       *  Revision 2.4  2002/05/12 00:47:43  vickery
+       *  Introduced support for client manager processes.
+       *
+       *  Revision 2.3  2002/05/07 05:07:55  vickery
+       *  Snapshot: User authentication and prompt string processing.
+       *
+       *  Revision 2.2  2002/05/06 06:33:21  vickery
+       *  Introduced the message passing protocol.  Send SC_LOGIN
+       *  message when client connects.
+       *
+       *  Revision 2.1  2002/04/25 03:06:38  vickery
+       *  First revision for Assignment 4.
+       *
+       *  Revision 1.3  2002/03/31 06:25:00  vickery
+       *  Added a check for dangling command line options.
+       *
+       *  Revision 1.2  2002/03/28 19:57:04  vickery
+       *  Added support for SIGTERM as well as SIGINT.  This code now
+       *  implements Assignment 3.
+       *
+       *  Revision 1.1  2002/03/23 04:56:33  vickery
+       *  Initial revision
+       *
+       *
+       */
+      
+      #include "qserver.h"
+      
+      //  Globals
+      //  ------------------------------------------------------------------
+      /*
+       *    Constants
+       */
+      static  const int   BACKLOG     = 5;
+      static  const char* VERSION     = "$Revision: 2.6 $";
+      static  const pid_t server_pid  = getpid();
+      
+      /*
+       *    Variables initialized by main and never changed.
+       */
+      char  user_name[ USERNAME_MAX ];
+      char  host_name[ HOSTNAME_MAX ];
+      char  login_msg[ MESSAGE_MAX  ];
+      char  server_home[ PATHNAME_MAX ];
+      /*
+       *    The set of client manager processes
+       */
+      vector&lt;pid_t&gt; client_managers;
+      
+      //  Command line options
+      //  ------------------------------------------------------------------
+      static const char* usageMsg = "Usage: qserver [options]n"
+        "  Options:n"
+        "   -p --port &lt;number&gt;  Port number          (default is 0x8000)n"
+        "   -l --logfile &lt;file&gt; Log file name (default is ./qserver.log)n"
+        "   -o --overwrite      Overwrite logfile (default is to append)n"
+        "   -v --version        Display version number, and exitn"
+        "   -h --help           Display this message, and exitn";
+      
+      
+      static  const   char*   short_options = "p:l:ovh?";
+      static  struct  option  long_options[] =
+      {
+        { "port",       required_argument,  0,  'p' },
+        { "logfile",    required_argument,  0,  'l' },
+        { "overwrite",  no_argument,        0,  'o' },
+        { "version",    no_argument,        0,  'v' },
+        { "help",       no_argument,        0,  'h' },
+        { 0,            0,                  0,  0   },
+      };
+      
+      
+      //  signal_handler()
+      //  ------------------------------------------------------------------
+      /*
+       *    Handle signals.
+       *
+       *    SIGCHLD:    If exit status is 0, remove the process from the
+       *                client_managers vector.
+       *                If exit status is SHUTDOWN_EXIT, shut down.
+       *                
+       *    SIGTERM:    Shut down.
+       *    SIGINT:     Shut down.
+       */
+      void
+      signal_handler( int signum )
+      {
+      
+        int   status                  = 0;
+        char  msg_buf[ MESSAGE_MAX ];
+        pid_t which_child             = 0;
+        vector&lt;pid_t&gt;::iterator it    = 0;
+      
+        switch ( signum )
+        {
+      
+          case SIGCHLD:
+            //  A manager process has terminated.
+            which_child = wait( &status );
+            if ( WIFEXITED(status) )
+            {
+              sprintf( msg_buf, "MANAGER (%d) EXITED", which_child );
+              writeLog( msg_buf, 0 );
+      
+              //  Remove this child from the list of client managers.
+              it = find( client_managers.begin(), client_managers.end(),
+                                                              which_child );
+              if ( it != client_managers.end() )
+              {
+                client_managers.erase( it );
+              }
+              else
+              {
+                fprintf( stderr, "SIGCHLD but %d is not a managern",
+                    which_child );
+                exit ( 1 );
+              }
+      
+              //  If this is a shutdown event, tell all the other managers
+              //  to shut down now.
+              if ( ( (0x0FF & WEXITSTATUS(status)) == 
+                     (0x0FF & SHUTDOWN_EXIT) )
+                 )
+              {
+                sprintf( msg_buf, "SHUTDOWN_EXIT BY %d", which_child );
+                writeLog( msg_buf, 0 );
+                signal( SIGCHLD, SIG_IGN );
+                it = client_managers.begin();
+                while ( it != client_managers.end() )
+                {
+                  sprintf( msg_buf, "  Killing process %d", *it );
+                  writeLog( msg_buf, 0 );
+                  kill( *it, SIGUSR1 );
+                  waitpid( *it, 0, 0 );
+                  sprintf( msg_buf, "  Process %d exited", *it );
+                  writeLog( msg_buf, 0 );
+                  it++;
+                }
+                exit( 0 );  //  Shut down server.
+              }
+              break;        //  Not a shutdown exit
+            }
+      
+            //  Error: Manager stopped or died.
+            if ( WIFSIGNALED(status) )
+            {
+              sprintf( msg_buf, "*** Manager %d received signal %d ***",
+                  which_child, WTERMSIG(status));
+              writeLog( msg_buf, 0 );
+              break;
+            }
+            if ( WIFSTOPPED(status) )
+            {
+              sprintf( msg_buf, "*** Manager %d received stop %d ***",
+                  which_child, WSTOPSIG(status));
+              writeLog( msg_buf, 0 );
+              break;
+            }
+              sprintf( msg_buf, "*** Manager %d exit unknown %d ***",
+                  which_child, status );
+              writeLog( msg_buf, 0 );
+              break;
+      
+          case SIGINT:
+          case SIGTERM:
+              exit( SIGNAL_EXIT );
+              break;
+              
+          default:
+              sprintf( msg_buf, 
+                  "*** UNEXPECTED SIGNAL %d ***", signum );
+              writeLog( msg_buf, 0 );
+              exit( SIGNAL_EXIT );
+        }
+      }
+      
+      
+      //  do_exit()
+      //  ------------------------------------------------------------------
+      /*
+       *    Called when a signal arrives or on normal exit.
+       *    Do orderly shutdown of server.
+       */
+      void 
+      do_exit( const int code, const char *reason )
+      {
+        char msg_buf[ MESSAGE_MAX ];
+        pid_t exiting_pid = getpid();
+      
+        if ( server_pid == exiting_pid )
+        {
+          //  The server (main) process is exiting.
+          switch ( code )
+          {
+            case SIGNAL_EXIT:
+              closeLog( "Signal Received" );
+              break;
+            
+            default:
+              closeLog( reason );
+              break;
+          }
+        }
+        else
+        {
+          //  A manager process is exiting.
+          sprintf( msg_buf, "*** do_exit: Unexpected process (%d)", 
+                                                              exiting_pid );
+          writeLog( msg_buf, 0 );
+        }
+      }
+      
+      
+      //  main()
+      //  ------------------------------------------------------------------
+      /*
+       *    Process command line arguments, open a log file, become a
+       *    daemon, accept connections from clients, and for a process for
+       *    each client.
+       * 
+       *  Arguments
+       *
+       *    The standard arguments to main().
+       *
+       */
+      int
+      main(int argc, char *argv[], char *envp[] )
+      {
+      
+        //  Get cwd and "server_home"
+        getcwd( server_home, sizeof( server_home ) );
+      
+        //  Determine user name for authentication
+        struct passwd *passwd_ptr = getpwuid( geteuid() );
+        if ( 0 == passwd_ptr )
+        {
+          perror( "username" );
+          exit( 1 );
+        }
+        strcpy( user_name, passwd_ptr-&gt;pw_name );
+      
+        //  Process command line options
+        int     wellKnownPort = 0x8000;
+        char    logfilePath[ PATH_MAX ];
+        bool    overwriteLogfile = false;
+      
+        //  Specify directory for logfile if not given
+        if ( (*argv[0] != '.') && (*argv[0] != '/') )
+        {
+          strcpy( logfilePath, "./" );
+        }
+        else
+        {
+          strcpy( logfilePath, "" );
+        }
+        strcat( logfilePath, argv[0] );
+        strcat( logfilePath, ".log" );
+      
+        int     c;
+        while ( -1 != 
+            ( c = getopt_long( argc, 
+                                argv, 
+                                short_options,
+                                long_options, 0 ) ) )
+        {
+          switch ( c )
+          {
+      
+            case 'p':
+              wellKnownPort = strtol( optarg, 0, 0);
+              if ( ( wellKnownPort &lt; 0 ) ||
+                   ( (wellKnownPort &lt; 1024) && (geteuid() != 0) ) )
+              {
+                fprintf( stderr, "Bad port number: %sn", optarg );
+                exit( 1 );
+              }
+              break;
+      
+            case 'l':
+              strncpy( logfilePath, optarg, sizeof( logfilePath ) -1 );
+              break;
+      
+            case 'o':
+              overwriteLogfile = true;
+              break;
+      
+            case 'v':
+              printf( "%s: %sn", argv[0], VERSION );
+              exit( 0 );
+      
+            case '?':
+            case 'h':
+            default:
+              fprintf( stderr, usageMsg );
+              exit( 1 );
+              
+          }
+        }
+      
+        //  Check for dangling command line options.
+        if ( optind &lt; argc )
+        {
+          fprintf( stderr, "unexpected value: %sn", argv[ optind ] );
+          fprintf( stderr, usageMsg );
+          exit( 1 );
+        }
+      
+        //  Create and bind this server's well-known socket
+        //  ----------------------------------------------------------------
+        struct  hostent   *hp;
+        int     server_fd, client_fd;
+        struct  sockaddr_in server_sockaddr, client_sockaddr;
+      
+        //  Get local host's name and IP address
+        if ( gethostname( host_name, HOSTNAME_MAX ) &lt; 0) 
+        {
+          perror( "gethostname" );
+          exit( EXIT_FAILURE );
+        }
+        if ((hp = gethostbyname( host_name ) ) == NULL)
+        {
+          fprintf(  stderr,
+                    "qserver: cannot get local host informationn" );
+          exit( EXIT_FAILURE );
+          }
+      
+        //  Initialize local sockaddr struct.
+        memset( &server_sockaddr, 0, sizeof( server_sockaddr ) );
+        server_sockaddr.sin_family = AF_INET;
+        memcpy( &server_sockaddr.sin_addr, hp-&gt;h_addr_list[0], hp-&gt;h_length );
+        server_sockaddr.sin_port = htons( wellKnownPort );
+      
+        //  Create and bind the well-known socket
+        if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) &lt; 0)
+        {
+          perror( "socket" );
+          exit( EXIT_FAILURE );
+        }
+        if ( bind(  server_fd, 
+                    (struct sockaddr *) &server_sockaddr, 
+                    sizeof server_sockaddr) &lt; 0)
+        {
+          perror( "bind" );
+          exit( EXIT_FAILURE );
+        }
+        listen( server_fd, BACKLOG );
+      
+        //  Log startup message.
+        int major = 0, minor = 0;
+        sscanf( VERSION, "$Revision: %d.%d ", &major, &minor );
+        sprintf( login_msg, 
+                 "QC Remote Shell version %d.%d running on %s port 0x%04Xn",
+                                    major, minor, host_name, wellKnownPort );
+        openLog( logfilePath, login_msg, overwriteLogfile );
+      
+        //  Set up exit processing
+        on_exit( do_exit, (char *) "Normal Exit" );
+        signal( SIGINT,   signal_handler );
+        signal( SIGTERM,  signal_handler );
+        signal( SIGCHLD,  signal_handler );
+      
+      
+        //  Event Loop
+        //  ----------------------------------------------------------------
+        while ( true )
+        {
+          //  Accept a connection
+          socklen_t saSize = sizeof client_sockaddr;
+          client_fd = accept( server_fd, 
+                          (struct sockaddr *) &client_sockaddr, &saSize );
+          if (client_fd &lt; 0)
+          {
+            perror( "accept" );
+            exit( 1 );
+          }
+          
+          //  Log the connection
+          hp = gethostbyaddr( (const char *)&client_sockaddr.sin_addr, 
+              4, AF_INET );
+      
+          //  Create a process to manage this client.
+          pid_t client_pid = fork();
+          switch ( client_pid )
+          {
+            case -1:
+              //  Error forking.
+              writeLog( "fork client manager", strerror( errno ) );
+              exit( 1 );
+              break;
+      
+            case 0:
+              //  Child: Manage client.
+              manageClient( client_fd, hp-&gt;h_name );
+              fprintf( stderr, "Unexpected return from manageClient "
+                  "at %s line %dn", __FILE__, __LINE__ );
+              exit( 1 );
+              break;
+      
+            default:
+              //  Parent: Do housekeeping, and continue.
+              close( client_fd );
+              client_managers.insert( client_managers.end(), client_pid );
+              char msg_buf[ MESSAGE_MAX ];
+              sprintf( msg_buf, "%s(%d)", hp-&gt;h_name, client_pid );
+              writeLog( "CONNECT FROM", msg_buf );
+              break;
+          }
+        }
+      }
+      
+</pre><hr></body></html>

@@ -1,0 +1,114 @@
+<html><head><title>readchar.cc</title></head>
+<body><center><h1>readchar.cc</h1></center><hr><pre>
+      //  readchar.cc
+      
+      /*  Sample code to read from the console a character at a time.
+       *
+       *    CS-701
+       *    Spring 2003
+       */
+      #include &lt;stdio.h&gt;
+      #include &lt;stdlib.h&gt;
+      #include &lt;string.h&gt;
+      #include &lt;termios.h&gt;
+      #include &lt;unistd.h&gt;
+      
+      static struct termios saved, raw;
+      
+      //  restoreTTY()
+      //  ------------------------------------------------------------------
+      void 
+      restoreTTY( void )
+      {
+        tcsetattr( STDIN_FILENO, 0, &amp;saved );
+        exit( 0 );
+      }
+        
+      //  main()
+      //  ------------------------------------------------------------------
+      int
+      main(int argc, char*argv[], char*envp[])
+      {
+      
+        //  Make sure it makes sense to process input a char at a time.
+        const char  notATTY[] = "Stdin is not a terminal\n";
+        if ( 0 == isatty( 0 ) )
+        {
+          write( 1, notATTY, strlen( notATTY ) );
+          exit( 1 );
+        }
+      
+        //  Save original tty state, and set up to restore it at exit.
+        if ( -1 == tcgetattr( STDIN_FILENO, &amp;saved ) )
+        {
+          perror( "Unable to save tty attributes" );
+          exit( 1 );
+        }
+        if ( -1 == atexit( restoreTTY ) )
+        {
+          perror( "Unable to intercept exit calls" );
+          exit( 1 );
+        }
+      
+        //  Put tty into raw mode
+        raw               = saved;
+        raw.c_lflag      &amp;= ~ICANON &amp; ~ECHO;
+        raw.c_cc[ VMIN ]  = 1;
+        raw.c_cc[ VTIME ] = 0;
+      
+        tcsetattr( STDIN_FILENO, 0, &amp;raw );
+        const char  prompt[]  = "jsh&gt; ";
+        const char  crlf[]    = "\r\n";
+        char        aChar;
+        char        inBuf[ 10 ];
+        bool        endline = false;
+      
+        for ( ;; )
+        {
+          endline = false;
+          memset( inBuf, '\0', sizeof( inBuf ) );
+          write( STDOUT_FILENO, prompt, strlen( prompt) );
+          for (unsigned int i = 0; i &lt; (sizeof( inBuf ) - 2); i++ )
+          {
+            int numRead = read( STDIN_FILENO, &amp;aChar, 1 );
+            if ( numRead &lt; 1 )
+            {
+              perror( "\n\rError Reading" );
+              exit( 1 );
+            }
+      
+            //  Examples of things you can do in raw mode.
+            switch (aChar )
+            {
+              case '\x004':
+                // Control-D
+                write( STDOUT_FILENO, "^D", 2 );
+                if ( 0 == i )
+                {
+                  //  EOF
+                  write( STDOUT_FILENO, crlf, sizeof( crlf ) );
+                  exit( 0 );
+                }
+                endline = true;
+                break;
+      
+              case '\n':
+                //  Newline
+                write( STDOUT_FILENO, "^J", 2 );
+                endline = true;
+                break;
+      
+              default:
+                inBuf[i] = aChar;
+            }
+            if ( endline )
+            {
+              break;
+            }
+            write( STDOUT_FILENO, &amp;aChar, 1 );
+          }
+          printf( "\nYou typed \"%s\"\n", inBuf );
+        }
+      }
+      
+</pre><hr></body></html>

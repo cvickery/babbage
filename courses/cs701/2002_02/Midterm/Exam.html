@@ -1,0 +1,170 @@
+<html><head><title>Midterm Exam Answers</title>
+<link rel=stylesheet
+      href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+      media="screen">
+</head><body bgcolor="#ffffc0">
+<center>
+<h1>Midterm Exam Answers</h1>
+</center>
+<h2>Question 1</h2>
+
+(20 points) Consider the following command:
+
+<pre>
+  g++ -g -Wall -Wwrite-strings -Ddebug main.cc sub.o -o q1
+</pre>
+
+Tell what the command name is. Tell what each command line option does.
+Tell what programs will be run, and what the inputs and outputs of each
+program will be.<p>
+
+<b>Answer: </b>The command name is <i>g++</i>.  The -g option causes
+the compiler to add information for a debugger to the output files. 
+The -Wall option causes the compiler to print <i>all</i> warning
+messages.  The -Wwrite-strings options causes the compiler to print
+warning messages if literal strings are not handled as constants.  The
+-Ddebug option defines the symbol "debug" for the preprocessor.  The
+preprocessor will read main.cc, interpret all preprocessor directives
+and macro references, remove all comments, and write source code to
+<i>stdout</i>.  The compiler will read the output of the preprocessor
+from <i>stdin</i>, and will write an assembly language program to
+main.s.  The assembler will read main.s and generate main.o.  The
+linker will link main.o, sub.o, and the standard runtime library to
+produce the executable file, q1.  The compiler driver will delete
+main.s and main.o (but not sub.o).
+
+<h2>Question 2</h2>
+
+(20 points) Tell how to set up a project directory so it has a properly
+named subdirectory for an RCS database.  Tell how to add files to the
+RCS database for a project.  Tell the names and options for commands
+used to obtain read-only and read-write copies of files from the RCS
+database for a project.  Tell how to enter a new version of a file into
+the RCS database for a project.  Tell the names, contents, and
+permissions of the files in the RCS database for a project.  Tell how
+to use RCS keywords in files that are under RCS management.<p>
+
+<b>Answer: </b>
+
+Use the <i>mkdir</i> command to create a subdirectory named RCS.  Add
+files to the database using the <i>ci</i> command, providing a
+description of each file's role in the project when prompted.  Use the
+<i>co</i> command with no options (except the file names) to get
+read-only copies of files from the database.  Use the <i>co</i> command
+with the -l ("el") option to lock files for editing; that is, to get
+writeable copies of the files.  Use the <i>ci</i> command to enter a new
+version of a file into the RCS database for a project; provide a log
+message that tells what changes were made when prompted.  Files in the
+RCS subdirectory have the same names as the files in the project
+directory, but with ",v" appended to the end of each file name.  Files
+in the database are read-only.  They contain housekeeping information,
+the full text of the most recent version of the file, and a record of
+all the differences between the current version and each previous
+version of the file.  Use the $Id$ keyword in a comment at the beginning
+of each file to show the name of the file and its status.  Use the $Log$
+keyword in the comment block at the beginning of each file to show the
+history of changes that were made to the file.
+
+<h2>Question 3</h2>
+
+(20 points) Answer the following questions about the <i>make</i>
+processor and Makefiles.
+
+<pre>
+  A.  What is significant about tab characters?
+  B.  Can the <i>make</i> command be used without a Makefile?  If not,
+      explain why not, and if yes, tell when.
+  C.  What is a rule, and what is the difference between an
+      implicit and an explicit rule?  Give an example of both.
+  D.  In the skeleton makefile I provided, there are references to the
+      symbols CXXFLAGS and OBJS.  In what way are these two symbols
+      similar?  What is the significant difference between them? 
+      (<i>Hint: one of them will be used automatically in certain
+      circumstances, but the other one will never be used
+      automatically.</i>)
+  E.  The skeleton makefile contains the line,
+  
+        depend : $(SRCS) $(HDRS).  
+      
+      Tell everything make would do because of this line, assuming the
+      user types the command, "make depend".
+  F.  What is the difference between the commands, "make&nbsp;depend"
+      and "makedepend"?
+</pre>
+
+<b>Answer:</b><p>
+
+A.  You have to start each command line in a rule with a tab character
+because <i>make</i> recognizes the end of the command list by seening a
+line that does not start with a tab character.<p>
+
+B.  Yes it can.  If you have a single source module, such as myprog.cc,
+you can type "make myprog" and <i>make</i> will use one of its implicit
+rules to generate the appropriate command to compile and link the
+program.<p>
+
+C.  A rule consists of a <i>target</i> followed by a colon (:),
+optionally followed by a list of <i>dependencies</i> on one line.  The
+first line may be followed by any number of command lines, each of which
+must start with a tab character.  An implicit rule is one that is built
+into <i>make</i> and will be used automatically based on filename
+endings.  An explicit rule is one specified in a Makefile.<p>
+
+D.  They are both <i>make</i> variable names.  But CXXFLAGS is
+automatically used by <i>make</i> when it generates compilation commands
+using its implicit rules, whereas OBJS is used only when written into
+explicit rules.  (It's all right to use CXXFLAGS in explicit rules,
+too.)<p>
+
+E.  It expands the variable SRCS to whatever its value is, which is probably
+a list of source files.  If these files are not already present in the
+project directory, use an implicit rule to check them out of the RCS
+database if possible.  Then expand HDRS, and if these files are not
+already present in the project directory, use an implicit rule to check
+them out of the RCS database if possible.<p>
+
+F.  The command "make&nbsp;depend" causes the "depend" rule in the
+Makefile to be processed (after checking out the Makefile if necessary).
+The depend rule has a <i>makedepend</i> command in its command list,
+which gets executed after the dependency part of the rule is processed. 
+The <i>makedepend</i> command updates the Makefile with the header file
+dependencies for all the .o files that would be generated by compiling
+all of the source files given as command line arguments to the command.
+
+<h2>Question 4</h2>
+
+(40 points) Write a complete C++ program named <i>midterm</i> that implements
+the following requirements:<p>
+
+The program is to read lines from a set of input files whose names are
+specified on the command line. The input files are assumed to contain
+lines of text. If an input file cannot be read, print an appropriate
+error message that includes the file name, and continue on to process
+the next input file. Exit when all input files have been read.<p>
+
+For each input file, the program  is to write a message to an output
+file that tells the name of the input file and how many lines of text
+it contained. The default name of the output file is midterm.out, but
+the user can change this name using the "-o" or "--outfile" command
+line option (which must be followed by a file name argument). The
+output file is to be overwritten if it already exists, unless the user
+specifies the "-a" or "--append" command line  option (which takes no
+argument), in which case messages are to be appended to the file.<p>
+
+If the user specifies "-?" or "--help" on the command line,
+the program prints a meaningful error message and exits with a status
+code of 1. Handle invalid command line options in the usual way.<p>
+
+You may write your program as a single source module if you want to.
+You may implement the entire program in <i>main()</i> if you want to.
+But you are free to use additional modules and functions if you prefer.
+Comment your code according to the coding guidelines for this course,
+except you may reduce the file header(s) and function header(s) to a
+single summary sentence each. But do include all RCS keywords in the
+proper places. Do not provide a Makefile.<p>
+
+<b>Answer: </b>See the <a href="./coding_solution.html">Coding
+Solution</a> web page.
+
+<hr></body></html>
+     

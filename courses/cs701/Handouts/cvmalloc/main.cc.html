@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>main.cc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</head>
+<center><h1>main.cc</h1></center>
+<hr>
+<pre>
+      #include &lt;stdio.h&gt;
+      #include &lt;stdlib.h&gt;
+      #include &lt;unistd.h&gt;
+      
+      int
+      main(int argc, char *argv[], char *envp[] )
+      {
+        char *x[100];
+        
+        for (int i=0; i&lt;100; i++)
+        {
+          x[i] = (char*)malloc( i*10 );
+        }
+        
+        for (int i=0; i&lt;50; i++)
+        {
+          free( x[i*2] );
+        }
+        exit(0);
+      }
+</pre><hr></body></html>

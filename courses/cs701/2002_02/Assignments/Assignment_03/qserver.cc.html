@@ -1,0 +1,273 @@
+<html><head><title>qserver.cc</title></head>
+<body><center><h1>qserver.cc</h1></center><hr><pre>
+      //  $Id: qserver.cc,v 1.3 2002/03/31 06:25:00 vickery Exp $
+      /*
+       *      This is the server's main module for the qrsh project
+       *      developed in CS-701 Spring 2002.
+       *
+       *      C. Vickery
+       *
+       *  $Log: qserver.cc,v $
+       *  Revision 1.3  2002/03/31 06:25:00  vickery
+       *  Added a check for dangling command line options.
+       *
+       *  Revision 1.2  2002/03/28 19:57:04  vickery
+       *  Added support for SIGTERM as well as SIGINT.  This code now
+       *  implements Assignment 3.
+       *
+       *  Revision 1.1  2002/03/23 04:56:33  vickery
+       *  Initial revision
+       *
+       *
+       */
+      
+      #include "qserver.h"
+      
+      #include &lt;getopt.h&gt;
+      #include &lt;limits.h&gt;
+      #include &lt;signal.h&gt;
+      #include &lt;sys/types.h&gt;
+      #include &lt;sys/socket.h&gt;
+      #include &lt;netinet/in.h&gt;
+      #include &lt;netdb.h&gt;
+      
+      
+      static const int    BACKLOG       = 5;
+      static const int    MAX_HOST_NAME = 256;
+      static const char*  VERSION       = "$Revision: 1.3 $";
+      
+      //  Command line options
+      //  -----------------------------------------------------------------
+      static const char* usageMsg = "Usage: qserver [options]n"
+        "  Options:n"
+        "   -p --port &lt;number&gt;  Port number          (default is 0x8000)n"
+        "   -l --logfile &lt;file&gt; Log file name (default is ./qserver.log)n"
+        "   -o --overwrite      Overwrite logfile (default is to append)n"
+        "   -v --version        Display version number, and exitn"
+        "   -h --help           Display this message, and exitn";
+      
+      
+      static  const   char*   short_options = "p:l:ovh?";
+      static  struct  option  long_options[] =
+      {
+        { "port",       required_argument,  0,  'p' },
+        { "logfile",    required_argument,  0,  'l' },
+        { "overwrite",  no_argument,        0,  'o' },
+        { "version",    no_argument,        0,  'v' },
+        { "help",       no_argument,        0,  'h' },
+        { 0,            0,                  0,  0   },
+      };
+      
+      
+      //  signal_handler()
+      //  ------------------------------------------------------------------
+      /*
+       *    Invoke do_exit() when a signal arrives.
+       */
+      void
+      signal_handler( int signum )
+      {
+        exit( -1 );
+      }
+      
+      
+      //  do_exit()
+      //  ------------------------------------------------------------------
+      /*
+       *    Called when a signal arrives or on normal exit.
+       *    Do orderly shutdown of server.
+       */
+      void 
+      do_exit( int code, char *reason )
+      {
+        if ( -1 == code )
+          closeLog( "Signal Received" );
+        else
+          closeLog( reason );
+      }
+      
+      
+      //  main()
+      //  ------------------------------------------------------------------
+      /*
+       *    Process command line arguments, open a log file, become a
+       *    daemon, accept connections from clients, and for a process for
+       *    each client.
+       * 
+       *  Arguments
+       *
+       *    The standard arguments to main().
+       *
+       */
+      int
+      main(int argc, char *argv[], char *envp[] )
+      {
+      
+        //  Process command line options
+        int     wellKnownPort = 0x8000;
+        char    logfilePath[ PATH_MAX ];
+        bool    overwriteLogfile = false;
+      
+        //  Specify directory for logfile if not given
+        if ( (*argv[0] != '.') && (*argv[0] != '/') )
+          strcpy( logfilePath, "./" );
+        else
+          strcpy( logfilePath, "" );
+        strcat( logfilePath, argv[0] );
+        strcat( logfilePath, ".log" );
+      
+        int     c;
+        while ( -1 != 
+            ( c = getopt_long( argc, 
+                                argv, 
+                                short_options,
+                                long_options, 0 ) ) )
+        {
+          switch ( c )
+          {
+      
+            case 'p':
+              wellKnownPort = strtol( optarg, 0, 0);
+              if ( ( wellKnownPort &lt; 0 ) ||
+                   ( (wellKnownPort &lt; 1024) && (geteuid() != 0) ) )
+              {
+                fprintf( stderr, "Bad port number: %sn", optarg );
+                exit( 1 );
+              }
+              break;
+      
+            case 'l':
+              strncpy( logfilePath, optarg, sizeof( logfilePath ) -1 );
+              break;
+      
+            case 'o':
+              overwriteLogfile = true;
+              break;
+      
+            case 'v':
+              printf( "%s: %sn", argv[0], VERSION );
+              exit( 0 );
+      
+            case '?':
+            case 'h':
+            default:
+              fprintf( stderr, usageMsg );
+              exit( 1 );
+              
+          }
+        }
+      
+        //  Check for dangling command line options.
+        if ( optind &lt; argc )
+        {
+          fprintf( stderr, "unexpected value: %sn", argv[ optind ] );
+          fprintf( stderr, usageMsg );
+          exit( 1 );
+        }
+      
+      #ifdef DEBUG
+        printf( "Logfile: %s (%s)n"
+                "Port:    0x%04X (%d)n",
+                  logfilePath, (overwriteLogfile ? "overwrite" : "append" ),
+                  wellKnownPort, wellKnownPort );
+      #endif
+      
+        //  Create and bind this server's well-known socket
+        //  ----------------------------------------------------------------
+        char    thisHostName[MAX_HOST_NAME];
+        struct  hostent   *hp;
+        int     server_fd, client_fd;
+        struct  sockaddr_in server_sockaddr, client_sockaddr;
+      
+        //  Get local host's name and IP address
+        if ( gethostname( thisHostName, MAX_HOST_NAME ) &lt; 0) 
+        {
+          perror( "gethostname" );
+          exit( EXIT_FAILURE );
+        }
+        if ((hp = gethostbyname(thisHostName)) == NULL)
+        {
+          fprintf(  stderr,
+                    "qserver: cannot get local host informationn" );
+          exit( EXIT_FAILURE );
+          }
+      
+        //  Initialize local sockaddr struct.
+        memset( &server_sockaddr, 0, sizeof( server_sockaddr ) );
+        server_sockaddr.sin_family = AF_INET;
+        memcpy( &server_sockaddr.sin_addr, hp-&gt;h_addr_list[0], hp-&gt;h_length );
+        server_sockaddr.sin_port = htons( wellKnownPort );
+      
+        //  Create and bind the well-known socket
+        if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) &lt; 0)
+        {
+          perror( "socket" );
+          exit( EXIT_FAILURE );
+        }
+        if ( bind(  server_fd, 
+                    (struct sockaddr *) &server_sockaddr, 
+                    sizeof server_sockaddr) &lt; 0)
+        {
+          perror( "bind" );
+          exit( EXIT_FAILURE );
+        }
+        listen( server_fd, BACKLOG );
+      
+        //  Log startup message.
+        char msgBuf[ 256 ];
+        sprintf(  msgBuf, 
+                  "qserver pid %d listening on %s port 0x%04X",
+                  getpid(), thisHostName, wellKnownPort );
+        openLog( logfilePath, msgBuf, overwriteLogfile );
+      
+        //  Set up exit processing
+        on_exit( do_exit, (char *) "Normal Exit" );
+        signal( SIGINT, signal_handler );
+        signal( SIGTERM, signal_handler );
+      
+        
+        //  Event Loop
+        //  ----------------------------------------------------------------
+        while ( true )
+        {
+          //  Accept a connection
+          socklen_t saSize = sizeof client_sockaddr;
+          client_fd = accept( server_fd, 
+                          (struct sockaddr *) &client_sockaddr, &saSize );
+          if (client_fd &lt; 0)
+          {
+            perror( "accept" );
+            exit( EXIT_FAILURE );
+          }
+          
+          //  Log the connection
+          hp = gethostbyaddr( (const char *)&client_sockaddr.sin_addr, 
+              4, AF_INET );
+          writeLog( "CONNECT", hp-&gt;h_name );
+      
+          //  Read from the connection until it closes or a shutdown message
+          //  ( SHUT ) is received.
+          char inBuf[8192];
+          while ( true )
+          {
+            int bytesRead = read( client_fd, &inBuf, sizeof( inBuf ) );
+            if ( 0 == bytesRead )
+            {
+              //  Client closed the socket
+              writeLog( "DISCONNECT", hp-&gt;h_name );
+              close( client_fd );
+              break;
+            }
+            else
+            {
+              //  Write the message to the log file and check for SHUT
+              inBuf[ bytesRead ] = '0';
+              writeLog( "TESTING", inBuf );
+              if ( 0 == strcmp( inBuf, "SHUT" ) )
+                exit( 0 );
+            }
+          }
+        }
+      }
+      
+</pre><hr></body></html>

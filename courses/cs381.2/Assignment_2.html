@@ -1,0 +1,115 @@
+<HTML><HEAD><TITLE>Assignment 2</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Assignment 2</H1>
+</center>
+
+<H2>Deliverables and Due Date</H2>
+
+Submit two .c files, one called <CODE>main.c</CODE> and another named
+<CODE>strtok.c</CODE>, and submit one .h file named
+<CODE>strtok.h</CODE>.  Document each properly. The programs for the
+two .c files are described below.  The header file is to contain the
+function prototype for the function, <I>strtok()</I>, that you will be
+writing for this assignment.  Be sure to #include <CODE>strtok.h</CODE>
+in both .c files.<p>
+
+This assignment is due by <B>midnight March 23, 1999</B>.
+
+<H2>Introduction</H2>
+
+I decided that the shell project would be too contrived if you work
+only with the standard library's <I>strtok()</I> function, so for this
+assignment you are to write your own improved version.  Yours will have
+the same name as the library version, but that won't be a problem
+because you will make sure the linker finds yours before it looks in the
+standard library.  (Yours will have a different prototype.)<p>
+
+Your function return its "internal pointer" as well as the terminating
+char as well as the next token as it parses a string passed to it. 
+Otherwise, it behaves the same as the library function.<p>
+
+Here is the function prototype you are to use:
+
+<pre>
+    char *
+    strtok(  char        *stringToParse, 
+             const char  *terminatorSet, 
+                   char **continuationString,
+             char        *terminatorChar
+    );
+</PRE>
+
+<H2><I>strtok()</I></H2>
+
+Write your definition of <I>strtok()</I> in <CODE>strtok.c</CODE>. If
+you try to put the statement, <CODE>#include &lt;string.h&gt;</CODE>,
+in your <CODE>strtok.c</CODE> you will get a syntax error because of
+the conflicting prototypes for <I>strtok()</I> in
+"<CODE>strtok.h</CODE>" and in the standard header file.  I suggest
+that you deal with this by copying the prototypes you need from
+<CODE>&lt;string.h&gt;</CODE> into your "<CODE>strtok.c</CODE>".  I used
+these two:
+<pre>
+  size_t strspn(  const char *s, const char *set );
+  size_t strcspn( const char *s, const char *set );
+</pre>
+You will need <CODE>&lt;stdlib.h&gt;</CODE> for the typedef of
+size_t.<p>
+
+Unlike the presentation in class on March 12, the assignment uses the
+same return value and first two parameters as the standard library's
+<I>strtok()</I> function.  The third parameter is used for returning a
+pointer to the next part of the string being parsed.  If there is
+nothing left to parse in the string, return a value of NULL for this
+pointer.  The fourth pointer is used to return the character that
+terminated the token.<p>
+
+<H2><I>main()</I></H2>
+
+Write a main program, in <CODE>main.c</CODE>,  that gets strings from
+the user, and prints messages describing the command lines it read,
+using your <I>strtok()</I>, to do the parsing.<p>
+
+<H2>Sample Output</H2>
+
+<pre>
+    $ <B>main
+
+    </B>Enter a command line: <B> first cmd ; second cmd | third
+    </B>Command 1 was: "first cmd"
+       It terminated with ';'
+    Command 2 was: "second cmd"
+       It terminated with '|'
+    Command 3 was: "third"
+       It terminated with ''
+
+    Enter a command line: <B> a command || b &amp;&amp; c &amp;
+    </B>Command 1 was: "a command"
+       It terminated with '||'
+    Command 2 was: "b"
+       It terminated with '&amp;&amp;'
+    Command 3 was "c"
+       It terminated with '&amp;'
+
+    Enter a command line: <B>^C
+    </B>$ 
+</pre>
+
+<H2>Notes</H2>
+
+<UL>
+
+  <LI>Handling the double-character command separators, || and
+  &amp;&amp; is optional.
+
+  <LI>Note that this program teminates only when the user types Control-C. 
+  It's okay if the next command prompt appears on the same line as
+  the Control-C.
+
+  <LI>Send all three files to me as separate attachments to a single
+  email message.<p>
+
+</UL>
+
+<HR></BODY></HTML>

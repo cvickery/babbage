@@ -1,0 +1,338 @@
+<HTML> <HEAD> <TITLE> WWW Server and Client </TITLE> </HEAD>
+<BODY bgcolor=#ffffff>
+
+<H1 align=center>WWW Server and Client</H1>
+<DL>
+<DT><B>Due Date:</B><DD>May 28, 1996 (The day of the Final Exam)
+
+<DT><B>Deliverables:</B><DD>
+
+When the project is complete, send me an e-mail message telling me the
+path to the project directory for this assignment.<P>
+
+The project directory is to contain an RCS subdirectory where you are
+to keep the source files for two separate programs (a Web server and a
+Web client), and a Makefile, all under rcs management.  In addition,
+the directory <code>~/man/man1</code> is to contain <i>man</i> pages
+for the executable programs you write for this project.<P>
+
+You may leave a <code>README</code> file in the project directory if
+you think that one is needed, but I neither expect nor require you to
+do so.<P>
+
+<DT><B>Requirements:</B><DD>
+
+In addition to the information given here, be sure to consult the
+<A HREF="grading_form_3.html">Grading Form for this assignment</A>,
+which includes additional information about the requirements for this
+project.
+
+</DL>
+
+<H2>Project Description</H2>
+
+You are to write two programs, a World Wide Web server, and a World
+Wide Web client (also known as a Web browser).<p>
+
+<blockquote>
+It is a requirement for this project that both your programs interact
+properly with standard Web programs in use on the Web.  That is, your
+server must be able to respond to requests from Netscape and Lynx, and
+your client must be able to make requests to servers such as the ones
+running on <i>babbage</i> and <i>qcunix1</i>.<p>
+</blockquote>
+
+Your programs are to exchange information using the Hypertext Transfer
+Protocol (HTTP).  The full documentation of the HTTP protocol is
+available at <a
+href="http://www.w3.org/pub/WWW/Protocols/HTTP/1.0/spec.html">
+The WWW Consortium</a>, but you should not need to read the full
+document.  This assignment page includes a summary of the parts of the
+protocol that you need to handle.<p>
+
+The steps you are to follow to develop the two programs are listed
+below.  First develop your server, and then start working on your
+client, which is an open-ended exercise.  The list of steps for the
+programs tell you how far you are expected to get this term.<p>
+
+<h2>HTTP Description</h2>
+
+The HTTP description provided here is for a compatible subset of the
+HTTP/1.0 Protocol Specification.  Although some parts of the protocol
+are omitted from this description and some parts are given more
+concrete interpretations than the specification document does, clients
+and servers that use the protocol described here will be compatible
+with the basic features of most other web clients and servers in use on
+the Internet today.<p>
+
+HTTP servers use a stream socket to receive <i>request messages</i>
+from HTTP clients, and to send <i>response messages</i> in return.  Your
+server is to operate as an iterative server: It accepts a connection
+from a client, reads the client's request, sends a reply to the client,
+closes the socket, and then becomes ready to accept a connection from
+another client.<p>
+
+Your server is to use the default port number assigned to you, based on
+the last three digits of your ID number.  It must accept a command line
+argument that allows the user to specify an alternate port number.<p>
+
+<h2>Request Messages</h2>
+
+A request is a text message that consists of a <i>Request-Line</i>,
+followed by zero or more <i>Request-Headers</i>, followed by
+<code>CRLF</code> (Ascii Carriage Return and Linefeed characters).  The
+format of a <i>Request-Line</i> is "<code>GET &lt;uri&gt; HTTP/1.0
+CRLF</code>", with <i>&lt;uri&gt;</i> (Universal Resource Identifier)
+being a Unix pathname relative to the server's root directory.<p>
+
+The optional Request Headers consist of any number of text lines terminated by
+<code>CRLF</code>.  Your client must generate at least one valid
+request header consisting of a line in the form <code>User-Agent:
+&lt;identifier&gt;CRLF</code>.  The &lt;identifier&gt; is a string that
+identifies your client program, including its RCS version number.  Your
+server will not interpret request headers, but will copy them all to
+its log file.  Fuller descriptions of your client and server are given
+below.<p>
+
+In summary, a request message consists of a Request-Line, zero or more
+Request-Header lines, and a terminating <code>CRLF</code>.  The server
+knows it has read all of a client's request when it gets a blank line
+of text.<p>
+
+<h2>Response Messages</h2>
+
+Once a server reads all of a client's request message, is replies by
+writing a <i>Response Message</i> to the socket.  A Response Message
+consists of a <i>Status Line</i>, followed by zero or more
+<i>Response-Headers</i>, followed by zero or more
+<i>Entity-Headers</i>, followed by a <code>CRLF</code>, optionally
+followed by an <i>Entity-Body</i>.<p>
+
+The Status Line consists of a version string ("HTTP/1.0"), one or more
+spaces, a 3-digit code number, one or more spaces, some text that
+describes the status code, and finally the end of line code, 
+(<code>CRLF</code>).  Here is a list of status codes and suggested text
+that your server might generate:<p>
+
+<blockquote><pre>
+200 OK
+204 No Content
+400 Bad Request
+403 Forbidden
+404 Not Found
+500 Internal Server Error
+501 Not Implemented
+</pre></blockquote>
+
+The meanings of these codes should be pretty self-evident: 200 means
+the request was all right, 204 means the request was for an empty file,
+400 means there was something wrong with the syntax of the request, 403
+means the request was for a file that exists but for which the server
+does not have read access, 404 means the request was for a file that
+does not exist.  500 will probably never occur, and 501 is a way of
+handling requests that your server recognizes but can't handle yet.<p>
+
+Your server will return at least one Response-Header, a line containing
+"<code>Server: &lt;identifier&gt;CRLF</code>".  Like the User-Agent line
+sent by the client, this line is to contain an identifier string giving
+the name and RCS version of your server.<p>
+
+If the server is going to return a file to the client, it first sends
+an Entity Header that describes the file being returned.  In
+particular, the server sends an Entity Header line containing
+"<code>Content-Length: &lt;size&gt;CR</code>", where <i>size</i> is the
+length of the file, in bytes, being returned as the Entity Body.  Your
+server must also send a second Entity Header line containing
+"<code>Content-Type &ltmedia-type&gtCRLF"</code>.  The
+<i>media-type</i> will normally be the string,
+"<code>text/plain</code>", but it might be one of these common
+names:<p>
+
+<blockquote>
+<dl>
+<dt><code>text/html</code><dd>A Hypertext Markup Language web page.
+<dt><code>image/gif</code><dd>A picture in GIF format.
+<dt><code>application/octet-stream</code><dd>An arbitrary binary file.
+<dt><code>audio/basic</code><dd>An audio file.
+<dt><code>video/mpeg</code><dd>An MPEG movie.
+</dl>
+</blockquote>
+
+Note: Your server might return one of these additonal content types,
+but I don't expect your client to know what to do with them!<p>
+
+Unless the server returns a status code of 204 (no content), it must
+return the contents of the requested file as the Entity Body part of
+its reply.  The client can tell when the Entity Body begins because it
+is separated from the header lines by an empty line.  When the server
+has written all of the file to the client, it closes its end of the
+socket, which signals the client that the reply is complete.  The
+client could also tell how many bytes it will receive by examining the
+Content-Length header line, but this is not a reliable technique.  The
+Content-Length value can be used by clients to provide users with
+feedback about how much longer it will take to retrieve the requested
+document.<p>
+
+<h2>The Server Program</h2>
+
+Your server is to be developed in a sequence of steps.  Each of the
+steps is to be a working program, with the step number corresponding to
+the RCS version number of the source code.<p>
+
+<ol>
+
+<li>When the server starts running, it is to create a log file and
+write a message to that file giving the current date and time, the name
+of the host on which the server is running, and the port number it is
+using.  It must be possible to read the current contents of the log
+file while the server is running.  The way to terminate the server is
+to kill it.  When the server is killed it is to write another message
+to the log file giving the date and time and a message indicating that
+it is terminating.<p>
+
+The server's log file is to be written in the same directory as the
+server's executable file, and must have the same name as the server's
+executable file, but with an extension of <code>.log</code>.  You must
+determine the name of the server's executable file from the value of
+<code>argv[0]</code> passed to <i>main()</i>.<p>
+
+<b>Optional:</b>  If the environment variable <code>SERVER_LOG</code> is set,
+use that as the full pathname to the server's log file instead of the
+name specified above.<p>
+
+<b>Note:</b>  If you write debugging information to the log file (a
+deprecated practice; use <i>gdb</i> or <i>ddd</i> instead), you must be
+sure no such messages are written in the version of the assignment that
+you submit.<p>
+
+<b>Remember!</b>  You must code this step, and no more, as a working
+program before you proceed to work on the next step.  The RCS version
+number for this program is to be 1.1.  This policy applies to all steps
+in this project.<p>
+
+<li>For this step, the server accepts connections on your "well-known"
+port.  For each client, read the entire request from the socket, write
+it to the log file, write back a "HTTP/1.0 501 Not Implemented"
+response message, and close the socket.<p>
+
+<b>Note:</b>  Test this and all subsequent versions of your server
+using Lynx and Netscape.<p>
+
+<b>Remember!</b>  The RCS version number for this step must be 1.2.<p>
+
+
+<li>For each client request, be sure the request method is
+"<code>GET</code>" and the HTTP-version is "<code>HTTP/1.0</code>".  If
+either is wrong, send a "400 Bad Request" response and close the
+socket.  Otherwise send a "501 Not Implemented" response.<P>
+
+<b>Optional:</b>  You could accept version numbers other than 1.0,
+provided they start with "HTTP/."<p>
+
+<b>Remember!</b>  The RCS version number for this step must be 1.3.<p>
+
+<li>Interpret the URI field of a request as the pathname of a file or
+directory relative to the directory specified by the environment
+variable, "<code>SERVER_ROOT</code>".  Use <i>stat()</i> to determine
+whether it is a directory or a file.  If it is a directory, return "501
+Not Implemented."  If it is a file of size zero, return "204 No
+Content."  If it is a file, open it for reading and copy it to the
+client as the Entity Body of the response.  (Be sure to set the
+Content-Length" header line properly.)  If the call to <i>open()</i>
+fails, return "403 Forbidden."  If the file does not exist, return "404
+Not Found."<P>
+
+<b>Remember!</b>  The RCS version number for this step must be 1.4.<p>
+
+<hr>
+All remaining steps for the server are optional.<p>
+
+<li>If the client requests a directory, create a directory listing and
+return it as the Entity Body of the response.<P>
+
+<b>Remember!</b>  The RCS version number for this step must be 1.5.<p>
+
+<li>If the request is for a file and the name of the file ends in
+".gif", send a Content-Type" header of "image/gif" instead of
+"text/plain".<P>
+
+<li>If the request is for a file and the name of the file ends in
+".cgi", execute the file, with the program's standard output written as
+the Entity Body of the response.<p>
+
+</ol>
+
+<h2><a name="browser">The Client Program</a></h2>
+
+Your browser is to be developed in a sequence of steps. Each of the
+steps is to be a working program, with the step number corresponding to
+the RCS version number of the source code. <p>
+
+<ol>
+
+<li>Write a main program that reads command lines from the user, and
+terminates when the user types "quit" or "exit".<P>
+
+<b>Remember!</b>  The RCS version number for this step must be 1.1.<p>
+
+<li>Write a function named <i>parseURL()</i>.  It must be in a separate
+source file, and there must be a header file named <code>parseurl.h</code>
+containing the function prototype for this function.  (#include the
+header file in both your .c files.)  <i>parseURL()</i> must receive the
+command line entered by the user as one argument, and it is to return
+the parsed URL either as a structure or as an array of strings, as
+discussed in class.  Use <i>gdb</i> or <i>ddd</i> to verify that your
+parser is working correctly.<p>
+
+<b>Remember!</b>  The RCS version number for this step must be 1.2.<p>
+
+<li>Use the information from the parsed url to create a socket
+connection to the specified server and port number.  Write a valid
+request message to the server based on the parsed url, and read the
+server's reply.  When the server closes the socket, prompt the user for
+another URL.  If the environment variable <code>CLIENT_FILE</code> is
+set to the pathname of a file, write the server's reply to it.  If the
+status code of the server's reply does not begin with the character "2"
+display the complete Status Line of the server's reply to the user.<p>
+
+<b>Remember!</b>  The RCS version number for this step must be 1.3.<p>
+
+<hr>
+
+All remaining steps for the client are optional.<p>
+
+<li>Provide a progress indicator so the user can tell how much longer
+it will take for a server's reply to arrive.<p>
+
+<b>Remember!</b>  The RCS version number for this step must be 1.4.<p>
+
+
+<li>Using <a
+href="ftp://babbage.cs.qc.edu/pub/vickery/Motif_Sample.tar">Motif_Sample</a>
+as a model, implement an X Window user interface for your client. 
+Display the server's reply, without change, in the text widget.<p>
+
+<li>Display only the Entity Body of the server's reply in the text
+widget.<p>
+
+<li>If the Entity Body is an HTML document, remove all html markup
+items from the information displayed in the text widget.  Insert a line
+break for each &lt;p&gt; and &lt;/Hn&gt; item (where <i>n</i> is a
+digit from 1 to 9).
+
+
+
+
+
+</ol>
+
+<HR>
+<UL>
+<LI> <A HREF="../gf.html">Standard Grading Form</A>.
+<LI> <A HREF="grading_form_2.html">Grading Form for this Assignment</A>.
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>

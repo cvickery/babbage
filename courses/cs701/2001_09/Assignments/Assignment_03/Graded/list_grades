@@ -1,0 +1,7 @@
+#! /usr/local/bin/ksh
+
+for f in *.grade
+do
+  grep ${f/.grade/} ../../../roster
+  grep /5.0 $f
+done 

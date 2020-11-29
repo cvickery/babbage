@@ -1,0 +1,2324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0063)http://slashdot.org/article.pl?sid=01/02/06/2030205&mode=thread -->
+<HTML><HEAD><TITLE>Slashdot | David Korn Tells All</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 5.50.4611.1300" name=GENERATOR></HEAD>
+<BODY>
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD width=2>
+      <SCRIPT language=JAVASCRIPT>
+<!--
+now = new Date();
+tail = now.getTime();
+document.write("<IMG SRC='http://images2.slashdot.org/Slashdot/pc.gif?/article.pl,");
+document.write(tail);
+document.write("' WIDTH=1 HEIGHT=1 BORDER=0>");
+document.write("<IMG SRC='http://images.slashdot.org/pagecount.gif?/article.pl,");
+document.write(tail);
+document.write("' WIDTH=1 HEIGHT=1 BORDER=0><BR>");
+//-->
+</SCRIPT>
+      <NOSCRIPT><IMG height=1 src="Slashdot  David Korn Tells All_files/pc.gif" 
+      width=1 border=0> <IMG height=1 
+      src="Slashdot  David Korn Tells All_files/pagecount.gif" width=1 
+      border=0><BR></NOSCRIPT></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD width=468>
+      <SCRIPT language=JAVASCRIPT>
+</SCRIPT>
+      <NOSCRIPT><A target=_top 
+      href="http://images.slashdot.org/cgi-bin/adlog.pl?article,safe0001en"><IMG 
+      height=60 alt="Click here!" 
+      src="Slashdot  David Korn Tells All_files/safe0001en.gif" width=468 
+      border=0></A><BR></NOSCRIPT></TD></TR></TBODY></TABLE>
+<H1>Slashdot.org</H1>
+<H2>News for Nerds: Stuff that Matters.</H2><A href="http://slashdot.org/"><IMG 
+height=34 src="Slashdot  David Korn Tells All_files/topicslashdot.gif" width=100 
+border=0></A> 
+<P>[ <FONT size=2><B>&nbsp;<A href="http://slashdot.org/faq/">faq</A> | &nbsp;<A 
+href="http://slashdot.org/code.shtml">code</A> | &nbsp;<A 
+href="http://www.osdn.com/">osdn</A> | &nbsp;<A 
+href="http://slashdot.org/awards.shtml">awards</A> | &nbsp;<A 
+href="http://osdn.com/privacy.shtml">privacy</A> | &nbsp;<A 
+href="http://slashnet.org/">slashNET</A> | &nbsp;<A 
+href="http://slashdot.org/search.pl">older stuff</A> | &nbsp;<A 
+href="http://cmdrtaco.net/">rob's page</A> | &nbsp;<A 
+href="http://slashdot.org/users.pl?op=preferences">preferences</A> | &nbsp;<A 
+href="http://slashdot.org/submit.pl">submit story</A> | &nbsp;<A 
+href="http://slashdot.org/advertising.shtml">advertising</A> | &nbsp;<A 
+href="http://slashdot.org/supporters.shtml">supporters</A> | &nbsp;<A 
+href="http://slashdot.org/pollBooth.pl">past polls</A> | &nbsp;<A 
+href="http://slashdot.org/topics.shtml">topics</A> | &nbsp;<A 
+href="http://slashdot.org/about.shtml">about</A> | &nbsp;<A 
+href="http://slashdot.org/jobs.shtml">jobs</A> | &nbsp;<A 
+href="http://slashdot.org/hof.shtml">hof</A> </B></FONT>] 
+<P>
+<H2>David Korn Tells All</H2><A 
+href="http://slashdot.org/search.pl?topic=news">News</A> | <B>Posted by <A 
+href="http://www.monkey.org/~timothy">timothy</A> on Wednesday February 07, 
+@12:00PM</B><BR><FONT size=2><B>from the old-school-new-jersey 
+dept.</B></FONT><BR>David Korn answers! <A 
+href="http://slashdot.org/article.pl?sid=01/01/25/2320255">You asked the 
+questions</A> a little while ago, and now David Korn has kindly responded with 
+answers (some lengthy, some pithy, all appreciated) to queries about the 
+eponymous shell, the famous Microsoft/Korn story (in short -- yep, it's like 
+you've heard), and proper Unix behavior. He even made his son Adam write one of 
+the answers. <BR>
+<P><STRONG>Question 1) Comparison<BR>by Shadowlion (shadowlionc@netscape.net) 
+</STRONG>
+<P><I>Background: the only shell I've ever really used is bash. Bash has always 
+seemed to be the standard UNIX shell (or, at least, the standard default UNIX 
+shell), and for the most part I've always been able to do what I wanted in it.
+<P>Question: can you engage in a little unadulterated advocacy for a moment to 
+offer some reasons why an informed user might consider using ksh over bash or 
+other popular UNIX shells? What does ksh provide that other shells don't? 
+Similarly, can you give a realistic appraisal of ksh's drawbacks as compared to 
+bash or other shells?
+<P>Thanks.
+<P></I><STRONG>David Korn: </STRONG>First of all, when I talk about ksh here, I 
+am referring to ksh93 which was first released over six years ago. Most UNIX 
+systems ship with ksh88 and most Linux systems ship with pdksh, neither of which 
+has the functionality of ksh93.
+<P>There are two different areas of functionality in shells. First is 
+interactive use and the second is scripting. Much of the debate about shells has 
+focused on interactive use only. For example, tcsh is an acceptable shell for 
+interactive use but practically unusable for scripting.
+<P>In many cases the argument over which shell is best for interactive use is 
+based upon which key to press for completion. This is a little like arguing that 
+Solaris is better than Windows because of location of the Control and Shift keys 
+or that vi is better than emacs because you you can save a keystroke or two. 
+Most popular shells have similar functionality with respect to interactive use.
+<P>It is hard to argue that ksh is any better for interaction, given all the 
+features in tcsh and zsh. But the scripting features in ksh93 are far more 
+advanced than any other shell that I am aware of. For scripting, I feel that ksh 
+is more in the category of perl/tcl/python and I would like to see 
+debates/comparisons for those languages rather than the antiquated bash/csh/etc.
+<P>I have not looked at bash for several years and some of the features I 
+describe here might now be implemented by bash. I sent Chet Ramey, author of 
+bash, the list of new features in ksh93 years ago so that if these features get 
+implemented in bash, they would be compatible. Here is a partial list of ksh93 
+features: 
+<OL>
+  <LI>Associative arrays - ksh88 already supports indexed arrays. 
+  <LI>Floating point arithmetic + math library functions. 
+  <LI>Arithmetic for command similar to C and awk. 
+  <LI>Complete ANSI C printf formatting with extensions. 
+  <LI>Run time linking of libraries and builtins. 
+  <LI>A number of additional substring operations such as offset length. 
+  <LI>Full extended regular expression matching capabilities 
+  <LI>Compound variables which can be used to represent data aggregates. 
+  <LI>Name references for passing aggregate variables by name. 
+  <LI>Active variables. Users can trap variable assignment and references by 
+  associating intercept functions of the form name.get and name.set. 
+  <LI>Ability to make socket connections to servers by name. 
+  <LI>read with timeouts. 
+  <LI>Conformance to POSIX 1003.2. 
+  <LI>Command completion and variable completion, ksh93 only had file name 
+  completion. 
+  <LI>A key binding mechanism that allows users to bind keys to new editing 
+  functions. </LI></OL>Note that only the last two features relate to interactive 
+use. The primary focus of ksh93 is scripting and in this arena it certainly 
+outshines bash. ksh93 runs builtin shell commands much faster than bash.
+<P>There is actually a third area of shell functionality which is related to 
+extensibility. In this area ksh93 should be compared to tcl. ksh93 is 
+implemented as a reusable library with a C language API for adding builtins and 
+accessing shell internals. It can be embedded in other programs. For example, 
+dtksh, which is part of the Common Desktop Environment (CDE), uses ksh93 as a 
+library. Similarly, tksh, (written by Jeff Korn) which uses the tk library for 
+graphics, uses ksh93 as a library.
+<P>The primary drawback to ksh has been that it was proprietary. This has 
+recently changed however. The new AT&amp;T open source license allows ksh source 
+and binaries to be shipped as part of the system and is now just beginning to 
+start showing up in Linux systems; for example the latest slackware. The source 
+or binary for over a dozen architectures can be downloaded from 
+(http://www.research.att.com/sw/download). Hopefully other systems will start 
+shipping ksh93 and start using this for /bin/sh as well.
+<P><STRONG>Question 2) What about enhancing ksh syntax?<BR>by mirko 
+(mirko@myfamilyname.org) </STRONG>
+<P><I>Ksh is quite cool as it is much more compact than bash ; here are their 
+respective sizes on a Solaris system:
+<P>-&gt; /usr/local/bin/bash -version<BR>GNU bash, version 2.02.0(1)-release 
+(sparc-sun-solaris2.6)<BR>Copyright 1998 Free Software Foundation, Inc.
+<P>-&gt; ls -la /usr/local/bin/bash<BR>-rwxr-xr-x 1 bin bin 3157516 Jul 14 1998 
+/usr/local/bin/bash<BR># ksh -o emacs<BR># Version M-11/16/88i
+<P># ls -la `which ksh`<BR>-r-xr-xr-x 2 bin bin 186356 Jul 16 1997 /usr/bin/ksh
+<P>On a Linux system, these are approximately 300k for bash and 160k for 
+(pd)ksh.
+<P>In which direction do you plan to improve it?
+<P>Will you rather keep it compact or extend its functionalities regardless the 
+volume increase ?
+<P>This issue is quite important for me as, as of yet I am working upon some 
+System-on-a-floppy distribution and the size appears to be critical in this 
+context.
+<P></I><STRONG>Korn: </STRONG>First of all pdksh is a ksh88 clone; and I might 
+add a better clone than the MKS Korn Shell.
+<P>A lot of effort was made to keep ksh88 small. In fact the size you report on 
+Solaris is without stripping the symbol table. The size that I am getting for 
+ksh88i on Solaris is 160K and the size on NetBSD on intel is 135K.
+<P>ksh88 was able to compile on machines that only allowed 64K text. There were 
+many compromises to this approach. I gave up on size minimization with ksh93. 
+ksh93 is larger than bash. However, because of the number of commands that can 
+be builtin to ksh93, it is possible to put ksh93 and approximately 30 additional 
+commands on a floppy in approximately the same space as with ksh88 and those 
+commands.
+<P>Some of the reasons for the large size of ksh93 are: 
+<OL>
+  <LI>Floating point arithmetic. 
+  <LI>The use of Sfio for Stdio. Use of the native stdio would not have counted 
+  towards the size on most systems because they are part of the shared C 
+  library. However, Stdio has too many weaknesses to be used portably and safely 
+  by ksh. 
+  <LI>Self-documenting code. All the built-ins to ksh93 can generate their own 
+  manual page in several formats and locales. This takes up space for the 
+  documentation text as well the the processing libraries. 
+</LI></OL><STRONG>Question 3) pdksh...<BR>by mirko 
+(mirko@myfamilyname.org)</STRONG>
+<P><I>Do you collaborate (or plan to) with the pdksh development team ?
+<P></I><STRONG>Korn: </STRONG>I don't know the pdksh development team but I 
+would like to thank them for the service they have done in making a version of 
+ksh available while ksh was proprietary. I have noticed remarkable improvements 
+in pdksh in its ability to mimic ksh88 functionality. I don't know what plans 
+the pdksh development team has now that ksh93 is available in open source form, 
+but I certainly would help them try to maintain compatibility if they do 
+continue pdksh distribution. Otherwise, I would hope that they would pick up the 
+ksh93 source and help support and enhance it.
+<P><STRONG>Question 4) ksh today<BR>by Y-Leen
+<P></STRONG>
+<P><I>During the design of ksh, were you limited/influenced by computer hardware 
+and consumer market?
+<P>Given the chance to completely redesign ksh for today's higher spec machines 
+and the current consumer base, what new features would you include?
+<P></I><STRONG>Korn: </STRONG>In many ways yes. In early days memory size was a 
+big consideration. [That] sixteen bit machines were the norm influenced the 
+design. The fork() call on most systems caused the data area to be copied in the 
+child process and therefore keeping the data region as small as possible was 
+needed for performance reasons.
+<P>Another design principle that was influenced by the hardware and the OS was 
+the desire to only have features that would work on all systems so that korn 
+shell scripts would be portable.
+<P>The decision to keep ksh compatible with the Bourne shell was influenced by 
+the consumer base. There are very few Bourne shell scripts that will not run 
+unchanged with ksh.
+<P>In a complete redesign, all shell functions would be thread safe so that 
+multiple shell interpreters could run in separate threads.
+<P>There are two features that are missing the current ksh93 release that are 
+present in perl and should be added to a future release. One is the ability to 
+handle and process binary data. The second is related to name spaces.
+<P><STRONG>Question 5) True Story?<BR>by travisd (travisd_no_spam@tubas.net)
+<P></STRONG><I>Was the story about you embarrassing a Microsoftie at a 
+conference true? Specifically, that he was insisting that their implementation 
+of ksh in their unix compatibility kit was true to the "real" thing and trying 
+to argue the point with you. The argument ended when someone else finally stood 
+up and informed the speaker who he was arguing with.
+<P>Just curious ...
+<P></I><STRONG>Korn: </STRONG>This story is true. It was at a USENIX Windows NT 
+conference and Microsoft was presenting their future directions for NT. One of 
+their speakers said that they would release a UNIX integration package for NT 
+that would contain the Korn Shell.
+<P>I knew that Microsoft had licensed a number of tools from MKS so I came to 
+the microphone to tell the speaker that this was not the "real" Korn Shell and 
+that MKS was not even compatible with ksh88. I had no intention of embarrassing 
+him and thought that he would explain the compromises that Microsoft had to make 
+in choosing MKS Korn Shell. Instead, he insisted that I was wrong and that 
+Microsoft had indeed chosen a "real" Korn Shell. After a couple of exchanges, I 
+shut up and let him dig himself in deeper. Finally someone in the audience stood 
+up and told him what almost everyone in the audience knew, that I had written 
+the 'real' Korn Shell. I think that this is symbolic about the way the company 
+works.
+<P><STRONG>Question 6) Kind of a shell question...<BR>by update()
+<P></STRONG><I>There's a lot of squabbling in the Linux world about how the Unix 
+mentality of small apps communicating through standard input/output to form a 
+pipeline should be maintained in the new whiz-bang, GUI environments. Do you 
+think that it can/should be done? What should be the most important 
+considerations for such a messaging system and how should a standard be 
+established?
+<P>So Korn (the band) drinks Coors Light? I might have suspected... </I>
+<P><STRONG>Korn: </STRONG>As far as the Korn band is concerned, as you probably 
+already know, it was formed in 1993 to promote the Korn Shell. On the 
+kornshell.com website (click on fun), you can see them endorsing the KornShell 
+Command and Programming Language book, the most complete reference book on 
+ksh93.
+<P>There are many people who use UNIX or Linux who IMHO do not understand UNIX. 
+UNIX is not just an operating system, it is a way of doing things, and the shell 
+plays a key role by providing the glue that makes it work. The UNIX methodology 
+relies heavily on reuse of a set of tools rather than on building monolithic 
+applications. Even perl programmers often miss the point, writing the heart and 
+soul of the application as perl script without making use of the UNIX toolkit.
+<P>Our aim with ksh, and with about 150 additional tools that are part of the 
+AST Toolkit, (http://www.research.att.com/sw/download), has been to enhance the 
+UNIX tool kit by providing new and improved tools.
+<P>Clearly most users prefer GUI interfaces, and GUI interfaces are often 
+hostile to the UNIX methodology. This presents a challenge for the GUI design 
+and unfortunately many GUI applications are built as monoliths with little hope 
+of reuse and make little reuse of the UNIX tool set. I think that the most 
+important consideration when building a system is to separate the GUI from the 
+rest of the system. Anything that can be done with the GUI should be able to be 
+done without the GUI via scripting. This is important if you ever want to 
+automate tasks in the future. Scripting can then be used for automation and for 
+testing.
+<P>This tight coupling between GUI and application has other drawbacks as well. 
+It makes it hard to distribute functionality from the client running the GUI to 
+a server that could be somewhere else on the network.
+<P><STRONG>Question 7) What functionality/code in ksh are you least proud 
+of?<BR>by segmond (segmond[at]hotmail)
+<P></STRONG><I>It is very hard to find a programmer who is completely satisfied 
+with his code. No matter how happy she is with it, there is always that part 
+which she wishes to improve. As far as ksh is concerned what is it that you wish 
+you didn't do, can improve? </I>
+<P><STRONG>Korn: </STRONG>The things that I most regret are not the code itself 
+but mistakes that are in the shell language that I inherited from the Bourne 
+shell code. A lot of effort was made to maintain compatibility while trying to 
+improve ksh at the same time. Compatibility was an extremely important 
+consideration for the adoption of ksh by may organizations. At one point I 
+backed out an improvement because it broke one script in a published UNIX book. 
+If I had my choice, the backquote would disappear as a special character and $() 
+would need to be used instead. Double quoted strings would interpret all of the 
+ANSI-C backslash conventions as well as expand $ expansions. The echo command 
+would not perform any interpretation on its argument. Word splitting would be 
+disabled by default. Note that because I did not make these changes, ksh can 
+safely replace /bin/sh on most systems today unlike zsh which would cause many 
+script to fail in mysterious ways.
+<P>There are also a number of features that I introduced into the shell that I 
+wish that I had done differently or not at all. Some obvious examples are the 
+poor design of the fc command, the let command which was superceded with 
+((...)), and the exporting of attributes for shell variables. 
+<P>The code has changed a lot over the years which I suspect is an indication 
+that I am never completely satisfied with my code. In fact whenever I look at 
+code I wrote a few years ago, I can't believe how bad it is and I always believe 
+that my new code is finally ok.
+<P>What bothers me most about the current code, is that, in spite of its 
+modularity, there are too many places where code in one module only works 
+because of the way another module works. The effect of this is that many changes 
+that I make are not orthogonal and require changes to several parts of the code.
+<P>Another weakness of the current code is that it is not completely thread 
+safe.
+<P><STRONG>Question 8) UWIN and etc<BR>by rabtech (russ_slash@boneville.net)
+<P></STRONG><I>You once said that you had to learn Windows NT because you 
+couldn't criticize what you didn't know. What I'd like to know (as a primarily 
+Windows programmer) is what do you consider to be the best and worst parts of 
+both the Windows NT/2000 model and the UNIX model. What advice can you give? 
+Also, has working on the UWIN project given you any insights that you can share 
+with the rest of the community?
+<P></I><STRONG>Korn: </STRONG>I have spent the last five years writing a UNIX 
+for windows which is called UWIN (http://www.research.att.com/sw/tools/uwin). My 
+experience is with the WIN32 API for the core OS and not with the WIN32 
+interface to the GUI. Clearly I had to learn more about the WIN32 API than I 
+think that anyone should need to know. The more I know about the WIN32 API the 
+more I dislike it. It is complex and for the most part poorly designed, 
+inconsistent, and poorly documented.
+<P>One of the biggest myths about Windows is that the MS operating systems are 
+compatible, unlike UNIX which has so many variants. In reality, porting from one 
+version of Windows to another is often more difficult than porting from one UNIX 
+or Linux system to another. WIN32 calls on one system are not necessarily 
+implemented on other systems, or even worse, they behave differently, requiring 
+completely different code strategies.
+<P>That is not to say that there aren't things that I like about Windows NT. The 
+handle model is good, but would have been better if Microsoft had done it right. 
+The separation of dynamic libraries into interface and implementation also makes 
+sense. Putting the libraries in the same directory as the executables is an 
+improvement over UNIX since the allows executables and libraries to be searched 
+for simultaneously.
+<P>The best advice I can give is to not use Windows unless you have to, or if 
+you have to, use a UNIX operating system on top of Windows like UWIN or Cygwin.
+<P>One insight that I would give about UWIN is that it proved to be far more 
+difficult that I had anticipated.
+<P><STRONG>Question 9) Ksh Programming For the Web<BR>by Dom2 
+(dom@happygiraffe.net)
+<P></STRONG><I>How do you feel that ksh holds up for web programming? I have 
+always enjoyed programming shell scripts more than anything else, but I have 
+always been unhappy with the shell idioms for parsing securely and correctly 
+(the myriad of substitution operators is a nightmare to control). This is one 
+area in which Perl has really taken the lead. How do you think shell programming 
+could be better adapted for the web?
+<P>Also, how do you feel about most commercial Unix vendors (and projects like 
+pdksh) that are still shipping ksh88 as the default, 13 years later? ksh93 has 
+many more useful features, but the take up has been slow.
+<P>Thanks,<BR>-Dom
+<P></I><STRONG>Korn: </STRONG>One of my biggest disappointments is the slowness 
+of adoption of ksh93. At the time ksh88 was released, AT&amp;T was a primary 
+UNIX vendor and was able to put it into the standard product. This led to 
+relatively quick adoption for most vendors.
+<P>Shell features like here-documents are very well suited for CGI scripts. 
+However, ksh93 is far better as a web scripting language than ksh88. There is 
+not an efficient way to handle the myriad of substitution operators that get 
+passed into a CGI script with ksh88 or any other shell. ksh93 does this rather 
+efficiently with a 'set' discipline which converts the CGI command line into a 
+single compound variable for manipulation by the script. A 'get' discipline 
+converts it back.
+<P>The kornshell.com page has the code for a script that can be included in a 
+CGI script in which all the arguments are mapped into shell variables.
+<P>Also, recent version of ksh93 have added %H to printf so that strings can be 
+expanded using HTML/XML %xx; form whenever necessary.
+<P>The http://www.research.att.com/sw/download website is maintained by ksh 
+scripts in combination with AT&amp;T nmake, and all CGI scripting is done by 
+ksh93.
+<P><STRONG>Question 10) Graphical dtksh, zend, standardizing on ksh93, rpm<BR>by 
+emil
+<P></STRONG><I>a) Since the code to Motif is now free and open, is there any 
+possibility that dtksh, the ksh93-compliant CDE shell with Motif extensions will 
+be open-sourced? Novel wrote it; will they give it away?
+<P>b) Any possibility that you could leverage Zend from php? Or what would it 
+take to implement a dbi-like SQL layer for ksh?
+<P>c) Under Solaris and HP-UX, ksh88 is installed in /usr/bin/ksh, ksh93 is 
+installed in /usr/dt/bin/dtksh, but the default shell is the "Posix" shell, a 
+superset of ksh. Is there any hope of getting this mess straightened out?
+<P>d) Will I ever expect Red Hat to include an RPM for ksh93? Or would you 
+consider merging with Bash?
+<P></I><STRONG>Korn: </STRONG>a) I can't say whether Novell will give dtksh away 
+or not. They own the ksh93 extensions and its up to them what they do. I don't 
+think that Motif is either free or open since my understanding is that it cannot 
+be included in commercial products. On the other hand, tksh, which combines 
+ksh93 with tk graphics is freely available. In addition to interpreting shell 
+syntax, tksh can interpret tcl syntax as well.
+<P>b) I am not familiar with Zend from php. ksh93 is very extensible. Builtins 
+can be added to ksh and use the same calling convention as tcl uses. There is an 
+API interface to shell variables and other shell functions that can be used with 
+built-in commands. If Zend from php can be added to tcl, then it can be added to 
+ksh93.
+<P>c) Since ksh88 is not fully POSIX compliant, some system vendors have 
+modified ksh88 to make it compliant and used that for their POSIX shell. One way 
+to clean up this mess is to get all the vendors to move to ksh93. ksh93 has a 
+single source that compiles on all systems from pc,'s mac's, unix systems, and 
+mainframes. I have no say over what vendors do, but users on these systems 
+certainly can state their preferences.
+<P>d) I would hope that Red Hat and other Linux and UNIX vendors would pick up 
+ksh93 and distribute it at least as /bin/ksh. There is no reason why it could 
+not be used as /bin/sh as well and I suspect that it could be merged with bash. 
+We will soon be offering RPMs for the entire AST library from the AT&amp;T 
+website.
+<P><STRONG>Question 11) UWIN and Cygwin<BR>by Lumpish Scholar 
+(psrchisholm@yahoo.com)
+<P></STRONG><I>How would you compare the UWIN and Cygwin projects?</I>
+<P><STRONG>Korn: </STRONG>I believe that UWIN and Cygwin started at about the 
+same time although I don't believe that either knew about the other for the 
+first year or two. The focus for Cygwin seemed to be primarily GNU tools rather 
+than a more complete integration. The primary focus on UWIN was to make the AST 
+tools described in now the out of print book "Practical Reusable UNIX Software", 
+run without change on Windows NT and Windows 95.
+<P>Cygwin has the advantage of being an OpenSource project whereas UWIN is not, 
+although hopefully this will change in the not too distant future. However, UWIN 
+binaries have been freely available for educational and research use, and 
+available for 90 day evaluation for commercial use. As a result there are more 
+than 100,000 UWIN users and this has helped in discovering problems. The source 
+for nearly all of the UWIN commands are available in open source.
+<P>Cygwin relies on the gcc compilation system. UWIN tries to be compiler 
+neutral and works with gcc and Visual C/C++. Since it works with the Visual 
+C/C++ compiler, it is easier to integrate UWIN code with native Visual C/C++ 
+modules.
+<P>The website http://www.research.att.com/sw/tools/uwin/survey.html allows 
+users to compare UWIN with other alternatives such as Cygwin in for different 
+categories. The feedback that I have received shows that in most instances UWIN 
+receives higher marks than Cygwin, especially in performance.
+<P></I><STRONG>Question 12) ksh93 as a programming language?<BR>by Lumpish 
+Scholar (psrchisholm@yahoo.com)
+<P></STRONG><I>What are some of the differences between ksh88 (which I think of 
+as comparable to bash or the Posix shell) and ksh93, that makes the latest 
+KornShell as good or better a language than Perl?
+<P></I><STRONG>Korn: </STRONG>In question 1 I gave a quick summary of ksh93 
+features that distinguish it from ksh88 and from other shells. For the most part 
+ksh93 has the functionality of perl 5 and arguably a more readable syntax. In 
+most instances the performance is similar. Scripts that interact heavily with 
+the file system or use pipelines tend to be better suited for shell scripting.
+<P><STRONG>Question 13) So, Dave ...<BR>by An Unnamed Correspondent
+<P></STRONG><I>Quick question: Vi or Emacs?
+<P></I><STRONG>Korn: </STRONG>This is an old battle that was raging in the early 
+'80s. It will never be settled. This is why ksh has both edit modes. It partly 
+depends on whether you use the editor as a command or as an environment. I think 
+of an editor as a command that I can quickly start and leave and I think of the 
+shell as an environment which holds state. vi fits this model better and that is 
+what I use.
+<P>I use several versions of vi depending on which system I am on. UWIN uses nvi 
+from BSD.
+<P><STRONG>Question 14) Public Apology<BR>by watanabe (petervNOMEATivcfne.org)
+<P></STRONG><I>Dear Dr. Korn, I feel I owe you an apology, and this seemed like 
+a great chance! I went to school with Adam at Brown. And, in 1993, my roommate, 
+Matt Smith, woke me up at about midnight, excitedly telling me "Do you know the 
+Korn Shell? This guy's dad wrote the Korn shell!!!" He was coming in with Adam 
+from somewhere.
+<P>I sort of turned over in my sleep, (I was extremely groggy), and said "I hate 
+the Korn shell." and went back to bed. Adam never really talked to me after 
+that, although he was polite enough to me at parties.
+<P>So, Dr. Korn, I feel I owe you an apology. I didn't mean to disrespect your 
+lifework in front of your son! I still can't use the korn shell, but call it 
+fear of the unknown, please, rather than lucid comments on your code.
+<P>Peter Vessenes, Brown '97
+<P></I><STRONG>Korn: </STRONG>Since I could not recall the incident, I asked by 
+son Adam to respond to this. Here is his response:
+<P>
+<BLOCKQUOTE>Peter,
+  <P>Thanks for clearing things up! In my memory of the incident, we had woken 
+  you up that evening and I thought you said to me, "I hate the Korn smell." I 
+  was mortified! That was the first time anyone ever (publicly) accused me of 
+  having b.o., and your comment gave me quite a complex for the many months that 
+  followed. I avoided you at all social gatherings because I was scared to death 
+  that you might mention this in front of others. I am relieved to learn that 
+  this was all the result of a simple miscommunication. 
+  <P>To be honest, I have no recollection of this incident. I do appreciate your 
+  apology, but it is not necessary -- just as people are entitled to their 
+  choice of music, art, religion, etc, they too should have the right to pick 
+  their favorite shell. I'm just thankful I'm not the son of Bill Gates!
+  <P>Best,<BR>Adam
+  <P></P></BLOCKQUOTE>
+<P>
+<HR>
+<I>Our thanks to David for his responses, and likewise to Adam for his.</I> 
+<P>&lt;&nbsp; <A 
+href="http://slashdot.org/article.pl?sid=01/02/07/1327226&amp;mode=thread">Linux 
+2.4 Schematic Poster (Generated From Source!)</A> | <A 
+href="http://slashdot.org/article.pl?sid=01/02/07/1412239&amp;mode=thread">The 
+DDoS Attacks, One Year Later</A> &nbsp;&gt; 
+<P>&nbsp;</TD><TD>&nbsp;</TD><TD VALIGN="TOP"> 
+<H3>ccvqc</H3>
+<P>[ <A href="http://slashdot.org/users.pl?op=preferences">Preferences</A> ]
+<P>
+<P></P>
+<H3>Related Links</H3>
+<P>
+<LI><A href="http://www.linux.com/">Linux</A> 
+<LI><A href="http://slashdot.org/">Slashdot</A> 
+<LI><A href="http://www.netscape.com/">Netscape</A> 
+<LI><A href="http://www.redhat.com/">Red Hat</A> 
+<LI><A href="http://www.intel.com/">Intel</A> 
+<LI><A href="http://slashdot.org/article.pl?sid=01/01/25/2320255">You asked the 
+questions</A> 
+<LI><A href="http://slashdot.org/search.pl?topic=news">More on News</A> 
+<LI><A href="http://slashdot.org/search.pl?author=timothy">Also by timothy</A> 
+<P></P></TD></TR><TR><TD COLSPAN="3">
+<TABLE cellSpacing=1 cellPadding=2 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle bgColor=#006666><FONT color=#ffffff size=2>'<A 
+      href="http://slashdot.org/article.pl?sid=01/02/06/2030205&amp;mode=thread"><FONT 
+      color=#ffffff>David Korn Tells All</FONT></A>' | <A 
+      href="http://slashdot.org/users.pl?op=edituser"><FONT 
+      color=#ffffff>Preferences</FONT></A> | <B>215</B> comments | <A 
+      href="http://slashdot.org/search.pl?op=comments&amp;sid=01/02/06/2030205"><FONT 
+      color=#ffffff>Search Discussion</FONT></A></FONT> </TD></TR>
+  <TR>
+    <TD align=middle bgColor=#cccccc><FONT size=2>
+      <FORM action=http://slashdot.org/comments.pl><INPUT type=hidden 
+      value=01/02/06/2030205 name=sid> <INPUT type=hidden name=cid> <INPUT 
+      type=hidden value=0 name=pid> <INPUT type=hidden name=startat> Threshold: 
+      <SELECT name=threshold> <OPTION value=-1>-1: 215 comments<OPTION value=0 
+        selected>0: 182 comments<OPTION value=1>1: 116 comments<OPTION 
+        value=2>2: 47 comments<OPTION value=3>3: 14 comments<OPTION value=4>4: 7 
+        comments<OPTION value=5>5: 1 comments</OPTION></SELECT> <SELECT name=mode> 
+        <OPTION value=nocomment>No Comments</OPTION> <OPTION value=thread 
+        selected>Threaded</OPTION> <OPTION value=nested>Nested</OPTION> <OPTION 
+        value=flat>Flat</OPTION></SELECT><SELECT name=commentsort> <OPTION 
+        value=0 selected>Oldest First</OPTION> <OPTION value=1>Newest 
+        First</OPTION> <OPTION value=3>Highest Scores First</OPTION> <OPTION 
+        value=4>Oldest First (Ignore Threads)</OPTION> <OPTION value=5>Newest 
+        First (Ignore Threads)</OPTION></SELECT> Save:<INPUT type=checkbox 
+      name=savechanges> <INPUT type=submit value=Change name=op> <INPUT type=submit value=Reply name=op> </FONT></TD></TR>
+  <TR>
+    <TD align=middle bgColor=#006666><FONT color=#ffffff size=2><FONT 
+      size=1><B>The Fine Print:</B> The following comments are owned by whoever 
+      posted them. Slashdot is not responsible for what they say. 
+      </FONT></FONT></FORM></TD></TR>
+  <TR>
+    <TD><A name=2>
+      <H4>not second post!...</H4></A>(Score:0)<BR>by Anonymous Coward on 
+      Wednesday February 07, @12:02PM EDT<BR>
+      <P>:)<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=2">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=2#3">Re:not 
+        second post!...</A> by Anonymous Coward <FONT size=-1>Wednesday February 
+        07, @12:03PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=3#7">Re:not 
+          second post!...</A> by Anonymous Coward <FONT size=-1>Wednesday 
+          February 07, @12:08PM EDT </FONT></LI></UL></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=5>
+      <H4>Timothy</H4></A>(Score:0, Funny)<BR>by Anonymous Coward on Wednesday 
+      February 07, @12:05PM EDT<BR>
+      <P>Close your bold tag!<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=5">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=18>
+      <H4>The place to get ksh93?</H4></A>(Score:1)<BR>by <A 
+      href="mailto:randomform@users.no.sourceforge.spam.net">bliss</A> <B><FONT 
+      size=2>(randomform@users.no.sourceforge.spam.net)</FONT></B> on Wednesday 
+      February 07, @12:14PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=bliss">User #21836 
+      Info</A>) <A 
+      href="http://randomform.sourceforge.net/">http://randomform.sourceforge.net/</A><BR>
+      <P>Well I guess I must be the first to actually post something serious 
+      about the korn shell. Having been forced to program in pdksh because of a 
+      lack of actually having access to ksh93 in debian I wonder where one can 
+      actually get it?<BR>The death of one man is a tragedy; the death of a 
+      million is a statistic --Joseph Stalin </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=18">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=18#29">Re:The 
+        place to get ksh93?</A> by bumperson <FONT size=-1>(Score:1)</FONT> 
+        <FONT size=-1>Wednesday February 07, @12:18PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=50#58">Re:Thanks 
+          for the information</A> by Anonymous Coward <FONT size=-1>Wednesday 
+          February 07, @12:32PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=58#63">Go 
+            fuck yourself quitely in a corner</A> by Anonymous Coward <FONT 
+            size=-1>Wednesday February 07, @12:37PM EDT </FONT></LI></UL>
+          <LI><FONT size=2><B><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=29">1 
+          reply</A> beneath your current threshold.</B></FONT> 
+    </LI></UL></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=19>
+      <H4>*shudder*...</H4></A>(Score:4, Funny)<BR>by CptnHarlock on Wednesday 
+      February 07, @12:15PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=CptnHarlock">User 
+      #136449 Info</A>) <A 
+      href="http://www.ludd.luth.se/~silver_p/">http://www.ludd.luth.se/~silver_p/</A><BR>
+      <P><BR>
+      <BLOCKQUOTE><I>Background: the only shell I've ever really used is bash. 
+        Bash has always seemed to be the standard UNIX shell (or, at least, the 
+        standard default UNIX shell)... </I></BLOCKQUOTE>An asumption like this 
+      should earn him <A 
+      href="http://www.cs.hmc.edu/~smikes/emacs/ed.html">/bin/ed</A> as a 
+      standard shell... :) 
+      <P>Cheers...<BR>--<BR>"No se rinde el gallo rojo, sólo cuando ya está 
+      muerto."<BR>-- Los Miserables "Gallo Rojo" </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=19">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=19#36">Re:*shudder*...</A> 
+        by Geoff <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 
+        07, @12:21PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=19#120">Re:*shudder*...</A> 
+        by Lx <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 
+        07, @02:15PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=120#167">Re:*shudder*...</A> 
+          by orangesquid <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday 
+          February 07, @05:22PM EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=19#175">Re:*shudder*...</A> 
+        by Lozzer <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday 
+        February 07, @06:17PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=19#176">Re:*shudder*...</A> 
+        by sharkey <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday 
+        February 07, @06:38PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=176#211">Re:*shudder*...</A> 
+          by Shadowlion <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Thursday 
+          February 08, @11:10AM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=211#213">Re:*shudder*...</A> 
+            by sharkey <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Thursday 
+            February 08, @12:35PM EDT </FONT></LI></UL></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=19#208">Re:*shudder*...</A> 
+        by ethereal <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Thursday 
+        February 08, @09:59AM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=37#51">Re:Default 
+        shells</A> by CptnHarlock <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @12:29PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=51#78">Re:Default 
+          shells</A> by rcp <FONT size=-1>(Score:2)</FONT> <FONT 
+          size=-1>Wednesday February 07, @12:50PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=78#86">Re:Default 
+            shells</A> by logicTrAp <FONT size=-1>(Score:2)</FONT> <FONT 
+            size=-1>Wednesday February 07, @01:04PM EDT </FONT>
+            <UL>
+              <LI><A 
+              href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=86#92">All 
+              you need to know about csh programming</A> by rcp <FONT 
+              size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, 
+              @01:17PM EDT </FONT>
+              <UL>
+                <LI><A 
+                href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=92#152">Re:All 
+                you need to know about csh programming</A> by Anonymous Coward 
+                <FONT size=-1>Wednesday February 07, @04:00PM EDT 
+              </FONT></LI></UL></LI></UL></LI></UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=51#150">Re:Default 
+          shells</A> by Anonymous Coward <FONT size=-1>Wednesday February 07, 
+          @03:56PM EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=37#64">Re:Default 
+        shells</A> by Anonymous Coward <FONT size=-1>Wednesday February 07, 
+        @12:38PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=64#85">Re:Default 
+          shells</A> by slim <FONT size=-1>(Score:1)</FONT> <FONT 
+          size=-1>Wednesday February 07, @01:01PM EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=64#114">Re:Default 
+          shells</A> by duffbeer703 <FONT size=-1>(Score:2)</FONT> <FONT 
+          size=-1>Wednesday February 07, @01:58PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=114#212">Re:Default 
+            shells</A> by Anonymous_Hero <FONT size=-1>(Score:1)</FONT> <FONT 
+            size=-1>Thursday February 08, @11:30AM EDT </FONT></LI></UL>
+          <LI><FONT size=2><B><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=64">1 
+          reply</A> beneath your current threshold.</B></FONT> </LI></UL>
+        <LI><FONT size=2><B><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=19">2 
+        replies</A> beneath your current threshold.</B></FONT> </LI></UL></TD></TR>
+  <TR>
+    <TD><A name=20>
+      <H4>EVERYONE SUCKS EXCEPT FOR ME!!</H4></A>(Score:0)<BR>by Anonymous 
+      Coward on Wednesday February 07, @12:15PM EDT<BR>
+      <P><A 
+      href="http://slashdot.org/rejwqlfhjekwqlhfjeqkwlfjeqkwlbfjeqvfbneqmvfenwqbfhjeqwkbfqjk"></A>I 
+      DO NOT SUCK!!!<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=20">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=20#30">Re:EVERYONE 
+        SUCKS EXCEPT FOR ME!!</A> by Anonymous Coward <FONT size=-1>Wednesday 
+        February 07, @12:19PM EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=21>
+      <H4>I'm very stupid, please explain</H4></A>(Score:1, Troll)<BR>by 
+      OlympicSponsor on Wednesday February 07, @12:15PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=OlympicSponsor">User 
+      #236309 Info</A>) 
+      <P>Call me Ishmael, but I'm still confused: Is there or is there not an 
+      actual connection between Korn the shell and Korn (with a backwards "r") 
+      the band?<BR>--<BR><A href="http://www.openone.com/">MailOne</A> <BR>IMAP 
+      coming soon! </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=21">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=21#45">Re:I'm 
+        very stupid, please explain</A> by banuaba <FONT 
+        size=-1>(Score:3)</FONT> <FONT size=-1>Wednesday February 07, @12:26PM 
+        EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=45#56">nice 
+          red-eye effect</A> by capoccia <FONT size=-1>(Score:1)</FONT> <FONT 
+          size=-1>Wednesday February 07, @12:31PM EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=45#100">Re:I'm 
+          very stupid, please explain</A> by mojo-raisin <FONT 
+          size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @01:27PM 
+          EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=100#127">Re:I'm 
+            very stupid, please explain</A> by carlos_benj <FONT 
+            size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, 
+            @02:27PM EDT </FONT>
+            <UL>
+              <LI><A 
+              href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=127#192">Re:I'm 
+              very stupid, please explain</A> by PurpleBob <FONT 
+              size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, 
+              @10:53PM EDT </FONT></LI></UL></LI></UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=45#107">Re:I'm 
+          very stupid, please explain</A> by MsGeek <FONT 
+          size=-1>(Score:2)</FONT> <FONT size=-1>Wednesday February 07, @01:41PM 
+          EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=45#109">Oh 
+          my god</A> by Anonymous Coward <FONT size=-1>(Score:1)</FONT> <FONT 
+          size=-1>Wednesday February 07, @01:43PM EDT </FONT></LI></UL>
+        <LI><FONT size=2><B><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=21">2 
+        replies</A> beneath your current threshold.</B></FONT> </LI></UL></TD></TR>
+  <TR>
+    <TD><A name=31>
+      <H4>Double Public Apology</H4></A>(Score:5, Funny)<BR>by <A 
+      href="mailto:peterv<<<ybos.net">watanabe</A> <B><FONT 
+      size=2>(peterv&lt;&lt;&lt;ybos.net)</FONT></B> on Wednesday February 07, 
+      @12:20PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=watanabe">User 
+      #27967 Info</A>) <A 
+      href="http://www.ybos.net/">http://www.ybos.net/</A><BR>
+      <P>Dr. Korn, 
+      <P>I'm chagrined to see that you and your son are more gracious <B>and</B> 
+      funnier than I am. All the best; I think it's clear I need to learn to use 
+      your shell. 
+      <P>- Peter Vessenes<BR>Enterprise Level Database-Backed Web Sites. For 
+      under $100,000. <A href="http://www.ybos.net/">ybos</A> </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=31">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=31#141">Re:Double 
+        Public Apology</A> by Anonymous Coward <FONT size=-1>Wednesday February 
+        07, @03:02PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=31#174">Re:Double 
+        Public Apology</A> by Anonymous Coward <FONT size=-1>Wednesday February 
+        07, @06:17PM EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=32>
+      <H4>"vi is better than emacs"</H4></A>(Score:4, Funny)<BR>by <A 
+      href="mailto:uce@ftc.gov">ch-chuck</A> <B><FONT 
+      size=2>(uce@ftc.gov)</FONT></B> on Wednesday February 07, @12:20PM 
+      EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=ch-chuck">User 
+      #9622 Info</A>) 
+      <P>you read it here folk. <BR><BR>(blast shileds deployed) <BR><BR>Brand 
+      names are for suckers </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32#48">Re:"vi 
+        is better than emacs"</A> by JWW <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @12:29PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=48#121">you 
+          are eVIl</A> by Anonymous Coward <FONT size=-1>Wednesday February 07, 
+          @02:16PM EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32#55">Re:"vi 
+        is better than emacs"</A> by Anonymous Coward <FONT 
+        size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @12:31PM 
+        EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=55#145">Re:"vi 
+          is better than emacs"</A> by Pedersen <FONT size=-1>(Score:1)</FONT> 
+          <FONT size=-1>Wednesday February 07, @03:25PM EDT </FONT>
+          <LI><FONT size=2><B><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=55">1 
+          reply</A> beneath your current threshold.</B></FONT> </LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32#68">Re:"vi 
+        is better than emacs" - nope</A> by mojo-raisin <FONT 
+        size=-1>(Score:3)</FONT> <FONT size=-1>Wednesday February 07, @12:43PM 
+        EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=68#128">Re:"vi 
+          is better than emacs" - nope yea. but. . .</A> by heller <FONT 
+          size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @02:27PM 
+          EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=68#189">Re:"vi 
+          is better than emacs" - nope</A> by Anonymous Coward <FONT 
+          size=-1>Wednesday February 07, @10:10PM EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=68#200">IMHO, 
+          emacs as an OS has worse docs than WinDoze</A> by RedLaggedTeut <FONT 
+          size=-1>(Score:1)</FONT> <FONT size=-1>Thursday February 08, @04:25AM 
+          EDT </FONT>
+          <LI><FONT size=2><B><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=68">1 
+          reply</A> beneath your current threshold.</B></FONT> </LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32#74">Equality</A> 
+        by SuperKendall <FONT size=-1>(Score:2)</FONT> <FONT size=-1>Wednesday 
+        February 07, @12:47PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=74#119">Re:Equality</A> 
+          by jcn <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 
+          07, @02:14PM EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32#79">Re:"vi 
+        is better than emacs"</A> by triticale <FONT size=-1>(Score:2)</FONT> 
+        <FONT size=-1>Wednesday February 07, @12:50PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=79#172">Re:"vi 
+          is better than emacs"</A> by Anonymous Coward <FONT size=-1>Wednesday 
+          February 07, @05:49PM EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32#80">Screw 
+        them both</A> by Anonymous Coward <FONT size=-1>Wednesday February 07, 
+        @12:50PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=80#153">Re:Screw 
+          them both</A> by mcrandello <FONT size=-1>(Score:1)</FONT> <FONT 
+          size=-1>Wednesday February 07, @04:13PM EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=84#89">Re:It 
+          rarely works in practice</A> by Juan Epstein <FONT size=-1>Wednesday 
+          February 07, @01:14PM EDT </FONT>
+          <LI><FONT size=2><B><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=80">1 
+          reply</A> beneath your current threshold.</B></FONT> </LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32#105">Windowz 
+        NOTEPAD rulez d00d!</A> by Anonymous Coward <FONT size=-1>Wednesday 
+        February 07, @01:33PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=105#115">BBEdit 
+          all the way, BAY-BEE!!!!!</A> by Anonymous Coward <FONT 
+          size=-1>Wednesday February 07, @01:58PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=115#136">Re:BBEdit 
+            all the way, BAY-BEE!!!!!</A> by Anonymous Coward <FONT 
+            size=-1>Wednesday February 07, @02:46PM EDT </FONT>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=115#140">Re:BBEdit 
+            all the way, BAY-BEE!!!!!</A> by Anonymous Coward <FONT 
+            size=-1>Wednesday February 07, @02:54PM EDT </FONT>
+            <UL>
+              <LI><A 
+              href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=140#154">Re:BBEdit 
+              all the way, BAY-BEE!!!!!</A> by jafac <FONT 
+              size=-1>(Score:2)</FONT> <FONT size=-1>Wednesday February 07, 
+              @04:13PM EDT </FONT>
+              <UL>
+                <LI><A 
+                href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=154#163">Re:BBEdit 
+                all the way, BAY-BEE!!!!!</A> by Anonymous Coward <FONT 
+                size=-1>Wednesday February 07, @05:06PM EDT 
+            </FONT></LI></UL></LI></UL></LI></UL></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32#126">This 
+        was empirically proven...</A> by slothbait <FONT 
+        size=-1>(Score:2)</FONT> <FONT size=-1>Wednesday February 07, @02:27PM 
+        EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=126#138">Re:This 
+          was empirically proven...</A> by ptomblin <FONT 
+          size=-1>(Score:3)</FONT> <FONT size=-1>Wednesday February 07, @02:50PM 
+          EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=126#155">Re:This 
+          was empirically proven...</A> by jafac <FONT size=-1>(Score:2)</FONT> 
+          <FONT size=-1>Wednesday February 07, @04:14PM EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=126#182">Re:This 
+          was empirically proven...</A> by Bingo Foo <FONT 
+          size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @07:04PM 
+          EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=32#179">Re:"vi 
+        is better than emacs"</A> by Anonymous Coward <FONT size=-1>Wednesday 
+        February 07, @06:50PM EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=33>
+      <H4>GUI environment shell</H4></A>(Score:2, Interesting)<BR>by mikeee on 
+      Wednesday February 07, @12:20PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=mikeee">User 
+      #137160 Info</A>) 
+      <P>Hmmm... I'd like to see a shell that provides a command-line, 
+      programmatic interface to some of the Linux desktop librarys (GNOME, KDE) 
+      in much the same way that ksh and its ilk provide the same to the basic 
+      POSIX APIs of a baseline UNIX system. <BR><BR>Eg, you could write a script 
+      to go searching through a gnome-vfs 'filesystem' or such... <BR><BR>Or am 
+      I on crack?<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=33">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=33#53">Re:GUI 
+        environment shell</A> by Windplume <FONT size=-1>(Score:2)</FONT> <FONT 
+        size=-1>Wednesday February 07, @12:30PM EDT </FONT>
+        <TABLE>
+          <TBODY>
+          <TR>
+            <TD><A name=135>
+              <H4>Re:GUI environment shell</H4></A>(Score:4, Informative)<BR>by 
+              <A href="mailto:mattleo@treehouse.acrcorp.com">hey!</A> <B><FONT 
+              size=2>(mattleo@treehouse.acrcorp.com)</FONT></B> on Wednesday 
+              February 07, @02:45PM EDT<BR>(<A 
+              href="http://slashdot.org/users.pl?op=userinfo&amp;nick=hey!">User 
+              #33014 Info</A>) 
+              <P>I think the issue is that programming is largely a verbal, 
+              logical thing rather than visual. I've yet to see a visual 
+              programming environment that really doesn't boil down to a "so 
+              what" at the end of the day. IBMs visual age stuff is fairly nice, 
+              but mainly because it gets out of the way in a hurry when you 
+              really need to get down to brass tacks. <BR><BR>I think the shell 
+              as programming environment is a kind of curious historical 
+              accident that worked out really well in conjuction with a broad 
+              variety of filter-ish applications. If you think about it, there 
+              is little reason why your shell should be your primary glue 
+              language for all kinds of applications, other than you happen to 
+              be spending a lot of time typing in it if you are on a non-gui 
+              system. <BR><BR>If you relieve the application of having to be 
+              your primary mode of interaction with the file system and for 
+              launching applications, you can look at various applications as 
+              repositories of objects to be used rather than processes to be 
+              evoked. Yes, I know you can do more with shell scripting, but this 
+              is the sort of task shell scripting is natural for -- to evoke a 
+              series of small tools that perform simple kinds of transformations 
+              on a file system or data stream. These are highly useful, but 
+              aren't the entire universe of scripting applications. <BR><BR>It's 
+              been a few years, but the nicest example of of system scripting 
+              I've ever seen is Applescript. In MacOS, applications tell the 
+              system about objects and methods that they are willing to expose. 
+              They are essentially self documenting. These objects can be 
+              manipulated through low level APIs, but they can also be accessed 
+              by Applescript via a form of message passing. Applescript was a 
+              very small, simple and relatively clean scripting language. It had 
+              various sugary constructs that allowed you to make script lines 
+              sound like reading English sentences, but they were tastefully 
+              done and they weren't obtrusive if you liked things terse. Apple 
+              provided a small interactive editor/interpreter environment 
+              (vaguely a la WISH or IDLE but less funky) which could inspect the 
+              self documenting features of the applications' objects. Scripts 
+              could then be saved and run like Unix shell scripts. 
+              <BR><BR>Applescript was sort of like a cleanly done VBA, but it's 
+              real strength was that it was a tidy way to coordinate a number of 
+              processes whose lifespan were not related in any preconceived way 
+              to the lifespan of the script and do itneract with them in a very 
+              flexible way. In that sense it was kind of like workign with 
+              application COM services. Integration with the Finder gave you the 
+              kind of shell script capabilities you'd expect in Unix. 
+              <BR><BR>I've been out of the Mac world now for six or seven years, 
+              but they were definitely way ahead of their time. Applescript was 
+              a relly valuable technology that was hurt by Apple's failure to 
+              deliver OpenDoc and at one point Apple was even going to abandon 
+              it. <BR><BR><BR>---- It's bad luck to be superstitious. </P></TD></TR>
+          <TR>
+            <TD><FONT size=2>[ <A 
+              href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=135">Reply 
+              to This</A> | <A 
+              href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=33">Parent</A> 
+              ] </FONT></TD></TR>
+          <TR>
+            <TD></TR></TBODY></TABLE>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=135#191">Re:GUI 
+          environment shell</A> by peter <FONT size=-1>(Score:1)</FONT> <FONT 
+          size=-1>Wednesday February 07, @10:33PM EDT 
+  </FONT></LI></UL></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=35>
+      <H4>Fix the damn BOLD tag!</H4></A>(Score:1, Informative)<BR>by <A 
+      href="mailto:UCE@metajoke.net">Pope</A> <B><FONT 
+      size=2>(UCE@metajoke.net)</FONT></B> on Wednesday February 07, @12:21PM 
+      EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=Pope">User #17780 
+      Info</A>) <A href="http://www.robotx.org/">http://www.robotx.org/</A><BR>
+      <P>Someone forgot to close the BOLD Tag!<BR><BR>Pope<BR><BR><I>Freedom is 
+      Slavery! Ignorance is Strength! Monopolies offer Choice!</I> <BR>- Tom 
+      Tomorrow </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=35">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=35#52">Re:Fix 
+        the damn BOLD tag!</A> by segmond <FONT size=-1>(Score:2)</FONT> <FONT 
+        size=-1>Wednesday February 07, @12:30PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=35#95">Re:Fix 
+        the damn BOLD tag!</A> by Juan Epstein <FONT size=-1>Wednesday February 
+        07, @01:20PM EDT </FONT>
+        <LI><FONT size=2><B><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=35">1 
+        reply</A> beneath your current threshold.</B></FONT> </LI></UL></TD></TR>
+  <TR>
+    <TD><A name=40>
+      <H4>Korn rock!</H4></A>(Score:0)<BR>by Anonymous Coward on Wednesday 
+      February 07, @12:24PM EDT<BR>
+      <P>but i prefer Limp Bizkit!<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=40">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=42>
+      <H4>Korn Shell question</H4></A>(Score:4, Interesting)<BR>by <A 
+      href="mailto:john@hartnup.net">slim</A> <B><FONT 
+      size=2>(john@hartnup.net)</FONT></B> on Wednesday February 07, @12:25PM 
+      EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=slim">User #1652 
+      Info</A>) <A 
+      href="http://www.ladle.demon.co.uk/">http://www.ladle.demon.co.uk/</A><BR>
+      <P>Shame I missed the call for questions: I'm interested in a quirk of ksh 
+      and its clones: <BR><BR>Consider this code: <BR><BR>x="hello" <BR>echo 
+      "goodbye" | read x <BR>echo $x <BR><BR>In both bash and pdksh, running the 
+      script would return "hello", because the "read x" would be run in a 
+      subshell with its own environment. The subshell would then close without 
+      affecting the instance of x in the main shell. <BR><BR>In ksh, however, 
+      putting 'read' at the end of a pipeline does not seem to run it in a 
+      subshell, so running the script would return "goodbye" just as the naive 
+      reader of the code might expect. <BR><BR>Why is this? Is an exception made 
+      for the "read" builtin? Is this a deliberate feature that pdksh and bash 
+      have failed to clone, or is it happenstance that it came about? I assume 
+      David is too busy to be reading, so does anyone else know? <BR><BR>In our 
+      ksh-happy shop, we have a lot of scripts that rely on "echo $string | read 
+      x y junk" to parse space-seperated lists, and of course these statements 
+      don't port well to Bash (you have to do a few backtick/sed 
+      operations).<BR>--<BR>My route 66 active diary is <A 
+      href="http://www.ladle.demon.co.uk/r66/">here</A>. </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=42">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=42#88">Re:Korn 
+        Shell question</A> by Wheely <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @01:13PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=88#96">Re:Korn 
+          Shell question</A> by slim <FONT size=-1>(Score:2)</FONT> <FONT 
+          size=-1>Wednesday February 07, @01:21PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=96#111">Re:Korn 
+            Shell question</A> by cecooke <FONT size=-1>(Score:1)</FONT> <FONT 
+            size=-1>Wednesday February 07, @01:49PM EDT </FONT>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=96#160">It's 
+            one of the best features of ksh vs. /bin/sh</A> by billstewart <FONT 
+            size=-1>(Score:2)</FONT> <FONT size=-1>Wednesday February 07, 
+            @04:56PM EDT </FONT></LI></UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=88#133">Re:Korn 
+          Shell question</A> by VoidOfReality <FONT size=-1>(Score:1)</FONT> 
+          <FONT size=-1>Wednesday February 07, @02:41PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=133#159">Re:Korn 
+            Shell question</A> by Anonymous Coward <FONT size=-1>Wednesday 
+            February 07, @04:55PM EDT </FONT>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=133#214">Re:Korn 
+            Shell question</A> by Wheely <FONT size=-1>(Score:1)</FONT> <FONT 
+            size=-1>Thursday February 08, @01:05PM EDT </FONT></LI></UL></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=42#102">Re:Korn 
+        Shell question</A> by wbattestilli <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @01:30PM EDT </FONT>
+        <TABLE>
+          <TBODY>
+          <TR>
+            <TD><A name=108>
+              <H4>Re:Korn Shell question</H4></A>(Score:4, Informative)<BR>by 
+              The Pim on Wednesday February 07, @01:42PM EDT<BR>(<A 
+              href="http://slashdot.org/users.pl?op=userinfo&amp;nick=The%20Pim">User 
+              #140414 Info</A>) 
+              <P>This is a <A 
+              href="ftp://rtfm.mit.edu/pub/usenet/news.answers/unix-faq/faq/part3">Unix 
+              FAQ</A>, <A href="http://www.kornshell.com/doc/faq.html">ksh 
+              FAQ</A>, and a <A 
+              href="ftp://rtfm.mit.edu/pub/usenet/news.answers/unix-faq/shell/bash">Bash 
+              FAQ</A>. As a bonus, I found this <A 
+              href="http://www.netbsd.org/cgi-bin/query-pr-single.pl?number=7351">pertinent 
+              discussion</A> in the NetBSD bug database.<BR><BR><I>The 
+              evaluation of an action as 'practical' . . . depends on what it is 
+              that one wishes to practice.</I> </P></TD></TR>
+          <TR>
+            <TD><FONT size=2>[ <A 
+              href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=108">Reply 
+              to This</A> | <A 
+              href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=42">Parent</A> 
+              ] </FONT></TD></TR>
+          <TR>
+            <TD></TR></TBODY></TABLE>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=42#117">Re:Korn 
+        Shell question</A> by MO! <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @02:06PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=42#134">Re:Korn 
+        Shell question</A> by Macka <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @02:45PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=134#188">bash 
+          is broken</A> by Macka <FONT size=-1>(Score:1)</FONT> <FONT 
+          size=-1>Wednesday February 07, @09:56PM EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=42#144">Re:Korn 
+        Shell question</A> by vinyl1 <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @03:10PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=42#147">Re:Korn 
+        Shell question</A> by Greg W. <FONT size=-1>(Score:2)</FONT> <FONT 
+        size=-1>Wednesday February 07, @03:35PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=42#173">Re:Korn 
+        Shell question</A> by Anonymous Coward <FONT size=-1>Wednesday February 
+        07, @06:13PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=42#193">Re:Korn 
+        Shell question</A> by Anonymous Coward <FONT size=-1>Wednesday February 
+        07, @11:09PM EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=43>
+      <H4>How insightful</H4></A>(Score:0)<BR>by Anonymous Coward on Wednesday 
+      February 07, @12:25PM EDT<BR>
+      <P>
+      <P>Let's ask the Unix zealot a bunch of questions about Microsoft. Gee, I 
+      wonder how he'll respond. Maybe he'll even show us the kind of 
+      indoctrination that he's given to his children. Hey, I was 
+    right!</P><BR></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=43">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=47#72">Re:Indoctrination</A> 
+        by Anonymous Coward <FONT size=-1>Wednesday February 07, @12:43PM EDT 
+        </FONT>
+        <LI><FONT size=2><B><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=43">1 
+        reply</A> beneath your current threshold.</B></FONT> </LI></UL></TD></TR>
+  <TR>
+    <TD><A name=44>
+      <H4>Yay! Another Shell</H4></A>(Score:1)<BR>by Windplume on Wednesday 
+      February 07, @12:25PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=Windplume">User 
+      #262613 Info</A>) 
+      <P>Thanks to whoever submitted this. I wasen't aware of ksh93, and will 
+      now need to add it to my collection of shells, moving toward my ultimate 
+      goal of having every shell on my box.<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=44">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=44#57">Conch</A> 
+        by Anonymous Coward <FONT size=-1>Wednesday February 07, @12:32PM EDT 
+        </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=57#156">Re:Conch</A> 
+          by Anonymous Coward <FONT size=-1>Wednesday February 07, @04:22PM EDT 
+          </FONT></LI></UL></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=62>
+      <H4>KSH / other ATT tools not Free?</H4></A>(Score:2, Insightful)<BR>by 
+      Hobart on Wednesday February 07, @12:36PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=Hobart">User 
+      #32767 Info</A>) <A href="http://www.jb.org/">http://www.jb.org/</A><BR>
+      <P><A 
+      href="http://www.research.att.com/~gsf/download/faq.license.html">http://www.research.att.com/~gsf/download/faq.license.html</A> 
+      <BR>
+      <UL><I><B>Is the software OpenSource?</B> <BR>We believe that it 
+        conforms to the provisions of the Open Source Definitions (OSD), and 
+        have submitted the license for certification, but we have not heard 
+        back.</I> </UL>... perhaps since OSI isn't contacting them, they can 
+      choose a ready-made <A 
+      href="http://www.fsf.org/philosophy/license-list.html#GPLCompatibleLicenses">Free 
+      Software License</A> -- there's 15 to choose from that will maximize the 
+      real ksh's availabilty, adoption, etc...<BR><BR>"<I>I have finally found 
+      the free Unix that's the closest thing to FORTH.</I>" -- Jack J. Woehr on 
+      OpenBSD </TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=62">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=62#82">Re:KSH 
+        / other ATT tools not Free?</A> by mojo-raisin <FONT 
+        size=-1>(Score:2)</FONT> <FONT size=-1>Wednesday February 07, @12:54PM 
+        EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=82#171">Re:KSH 
+          / other ATT tools not Free?</A> by RonVNX <FONT 
+          size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @05:43PM 
+          EDT </FONT></LI></UL>
+        <LI><FONT size=2><B><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=62">1 
+        reply</A> beneath your current threshold.</B></FONT> </LI></UL></TD></TR>
+  <TR>
+    <TD><A name=69>
+      <H4>Finally a voice of sanity</H4></A>(Score:3, Insightful)<BR>by <A 
+      href="mailto:squadboy@thisisnotitsisna.com">SquadBoy</A> <B><FONT 
+      size=2>(squadboy@thisisnotitsisna.com)</FONT></B> on Wednesday February 
+      07, @12:43PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=SquadBoy">User 
+      #167263 Info</A>) 
+      <P>in the vi vs. Emacs deal. I have to agree. As a sysadmin type I also 
+      make the choice based on a couple of other factors. Over a slow SSH 
+      connection vi is faster and feels more responsive.The same goes for 
+      editing a couple of lines in a config file. But if I have to edit 
+      something long or more then a few lines I find Emacs to better suit my 
+      style of working (this is somewhat because I learned a evil editor in my 
+      youth and did not see how good vi was untill the last year or so.) 
+      <BR><BR>I'm afraid it is you who are mistaken about a great many 
+      things....<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=69">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=69#151">Re:Finally 
+        a voice of sanity</A> by Ded Bob <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @03:56PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=69#164">Re:Finally 
+        a voice of sanity</A> by mkcmkc <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @05:06PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=164#170">Re:Finally 
+          a voice of sanity</A> by Rohan Talip <FONT size=-1>(Score:1)</FONT> 
+          <FONT size=-1>Wednesday February 07, @05:42PM EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=164#178">Re:Finally 
+          a voice of sanity</A> by MadAhab <FONT size=-1>(Score:1)</FONT> <FONT 
+          size=-1>Wednesday February 07, @06:47PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=178#197">Re:Finally 
+            a voice of sanity</A> by SquadBoy <FONT size=-1>(Score:1)</FONT> 
+            <FONT size=-1>Thursday February 08, @12:31AM EDT 
+        </FONT></LI></UL></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=69#183">Re:Finally 
+        a voice of sanity (the true answer)</A> by Christopher Biggs <FONT 
+        size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @07:42PM 
+        EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=71>
+      <H4>So which OSen have ksh93 installed by default?</H4></A>(Score:2)<BR>by 
+      bee on Wednesday February 07, @12:43PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=bee">User #15753 
+      Info</A>) 
+      <P>Does anyone know which OSen (or Linux dists) have ksh93 installed with 
+      them? Even if it's installed as (/usr)/bin/ksh93 it'd still be nice to see 
+      it get out there and get used, since it sounds like it has some really 
+      cool features. <BR><BR>--- <BR>I'm socially handicapped, so why can't I 
+      get the sticker so I can park in the good spots at the mall? </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=71">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=71#93">Re:So 
+        which OSen have ksh93 installed by default?</A> by Anonymous Coward 
+        <FONT size=-1>Wednesday February 07, @01:19PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=71#97">Re:So 
+        which OSen have ksh93 installed by default?</A> by Bigbambo <FONT 
+        size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @01:22PM 
+        EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=97#196">Re:So 
+          which OSen have ksh93 installed by default?</A> by Anonymous Coward 
+          <FONT size=-1>Wednesday February 07, @11:55PM EDT </FONT>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=97#201">not 
+          quite</A> by Sylvain Tremblay <FONT size=-1>(Score:1)</FONT> <FONT 
+          size=-1>Thursday February 08, @06:26AM EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=71#106">Re:So 
+        which OSen have ksh93 installed by default?</A> by ILikeRed <FONT 
+        size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @01:35PM 
+        EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=106#143">Re:So 
+          which OSen have ksh93 installed by default?</A> by Saint Nobody <FONT 
+          size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @03:07PM 
+          EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=71#123">Re:So 
+        which OSen have ksh93 installed by default?</A> by nathana <FONT 
+        size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @02:21PM 
+        EDT </FONT>
+        <UL>
+          <LI><FONT size=2><B><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=123">1 
+          reply</A> beneath your current threshold.</B></FONT> 
+    </LI></UL></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=81>
+      <H4>How can I tell what version I have?</H4></A>(Score:0)<BR>by Anonymous 
+      Coward on Wednesday February 07, @12:54PM EDT<BR>
+      <P>How can I tell what version of ksh is installed on my 
+  system?<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=81">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=81#130">Re:How 
+        can I tell what version I have?</A> by kps <FONT 
+        size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @02:32PM 
+        EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=83>
+      <H4>Executable sizes</H4></A>(Score:1)<BR>by TommyW on Wednesday February 
+      07, @12:57PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=TommyW">User 
+      #75753 Info</A>) 
+      <P>
+      <BLOCKQUOTE>Ksh is quite cool as it is much more compact than bash ; 
+        here are their respective sizes on a Solaris system:
+        <P>-&gt; /usr/local/bin/bash -version GNU bash, version 
+        2.02.0(1)-release (sparc-sun-solaris2.6) Copyright 1998 Free Software 
+        Foundation, Inc.
+        <P>-&gt; ls -la /usr/local/bin/bash -rwxr-xr-x 1 bin bin 3157516 Jul 14 
+        1998 /usr/local/bin/bash
+        <P>On a Linux system, these are approximately 300k for bash and 160k for 
+        (pd)ksh. </P></BLOCKQUOTE>That's *not* 300k. That's 3 meg ;)<BR>--<BR>Too 
+      stupid to live.<BR>Too stubborn to die. </TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=83">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=83#87">Re:Executable 
+        sizes</A> by arivanov <FONT size=-1>(Score:2)</FONT> <FONT 
+        size=-1>Wednesday February 07, @01:07PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=87#122">Re:Executable 
+          sizes</A> by mangino <FONT size=-1>(Score:2)</FONT> <FONT 
+          size=-1>Wednesday February 07, @02:19PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=122#157">Clearing 
+            up a common misconception</A> by sparcv9 <FONT 
+            size=-1>(Score:2)</FONT> <FONT size=-1>Wednesday February 07, 
+            @04:37PM EDT </FONT>
+            <UL>
+              <LI><A 
+              href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=157#161">Re:Clearing 
+              up a common misconception</A> by Anonymous Coward <FONT 
+              size=-1>Wednesday February 07, @04:59PM EDT </FONT></LI></UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=122#203">but...</A> 
+            by Sylvain Tremblay <FONT size=-1>(Score:1)</FONT> <FONT 
+            size=-1>Thursday February 08, @06:29AM EDT </FONT></LI></UL></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=83#91">Wrong!</A> 
+        by metlin <FONT size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday 
+        February 07, @01:17PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=91#113">Hmmm.. 
+          Let's do the math.</A> by Anonymous Coward <FONT size=-1>Wednesday 
+          February 07, @01:56PM EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=83#132">Re:Executable 
+        sizes - uh. re-read that.</A> by heller <FONT size=-1>(Score:1)</FONT> 
+        <FONT size=-1>Wednesday February 07, @02:38PM EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=90>
+      <H4>I would outright disagree with most statements</H4></A>(Score:2)<BR>by 
+      arivanov on Wednesday February 07, @01:15PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=arivanov">User 
+      #12034 Info</A>) 
+      <P>
+      <LI>Ksh syntax more readable than perl... Yeah right. I have read enough 
+      IBM install scripts or semi-insane scripts from commercial solaris 
+      software to object. Well written ksh is more readable than horrible perl, 
+      but it does not even get closed to proper perl. 
+      <LI>Perl developers not using unix system toolkits. Well... there is a 
+      reason for it. Specifically related to temporary files, the system call 
+      versus fork/exec and so on. Most ksh programs I have seen (including parts 
+      of commercial software) do not take these subtleties into account. As a 
+      result they are full with root holes. Perl programmers have learned to 
+      take them into account the hard way 
+      <LI>Ksh faster than perl. Seeing is believing. Unless we are talking about 
+      arithmetics where perl traditionally does not cut the mustard... 
+      <LI>Ksh more extensible than perl... Well... Once again seing is 
+      believing... So far just looking at CPAN the answer is "bulshit"<BR>@*** 
+      Baker's Law *** Misery no longer loves company. Nowadays it insists on it. 
+      </LI></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=90">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=90#101">Perl 
+        is absolutely faster than Ksh: Proof</A> by Ted V <FONT 
+        size=-1>(Score:2)</FONT> <FONT size=-1>Wednesday February 07, @01:29PM 
+        EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=101#129">LIE</A> 
+          by Anonymous Coward <FONT size=-1>Wednesday February 07, @02:28PM EDT 
+          </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=90#116">Re:I 
+        would outright disagree with most statements</A> by drinkypoo <FONT 
+        size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @01:58PM 
+        EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=116#180">Re:I 
+          would outright disagree with most statements</A> by Buckaduck <FONT 
+          size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @06:50PM 
+          EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=90#124">Re:I 
+        would outright disagree with most statements</A> by Anonymous Coward 
+        <FONT size=-1>Wednesday February 07, @02:24PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=90#181">Re:I 
+        would outright disagree with most statements</A> by Anonymous Coward 
+        <FONT size=-1>Wednesday February 07, @07:04PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=90#195">Re:I 
+        would outright disagree with most statements</A> by Anonymous Coward 
+        <FONT size=-1>Wednesday February 07, @11:26PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=195#205">Re:I 
+          would outright disagree with most statements</A> by Anonymous Coward 
+          <FONT size=-1>Thursday February 08, @07:19AM EDT 
+      </FONT></LI></UL></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=94>
+      <H4>footer (nothing to do with ksh)</H4></A>(Score:0, Troll)<BR>by artg on 
+      Wednesday February 07, @01:19PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=artg">User #24127 
+      Info</A>) 
+      <P>Q: What do you say to a Puerto Rican in a three-piece suit? A: Will the 
+      defendant please rise? <BR><BR>Is it just me, or does anyone else find 
+      this offensive ? I'm not Puerto Rican and don't consider myself very 'PC', 
+      but this belongs in a cheap standup-comic's routine, not on a respectable 
+      geek's forum. <BR><BR><BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=94">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=94#104">Re:footer 
+        (nothing to do with ksh)</A> by trollercoaster <FONT size=-1>Wednesday 
+        February 07, @01:33PM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=94#110">Re:footer 
+        (nothing to do with ksh)</A> by Anonymous Coward <FONT size=-1>Wednesday 
+        February 07, @01:43PM EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=98>
+      <H4>Ksh the Shell vs. Ksh the Script</H4></A>(Score:2)<BR>by <A 
+      href="mailto:tedv@[NOSPAM]hushmail.com">Ted V</A> <B><FONT 
+      size=2>(tedv@[NOSPAM]hushmail.com)</FONT></B> on Wednesday February 07, 
+      @01:23PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=Ted%20V">User 
+      #67691 Info</A>) 
+      <P>Basically what David Korn says is that all the good shells (or at least 
+      popular shells) are similar in terms of interactivity: bash, tcsh, zsh, 
+      ksh, and a handfull of others. His selling point is that Ksh has far 
+      superior scripting capabilities than the other shells. <BR><BR>As a shell, 
+      I personally prefer zsh because the interactivity is a little more 
+      customizable than ksh. As a scripting language, I personally prefer Perl 
+      because the scripting is more syntactically flexible. (That's a nice way 
+      of saying that Perl lets you write both readable code and slash code.) 
+      <BR><BR>I won't claim that ksh scripts are inherently messier than a 
+      dedicated scripting language. Perhaps I've only seen bad examples of ksh 
+      scripts, and I've seen my share of bad perl scripts as well. I will claim, 
+      however, that there are other scripting languages which are more 
+      expressive than ksh and other shells which are more interactive than ksh. 
+      <BR><BR>So I think it's great that ksh scores a 9 out of 10 on 
+      interactivity and an 8 out of 10 on scripting, but I can't help but think 
+      that Ksh has bridesmaid syndrome-- always second to something else. Sure, 
+      you can use your shell to script. You can use your emacs text editor to 
+      read news, mail, and play games if you want to. Personally I'd rather have 
+      more functionality in each specific area, be it interactivity or 
+      scripting. <BR><BR>-Ted<BR>Like the situation at ski resorts of young 
+      women looking for husbands and husbands looking for young women, the 
+      situatio </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=98">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=98#177">tcsh 
+        for interactive shell</A> by Rohan Talip <FONT size=-1>(Score:3)</FONT> 
+        <FONT size=-1>Wednesday February 07, @06:42PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=177#204">Re:tcsh 
+          for interactive shell</A> by Anonymous Coward <FONT size=-1>Thursday 
+          February 08, @07:16AM EDT </FONT></LI></UL></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=99>
+      <H4>UNIX commands in Perl</H4></A>(Score:4, Insightful)<BR>by Erasmus 
+      Darwin on Wednesday February 07, @01:26PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=Erasmus%20Darwin">User 
+      #183180 Info</A>) 
+      <P><I>Even perl programmers often miss the point, writing the heart and 
+      soul of the application as perl script without making use of the UNIX 
+      toolkit.</I> 
+      <P>I'm not quite sure what to make of his quote above. On one hand, I 
+      freely admit that I tend to think in terms of globbing various UNIX 
+      commands together to produce some pretty decent results with the use of 
+      just a few pipe symbols as glue.
+      <P>On the other hand, I feel that doing so in anything intended to be 
+      portable and/or robust is just asking for grief. When I stick to utilizing 
+      constructs that exist only within perl, I know I'm pretty safe. As soon as 
+      I start integrating external commands, I have to worry about checking 
+      return values, checking that the command even exists, escaping shell 
+      metacharacters, portability issues, and so forth. Some times, it just 
+      becomes simpler to "reinvent the wheel", so that I've got a nice, 
+      predictable function to deal with.
+      <P>That being said, for quick hacks that are't mission critical, external 
+      UNIX commands are quite definitely the way to go. However, there often is 
+      a valid reason not to go that route.<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=99">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=99#168">Re:UNIX 
+        commands in Perl</A> by drivers <FONT size=-1>(Score:2)</FONT> <FONT 
+        size=-1>Wednesday February 07, @05:25PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=168#206">Re:UNIX 
+          commands in Perl</A> by slim <FONT size=-1>(Score:2)</FONT> <FONT 
+          size=-1>Thursday February 08, @07:31AM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=206#207">Re:UNIX 
+            commands in Perl</A> by merlyn <FONT size=-1>(Score:1)</FONT> <FONT 
+            size=-1>Thursday February 08, @09:44AM EDT </FONT>
+            <UL>
+              <LI><A 
+              href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=207#210">Re:UNIX 
+              commands in Perl</A> by Erasmus Darwin <FONT 
+              size=-1>(Score:2)</FONT> <FONT size=-1>Thursday February 08, 
+              @10:16AM EDT </FONT></LI></UL></LI></UL></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=99#199">And 
+        if you really want UNIX commands in Perl...</A> by Zico <FONT 
+        size=-1>(Score:2)</FONT> <FONT size=-1>Thursday February 08, @02:10AM 
+        EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=103>
+      <H4>Korn and Coors</H4></A>(Score:3, Informative)<BR>by update() on 
+      Wednesday February 07, @01:31PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=update()">User 
+      #217397 Info</A>) 
+      <P><I>So Korn (the band) drinks Coors Light? I might have suspected... 
+</I>
+      <P>For those of you wondering where that apparently idiotic non-sequitur 
+      came from, it refers to <A 
+      href="http://www.research.att.com/~jlk/kshpics/band.gif">this picture</A> 
+      on David Korn's web site. Roblimo, I appreciate your including my question 
+      but you could have edited out that line, especially if you're stripping 
+      out the HTML. ;-)<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=103">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=112>
+      <H4>Experiences with UWIN</H4></A>(Score:2)<BR>by <A 
+      href="mailto:tedv@[NOSPAM]hushmail.com">Ted V</A> <B><FONT 
+      size=2>(tedv@[NOSPAM]hushmail.com)</FONT></B> on Wednesday February 07, 
+      @01:54PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=Ted%20V">User 
+      #67691 Info</A>) 
+      <P>I once had the displeasure of working with UWIN in a corporate setting. 
+      I had just been transfered to a group that produced a tool consisting of 4 
+      posix-compliant C programs multithreaded together using Ksh scripts to 
+      glue pieces. No disrespected intended to Ksh itself, the whole code was an 
+      utter an complete pile. (As for functionality, the optimal solution 
+      involved 1 perl script, no C code or ksh, and it would have taken me a few 
+      weeks to do it.) The code took some 2 or 3 years to write, presumably 
+      because they used all sorts of great but unnecessary posix features like 
+      shared memory maps. Apparently the code really did run fine on a system 
+      like Solaris. <BR><BR>Anyway, everyone who worked on the project left the 
+      group in 6 months, but the PHB hadn't figured this out. The product was 2 
+      years overdue for their Solaris to Windows port. The engineers decided to 
+      use UWIN rather than rewrite in Windows because they thought it would be 
+      less effort. Those engineers had since left. What we discovered working 
+      with with the Global Technologies company supporting UWIN was that UWIN 
+      didn't properly support most of the strange features our code used. 
+      Roughly 95% of the problems were due to Posix incompatabilities in UWIN. I 
+      would routinely spend 2 weeks talking with Global Technologies pointing 
+      out that the bug really was their fault and why the solution was NOT for 
+      us to change our code to match their bug behavior. After they hacked 
+      together their changes, they didn't even bother testing if the change left 
+      their code Posix compliant, expecting us to test. After that, they'd say 
+      that it must be our fault it doesn't work and the cycle would complete, 
+      until I could show where else they messed up. <BR><BR>A few months later I 
+      left for a group working on useful things. <BR><BR>Anyway, UWIN is a great 
+      idea, but the people developing it are completely incompetant. (A few 
+      times it turned out that I knew more about posix features than they did, 
+      and I'm just a standard software engineer.) <BR><BR>-Ted<BR>Like the 
+      situation at ski resorts of young women looking for husbands and husbands 
+      looking for young women, the situatio </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=112">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=112#139">Re:Experiences 
+        with UWIN (Off Topic)</A> by Anonymous Coward <FONT size=-1>Wednesday 
+        February 07, @02:52PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=139#146">Sig 
+          (Off Topic)</A> by Ted V <FONT size=-1>(Score:2)</FONT> <FONT 
+          size=-1>Wednesday February 07, @03:31PM EDT </FONT></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=112#186">Re:Experiences 
+        with UWIN</A> by Anonymous Coward <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Wednesday February 07, @08:45PM EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=118>
+      <H4>now i know what not to use</H4></A>(Score:0)<BR>by Anonymous Coward on 
+      Wednesday February 07, @02:10PM EDT<BR>
+      <P>" <BR>vi fits this model better and that is what I use. <BR>" 
+      <BR><BR>now i know what shell not to use. <BR>BAN KSH! Its written by an 
+      eVIl user! <BR><BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=118">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=137>
+      <H4>Nostalgia</H4></A>(Score:1)<BR>by <A 
+      href="mailto:berns-at-rdacustomsoftware-dot-com">Shimmer</A> <B><FONT 
+      size=2>(berns-at-rdacustomsoftware-dot-com)</FONT></B> on Wednesday 
+      February 07, @02:48PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=Shimmer">User 
+      #3036 Info</A>) 
+      <P>I was weaned on Unix systems many years ago and have been assimilated 
+      into the Windows world since. Reading this definitely makes me nostalgic 
+      for the well-defined old days. One good thing I can say for Windows, 
+      however, is that it is finally taking Korn's advice to allow via scripting 
+      (e.g. the Windows Scripting Host) most things that can be accomplished via 
+      the GUI. <BR><BR>-- Brian<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=137">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=158>
+      <H4>My prompt in ksh</H4></A>(Score:1)<BR>by westrick on Wednesday 
+      February 07, @04:49PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=westrick">User 
+      #245730 Info</A>) 
+      <P>PS1=`uname -n`':${PWD#$OLDPWD/}$ ' Just enough info about where I am, 
+      without wasting the entire screen with $PWD.<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=158">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=158#209">Re:My 
+        prompt in ksh</A> by Anonymous Coward <FONT size=-1>Thursday February 
+        08, @10:13AM EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=162>
+      <H4>CGI's using a shell</H4></A>(Score:2)<BR>by MSG on Wednesday February 
+      07, @05:01PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=MSG">User #12810 
+      Info</A>) 
+      <P><I>The kornshell.com page has the code for a script that can be 
+      included in a CGI script in which all the arguments are mapped into shell 
+      variables.</I> <BR><BR>Now that just strikes me as a 
+      <STRONG>terrible</STRONG> idea. Bad things happening to shell variables is 
+      exactly why you should <STRONG>not</STRONG> write CGI's using a shell. 
+      <BR><BR>Really. If you don't yet believe the awesome power of unchecked 
+      variables, then read Perl's <A 
+      href="http://www.perl.com/pub/doc/manual/html/pod/perlsec.html">security 
+      docs</A> and learn about Taint mode. Check the FAQ's to see a small 
+      example of how often poorly checked input in CGI leads to a compromise. 
+      Taint mode specifically is what makes Perl my prefered language for CGI 
+      (among my primary languages: C, Perl, Python)<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=162">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=165>
+      <H4>Who owns the Unix source code?</H4></A>(Score:0)<BR>by Anonymous 
+      Coward on Wednesday February 07, @05:09PM EDT<BR>
+      <P>"Korn: a) I can't say whether Novell will give dtksh away or not." 
+      <BR><BR>Does Novell still have rights over System V? I suppose Novell 
+      granted them to SCO, and now Caldera should be the owner. Can somebody 
+      clarify this? <BR><BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=165">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=166>
+      <H4>Old ideas</H4></A>(Score:3, Interesting)<BR>by joshv on Wednesday 
+      February 07, @05:15PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=joshv">User #13017 
+      Info</A>) 
+      <P>I understand what he is talking about in terms of building new tools 
+      based on resuable 'toolkits' of shell commands, but I think Korn's ideas 
+      on code resuability are incredibility out of date. <BR><BR>The tools he 
+      talks about operate on text streams which are piped from tool to tool. 
+      There is no structure to the text streams and it is up to every tool to 
+      figure out what the stream contains on it's own. Is it HTML? A Text file? 
+      /etc/passwd? To top it off, each tools has it's own arcane syntax and 
+      combinations of command line switches - a support, training and 
+      maintenance nightmare. <BR><BR>This just does not strike me as a 
+      particularly good way of doing things. It was an excellent solution to the 
+      problem of resuability back in the days when hardware was slow and memory 
+      was limited. But today we have better solutions, and the only reason I 
+      could see to use these older tools is for the sake of backward 
+      compatibility. <BR><BR>The idea of building a web site using shell scripts 
+      strikes me as patently absurd. Sure it can be done, but why, when there 
+      are much better tools for the job - and all of these tools have solved 
+      many of the code reuse problems of the past in a much more elegant fashion 
+      than the Unix 'toolkit' has. <BR><BR>His comments on modern GUIs show a 
+      certain naivité about the state of the art of GUI design. Both KDE and 
+      Gnome have an extensive object models, and their own component and 
+      application toolkits which support code reuse and the building of your own 
+      personal 'toolkits'. His critique of GUIs might more appropriately be 
+      levelled at older Motif applications, where every app truly is an island 
+      unto itself. <BR><BR>It just seems that Korn is living a few decades 
+      behind the times. He deserves respect, but his ideas are anachronistic at 
+      best. <BR><BR>-josh<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=166">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=166#185">Re:Old 
+        ideas</A> by Anonymous Coward <FONT size=-1>Wednesday February 07, 
+        @08:00PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=185#194">Re:Old 
+          ideas</A> by joshv <FONT size=-1>(Score:1)</FONT> <FONT 
+          size=-1>Wednesday February 07, @11:22PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=194#198">Unable 
+            to compete?</A> by Mike Greaves <FONT size=-1>(Score:1)</FONT> <FONT 
+            size=-1>Thursday February 08, @01:14AM EDT </FONT></LI></UL></LI></UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=166#202">Re:Old 
+        ideas</A> by tree_frog <FONT size=-1>(Score:1)</FONT> <FONT 
+        size=-1>Thursday February 08, @06:27AM EDT </FONT>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=166#215">Silly 
+        fool</A> by Eric Green <FONT size=-1>(Score:2)</FONT> <FONT 
+        size=-1>Thursday February 08, @03:53PM EDT </FONT></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=169>
+      <H4>Proving once again</H4></A>(Score:2)<BR>by <A 
+      href="mailto:fervent@NOSPAM.slc.edu">Fervent</A> <B><FONT 
+      size=2>(fervent@NOSPAM.slc.edu)</FONT></B> on Wednesday February 07, 
+      @05:40PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=Fervent">User 
+      #178271 Info</A>) 
+      <P>That advocacy for something as silly as text shells is an ugly thing.
+      <P>Let's go New Jersey Devils! :)<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=169">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=184>
+      <H4>mmmm KORN</H4></A>(Score:1)<BR>by MxT on Wednesday February 07, 
+      @07:46PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=MxT">User #307217 
+      Info</A>) 
+      <P>mmmmmm Korn <BR><BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=184">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=187>
+      <H4>I'm surprised that nobody has brought up</H4></A>(Score:1)<BR>by <A 
+      href="mailto:slashdot@inter-slice.com">nosferatu-man</A> <B><FONT 
+      size=2>(slashdot@inter-slice.com)</FONT></B> on Wednesday February 07, 
+      @09:02PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=nosferatu-man">User 
+      #13652 Info</A>) 
+      <P>... what is by far the coolest thing in the whole interview: 
+      <BR><BR><TT>All the built-ins to ksh93 can generate their own manual page 
+      in several formats and locales. </TT><BR><BR>That's almost enough to get 
+      me to start using it. Thank you, David Korn. It'd be a pleasure if other 
+      authors took this idea and ran with it, especially on systems with the 
+      more brain-damaged documentation (you know who you are.) 
+      <BR><BR>(jfb)<BR>To spur "enterprise Linux," Big Bang, the distributed 
+      two-phase commit. </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=187">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=0">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=22>
+      <H4>Re:I Enjoy Korn</H4></A>(Score:0)<BR>by Anonymous Coward on Wednesday 
+      February 07, @12:15PM EDT<BR>
+      <P>I wondered where all my Talnet had gone...<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=22">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=13">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=25>
+      <H4>Re:I Enjoy Korn</H4></A>(Score:0)<BR>by Anonymous Coward on Wednesday 
+      February 07, @12:16PM EDT<BR>
+      <P><BR>HAHAHAHAHahahaha... hehehehehehe.... <BR><BR>whew, that was 
+      funny... <BR><BR>hehehehehehehehe..... <BR><BR><BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=25">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=13">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=28>
+      <H4>or maybe just a bit bored at work</H4></A>(Score:0)<BR>by Anonymous 
+      Coward on Wednesday February 07, @12:17PM EDT<BR>
+      <P>...and let me 'congradulate' you on spelling an entire post 
+      correctly... well done<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=28">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=23">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=28#41">Does 
+        it make you proud?</A> by Anonymous Coward <FONT size=-1>Wednesday 
+        February 07, @12:25PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=41#54">Re:Does 
+          it make you hard?</A> by Anonymous Coward <FONT size=-1>Wednesday 
+          February 07, @12:30PM EDT </FONT>
+          <UL>
+            <LI><A 
+            href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=54#59">Can't 
+            say it's worth the time</A> by Anonymous Coward <FONT 
+            size=-1>Wednesday February 07, @12:33PM EDT 
+        </FONT></LI></UL></LI></UL></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=34>
+      <H4>Re:I Enjoy Korn</H4></A>(Score:0)<BR>by trollercoaster on Wednesday 
+      February 07, @12:20PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=trollercoaster">User 
+      #250101 Info</A>) 
+      <P>I enjoy korn with lots of butter or in a nice chowder. Or korn 
+      whiskey.<BR><BR>Q:What do you say to a Puerto Rican in a three-piece suit? 
+      A:Will the defendant please rise?<BR><B>/. Footer 2/07 </B></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=34">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=13">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=39>
+      <H4>Re:I Enjoy Korn</H4></A>(Score:0)<BR>by Anonymous Coward on Wednesday 
+      February 07, @12:24PM EDT<BR>
+      <P>Isn't that an inferior SSH type client?<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=39">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=13">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=46>
+      <H4>what would you like to see?</H4></A>(Score:0, Offtopic)<BR>by <A 
+      href="mailto:pretty.pony@mamby.pamby.org">gbgbgbg</A> <B><FONT 
+      size=2>(pretty.pony@mamby.pamby.org)</FONT></B> on Wednesday February 07, 
+      @12:28PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=gbgbgbg">User 
+      #313744 Info</A>) <A 
+      href="http://the.perfect.blend.of.monkeys.cities.asses.and.beef/">http://the.perfect.blend.of.monkeys.cities.asses.and.beef/</A><BR>
+      <P>show what? my face? my ass? my big toe? your vagueness causes great 
+      confusion. perhaps you meant to call out someone else, then? or do you 
+      really just not know? homework, my boy, its all about the homework.
+      <P><BR><I>News for turds, shit that splatters</I> </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=46">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=17">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD>
+      <UL>
+        <LI><A 
+        href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=46#76">Re:what 
+        would you like to see?</A> by Juan Epstein <FONT size=-1>Wednesday 
+        February 07, @12:49PM EDT </FONT>
+        <UL>
+          <LI><A 
+          href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=76#142">Re:what 
+          would you like to see?</A> by $eyeB0rq_munqee <FONT 
+          size=-1>(Score:1)</FONT> <FONT size=-1>Wednesday February 07, @03:04PM 
+          EDT </FONT></LI></UL></LI></UL></TD></TR>
+  <TR>
+    <TD><A name=49>
+      <H4>Re:Point being</H4></A>(Score:0, Offtopic)<BR>by <A 
+      href="mailto:pretty.pony@mamby.pamby.org">gbgbgbg</A> <B><FONT 
+      size=2>(pretty.pony@mamby.pamby.org)</FONT></B> on Wednesday February 07, 
+      @12:29PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=gbgbgbg">User 
+      #313744 Info</A>) <A 
+      href="http://the.perfect.blend.of.monkeys.cities.asses.and.beef/">http://the.perfect.blend.of.monkeys.cities.asses.and.beef/</A><BR>
+      <P>tell it to 'em straight, brotha!
+      <P><BR><I>News for turds, shit that splatters</I> </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=49">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=26">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=60>
+      <H4>Re:reading that...</H4></A>(Score:0, Offtopic)<BR>by <A 
+      href="mailto:pretty.pony@mamby.pamby.org">gbgbgbg</A> <B><FONT 
+      size=2>(pretty.pony@mamby.pamby.org)</FONT></B> on Wednesday February 07, 
+      @12:34PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=gbgbgbg">User 
+      #313744 Info</A>) <A 
+      href="http://the.perfect.blend.of.monkeys.cities.asses.and.beef/">http://the.perfect.blend.of.monkeys.cities.asses.and.beef/</A><BR>
+      <P>really, this isn't all that much of a flamebait. I see this as a harsh 
+      criticism, meant to be both inspiring and informative. although, I'm not 
+      sure what was going on when the part about the corn was written. perhaps I 
+      was distracted at the time? who cares - the point stands - either troll 
+      with flair or fuck off.
+      <P><BR><I>News for turds, shit that splatters</I> </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=60">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=4">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=148>
+      <H4>Fasciasm is not even a threat</H4></A>(Score:0)<BR>by <A 
+      href="mailto:randomform@users.no.sourceforge.spam.net">bliss</A> <B><FONT 
+      size=2>(randomform@users.no.sourceforge.spam.net)</FONT></B> on Wednesday 
+      February 07, @03:43PM EDT<BR>(<A 
+      href="http://slashdot.org/users.pl?op=userinfo&amp;nick=bliss">User #21836 
+      Info</A>) <A 
+      href="http://randomform.sourceforge.net/">http://randomform.sourceforge.net/</A><BR>
+      <P>The communists are a group of idiots but I don't happen to believe that 
+      Nazism is much better. <BR><BR>Basically Fasciasm is/was a reaction to 
+      events that are chaotic by an unreasonable show of jingoism (ie crappy 
+      lives because of WWI in Germany, Italy and movements in places like France 
+      and to a small degree England). <BR><BR>It is a well known fact that most 
+      people in the USSR after the death of Joseph Stalin in fact disliked his 
+      methodology and ideals. <BR><BR>Take a look at Kruchev had to say about 
+      Stalin's interpretation of communist ideals. His internal purges and his 
+      elimination of Trosky among other things.<BR>The death of one man is a 
+      tragedy; the death of a million is a statistic --Joseph Stalin </P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=148">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=125">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD><A name=190>
+      <H4>Re:I Enjoy Korn</H4></A>(Score:0)<BR>by Anonymous Coward on Wednesday 
+      February 07, @10:11PM EDT<BR>
+      <P>Huh? I don't know of any metal bands called Korn. I don't know of any 
+      bands called Korn with a great deal of talent, either. There is this one 
+      band called Korn, but they're not talented and they're not a metal 
+      band.<BR></P></TD></TR>
+  <TR>
+    <TD><FONT size=2>[ <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;op=Reply&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;pid=190">Reply 
+      to This</A> | <A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=0&amp;commentsort=0&amp;mode=thread&amp;cid=13">Parent</A> 
+      ] </FONT></TD></TR>
+  <TR>
+    <TD>
+  <TR>
+    <TD bgColor=#cccccc>
+      <LI><FONT size=2><B><A 
+      href="http://slashdot.org/comments.pl?sid=01/02/06/2030205&amp;threshold=-1&amp;commentsort=0&amp;mode=thread&amp;pid=0">7 
+      replies</A> beneath your current threshold.</B></FONT> 
+</LI></TD></TR></TBODY></TABLE>
+<P>[ <FONT size=2><B>&nbsp;<A href="http://slashdot.org/faq/">faq</A> | &nbsp;<A 
+href="http://slashdot.org/code.shtml">code</A> | &nbsp;<A 
+href="http://www.osdn.com/">osdn</A> | &nbsp;<A 
+href="http://slashdot.org/awards.shtml">awards</A> | &nbsp;<A 
+href="http://osdn.com/privacy.shtml">privacy</A> | &nbsp;<A 
+href="http://slashnet.org/">slashNET</A> | &nbsp;<A 
+href="http://slashdot.org/search.pl">older stuff</A> | &nbsp;<A 
+href="http://cmdrtaco.net/">rob's page</A> | &nbsp;<A 
+href="http://slashdot.org/users.pl?op=preferences">preferences</A> | &nbsp;<A 
+href="http://slashdot.org/submit.pl">submit story</A> | &nbsp;<A 
+href="http://slashdot.org/advertising.shtml">advertising</A> | &nbsp;<A 
+href="http://slashdot.org/supporters.shtml">supporters</A> | &nbsp;<A 
+href="http://slashdot.org/pollBooth.pl">past polls</A> | &nbsp;<A 
+href="http://slashdot.org/topics.shtml">topics</A> | &nbsp;<A 
+href="http://slashdot.org/about.shtml">about</A> | &nbsp;<A 
+href="http://slashdot.org/jobs.shtml">jobs</A> | &nbsp;<A 
+href="http://slashdot.org/hof.shtml">hof</A> </B></FONT>] 
+<FORM action=http://slashdot.org/search.pl method=get><INPUT type=name 
+name=query length="20" width="20"> <INPUT type=submit value="Search Slashdot"> 
+</FORM>Not drinking, chasing women, or doing drugs won't make you live longer -- 
+it just seems that way. 
+<P>All trademarks and copyrights on this page are owned by their respective 
+companies. Comments are owned by the Poster. The Rest © 1997-2001 <A 
+href="http://www.osdn.com/">OSDN</A>. </P></LI></BODY></HTML>

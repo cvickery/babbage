@@ -1,0 +1,148 @@
+
+<HTML> <HEAD> <title>Device Driver Assignment</title> <body>
+<h2>CS-704 Device Driver Assignment</h2>
+
+<dl>
+<dt><b>Due Date:</b><dd>December 19, 1995
+
+<dt><b>Deliverables:</b>
+
+<dd> When your program is ready for grading, send
+me e-mail telling me the name of the project directory, which I will assume
+is under your home directory on Panther7.  The project directory is to be
+empty except for a Makefile, source file(s), and a Notes file telling me
+what your program does and any information I might need to test it.
+When I type "Make" in the project
+directory, all executables for this assignment are to be built without
+remarks, warnings, or errors.  All code must conform to the <A
+HREF="../coding_guidelines.html">Coding Guidelines</A> for this course.</p>
+
+<dt><b>Program Description</b>
+
+<dd> The program is to act as a terminal emulator.  Whatever the user types
+at the console keyboard is to be written to a serial port, and whatever is
+received at the serial port is to be displayed on the user's console
+screen.  The program takes two command line arguments: the base address
+of the UART registers for the serial port being used, and the encoded
+interrupt level for that port.  For a standard PC, the arguments for
+the four COM ports would be:
+
+<p><ol>
+<li>0x3F8, 0x48
+<li>0x2F8, 0x38
+<li>0x3E8, 0x48
+<li>0x2E8, 0x38
+</ol></p>
+
+<dt><b>Development Steps</b>
+
+<dd> This exercise is to be done as a sequence of steps.  Because of time
+constraints, all but Step 1 are optional for this assignment. (!)</p>
+
+<dl>
+<dt>Step 1
+
+<dd>Construct a testing environment for this exercise.  Connect either a
+terminal or a modem to one of the COM ports on a PC, and make sure the
+connection works.  In the lab, you will have to disable logins on the
+terminal attached to the computer you are going to work on.  Edit the
+file <code>:config:terminals</code> and change the first line of that
+file from a '2' to a '1'.  You have to reboot the computer for this change
+to take effect.  You can test the change after rebooting by issuing the
+following commands:</p>
+
+<code><ul>
+<li>attachdevice com1 as t p
+<li>dir :$: to :t:
+<li>copy :t:
+<li>detachdevice :t:
+</ul></code>
+
+<p>The <i>attachdevice</i> command is correct only if the terminal is on com1;
+the third line of the <code>:config:terminals</code> file tells you which port
+it is actually connected to.  The output of the <i>dir</i> command should
+appear on the terminal's screen, and whatever you type on the terminal's
+keyboard should be displayed on the iRMX console while the <i>copy</i>
+command is running.  Type <code>^Z</code> at the beginning of a line on
+the terminal to terminate the <i>copy</i> command.  If that doesn't work,
+type <code>^C</code> on the iRMX console.</p>
+
+<p>Now use SoftScope or the <i>monitor</i> command to get to the SDM
+debug monitor.  You should be able to use the SDM <i>o 2f8,41</i> and
+<i>i 2f8</i> commands to send characters (the letter 'A' in this
+example) to the terminal's screen and to read characters from its
+keyboard. (Address 2f8 is for COM2.)  In SoftScope, the commands would
+be <i>port 2f8 = 41h</i> and <i>port 2f8</i>.</p>
+
+<p>Use these commands to determine the settings of the divisor latch
+and line status register of the UART.  Tell what you found in the Notes
+file in the project directory for this exercise.</p>
+
+<dt>Step 2
+
+<dd>Write a program that reads the contents of all the UART registers
+and displays their values in hexadecimal on the console.  Be sure the
+values make sense before proceeding.  ("All" means all readable registers,
+including those that share addresses.)  The base address of the UART's
+registers comes from a command line argument.</p>
+
+<dt>Step 3
+
+<dd>Modify your program so that it consists of two tasks.  One task calls
+<i>rqsetinterrupt()</i> and becomes the interrupt task for the serial
+port.  The interrupt handler does nothing but call <i>rqsignalinterrupt()</i>
+and the interrupt task does nothing but send a unit to a semaphore each
+time it returns from <i>rqwaitinterrupt()</i>.  The second task waits for
+a unit at the semaphore, and reads from the UART's IID, LSR,  and RBR registers
+when it receives a unit; it displays the hexadecimal value of the IID and
+LSR registers, and the character value of the RBR.  If the RBR character
+is the letter 'q' the second task calls <i>rqresetinterrupt()</i> and exits.
+
+<p>The interrupt level is specified as a second command line argument by
+the user.
+Be sure one of the tasks calls <i>rqesetmaxpriority()</i> before the
+interrupt task calls <i>rqsetinterrupt()</i>.</p>
+
+
+<dt>Step 4
+
+<dd>Modify your program so there is a third task.  The interrupt task
+notifies this task when there is a TBE interrupt by means of another
+semaphore, and the interrupt task signals only RBF interrupts only to
+the reading task.</p>
+
+<p>Notes that this design is simpler (by two tasks and two
+bounded buffers) than the design presented in class on December 14.</p>
+
+<dt>Step 5
+
+<dd>Fix the code up so that it works like a terminal emulator!  Use
+<i>rqsspecial()</i> so you can read characters from the console one at
+a time without echoing them.  You have to use the <code>get/set
+terminal attibutes</code> subfunctions (4 and 5) of <i>rqsspecial()</i>
+so that the connection mode is <code>transparent</code>,  The
+documentation for <i>rqaspecial</i> gives more information about how to
+set up the arguments to <i>rqsspecial()</i> than the documentation
+for <i>rqsspecial()</i> itself does.</p>
+
+</dl>
+
+<dt><b>The Notes File</b>
+
+<dd>Tell how far you got in the exercise in the Notes file that you leave
+in your project directory.</p>
+
+<dt><b>Grading</b>
+
+<dd>Completing Step 1 of this exercise counts as 2% of your final grade.
+Any additional work you do on this exercise counts as extra credit
+for the course.  The only documentation you need to supply for this
+exercise is the Notes file.</p>
+
+</dl>
+
+<hr>
+<ul>
+<li> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</ul>
+<hr> </body> </html>

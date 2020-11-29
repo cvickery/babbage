@@ -1,0 +1,174 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 2</title>
+<meta name=Description content="3-Feb-01: Shell Algorithm">
+<link rel=next href=slide0004.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0003.htm');   
+  else
+    parent.location.href = "../701_Lecture_02.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=94 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=208 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=86 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=134 height=33 colspan=2></td>
+  <td width=208 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=208 height=33 align=center><font face="Times New Roman" size=5>Shell
+    Algorithm</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=133 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=209></td>
+  <td width=388 height=209 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=75 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=72 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=29 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=27 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=14 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=184 height=21 colspan=7><font face="Times New Roman" size=3>Display
+    a prompt string</font><br>
+    </td>
+    <td width=187 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=389 height=3 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=169 height=21 colspan=6><font face="Times New Roman" size=3>Read
+    a command line</font><br>
+    </td>
+    <td width=202 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=389 height=4 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=256 height=21 colspan=11><font face="Times New Roman" size=3>Substitute
+    environment variables</font><br>
+    </td>
+    <td width=115 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=389 height=3 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=215 height=21 colspan=9><font face="Times New Roman" size=3>Expand
+    aliases and patterns</font><br>
+    </td>
+    <td width=156 height=21 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=389 height=3 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=97 height=21 colspan=5><font face="Times New Roman" size=3>Redirect
+    I/O</font><br>
+    </td>
+    <td width=274 height=21 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=389 height=4 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=258 height=21 colspan=12><font face="Times New Roman" size=3>Interpret
+    or Execute command(s)</font><br>
+    </td>
+    <td width=113 height=21></td>
+   </tr>
+   <tr>
+    <td width=389 height=3 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=350 height=18 colspan=10><font face="Times New Roman" size=2>Interpret
+    built-in commands like <i>cd, setenv,</i> <i>exit,</i> etc.</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=389 height=2 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=221 height=18 colspan=7><font face="Times New Roman" size=2>Create
+    processes to execute files.</font><br>
+    </td>
+    <td width=129 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=389 height=4 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=213 height=21 colspan=8><font face="Times New Roman" size=3>Repeat
+    from the beginning.</font><br>
+    </td>
+    <td width=158 height=21 colspan=5></td>
+   </tr>
+  </table>
+  </td>
+  <td width=47 height=209></td>
+ </tr>
+ <tr>
+  <td width=475 height=42 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

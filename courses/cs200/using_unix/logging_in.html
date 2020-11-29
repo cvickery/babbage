@@ -1,0 +1,191 @@
+<HTML> <HEAD> <title> Logging In </title>
+<body BGCOLOR=#ffffff>
+
+<H1 ALIGN=center>Logging In To Your Unix Account</H1>
+
+<H2>On This Page</H2>
+
+<ul>
+<li><A HREF="#getting">Getting Your User ID</A>
+<li><A HREF="#background">Background</A>
+<li><A HREF="#in">Logging In</A>
+  <ul>
+  <li><A HREF="#PC">From a PC in I Building</A>
+  <li><A HREF="#telnet">Using <i>telnet</i></A>
+  <li><A HREF="#windows">Using Windows (Microsoft and/or X)</A>
+  <li><A HREF="#dialing">Dialing In</A>
+  </ul>
+<li><A HREF="#password">Set Your Password!</A>
+<li><A HREF="#out">Logging Out</A>
+</ul>
+
+<H2><A NAME="getting">Getting Your User ID</A></H2>
+
+<P>Before you <i>access</i> your Unix account, you will have to <i>get</i>
+your Unix account!  Go to Room 200 of I Building and use one of the
+Express Terminals to find out your account name (user ID).  Be sure
+the account is for <i>qcunix1</i>, not <i>qcvaxa</i>.  If there are
+any problems, go down the hall to the information desk for help.
+
+
+<H2><A NAME="background">Background</A></H2>
+
+Things might make more sense if you start by looking at some <A
+HREF="background.html">background material on accessing Unix
+accounts</A>.  That page will tell you about the various options you
+have for accessing your Unix account and will tell you the difference
+between <i>command line mode</i> and <i>GUI mode</i>.<P>
+
+<H2><A NAME="in">Logging In</A></h2>
+
+<h4><A NAME="PC">Using a PC in I Building</A></h4>
+
+There are many PCs on campus that have an Ethernet connection
+to <i>qcunix1</i>, and you can use any of them to make a command line
+mode connection to your account.  Some of the PCs in I Building Room 200
+are set up to give you the option of accessing your account in either
+command line mode or in GUI mode, so we'll describe how to use those PCs
+since they provide the most general case.<P>
+
+At the present time, all the PCs in I-200 are configured
+for GUI mode, but only some of them (the AT&T brand PCs) operate with
+high-resolution video drivers that make the interface good.<P>
+
+Once you log into a PC you are given a menu of applications that
+you can run.  Select <i>Telnet to qcunix1</i> for command line access
+to your account, or <i>Windows</i> to bring up Microsoft Windows,
+from which you will be able to access your account in GUI mode.<P>
+
+<h4><A NAME="telnet">Using Telnet</A></h4>
+
+When you make a Telnet connection to your account you will be greeted
+with some messages followed by a <code>login:</code> prompt.  Type in
+your user ID.  Be sure to use the proper case (lower case) because
+upper and lower case letters are <i>not</i> interchangeable Unix.  When
+prompted for your password, give your college ID number.<P>
+
+At this point you will be logged in, some intial commands will run
+automatically, and the shell will issue a prompt for you to enter
+commands.  The prompt will be the string "<code>qcunix1> </code>".  You
+will be able to change the prompt if you want to, and in the examples we
+give, we will use "<code>$ </code>" to represent whatever prompt string you
+decide to use.<P>
+
+<h4><A NAME="windows">Using Windows (Microsoft and/or X)</A></h4>
+
+If you select Windows instead of Telnet from the menu on the PC,
+Microsoft Windows will start running, and you will see the usual array
+of icons, including <i>Netscape</i>, displayed in the "Main" program
+group.  One of the minimized program groups will be "eXcursion," which
+you should open by double clicking on it.  In that program group you
+will find an icon for an application called "qcunix1 terminal." Double
+click on the "qcunix1 terminal" icon, and another application called
+<i>eXcursion</i> will start up, and you will then be asked for your
+User ID and password for your <i>qcunix1</i> account.  Enter them, and
+the next thing you will see will be a Microsoft Windows window that
+contains an X Window System window that is running the <i>dxterm</i>
+terminal application, which will provide you with a command line
+interface to a shell program running on your <i>qcunix1</i> account.
+Got all that?<P>
+
+Once <i>dxterm</i> starts running, you will be in exactly the
+same situation as if you had logged in using Telnet.  Some initial
+commands will run automatically, and you will get your "<code>qcunix1>
+</code>" command prompt.  There is one major difference when you log in
+this way, though: You can now run X Window applications on
+<i>qcunix1</i> and their windows will show up on your PC's Microsoft
+Windows screen.  The secret to all this is eXcursion, which is an X
+Window System server that runs under Microsoft Windows.<P>
+
+For example, if you want to run two terminal sessions at the same time,
+it's no problem.  Just type "dxterm &" at your <i>qcunix1</i> command
+prompt and another window running another copy of <i>dxterm</i> will
+show up on your screen.  Use the mouse to click on the window you want
+to work in.  Also, if eXcursion is set up properly, you will be able to
+use <code>Alt-&lt;tab&gt;</code> to switch between dxterm windows.
+(Experiment with the left and right <code>Alt</code> keys:  eXcursion
+should let Microsoft Windows know when you press one of them, and let X
+Window applications know when you press the other.)<P>
+
+Some other X Window applications you might want to try are "xlogo" and
+"nedit."  You can use <i>nedit</i> to edit files as easily as
+you can with <i>pico</i>, and you can use the mouse to make editing
+even easier.<P>
+
+<h4><A NAME="dialing">Dialing in</A></h4>
+
+You can make a command line connection to your account from off-campus
+provided you have a modem and either a VT-100 compatible terminal or a
+terminal emulation program running on a PC.  The Kermit terminal emulation
+program is available from the computer center.<P>
+
+The telephone number to dial is 718-997-5042.  (2400 baud).  When you get
+the "Enter Desitination" prompt, type "qcunix1" and you will be able to log
+in as described above.  Except for the low baud rate, your access to your
+account will be the same as if you had chosen "Telnet" from one of the
+PCs on campus.<P>
+
+<H3><A NAME="password">Set Your Password!</A></H3>
+
+Your account can be accessed from any computer in the world that is on
+the Internet, and there are other people who would like to have access
+to it.  Some of those people want to cause mischief, and some might want
+to take your work and claim it is their own.  It's important to keep
+your account private.<P>
+
+The only way to protect your account is to use a password
+that is as secure as possible.  You set your password with the <i>passwd</i>
+command.  First, decide on the password you are going to use.  It has
+to be easy for you to remember and to type, but it has to be hard for
+anybody else to guess.  There are lots of rules about how <i>not</i> to
+choose a password: Don't use people's names or anything based on your
+User ID, don't use birthdays or other things based on dates, days of
+the week, etc.  One popular form of password that is hard to guess
+combines two simple, but unrelated, words with a punctuation mark or
+number between them.  Like everything else in Unix, your password is
+case-sensitive, and mixing upper and lower case letters can help make
+a password more secure.<p>
+
+When you enter the <i>passwd</i> command, it will prompt for your old
+password, and will have you enter the new password twice to make sure
+you got it right.  If there is any problem with the password you chose,
+it will let you know.  Note that the command is "passwd" rather
+than "password" -- Unix has traditionally used terse commands to save
+typing time.<p>
+
+<h3><A NAME="out">Logging out</A></h3>
+
+You log out of your account by exiting the shell program.  There are three
+ways to do this:
+
+<ol>
+<li>Type <i>exit</i>.
+<li>Type <i>quit</i>.
+<li>Type <code>^D</code> (Control-D) at the command prompt.
+<li>Hang up the phone if you are logged in through a modem.
+</ol>
+
+Method (1) always works.  Method (2) is almost equivalent, except that
+it will not work if the shell you are running is not the one that
+started up when you logged in.  Unless you run another shell,
+methods (1) and (2) are pretty much equivalent.  Method (3) is how
+you signal end-of-file in Unix, and if the shell receives that when it tries
+to read a command, it interprets it the same as
+an <i>exit</i> command.  Method (4) is not a good idea, since there is
+a chance that you have programs running that the shell would remind you
+about if you log off using one of the other methods.  However, you don't
+need to worry about someone else accessing your account if you use
+Method (4); you are automatically logged out any time your modem
+connection is broken.<P>
+
+<hr>
+
+<ul>
+<li><A HREF="index.html">Using Unix  - Table of Contents</A>
+<li><A HREF="/courses/cs200/index.html">CS-200 Home Page</A>
+</ul>
+
+<hr>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+<A HREF="/">Home Page</A>
+<hr> </body> </html>

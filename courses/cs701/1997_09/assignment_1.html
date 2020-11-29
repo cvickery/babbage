@@ -1,0 +1,138 @@
+<HTML>
+<HEAD><TITLE>Hexadecimal Dump Program</TITLE></HEAD>
+<BODY BGCOLOR="#FFFFFF">
+Assignment 1, CS-701, Fall 1997
+<H1 ALIGN=center>Hexadecimal Dump Program</H1>
+<DL>
+<DT><B>Due Date:</B><DD>October 14, 1997
+
+<DT><B>Deliverables:</B><DD>
+
+The project directory is to contain an RCS subdirectory, and nothing
+else.  The RCS database for the project is to include entries for the
+files <code>main.cc</code>, <code>hexline.cc</code>,
+<code>Makefile</code>, <code>hexdump.1</code>, and
+<code>hexline.3</code>. These files are described below.  Consult "<a
+href="../using_rcs.html">Using RCS</a>" for information on how to set
+up your project directory and use RCS for project management.<p>
+
+Your <code>~/man</code> directory tree is to contain <i>man</i> pages
+for <i>hexdump(1)</i> and <i>hexline(3)</i>.  See "<a
+href="../man_pages.html">How to Write a Man Page</a>" for information
+on how to prepare your <code>man</code> pages.<p>
+
+You may also leave a <code>README</code> file in the project directory
+if you think that one is needed, but I neither expect nor require you
+to do so.<p>
+
+When the assignment is complete, send me an email message telling me
+the path to the project directory.  
+
+<DT><B>Requirements:</B><DD>
+
+In addition to the information given here, be sure to consult the <A
+HREF="grading_form_1.html">Grading Form for this assignment</A>, which
+includes additional information about the requirements for this
+project.<p>
+
+</DL>
+
+<H2>Project Description</H2>
+
+You are to write a utility program that can be used to print the
+contents of files in hexadecimal.  The name of the command is
+<code>hexdump</code>, and it must be built from three source files,
+which are named <code>main.cc</code>, <code>hexline.cc</code>, and
+<code>hexline.h</code>.  The header file must be <code>#included</code>
+in both the <code>.cc</code> files.<p>
+
+I will provide a <code>Makefile</code>, the <code>hexline.h</code> header
+file, and a library file named <code>libhex.so</code>.  The
+<code>Makefile</code> has been emailed to you, the header file is
+installed in your <code>~/include</code> directory, and the library
+file is installed in your <code>~/lib</code> directory.  Create a
+directory just for this project, and copy the <code>Makefile</code>
+into it before you start work on the project.  Always use the
+<i>make(1)</i> command to compile and link your program.  (There is an
+alias for "make" to save you all that typing: "mk".)<p>
+
+You are to do the project in two steps.  For the first step you are to
+write <code>main.cc</code> and build <code>hexdump</code> by linking
+<code>main.o</code> with <code>libhex.so</code>, which contains a
+single object module with the function definition for
+<i>hexline()</i>.  Once you have the code for this step tested and
+debugged, you are to write your own version of <code>hexline.cc</code>,
+create a new <code>libhex.so</code>, and link your main program to it. 
+The <code>Makefile</code> supplied to you has two lines that will build
+the new <code>libhex.so</code> for you, but you have to remove the
+comment markers ('<code>#</code>' characters) from them.  Read the
+<code>Makefile</code> to find them.<p>
+
+Write <code>man</code> pages for hexline(3) and hexdump(1).  Check all
+<code>.cc</code>, <code>.h</code>, <code>.1</code>, <code>.3</code>,
+and <code>Manpage</code> files into RCS using the <code>ci</code>
+command.  Delete all other files from your project directory, and make
+sure the command "mk" builds the program using both your
+<code>.cc</code> files.  Check out copies of the <code>man</code> pages
+and copy them to the proper directories, clean up the project
+directory, and send me mail with the pathname of the project
+directory.<p>
+
+<H2><code>hexdump</code></H2>
+
+As described in class, <code>hexdump</code> takes two optional command line
+options:
+
+<blockquote>
+  <DL>
+    <DT><B>-s &lt;n&gt;</B><DD>Specifies a starting offset for the dump. 
+    The default value is zero, which means to begin the dump with the
+    first byte of the file.
+    <DT><B>-e &lt;n&gt;</B><DD>Specifies the offset of the last byte of
+    the file to be dumped.  The default value is -1, which means "the last
+    byte of the file."
+  </DL>
+</blockquote>
+
+After the options, the user may enter any number of file names.  Each
+file will be dumped from its starting offset to its ending offset.  If
+no file names are given, the program dumps stdin.<p>
+
+For this assignment, you must do all input and output by using the
+<i>read()</i> and <i>write()</i> system calls.  Exception: you may use
+<i>perror()</i> and/or <i>fprintf()</i> for writing error messages to
+stderr.
+
+<H2><i>hexline()</i></H2>
+
+The <i>hexline()</i> function generates the character representation of
+one line of a file dump.  The first argument is a pointer to an 81-byte
+"output" buffer where the formatted line is returned; the second
+argument is a pointer to a 16-byte "input" buffer containing the data
+to be formatted; the third argument is an integer that will be
+formatted to print in the first 8 bytes of the output buffer; the
+fourth and fifth arguments are starting and ending offsets for limiting
+how much of the input buffer is to be formatted.  If either buffer
+argument is NULL, or if the starting and ending offsets are not between
+0 and 15, or the ending offset is less than the starting offset,
+<i>hexline()</i> returns a value of -1 without changing the contents of
+the output buffer.  Otherwise, it formats the output buffer and returns
+a value of zero.<p>
+
+There is a working version of <code>hexdump</code> in
+<code>~vickery/bin</code>, which you may use to see what the program is
+supposed to do.<p>
+
+<HR>
+<UL>
+<LI> <A HREF="../gf.html">Standard Grading Form</A>.
+<LI> <A HREF="grading_form_1.html">Grading Form for this Assignment</A>.
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+
+<HR>
+
+</BODY>
+</HTML>

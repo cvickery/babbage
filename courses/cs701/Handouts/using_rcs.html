@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Using RCS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>Using RCS</h1>
+</center>
+
+<h2>Introduction</h2>
+
+<p>RCS is the "Revision Control System," a project management tool
+which is available for free from <a
+href="http://www.gnu.ai.mit.edu/fsf/fsf.html">The Free Software
+Foundation</a>.  There are several such tools available commercially,
+but we use this one because (1) it is good, (2) it's basic features are
+very similar to the commercial products available, (3) it is easy to
+use, and (4) it is free.</p>
+
+<p>There are two main features of RCS that we will use.  One is its
+provision for maintaining a complete history of each document (source
+code or documentation page) in your projects.  At any time you can
+recover earlier versions of files almost as easily as you can work with
+the current version.  The second feature is the facility that RCS
+provides for documenting changes you make to your files as you develop
+a project.  There are many more features that RCS can provide, but we
+will not take advantage of them in this course.  If you want to learn
+more, consult the <i>man</i> page for <i>rcs</i>.</p>
+
+<H2>Setting Up a Project Directory</H2>
+
+<p>Whenever you start a new programming project, create a new directory
+to work in as you edit, compile, document,and debug the project. 
+Create another directory under this directory named <code>RCS</code>
+(this is a case-sensitive directory name).  Each new source file,
+whether it is a <code>.cc</code> or a header file, starts like
+this:</p>
+
+<pre>
+      //  $Id$
+
+      /*  SUMMARY
+       *
+       *
+       *  REVISION HISTORY
+       *    $Log$
+       */
+</pre>
+
+<p>The complete form of this <i>file header</i> is described in the <a
+href="coding_guidelines.html">Coding Guidelines</a> for this course.
+Our attention here is on the <code>$Id$</code> and <code>$Log$</code>
+lines, which must be written with exactly the capitalization and
+punctuatuation shown here in order to work properly with RCS.  These
+are examples of RCS <i>keywords</i> (sometimes called RCS
+<i>macros</i>) which will be modified by RCS as you work on your
+project.  There is a <a href=
+"http://babbage.cs.qc.edu/courses/cs701/Handouts/rcs_keywords.html">list
+of all RCS keywords</a> you should look at, although you need to use
+only the two mentioned above for this course.  Note that these keywords
+must appear in comment lines.  If they were placed anywhere else the
+compiler would recognize that they are not valid C or C++ code, and
+would produce syntax errors.</p>
+
+<p>The other files that you will create for the projects in this course
+are the <code>Makefile</code> that goes in each project directory, and
+the <I>man</I> pages that you use to document your projects.  Comment
+lines in Makefiles start with a hash symbol in column 1:</p>
+
+<pre>
+      #   $Id$
+      
+      #   comments ...
+      #
+      #   $Log$
+      #
+</pre>
+Comments in <I>man</I> pages start with dot-backslash-quote:
+<pre>
+      .\"   $Id$
+      .\"
+      .\"   comments ...
+      .\"
+      .\"   $Log$
+      .\"
+      .TH ...
+</pre>
+
+<p>Once you are comfortable working with these two RCS keywords, you
+might want to put some of the other keywords inside character strings
+so your program can use them as data for one reason or another (such as
+including the program's version number in the "About" message of a Help
+window).  However, that topic goes beyond the scope of this document. 
+We will look at <code>$Id$</code> and <code>$Log$</code> again after
+going over some basic RCS concepts.</p>
+
+<h2>RCS Revisions</h2>
+
+<p>You write the first version of your program just as you would if you
+weren't using RCS.  Use a text editor to create source files, compile
+them, test the code, and iterate through this process until you have a
+working program.  If the program is simple, the development process
+might be complete at this stage.  For other programs, the first working
+program might be just the first step of a multi-step assignment.  In
+either case, you are now ready to put the source files under RCS
+management.  The command to do this is <i>ci <list of files></i>.  The
+command name <i>ci</i> stands for "check in."  When you execute it, two
+things will happen:</p>
+
+<p>First, you will be prompted for a description for each file.  Type a
+meaningful description of each file, including a statement about how
+the file fits into the overall structure of the project.  It would look
+like the Summary part of the file header, and may extend over several
+lines.  You terminate this description by typing a period at the
+beginning of a line.  If you make a typing mistake, there is a way to
+<a href="#change description">change the description</a> for a file
+later on.</p>
+
+<p>Second, the file will be moved into the RCS "database" for the
+project.  What this really means is that the file, along with some
+additional information (such as your file description) will be moved
+into the RCS subdirectory and given a new name, which will consist of
+the original file name with ",v" at the end.  You can list the contents
+of the RCS subdirectory to verify this.  Do a long listing, and you
+will also notice that the database file (also called the "history
+file") is made read-only.  From now on you can make changes to the file
+only by telling RCS that you want to do so.  You could change
+permissions on the history file and change its contents manually, but
+don't.  Really don't.</p>
+
+<p>At this point you have entered version 1.1 of each of your source
+files into the RCS database.  You can use the <i>ci</i> command any
+time to add more files to the database.  If, for some reason, you want
+the initial revision number to be something other than 1.1, you can
+specify it on the <i>ci</i> command line.  For example <i>ci -r3
+xyz.cc</i> would enter file xyz.cc with an inital version number of
+3.1.</p>
+
+<p>Once you have put a particular file into the project's RCS database,
+there are just two things you might want to do with that file:  (1) You
+might want to get a copy of the file so you can use it to build your
+original program again, or (2) you might want to get a copy so you can
+make changes to it.  In the first case, the copy you want should be a
+read-only copy because you aren't going to make any changes to the
+file.  You would also use this option if you want to get a copy of the
+file to print out or to back up. The command to get a read-only copy of
+a file is <i>co</i>, which stands for "check out."  If there is more
+than one version of a file that you check out, you will be given a copy
+of the most recent version.  If you want a copy of an earlier version,
+use the "-r" command line option:</p>
+
+<pre>
+       co xyx.cc            Get a copy of the most recent revision.
+       co -r3.22 xyz.cc     Get a copy of version 3.22.
+       co -r3 xyz.cc        Get a copy of the most recent version that
+                            is greater than 3.0 and less than 4.0.
+</pre>
+
+<p>For the second case, where you want to edit the file, you must
+"lock" it using the "-l" option on the <i>co</i> command:</p>
+
+<pre>
+       co -l xyz.cc         Get a writeable copy of the file.
+</pre>
+
+<p>When there is a development team with more than one person working on
+the same code base for a project (not in this course!), it could be
+disasterous if two different users changed a file at the same time;
+there would have to be some way to merge the changes both users made
+into the file when they finished.  RCS disallows this by refusing to
+let the same file be locked more than once at a time.  When you lock a
+file, you will have write access to the file, and can edit it as you
+wish.  If someone (even you) tried to lock the file again, the co
+command would generate an error message.  (Another package based on RCS
+called CVS overcomes this limitation by merging different users'
+changes into a particular revision of the file -- if it can do so
+safely.)</p>
+
+<p>When a new version of your program is working, you use the <i>ci</i>
+command to put the edited files back into the RCS database again.  At
+this point, you will be prompted for another message, the "log message"
+for this version.  At this point, write a short summary of just what it
+is that makes this version of the file different from the previous
+version.  If you fixed a bug, tell what the bug was.  If you added a
+new feature, tell what the feature does.  If you changed comments, tell
+what kind of changes you made.  The log message does not have to be
+long, but it must be concrete and meaningful, not vague.</p>
+
+<p>When you check a file in after editing it, RCS will add one to the
+rightmost part of the version number.  For example, the next version
+number after 1.9 is 1.10, and the next number after that is 1.11.  If
+you want to use a different version number you can use the "-r" command
+line option as shown above.  You can't check in a file with a version
+number that is less than the latest version.  For example, if you check
+out version 1.3 and check the changed file in as 2.1, you can't go back
+and create version 1.4.  You can create a "branch" from version 1.3
+with numbers like 1.3.1.1, 1.3.1.2, etc. but managing branches is very
+cumbersome and should be avoided if at all possible in this course.</p>
+
+<p>Sometimes you will need to check a file in with a new version number
+even though you haven't made any changes to it.  Normally, RCS will
+recognize that there are no differences between what you checked out
+and what you are checking in, and will discard the new version:</p>
+
+<pre>
+      % co -l a_file
+      RCS/a_file,v  -->  a_file
+      revision 1.1 (locked)
+      done
+      % ci -r2 a_file
+      RCS/a_file,v  <--  a_file
+      file is unchanged; reverting to previous revision 1.1
+      done
+      % 
+</pre>
+
+<p>But you can force the new version to be accepted by using the "-f"
+command line option:</p>
+
+<pre>
+      % co -l a_file
+      RCS/a_file,v  -->  a_file
+      revision 1.1 (locked)
+      done
+      % ci -r2 -f a_file
+      RCS/a_file,v  <--  a_file
+      new revision: 2.1; previous revision: 1.1
+      enter log message, terminated with single '.' or end of file:
+      >> No chages.  Just increased the version number.
+      >> .
+      done
+      %
+</pre>
+
+<H2>Keywords Again</H2>
+
+<p>Once a file is under RCS management, you will see that checking it
+out (with or without the lock option) gives you a file in which the
+keywords have been expanded.  The <code>$Id$</code> keyword will tell
+you the name of the file, its version number, who last modified it, and
+when. We put this keyword on the first line of the file so this basic
+summary information is always the first thing anyone sees when they
+first look at the file.  The <code>$Log$</code> keyword will be
+expanded to give the complete modification history of the file, that
+is, comment lines from all the log messages you entered when checking
+in revised copies of the file along with the revision dates and
+numbers.  Be sure these log messages provide useful information for
+programmers who might need to work on a file after you.</p>
+
+<H2>Fixing Things Up</H2>
+
+<p>The <i>rcs</i> command lets you do all sorts of things with the
+files in your RCS database, including changing the description and log
+messages you originally entered.  To change a log message for version
+3.2, for example, you could do something like this:</p>
+
+<pre>
+      rcs -m3.2:"This is a newly-revised log message \
+      for version 3.2 of this file" xyz.cc
+</pre>
+
+<p><a name="change description"> To change the initial description
+message, use the "-t" command line option, and <i>rcs</i> will prompt
+you to type that message in again.</a></p>
+
+<p>You can remove a version (or range of versions) from a file's
+history using the "-o" command line option:</p>
+
+<pre>
+        rcs -o  xyz.cc            Delete the most recent version.
+        rcs -o2.34 xyz.cc         Delete just version 2.34.
+        rcs -o2:3.12 xyz.cc       Delete all versions from 2.1 through
+                                  3.12.
+</pre>
+
+<p>When you are fixing things up, you might want to look at the
+complete list of log messages as well as the initial description for
+the file.  If so, use the <i>rlog</i> command, which will also tell you
+other information about the file as well, such as whether it is
+currently locked or not.</p>
+
+
+<H2><A name="rcs_make">RCS and <i>make</i></A></H2>
+
+<p><I>Make</I> has an implicit rule that tells it how to use <I>co</I>
+to get files from an RCS directory.  For example, if there is no
+<code>Makefile</code> in the current directory and you invoke
+<I>make</I> with no target names on the command line, <I>make</I> will
+automatically try to get a <code>Makefile</code> using the <I>co</I>
+command.  Also, if <I>make</I> needs a <code>.c</code> or
+<code>.cc</code> file to build a <code>.o</code> or executable file, it
+will automatically try to get it using <I>co</I>.</p>
+
+<p>If you want <I>make</I> to check out a particular version of a file,
+you can set the <I>make</I> variable COFLAGS to the proper "-r" option
+that you want.  For example, if you have implemented a project that has
+files with version numbers in the form 1.x for the first use case, 2.x
+for the second use case, etc., you can reconstruct the second use case
+by making sure the project directory is clean (no Makefile, no source
+files, no man pages, no object files, and no executable files), and
+then issuing the command:</p>
+
+<pre>
+      make COFLAGS=-r2
+</pre>
+
+<p>First <I>make</I> will check out the last Makefile with a version
+number between 2.0 and 3.0, and then will do the same for all other
+files that it needs to check out using implicit rules.  If you have any
+rules in the Makefile that include explicit <I>co</I> commands, be sure
+to reference the <code>COFLAGS</code> variable on the command line, as
+in this example:</p>
+
+<pre>
+      myheaders :
+      &lt;tab&gt; co $(COFLAGS) a_header.h b_header.h
+</pre>
+
+<p>One final issue on this topic is that <I>co</I> will fail if it is
+told to check out a file with a particular version number, but if that
+revision doesn't exist.  For example, if you have only revisions 1.1
+and 3.1 of <I>a_header.h</I>, the example above will cause <I>co</I> to
+fail, and <I>make</I> will exit then too.  (This behavior of
+<I>make</I> can be overridden, but that's not the point here.)  The
+solution is to have used the "-f" option to <I>ci</I> as shown earlier
+to create revision 2.1, even though it is has no changes from revision
+1.1.</p>
+
+<H2>Using <I>ident</I></H2>
+
+<p>The <I>ident</I> command searches object or executable files for RCS
+keywords and prints them out.  It can be used to determine which
+version of your source files were used to build a particular instance
+of an executable.  To use this feature, put lines like this outside of
+any function or class definitions of all your <code>.cc</code>
+files:</p>
+
+<pre>
+      static char *rcs_version =
+        "$Id$";
+</pre>
+
+<p>The keyword is on a separate line because it will be expanded to a
+long string that won't fit on the first line once you check the file in
+and back out again.  Once you have built a program, just give its name
+as an argument to <I>ident</I> and you will be able to see the names
+and versions of all the .cc files that were used to build the
+executable.</p>
+
+<H2>RCS Documentation</H2>
+
+<p>The standard documentation for RCS is the online <i>man</i> page,
+however you might want to look at this book for more complete coverage
+of RCS and a similar package that comes with Solaris, called SCCS:</p>
+
+<pre>
+     Bolinger, D. &amp; Bronson, T.  <i>Applying RCS and SCCS</i>.
+     O'Reilly &amp; Associates, 1995.  ISBN 1-56592-117-8.
+</pre>
+
+<p>While you are at it, the same publisher has a book on
+<i>make</i>:</p>
+
+<pre>
+     Oram, A. &amp; Talbott, S.  <i>Managing Projects with make</i>.
+     O'Reilly &amp; Associates, 1991.  ISBN 0-937175-90-0.
+</pre>
+
+<p>You can contact this publisher at <a
+href="http://www.ora.com">http://www.ora.com</a>.</p>
+
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+<br><a href="http://babbage.cs.qc.edu">Home Page</a>
+<HR>
+
+</BODY></HTML>

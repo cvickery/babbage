@@ -1,0 +1,591 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Coding Guidelines for CS-701</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>Coding Guidelines for CS-701</h1>
+<h2>Spring 2003</h2>
+</center>
+
+
+<h2>Introduction</h2>
+
+This document gives the rules you are to follow for all the programs
+you write for CS-701. The goal is for you to write code that is
+correct, robust, efficient, and easy to understand. Most of the
+detailed specifications given given in this document apply to the
+"easy to understand" criterion because code that is easy to understand
+is also most likely to be correct, robust, and efficient too!
+
+<h2>Programming Language</h2>
+
+<p>All code for this course is to be written in C++ and compiled using
+the GNU <i>g++</i> compiler.
+
+<p><center><table border=1 cellpadding=5 width="80%">
+  <tr>
+
+    <th align=left>All code must compile and link with no warnings and
+    no errors when compiled with <i>g++</i> using the
+    <p><center>
+      <code>-g&nbsp;&nbsp;-Wwrite-strings&nbsp;&nbsp;-Wall</code>
+    </center><br>command line options.
+
+</table></center>
+
+<p>There is a [&nbsp;<a
+href="http://babbage.cs.qc.edu/courses/cs701/Writeable_Strings.html">separate
+web page on writeable strings</a>&nbsp;] that explains the
+significance of the <code>-Wwrite-stings</code> option.
+
+<p>Because you are programming in C++ you must supply a function
+prototype for every function you define except <i>main()</i>. (The C
+language does not require prototypes, but C++ does.)
+
+<p>Your function prototype must be in a header file if and only if the
+function is defined in one source module and referenced from another
+module.  If the function is referenced only from within the same module
+in which it is defined and if the definition precedes all references
+to the function, the definition itself may be used as the prototype.
+
+<p>You may use most, but not all, of the features of the C++ lanugage
+in your code. Parts of the language not to use include:
+<ul>
+
+  <li>Do not use I/O Streams, including cin and cout.  Use the standard
+  C I/O library instead (<i>printf()</i>, <i>fgets()</i>, etc.) or,
+  when an assignment makes it explicit that you should do so, use Unix
+  system calls (<i>write()</i>, <i>read()</i>, etc.).  This means you
+  will use the header files <code>stdio.h</code>,
+  <code>stdlib.h</code>, and <code>unistd.h</code> rather than
+  <code>iostream</code>.
+
+  <li>Do not use <i>new</i> and <i>delete</i> for dynamic memory
+  management.  Use <i>malloc()</i>, <i>realloc()</i>, and <i>free()</i>
+  instead.
+
+  <li>In general, do not define classes and do not use the C++ standard
+  template library. The vast majority of the code written for this
+  course is <i>not</i> object-oriented by nature.  However, there will
+  be some simple data structures used in the assignments (lists and
+  tables) where it would be entirely appropriate to encapsulate the
+  structure and its programming interface into a class, and you are
+  encouraged to do so.  If you do define any classes, of course, you
+  will have to use <i>new</i> and <i>delete</i> to manage the memory
+  for the objects, despite the previous item in this list.  Just be
+  careful not to try to <i>free()</i> memory that was allocated with
+  <i>new</i> nor to <i>delete</i> memory that was allocated with
+  <i>malloc()</i>.
+
+</ul>
+
+
+<h2>Project Management</h2>
+
+An important goal of this course is for you to learn how to use the
+Revision Control System (RCS) and the <i>make</i> utility to manage
+programming projects.  There are separate web pages on <a
+href="./using_rcs.html">Using RCS</a> and <a
+href="./using_make.html">Using <i>make</i></a> that will be assigned
+at the appropriate time in the course.  Meantime, the follow material
+is to help you get your projects set up correctly in general.<p>
+
+Set up a separate project directory for each assignment, and put only
+the files that actually are part of that assignment in the project
+directory.  For assignments that are continuations of previous
+assignments, reuse the same project directory.
+
+<p>Create a subdirectory named RCS (must be all capital letters) in the
+project directory.  You will practice using <i>rcs</i> to keep track of
+program versions in this course.
+
+<p>Once you have learned how to use <i>rcs</i> and <i>make</i> (or
+<i>gmake</i> as the case may be), you will be required to make the
+project directory "clean" so it contains nothing but the RCS
+subdirectory and possibly a text file named README (spelled and
+capitalized just like that) before submitting an assignment.
+
+<p>To submit an assignment, make the project directory "clean," change
+to the directory <i>above</i> the project directory, and create a tar
+file of the project directory using a command like the following:
+
+<pre>
+    tar cvf Assignment_1.tar Assignment_1
+</pre>
+
+This example assumes the project directory name is Assignment_1.  After
+you create the tar file, submit it to me as an attachment to an email
+message.  <i>Warning!</i> Tar files are "binary" (not text) files, and
+will be corrupted if you are not careful when you copy them from one
+computer to another.  If you use <i>ftp</i> to transfer a tar file, for
+example, you have to be sure to use "binary mode" for the file
+transfer. To be sure your tar file is in good shape, you should email a
+copy to yourself using exactly the same technique you will use to send
+it to me. Then create a temporary directory <u>separate from your
+project directory</u>, save the tar file there, and be sure you can
+extract the contents of the received copy successfully using a command
+like the following:
+
+<pre>
+    tar xvf Assignment_1.tar
+</pre>
+
+
+<h2>Text Editing</h2>
+
+You must use a Unix programmer's editor to prepare all source files
+for this course.  Two free editors that will satisfy this requirement
+are vim ("Vi Improved") and emacs. Both of these editors normally come
+preinstalled on all Unix systems.  There are other editors available
+for various Unix systems, but these two are industry standards, and
+you should pick one of them unless you are already very familiar with
+a different one.  Of the two, vim is easier to use and perhaps more
+universally available, so that is the assumed editor of choice for the
+course.  Examples of editors that are <i>not</i> programmer's editors
+are pico and various editors packagedi with various Linux desktop
+environments, such as KDE or Gnome.  And, of course, Notepad, which is
+a Windows program anyway.<p>
+
+What makes an editor a "programmer's editor?"  Any programmer's editor
+will include at least the following features to help you produce easy
+to read and well-formatted source code:
+
+<ul>
+
+  <li><b>Syntax Highlighting.</b>  A programmer's editor recognizes
+  the syntax rules for the programming language you are working with,
+  and colors various elements of the code, such as comments, keywords,
+  variable names, etc. to indicate what is what.  Editors like vim
+  come with built-in support for dozens of programming languages, and
+  can be customized to support others as well.<p>
+
+  <li><b>Automatic Indentation.</b>  A programmer's editor recognizes
+  language elements like curly braces and automatically indents your
+  code to reflect the program's syntactic structure as you type it.
+  When you change the structure of the code, a programmer's editor
+  gives you commands to shift blocks of code left or right to fix up
+  indentation changes.<p>
+
+  <li><b>Pair Matching.</b>  If you put the cursor on any sort of "pair
+  character" such as curly, round, or square braces (&nbsp;{}, (), or
+  []&nbsp;), the cursor should automatically jump to the matching
+  brace or bracket to help you see that you have your code matched up
+  properly.  With vim, this cursor jumping can happen eiter
+  automatically as you type and/or when you type a % character when
+  the cursor is positioned on a brace.<p>
+  Note that pair matching eliminates the need for comments that
+  indicate the structure of the code, like "} // end while".  These
+  comments are useful when you use a plain text editor, but are poor
+  programming style in general because it is too easy for the comments
+  and the braces to get out of synch with each other over the lifetime
+  of a large project.<p>
+
+  <li><b>Tab Expansion.</b>  A sad fact of life is that all tabs are not
+  created equal.  You might set tab stops every 4 columns in your
+  code, but the next programmer might prefer tab stops every 2
+  columns.  Or a file may get printed, where tab stops are set for
+  every 8 columns, or perhaps totally ignored.  The bottom line is
+  that you cannot control the format of code that has tab characters
+  in it, and the only solution is to eliminate them completely!  (I've
+  seen books that claim you should always used tabs and to set stops
+  every 8 characters.  You can do whatever you like after this course
+  is over, but for now the rule is NO TABS!)<p>
+
+  Tab stops should be set for either every two or four characters,
+  neither more or less.  Less makes identation too difficult to see,
+  and more leads to code that gets so deeply indented that it
+  disappears off the right end of the screen.<p>
+
+  Set your programmer's editor so that it uses two or four character
+  tab stops for its automatic indenting feature, and set it up so that
+  it always expands tab characters to the correct number of spaces in
+  your code to simulate the behavior of tab characters.  Note that the
+  editors that come with Integrated Development Environments (IDEs)
+  often provide all the programmer's editor features listed here
+  except for control over tab stops.<p>
+
+  <center><table border=1 cellpadding=5 width="80%">
+  <tr>
+    <th>No text file you submit in this course is to contain any tab
+    characters.
+  </table></center><p>
+
+  <li><b>Recognize Different File Formats.</b>  Unix, Windows, and
+  Macintosh all follow different rules for how lines are terminated in
+  text files.  Unix files use the ASCII linefeed character (0x0A) at
+  the end of each line, Machintosh uses ASCII character returns
+  (0x0D) at the end of each line, and Windows uses both carriage
+  return and linefeed at the end of each line.  Generally, the
+  difference isn't significant to compilers, and good programmer's
+  editors recognize what kind of file they are editing and adjust
+  their behavior accordingly.  But you can get strange behavior if you
+  edit the same file on two different platforms with different
+  editors.  If you do want to do editing on different platforms, the
+  best route is to use vim, which is available for both Unix and
+  Windows, and does a good job of keeping files compatibile with each
+  other if you move them across platforms.<p>
+
+</ul>
+
+
+<h3>Setting Up Your Editor</h3>
+
+There is a <a
+href="http://babbage.cs.qc.edu/courses/cs701/Handouts/using_vim.html">web
+page here</a> to help you install and set up the current version of vim
+on your computer.  The current version of vim should work well as soon
+as you install it.  But that web page includes a sample iniitialzation
+file (.vimrc) that you should copy to your home directory to be sure
+all features, such as tab expansion, are set up properly.
+
+
+<h2>Coding Style</h2>
+
+The remainder of this document tells you how to structure your C++
+code so that it meets the course requirements for <i>Correctness,
+Robustness,</i> and <i> Efficiency</i>.<p>
+
+A <i>correct program</i> is one that does what it is supposed to do
+when all inputs take on values anywhere within their expected range.
+Be sure to test your programs for correctness before submitting them.
+Pay special attention to situations on the edge of the expected range
+of values.  For example, if your program has to read lines of text from
+a file, it should not have a problem dealing with empty lines.
+
+<p>A <i>robust program</i> is one that behaves in a "reasonable manner"
+when it encounters input values that are not within their expected
+range or if expected parameters are missing. The reasonable thing to
+do, depending on the severity of the error and the nature of the
+program, is to issue an error message and continue processing
+(recovery) or to issue an error message and terminate (abort).  Be sure
+to test your program's behavior in response to "bad input" before
+submitting it too.  Instead of "garbage in, garbage out" your code
+should operate on the "garbage in, explanation out" principle.
+Explanations should be meaningful, but terse.
+
+<p>An <i>efficient program</i> is one that performs only those
+computations necessary to accomplish the work at hand. Aside from the
+obvious advantage of executing quickly, efficient code is typically
+much easier for someone else to read and understand than code which
+performs extraneous operations, which the reader has to understand in
+order to know that they can safely be ignored!
+
+<h2>Source File Structure</h2>
+
+As mentioned in the Introduction, making code easy to read is one
+important way to achieve the goals of robustness, clarity, and
+efficiency.  To make your code easy to read, all source modules
+(<code>.cc</code> files and <code>.h</code> files) must contain the
+following sections in the order listed here:
+
+<h3>File Introduction</h3>
+
+The file must begin with a block of comments that introduce the file,
+called the <b>File Introduction</b>. The first line of the file
+introduction must contain the RCS keyword, <code>$Id$</code>, which
+will be expanded by RCS to give the file's name, date of modification,
+and some other information. Be sure to punctuate and capitalize the
+keyword exactly as shown, or RCS won't recognize it. Using the RCS
+utility for project management will be covered in class.
+
+<p>The File Introduction then continues with comments that give a
+<u>Summary</u> of the file's contents.
+
+<p>If there is more than one function definition in the file, follow
+the file summary with a <u>Functions</u> section, which is a list of
+the names of all the functions defined in the file, along with a brief
+phrase identifying each. Each item in this list should normally fit on
+a single line. The list must be in the same order as the sequence of
+function definitions in the file.  Do not list functions referenced
+from within the file, only functions defined in the file.
+
+<p>The <u>Revision History</u> for the file is the section of the file
+introduction in which you list the changes made to the file and the
+dates the changes were made.  The good news is that you can generate
+the contents of this section completely automatically by putting the
+RCS keyword <code>$Log$</code> inside your comments.
+
+<p>Include the Author's Name in the <u>Author</u> section of the File
+Introduction. When more than one programmer works on a file, the
+authors' names go in the revision history. For this course, only one
+person works on a file, so the author's name goes in its own section.
+If I give you some code to use as basis for part of a project, put
+your name underneath mine with a comment to the  effect that you
+modified the code. (Don't put in my name unless I provided a significant
+part of the code.  Sample code given in class, for example, is not
+"significant.")
+
+<p>Each of the File Introduction sections ("Summary," "Function Names,"
+"Revision History," and "Author") should be preceded its own
+sub-heading name, but you may omit these names if you think it makes
+your code easier to read.
+
+<p>Here is a template you can use for your File Introductions:
+
+<p><pre>
+     //  $Id$
+     /*
+      *  Summary
+      *
+      *    [A sentence or two giving the role of this module in the
+      *    overall structure of the project.]
+      *
+      *  Function Names
+      *
+      *    [A list of the names of all functions defined in this
+      *    module in the order in which they are defined.  Follow each
+      *    name with a phrase summarizing what the function does.]
+      *
+      *  Revision History
+      *
+      *    $Log$
+      *
+      *  Author:  [Your Name]
+      *
+      */
+</pre>
+
+<p>Notice that the first line uses the // type of comment, but that
+the other lines use the /*&nbsp;...&nbsp;*/ style.  It's important to
+use the /*&nbsp;...&nbsp;*/ for the part of the comment block that
+includes the RCS $Log$ keyword because RCS will expand $Log$ into a
+list of comments designed to fit inside
+/*&nbsp;...&nbsp;*/ comment blocks, not in // comment lines.</p>
+
+
+<p>All <code>Makefile</code>s and <i>man</i> page files must also have
+a file header with comments giving the $Id$, Summary, Revision
+History, and Author sections.</p>
+
+<h3>Include Files, Manifest Constants, and Macro Definitions</h3>
+
+All <code>#include</code> and <code>#define</code> statements follow
+the File Introduction section. Put <code>#define</code> statements that
+are used in multiple source modules into a header file. Although ANSI
+C does not require it, putting a header file name in angle brackets
+(<code>&lt;</code> and <code>&gt;</code>) conventionally means the
+header file is one that is supplied with the compiler or part of a
+standard programming package that is installed on the development
+system. Putting the name of the header file in quotes (<code>"</code>)
+conventionally means that the header file is specific to the current
+project and is located in the project directory.
+
+<h3>Function Definitions</h3>
+
+Every function definition (including <i>main()</i>&nbsp;!!!) begins
+with a <b>Function Introduction</b>, followed by the function
+definition itself.
+
+<h4>Function Introduction</h4>
+
+A function introduction is a block of comments that contains the
+following information in the order listed here: <p>
+
+<blockquote>
+<dl>
+
+  <dt><i>Name</i> <dd>The name of the function.
+
+  <dt><i>Summary</i> <dd>A statement of the purpose of the function.
+  Use one or more complete sentences. Write in the present tense.
+
+  <dt><i>Arguments</i> <dd>List the arguments to be passed to the
+  function using the names used in the function definition. Give a
+  phrase telling what each is used for and any assumptions made about
+  the valid range of values the argument may meaningfully take. If any
+  arguments are pointers to values that are modified by the function,
+  say so.
+
+  <dt><i>Return Value</i> <dd>Tell what values are returned by
+  the function. If no value is returned, say so.
+
+  <dt><i>Global Variables</i> <dd>List any global variables that are
+  referenced or modified by the function.
+
+  <dt><i>Algorithm</i> <dd>List the steps the function executes. Use
+  imperative sentences.
+
+  </dd>
+</dl>
+</blockquote>
+
+<p>Here is a template you could use for Function Introductions.  As
+with the File Introduction, the heading names are recommended, but not
+required.
+
+<pre>
+  /*  functionName()
+   *  ------------------------------------------------------------
+   *
+   *  Summary
+   *
+   *  Arguments
+   *
+   *  Return Value
+   *
+   *  Global Variables Referenced
+   *
+   *  Global Variables Modified
+   *
+   *  Algorithm
+   *
+   *    1.
+   *
+   */
+</pre>
+
+Note the comment line with dashes under the function name.  The idea
+is to make it clear where each function definition begins.  The next
+programmer to read your code (the one who has to add a new feature or
+fix a bug) will be eternally grateful for this textual landmark.
+Likewise, notice that all comments need to have two spaces between
+the comment leader (the //, /*, or the * at the beginning of the line)
+and the textual part of the comment.  This whitespace is an important
+part of making your code easy to read.<p>
+
+Omit the Global Variables sections if your program doesn't use global
+variables.<p>
+
+The Algorithm section does not need to be at all elaborate.  The idea
+here is to provide the reader with a guide to the code that makes up
+the function definition.  The code itself will give the details of the
+algorithm; the comments here, which should parallel the lines of
+comments in the function body, should give the reader an overview of
+the algorithm being implemented.<p>
+
+<h4>Writing Function Definitions</h4>
+
+Use meaningful variable names. (However, "anonymous" variable names
+like <code>i</code>, <code>j</code>, and <code>k</code> are OK for
+integers used to index arrays.) In general, you do not need to comment
+your variable declarations.  Use a consistent style of capitalization
+and underscores for variable names.  Manifest constants (set up using
+<code>#define</code>) are normally all capitals.  Variable and function
+names should be mixed upper/lower case, with underscores or internal
+capitals to separate words inside a name.  (num_commands or
+numCommands, for example.)  Data types that you define using
+<code>struct</code>, <code>enum</code>, or <code>typedef</code>
+conventionally have names that end in "_t." (<code>struct node_t { ...
+};</code> for example)<p>
+
+Use a consistent indentation style that shows the lexical structure
+of your code. Blank lines and other whitespace generally improve your
+code's legibility.  Choose an indent increment of either 2, or 4
+spaces. Anything larger will result in lines of code that get pushed
+over to the right margin and are hard to read.<p>
+
+<center><table border=1 cellpadding=5 width="80%">
+  <tr>
+    <th>No code or comment line may be more than 72 characters long.
+</table></center><p>
+
+Remember the following feature of the language when breaking up
+long pieces of code so they will meet this requirement:
+
+<pre>
+    printf( "This is a very long line of text that I want to print\n" );
+</pre>
+can be rewritten as:
+<pre>
+    printf( "This is a very long "
+            "line of text that I "
+            "want to print\n" );
+</pre>
+
+
+The only comments you have to write in your function definitions are
+ones that correspond to the steps you listed in the Algorithm
+section of the Function Introduction. These comments go on lines by
+themselves just <i>before</i> the code that implements each step of
+the algorithm. Of course, you should add other comments if a piece of
+code is difficult to understand, but try to write clear code so the
+need for these extra comments is minimized.<p>
+
+There are only two acceptable arguments to the <i>exit()</i>
+function: <code>EXIT_SUCCESS</code> and <code>EXIT_FAILURE</code>.
+These two constants are defined in <code>stdlib.h</code>, along with
+the function prototype for <i>exit()</i>. These two constants normally
+have the values of 0 and 1 respectively, and it is all right to use
+these values explicitly rather than the constant names. But using any
+other values makes your code "unconventional" and thus more difficult
+for other programmers to understand easily.<p>
+
+Avoid flag variables wherever possible.  If you must have one, give
+it a meaningful name, and use type <i>bool</i> rather than <i>int</i>
+for it.  Use <u>true</u> and <u>false</u> as boolean literals; they are
+part of the language, but other forms, such as <u>TRUE</u> and
+<u>FALSE</u> are not defined on all systems.<p>
+
+<h2>Notes About This Style</h2>
+
+<ul>
+
+  <li>This coding style discourages the use of many small functions to
+  implement a program, which is intentional. First of all, small
+  functions generally are utilities. In general, the standard C
+  library provides all the utility functions you need. Be sure you are
+  familiar with all the utilities available to you, especially the
+  string manipulation functions, before you decide you need your own
+  new one. Writing code that re-implements a standard function is very
+  distracting to the people who look at your code after you are
+  finished with it, and should be avoided. If you do need to write a
+  utility function, this coding style encourages you to think about it
+  carefully. It is often the case that the same amount of code can
+  provide general utility instead of satisfying just a single need,
+  which increases the probability that the function can be used in
+  other applications. For this reason, utility functions should be in
+  separate source modules so they can be incorporated into other
+  applications easily.
+
+  <li>Believe it or not (and I know you don't), it really makes more
+  sense to write the comments before you write the code than the other
+  way around.  Listing the steps of the algorithm performed by a
+  function and then creating the sectional comments for each step
+  means that writing the code is just a matter of filling in the
+  blanks. It is much more effective use of your time to think and then
+  write code than its is to "debug a program into existence." On top
+  of that, the world is full of programmers who lament, "the program
+  stopped working when I added the comments!" Editing a file opens up
+  the possibility of inadvertent changes, changes that always seem
+  particularly difficult to debug.
+
+  <li>It could be argued that this style discourages program modularity
+  by increasing the overhead on the programmer for each new function
+  defined.  Actually, good modularity demands that the interfaces to
+  each module should be carefully designed and that each module should
+  be a self-contained entity as much as possible. The style presented
+  here encourages this type of modularity.
+
+</ul>
+
+<hr>
+
+<ul>
+  <li><a href="http://babbage.cs.qc.edu/courses/cs701/index.html">CS-701 Home
+  Page</a>
+  <li><a href="/">Dr. Vickery's Home Page</a>
+</ul>
+
+<hr>
+
+<address>Christopher Vickery<br>Queens College of CUNY</address></body></html>

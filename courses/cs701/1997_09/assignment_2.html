@@ -1,0 +1,89 @@
+<HTML><HEAD><TITLE>Object Broker Project</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+Assignment 2, CS-701, Fall 1997
+<H1 align=center>Object Broker Project</H1>
+
+<B>Due Date:</B> This assignment is due by midnight December 23, 1997. 
+There will be no "late points" or extensions for this project.  If you
+don't finish the entire project, hand in whatever you have finished by
+the deadline.<p>
+
+<B>Deliverables:</B> Create a project directory for this project, and
+email me its path when you are ready to submit the assignment.  The
+project directory is to contain nothing except a subdirectory named RCS
+and, possibly, a file named README.  A README file is neither required
+nor expected for this assignment, but I will read it if you leave one in
+the project directory.  Use a README file rather than email to tell me
+any way(s) in which your project deviates from the assignment that I
+should know about.<p>
+
+One requirement for this assignment is to develop a sequence of <I>use
+cases</I> from a common code base.  Each use case will have its own
+revsion number as listed in the description of the project below.  The
+first use case will be known as "Step 1," the next one will be "Step
+2," etc.  From an empty project directory (except for the RCS
+subdirectory), a use case is created by issuing the following
+command:
+
+<pre>
+      mk COFLAGS=-r&lt;n&gt;
+</pre>
+
+In this command, &lt;n&gt; is the revision number for the use case to
+be built.  Consult <A href="../Handouts/using_rcs.html">the handout
+page on Using RCS</A> for more information on how this will work with
+your Makefile for the project.<p>
+
+<B>Requirements:</B> In addition to the information given here, be sure
+to consult the <A HREF="grading_form_2.html">Grading Form for this
+assignment</A>, which includes additional information about the
+requirements for this project.<p>
+
+<H2>Project Description</H2>
+
+For this assignment, an <I>object manager</I> is defined as a program
+that manages classes and class instances (objects).  An object manager
+knows how to create and delete class instances, how to provide lists of
+the classes and class instances being managed, and how to invoke class
+and instance methods for the classes and objects under its
+management.<p>
+
+An <I>object broker</I> is defined as a program that knows how to
+locate the object manager for a class or class instance and which acts
+as an intermediary between the class manager and programs that need to
+invoke the class and instance methods managed by an object manager.<p>
+
+For this assignment you will be developing three separate programs that
+communicate with each other using our own CSSOOOBP ("Computer Science
+Seven-Oh-One Object Broker Protocol").  (CSSOOOBP is pronounced "cuss
+soup.")  The programs will communicate with each other using
+lower-level network socket protocols.<p>
+
+We will start by developing the object manager program called <I>om</I>
+and a client program called <I>ou</I> (object user) that accesses the
+<I>om</I>.  We will gradually add functionality to both of these
+programs until they provide enough functionality to warrent development
+of the third program, <I>ob</I> (object broker).<p>
+
+<H2>Use Cases</H2>
+
+<pre>
+
+  1.  <A href="a2_usecase_1.html"><I>om</I> and <I>ou</I> Exchange Datagrams</A>
+
+  2.  <A href="a2_usecase_2.html"><I>om</I> Writes a Log File</A>
+
+  2a. <A href="a2_usecase_2a.html">Change Structure of <I>om</I> Source Code</A>
+
+  3.  <A href="a2_usecase_3.html">The Object Broker First Appears</A>
+
+  4.  <A href="a2_usecase_4.html"><I>ob</I> and <I>om</I> Communicate</A>
+
+  5.  <A href="a2_usecase_5.html"><I>ou</I> and <I>om</I> Communicate Through <I>ob</I></A>
+
+</pre>
+
+<HR>
+<address>Christopher Vickery<br>Computer Science Department,
+Queens College of CUNY</address>
+<HR></BODY></HTML>

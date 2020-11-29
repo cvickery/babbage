@@ -1,0 +1,223 @@
+<HTML> <HEAD> <title> Automaton Server Assignment </title> <body>
+<h2>CS-704 Automaton Server Assignment</h2>
+<dl>
+<dt><b>Due Date:</b><dd>November 28, 1995
+
+<dt><b>Deliverables:</b><dd>When your programs are ready for grading, send
+me e-mail telling me the name of the project directory, which I will assume
+is under your home directory on Panther7.  The project directory is to be
+empty except for a Makefile, two (or more) Source files, and two help
+files, to be named appropriately.  If I type "Make" in the project
+directory, all executables for this assignment are to be built without
+remarks, warnings, or errors.  All code must conform to the <A
+HREF="../coding_guidelines.html">Coding Guidelines</A> for this course.
+
+<dt><b>Server Description</b><dd>One program you will write is to act
+as a <i>server</i> program, a program that interacts with <i>client</i>
+programs to provide computational services.  In this document, the program
+will be called <i>server</i>, but your are to make up your own meaningful
+name for this program.  The help file for this program will be named
+<i>server</i><code>.hlp</code>.
+
+<p>There will be two parts to <i>server</i>, a front-end that interacts
+with clients by exchanging iRMX mailbox messages, and a back-end which
+simulates the operation of Finite State Automata (FSA's), as specified below.
+<i>Server</i> will be designed so that it can be run as a sysloaded command
+under iRMX, supporting the -w and -u sysload flags as described in class
+and in the file <code>\dosrmx\readme.txt</code>.
+
+<p>The front end of the server receives messages from one data mailbox,
+which will be called the "request mailbox" in this assignment, and it
+will send messages to another mailbox, which will be called the "reply
+mailbox" in this assignment.  In addition, the server will write messages
+to a text file, which will be called the "server logfile" in this
+assignment.  The behavior of the server can be defined in terms of the
+messages it receives, sends, and writes to the logfile:
+
+<p><dl>
+
+<dt><b>Request Messages</b><dd>Request messages fall into four general
+categories: Definition, Assignment, Query, and Termination.  Definition
+messages are used to define FSA's; Assignment messages assign values to
+the variables that control the automata; Query messages request information
+about the values of variables and the states of automata; Termination
+requests tell the server to terminate.
+
+<dt><b>Reply Messages</b><dd>The server sends a message to the reply
+mailbox for every Query or Termination message it receives from the
+request mailbox.  Reply messages are timestamped and formatted so
+that they can be read easily by a human.
+
+<dt><b>Logfile Messages</b><dd>All reply messages are written to the
+logfile, along with messages logging all variable and state changes.
+</dl>
+
+<dt><b>Client Description</b><dd>The client program is used by a person
+to send messages to the server and to view replies from the server.  Each
+time the client is run it goes through two phases.  First it examines its
+command line arguments and formats a single request message to send to
+the request mailbox.  If there are no arguments, this phase is skipped.
+Second, the client retrieves all messages waiting at the reply mailbox
+and displays them on the user's screen.  Then the client exits.
+
+<dt><b>Implementation Strategy</b><dd>This project is to be implemented
+as a sequence of steps.  At each step (except the last) you are to have
+a tested and functioning, but incomplete, project.  If you do not complete all steps
+by the due date, you will receive partial credit for the steps that you
+do have complete.  Here is an outline of the steps you are to follow
+in developing this program:
+
+<p><dl>
+
+<dt><b>Step 1</b><dd>First construct a server program that responds properly
+to <i>sysload</i> commands with the -w and -u options.  Test to be sure the
+program does not cause <i>sysload -w</i> to wait more than a fraction of
+a second for initialization, and that the program does, indeed, delete
+itself in response to a <i>sysload -u</i> command.  Check to be sure you
+can re-load the command after unloading it.
+
+<dt><b>Step 2</b><dd>Augment the server so that it creates a logfile to
+which it writes a time-stamped message when it initializes and another
+time-stamped message when it terminates.  Be sure you can read the
+initialization message while the server is running, not just after it
+terminates.  Each message written to the logfile is to contain the time
+and date plus some explanatory text, all on one line.  I suggest that
+you use the library
+functions <i>time()</i> and <i>ctime()</i> to format the timestamps.
+
+<dt><b>Step 3</b><dd>Construct a client program that will send a termination
+message to the server's request mailbox and display a reply message confirming
+that the server has deleted itself.  Be sure both the client and server can
+be run repeatedly.  Be sure the client behaves in a reasonable manner if it
+is run when the server is not loaded.  The termination message shall consist
+of the word "terminate" encoded as a C string.  If you wish, you may
+write your code to accommodate unambiguous abbreviations of messages.  From
+this point forward, however, all messages sent to the server must be
+syntactically correct.  For example, for this step, it would be incorrect
+to send any message to the server other than a "terminate" string.  At this
+stage, the server will be able to handle two different messages arriving
+at its request mailbox:  A message that starts with 0xFFDD is a "delete
+yourself" message from <i>sysload</i>, and a message that starts with the
+string "terminate" is a message from <i>client.</i>  Only a client message
+should cause a reply to be sent to the reply mailbox, but either message
+should cause a termination message to be written to the logfile before
+the server exits.
+
+<dt><b>Step 4</b><dd>Implement variables.  For this assignment, a
+variable looks like a C-language identifier, and may take on the boolean
+values of <i>zero</i> and <i>one</i>.  (Equivalent names for the two values
+are <i>off</i> and <i>on</i> or <i>reset</i> and <i>set</i>).  The user may
+type <i>"client set <gt>x<lt>"</i> or <i>"client reset <gt>x<lt>"</i> or
+<i>"client toggle <gt>x<lt>"</i>, where <i><gt>x</i> is any variable name.
+These commands will cause the client to send corresponding messages to the
+request mailbox.  How you encode these messages is up to you.
+The server shall recognize the three types of messages, and shall create
+the named variable if it does not already exist, and then shall send a
+message to the reply mailbox telling the name of the variable and its
+current value.  (Your help file for <i>client</i> will tell users what
+it means to toggle a variable that does not already exist.
+
+<p>If the user types <i>"client query variables"</i> the client and
+server shall cooperate to produce a list of all defined variables and
+their current values.
+
+<p>The server must be implemented as two or more source files at this
+point.  One file is to contain the definition of <i>main()</i> and all
+global variables.  Other function definitions are to be in a separate
+source file (or files).  When <i>main()</i> receives a message having
+to do with variables, it is to call a separate function to process the
+message.
+
+<dt><b>Step 5</b><dd>Define Automata.  We define an FSA as a named thread
+of execution whose behavior is determined by a set of states and a set of
+transitions from those states.  Each FSA has one unique state known as its
+<i>start</i> state, and another unique state known as its <i>end</i> or
+<i>final</i> state.  There can be any number of other states.  Each state
+except <i>final</i> is connected to one or more other states by a set of
+transitions.  Each transition is specified by a list of variable/value
+pairs that tells what input conditions are to cause the transition (the
+<i>input list</i>), a list
+of variable/value pairs that are to be output when the transition
+is taken (the <i>output list</i>), and the name of the state the automaton
+is to transfer to when the transition is taken (the <i>next state</i>).
+In this step, you are only to allow the user to set up the data structures
+to define automata, not to create the tasks that will act as automata.
+
+<p>To define an automaton, the user will enter a sequence of <i>client</i>
+commands, which we will describe using an annotated example:
+<dl>
+<dt>Start the definition of an FSA named alpha
+<dd><code>% client define alpha</code>
+<dt>Define the <i>start</i> state for automaton <i>alpha</i>
+<dd><code>% client start: abc = 1, def = 0; abc = 0; 1</code>
+<dt>Define state <i>1</i> for automaton <i>alpha</i>
+<dd><code>% client 1: def = 1; ghi = 1; end
+<br>% client 1: def = 0; ghi = 1; 0</code>
+<dt>Finish the definition of automaton <i>alpha</i>
+<dd><code>% end
+<br>Automaton alpha has 3 states.
+<br>%</code>
+</dl>
+
+<p>The <i>define</i> command is used to start the definition of a new FSA.
+The definition continues across <i>client</i> commands until an <i>end</i>
+command is entered.  Each line between the <i>define</i> and <i>end</i>
+commands defines one transition for one state of the automaton.  Each
+transition line starts with the name of the state, an input list, a
+semicolon, an output list, another semicolon, and the name of the next
+state.  State names are the reserved names "start" and "end," and integers.
+In the example above, the first transition defined is for the start state.
+It says that if the variable <i>abc</i> is 1 or the variable <i>def</i> is
+0, the variable <i>abc</i> is to be set to zero and the automaton is to
+transfer to state 1.  The second transition line says that if the automaton
+is in state 1 and the variable <i>def</i> becomes 1, the automaton is to
+set the variable <i>ghi</i> to 1 and to transfer to the end state.  The
+third transition line says that if the automaton is in state 1 and the
+variable <i>def</i> becomes 0, the automaton is to set the variable
+<i>ghi</i> to 1, and transfer back into state 1 again.  When the <i>end</i>
+line is entered, the server sends a message to the reply mailbox confirming
+the name of the automaton and the number of states.
+
+<p>This step of the project is an exercise in string processing and
+data structure construction.  Augmenting the client program for this
+step is trivial; it just passes command line strings on to the server.
+Your client is not required to check the syntax or semantics of the
+command line, but it must make sure that each command fits within
+the 128 bytes allowed by the <i>rqsenddata()</i> system call.  We will
+discuss the rationale behind these design decisions in class.
+
+<p>The server must dynamically create data structures for each automaton,
+each state of each automaton, and each transition for each state.  The
+only way to verify if these structures are being set up correctly is to
+look at them at run time using SoftScope.  For this step you will run
+your server under SoftScope instead of loading it using <i>sysload</i>
+and use SoftScope's "system" command to run the client program while
+debugging the server.  Alternatively, you can use a second terminal
+attached to your computer to log in a second time.  Use one login
+session to run the server under SoftScope and the other login session
+to issue <i>client</i> commands.
+
+<dt><b>Step 6</b><dd>Implement the automata.  Each time the user
+completes the definition of an automaton, create a task to interpret
+the data structures you implemented in Step 5.  Each time a variable
+changes value, send a message to each automaton task informing it of
+the change.  Automata as well as <i>client</i> commands can cause
+variables to change state.  The server has to be able to determine
+the current state of each automaton so that it can respond to a
+<i>"client query automata"</i> command with a list of automata names
+and their states.
+
+<dt><b>Step 7</b><dd><b>Optional</b>  Add the option of timed transitions
+to the input lists.  An integer with no variable name in an input list
+means the transition will be taken if the specified interval (number of
+hundredths of a second) elapses after the automaton enters the state.
+
+</dl>
+
+<hr>
+<ul>
+<li> <A HREF="../grading_form.html">Standard Grading Form</A>.
+<li> <A HREF="grading_form_4.html">Grading Form for this Exercise</A>.
+<li> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</ul>
+<hr> </body> </html>

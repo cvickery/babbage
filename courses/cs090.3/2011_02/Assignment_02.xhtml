@@ -1,0 +1,170 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 2</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style>
+      img {border:1px solid red;}
+    </style>
+  </head>
+  <body id='urn:uuid:FEE9B770-14A0-4B6C-913D-606A4D8E1332'>
+    <h1>CS-90.3 Assignment 2<br/>
+    Due March 8</h1>
+    <div id="content">
+      <h2>Reading Assignment</h2>
+      <ul>
+        <li>
+        	Refer to the documentation on the PHP web site and/or whatever book you are using to
+          learn PHP.
+        </li>
+      </ul>
+      <h2>Assignment To Submit</h2>
+      <div>
+        <p>
+          The assignment is to put a form on the index page where users can enter an arbitrary amount
+          of text and, separately, a color. A second page is to display the text the user typed in a
+          square matrix, one character per cell, using the color typed by the user for the background
+          color of the page.
+        </p>
+        <p>
+          Since this is a pedagogical exercise, <em>how</em> you implement the assignment is just as
+          important as getting the assignment to meet the broad statement above. The goal is not to
+          stifle your creativity, but to guide you into learning best practices for writing code.
+        </p>
+        <p>
+          When you have finished the assignment, send me an email message, and I’ll check it out on babbage.
+        </p>
+          <ul class="standout-block">
+            <li>Be sure to sign your email so I know who sent it.</li>
+            <li>The Subject line of your message must be: <pre style="margin:0 2em;">CS-90.3 Assignment 2</pre>
+            </li>
+          </ul>
+        
+        <ol>
+          <li>
+            <h5>Adjust your template for web pages for the course.</h5>
+            <p>
+            	In order to take advantage of Dreamweaver’s syntax checking for PHP code and to cope with the
+              fact that Dreamweaver seems incapable of dealing with PHP files with other extensions, all
+              XHTML files for this course are to have the <code>.php</code> extension instead of 
+              <code>.xhtml</code>.  Start by renaming your index file from 
+              <span class="file-name">index.xthml</span> to <span class="file-name">index.php</span>. Since
+              we have our Apache servers to recognize both extensions, this will have no effect on your web site.
+             </p>
+             <p>
+               But now Dreamweaver will have problems with the XML declaration at the beginning of the file
+               (<code>&lt;?xml version=...</code>). It looks like invalid PHP code because it starts with
+               <code>&lt;?</code> but is followed by <code>xml</code> instead of <code>php</code>.
+               You will have to use a PHP <code>echo</code> statement to
+               generate it instead of simply including it as a plain line before the DOCTYPE. The beginning of
+               each of your <code>.php</code> files is to look like this:
+             </p>
+             <div class="code-block">
+&lt;?php
+  header("Content-Type: application/xhtml+xml");
+  echo "&lt;?xml version='1.0' encoding='utf-8'?>\n";
+?>
+&lt;!DOCTYPE html>
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+             </div>
+          </li>
+          <li>
+            <h5>Set up the two web pages for the assignment.</h5>
+            <p>
+              The first web page is your index page for your course site: put a form on it with a 
+              <span class="tag">textarea</span> where the user can enter a “message” of arbitrary length,
+              and a text <span class="tag">input</span> element where users can type in a “color.”
+            </p>
+            <p>
+              Use the GET method for the form so you can see the form data being submitted easily.
+            </p>
+            <p>
+            	The <span class="attribute-name">action</span> attribute for the form is to be a second page,
+              which you are to place in your site’s <span class="file-name">scripts</span> directory. The
+              name of this second page is arbitrary, but must end with the <code>.php</code> extension. For this
+              assignment, I will refer to it as “the action page.”
+            </p>
+            <p>
+             For now, the action page does not have to do much: just display a message so you can verify that
+             the page was activated when you submit the form on the index page.
+            </p>
+            <p>
+              Set up a stylesheet named <span class="file-name">assignment_2.css</span> in your site’s
+              <span class="directory-name">css</span> directory, and link to it from both your index and
+              action pages. Use CSS rules to make both pages “attractive.” Be sure both pages have no errors
+              when you click their XHTML and CSS validation links.
+            </p>
+          </li>
+          <li>
+            <h5>Display the message entered by the user in a square matrix, one character per cell.</h5>
+            <p>
+            	Use the <span class="function-name">sqrt()</span> and <span class="function-name">strlen()</span>
+              functions to determine the number of rows (and columns) for the matrix. Put each letter in a
+              separate cell of a <span class="tag">table</span>.
+            </p>
+            <p>
+            	Use CSS to make each cell of the table square. (<em>Easier said than done!</em>)
+            </p>
+            <p>
+            	Be sure the action page still validates. Be sure the code is robust: the action page has to
+              handle the case where the user goes directly to the page without submitting the form, the
+              case where the user does not type anything into the message box of the form, and the cases where
+              the user types any number of characters of text.
+            </p>
+          </li>
+          <li>
+          	<h5>Process colors entered by the user.</h5>
+            <p>
+            	The user may enter a color using hexadecimal notation (#123 or #123456) or by typing any of the
+              CSS3 valid color names given in <a href="../color_names.txt">color_names.txt</a>. Copy the color
+              names file to your web site, and read the lines from it to determine what name the user typed
+              (case insensitive), and the corresponding hexadecimal color value.
+            </p>
+            <p>
+            	If the user did not type a valid color name, use a default value of white; do not display any
+              error message.
+            </p>
+            <p>
+            	Generate a <span class="tag">style</span> element in the head of the document to set the background
+              color of the entire action page to the color the user specified. Set the color of all text on the page
+              and the borders of the table cells to a color that is clearly visible against the user-supplied
+              background color. (Or against the default white color if the user did not type a valid color.)
+            </p>
+            <p>
+            	Validate and test your code carefully before submitting it.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </div>
+  </body>
+</html>

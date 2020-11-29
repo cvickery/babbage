@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>ListArgs.java</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</head>
+<center><h1>ListArgs.java</h1></center>
+<hr>
+<pre>
+      //  $Id: ListArgs.java,v 1.2 2003/03/10 03:47:57 vickery Exp $
+      
+      /*  
+       *  $Log: ListArgs.java,v $
+       *  Revision 1.2  2003/03/10 03:47:57  vickery
+       *  Changed comment style for the Log message so RCS won't
+       *  complain.
+       *
+       *  Revision 1.1  2003/03/10 03:37:48  vickery
+       *  Initial revision
+       *
+       */
+      
+      //  Class ListArgs
+      //  ------------------------------------------------------------------
+      /**
+        *     Invokes a native method, doMain(), to print the command line
+        *     arguments to this Java application.
+        *
+        *     @author C. Vickery
+        *     Spring 2003
+        */
+        public class ListArgs
+        {
+          //  Static initialization
+          //  --------------------------------------------------------------
+          /*
+           *    Loads shared library containing native method(s).
+           */
+            static
+            {
+              System.loadLibrary( "la" );
+            }
+      
+          //  doMain()
+          //  --------------------------------------------------------------
+          /**
+            *   Native method prints an array of strings.
+            *
+            *   @param  s   Array of strings to be printed.
+            */
+            public static native void doMain( String[] s );
+      
+          //  main()
+          //  --------------------------------------------------------------
+          /**
+            *   Entry point for the application which passes command line
+            *   arguments to a native method for printing, then prints them
+            *   out itself.
+            */
+            public static void main( String[] args )
+            {
+              new ListArgs().doMain( args );
+              for (int i = 0; i &lt; args.length; i++)
+              {
+                System.out.println( "main: " + i + ": \t" + args[i] );
+              }
+              System.exit( 0 );
+            }
+        }
+      
+</pre><hr></body></html>

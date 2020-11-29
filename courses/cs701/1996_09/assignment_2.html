@@ -1,0 +1,208 @@
+<HTML> <HEAD> <TITLE> HTML Document Processor </TITLE> </HEAD>
+<BODY>
+<H1 ALIGN=center>HTML Document Processor</H1>
+
+<DL>
+<DT><B>Due Date:</B><DD>To Be Determined
+
+<DT><B>Deliverables:</B><DD>
+
+When the assignment is complete, send me an e-mail message telling me the
+path to the project directory.  The project directory
+is to contain an RCS subdirectory, and nothing else.  In
+addition, the <code>~/man</code> directory tree is to contain
+a <i>man</i> page for the executable program.  You may also leave a
+<code>README</code> file in the project directory if you think that one
+is needed, but I neither expect nor require you to do so.
+
+<DT><B>Requirements:</B><DD>
+
+In addition to the information given here, be sure to consult the
+<A HREF="grading_form_2.html">Grading Form for this assignment</A>,
+which includes additional information about the requirements for this
+project.
+
+</DL>
+
+<H2>Project Overview</H2>
+
+
+You are to do the exercise as a sequence of steps as listed below, and
+the code for each step is to have its own RCS major version number. 
+Because you will have to add modules in some of the later steps, there
+should be a different version of the project Makefile for each step,
+too.<P>
+
+<H2>Project Steps</H2>
+
+<ol>
+
+<li>
+
+Write a function, <i>parseURL</i> which takes a pointer to a C string as
+an argument, and returns the following struct:
+
+<pre>
+          struct parsedURL {
+            char*    protocol;
+            char*    hostname;
+            char*    portNumber;
+            char*    pathName;
+            };
+</pre>
+
+When the struct is returned, the <code>protocol</code> field will
+normally point to the string "http" or "file".  However, it will be a
+NULL pointer if the string begins with a different protocol name or if
+there is an error in the string that makes it impossible to parse.  If
+the protocol is http, the hostname and portNumber fields must be
+defined, although the portNumber field will be be defined as NULL if
+the URL does not specify a port number.  If protocol field is a
+non-NULL pointer, pathName must be a non-NULL pointer too.  If the
+pathname part of the URL string is missing, make the pathName member
+point to the string "/".<p>
+
+Write a main program that accepts a URL string as a command line
+argument.  (If no command line argument is given, the program simply
+terminates.)  Pass the command line argument to <i>parseURL()</i> and
+use <code>ddd</code> to verify that the string is parsed correctly.  Try
+different URL strings to test your program fully.  Have the program
+exit when <i>parseURL()</i> returns.<P>
+
+At this point, your project directory should have the following
+files:<P>
+<dl>
+<dt><code>Makefile</code><dd>Typing <i>make</i> with no arguments should
+build the executable program.
+<dt><code>parseURL.h</code><dd>This file should contain the declaration
+for the parsedURL data structure and the function prototype for
+<i>parseURL()</i>.
+<dt><code>parseURL.cc</code><dd>Source code for the <i>parseURL()</i>
+function definition.  (Since you are using the g++ compiler, you might
+as well use the <code>.cc</code> extension instead of <code>.c</code>.)
+<dt><code>main.cc</code><dd>Source code for your <i>main()</i> function
+definition.<P>
+</dl>
+You may use different file names if you wish, but you should have the
+equivalent of these four files.  When the program works, check these
+four files into RCS as version 1.1.
+
+
+<li>Create a skeleton implementation of the entire browser project. 
+Include the following modules:
+  <ul>
+
+  <li><B>main</B> - The function <i>main()</i> uses the environment
+  variable <code>USER_INTERFACE</code> to determine which user interface
+  to use.  Recognize "curses" and "motif," and use a dispatch table to
+  call the appropriate initialization code for the selected interface. 
+  Pass a pointer to <code>argc</code> and <code>argv</code> as
+  parameters to the interface initialization routine.  You may use
+  "curses" as the default value if <code>USER_INTERFACE</code> is not set.
+  The interface initialization function will not return to
+  <i>main()</i>.
+
+  <li><B>processURL</B> - This module should include functions to parse
+  a URL, to call one of the protocol handlers (see below) to get a
+  document, one to parse a raw (HTML) document into paragraphs and text
+  segments, and one to free whatever resources have been allocated to
+  the processing of a particular URL.  For now the HTML parser should
+  create a single paragraph with a single text segment that includes
+  the entire raw document.
+
+  <li><B>fileProtocol</B> - There must be two functions, one to map a
+  file into memory, and one to unmap it.  The address of the first
+  function is to be one of the entries a table of protocol handlers
+  defined in the <code>processURL</code> module.  This handler puts the
+  address of the other function in the <code>urlInfo_t</code> structure
+  for the URL.
+
+  <li><B>httpProtocol</B> - Provide a stub function that prints a message
+  saying "HTTP protocol not implmented yet!", and put its address in the
+  table of protocol handlers defined in the <code>processURL</code>
+  module.
+
+  <li><B>cursesUI</B> - Initialize the Curses user interface.  If there
+  was an argument on the command line when the program was invoked,
+  process the URL, and pass the processed URL information to a function
+  that is local to this module, which displays the first screenful of
+  the document.  If there is no command line argument or if the command
+  line argument cannot be processed to produce a parsed document,
+  display a message telling the user what to do, and exit.
+
+  <li><B>motifUI</B> - Provide a stub function that issues a message
+  saying "Motif user interface not implemented yet!" and exit.
+
+  </ul>
+
+Here is a data structure you might use to hold the information about a
+URL at the various stages of its processing:<p>
+<pre>
+struct urlInfo_t {
+
+  // The original URL string.
+  const char*   urlString;
+
+  // Parsed Substrings of the URL string.
+  char*         protocolName;
+  char*         hostName;
+  char*         portNumber;
+  char*         pathName;
+
+  // Raw Document Information.
+  caddr_t       rawStart;
+  size_t        rawLength;
+  freeDoc_f*    freeDoc;
+
+  // Parsed Document Information.
+  paraInfo_t   *firstPara;
+
+  };
+</pre>
+
+When you have this program working, check in all files, including the
+Makefile, as version 2.1 of your project.
+
+<li>Complete a working Curses user interface for the project.  The user
+is to be able to enter the following command characters, with the
+indicated effects:
+
+  <ul>
+  <li><code>'q'</code> - Exit the program.
+  <li><code>KEY_DOWN</code> - Scroll down one line in the displayed
+  document.
+  <li><code>KEY_UP</code> - Scroll up one line in the displayed
+  document.
+  <li><code>KEY_NPAGE</code> - Scroll down one screenful.
+  <li><code>KEY_PPAGE</code> - Scroll up one page.
+  </ul>
+
+If the user presses any other key, the program should beep.  This is
+version 3.1 of the project.
+
+<li>Add the <code>'g'</code> command to your Curses user interface that
+prompts for a URL string and processes it.  This is version 4.1 of the
+project.
+
+<li>Implement the http protocol handler so that documents can be
+retrieved from World Wide Web servers.  This is version 5.1 of the
+project.
+
+<li>Parse HTML documents into paragraphs.  Remove all HTML tags, and use
+<code>&lt;P&gt;</code> and &lt;H<i>n</i>&gt;</code> pairs to divide the
+document into paragraphs.  Modify your Curses renderer to display
+paragraphs properly.  This is version 6.1 of the project.
+
+<li> ...
+</ol>
+
+<HR>
+<UL>
+<LI> <A HREF="../gf.html">Standard Grading Form</A>.
+<LI> <A HREF="grading_form_2.html">Grading Form for this Assignment</A>.
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>

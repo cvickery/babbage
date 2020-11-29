@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>ListArgs.cc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</head>
+<center><h1>ListArgs.cc</h1></center>
+<hr>
+<pre>
+      //  $Id: ListArgs.cc,v 1.1 2003/03/10 03:37:48 vickery Exp $
+      
+      /*  Native code to print an array of Java strings passed to it.
+       *
+       *  $Log: ListArgs.cc,v $
+       *  Revision 1.1  2003/03/10 03:37:48  vickery
+       *  Initial revision
+       *
+       *
+       *  C. Vickery
+       *  Spring 2003
+       */
+      #include &lt;stdio.h&gt;
+      #include &lt;stdlib.h&gt;
+      #include &lt;jni.h&gt;
+      #include "ListArgs.h"
+      
+      //  Java_ListArgs_doMain()
+      //  ------------------------------------------------------------------
+      /**
+        *   Print the length of the array passed as "args" and then convert
+        *   each element of the array to a printable string.  Print the
+        *   string and deallocate it.  Return after printing all strings.
+        */
+        JNIEXPORT void JNICALL
+        Java_ListArgs_doMain( JNIEnv *env, jclass cls, jobjectArray args )
+        {
+          jsize len = env-&gt;GetArrayLength( args );
+          printf( "doMain: There are %d arguments.\n", len );
+          for (jsize i = 0; i &lt; len; i++ )
+          {
+            jobject obj = env-&gt;GetObjectArrayElement( args, i );
+            const char *sstr = env-&gt;GetStringUTFChars( (jstring) obj, 0 );
+            printf( "doMain: %d:\t\"%s\"\n", i, sstr );
+            env-&gt;ReleaseStringUTFChars( (jstring) obj, sstr );
+          }
+          printf( "doMain: returning\n" );
+          return;
+        }
+      
+</pre><hr></body></html>

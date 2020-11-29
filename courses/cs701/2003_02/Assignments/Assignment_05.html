@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>JSH With JVM</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+    body
+    {
+      background:       #ffffcc;
+      font-family:      sans-serif;
+      color:            #606010;
+      margin:           1em;
+    }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+    div.ans { font-weight: bolder; background: #ccffcc; margin:1em; }
+    h2.warning 
+    {
+      color:      #FF8080;
+      position:   fixed;
+      width:      100%;
+      text-align: center;
+      top:        40%;
+      bottom:     auto;
+    }
+    font.darker { font-weight: bolder; color: green; }
+    font.blue   { color: blue;      }
+    font.red    { color:  red;      }
+  </style>
+
+</head>
+
+<body>
+
+<center>
+<h1>JSH With PJVM</h1>
+</center>
+
+<h2 class="warning">This Page is Not Complete Yet</h2>
+
+<h2>Introduction</h2>
+
+  <p>This is the final version of the <i>jsh</i> project for the
+  semester.  You will be developing it in a sequence of steps, and this
+  web page will be updated as new steps are introduced.  The assignment
+  will be due on midnight of the last day of exams, May 23.</p>
+
+<h2>Overview</h2>
+
+  <p>The goal of the assignment is to allow a user of <i>jsh</i> to
+  load Java class files into a "Persistent Java Virtual Machine" (PJVM)
+  and to invoke methods within those classes by typing commands on the
+  command line.  The name PJVM refers to the fact that the JVM gets
+  created once when <i>jsh</i> starts running, and continues to run
+  (persists) until <i>jsh</i> exits.  This is in contrast with a
+  conventional JVM such as the one invoked by the <i>java</i> command,
+  which is loaded and started for every Java program the user runs.</p>
+
+  <p>When the user types in a command line, <i>jsh</i> will read and
+  tokenize it in the usual way.  If it turns out that the command name
+  is neither a shell builtin (alias, echo, exit), nor the name of an
+  executable file, <i>jsh</i> is to write the command to a separate
+  process, which will interpret the command line and load a class into
+  a running jvm, and optionally invoke one of the class' methods.</p>
+
+<h2><a name="steps">Development Steps</a></h2>
+
+<ol>
+
+  <li><a href="#aliases">Implement Aliases</a>
+  <li><a href="#version2">Bring All Project Files Up To Version 2</a>
+  <li><a href="#skeleton">Create a Skeleton Of The JVM Process</a>
+  <li><a href="#ipc">Send Command Lines to the JVM Process</a>
+  <li><a href="#pjvm">Implement the PJVM.</a>
+
+</ol>
+<hr>
+
+  <h3><a name="aliases">Implement Aliases</a></h3>
+
+  <p>If you have not done so yet, implement the <i>alias</i> builtin
+  command and alias substitution.  Use an STL <i>map</i> to implement
+  the alias table.  An <i>alias</i> command with no arguments should
+  cause all aliases and their values to be displayed.  The syntax for
+  defining a new alias (or to replace an existing alias) can be either
+  "alias&nbsp;name&nbsp;value" or "alias&nbsp;name=value" as you
+  prefer.</p>
+
+  <p><a href="#steps">Back to List of Steps</a></p>
+
+  <h3><a name="version2">Bring All Project Files Up To Version
+  2</a></h3>
+
+  <p>Before starting on the remainder of the project, bring all project
+  files up to RCS revision 2.1.  You do this by checking each file out
+  with the lock option, and then checking them back in with the "-f"
+  and "-r2" options.  The -r2 option (or -r2.1) checks the file in with
+  the new version number.  Normally, you can't check in a file if you
+  haven't modified it in any way, but the -f option <u>f</u>orces RCS
+  to check the file in even though nothing changed.  An appropriate log
+  message would be something like, "Starting work on Version 2."  Note
+  that you can use a single <i>ci</i> command to check in all the files
+  in the project.  If you do, you will need to enter the log message
+  just once for all of them.</p>
+  
+  <p>If you add new files to the project after this, be sure to use the
+  -r2 option the first time you check them in.</p>
+  
+  <p>When you have this working, you will be able to make either version
+  of the project by making the environment variable (or </p>make<p>
+  variable) COFLAGS equal to -r1 or -r2.  For example, in a clean
+  project directory, you could type, "make COFLAGS=-r1" to build version
+  1 of the project.  (Thought question: What is the difference between
+  "make&nbsp;COFLAGS=-r1" and COFLAGS=r1&nbsp;make"?)</p>
+
+  <p><a href="#steps">Back to List of Steps</a></p>
+
+  <h3><a name="skeleton">Create a Skeleton of the JVM Process</a></h3>
+
+  <p>For this step, have the main process fork a child
+  process when it first starts up.  We'll call this new process the jvm
+  process and the main process the jsh process from now on.  Before
+  creating the jvm process, create a pipe for communicating between it
+  and the jsh process.  The purpose of this step is to manage
+  interprocess communciation (IPC) between the jsh and jvm processes.</p>
+  
+  <p>Your code is to implement the following IPC features:</p>
+  
+  <ul>
+    <li>The jsh process can write message strings to the jvm process at
+    any time.
+    <li>The jvm process can write message strings to the jsh process at
+    any time.
+    <li>The jsh process must notify the user if the jvm process
+    terminates unexpectedly at any time.  The jsh process must create a
+    replacement jvm process if this happens.
+    <li>The jsh process must tell the jvm process to terminate when the
+    jsh process itself terminates.
+    <li>Messages from the jvm process are displayed to the user only
+    when the jsh process is reading a command line from the user.  The
+    prompt string and user command must not be garbled on the string
+    when a message from the jvm process is displayed.  That is, the
+    prompt string and whatever part of the commmand line the user has
+    entered must be redisplayed after printing a message from the jvm
+    process.
+  </ul>
+
+  <p>Here is an example of what I mean by the last item in the above
+  list:</p>
+
+  <pre>
+    <i>jsh&gt;</i> <font class="darker">da</font>
+    <font class="blue">JVM: This is a message from the jvm ...</font>
+    <font class="red">jsh&gt;da</font><font class="darker">te</font>
+    <i>(output of the date command)</i>
+    <i>jsh&gt;</i>
+  </pre>
+
+  <p>In this example, the user was in the middle of typing a "date"
+  command (green characters), when a message arrived from the jvm
+  process and was displayed on the user's screen.  The red text is what
+  the jsh printed on the screen before continuing to read the command
+  the user was entering.</p>
+
+  <p>To test this version of your program, code the jvm process so it 
+  reads an initial message from the jsh process when it starts up, and
+  sends this same message back to the jsh process at 5 second intervals
+  for as long as it runs.  Either the jsh or jvm process should display
+  the jvm process' pid so you can experiment with killing the jvm
+  process with a kill command from a second console window to see if
+  that is handled properly.</p>
+
+  <p><a href="#steps">Back to List of Steps</a></p>
+
+  <h3><a name="ipc">Send Command Lines to the JVM Process</a></h3>
+
+  <p>If the user enters a command that is not a builtin command, the jsh
+  process searches through the user's PATH, using the <i>access()</i>
+  system call to determine whether an executable file can be found.  (If
+  the command name starts with . or / don't search the PATH, just test
+  the explicit pathname the user entered.)  If the command name fails
+  the <i>access()</i> test, send the entire command as a message to the
+  jvm process.  The jvm process waits 5 seconds, and sends back a
+  message saying "JVM: <i>&lt;user's command&gt;</i>"</p>
+
+  <p><a href="#steps">Back to List of Steps</a></p>
+
+  <h3><a name="pjvm">Implement the PJVM</a></h3>
+
+  <p>Well, you know, the user types in executable Java statements, and
+  the jsh process sends them to the jvm process, which executes them in
+  the jvm.  There are also commands for determining which classes are
+  currently loaded into the jvm, for listing the methods available for
+  each of those classes, and stuff like that.  And a command for seeing
+  how much memory the jvm is using.  You know, like, other stuff too ...</p>
+
+  <p><a href="#steps">Back to List of Steps</a></p>
+
+<hr>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>ListArgs Assignment</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+    div.ans { font-weight: bolder; background: #ccffcc; margin:1em; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>ListArgs Assignment</h1>
+</center>
+
+<h2>Due: Midnight March 12, 2003</h2>
+<p>Late Points: You will lose 1% of the grade for this assignment for
+each day it is late.</p>
+<hr>
+
+<h2>Deliverables</h2>
+
+  <p>Send email to <i>vickery@dijkstra</i> with a tar file of your
+  empty project directory attached.  Be sure to include "CS-701
+  Assignment 3" in the subject line of your email, and put your name and
+  ID number in the body of your message.</p>
+  
+  <p>Typing "make" in the project directory must create a shared
+  library named libla.so and install it in the directory $HOME/lib.  It
+  must also create a Java class file named ListArgs.class in the
+  project directory.  There must be no error or warning messages when
+  this make commmand is run.  Your Makefile must also provide targets
+  named <i>depend</i> and <i>clean</i> which operate in the usual way,
+  also with no warning or error messges.  The Makefile and the Java and
+  C++ source files must be coded according to the Coding Guidelines for
+  the course, including proper use of RCS keywords.  The only header
+  file (other than system-supplied ones) is to be ListArgs.h, which is
+  to be built by javah as part of the make process.  Make clean should
+  remove all javah-generated header files, which should not be checked
+  into RCS.</p>
+
+<h2>Functionality</h2>
+
+  <p>After running make, the command "listargs ..." must print all the
+  command line arguments entered, one per line, and exit.  When your
+  program is run, listargs will be an alias for "java ListArgs," and
+  the user's LD_LIBRARY_PATH will include $HOME/lib.  I will set up
+  this alias and environment variable on my system before testing your
+  code; you may do the same on your own system outside of the project,
+  such as in your .bashrc file.</p>
+
+<h2>Description</h2>
+
+  <p>This is an exercise in Makefile design and RCS management.  It
+  also gives you practice using JNI.  The ListArgs class is to call a
+  native C++ method named doMain(), defined in a file named
+  ListArgs.cc.  The Java code is to pass a reference to the args
+  variable, received by its main() method, to doMain().  The doMain()
+  method receives args as a javaobjectArray.  It uses
+  <i>GetArrayLength()</i> to find out how long the array is, then uses
+  <i>GetObjectArrayElement()</i> to extract successive jstring objects
+  from the array, and prints each jstring after converting it to a C
+  string using <i>GetStringUTFChars()</i>.  Be sure to release each
+  string after printing it.</p>
+
+<hr>
+
+</body>
+</html>

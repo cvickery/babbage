@@ -1,0 +1,264 @@
+/* style-all.css
+ */
+
+html, body {
+  background-color: #ffc;
+  color:             #330;
+  margin:           0;
+  padding:          0;
+  width:             100%;
+  line-height:      1.3;
+  counter-reset:    aq;
+  }
+
+#header { text-align: center;   }
+#content {
+  display:          block;
+  padding:          0.5em;
+  background-color:  #eee;
+  text-align:       left;   
+  clear:             both;
+  border:           1px solid #063;
+  border-radius:     0.5em;
+  box-shadow:       0.25em 0.25em 0.25em #999;
+  }
+footer, #footer {
+  display:block; 
+	text-align: center; 
+  }
+
+section > h1 { font-size: 1.5em;}
+
+hr {
+  background-color: black;
+  color:            blue;
+  width:            80%;
+  }
+
+p {
+  margin-left:      1em;
+  margin-right:     2em;
+  widows:4;
+  orphans:4;
+  }
+
+table {
+  width:            80%;
+  margin:           auto;
+  border-collapse:  collapse; 
+  border:           solid 2px blue;
+  background-color: white;
+  color:            black;
+  }
+
+td {
+  border:           1px solid black;
+  padding:          0.1em 0.5em;
+  vertical-align:   top;
+  }
+th {
+  border:           2px solid blue;
+  text-align:       center;
+  padding:          0.1em 0.5em;
+  }
+
+li {
+  padding-right:     3em;
+  }
+
+h5 {
+  font-size:        1em;
+  display:          inline;
+  }
+
+ol {
+  list-style-type:  decimal;
+  }
+
+ol ol {
+  list-style-type:  lower-latin;
+  }
+
+ol ol ol {
+  list-style-type:  lower-roman;
+  }
+
+.subscript {
+  font-size:        0.8em;
+  position:         relative;
+  top:              0.4em;
+  }
+
+.superscript {
+  font-size:        0.8em;
+  position:         relative;
+  top:              -0.4em;
+  }
+.align-left {
+  text-align:        left;
+  }
+.align-right {
+  text-align:        right;
+  }
+.align-center {
+  text-align:        center;
+  }
+
+/* "Activity Question" */
+.aq {
+  background-color: #cfc;
+  color:            #303;
+  }
+.aq:after {
+  counter-increment:  aq;
+  content:            " " counter(aq) ": ";
+  }
+
+.whitebox {
+  background:       white;
+  color:            black;
+  border:           solid 1px blue;
+  width:            90%;
+  margin:           1em auto;
+  padding:          2em;
+  }
+
+.tag,
+.tagname,       .tagName,       .tag_name,       .tag-name,
+.nodename,      .nodeName,      .node_name,      .node-name
+.attributename, .attributeName, .attribute_name, .attribute-name {
+  font-family:      monospace;
+  font-size:        1.2em;
+  background-color: transparent;
+  color:            #063;
+  }
+
+.tag:before {
+  content:"<";
+}
+.tag:after {
+  content:">";
+}
+  
+.standoutbox,   .standoutBox,   .standout_box,   .standout-box,
+.standoutblock, .standoutBlock, .standout_block, .standout-block {
+  border:           solid 1px green;
+  text-align:       justify;
+  background-color: #efe;
+  color:            #303;
+  padding:          .5em 1em;
+  width:            80%;
+  margin:           1em auto;
+  }
+
+.computer-output {
+  background-color:  #efe;
+  color:             #303;
+  border:            1px solid #0f6;
+  width:             40%;
+  margin:            1em auto;
+  padding:           0.5em 0.25em;
+  overflow:          auto;
+}
+
+.underline {
+  text-decoration:   underline;
+  }
+
+.propertyname,  .propertyName,  .property_name,  .property-name,
+.attributename, .attributeName, .attribute_name, .attribute-name,
+.booktitle,     .bookTitle,     .book_title,     .book-title,
+.functionname,  .functionName,  .function_name , .function-name {
+  font-style:       italic;
+  }
+
+.variablename,  .variableName,  .variable_name,  .variable-name,
+.directoryname, .directoryName, .directory_name, .directory-name,
+.pathname,      .pathName,      .path_name,      .path-name,
+.optionname,    .optionName,    .option_name,    .option-name {
+  font-family:      monospace;
+  font-size:        1.15em;
+  }
+
+.filename,     .fileName,     .file_name,     .file-name,
+.programname,  .programName,  .program_name,  .program-name,
+.computername, .computerName, .computer_name, .computer-name {
+  font-style:       italic;
+  }
+
+.menuitem, .menuItem, .menu_item, .menu-item,
+.url, .URL {
+  font-family:      monospace;
+  font-size:        1.15em;
+  }
+
+code {
+  font-size:1.2em;
+}
+.codesnippet,     .codeSnippet,     .code_snippet,    .code-snippet,
+.optionvalue,     .optionValue,     .option_value,    .option-value,
+.attributevalue,  .attributeValue,  .attribute_value, .attribute-value,
+.propertyvalue,   .propertyValue,   .property_value,  .property-value,
+.variablevalue,   .variableValue,   .variable_value,  .variable-value {
+  font-size:      1.15em;
+  font-family:    monospace;
+  white-space:    pre;
+  }
+
+.codesnippet,     .codeSnippet,     .code_snippet,    .code-snippet {
+  border:          1px dotted green;
+  }
+
+.codeblock, .codeBlock, .code_block, .code-block {
+  font-size:        1.15em;
+  font-family:      monospace;
+  white-space:      pre;
+  background-color: white;
+  color:            black;
+  border:           1px solid red;
+  margin:           1em auto;
+  width:            100%;
+  overflow:auto;
+  }
+
+.techterm, .techTerm, .tech_term, .tech-term {
+  border-bottom:1px dotted green;
+  color:#030;
+  background-color:#ffc;
+  }
+
+.keyword, .keyWord, .key_word , .key-word {
+  font-weight:      bold;
+  }
+
+.procedurelist, .procedureList, .procedure_list, .procedure-list {
+  }
+
+.notyet, .notYet, .not_yet, .not-yet,
+.incompletepage, .incompletePage, .incomplete_page, .incomplete-page,
+.pageincomplete, .pageIncomplete, .page_incomplete, .page-incomplete {
+  text-align:       center;
+  color:            red;
+  background-color: #ccc;
+  font-size:        1.3em;
+  padding:          0.5em;
+  margin:            0.25em auto;
+  width:            90%;
+  border:            1px solid green;
+  }
+
+.inlineList, .inline, .inLine, .in-line,
+.runin, .runIn, .run_in, .run-in {
+  display: inline; padding: 0; margin: 0.1em;
+  }
+
+.level1outline {
+  list-style-type:  decimal;
+  }
+
+.level2outline {
+  list-style-type:  lower-alpha;
+  }
+.level3outline {
+  list-style-type:lower-roman;
+  }

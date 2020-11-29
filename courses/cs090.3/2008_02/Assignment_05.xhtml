@@ -1,0 +1,118 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 5</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 5</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+      	For this assignment, you are to verify that the user has entered a valid Queens College email address on
+        the start page.
+      </div>
+
+      <h2>Project Description</h2>
+      <div>
+      	<p>
+        	Call <span class="functionName">Core.preventDefault()</span> to prevent the form from being submitted if the
+          user tries to submit the form without entering a valid QC email address. Use a regular expression to test the
+          information the user entered in the form to see if it is valid or not.
+        </p>
+        <p>
+          For this assignment define a valid email address as one that contains any mix of one or more word 
+          (<span class="codeSnippet">\w</span>) and dot (<span class="codeSnippet">\.</span>) characters followed by an
+          at sign (<span class="codeSnippet">@</span>), followed by any number of word characters followed by either
+          <span class="codeSnippet">qc.edu</span> or <span class="codeSnippet">qc.cuny.edu</span>. The address may
+          have any number of whitespace characters (<span class="codeSnippet">\s</span>) before and after the email
+          address, but nothing else. Neither the username (the part to the left of the <span class="codeSnippet">@</span>)
+          nor the hostname (the part to the right of the <span class="codeSnippet">@</span>) may begin or end with a dot.
+        </p>
+        <p>
+          If the email address is valid, the action page should display the user&rsquo;s email address in the text of a
+          paragraph, just as it did in Assignment 4.
+        </p>
+        <p>
+          If the email address is not valid, provide visual feedback to the user that the field is invalid, such as by
+          giving it a red border, and put the keyboard focus inside it.
+        </p>
+        <p>
+          Each time the submit handler is invoked, remove any error indicator from the field to let the user know that
+          their input has not been re-evaluated yet.
+        </p>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have tested your web pages, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;5</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

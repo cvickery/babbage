@@ -1,0 +1,7 @@
+#! /usr/local/bin/ksh
+
+for f in *.grade
+do
+  grep ${f/.grade/} ../Roster | head -n 1
+  print -- "         " $(grep "Assignment Grade" $f)
+done 

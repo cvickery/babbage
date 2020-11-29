@@ -1,0 +1,237 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 2</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 2</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          If you haven&rsquo;t done <a href="Assignment_01.xhtml">Assignment 1</a> yet, do so now. This assignment adds
+          new features to the first project.
+        </p>
+        <p>
+          This assignment gives you some practice with JavaScript statements and functions. The project does not do
+          anything useful (in fact, the result is a bit annoying to look at), but it gives you a chance to practice
+          several fundamental JavaScript coding techniques.
+        </p>
+        <p>
+          The end result of the project will be a web page that displays several paragraphs of text. The appearances of
+          these paragraphs will be controlled by two (or three) style sheets, and your JavaScript code will dynamically
+          change the style of the paragraphs, one at a time in a repeating cycle. The effect was demonstrated in class
+          on February 21. You can try <a href="../../TREE_Lab/index.xhtml">my version on babbage</a>. (<em>Note:
+          this is a temporary link.</em>)
+        </p>
+      </div>
+
+      <h2>Project Description</h2>
+      <div>
+        <h3>Set Up The Static Page</h3>
+        <p>
+          Change the <span class="tagName">title</span> of your index page to something meaningful, like
+          &ldquo;Revolving Paragraphs&rdquo; or &ldquo;Assignment 2&rdquo;. Change the <span class="tagName">h1</span>
+          tag&rsquo;s content to match the page&rsquo;s title.
+        </p>
+        <p>
+          Add five paragraphs of dummy text to your <span class="fileName">index.xhtml</span> file, inside the <span
+          class="variableName">content</span> <span class="tagName">div</span>. Get the dummy text from the <a
+          href="http://lipsum.com">Lorem Ipsum Generator at lipsum.com</a>. Go to the form in the lower right corner
+          of the page, click on the &ldquo;Generate Lorem Ipsum&rdquo; button, and copy the text of the five
+          paragraphs into your web page. You will have to put <span class="tagName">p</span> tags around each paragraph
+          to make them into real HTML paragraphs.
+        </p>
+        <p>
+          The page is pretty ugly as it is, with the paragraphs filling the entire width of the browser window. Create
+          a stylesheet named <span class="fileName">layout.css</span> in your site&rsquo;s <span
+          class="directoryName">css</span> directory, and put a link to it in the head of your index page, after the
+          <span class="tagName">title</span> element:
+        </p>
+        <p class="code_block">
+  &lt;link rel="stylesheet" type="text/css" href="css/layout.css" /&gt;
+        </p>
+        <p>
+          If you right-click on your <span class="directoryName">css</span> folder in Dreamweaver, you can select
+          New File from the dropdown menu; when you give it a name ending in <span class="code_snippet">.css</span>,
+          Dreamweaver will automatically know it is a stylesheet. You can take out the two lines it inserts at the
+          beginning of the file if you want to; they are not needed. (I like to put the name of the file in a comment
+          on the first line of all stylesheet and script files, but that is a personal preference.)
+        </p>
+        <p>
+          You can use the following CSS rule to center the paragraphs in the content <span class="tagName">div</span>
+          with 10% of the window width on each side and a one character high margin above each one. Feel free to use
+          a different rule, if you like. But you must do something to make the layout of the paragraphs better than the
+          default.
+        </p>
+        <p class="code_block">
+  #content p {
+    width: 80%;
+    margin: 1em auto;
+    }
+        </p>
+        <p>
+          Give the first two paragraphs the class name, <span class="codeSnippet">important</span>, and create a
+          second stylesheet named <span class="fileName">colors.css</span> with a rule that makes the text color
+          of elements with the important class red:
+        </p>
+        <p class="code_block">
+  .important {
+    color: red;
+    }
+        </p>
+        <p class="standout_block">
+          This code is not proper CSS because it does not specify the background color. That has nothing to do with
+          scripting, so it is acceptable for this assignment. However, I encourage you to figure out how to do it
+          &ldquo;right&rdquo; for the entire project.
+        </p>
+        <p>
+          Add another CSS rule to <span class="fileName">colors.css</span> so elements with class <span
+          class="codeSnippet">highlight</span> have a <span class="codeSnippet">background-color</span> of gray and a
+          <span class="codeSnippet">color</span> of white.
+        </p>
+        <p>
+          At this point the first two paragraphs should have red text on a white background, and the other three should
+          have black text on a white background. And the &ldquo;Need JavaScript&rdquo; heading from Assignment 1 should
+          not be displayed if JavaScript is enabled.
+        </p>
+
+        <h3>Set Up JavaScript</h3>
+        <p>
+          First a bit of housekeeping: use Dreamweaver to change the name of your script file from <span
+          class="fileName">assignment_01.js</span> to <span class="fileName">assignment_02.js</span>. If you do this
+          from within Dreamweaver, it will automatically update the link to it in <span
+          class="fileName">index.xhtml</span> for you.
+        </p>
+        <p>
+          You need a function that cycles through the paragraphs. Add code to your window.onload handler that
+          captures a Node List (array) referencing all the paragraphs in the web page by calling <span
+          class="codeSnippet">document.getElementsByTagName('p')</span> and saving the result in a global variable.
+        </p>
+        <p class="standout_block">
+          Optional: Try to figure out how to include just the paragraphs inside the <span
+          class="variableName">content</span> <span class="tagName">div</span> in your node list.
+        </p>
+        <p>
+          Create a function with a name of your choice (doNext, cycleIt, etc.) that increments two global variables,
+          <span class="variableName">thisParagraph</span> and <span class="variableName">lastParagraph</span>, modulo
+          the length of the paragraph array, each time it is called. For now, have the function write the values of
+          these two variables using the Firebug <span class="functionName">console.log()</span> function. In the
+          window.onload handler, check if there is more than one paragraph in the document, and set up for your
+          function to be called periodically. Since there are no parameters being passed to the function, you can set
+          this up either of two ways:
+        </p>
+        <ol>
+          <li class="codeBlock">
+  setInterval(doNext, 2500);
+          </li>
+          <li class="codeBlock">
+  setInterval('doNext()', 2500);
+          </li>
+        </ol>
+        <p>
+          Open the Firebug extension in Firefox, select the Console tab, and verify that your script runs and
+          displays the correct values.
+        </p>
+
+        <h3>Implement The Animation</h3>
+        <p>
+          Now copy the <span class="functionName">hasClass()</span>, <span class="functionName">addClass()</span>, and
+          <span class="functionName">removeClass()</span> functions that are defined in the textbook starting on page 87.
+          The code in the book has to be altered slightly: leave &ldquo;Core.&rdquo; off the function names, and omit the
+          semicolon at the end of each function definition.
+        </p>
+        <p>
+          Add code to your interval function to add and remove the class name, <span
+          class="codeSnippet">highlight</span>, to the appropriate paragraphs each time it is called:
+        </p>
+        <p class="codeBlock">
+  removeClass(paragraphs[lastParagraph], 'highlight');
+  addClass(paragraphs[thisParagraph], 'highlight');
+        </p>
+        <p>
+          When you have your page working properly using Firefox, either remove or comment out the calls to
+          <span class="functionName">console.log()</span> and test your site using Internet Explorer, Opera, and
+          Safari.
+        </p>
+        <p class="standoutBlock">
+          Click the XHTML and CSS links at the bottom of the page, which will submit it to the W3C Validators to be
+          sure both your XHTML and CSS are perfectly valid. Make any fixes needed to get perfect ratings from both
+          validators.
+        </p>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have built and tested your web page, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;2</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a 
+        href="../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

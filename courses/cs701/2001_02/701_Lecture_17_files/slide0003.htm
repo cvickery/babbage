@@ -1,0 +1,177 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 17</title>
+<meta name=Description content="2-Apr-01: I/O Redirection">
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0003.htm');   
+  else
+    parent.location.href = "../701_Lecture_17.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=98 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=200 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=105 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=138 height=33 colspan=2></td>
+  <td width=200 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=200 height=33 align=center><font face="Times New Roman" size=5>I/O
+    Redirection</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=137 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=28 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=190></td>
+  <td width=403 height=190 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=9 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=183 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=34 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=10 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=29 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=383 height=21 colspan=16><font face="Times New Roman" size=3>Each
+    process uses file descriptors (<i>fd</i>s) 0, 1, 2 for</font><br>
+    </td>
+    <td width=3 height=21></td>
+   </tr>
+   <tr>
+    <td width=404 height=1 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=347 height=21 colspan=14><font face="Times New Roman" size=3>standard
+    in, standard out, and standard error.</font><br>
+    </td>
+    <td width=39 height=21 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=404 height=5 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=312 height=21 colspan=12><font face="Times New Roman" size=3>The <i>open()</i>
+    system call returns a new <i>fd</i>.</font><br>
+    </td>
+    <td width=74 height=21 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=404 height=5 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=301 height=18 colspan=10><font face="Times New Roman" size=2>Numerically,
+    the next-largest unused integer.</font><br>
+    </td>
+    <td width=64 height=18 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=404 height=5 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=333 height=18 colspan=12><font face="Times New Roman" size=2>This
+    sequence will redirect <i>stdin</i> for the executing</font><br>
+    </td>
+    <td width=32 height=18 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=404 height=1 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=55 height=18 colspan=6><font face="Times New Roman" size=2>process:</font><br>
+    </td>
+    <td width=310 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=404 height=4 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=65 height=16 colspan=5><font face=Arial size=1><span
+    style="mso-spacerun: yes"> </span>close( 0 );</font><br>
+    </td>
+    <td width=291 height=16 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=404 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=248 height=16 colspan=6><font face=Arial size=1><span
+    style="mso-spacerun: yes"> </span>int stdin_fd = open( afile, O_RDONLY );</font><br>
+    </td>
+    <td width=108 height=16 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=404 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=72 height=14 colspan=7></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=320 height=14 colspan=10><font face="Times New Roman" size=1>The <i>open(
+    )</i> call returns 0 because that is the smallest unused <i>fd</i>.</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=32 height=190></td>
+ </tr>
+ <tr>
+  <td width=475 height=59 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

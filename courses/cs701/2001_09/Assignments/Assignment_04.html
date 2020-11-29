@@ -1,0 +1,437 @@
+<html><head><title>Assignment 4</title>
+
+</head>
+<body>
+<center>
+<h1>The Ouch Shell</h1>
+<h2>Version 2.x</h2>
+</center>
+
+<h2>Introduction</h2>
+
+  In this assignment you will continue development of a Unix shell
+  program, begun in Assignment 3.  In this assignment, you will build
+  the general structure for an interactive shell, extending the -c
+  option you wrote for Assignment 3.  Future assignments will add
+  successively more features to the interactive shell.
+
+<h2>Project Management</h2>
+
+  I assume that all files you wrote for Assignment 3 had RCS version
+  numbers in the range 1.1 to 1.x, where x might vary from one file to
+  another.  If that is not the case, you will need to create a new
+  project directory and check in the final version of each Assignment 3
+  file as the initial versions of the files for this assignment.  If you
+  need to do this, be sure to edit out previous $Id$ and $Log$ sections
+  of the files before checking them in to the new RCS subdirectory.  But
+  if none of your files have version numbers 2.1 or above, you don't
+  have to worry about this: Just use the same project directory you used
+  for Assignment 3.<p>
+
+  All files for this assignment are to have version numbers in the range
+  2.1 through 2.x.  Check out each file from Assignment 3 for editing
+  and, without making any changes, check it in again as version 2.1.
+  For example, you would use the following commands for Makefile:<p>
+
+  <pre>
+    % co -l Makefile
+    % ci -f -r2.1 Makefile
+    &gt; No changes.  Starting work on Assignment 4.
+    .
+    %
+  </pre>
+
+  The -r option specifies the revision number you want to use, and the
+  -f option forces the check in to succeed even though the file hasn't
+  been changed.  Normally, ci won't let you check in a file if you
+  haven't actually changed anything in it.<p>
+
+  Future assignments will use version numbers 3.x, 4.x, etc.<p>
+
+<h2>Multiple Source Modules</h2>
+
+  Starting with this assignment, you are required to work with multiple
+  source modules.  There is to be a common header file named
+  <i>ouch.h</i> which will be included in all other source modules for
+  the project.  Put all #include for system header files (stdio.h, etc.)
+  in here, along with function prototypes, etc. for the project.  Be
+  sure to code this header file so it cannot accidentally be included
+  recursively.<p>
+
+  The main() method is to be defined in a file named <i>ouch.cc</i>. 
+  For this assignment you will be coding the following methods, each of
+  which is to be in its own .cc file:<p>
+
+<table>
+  <tr>
+  <td width=10%>&nbsp;
+  <td>
+    <table border=1 cellpadding=5>
+    <tr>
+      <th>Function
+      <th>File Name
+      <th>Purpose
+
+    <tr>
+      <td><i>getCommandLine()</i>
+      <td>cmd_line.cc
+      <td>Prints a prompt string and reads an entire command line.
+    
+    <tr>
+      <td><i>getSubcommands()</i>
+      <td>subcmds.cc
+      <td>Breaks a command line into sub-commands.
+
+    <tr>
+      <td><i>tokenize()</i>
+      <td>tokenize.cc
+      <td>Breaks a subcommand into tokens.
+
+    <tr>
+      <td><i>expandToken()</i>
+      <td>expand.cc
+      <td>Does variable substitutions and pattern matching for a token.
+    
+    <tr>
+      <td><i>executeCommand()</i>
+      <td>exec_single.cc
+      <td>Executes a single command.
+
+  </table>
+</table>
+
+<h2>Requirements for Version 2.x</h2>
+
+Each function description starts with the function prototype for the
+function.
+
+<h3>getCommandLine()</h3>
+
+<pre>
+    int getCommandLine( char *buf, int max );
+</pre>
+
+  If the value of the environment variable "PS1" is set to anything, use
+  that as the prompt string to display before reading the command line
+  from the user.  If PS1 is not set, print "no-prompt&gt; " as the
+  prompt string.<p>
+
+  Use <i>fgets()</i> to read a command line from the user into
+  .<i>buf</i>  If a command line ends with a backslash (\), read another
+  command line and append it to whatever you have read so far.  When
+  reading continuation lines, use the value of "PS2" as the prompt
+  string if it is set, and use the string "no-prompt&gt;&gt; " if PS2 is
+  not set.  Never store more than  <i>max</i> bytes into <i>buf</i>,
+  including the end-of-string '\0'.<p>
+
+  This function returns 0 if it is successful.  It should never fail,
+  but would return -1 if it did.
+
+<h3>getSubCommands()</h3>
+
+<pre>
+    subcommand_t* getSubcommands( char *buf );
+</pre>
+
+  This function receives a complete command line (the one returned by
+  <i>getCommandLine()</i>), and returns a pointer to the head of a
+  linked list of structures.  The structure type includes a char*
+  pointing to a complete command, and a char that contains the
+  character that terminated the command, defined like this:
+
+  <pre>
+      struct subcommand_t
+      {
+        char          *cmdString;
+        char          termChar;
+        token_t       *tokens;
+        subcommand_t  *next;
+      };
+    </pre>
+
+  The <i>tokens</i> field of this structure will be filled in with the
+  result of a subsequent call to <i>tokenize()</i>.<p>
+
+  The terminating character will be removed from the command string by
+  this function, and returned in the <i>termChar</i> field of the
+  subcommand_t structure.  Possible terminating characters are ';',
+  '&', '|', '\0', and possibly other characters to be added in future
+  versions of the shell.  (For example, <i>ksh</i> lets you type a
+  subcommand inside parentheses, which makes the command run in a
+  "subshell."  The terminating character would be ')' in that case.)<p>
+
+  You need to code this function so it does not get fooled by
+  terminating characters that appear inside strings or which are escaped
+  by backslashes.  For example, the following is all one subcommand,
+  terminated by '\0':<p>
+  
+  <pre>
+      echo 'Semicolons (;) & pipes (|)' \& " ||| " are nice.
+  </pre>
+  
+  There are three quote characters this function should recognize:
+  single ('), double ("), and backquote (`).  The function does not have
+  to recognize nested quotes, like "The character '!' is nice."<p>
+
+  The memory for the linked list will have to be allocated dynamically,
+  but the cmdString pointers may be pointers into the <i>buf</i>
+  parameter.  That is, this function may modify <i>buf</i>, much the way
+  <i>strtok()</i> modifies the strings it tokenizes.<p>
+
+<h3>tokenize()</h3>
+
+<pre>
+  token_t *tokenize( const subcommand_t *cmd );
+</pre>
+
+  This function returns the head of a linked list of token_t structures
+  defined as follows:
+
+  <pre>
+    struct token_t
+    {
+      char          *token;
+      token_tag_t   tag;
+      token_t       *next;
+    };
+</pre>
+
+  The tag for each token with be taken from the following list of
+  enumerated values:
+  
+<table>
+  <tr>
+  <td width=10%>&nbsp;
+  <td>
+    <table border=1 cellpadding=5>
+    <tr>
+      <th>Value
+      <th>Meaning
+    <tr>
+      <td><b>T_default</b>
+      <td>A token that is neither a string nor a redirection operator.
+
+    <tr>
+      <td><b>T_double_quote</b>
+      <td>A token that was enclosed in double quotes (<b>"</b>).  The double
+      quotes are not part of the token.
+
+    <tr>
+      <td><b>T_single_quote</b>
+      <td>A token that was enclosed in single quotes (<b>'</b>).  The
+      single quotes are not part of the token.
+
+    <tr>
+      <td><b>T_back_quote</b>
+      <td>A token that was enclosed in back quotes (<b>`</b>).  The
+      back quotes are not part of the token.
+
+    <tr>
+      <td><b>T_redirect_in</b>
+      <td>A token for input redirection (<b>&lt;</b>).
+
+    <tr>
+      <td><b>T_redirect_out</b>
+      <td>A token for output redirection (<b>&gt;</b>).
+
+    <tr>
+
+      <td><b>T_redirect_append</b>
+      <td>A token for output redirection with the append option
+      (<b>&gt;&gt;</b>).
+
+    <tr>
+      <td><b>T_redirect_clobber</b>
+      <td>A token for output redirection with the "clobber" option
+      (<b>&gt;!</b>).
+
+  </table>
+</table><p>
+
+  This function does not modify the string passed to it because the
+  character that terminates one token might be the beginning of the
+  next one, so there is no easy way to instert '\0' characters to break
+  up the original string.  Rather, the memory for the tokens has to be
+  allocated dynamically.<p>
+  
+  Note that strings enclose tokens.  The <i>echo</i> command listed
+  above contains six tokens:
+
+  <ol>
+    <li>"echo"
+    <li>"Semicolons (;) & pipes (|)"
+    <li>"&"
+    <li>" | | | "
+    <li>"are"
+    <li>"nice."
+  </ol>
+
+  The quotes in the list above are not part of the tokens; they are
+  there to show you where there are spaces inside tokens.  This
+  function  should recognize the I/O redirection operators as tokens
+  even if they are not separated from other tokens by whitespace.<p>
+
+  Although you can't use this code directly, the function [&nbsp;<a
+  href="./strtok2.cc.html">strtok2()</a>&nbsp;] might give you some
+  ideas how to work on the design of this function.<p>
+
+<h3>expandToken()</h3>
+
+<pre>
+    char *expandToken( const char *token )
+</pre>
+
+    This function is called by the main program for each token
+    that is of type T_default or T_double_quote.  If the token is the
+    string "$?", this function substitutes a string representing the
+    previous command's result code for the token.  Otherwise, this
+    function returns the same pointer that was passed to it.  Since
+    tokens are allocated memory dynamically, this function must free the
+    pointer passed to it if it does perform a substitution.
+
+<h3>executeCommand()</h3>
+
+<pre>
+    int executeCommand( subcommand_t *cmd );
+</pre>
+
+    This function executes a single command, which might be either a
+    builtin command or an external command.  It returns the "result code"
+    for the command, which is the exit code for external commands, or
+    the the return code for builtin commands.  If the command is neither
+    an external command nor a builtin command, this function writes an
+    error message to stderr and returns the value 1.
+
+<h2>Development Strategy</h2>
+
+For Version 2.x of this project, your program is to implement <i>only
+the following features <b>and no more!</b></i>  You will lose credit if
+this version of your program does anything more than the following:
+
+<ul>
+  <li>Do a complete implementation of <i>getCommandLine()</i> as described
+  above.
+  <li>Code <i>getSubcommands()</i> so that it simply returns the command
+  line passed to it.  That is, it doesn't actually break lines into
+  subcommands at all.  When testing your program, don't type in
+  subcommands.
+  <li>Code <i>tokenize()</i> so that it recognizes only
+  whitespace-separated tokens and does not handle quotes or redirection.
+  The full version of this function will be part of Version 3.x of the
+  assignment.  <b>Note:</b> If you have already coded a version of
+  <i>tokenize()</i> that does more than this requirement by the time you
+  read this web page, you may leave your code intact.  But it will have
+  to match the definition of <i>tokenize()</i> described above for
+  Version 3.x.
+  <li>Code <i>expandToken()</i> so it just returns the pointer passed to
+  it.
+  <li>Code <i>executeCommand()</i> so it generates proper values of the
+  traditional variables <i>argc</i> and <i>argv</i> suitable for passing
+  to a <i>main()</i> function.  If argv[0] is the name of an executable
+  file (use your previous version of <i>findExecutable()</i>), execute
+  the command.  Code <i>wait()</i> so that this function determines the
+  command's exit code, and return that value as the return value for
+  this function.  If the command does not name an executable file, print
+  a "command not found" message and return 1.
+</ul>
+
+Recode <i>main()</i> so that something like the following gets executed
+if the user doesn't type any command line options:<p>
+
+<pre>
+    int result;
+    char inBuf[ 1024 ];
+    while ( true )
+    {
+      //  Read a command line
+      result = getCommandLine( inBuf, sizeof( inBuf ) );
+      if ( result != 0 )
+      {
+        fprintf( stderr, "Error reading command line\n" );
+        continue;
+      }
+      fprintf ( stderr, "Result: %d\nStrlen: %d\nCommand: %s\n", 
+                        result, strlen( inBuf ), inBuf );
+      
+      //  Break line into subcommands and tokenize each one
+      subcommand_t *cmd_list = getSubcommands( inBuf );
+      if ( 0 == cmd_list )
+        continue; //  Empty command line
+      subcommand_t *cmd = cmd_list;
+      while ( cmd )
+      {
+        token_t *token_list = tokenize( cmd );
+        if ( 0 == token_list )
+          continue; // Not empty, but no tokens
+        cmd->tokens = token_list;
+        // execute it
+        exitCode = executeCommand( cmd );
+        cmd = cmd->next;
+      }
+    }
+</pre><p>
+
+The main purpose of Version 2.x of the assignment is to be sure your
+project is set up with the proper source modules and Makefile.  Be sure
+"make clean" leaves your project directory with nothing but the RCS
+subdirectory in it, be sure that "make" builds program correctly
+after you run "make clean,", be sure "make" recompiles only those files
+you have edited since the last make, and be sure that the sequence
+"touch ouch.h ; make" recompiles everything before linking.<p>
+
+Be sure to test your program carefully to be sure it works.  In
+particular, be sure nothing happens in interactive mode if the user
+types an empty command line.  Be sure prompt strings are handled
+correctly; you will probably find that the PS1 and PS2 variables are
+already set up if you log into a Linux account, and the prompt printed
+for PS1 will not be "pretty."  But on forbin you will have to set up
+your own values for PS1 and PS2.
+
+<h2>Due Date and Grading Criteria</h2>
+
+The due date for this assignment is midnight Thursday, December 6, but
+no late points will be deducted for assignments submitted as late as
+midnight December 13.  This assignment will not be accepted after
+December 13.<p>
+
+The assignment will be graded on a 5-point scale, with each of the
+following counting approximately equally:
+
+<ul>
+
+    <li>Does the tar file contain a subdirectory for the project, is the
+    project directory empty except for an RCS subdirectory, and possibly
+    a file named README (spelled and capitalized exactly like that)?
+
+    <li>Does the following procedure build the ouch application with no
+    warnings or error messages:  Checkout a copy of Makefile, locked
+    for editing; type the command "(g)make depend," and check the
+    Makefile back in; type the command "(g)make."
+    
+    <li>Does "touch ouch.h; (g)make" recompile everything, and does
+    "(g)make clean" remove everything from the project directory other
+    than the RCS subdirectory and possibly the README file?  Do all the
+    files for the project have RCS version numbers in the 2.x range?
+    
+    <li>Are the source modules named in the assignment handout all
+    present, and are all required functions defined using the proper
+    function prototypes?  Are the source modules coded and documented
+    according to the coding guidelines for the course?
+
+    <li>Does the program manage PS1 and PS2 environment variables
+    correctly, does the program interactively handle a sequence of
+    simple command lines (external commands with any number of
+    arguments; empty command lines; commands with names of nonexistent
+    files) correctly; and does the program process the -c command line
+    option correctly?  Do both subcommands entered on the command line
+    and those entered interactively receive the correct environment?  In
+    interactive mode, does a backslash at the end of a line allow the
+    user to continue a command line correctly?
+
+</ul>
+
+<b>Note: </b>Your program may implement more features than specified
+here, and that is okay.  But only the features listed here will be
+examined for this assignment.
+
+<hr> </body></html>

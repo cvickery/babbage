@@ -1,0 +1,51 @@
+<html><head><title>Character I/O</title></head>
+<body>
+<h1> Character I/O Program</h1>
+
+This program illustrates how you can read and write individual
+characters as the user types them.  For each character the user
+types, the program prints the ASCII code in hexadecimal followed
+by a space.  If the program receives the newline character,
+it writes a carriage return and linefeed to the screen as well as
+the hexadecimal code for the newline.<p>
+
+<pre>
+     #include &lt;fcntl.h&gt;
+     #include &lt;stdio.h&gt;
+     #include &lt;signal.h&gt;
+     #include &lt;termios.h&gt;
+     #include &lt;unistd.h&gt;
+     #include &lt;sys/types.h&gt;
+     
+     int
+     main()
+     {
+       struct termios termiosBuf;
+       char charBuf;
+       char outBuf[2];
+       char hexBuf[] = "0123456789ABCDEF";
+       int fd = open( "/dev/tty", O_RDWR );
+       printf( "fd is %d\n", fd );
+     
+       tcgetattr( fd, &termiosBuf );
+       termiosBuf.c_lflag &= ~( ECHO | ICANON | IEXTEN );
+       termiosBuf.c_oflag &= ~( OPOST );
+       termiosBuf.c_cc[VMIN] = 1;
+       termiosBuf.c_cc[VTIME] = 0;
+       tcsetattr( fd, 0, &termiosBuf );
+     
+       for ( ;; )
+       {
+         read( fd, &charBuf, 1 );
+         outBuf[0] = hexBuf[ (charBuf & 0xF0) &gt;&gt; 4 ];
+         outBuf[1] = hexBuf[ (charBuf & 0x0F) ];
+         write( fd, outBuf, 2 );
+         if ( charBuf == '\n' )
+           write( fd, "\r\n", 2 );
+         else
+           write( fd, " ", 1 );
+       }
+     }
+</pre>
+<hr></body></html>
+

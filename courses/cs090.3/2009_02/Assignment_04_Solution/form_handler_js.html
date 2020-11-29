@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+                          "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>form_handler.js</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body {
+        background-color: #ffc;
+        font-family:      sans-serif;
+        color:            #661;
+        margin:           2em;
+        }
+      h1 {
+        text-align:       center;
+        }
+      pre {
+        background-color: #fff;
+        color:            #111;
+        margin:           1em;
+        border:           1px solid red;
+        }
+      #footer {
+        text-align:       center;
+        font-size:        0.7em;
+        }
+  </style>
+</head>
+<body>
+	<h1>form_handler.js</h1>
+	<hr>
+	<pre>
+// form_handler.js
+/* Vickery's version of CS90.3 Assignment 4, Spring 2009.
+ * We went over this code in class on April 2 and 7.
+ *
+ * Updates April 22, 2009
+ *  1.  Removed checkForEnter function, and added blur listeners to
+ *      the elements to be validated instead.
+ *  2.  Added Node.TEXT_NODE definition if undefined (for use with
+ *      IE, for example.
+ *  3.  Removed call to focus() when validating an element fails because
+ *      some browsers went into an endless loop when focus() of an
+ *      invalid element caused a blur event on another invalid element.
+ *  4.  Attempt to submit with invalid stuff calls focus() on a maximum
+ *      of one invalid element.
+ *    
+ */
+
+//  Enable use of the console.log(), available with Firefox/Firebug,
+//  Webkit, and Chrome (which is Webkit anyway).
+if (typeof opera !== "undefined")
+{
+  //  Opera
+  window.console = opera;
+  console.log = opera.postError;
+}
+else if (typeof window.console === "undefined")
+{
+  //  All others
+  window.console = {};
+  window.console.log = window.alert;
+}
+
+//  Add support for Node.TEXT_NODE if missing.
+if (typeof Node === "undefined")
+{
+  Node = { TEXT_NODE: 3 } ;
+}
+else console.log("typeof Node is "+typeof Node);
+//  This application: validate the email address and password 
+//  that a user enters on a form.
+Core.start(
+  (
+    //  anonymous()
+    //  ----------------------------------------------------------
+    /*  Encapsulate the application in an anonymous self-executing
+     *  function to avoid polluting the global namespace.
+     */
+    function()
+    {
+
+      //  Global variables for the application.
+      var emailInput = null;
+      var passwdInput = null;
+      
+      //  validateElement()
+      //  -----------------------------------------------------
+      /*  Given a node in the DOM ('element') and a regular expression
+       *  ('regex'), test the node's value against regex, and adjust its
+       *  class, its isValid setting, and the visibility of its
+       *  associated error message.
+       *  Notes: The isValid property of the node is added to the
+       *  element's object here automatically if it does not already
+       *  exist; it will be checked by the submit listener. The errorMsg
+       *  property has to have been created by init(); it is a reference
+       *  to the DOM element that holds the error message associated
+       *  with this element.
+       */
+        function validateElement(element)
+        {
+          //  Ignore elements that do not have a regex
+          if ( typeof element.regex === "undefined" ) return;
+          
+          //  Validate the element
+          if ( element.regex.test(element.value) )
+          {
+            element.isValid = true;
+            Core.addClass(element.errorMsg, 'not-shown');
+            Core.removeClass(element, 'error');
+            Core.addClass(element, 'is-valid');
+          }
+          else
+          {
+            element.isValid = false;
+            Core.removeClass(element.errorMsg, 'not-shown');
+            Core.removeClass(element, 'is-valid');
+            Core.addClass(element, 'error');
+          }
+        }
+
+      //  changeListener()
+      //  -------------------------------------------------------------
+      /*  Validate the element whenever its value changes. */
+        function changeListener(evt) { validateElement(this); }
+
+      //  submitListener()
+      //  -------------------------------------------------------------
+      /*  Prevents the form from being submitted if either of the input
+       *  elements has not yet been approved by the validateElement()
+       *  function.
+       */
+        function submitListener(evt)
+        {
+          evt = evt ? evt : window.event ;
+          
+          
+          //  Block form submission if either input has not passed valiation.
+          if ( typeof emailInput.isValid === "undefined" ) validateElement( emailInput );
+          if ( typeof passwdInput.isValid === "undefined" ) validateElement( passwdInput );
+          if ( emailInput.isValid &amp;&amp; passwdInput.isValid )
+          {
+            //  Assignment requirement: display a special message if the email address
+            //  is a valid QC student email address.
+            var matches = /^([a-z]+)\d{3,3}@qc(\.cuny)?\.edu$/.exec(emailInput.value);
+            if (matches)
+            {
+              var initial = matches[1].substring(0,1);
+              var name = matches[1].substring(1);
+              name = name.charAt(0).toUpperCase() + name.substring(1);
+              alert( 'Hello ' + initial.toUpperCase() + '. ' + name);
+            }
+              return;
+          }
+          alert('submit with invalid stuff');
+          if (! emailInput.isValid) emailInput.focus();
+          else passwdInput.focus();
+          Core.preventDefault(evt);
+        }
+      
+      var obj =
+      {
+        //  init()
+        //  ------------------------------------------------------
+        /*  Input elements get three additional properties:
+         *    isValid:  set by the change listener for the element
+         *              to indicate whether it is valid or not.
+         *    errorMsg: The next "real" element in the DOM after
+         *              this one. (Skip over whitespace text nodes
+         *              between elements.)
+         *    regex:    Regular expression for validating the element.
+         *
+         *  Email rules:
+         *    - Ignore whitespace before and/or after the address
+         *    - The recipient name may contain letters, digits,
+         *      underscores, hyphens, and dots; it must not
+         *      start or end with a hyphen or dot, and must have at
+         *      least one letter.
+         *    - Likewise for the host name, with the added proviso
+         *      that it must end in a dot followed by 2-4 letters.
+         *      (Strictly speaking, underscores should not be allowed
+         *      in host names.)
+         *  Password rules:
+         *    - Ignore whitespace at beginning and/or end.
+         *      require a non-space character (\S) at each end of
+         *      the password.
+         *    - Total password length must be six or more characters.
+         */
+        init: function()
+        {
+          //  setup submit handling
+          var theForm = document.getElementsByTagName('form')[0];
+          Core.addEventListener(theForm, 'submit', submitListener);
+          
+          //  setup email validation
+          emailInput = document.getElementById('user-text');
+          /* Next two lines find the span following the input without
+           * the use of an id for it. Deals with the possibility that
+           * there might be (whitespace) text nodes between the input
+           * element and the error message span. */
+          var msg = emailInput.nextSibling;
+          while (msg.nodeType === Node.TEXT_NODE) msg = msg.nextSibling;
+          emailInput.errorMsg = msg;
+          emailInput.regex = /^\s*\w[\w\-\.]*\w@\w[\w\-\.]*\w+\.[a-z]{2,4}\s*$/i;
+          Core.addEventListener(emailInput, 'change', changeListener);
+          Core.addEventListener(emailInput, 'blur', changeListener);
+          
+          //  setup passwd validation
+          passwdInput = document.getElementById('passwd');
+          msg = passwdInput.nextSibling;
+          while (msg.nodeType === Node.TEXT_NODE) msg = msg.nextSibling;
+          passwdInput.errorMsg = msg;
+          passwdInput.regex = /^\s*\S.{4,}\S\s*$/;
+          Core.addEventListener(passwdInput, 'change', changeListener);
+          Core.addEventListener(passwdInput, 'blur', changeListener);
+        }
+      };
+      return obj;
+    }
+  )()
+);
+
+</pre>
+<div id="footer">
+
+  <p>This web page was generated by <cite><a
+    href="http://babbage.cs.qc.cuny.edu/Miscellany/Utils/mkhtml.html">mkhtml</a></cite> on
+    2009-04-22<br />
+    Copyright &copy; 2002&ndash;2009 by Christopher Vickery<br />
+    Licensed under a <a rel="license"
+    href="http://creativecommons.org/licenses/by-sa/2.5/">Creative
+    Commons Attribution-ShareAlike 2.5 License</a><br />
+    <a href="http://validator.w3.org/check?uri=referer">HTML</a> -
+    <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+  </p>
+</div>
+</body></html>

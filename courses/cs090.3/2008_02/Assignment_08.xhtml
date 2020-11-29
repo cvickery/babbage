@@ -1,0 +1,511 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 8</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 8</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This is the final project for the semester. It is open&ndash;ended: there is not enough time
+          for you to complete the entire application, but it is structured as a sequence of steps that
+          will take you as close to the complete project as you have time for. At each step, you will
+          add a feature to your project. You will not receive credit for partially completing a feature,
+          but after the first few mandatory components are working, you may implement additional features
+          in any sequence that works for you. Just be sure each feature is completely tested and working
+          before moving on to another feature.
+        </p>
+        <p class="standout_block">
+          Each time you complete work on a feature, make a backup copy of your complete web site. At the end, discard any
+          work you did on an incomplete feature, and restore your last backup to your <span class="directoryName">My
+          Website</span> directory.
+        </p>
+      </div>
+
+      <h2>Project Description</h2>
+      <div>
+        <p>
+          The overall goal of the project is to provide a mechanism for people to submit applications
+            to serve on Academic Senate Committees at Queens College. You have already seen that your
+            database has a table for people, containing their QC email address, first name, and last
+            name. This table also has columns for information about the person: how to contact them,
+            whether they are a student, faculty member, or graduate student, and what department they
+            are affiliated with. For faculty, the departmental affiliation is the academic department
+          they are a member of; for students, the department depends on their major.
+        </p>
+        <p>
+          The purpose of this assignment is to provide a means for people to enter or update the information
+            about themselves in preparation for filling out an application for membership on Senate committees.
+            The project uses the "login or register" model: to use the site, users must either login
+            using their QC email and password or register with the site so they can then log in. The
+            site must work with JavaScript disabled, but if JavaScript is available, the site is to use
+            AJAX techniques to increase the responsiveness of the user interactions. Since this is a
+            scripting course, we will develop the AJAX functionality first, while making sure our implementation
+            will not interfere with implementation of a non&ndash;JavaScript version at some unidentified
+          time in the future.
+        </p>
+        <p>
+          The user will see only one web page: the <span class="fileName">index.xhtml</span> file in the project
+          directory, but there will actually be other PHP files in the project directory that will handle various
+          aspects of the AJAX interactions for the assignment. These files will be described in the development steps
+          below.
+        </p>
+      </div>
+
+      <h2>Development Steps</h2>
+      <ol class="whitebox">
+        <li>
+          <h5>Set up the project directory.</h5>
+          <p>
+            Create a directory named <span class="directoryName">Final_Project</span>, capitalized and spelled just like
+            that, for this project. Copy the <span class="fileName">index.xhtml</span> and <span
+            class="fileName">loginOrRegister.xhtml</span> files from Assignment 7 into this directory. Edit the index
+            page so that it loads a new script file, named <span class="fileName">final_project.js</span> (in your
+            scripts directory) instead of the one you used for Assignment 7. Remove the &ldquo;You need
+            JavaScript&rdquo; message from the index page, and remove the &ldquo;have JavaScript validate the
+            address&rdquo; checkbox from the form. Copy your script file from Assignment 7 to <span
+            class="fileName">final_project.js</span>, and edit it so that the submit event listener always calls <span
+            class="functionName">Core.preventDefault()</span> and does nothing else.
+          </p>
+
+          <p>
+            At this point, if you disable JavaScript, your project should have essentially the same functionality as
+            Assignment 7 did. Use the Web Developer&rsquo;s toolbar to disable all JavaScript, fill in an email address
+            in the form, and click the submit button: the form data should be submitted to loginOrRegister.xhtml, which
+            should show the proper message, depending on whether the user&rsquo;s email address is valid and in the
+            database or not.
+          </p>
+
+          <p>
+            If you enable JavaScript, submitting the form should cause nothing to happen, because <span
+            class="functionName">Core.preventDefault()</span> is always called when the form is submitted.
+          </p>
+
+          <p>
+            When you have this step completed and tested, make a copy of the entire project into a directory named <span
+            class="directoryName">Final_Project.1</span>; this is your first backup copy for the assignment.
+          </p>
+        </li>
+
+        <li>
+          <h5>Establish an XMLHttpRequest Framework</h5>
+          <p>
+            Add a new file to the project, named <span class="filename">ajax.php</span>. Put
+            &lt;php?&nbsp;&hellip;&nbsp;?&gt; tags in the file, and an <span class="functionName">echo</span> statement
+            in it that displays some useful information, such as the word &ldquo;hello.&rdquo;
+          </p>
+          <p>
+            In your index page, add either a paragraph or a div under the form with no content. (The validator will give
+            a warning about this, which you can eliminate by putting a non-breaking space &mdash;&nbsp;&amp;nbsp;&nbsp;&mdash;
+            inside the paragraph or div. Use an id on this element so it will be easy to locate using JavaScript; I used the
+            id of <span class="variableName">placeholder</span> in the code below.
+          </p>
+          <p>
+            For the XMLHttpRequest, you will need an event handler (not listener) to process the information that comes back
+            after you send the request. For this step, set up a function that locates the paragraph or div you just set up,
+            and writes some text to it:
+          </p>
+          <p class="code_block">
+  var request = null;
+  var stateChangeHandler = function()
+  {
+    if (request.readyState == 4 &amp;&amp; request.status == 200)
+    {
+      document.getElementById('placeholder').firstChild.nodeValue = "Not Hello";
+    }
+    else
+    {
+      console.log("Request not complete yet: " + request.readyState);
+    }
+  }
+          </p>
+          <p>
+            The above code would go inside the &ldquo;Anonymous self-executing function that returns
+            an object that contains an init() method.&rdquo; The <span class="variableName">request</span> variable
+            will be initialized using a call to <span class="functionName">XMLHttpRequest()</span>. How
+            to do this is described starting on page 306 in the textbook.
+          </p>
+          <p>
+            For this assignment, you may assume the user will be using a browser that supports the
+            <span class="functionName">XMLHttpRequest()</span> function rather the old proprietary Microsoft versions. Testing
+            suggests that the code in the book does not work because of the sequence of operations given on page 311. Here is
+            code that will successfully initiate an XMLHttpRequest transaction using the POST method, using your
+            <span class="fileName">ajax.php</span> file as the target:
+          </p>
+          <p class="code_block">
+  request = new XMLHttpRequest();
+  request.onreadystatechange = stateChangeHandler;
+  request.open('POST', './ajax.php', true);
+  request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+  request.send('request=anything');
+          </p>
+          <p>
+            The string sent using the <span class="functionName">send()</span> function is arbitrary at this point, but the
+            example shows how to mimic sending some form data with the name equal to <span class="variableName">request</span>
+            and the value of that variable being the string &ldquo;anything.&rdquo;
+          </p>
+          <p>
+            The XMLHttpRequest code should be executed when the user submits the form on the index page: it goes inside your
+            submit listener function, after the call to <span class="functionName">Core.preventDefault()</span> has been
+            executed.
+          </p>
+          <p>
+            If you have everything set up right, submitting the form should cause some text to appear under the form (&ldquo;Not
+            Hello&rdquo; in the code given above) when the user clicks the Login or Register button. If you open the Firebug
+            console, you might (or might not) see some &ldquo;Request not complete&rdquo; messages as the request goes through
+            the various states up to <span class="variableName">readyState</span> 4.
+          </p>
+          <p>
+            Test and edit your code until it works. At this point you have established that you can do a round&ndash;trip
+            exchange with <span class="fileName">ajax.php</span>, but you haven&rsquo;t actually exchanged any data between
+            the JavaScript and PHP code yet. That comes next. First, make a complete copy of your project in a directory
+            named <span class="directoryName">Final_Project.2</span> for backup.
+          </p>
+        </li>
+        <li><h5>Verify Data Transfer to JavaScript from PHP</h5>
+          <p>
+            This step is trivial, but important: verify that what is echoed by <span class="fileName">ajax.php</span> is in
+            fact passed back to the JavaScript XMLHttpRequest handler. Change just one line of code:
+          </p>
+          <p class="code_block">
+  document.getElementById('placeholder').firstChild.nodeValue = "Not Hello";
+          </p>
+          <p>becomes:</p>
+          <p class="code_block">
+  document.getElementById('placeholder').firstChild.nodeValue = request.responseText;
+          </p>
+          <p>
+            If the index page now displays &ldquo;Hello&rdquo; instead of &ldquo;Not Hello&rdquo; when you submit the form,
+            you have verified that the JavaScript code can successfully receive data from <span class="fileName">ajax.php</span>.
+            It&rsquo;s a small but critical step. When it works, make a copy of your entire project in a directory
+            named <span class="directoryName">Final_Project.3</span> for backup.
+          </p>
+        </li>
+        <li><h5>Send data from JavaScript to PHP</h5>
+          <p>
+            The mechanism for sending data using XMLHttpRequest mimics the mechanism already used by the browser to submit form
+            data. In our case, the code is set up to submit the form data using the POST method. So far, the code sends just one
+            name&ndash;value pair: &ldquo;request=anything&rdquo;. Modify <span class="fileName">ajax.php</span> so it echoes
+            the value of <span class="variableName">$_POST['request']</span> instead of &ldquo;Hello&rdquo;. If submitting the
+            form causes the word &ldquo;anything&rdquo; to appear below the form, this step works.
+          </p>
+          <p>
+            But this code is very fragile: it will &ldquo;break&rdquo; if anything out of the ordinary happens. You need to add
+            some checks and fix-ups to <span class="fileName">ajax.php</span> and verify that they work:
+          </p>
+          <ul>
+            <li>
+              <p>
+                Use the <span class="functionName">isset()</span> PHP function to verify that the value of <span
+                class="variableName">$_POST</span> is actually available before echoing it. If it is not set, echo an
+                error message instead. (<em>Note: appearance of this error message either means there is a bug in your
+                code or that a hacker is trying to subvert your system. Try to word the error message to help you locate
+                the bug but not to help the hacker figure out how the system works!</em>)
+              </p>
+              <p>You can test this code by changing the first argument to the XMLHttpRequest
+              <span class="functionName">open()</span> function from <span class="variableName">POST</span> to
+              <span class="variableName">GET</span>, which will cause the data to be appear in the
+              <span class="variableName">$_GET</span> array instead of the <span class="variableName">$_POST</span> array, so
+              the test to see if <span class="variableName">$_POST[request]</span> is set will fail and you will get to
+              see your error message.</p>
+            </li>
+            <li>
+              <p>The other fragility has to do with quotation marks in the data you send/receive. These are especially critical
+              in the JSON processing you will be doing below, so it&rsquo;s best to get them taken care of now. The solution is
+              quite simple: add this line to the beginning of your <span class="fileName">ajax.php</span> file:</p>
+              <p class="code_block">
+  require_once('strip_quotes.php');
+              </p>
+              <p>
+                The problem addressed by the code in this file is that the PHP processor might or might not insert backslash
+                characters before quotation marks in the <span class="variableName">$_GET</span>,
+                <span class="variableName">$_POST</span>, and <span class="variableName">$_COOKIE</span> super global variables.
+                (The first two are used for passing form data to the script, and the last one (surprise) is used for cookies.)
+                The code tests whether backslashes have been inserted or not by testing a PHP configuration parameter named
+                &ldquo;magic quotes&rdquo;, and
+                then removing them if it is set. If magic quotes is not set on the computer you are using, the script does
+                nothing. Thus, it is possible that your code will work without this code &mdash; but it might fail when run on
+                another computer, such as when I grade your project!
+              </p>
+              <p>
+                First you need to get a copy of the <span class="fileName">strip_quotes.php</span> file. I put it into a Zip file
+                that you can download:
+                <a href="../strip_quotes.zip">strip_quotes.zip</a> &mdash; just download it, unzip it, and put
+                <span class="fileName">strip_quotes.php</span> in your project directory along with the index file and
+                <span class="fileName">ajax.php</span>. (<em><strong>Thought Question</strong>: strip_quotes.php is a very small
+                file; why did I need to put it in a Zip file?</em>)
+              </p>
+              <p>
+                You can test this feature by adding some quotation characters to the text following the equal sign in the
+                <span class="functionName">send()</span> function call, and verifying that they come through unchanged in the
+                data returned when the form is submitted.
+              </p>
+            </li>
+          </ul>
+          <p>
+            Test your code carefully to be sure everything works, then make a copy of your entire project in a directory
+            named <span class="directoryName">Final_Project.4</span> for backup.
+          </p>
+        </li>
+        <li><h5>Exchange Objects using JSON</h5>
+          <p>
+            Before starting work on this step, download the JSON parser for JavaScript:
+            <a href="../json2.js">json2.js</a>. Add it to your <span class="directoryName">scripts</span> directory, and add
+            a <span class="tagName">script</span> tag to your index page to include this file before your
+            <span class="fileName">final_project.js</span> file. JSON processing is built into PHP, so you do not need to
+            download anything for that. Use the <a href="http://us2.php.net/manual/en/ref.json.php">PHP documentation</a> and
+            <a href="http://json.org">the web</a> to learn about JSON.
+          </p>
+          <p>
+            For this step, you are going to use JSON encoding to transfer a JavaScript Object to PHP, and then to
+            transfer a PHP object back to JavaScript. You have already established that you can exchange text strings
+            between the two sides of your code in previous steps. The idea of JSON is that it can convert objects into
+            strings and vice-versa, so the model for this step is:
+          </p>
+          <ol>
+            <li>
+              In JavaScript, create an object, and add the user&rsquo;s email address to it:
+              <p class="code_block">
+  var anObject = {};
+  anObject.email = qcEmailElement.value;
+              </p>
+              <p>Of course, your variable names might be different.</p>
+            </li>
+            <li>
+              Convert the JavaScript to a string using <span class="functionName">JSON.stringify()</span>.
+            </li>
+            <li>
+              Send the string created in the previous step to <span class="fileName">ajax.php</span> using XMLHttpRequest.
+            </li>
+            <li>
+              In <span class="fileName">ajax.php</span>, convert the string received from JavaScript into a PHP object
+              using the built-in <span class="functionName">json_decode()</span> function, add a field to the object, and
+              use <span class="functionName">json_encode()</span> to convert it back into a string, which gets sent back
+              to JavaScript:
+              <p class="code_block">
+  $obj = json_decode($_POST['request']);
+  $obj-&gt;password = 'secret';
+  echo json_encode($obj);
+              </p>
+            </li>
+            <li>
+              Back in the JavaScript readyState change handler, you need to convert the received string back into an
+              object using <span class="functionName">JSON.parse()</span>, and then extract the email and password
+              values from the resulting object.
+            </li>
+          </ol>
+          <p>
+            When this step works, your index page should show the email address entered by the user and the secret
+            password generated by <span class="fileName">ajax.php</span> under the form when it is submitted. Test your
+            code carefully to be sure everything works, then make a copy of your entire project in a directory named
+            <span class="directoryName">Final_Project.5</span> for backup.
+          </p>
+        </li>
+        <li><h5>Implement the Business Logic</h5>
+          <p>
+            The remainder of the project is to use the framework established in the first 5 steps as a basis for
+            implementing the &ldquo;business logic&rdquo; of the application: letting existing users log into the system
+            and letting new users register for the system so they can log in.
+          </p>
+          <p>
+            We will use the following protocol for exchanging information between the JavaScript and PHP sides of the
+            application: Each side will send an object to the other side that consists of one <span
+            class="variableName">code</span> field and one or more <span class="variableName">data</span> fields. The
+            JavaScript side will send &ldquo;request objects&rdquo; to the PHP side, and the PHP side will return
+            &ldquo;reply objects&rdquo; to the JavaScript side. The name of the code field of a request object will be
+            <span class="variableName">requestCode</span> and the name of the code field of a reply object will be <span
+            class="variableName">replyCode</span>. All the other fields of both types of object will match the names of
+            various columns in the database <span class="variableName">people</span> table. (This last statement will
+            have to be modified some if you actually do the entire application.)
+          </p>
+          <p>
+            There are just two possible values of <span class="variableName">requestCode</span>:
+          </p>
+          <table>
+            <tr>
+              <th>requestCode</th>
+              <th>Meaning</th>
+              <th>Other Information Sent</th>
+            </tr>
+            <tr>
+              <th>0</th>
+              <td>Lookup&nbsp;User</td>
+              <td>qc_email and password</td>
+            </tr>
+            <tr>
+              <th>1</th>
+              <td>Register&nbsp;User</td>
+              <td>qc_email, password, last_name, first_name,&nbsp;&hellip;</td>
+            </tr>
+          </table>
+          <p>
+            The situation is a bit richer for <span class="variableName">responseCode</span>:    
+          </p>
+          <table>
+            <tr>
+              <th>responseCode</th>
+              <th>Meaning</th>
+              <th>Other Information Returned</th>
+            </tr>
+            <tr>
+              <th>0</th>
+              <td>Email and Password OK</td>
+              <td>Return user information from database in other fields.</td>
+            </tr>
+            <tr>
+              <th>1</th>
+              <td>Email Syntax Error</td>
+              <td>Should not occur: email was checked by JavaScript.</td>
+            </tr>
+            <tr>
+              <th>2</th>
+              <td>Not in Database</td>
+              <td>Nothing</td>
+            </tr>
+            <tr>
+              <th>3</th>
+              <td>Missing Password</td>
+              <td>Nothing</td>
+            </tr>
+            <tr>
+              <th>4</th>
+              <td>Wrong Password</td>
+              <td>Nothing</td>
+            </tr>
+          </table>
+          <p>
+            As usual, this part of the project will be implemented as a sequence of development steps, each of which
+            adds functionality to those that went before:
+          </p>
+          <ol>
+            <li>
+              <p>
+                The first step is to modify the code from the previous step so the two sides communicate with each other
+                using our object-based protocol. The previous step corresponded (roughly) to a &ldquo;Lookup User&rdquo; request
+                (<span class="variableName">requestCode</span> = 0) and a &ldquo;Email and Password OK&rdquo; 
+                (<span class="variableName">responseCode</span> = 0)reply.
+              </p>
+              <p>
+                JavaScript should create the object that it sends like this:
+              </p>
+              <p class="code_block">
+  $obj = {};
+  $obj.requestCode = 0;
+  $obj.qc_email = emailElement.value;
+  $obj.password = passwdElement.value;
+              </p>
+              <p>
+              	Have the PHP side copy information from the request into a new object that it returns. The following code
+                illustrates creating the equivalent of JavaScript&rsquo;s <span class="code_snippet">$obj = {};</span> by
+                using PHP&rsquo;s <span class="functionName">stdClass()</span> &ldquo;constructor&rdquo; function:
+              </p>
+              <p class="code_block">
+  $request = json_decode($_POST['request']);
+  $reply = new stdClass();
+  $reply->responseCode = 0;
+  $reply->qc_email = $request->qc_email;
+  $reply->last_name = 'Student';
+  $reply->first_name = 'Perfect';
+  echo json_encode($reply);
+              </p>
+              <p>
+                With this code in place and working, the user should see the <span class="variableName">qc_email</span>,
+                <span class="variableName">responseCode</span>, <span class="variableName">last_name</span>, and
+                <span class="variableName">first_name</span> values displayed under the login or register form when he or she
+                submits it.
+              </p>
+              <p>
+              	When you have this step working, save the entire project in a directory named 
+                <span class="directoryName">Final_Project.6a</span> as backup before proceeding to the next step.
+              </p>
+              <p class="standout_block">
+                Sending the user&rsquo;s password over the network as plain text is a security risk. In the real world, you
+                would encrypt the password on the JavaScript side before sending it to the PHP side. But for this assignment,
+                implementing proper security management will be &ldquo;left for a later step.&rdquo; Doing authentication
+                securely involves setting up a secure socket layer (SSL) certificate on the server, which is beyond the scope
+                of this course. 
+              </p>
+            </li>
+            <li>
+              <p class="not-yet">More to come &hellip;</p>
+            </li>
+          </ol>
+        </li>
+      </ol>
+
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have tested your web pages, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;8</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

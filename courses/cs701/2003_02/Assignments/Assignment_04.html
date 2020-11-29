@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Assignment 4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+    div.ans { font-weight: bolder; background: #ccffcc; margin:1em; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>Assignment 4</h1>
+</center>
+
+<h2>Due Date: Midnight April 15</h2>
+
+  <p>Send a tar file of your clean project directory to me at my
+  Dijkstra account by midnight of the due date.  Be sure to put your
+  name and ID number in the body of your email message, and use
+  "Submitting Assignment 4" as the subject line of your message.</p>
+<hr>
+
+<h2>Requirements</h2>
+
+  <p>The assignment is to implement a rudimentary shell with the
+  following features:</p>
+  
+  <ul>
+
+    <li><p>Processes built-in commands, <i>exit</i>, <i>cd</i>, and
+    <i>echo</i>.</p>
+
+    <li><p>Executes any external command available in the user's
+    PATH.</p>
+
+    <li>Maintains the values of shell variables named $ and ?, and
+    expands their values when a command references them using "$$" and
+    "$?" respectively.
+
+  </ul>
+
+  <p>The shell is to use the string "jsh&gt;&nbsp;" as its prompt
+  string.  The space after the &gt; is important.</p>
+
+  <p>The shell is <i>not</i> to implement any of the following
+  features: I/O redirection, quoting of any sort; variable definition
+  or expansion except for the two shell variables named above; alias
+  definition or substitution; pattern matching; pipelines or other
+  syntax allowing multiple commands per line; background command
+  processing.</p>
+
+  <p>The <i>main()</i> function must be defined in a file named
+  <code>main.cc</code>. Functions implementing built-in commands must
+  be defined in a file named <code>builtins.cc</code>.  There must be a
+  header file named <code>jshell.h</code> containing function
+  prototypes, typedefs, etc. that are shared among the .cc files. 
+  There must be a Makefile which includes the normal phony targets for
+  "clean" and "depend" as well as a default target named "jsh" which
+  builds the executable program.  You may use additional source files
+  for the project if you wish, but the files named here must be
+  present, and must have the names given.</p>
+
+<h2>Testing</h2>
+
+  <p>Be sure to test all the project management features of your
+  program.  Be sure the clean, depend, and jsh targets all work
+  correctly.  Be sure no files are recompiled unnecessarily.  Be sure
+  all three targets operate correctly from a clean project directory as
+  well as from a project directory in which various combinations of
+  source files are checked out with or without locks.  There is no need
+  for multiple versions of any of the files in this directory; they may
+  all have revision number 1.1 when checked in, although it is okay to
+  have multiple revisions in the 1.1 to 1.999 range of any files,
+  provided each revision has a proper log message associated with
+  it.</p>
+
+  <p>The <i>echo</i> command lets you check your implementation of the
+  $ and ? shell variables.  For example, typing the command "grep
+  fribbitz main.cc" should produce an exit code of 1, so if the next
+  command entered is "echo The exit code was $?" the output should be
+  "The exit code was 1".</p>
+
+  <p>You can use the pwd command to check that the cd command executed
+  correctly.</p>
+  
+  <p>Assuming "$&nbsp;" is your bash prompt, you should be able to
+  reproduce the following dialog.  (User input is normal weight and
+  computer output is boldface for clarity.)</p>
+
+<pre>
+      <b>$&nbsp;</b>jsh
+      <b>jsh>&nbsp;</b>exit&nbsp;77
+      <b>$&nbsp;</b>The jsh exit code was $?
+      <b>The jsh exit code was 77</b>
+      <b>$&nbsp;</b>
+</pre>
+
+ <hr></body></html>

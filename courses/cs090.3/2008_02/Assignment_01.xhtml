@@ -1,0 +1,120 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 1</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 1</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+      	Your first assignment is to set up your course web site and to create your first JavaScript program.
+      </div>
+      
+      <h2>Description</h2>
+      <div>
+      	<p>
+        	First, log into your account and set up your web site using <span
+          class="programName">Dreamweaver</span>, as demonstrated in class. <a href="../../TREE_Lab">TREE Lab
+          Information</a> gives information on using the computers in the Lab. Use <span
+          class="codeBlock">903</span> as the course number and initial password. Download the <a
+          href="../template.zip">template.zip</a> file for the course, and extract its contents, the file named
+          <span class="fileName">template.xhtml</span>, into your <span
+          class="directoryName">My&nbsp;Website</span> directory. Make a copy of <span
+          class="fileName">template.xhtml</span> in Dreamweaver by clicking on it and typing Control-D (for
+          &ldquo;Duplicate&rdquo;) and rename the copy as <span class="fileName">index.xhtml</span>. You can
+          rename a file in Dreamweaver by clicking on its name twice (two separate clicks rather than a
+          double-click), and then typing in the new file name. Now you should be able to view the template
+          file using the URL, <span class="codeSnippet">http://<span
+          class="tagName">hostname</span>.cs.qc.cuny.edu/~<span
+          class="tagName">accountname</span>/</span>, where <span class="tagName">hostname</span> is
+          the name of the computer you are logged into, and <span class="tagName">accountname</span>
+          is your own account name. Note that the character before your account name is a tilde
+          (upper left corner of the keyboard), not a dash.
+        </p>
+        
+        <p>
+        	Once you have basic site setup and default index page working, create a script file namned
+          <span class="fileName">assignment_01.js</span> in your site&rsquo;s <span
+          class="directoryName">scripts</span> directory, and create a link to it from a <span 
+          class="tagName">script</span> tag in the head element of the index file. Add a "This page needs
+          JavaScript" element to the index page, and write a script that makes this element disappear if
+          JavaScript is actually available. Test that your code works properly in Firefox, Internet Explorere,
+          Safari, and Opera.
+        </p>
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have built and tested your web page, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;1</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a 
+        href="../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

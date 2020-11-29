@@ -1,0 +1,198 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 3</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:1530E40D-0151-4E23-B17C-771B171B447A'>
+
+    <h1>CS-90.3 Assignment 3</h1>
+
+    <div id="content">
+      <h2>Reading</h2>
+      <div>
+        Read Chapter 3. Review any material you do not understand fully from Chapters 1-2.
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <h3>Introduction</h3>
+        <p>
+          This assignment is an exercise in working with objects. The assignment is to prepare a script
+          file that creates and displays the properties of various objects.
+        </p>
+        <p>
+          Replace all links to scripts in your <span class="file-name">index.xhtml</span> page with a new link
+          to a single script file named scripts/assignment_03.js. Create that file, and edit statements into it
+          as you work through the assignment steps.
+        </p>
+        <p>
+          I’m reluctant to give the following advice because, in general, it is better to pay attention to
+          warning messages rather than to ignore them. But in preparing this assignment I got really tired of all
+          the blue warning messages that were coming out on the Firebug console. Clicking on the dropdown menu of
+          the Console tab and un-checking the “Show JavaScript Warnings” option really helped.
+        </p>
+        <h3>Assignment Steps</h3>
+        <ol>
+          <li>
+            <h5>Create an empty object named <span class="variable-name">cs903</span> in the global object.</h5>
+            <p>
+              First, prove that the variable named <span class="tag-name">cs903</span> is undefined by using console.log
+              statments to print the type of both <span class="variable-name">cs903</span> and <span
+              class="variable-name">window.cs903</span>. (We will explore the <span class="variable-name">window</span>
+              object below.) </p>
+            <p>
+              Then <em>without using the <span class="keyword">var</span> keyword</em>, assign the value <span
+              class="code-snippet">{ }</span> to variable named <span class="variable-name">cs903</span>.
+            </p>
+            <p>
+              To improve the clarity of this assignment’s output, display a copy of each assignment statement just
+              before executing it.  That is, the first four lines of your script file should be:
+            </p>
+            <div class="code-block">
+  console.log("The type of cs903 is '" + typeof cs903 + "'.");
+  console.log("The type of window.cs903 is '" + typeof window.cs903 + "'.");
+  console.log("cs903 = { };");
+  cs903 = { };
+            </div>
+            <p>
+              Now repeat the first two <span class="function-name">console.log()</span> statements to display the type
+              of <span class="variable-name">cs903</span> and <span class="variable-name">window.cs903</span> again.
+            </p>
+            <p>
+              Verify that before the assignment statement, both <span class="variable-name">cs903</span> and
+              <span class="variable-name">window.cs903</span> are undefined, but after the assignment they are both
+              objects.
+            </p>
+            <p>
+              Write out the answers to the following questions in the email you submit for this assignment:
+            </p>
+            <ol>
+              <li>
+                What is the type of a variable before it is assigned a value?
+              </li>
+              <li>
+                Is it necessary to use the <span class="keyword">var</span> keyword to define a variable?
+              </li>
+              <li>
+                If you don’t use the <span class="keyword">var</span> keyword to define a variable, where is that
+                variable created?
+              </li>
+              <li>
+                What is the type of the variable named <span class="variable-name">window</span>?
+              </li>
+              <li>
+                Why is <span class="variable-name">window</span> called the “global object”?
+              </li>
+            </ol>
+          </li>
+          <li>
+            <h5>Turn the <span class="variable-name">cs903</span> variable into a function and execute it.</h5>
+            <p>
+              Add code to <span class="file-name">assignment_03.js</span> to assign the value
+              <span class="code-snippet">function(){ console.log("This is window.cs903"); }</span> to the global
+              variable <span class="variable-name">cs903</span>. Add <span class="function-name">console.log()</span>
+              statements to document the assignment statement and to show the new type of
+              <span class="variable-name">window.cs903</span>.
+            </p>
+            <p>
+              Add statements to execute your new function:
+            </p>
+            <div class="code-block">
+cs903();
+window.cs903();
+            </div>
+            <p>
+              You should see the message, “This is window.cs903” displayed twice.
+            </p>
+          </li>
+          <li>
+            <h5>Repeat the previous step for another function, named <span class="function-name">onload()</span></h5>
+            <p>
+              This really is the same as the previous steps, except you can skip the part about assigning an object to
+              the property you will use here, the <span class="variable-name">window.onload</span> property.
+              Display the type of
+              <span class="variable-name">onload</span> and <span class="variable-name">window.onload</span>,
+              then assign a function to it that displays the message,
+              “This is window.onload” (instead of “This is window.cs903”), when the function executes.
+            </p>
+            <p>
+              Run your code, and write out answers to the following questions:
+            </p>
+            <ol>
+              <li>
+                What was the type of the <span class="variable-name">window.onload</span> property before you assigned a
+                value to it?
+              </li>
+              <li>
+                Anything different from using <span class="variable-name">cs903</span> yet?
+              </li>
+              <li>
+                What was the type of the <span class="variable-name">window.onload</span> property after you assigned the
+                function to it?
+              </li>
+              <li>
+                Anything different from using <span class="variable-name">cs903</span> yet?
+              </li>
+              <li>
+                How many times did the “This is window.onload” message appear?
+              </li>
+              <li>
+                What is different from using <span class="variable-name">cs903</span>?
+              </li>
+              <li>
+                Explain the difference.
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you have tested your code and determined the answers to the questions, type your answers into the
+          <strong>body</strong> (not an attachment) of an email message, and send it to me.  I’ll copy your entire web
+          site to my computer (babbage) and check out your code and will check your email to be sure you answered the
+          questions correctly.
+        </p>
+        <p>
+          Send your email message to me at: vickery<span class="at" title="Change to @">at</span>babbage.cs.qc.cuny.edu
+          by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-90.3 Assignment 3.”
+        </p>
+        <p>
+          Don’t forget to put your name in your email message!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,338 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 4</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:D415C60E-9C67-46A1-8239-DE18B5CB85FA'>
+
+    <h1>CS-90.3 Assignment 4</h1>
+
+    <div id="content">
+      <h2>Reading</h2>
+      <div>
+        Read Chapter 7.
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <h3>Introduction</h3>
+        <p>
+          This assignment is an exercise in working with objects, functions, conditionals, and loops.  As in the
+          previous two assignments, you are to prepare a script file that demonstrates features of JavaScript and
+          answers some questions.
+        </p>
+        <p>
+          Replace all links to scripts in your <span class="file-name">index.xhtml</span> page with a new link to a
+          single script file named scripts/assignment_04.js. Create that file, and edit statements into it as you work
+          through the assignment steps.
+        </p>
+        <h3>Assignment Steps</h3>
+        <ol>
+          <li>
+            <h5>Create a function that receives one parameter and displays the parameter’s type.</h5>
+            <p>
+              Name the function <span class="variable-name">foo()</span>. You may do it either of two ways
+            </p>
+            <div class="code-block">
+foo = <span class="keyword">function</span>(param) { console.log("foo: param is of type '" + <span class="keyword">typeof</span> param + "'."); };
+            </div>
+            or
+            <div class="code-block">
+<span class="keyword">function</span> foo(param)
+{
+  console.log("foo: param is of type '" + <span class="keyword">typeof</span> param + "'.");
+}
+            </div>
+            <p>
+              There is a difference between the two: the first technique defines the function when the assignment to
+              <span class="variable-name">foo</span> takes place. The second one defines the function as soon as the
+              script is loaded by the browser. If you wanted to you, you could put the second type of function
+              definition at the end of the script file, and still use it at the beginning.
+            </p>
+            <p class="standout-block">
+              For this assignment, you need to keep re-defining <span class="variable-name">foo()</span>, so except for
+              the first time you define the function, you will have to use the assignment statement form.  For the first
+              definition you could use either form.
+            </p>
+            <p>
+              When the function is defined, call it five times, passing it the following values:
+            </p>
+            <ol>
+              <li><span class="code-snippet">{ }</span></li>
+              <li><span class="code-snippet">[ ]</span></li>
+              <li><span class="code-snippet">123</span></li>
+              <li><span class="code-snippet">"1"</span></li>
+              <li><span class="code-snippet">foo</span></li>
+            </ol>
+            <p>
+              Explain each of the five lines of output.
+            </p>
+          </li>
+          <li>
+            <h5>Redefine <span class="variable-name">foo()</span> so it recognizes arrays and objects.</h5>
+            <p>
+              The goal is to get <em>one</em> of the following messages to print out, depending on what is passed as
+              an argument to <span class="variable-name">foo()</span> when it is called.
+            </p>
+            <ul>
+              <li>foo: param is an array</li>
+              <li>foo: param is an object</li>
+              <li>foo: param is neither an array nor an object</li>
+            </ul>
+            <p>
+              For example, for the five calls in the first step, the messages should be:
+            </p>
+            <div class="code-block">
+foo: param is an object
+foo: param is an array
+foo: param is neither an array nor an object
+foo: param is neither an array nor an object
+foo: param is neither an array nor an object
+            </div>
+            <p>
+              For this assignment, you may simply make the assumption that if an object has a
+              <span class="variable-name">length</span> property, it is an array. You should know by now that
+              it is possible to add any property to any object, so this test is not foolproof. But we will not
+              try to make fools of ourselves!
+            </p>
+            <p>
+              To do this step, you will have to use <span class="keyword">if</span> statements (textbook pages
+              36-43). I’m giving you the hard part, telling if the parameter is an array. You have to add the
+              <span class="keyword">else</span> and <span class="keyword">else if</span> parts to make it a
+              three-way decision.
+            </p>
+            <div class="code-block">
+foo = <span class="keyword">function</span>(param)
+{
+  <span class="keyword">if</span> ( (<span class="keyword">typeof</span> param === "object") &amp;&amp; (<span class="keyword">typeof</span> param.length === "number") )
+  {
+    console.log("foo: param is an array");
+  }
+  <span class="keyword">else</span>
+  {
+    console.log("foo: param is not an array");
+  }
+}
+            </div>
+          </li>
+          <li>
+            <h5>Redefine <span class="variable-name">foo()</span> so it sums numerical elements if the
+            parameter is an array.</h5>
+            <p>
+              For both parts of this step, use <span class="keyword">for</span> loops. There is an example of using a
+              <span class="keyword">for</span> loop to double all the elements in an array on page 47 of the
+              textbook. Here is the code to sum all the elements in an array:
+            </p>
+            <div class="code-block">
+ <span class="keyword">var</span> numbers = [ 1, 2, 3, 4, 5, -16 ];
+ <span class="keyword">var</span> sum = 0;
+ <span class="keyword">for</span> (<span class="keyword">var</span> i = 0; i &lt; numbers.length; i++)
+ {
+   sum = sum + numbers[i];
+ }
+ console.log("The sum is " + sum + ".");
+            </div>
+            <p>
+              Note that it is very important to initialize the variable <span class="variable-name">sum</span>
+              before looping through the numbers.
+            </p>
+            <p>
+              The statement inside the loop could have been written using the shorthand,
+              <span class="code-snippet">sum += numbers[i];</span> if you want to save a little typing.
+            </p>
+            <p>
+              But for this assignment, you have to test each element of the array to be sure it is a number:
+            </p>
+            <div class="code-block">
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> param[i] === "number") sum += param[i];
+            </div>
+            <p>
+              The body of an <span class="keyword">if</span> statement does not have to be inside curly braces
+              if there is only one statement. In the above example, the braces are omitted and the single statement
+              is moved to the same line as the <span class="keyword">if</span> test. Never omit the braces when
+              putting a single statement body on a separate line: it almost always leads to errors later on.
+            </p>
+            <p>
+              You can use the following lines of code to test your function:
+            </p>
+            <div class="code-block">
+console.log("foo([100, 20, 3, 'hello']);");
+foo([100, 20, 3, 'hello']);
+console.log("foo({a:100, b:'20', c:20, d:3});");
+foo({a:100, b:'20', c:20, d:3});
+console.log("foo(123);");
+foo(123);
+console.log("foo('1');");
+foo('1');
+console.log("foo(foo);");
+foo(foo);
+            </div>
+          </li>
+          <li>
+            <h5>Add code to <span class="variable-name">foo()</span> so it sums the numeric properties of
+            objects.</h5>
+            <p>
+              Use a different kind of <span class="keyword">for</span> loop to do this. JavaScript has a special type
+              of <span class="keyword">for</span> loop for iterating over the properties of an object, but it is not
+              covered in the textbook. Here is an example of it in action:
+            </p>
+            <div class="code-block">
+<span class="keyword">var</span> obj = { a:3, b:5, c:"hello", a_long_property_name:7 };
+<span class="keyword">for</span> (<span class="keyword">var</span> property_name <span class="keyword">in</span> object)
+{
+  console.log("obj." + property_name + " has the value " + obj[property_name]);
+}
+            </div>
+            <p>
+              I’ll explain this below, but it’s good enough if you can see the pattern in the example and adapt it to
+              the assignment. After you have updated the function, use the same set of function calls to test it. You
+              should see the sum for the numeric property values as well as the sum of the numeric array elements.
+            </p>
+            <div style="background-color:#fed;padding:0.3em;border:1px dotted red;">
+              <h4>Gory Details</h4>
+              <p>
+                This type of <span class="keyword">for</span> loop assigns the name of each property in an object, as a
+                string, to the loop variable (<span class="variable-name">property_name</span> in the example) on each
+                iteration.  You may recall that we could use strings and negative numbers as subscripts for arrays, but
+                that those elements don’t count in the length of the array. You may also recall that arrays are actually
+                objects.  Putting it all together, if you use a non-negative integer subscript, you can assign values to
+                the “array part” of an array, but if you use negative integers (or non-integers, like 1.2) or stings as a
+                subscript, you are using the “object part” of an array with the added twist that the subscript values do
+                not have to be valid property names; if they are not strings, they get converted to strings. And you can
+                use variables holding the string representations of these property names as subscripts!
+              </p>
+              <p>
+                 This is a rather obscure topic at this point. But being able to iterate over the properties of an
+                 object can be a very useful debugging technique that you can use even if you don’t understand exactly
+                 how it works.
+              </p>
+              <p>
+                Here is some sample code and the output it generates. (<span class="variable-name">Math</span> is an
+                object built into JavaScript that has a property named <span class="variable-name">PI</span> that holds
+                the value of the mathematical constant, π.)
+              </p>
+              <div class="code-block">
+  var a = [ 1, 2, 'hello'];
+  a[-1] = 123;
+  a[Math.PI] = "I like apple";
+  a['something'] = 321;
+  <span class="keyword">for</span> (p <span class="keyword">in</span> a)
+  {
+    console.log("p is a " + typeof p + " and its value is '" + p + "'. a[p] is " + a[p]);
+  }
+  console.log("a.something is " + a.something);
+  console.log("a['something'] is " + a['something']);
+  console.log("The length of array a is " + a.length);
+  ---------------------------------------------------------------------------------------
+  p is a string and its value is '0'. a[p] is 1
+  p is a string and its value is '1'. a[p] is 2
+  p is a string and its value is '2'. a[p] is hello
+  p is a string and its value is '-1'. a[p] is 123
+  p is a string and its value is '3.141592653589793'. a[p] is I like apple
+  p is a string and its value is 'something'. a[p] is 321
+  a.something is 321
+  a['something'] is 321
+  The length of array a is 3
+              </div>
+            </div>
+          </li>
+          <li>
+            <h5>Check your program’s output.</h5>
+            <p>
+              It should look like this, but without the step number messages:
+            </p>
+            <div class="code-block">
+<h4>Step 1</h4>
+  foo([ ]);
+  foo: param is of type 'object'.
+  foo({ });
+  foo: param is of type 'object'.
+  foo(123);
+  foo: param is of type 'number'.
+  foo('1');
+  foo: param is of type 'string'.
+  foo(foo);
+  foo: param is of type 'function'.
+<h4>Step 2</h4>
+  foo([ ]);
+  foo: param is an array
+  foo({ });
+  foo: param is an object
+  foo(123);
+  foo: param is neither an array nor an object
+  foo('1');
+  foo: param is neither an array nor an object
+  foo(foo);
+  foo: param is neither an array nor an object
+<h4>Steps 3 and 4</h4>
+  foo([100, 20, 3, 'hello']);
+  foo: param is an array
+  foo: the sum of the numeric elements in the array is: 123
+  foo({a:100, b:'20', c:20, d:3});
+  foo: param is an object
+  foo: param.a is of type 'number'
+  foo: param.b is of type 'string'
+  foo: param.c is of type 'number'
+  foo: param.d is of type 'number'
+  foo: The sum of the numeric properties is 123
+  foo(123);
+  foo: param is neither an array nor an object
+  foo('1');
+  foo: param is neither an array nor an object
+  foo(foo);
+  foo: param is neither an array nor an object            
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you have tested your code and determined the answers to the questions, type your answers into the
+          <strong>body</strong> (not an attachment) of an email message, and send it to me.  I’ll copy your entire web
+          site to my computer (babbage) and check out your code and will check your email to be sure you answered the
+          questions correctly.
+        </p>
+        <p>
+          Send your email message to me at: vickery<span class="at" title="Change to @">at</span>babbage.cs.qc.cuny.edu
+          by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-90.3 Assignment 4.”
+        </p>
+        <p>
+          Don’t forget to put your name in your email message!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>
+

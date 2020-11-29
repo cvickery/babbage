@@ -1,0 +1,62 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS 90.3 (Vickery) Home Page</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../css/style-print.css"
+    />
+  </head>
+  <body id='urn:uuid:86317DA3-90E2-4DBC-8843-BA5EE23832B8'>
+
+    <div id="header">
+      <h1>Computer Science 90.3</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>Courses</h2>
+      <p>CSCI-90.3 is the Computer Science Department&rsquo;s &ldquo;Special
+      Topics&rdquo; course number, which we use for new courses in the CIT
+      Minor.</p>
+      <p>I am offering the following course under the 90.3 rubric this semester:
+      <a href="syllabus.xhtml">Script Programming for the Web</a></p>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?> &mdash; <a
+      href="../../">Vickery Home</a> &mdash; <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash; <a
+      href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

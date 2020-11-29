@@ -1,0 +1,98 @@
+<HTML> <HEAD> <TITLE>Property List Project, Part 0</TITLE>
+</HEAD>
+
+<BODY>
+<H1 ALIGN=center>Property List Project, Part 0</H1>
+<H2>Introduction</H2>
+
+This assignment is due by midnight of your class date for Week 4
+(9/24; 9/27).<p>
+
+Write a C++ program that prompts the user to enter a name and a value,
+and enters each pair into an array of <i>struct</i>s.  Each name is to
+be any string the user wishes to type, but may not contain spaces.  The
+value is to be an <i>int</i>.<p>
+ 
+If the user types "exit" as a name, the program is to exit.  If the user
+types "show &lt;n&gt;" (where &lt;n&gt; is an integer), the program is
+to display the name and value pair at entry number &lt;n&gt; in the
+array, if there is one; otherwise display an error message.  The program
+continues to run after "show" commands.<p>
+ 
+Here is a partial implementation of the program for you to start with:
+ 
+<pre>
+ 
+#include &lt;iostream.h&gt;
+#include &lt;string.h&gt;
+ 
+struct element {
+ 
+  char  name[100];
+  int   value;
+ 
+  };
+ 
+int
+main() {
+ 
+element theArray[1000];
+ 
+  for (int i = 0; i &lt; 1000; i++) {
+ 
+    cout &lt;&lt; "Enter a name and its value: ";
+    cin &gt;&gt; theArray[i].name &gt;&gt; theArray[i].value;
+ 
+    if (0 == strcasecmp(theArray[i].name, "exit")) return 0;
+ 
+    }
+ 
+  }
+</pre> 
+[In the Tuesday section I used "if (!strcmp(... " instead of "if (0 ==
+strcasecmp( ...". <i>strcasecmp()</i> does a case-insensitive
+comparison.  That is, the user can type "Exit" or "exit" (or "ExIt",
+etc.) and the comparison will come out equal.  The "0 ==" in place of
+"!" is just a little less obscure, I think.]<p>
+ 
+This program may be written as a single .cc source file.  You do not
+have to use a Makefile.  Nor are you required to define any functions
+other than <i>main()</i> for this program.<p>
+ 
+Here are some things for you to think about as you write your program.
+You are not required to implement any of the items listed here, and you
+are not to hand in answers to these questions.  Just think about them!
+(If you <i>do</i> deal with any of these items in your program, leave a
+<code>README</code> file in your project directory telling me about them.)
+ 
+<ul>
+<li>What happens if the user supplies more than 1000 entries?
+<li>What happens to an entry if the user enters a "show" command.  Does
+"show" become an entry, or is that element of the array reused?
+<li>How could you implement a "delete" command?
+<li>How about a "showall" command that shows all entries defined so far?
+<li>The numbers 100 and 1000 are hard-coded into the sample program,
+which makes the program inflexible.  How could this inflexibility be
+reduced?  (You can't use a variable as the size of an array in C++, at
+least not in the part of the language we have looked at so far.)
+<li>How about letting the user enter other types of values besides
+integers?
+</ul>
+ 
+
+<HR>
+<UL>
+<LI><A HREF="index.html"> Fall 1996 Syllabus and Assignments</A>
+<LI><A HREF="../index.html"> CS-200 Home Page </A>
+</UL>
+
+<HR>
+<ADDRESS>
+Dr. Christopher Vickery<BR>
+Computer Science Department<BR>
+Queens College of CUNY<BR>
+<A HREF="/"> Home Page </A>
+</ADDRESS>
+<HR>
+</BODY>
+</HTML>

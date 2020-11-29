@@ -1,0 +1,139 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Fourier Synthesis</title>
+
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../css/style-print.css"
+    />
+    <style type="text/css" media="all">
+      .screenshot { text-align: center; height: 15em; }
+      .screenshot img { height: 14em; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Fourier Synthesis</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>What&rsquo;s Here</h2>
+      <div class="whitebox">
+
+        <p><a href="Fourier.jar">Fourier.jar</a> is a Java application that
+        lets you mix sine waves to produce complex waveforms.  It&rsquo;s a
+        work in progress.  Here is a screen shot:</p>
+
+        <div class="screenshot">
+          <img src="screenshot.png" alt="screen shot" />
+        </div>
+
+        <p>Download the jar file and save it some place convenient, such
+        as to your desktop. If your browser changes the name to Fourier.jar.zip,
+        just rename it back to Fourier.jar; don't un-zip it.
+        Then double-click it to run the program.  Try adding frequency
+        components and manipulating their frequencies, intensities, and
+        phase relationships, and observe the resulting waveforms.</p>
+
+        <p>The jar file contains the complete Eclipse project, if you would
+        like to look at and/or modify the source code.</p>
+
+        <h2>Features</h2>
+        <div class="whitebox">
+
+          <ul>
+
+            <li>Controls on the right side let you add frequency components
+            to the composite waveform and adjust their frequencies,
+            amplitudes, and phase relationships.  There are options for
+            associating different colors with each component, for
+            temporarily hiding a component while letting it contribute to
+            the composite waveform, excluding it from the composite, and
+            totally deleting it.</li>
+
+            <li>The panel in the upper left side shows the composite
+            waveform and the component frequencies.  You can use the sliders
+            to change the amplitude range displayed and to zoom/pan over the
+            waveform.  Click inside the waveform panel to turn the internal
+            legend on and off.</li>
+
+            <li>The displayed composite waveform is produced by digitally
+            sampling the continuous waveform generated; you can adjust the
+            sampling parameters using the controls in the middle of the left
+            side of the application.  See <a href="../Audio_Sampling/">Audio
+            Laboratory</a> for an introduction to the digital sampling
+            process.</li>
+
+            <li>A Fourier Analysis of the composite waveform is shown in the
+            bottom left part of the application.</li>
+
+            <li>The &ldquo;Frequency Domain Control&rdquo; will let you
+            generate a list of fixed-point numbers representing the sample
+            values.</li>
+
+            <li>The <span class="menuItem">Options</span> menu includes an
+            option to save the waveform samples in a format suitable for
+            processing using <span class="programName">MatLab</span>.  With
+            this option unchecked, the <span class="menuItem">File</span>
+            menu lets you save the samples as a simple text file.</li>
+
+          </ul>
+
+        </div>
+
+        <h2>Known Issues</h2>
+        <div class="whitebox">
+          <ul>
+
+            <li>The &ldquo;Frequency Domain Controls&rdquo; panel is
+            incomplete.</li>
+
+          </ul>
+
+        </div>
+        
+      </div>
+
+    </div>
+
+    <div id="footer">
+      Copyright &copy; 2000 - <?php echo
+      date("Y"); ?> by Christopher Vickery.<br />This work and the accompanying
+      program are licensed under a <a rel="license"
+      href="http://creativecommons.org/licenses/by-sa/2.5/">Creative Commons
+      Attribution-ShareAlike 2.5  License</a>.
+    </div>
+
+  </body>
+</html>

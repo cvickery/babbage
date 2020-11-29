@@ -1,0 +1,105 @@
+<HTML> <HEAD> <TITLE>Property List Project, Part 2</TITLE>
+</HEAD>
+
+<BODY>
+<H1 ALIGN=center>Property List Project, Part 2</H1>
+<H2>Introduction</H2>
+
+This document describes "Homework 5b,"  The second part of the
+Property List project.  The due date is Week 8 (10/29; 10/25).<p>
+
+For this assignment, You will add two new commands to the program
+you wrote for Homework 5a:  In addition to "<code>exit</code>" and
+a property name, change your program so that it recognizes the
+commands, "<code>getval</code>" and "<code>show</code> ."  The
+<code>getval</code> command is used to display the value part of
+a property list entry, and <code>show</code> displays all the entries
+in the property list.<p>
+
+Your application program must use the three functions whose prototypes
+are in <code>~vickery/CS-200/Homework_5b/plist.h</code>: <i>insert(),
+getValue(),</i> and <i>showList()</i>.  Note that the prototype for
+<i>insert()</i> for this assignment is slightly different from the
+prototypes used for Homework_5a.  You must use the new
+<code>plist.h</code> for this assignment, so you will have to change
+the code you wrote to call <i>insert()</i> before.<p>
+
+You are also to implement the three functions listed above.  For your
+convenience in developing this assignment, there is a compiled
+version of the solution in
+<code>~vickery/CS-200/Homework_5b/plist.o</code>.  Your application
+program must work with this version of <code>plist.o</code> as well
+as with the one that you write yourself.  Again, the
+<code>plist.o</code> file for this assignment is different from the one
+for Homework_5a, so be sure to use the correct one.<p>
+
+<h3>Requirements: </h3>
+<UL>
+<LI>The property list must be implemented as a linked list, not as an
+array.
+<LI>The property list must be sorted by property name at all times.  If
+the same property name occurs twice (or more) the sequence of those
+entries does not matter. [Optional: sort entries with the same name
+according to their types.]
+<LI>Every name/type combination in the list must be unique.
+<LI>You must use the file "<code>plist.h</code>" that I supplied in both
+your application program and in your implementation of the Property
+List package.
+<LI>Your main program must work properly when linked with the
+<code>plist.o</code> that I supplied, as well as with your own.
+<LI>You must use a Makefile that will build your program.  You may use
+the one in <code>~vickery/CS-200/Homework_5b</code> if you wish, or you
+may write your own, or you may modify the one that I supplied.  When you
+submit the assignment, provide only your own source files.  Do not send any
+binary files or copies of my <code>plist.h</code> or
+<code>Makefile</code>.  (Of course, if your <code>Makefile</code> is
+different from mine, send yours.)
+</UL>
+
+<h3>Sample Output:</h3>
+Your output does not have to look exactly like this, but you may use it
+as a model.
+
+<pre>
+<B>qcunix1&gt; </B>
+Property name or command: <i>vickery</i>
+  Property type: <i>int</i>
+  Property value (int): <i>100</i>
+Property name or command: <i>vickery</i>
+  Property type: <i>char</i>
+  Property value (char): <i>x</i>
+Property name or command: <i>christopher</i>
+  Property type: <i>float</i>
+  Property value (float): <i>3.14</i>
+Property name or command: <i>wagner</i>
+  Property type: <i>double</i>
+  Property value (double): <i>3.14159</i>
+Property name or command: <i>show</i>
+         christopher     float [3.14]
+             vickery       int [100]
+             vickery      char [x]
+              wagner    double [3.14159]
+Property name or command: <i>getval</i>
+  Property name: <i>vickery</i>
+  Property type: <i>char</i>
+  Value is [x]
+Property name or command: <i>exit</i>
+<B>qcunix1&gt; </b>
+</pre>
+
+<HR>
+<UL>
+<LI><A HREF="index.html"> Fall 1996 Syllabus and Assignments </A>
+<LI><A HREF="../index.html"> CS-200 Home Page </A>
+</UL>
+
+<HR>
+<ADDRESS>
+Dr. Christopher Vickery<BR>
+Computer Science Department<BR>
+Queens College of CUNY<BR>
+<A HREF="/"> Home Page </A> 
+</ADDRESS>
+<HR>
+</BODY>
+</HTML>

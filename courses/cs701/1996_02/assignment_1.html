@@ -1,0 +1,125 @@
+<HTML> <HEAD> <TITLE> Shell Program Exercise </TITLE> </HEAD>
+<BODY>
+<H1>Shell Program Exercise</H1>
+
+<DL>
+<DT><B>Due Date:</B><DD>February 27, 1996
+
+<DT><B>Deliverables:</B><DD>
+
+When the project is complete, send me an e-mail message telling me the
+path to the project directory for this exercise.  The project directory
+shall contain three source files, a Makefile, and nothing else.  In
+addition, the directory <code>~/man/man1</code> is to contain a
+<i>man</i> page for the executable program.  You may leave a
+<code>README</code> file in the project directory if you think that one
+is needed, but I neither expect nor require you to do so.
+
+<DT><B>Requirements:</B><DD>
+
+In addition to the information given here, be sure to consult the
+<A HREF="grading_form_1.html">Grading Form for this assignment</A>,
+which includes additional information about the requirements for this
+project.
+
+</DL>
+
+<H2>Project Description</H2>
+
+Your assignment is to modify and extend Program 1.8 from the Stevens
+textbook.  First create a project directory to work in and get a copy
+of the program, the header file, and the definition file for the
+functions <i>err_ret()</i> and <i>err_sys()</i> from
+<code>~vickery/CS-701/APUE</code>.  You will find Program 1.8 and
+<code>ourhdr.h</code> in <code>proc/shell2.c</code>, and
+<code>error.c</code> in <code>lib.sun</code>.<P>
+
+Do the exercise as a sequence of steps.  Most of you will have done
+some or all of Steps 2 and 3 before you got the assignment, so you
+will have to go back and do Step 1 out of sequence.<P>
+
+<ol>
+
+<li>Copy the default Makefile from your home directory to the project
+directory, use the command, "chmod 600 Makefile" to make it writeable,
+and add the following lines to the end of it:
+
+<blockquote>
+<pre>
+OBJS = shell2.o error.o
+
+myshell :  $(OBJS)
+        $(CC) $(CFLAGS) $(OBJS) $(LDLIBS) -o $@
+</pre>
+</blockquote>
+
+Be sure the last line is indented using a <code>&lt;tab&gt;</code>
+character, not spaces.  You should now be able to build the executable
+shell2 program by issuing the command, "make".<P>
+
+<li>Edit <code>shell2.c</code> so that it follows the <A
+HREF="../coding_guidelines.html"> Coding Guidelines</A> for this
+course.  You do not have to edit the other two files.<P>
+
+  <ol>
+  <li>Add file header and function header comment blocks.
+  <li>Fix the program so that it behaves "reasonably" if the user enters
+      an empty command line.
+  <li>Make calls to <i>exit()</i> meet the specifications of the Coding
+      Guidelines.
+  <li>Fix anything else you can spot.
+  </ol><P>
+
+Be sure the program still works!<P>
+
+<li>Change the program so that the user can enter command line arguments,
+like "ls -l a*".  You may place a "reasonable" limit on the number of
+command line arguments the user may enter.<P>
+
+To do this, you will have to break each command line into a sequence of
+space-separated tokens using the <i>strtok()</i> standard library function.
+There is sample code to do this in the Harbison and Steele book listed in
+the <A HREF="../description.html#harbison">CS-701 Course Description</A>.<P>
+
+It would be very hard to use the <i>execlp()</i> function to handle
+command line arguments.  You would have to have a separate call for each
+of the different number of number of arguments the user might enter!  Instead,
+look up the <i>execvp()</i> function in the <i>man</i> pages, and use that.
+You will save each of the pointers returned by <i>strtok()</i> in an array,
+and pass the array as the second argument to <i>execvp()</i>.<P>
+
+<b>Extra Credit:</b> Handle command line arguments in quotes properly.<P>
+
+<li>As it stands, typing <code>^C</i> when the program is running causes
+the "<code>interrupt</code>" message to be displayed, a new prompt to
+be issued, and the program exits.  Fix the program so it continues to
+accept command lines instead of exiting.<P>
+
+To do this, you will have to check to see if the global variable
+<code>errno</code> is set to <code>EINTR</code> (defined in
+<code>errno.h</code>) when the <i>fgets()</i> function returns
+<code>NULL</code>.  If so, repeat the <i>fgets()</i> instead of
+exiting.<P>
+
+<b>Extra Credit:</b>  Make the program contine to accept commands no matter
+how many times the user types <code>^C</code>.<P>
+
+<li>Write a <i>man</i> page for the new shell program.  It may be very
+brief, but it must be in standard <i>man</i> page format, and it must
+be installed properly.  Consult the <A HREF="../man_pages.html">man page handout</A>
+for this course and/or the
+<i>man</i> entry in Section 5 of the on-line <i>man</i> pages for information
+on how to mark up the text of your <i>man</i> page.<P>
+
+</ol>
+
+<HR>
+<UL>
+<LI> <A HREF="../gf.html">Standard Grading Form</A>.
+<LI> <A HREF="grading_form_1.html">Grading Form for this Assignment</A>.
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>

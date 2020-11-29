@@ -1,0 +1,293 @@
+<?php
+//  $Id: index.xhtml,v 1.3 2010/02/02 03:45:42 vickery Exp vickery $
+/*
+ *  $Log: index.xhtml,v $
+ *  Revision 1.3  2010/02/02 03:45:42  vickery
+ *  Updated to reflect changeover to Windows 7. Hopefully, roaming profiles
+ *  will work now!
+ *
+ *  Revision 1.2  2009/09/03 05:25:24  vickery
+ *  Room 227 no longer in use; more computers; iMacs. Editorial changes.
+ *
+ *  Revision 1.1  2009/09/03 04:19:56  vickery
+ *  Initial revision
+ */
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>TREE Lab Information</title>
+
+    <link rel="shortcut icon" href="../../favicon.ico"/>
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../css/style-print.css"
+    />
+    <style type="text/css" media="all">
+      body {
+        max-width: 700px;
+        margin: auto;
+        }
+      h2+div {
+        background-color: white;
+        color: black;
+        padding:1em;
+        border: 1px solid green;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        }
+      h5 {margin-bottom:0;}
+      h5+p {margin-top:0;}
+    </style>
+
+  </head>
+
+  <body id='urn:uuid:E2B3AE83-F2EB-4B85-ADEE-4BD550FAA3DB'>
+
+    <div id="header">
+      <h1>TREE Lab Information</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          The Computer Science Department maintains a set of computers known as the &ldquo;TREE
+          Lab&rdquo; because all the computers are named for trees: apple, birch, cherry, chestnut,
+          elm, fir, ginkgo, hemlock, hickory, juniper, maple, mimosa, peach, pine, plum, sequoia,
+          spruce, sycamore, walnut, and willow). The TREE lab is used for courses that require
+          special software not generally available on campus. At the present time, the lab is used
+          for three courses taught by Dr. Vickery: Web Design (CS-081) and Script Programming
+          (CS-090.3), which use the <span class="programName">Apache</span> web server and <span
+          class="programName">Dreamweaver</span> web programming environment, as well as for
+          Computer Architecture (CS-343), which uses the <span class="programName">Quartus II</span>
+          logic design software from Altera Corporation.
+        </p>
+        <p>
+          The computers are Apple iMacs running Windows 7 under &ldquo;bootcamp.&rdquo; Using them
+          is much like using your ADS account at the college. However, accounts for students taking
+          courses that use the TREE domain are totally separate from Queens College ADS accounts.
+          Your TREE domain user name will definitely be different from your ADS account name, and
+          your TREE password will be the same as your ADS password only if you choose to give the
+          same passwords to both accounts. There is no direct way to share information between your
+          two accounts.
+        </p>
+      </div>
+
+      <h2>Accounts and Computers</h2>
+      <div>
+        <p>
+          The computers are all in SB room A-205, which is run as an open lab. The lab is open any
+          time the Computer Science Department office is open, and you are free to use any computer
+          any time the lab is open. You can also access the computers from outside the lab so that
+          you can still work when the department is closed. If there is a problem with any of the
+          computers in the lab, let Dr. Vickery or someone in the department office know about it.
+        </p>
+        <p>
+          To use a computer, you need to log in using your User name and Password. The login dialog
+          box shows a third field that says, &ldquo;Log on to:&rdquo;. Be sure that third field says
+          &ldquo;TREE&rdquo; rather than the name of the computer. This is critical because the
+          laboratory is set up so that you have one account that works on all the computers, and the
+          work you do on any one of them will be available to you when you log into any other one.
+          But this works only if you log into the &ldquo;TREE domain&rdquo; instead of logging into
+          an individual computer.
+        </p>
+        <p>
+          Your account name is the first two letters of your last
+          name followed by the first two letters of your first name, followed by the last four digits
+          of your CUNY student ID number. So, if your name is &ldquo;Perfect Student&rdquo; and your ID number is
+          12345678, your account will be stpe5678. Your initial password is your 8-digit CUNY student ID number
+          (12345678 for the example.) You can change your password
+          any time you like, but be sure to keep it secure: lots of people &ldquo;out there&rdquo;
+          would love to hijack your account.
+        </p>
+        <p class="standout-block">
+          Remember: you are responsible for your account. If someone gains access to it and does something
+          wrong, you are the one who will suffer the consequences.
+        </p>
+        <p>
+          Since all of the computers are accessible from the Internet, you can use <span
+          class="programName">Remote Desktop Connection</span> (RDC) to log in to your account on
+          any of the computers from pretty much any other internet-connected computer. (You will
+          need at least a DSL connection.) Here is how to find RDC on various computers:
+        </p>
+
+        <h5>Windows</h5>
+        <p>
+          From the <span class="menuItem">Start</span> button, go to <span
+          class="menuItem">Programs</span>, to <span class="menuItem">Accessories</span>, to <span
+          class="menuItem">Communications</span>, and you will find it.
+        </p>
+        <h5>Macintosh OS X</h5>
+        <p>
+          If you are using a Macintosh, OS X comes with a Remote Desktop program you can use in the
+          same way as the Windows version. Under preferences, be sure to set a screen size and
+          resolution to match your computer&rsquo;s screen. The default value is very low
+          resolution, making it difficult to use. There are two different RDC clients avaiable from
+          Microsoft, &ldquo;Version 2&rdquo; client at <a
+          href="http://www.microsoft.com/mac/products/remote-desktop/default.mspx">
+          http://www.microsoft.com/mac/products/remote-desktop/default.mspx</a> is presumably more
+          secure than the Version 1 client, but both versions will work.
+        </p>
+        <h5>Linux</h5>
+        <p>
+          There an open source version of Remote Desktop at <a
+          href="http://www.rdesktop.org">www.rdesktop.org</a> that might be useful if you are
+          running Linux. But I have had no experience with it.
+        </p>
+        <p>
+          When RDC asks you what computer you want to connect to, pick one of the names from the
+          above list and add the domain name &ldquo;.cs.qc.cuny.edu&rdquo; to the computer name. For
+          example, you would log into <span class="computerName">ginkgo</span> by entering <span
+          class="computerName">ginkgo.cs.qc.cuny.edu</span>.
+        </p>
+        <p>
+          Only one person can use a computer at a time, so if the computer you try is in use, just
+          try another one until you find one that is available.
+        </p>
+        <div class="standoutBlock">
+          Be sure you log off your computer when you leave it so that others will be able to use it.
+          If you try to lock a computer so that other people cannot use it, your account will be
+          terminated.
+          <p class="standout-block">
+            &ldquo;Disconnecting&rdquo; is not the same as logging off: be sure to log off, not just
+            disconnect. Failure to do so means your work probably will not be saved to the server
+            for future access.
+          </p>
+        </div>
+        <p>
+          You are free to use the computers in the lab for anything you like (within the limits
+          imposed by the college, university, and the law!), <strong>but do not share your account with
+          anyone else.</strong>
+        </p>
+        <p>
+          If all the computers are in use when you are using one for anything other than your
+          assignments in CS-081, CS-090.3, or CS-343, you must immediately give it up to anyone who
+          needs it for their work in those courses.
+        </p>
+      </div>
+      <h2>Managing Your Account</h2>
+      <div>
+        <p>
+          In addition to the computers listed above, there is a server computer for the lab named
+          <span class="computerName">Oak</span>. You cannot log into that one directly, but it plays
+          a crucial role in managing your account. Each account has its own &ldquo;profile,&rdquo;
+          which consists of all the files and directories under <span
+          class="directoryName">C:\Users\[youraccountname]\</span>.  The very first time you log
+          into a TREE computer, this profile is set up on <span class="computerName">Oak</span>
+          (this may take a few minutes), and is then copied to the particular computer you logged in
+          to. When you log out of that computer, your profile is copied back to <span
+          class="computerName">Oak</span>. You can then log into any TREE computer, and your profile
+          will be copied from <span class="computerName">Oak</span> to that computer, eliminating
+          any need for you to restrict your usage to any particular computer; they are all
+          equivalent.
+        </p>
+        <p class="standoutblock">
+          Be sure to log out of your account each time you finish any work so that your profile gets
+          updated on <span class="computerName">Oak</span>. And never log into two computers at the
+          same time: the work you save when you log out of the first one will get overwritten when
+          you log out of the second one.
+        </p>
+        <p>
+          In the past, the roaming profile feature was not as robust as it should be. If you save
+          your work on one computer and cannot find it when you log into another one, let  Dr.
+          Vickery know right away so we can see deal with the problem. We think the problems have
+          been fixed, but here is information in case the problems we used to have show up again: A
+          safety net, in addition to the normal precaution of backing all of your projects up onto a
+          flash drive, is to copy your work to your <span class="directoryName">H:</span> drive;
+          this is your &ldquo;home&rdquo; directory on Oak, which is separate from your roaming
+          profile. It can only be accessed over the network, never locally the way your profile,
+          once copied to the local <span class="directoryName">C:</span> drive is, so it can be
+          slower to access. But it is always there, no matter what computer you log into. You can
+          just drag your project from the local machine to your <span
+          class="directoryName">H:</span> drive when you come to a stopping point, and then drag it
+          back to the <span class="directoryName">C:</span> drive of another machine if your roaming
+          profile doesn&rsquo;t work. You can get to it by double-clicking on &ldquo;My
+          Computer&rdquo;.
+        </p>
+        <p>
+          Although your H: drive can be useful for backing up your profile, it has significant
+          limitations you need to be aware of:
+        </p>
+        <ol>
+          <li>
+            Your H: “drive” is actually a directory on the same disk that holds your profile on Oak,
+            so if that disk crashes, both your profile and your H: drive will be lost. Always back your
+            work up onto a USB drive or your own computer. (See <a href="#off-campus">Working From
+            Off Campus</a> for information about that topic.)
+          </li>
+          <li>
+            Both your H: drive and your profile are available only when you are actually logged into
+            one of the computers in the lab. This is why you cannot host a permanent website on a
+            lab computer: as soon as you log off, the web site disappears. For students in CS-081
+            and CS-90.3 where this is an issue, there is a semi-permanent web site on each computer
+            you can use. This is covered in the <a href="../cs081/using_dreamweaver.xhtml">Using
+            Dreamweaver</a> web page.
+          </li>
+        </ol>
+        <p>
+          With my &ldquo;Adminstrator&rsquo;s&rdquo; account, I can access your profile on <span
+          class="computerName">Oak</span>. That means that you never actually send your projects to
+          me to submit them.  Instead, just send me a message telling me your project or assignment
+          is ready, and I will get a copy from the server and check it out. In order for this system
+          to work, you must use exactly the directory name specified in the assignment or project
+          web page when you do the project. I will be using a script to get your work, and the
+          script will fail if you did not use the correct directory name. For web projects it is
+          critical that directory and file names have no spaces in them and that you do not change
+          the upper/lower case forms of their names.
+        </p>
+      </div>
+      <h2 id="off-campus">Working From Off-Campus</h2>
+      <div>
+        <p>
+          The best way to use the lab computers is to sit at the computers in A-205. RDC can make more efficient use of
+          your time, except for the fact that your interactions with the system will be slower&mdash;sometimes painfully
+          slow&mdash; compared to sitting at the actual computer.
+        </p>
+        <p>
+          There is a separate <a href="using_scp.xhtml">Working From Off Campus</a> web page with suggestions for how
+          you might do your assignments off campus and then transfer them to the lab for final testing and submission.
+        </p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.
+      <a
+        href="../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

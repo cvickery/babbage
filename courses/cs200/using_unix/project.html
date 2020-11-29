@@ -1,0 +1,423 @@
+<HTML> <HEAD> <title> CS-200 Project Management </title> </HEAD>
+<BODY BGCOLOR=#ffffff>
+
+<H1 ALIGN=center>CS-200 Project Management</H1>
+<H2 ALIGN=center>(How to Prepare and Submit Assignments)</H2>
+<!-- AS-TOC_BEGIN{ -->
+<UL>
+	<LI><A HREF="#as-h2-104921">Introduction</A>
+	<LI><A HREF="#project_directories">Project Directories </A>
+	<LI><A HREF="#project_files">Project Files </A>
+	<UL>
+		<LI><A HREF="#as-h4-104922">Source Files</A>
+		<LI><A HREF="#as-h4-104923">Documentation Files</A>
+		<LI><A HREF="#as-h4-104924">Project Management Files</A>
+	</UL>
+	<LI><A HREF="#building">Building an Application</A>
+	<LI><A HREF="#submit">Submitting a Project</A>
+	<UL>
+		<LI><A HREF="#as-h4-104925">Clean the Project Directory</A>
+		<LI><A HREF="#as-h4-104926">tar the Project Directory</A>
+		<LI><A HREF="#as-h4-104927">Attach the tar File to a Mail Message</A>
+	</UL>
+</UL>
+<!-- AS-TOC_END} -->
+
+
+<H2><A NAME="as-h2-104921">Introduction</A></H2>
+
+This page tells you how to manage project directories that you will use for
+the assignments in this course.<P>
+
+<H2><A NAME="project_directories">Project Directories</A>
+</H2>
+
+Each programming assignment you submit for this course, whether it is a
+set of homework exercises or a programming project, is to be developed
+in its own subdirectory, which is referred to as the <i>project
+directory</i> for the assignment.  There are two basic reasons for this
+requirement.  The first is that it encourages you to manage your part
+of the filesystem rather than clutter up your home directory with an
+odd collection of unrelated files.  The second is that it establishes a
+precedent for project development in the real world, where you are
+likely to work on large projects, each of which consists of numerous
+source files.  Keeping the files for each project in separate
+directories is the only way to keep the different projects you work on
+under control.<P>
+
+There is a pragmatic reason for creating a separate directory for each
+assignment, too.  You will be submitting your assignments to your
+instructor by e-mail.  In this page you will learn how to bundle up all
+the files in a subtree into a single bundle (a <i>tar</i> file) that you
+will e-mail to us for grading.  For this course, the "subtree" will
+typically consist of just the files in a single directory, but the same
+mechanism will work when you use a project management tool such as RCS
+to keep track of different versions of the files in a project.  (RCS is
+a Unix tool that
+manages a database of all the versions of all the files in a project.  The
+RCS database for a project is kept in its own subdirectory within the project's project directory.)<P>
+
+<H2><A NAME="project_files">Project Files</A>
+</H2>
+
+The files in a project directory will be some combination of <i>source
+files</i>, <i>documentation files</i>, and <i>project management files</i>.<P>
+
+<H3><A NAME="as-h4-104922">Source Files</A></H3>
+
+Some of the early exercises you do will be coded as single C++ files,
+but once you start defining new classes and functions, the files for
+each executable program will consist of <i>source code files</i>
+(which have names ending in "<CODE>.cc</CODE>") and <i>header
+files</i> (which have names ending in "<CODE>.h</CODE>" and which are
+named in <CODE>#include</CODE> statements in one or more
+<CODE>.cc</CODE> files).  Both source code files and header files are
+called "source files" because they both contain C++ program text that
+you prepare using a text editor.<P>
+
+A project will contain some mix of the following source files:
+
+<ul>
+
+<li>A separate header file for each class declaration in the project.
+The class declaration may include "simple" class member function
+definitions.
+
+<li>A header file containing prototypes for any functions that you
+define which are neither members nor friends of classes.
+
+<li>File(s) containing C++ member function definitions.
+
+<li>A file containing the function definition for <i>main()</i>, which
+we will generally refer to as the "driver program" in this course.
+
+</ul>
+
+<H3><A NAME="as-h4-104923">Documentation Files</A></H3>
+
+There are three types of documentation for a project, each designed for
+a different audience:
+
+<ol>
+<li>System Administration Documentation<P>
+
+This type of documentation tells the person who is going to build and
+install the application how to do that.  For a complex project, this
+documentation normally takes the form of a text file named "README" that
+provides the necessary information, and is left in the project
+directory.  For this course, you can omit this documentation unless
+there is something unusual that your instructor should know in order to
+build and test your program.  If you <i>do</i> want to tell us something
+about your project, do not put it in the e-mail message; put it in a
+README file in the project directory.  Your e-mail is not always
+available when the actual grading of an assignment takes place.<P>
+
+<li><a name="man_page">User Documentation</a><P>
+
+
+This is the information that tells a user what the program does and how
+to use it.  It does <i>not</i> tell the user how the program works
+internally.  You should assume that the user knows how type a command to get
+the program started, so what you need to provide here is information about
+command line options or environment
+variables that affect the behavior of the program and which the user
+should be told about. <P>
+
+If your program has a Graphical User Interface, you would provide at least
+some of the information about how to use the program when the user selects the
+"Help" button.<P>
+
+For traditional command-line applications, however, the standard format
+for this documentation is the Unix <i>man</i> page, with which you
+should already be somewhat familiar.  Look at the <i>man</i> pages for
+some standard Unix commands to see what format this file should
+follow.  The conventional name of a <i>man</i> page for a command is
+the name of the command with a suffix of "<code>.1</code>" because
+commands are documented in "Section 1" of the Unix manual.  For example, if
+the executable file is named "<code>mycmd</code>," the <i>man</i> page
+would be named "<code>mycmd.1</code>."<P>
+
+Unless your instructor says otherwise, you must provide a <i>man</i>
+page for each program you submit this term, but for this course it will
+typically be just plain text file containing a sentence or two, like the
+<code>SYNOPSIS</code> section of a real <i>man</i> page.<P>
+
+<li>Programmer Documentation<P>
+
+The third person who needs information about your program is the <i>next</i>
+programmer who works on it.  Outside of academia, most programming consists
+of fixing bugs or adding features to existing code.  The comments you put
+in your source code files should be written to help other programmers
+navigate through your code easily in order to find bugs or to determine
+where to add new features.  Thus, it is important to pay attention to
+how the code is laid out on the screen (indentation) and to use meaningful
+variable names, as well as to write comments that are concise yet clear.<P>
+
+Programmer documentation should be concise so the person who reads it doesn't
+have to spend too much time to find what he or she is looking for.<P>
+
+Even though your code will actually be read only by yourself and the
+person who grades it, write the comments as if they would be read only by
+another programmer who needs to modify it.  How well you follow this
+rule will be one of the factors that determines your grade!<P>
+
+What I've just said about Programmer Documentation is true for all
+programming languages, but object oriented languages such as C++ make us
+distinguish between two different types of programmers: programmers who
+define classes and programmers who use classes.  A major value of using
+an object oriented language is that it promotes code reuse: one person
+develops a class type and makes it available somehow to other
+programmers.  Other programmers then either reuse the class directly in
+their application programs or extend the original class definition in
+some way(s) to tailor it to a particular application.  Again, working as
+a student makes this distinction difficult because you have to play both
+roles in order to do a complete assignment.  Nonetheless, the comments
+in your code should be written with the type of your real-world audience
+in mind:  When documenting class definitions the comments should focus
+on making it clear how to use the class and any special provisions you
+made for extending the definition.  When documenting your driver program
+(the one that tests your class definitions) you should make the
+structure of the program clear so that, for example, someone would be
+able to change the user interface or the nature of the tests the program
+performs.<P>
+
+</ol>
+
+<H3><A NAME="as-h4-104924">Project Management Files</A></H3>
+
+For simple programs with only one source file, there will be no project
+management files.<P>
+
+Once your programs are built from two or more source files, you are to
+manage the project by copying the standard <code> Makefile</code> for
+this course into the project directory and editing it according to the
+comments given in the <code>Makefile</code>.  You can copy the standard
+<code>Makefile</code> from <code>~vickery/CS-200/Makefile</code>.<P>
+
+In the <code>Makefile</code> you will find a line that says:
+<pre>
+    OBJS = main.o myClass.o
+</pre>
+It's on line 38 of the file at the time this page is being written.<P>
+
+This says that there are two object modules needed to build the
+application, <code>main.o</code> and <code>myClass.o</code>.  You have
+to edit this line to substitute a list of all the object modules the
+have to be linked to build the program you are creating.  (One for
+each of your <code>.cc</code> files.)<P>
+
+If you don't want the executable file to be named <code>main</code>,
+edit the line of <code>Makefile</code> that looks like this:
+
+<pre>
+    main: $(OBJS)
+</pre>
+
+and change the word <code>main</code> to whatever you want your
+executabel file to be.  (Line 51 of <code>Makefile</code>.)  Use a
+descriptive name for your executable program.  However, it is part of
+the Unix tradition for programs to have terse names (to save typing), so
+that is all right to do.<P>
+
+<b>Note:</b> Do not name your executable file <i>test</i>.  Not only is
+it not a descriptive name, but it is also the name of a Unix command
+(<code>/usr/bin/test</code>; look it up with the <i>man</i> command),
+and the Unix command will be executed instead of your own program
+whenever you enter a "test" command!<P>
+
+If you would like to experiment with an advanced project management tool
+that allows you to keep version numbers for your files and add revision
+history comments to your code, RCS is available on the system.  Its use
+is beyond the scope of this course, though.  There are <i>man</i>
+pages on line telling you how to use RCS.<P>
+
+<H2><A NAME="building">Building an Application</A></H2>
+
+Assuming you have a single source file named <code>main.cc</code>, the
+command to build an executable program named <code>main</code> from it is:
+
+<pre>
+    $ g++ -g -Wall main.cc -o main
+</pre>
+
+The <code>-g</code> option tells the compiler driver to preserve symbolic
+debugging information in the executable file, and must always be used when
+developing an application so that it can be debugged using an interactive
+symbolic debugger like <i>gdb</i>.  The use of <i>gdb</i> is an advanced
+topic in this course.<P>
+
+The <CODE>-Wall</CODE> option tells the compiler to print warning
+messages if your program contains anything that does not conform to the
+current standard for C++, even if the problem might not cause a run-time
+error.  It is a requirement for this course that you always use this
+option and that all your code compiles with not warning or error
+messages from the compiler (or any other processing program invoked by
+the <i>g++</i> compiler driver).
+
+The <code>-o</code> option is followed by the name of the executable file
+you want to generate.  If you omit it, your executable file will be
+named <code>a.out</code>.  Remember, the <i>man</i> page you write for
+the program must have the same name as the executable file with an
+extension of <code>.1</code>.<P>
+
+If the program is to be built from more than one <code>.cc</code> file,
+it can be built by listing all of the source files on the
+<code>g++</code> command line, and the compiler driver will preprocess,
+compile (and assemble) each one into a separate object module, and then
+link all the object modules together with <i>ld</i>.  For example, if
+you have two files, named <code>main.cc</code> and <code>sub.cc</code>,
+you could use this command:
+
+<pre>
+    $ g++ -g -Wall main.cc sub.cc -o main
+</pre>
+
+However, it is more efficient to save all your object modules and
+to recompile only the ones that need to be recompiled because of changes
+you make to the corresponding source files.  To do this, use the
+<i>gmake</i> utility:
+
+<ol>
+<li>Copy the default <code>Makefile</code> to the project directory and
+edit it as described earlier in this page.
+<li>Use the command "<code>gmake depend</code>" to build the header file
+dependency list in your project's <code>Makefile</code>.  You need to issue
+this command any time you change the <code>#include</code> statements in
+any of the source files for the project.
+<li>Use the command "<code>gmake</code>" to build the project.  Edit source
+files and repeat this command as necessary.
+<li>Test the program.
+</ol>
+
+<H2><A NAME="submit">Submitting a Project</A></H2>
+
+When you are ready to submit an assignment for grading, follow the sequence
+of steps listed here.
+
+<H3><A NAME="as-h4-104925">Clean the Project Directory</A></H3>
+
+You are going to submit all the files from your project directory (and
+any subdirectories) for grading.  Before you submit an assignment, make
+sure that the only files present in the project directory are actually
+part of the project.  There must be:
+
+<UL>
+
+<LI>No executable files.  We will re-build your executable program files
+as part of the process of grading your assignment, so don't send us any
+executable files.  They won't fit in our mailbox anyway.
+
+<LI>No test programs you wrote while developing the project.
+<LI>No debugging output files.
+<LI>No test data files unless they are actually part of the project.
+
+<LI>No "core" files.  (A core file is a file named <CODE>core</CODE>
+that is created automatically if a program you are running "bombs". I
+suggest that you copy the file <CODE>~vickery/.logout</CODE> into your
+home directory; it will delete all core files, as well as all files
+named "temp," "test," and "a.out" from each of your directories and
+subdirectories every time you log out, thereby saving file space for
+you.)
+
+<LI>No "tar" files.  As you will see below, you are going to create
+something called a tar file that combines all the files (and
+subdirectories) for your project into a single file that you will mail
+to your instructor.  Until you get the hang of it, it's easy to create a
+tar file inside the project directory, in which case you will end up
+with a tar file inside a tar file, and your mail message will be too
+big.
+
+</UL>
+
+Use the "<CODE>ls&nbsp;-la</CODE>" command to see all the files in your
+project directory and use the "rm" command to delete the ones you are
+not going to submit.  (Or use "mv" to move them into another directory
+if you want to save them.)<P>
+
+<H3><A NAME="as-h4-104926"><i>tar</i> the Project Directory</A></H3>
+
+Here is how you copy all of a directory tree into a single <i>tar</i>
+file.  (The name <i>tar</i> stands for "(t)ape (ar)chive"
+because it was originally used to copy directory trees to magnetic tape
+for backup.)  The name of the tar file you create is to be your qcunix1
+account name, with an extension of "<CODE>.tar</CODE>". If your account
+name is "abcqc," these would be the steps to build the file
+<CODE>abcqc.tar</CODE>:
+
+<ol>
+
+<li>Use the <i>cd</i> command to change your current working directory
+to the directory immediately above the project directory.  (If you are
+in the project directory, the command would be
+"<CODE>cd&nbsp;..</CODE>".)
+
+<li>Pretend the name of the project directory is <code>project_directory</code>.
+You would create a <i>tar</i> file named "abcqc.tar" by using the command:
+
+<pre>
+    $ tar cvf abcqc.tar project_directory
+</pre>
+
+The "<code>cvf</code>" part of the command are the flags to (C)reate a
+<i>tar</i> file, showing a (V)erbose list of all the files and
+directories as the archive is built, and to name the output (F)ile
+"abcqc.tar."  It is conventional to give <i>tar</i> files names that end
+in "<code>.tar</code>," and you should use your own account name as the
+base part of the filename.<P>
+
+<li>If you want to, you can be sure you built the <i>tar</i> file
+correctly like this: Make a new directory somewhere outside of the
+project directory, change to it, copy the tar file to it, and give the
+command "<code>tar xvf abcqc.tar</code>".  This should create a copy of
+your original project directory under the new directory.  (This command
+uses "xvf" instead of "cvf" because 'x' causes <i>tar</i> to e(X)tract
+files from a tar file.)  Use "<CODE>ls&nbsp;-l</CODE>" to check the
+copy, and then use <i>rm</i> and <i>rmdir</i> to delete the directories
+and files you don't need.<P>
+
+</ol>
+<h3><A NAME="as-h4-104927">Attach the <i>tar</i> File to a Mail Message</A></h3>
+
+To submit the project, send e-mail to your instructor's <i>qcunix1</i>
+account.  Dr. Vickery's account name is <code>vickery</code>, and Mr.
+Lusinyants' account name is <code>rrlqc</code>. (The middle character
+of Mr. Lusinyants' account is the first letter of his last name, not
+a numeral.)<P>
+
+Make sure the <code>Subject: </code> line tells which assignment you
+are submitting.  You can put any text you want to in the message body,
+just like a regular mail message, but that text will not stay
+with the <i>tar</i> file as the assignment is graded.  If there is
+something you think we need to read when grading your assignment, leave
+a <code>README</code> file in the project directory, and we will look at
+it.<P>
+
+Attach the <i>tar</i> file to the message with the <code>^J</code>
+command while the cursor is in the <i>header</i> part of the message.
+When <i>pine</i> asks you for an "Attachment comment" you can type
+something similar to what you used in the <code>Subject:</code> line.
+Now you can use <code>^X</code> to send the e-mail message in the usual
+way.  You should try sending yourself an assignment to be sure it works
+before you really submit one to your instructor.<P>
+
+<b>Note:</b>  Do <i>not</i> use the <code>^R</code> command to read the
+tar file into the body of an e-mail message.  <i>tar</i> files contain
+non-ASCII information that will corrupt the entire message if it is put
+in the body of your e-mail.  One of the reasons you are using
+<i>pine</i> instead of some other mail program is that <i>pine</i>
+knows how to handle binary attachments.  You have to send the
+<i>tar</i> file as an attachment using the <code>^J</code> command,
+which works only when the cursor is in the header part of the
+message.</P>
+
+<hr>
+<UL>
+<LI><A HREF="index.html">Using Your Unix Account - Contents</A>
+<LI><A HREF="/courses/cs200/index.html">CS-200 Home Page</A>
+</UL>
+
+<hr>
+<address>Christopher Vickery<BR>Queens College of CUNY</address>
+<A HREF="/">Home Page</A>
+<hr>
+</BODY> </HTML>

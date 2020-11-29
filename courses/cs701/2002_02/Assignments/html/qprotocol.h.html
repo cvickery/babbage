@@ -1,0 +1,87 @@
+<html><head><title>qprotocol.h</title></head>
+<body><center><h1>qprotocol.h</h1></center><hr><pre>
+      //  $Id: qprotocol.h,v 2.2 2002/05/18 22:03:13 vickery Exp $
+      
+      /*  Constants and types used for the rsh client/server project.
+       *  CS-701, Spring 2002.
+       *
+       *  $Log: qprotocol.h,v $
+       *  Revision 2.2  2002/05/18 22:03:13  vickery
+       *  I had the constant values for SC_xxxx wrong, and fixed them.
+       *  Addes a translation table and inline function for translating
+       *  message types to strings, for use during debugging.
+       *
+       *  Revision 2.1  2002/05/06 06:28:49  vickery
+       *  Initial version.
+       *
+       */
+      #ifndef __QPROTOCOL_H__
+      #define __QPROTOCOL_H__
+      
+      #include &lt;netinet/in.h&gt;
+      
+      //  Typedefs and structs
+      //  ------------------------------------------------------------------
+      #include &lt;stdlib.h&gt;
+      #include &lt;sys/types.h&gt;
+      
+      #ifndef int32_t
+      typedef int int32_t;
+      #endif
+      
+      struct msg_header_t
+      {
+        int32_t msg_length;
+        int32_t msg_type;
+      };
+      
+      //  Protocol Message Type Codes
+      //  ------------------------------------------------------------------
+      static const int32_t  CS_SHUT     = 101;
+      static const int32_t  CS_EXIT     = 102;
+      static const int32_t  CS_USER     = 103;
+      static const int32_t  CS_CMD      = 104;
+      static const int32_t  CS_STDIN    = 105;
+      
+      static const int32_t  SC_SHUT     = 201;
+      static const int32_t  SC_LOGIN    = 202;
+      static const int32_t  SC_DENY     = 203;
+      static const int32_t  SC_PROMPT   = 204;
+      static const int32_t  SC_STDOUT   = 205;
+      static const int32_t  SC_STDERR   = 206;
+      
+      //  Type codes &lt;--&gt; Strings
+      //  (For Debugging)
+      //  ------------------------------------------------------------------
+      struct type_name_t
+      {
+        const char    *name;
+        const int32_t type;
+      };
+      static type_name_t type_name_list[] =
+      {
+        { "CS_SHUT",    101 },
+        { "CS_EXIT",    102 },
+        { "CS_USER",    103 },
+        { "CS_CMD",     104 },
+        { "CS_STDIN",   105 },
+        { "SC_SHUT",    201 },
+        { "SC_LOGIN",   202 },
+        { "SC_DENY",    203 },
+        { "SC_PROMPT",  204 },
+        { "SC_STDOUT",  205 },
+        { "SC_STDERR",  206 },
+      };
+      static const int num_names = 
+                           sizeof( type_name_list ) / sizeof( type_name_t );
+      inline const char *type_name( int type_code )
+      {
+        for (int i = 0; i &lt; num_names; i++ )
+        {
+          if ( type_code == type_name_list[i].type )
+            return type_name_list[i].name;
+        }
+        return "Unknown Message Type";
+      }
+      #endif
+</pre><hr></body></html>

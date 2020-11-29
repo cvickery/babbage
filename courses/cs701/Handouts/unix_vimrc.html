@@ -1,0 +1,63 @@
+<html><head><title>Unix .vimrc</title></head>
+<body><center><h1>Unix .vimrc</h1></center><hr><pre>
+      
+      " Vickery's .vimrc file for Unix 
+      
+      set nocompatible      " Don't force vi compatibility
+      behave xterm          " Alternative is "mswin"
+      
+      set mouse=a           " Enable mouse support
+      set selectmode=mouse  " Use mouse to select text
+      set ai                " Turn on autoindenting
+      set aw                " Save file when compiling, etc.
+      set bs=2              " Allow backspacing over everything in insert mode
+      set guioptions=f      " For use with pine
+      set tw=70             " Limit the width of text to 70
+      set viminfo='20,\"50  " Read/write a .viminfo file, don't store more
+                            " than 50 lines of registers
+      set whichwrap=b,s,&lt;,&gt;,[,] " End of line cursor support
+      set nobackup          " Do not create backup files
+      set expandtab         " No tabs in the output file!
+      set ruler
+      set shiftwidth=2      " What you get for ^D
+      set tabstop=2         " Same as shiftwidth
+      set showmatch
+      syntax on
+      "set comments=sl:/**,mb:\ *,exl:\ */,sr:/*,mb:*,exl:*/,://
+      
+      " When starting to edit a file:
+      "   For Java, C, and C++ files set formatting of comments and set 
+      "   C-indenting on.   For other files switch it off.
+      "   Don't change the sequence, it's important that the line with * comes first.
+      autocmd BufRead * set formatoptions=tcql nocindent comments&amp;
+      autocmd BufRead *.java,*.c,*.h,*.cc set formatoptions=ctroq cindent comments=sr:/**,mb:*,elx:*/,sr:/*,mb:*,elx:*/,://
+      
+      " Format the current paragraph according to
+      " the current 'textwidth' with CTRL-J:
+        nmap &lt;C-J&gt;      gqap
+        vmap &lt;C-J&gt;      gq
+        imap &lt;C-J&gt;      &lt;C-O&gt;gqap
+        
+      " Beginning and end of line with CTRL-A and CTRL-E
+        map  &lt;C-A&gt;      0
+        map  &lt;C-E&gt;      $
+        imap &lt;C-A&gt;      &lt;C-O&gt;0
+        imap &lt;C-E&gt;      &lt;C-O&gt;$
+      " Delete line with CTRL-K
+        map  &lt;C-K&gt;      dd
+        imap &lt;C-K&gt;      &lt;C-O&gt;dd
+      " Switch buffers
+        imap &lt;C-^&gt;      &lt;C-O&gt;&lt;C-^&gt;
+      " PgDn
+        imap [6;5~    &lt;C-O&gt;:n&lt;CR&gt;
+        map  [6;5~    :n&lt;CR&gt;
+      " PgUp
+        imap [5;5~    &lt;C-O&gt;:N&lt;CR&gt;
+        map  [5;5~    :N&lt;CR&gt;
+      " Write file
+        map   &lt;C-W&gt;     :w&lt;CR&gt;
+        imap  &lt;C-W&gt;     &lt;C-O&gt;:w&lt;CR&gt;
+      " Suspend from insert mode
+        imap  &lt;C-Z&gt;     &lt;C-O&gt;&lt;C-Z&gt;
+      
+</pre><hr></body></html>

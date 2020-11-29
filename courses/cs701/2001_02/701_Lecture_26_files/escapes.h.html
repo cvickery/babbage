@@ -1,0 +1,30 @@
+<HTML><HEAD><TITLE>escapes.h</TITLE></HEAD><BODY>
+<CENTER><H1>escapes.h</H1></CENTER><HR><PRE>
+//  $Id: escapes.h,v 1.1 2001/05/11 04:43:50 vickery Exp $
+
+/*    Header file for use with recognize_escape()
+ *
+ *    $Log: escapes.h,v $
+ *    Revision 1.1  2001/05/11 04:43:50  vickery
+ *    Initial revision
+ *
+ *
+ */
+
+#ifndef __ESCAPES_H__
+#define __ESCAPES_H__
+
+//  Enum for recognized sequences
+//  ------------------------------------------------------------
+enum  escape_t
+{
+  unrecognized = 0, upArrow, downArrow, leftArrow,
+  rightArrow, deleteKey
+};
+
+//  Function prototype
+//  ------------------------------------------------------------
+escape_t recognize_escape(int fd );
+
+#endif
+</PRE><HR></BODY></HTML>

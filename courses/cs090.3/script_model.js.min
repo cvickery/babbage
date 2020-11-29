@@ -1,0 +1,11 @@
+
+if(typeof Core==="undefined")
+{alert("Core library is missing!");}
+Core.start
+((function()
+{var submitListener=function(evt)
+{evt=evt?evt:window.event;if(!confirm("I see that you tried to submit this form.\n"+"Would you like me to check it for you?"))
+{Core.preventDefault(evt);}};return{init:function()
+{document.getElementById('needJS').style.display='none'
+var theForm=document.getElementsByTagName('form')[0];if(theForm!='undefined')
+{Core.addEventListener(theForm,'submit',submitListener);}}};})());

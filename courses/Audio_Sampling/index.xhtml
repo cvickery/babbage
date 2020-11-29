@@ -1,0 +1,252 @@
+<?php
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Audio Sampling Laboratory</title>
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      html, body
+      {
+        background-color: #ffc;
+        color:            #661;
+        font-family:      sans-serif;
+        margin:           1em;
+      }
+      .textBox {
+        background-color: white;
+        color:            #066;
+        border:           1px solid blue;
+        width:            90%;
+        margin:           auto;
+        padding:          1em;
+        }
+      a:hover {
+        background-color: #ffc;
+        color:            #f00;
+        text-decoration:  none;
+        }
+      #footer {
+        text-align:       center;
+        font-size:        0.7em;
+        }
+    </style>
+
+    <!--  Media-independent styles  -->
+    <style type="text/css" media="all">
+      p { margin-left: 1em; margin-right: 1em; }
+      p.indent { margin-left: 2em; margin-right: 2em; }
+      .screenshot { text-align: center; height: 15em; }
+      .screenshot img { height: 14em; }
+    </style>
+
+  </head>
+  <body>
+    <h1>Audio Sampling Laboratory</h1>
+
+    <h2>Introduction</h2>
+    <div class="textBox">
+
+      <p>
+        When sound is recorded digitally, a microphone first transforms changes in sound
+        pressure level into voltage that varies in direct proportion to (is an anlog of) the sound
+        pressure level (SPL) as it varies in time. To digitize the voltage, an analog to digital
+        converter (ADC) samples the voltage at a certain rate, converting the voltage samples into a
+        sequence of binary numbers that are stored in some sort of memory device, such as a disk
+        file.  To reconstruct the sound later, the binary numbers read back from storage and are
+        fed into a digital to analog converter (DAC) at the same rate at which they were recorded.
+        The DAC outputs a fixed voltage for each binary number it receives; a loudspeaker
+        or headphone causes sound pressure level changes in proportion to the voltages it
+        receives from the DAC.
+      </p>
+
+      <p>
+        This laboratory is a Java application that lets you see the effects of digitizing a sine
+        wave. You can adjust two parameters to control the digitizing process: the sampling
+        <em>rate</em> (samples per second) and the sampling <em>resolution</em>
+        (bits per sample), and see their effects on the waveform that would be produced from
+        the digitized values.
+      </p>
+      <p>
+        You can <a href='#download'>download the code</a> and run it on any machine that has Java
+        installed.
+      </p>
+    </div>
+    <h2>Instructions</h2>
+    <div class='textBox'>
+      <p>
+        When you run the program, you will see three main panels, as shown in this screenshot:
+      </p>
+      <div class="screenshot">
+        <img src="AudioSampling.png" alt="screenshot" />
+      </div>
+
+      <ul>
+
+        <li>
+          The left panel is labeled “Sampled Voltages.”  The upper part is a waveform that shows
+          the points at which an analog sine wave would be sampled. You can change the frequency of
+          the
+          sine wave and the sampling using the controls in the box below the waveform.  The
+          horizontal (time) axis of the waveform is scaled so that exactly one cycle of the sine wave
+          fits onto it, no matter how you set the controls or resize the application window.
+          <br />
+          There is a “Show Samples” button in the lower right part of the window that
+          will display the numerical values of all the sample points: the time of the
+          sample in microseconds, the amplitude of the sample in volts, and the binary
+          encoded representation of that amplitude.  The time is relative to the beginning
+          of a cycle; the amplitude assumes the signal has a peak-to-peak voltage ranging
+          from -1.0 to +1.0; the binary value is an unsigned integer (see below).
+        </li>
+
+        <li>
+          The center panel shows how voltage ranges would be digitized into unsigned
+          binary numbers, given the number of bits per sample set by the slider in the box
+          below it.
+          This table can be used to see how the third column of the “Show Samples” display
+          was derived from the second column of that display.
+        </li>
+
+        <li>
+          The right panel shows the output waveform that would be generated if each sample
+          value is converted to a voltage for the duration of one sampling interval.
+          <br/>
+          Below the Generated Waveform you can see two of the operating characteristics of your
+          computer’s audio playback system: the maximum sampling rate and the maximum bits per
+          sample it can handle. Below that, there is a button to start and stop playback of the
+          generated waveform through your computer’s audio system.
+        </li>
+      </ul>
+    </div>
+
+    <h2 id='download'>Downloading and Running the Application</h2>
+    <div class="textBox">
+
+      <h3>Downloading</h3>
+
+      <p>
+        The application consists of a Java <em>jar</em> file, so you need to have the <a
+        href="http://www.oracle.com/technetwork/java/index.html">Java runtime
+        environment</a> installed on your computer to run it. Most computers already have
+        it installed.
+      </p>
+      <p>
+        Download the jar file for the program: <a
+        href="./AudioSampling.jar">AudioSampling.jar</a>. Save it to a convenient spot,
+        such as your desktop.  You can then run the application by double-clicking on it
+        or using the command, "java -jar AudioSampling.jar".
+        Note: if your browser downloads the file as AudioSampling.jar.zip, just rename it
+        to AudioSampling.jar before using it. Don’t unzip it.
+      </p>
+      <p>
+        If you would like to see/modify the code, the .java files are included in the jar
+        file, and you can extract them using the command:<br/>
+        <code>jar xvf AudioSampling.jar AudioSampling.java EnumeratedVector.java</code><br/>
+      </p>
+
+      <h3>Start-up and run-time options.</h3>
+
+      <p>
+        If you run the program from the command line, you can specify initial values for
+        the signal frequency, sampling rate, and bits per sample as command line
+        arguments.  Use <em>name</em>=<em>value</em> pairs, where <em>name</em> is
+        “frequency”, “rate”, “bitspersample”, or “bits” (the last two are equivalent).
+        Also, the program’s audio playback feature can be disabled by specifying the
+        “disableAudio” option on the command line. You can also set all these options as
+        the program is running, so you don’t even need to know what “the command line” is
+        in order to use the program.
+      </p>
+
+      <p>
+        You can use either command line arguments or the controls in the application to
+        set the frequency of the signal to be digitized to a value between 0.1 and 25
+        KHz.  (The upper limit of human hearing under ideal circumstances is about 20
+        KHz.)  You can set the sampling rate to any value in the range of 0.1 to 50
+        KHz, but no higher than your computer’s audio system will support, normally 44.1
+        KHz.  Bits per sample can range from 1 to 20, but large values will produce no
+        visible effect in the generated waveform, and might slow the program down
+        considerably.  Like the sampling rate, this parameter cannot be set higher than
+        the maximum value supported by your computer’s audio system.
+      </p>
+
+      <h3>Audio Playback</h3>
+
+      <p>
+        The program can generate a tone based on the signal frequency, sampling rate, and
+        bits per sample.  There are a few thing to note about this feature:
+      </p>
+
+      <ul>
+
+        <li>
+          The program has been tested successfully on a number of computers, but some
+          old computers produced very loud buzzing and dropouts. If you have problems with
+          this feature, it might be a problem with the computer rather than the program.
+        </li>
+
+        <li>
+          The tone you hear is not the displayed waveform repeated over and over because
+          doing that would produce an intensity discontinuity at the end of each cycle
+          whenever the tone’s frequency is not an exact multiple of the sampling rate.
+          Rather, the program generates a continuous stream of output intensity samples
+          from a continuous sine wave.  When the tone’s frequency is not an exact multiple
+          of the sampling rate, this means that the sampled values will drift throughout
+          the waveform from cycle to cycle, and as a result you might be able to hear a tone
+          even though the waveform on the screen appears to be too degraded to produce one.
+        </li>
+
+        <li>
+          The program produces lower sampling rates by a process called “downsampling.”
+          That is, each sample’s intensity is sent to the computer’s audio system a number
+          of times based on the ratio between the computer’s sampling rate and the rate
+          you select.  The control for selecting the sampling frequency limits you to
+          selecting integer divisors of the computer’s sampling rate instead of arbitrary
+          values.
+          <br />
+          In addition, lower bits per sample are produced by masking off low order bits in
+          the samples, not by actually changing the audio system.  That is, the program
+          never actually modifies the computer’s audio sampling rate and bits per sample.
+        </li>
+
+        <li>
+          Note that sub-optimal parameter values will often produce “wrong” tones, not
+          just lower quality ones.  These sounds are generally the natural result of a
+          digital sampling artifact called “aliasing.”
+        </li>
+
+      </ul>
+
+      <h3>Source Code</h3>
+
+      <p>
+        As mentioned above, the source code for the application is embedded in the jar file.
+        There are also two extra source files: one for experimenting with the sound system, and
+        a second one that is not useful.
+      </p>
+
+    </div>
+    <hr />
+    <div id="footer">
+      Copyright &copy; 2000 - <?php echo
+      date("Y"); ?> by Christopher Vickery.<br />This work and the accompanying
+      program are licensed under a <a rel="license"
+      href="http://creativecommons.org/licenses/by-sa/2.5/">Creative Commons
+      Attribution-ShareAlike 2.5  License</a>.
+    </div>
+  </body>
+</html>
+

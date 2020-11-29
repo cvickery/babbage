@@ -1,0 +1,58 @@
+<html><head><title>Skeleton Makefile</title></head>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+<center>
+<h1>Skeleton Makefile</h1>
+</center>
+
+Here is the skeleton of a Makefile you can use to start managing
+projects in CS-701.  To use it, replace the material inside angle
+brackets (&lt; &gt;) with appropriate text (or actual tab characters in
+the case of &lt;<i>tab</i>&gt;), and provide values for the <i>make</i>
+variables LDFLAGS (options to be passed to <i>ld</i>), HDRS (list of
+header files), SRCS (list of .cc files), and EXEC (name of the
+executable file).<p>
+
+Note that the text inside the box has a left margin that should not be
+there in your real Makefile.  In particular, the tab characters must
+be in column 1 of the file in order to work.<p>
+
+Consult the <a
+href="http://babbage.cs.qc.edu/courses/cs701/Handouts/using_make.html">using
+<i>make</i></a> web page for more information on how to use and extend
+this skeleton file.<p>
+
+<table align=center cellpadding =5 border=1 width="80%">
+<tr><td><pre>
+
+    # $Id$
+
+    #   Makefile for &lt;<i>Project Name</i>&gt;
+    #   CS-701, &lt;<i>Semester</i>&gt;
+    #   &lt;<i>Your Name</i>&gt;
+
+    #   $Log$
+    #
+
+    CXXFLAGS  = -g -Wall -Wwrite-strings $(DEBUG_FLAG)
+    LDFLAGS   =
+
+    HDRS      = 
+    SRCS      = 
+    OBJS      = $(SRCS:.cc=.o)
+    EXEC      = 
+
+    default : $(EXEC)
+
+    $(EXEC) : $(OBJS)
+
+    clean   :
+    &lt;<i>tab</i>&gt;rcsclean
+    &lt;<i>tab</i>&gt;rm -f *.o *.bak core $(EXEC)
+
+    depend  : $(HDRS) $(SRCS)
+    &lt;<i>tab</i>&gt;makedepend -- $(CXXFLAGS) -- $(SRCS)
+
+</pre></table><p>
+
+<hr></body></html>

@@ -1,0 +1,142 @@
+<HTML><HEAD><TITLE>Grading Form for Object Broker Project</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+Grading Form for Assignment 2, CS-701, Fall 1997
+<H1 align=center>Grading Form for Object Broker Project</H1>
+
+<H2>Project Management (3 points)</H2>
+<ul>
+
+  <li>Is the project directory empty except for the RCS subdirectory?
+
+  <li>Does a <I>make</I> command build the latest version of the
+  project?
+
+  <li>Does "make COFLAGS=&lt;n&gt;" build use case &lt;n&gt; from a
+  clean project directory?
+
+  <li>Are RCS $Id$ and $Log$ keywords present in all source files, man
+  pages, and the Makefile?
+
+  <li>Was each revision checked in with a meaningful log message?
+
+  <li>Is there a version string in each <CODE>.cc</CODE> file?
+
+  <li>How well are header files integrated into the Makefile?  Is there
+  a "depend" rule that handles this?
+
+  <li>How well is installation of <I>man</I> pages integrated into the
+  Makefile?  Is there an "install" rule that handles this?
+
+</ul>  
+
+<H2>User Documentation (2 points)</H2>
+<ul>
+
+  <li>Are there <I>man</I> pages for each use case for each program?
+
+  <li>Are <I>man</I> pages named properly and installed in the proper
+  directory?
+
+  <li>Are they structured in standard <I>man</I> page format, with only
+  the appropriate sections included?  (Note: There should not be an
+  "Availability" section, and "Examples" are normally not needed because
+  the "Synopsis" should tell the user what to type.)
+
+  <li>Is the writing clear, succinct, accurate, and appropriate for the
+  audience who would read them?
+
+</ul>
+
+<H2>Coding Style (2.5 points)</H2>
+<ul>
+
+  <li>Does code and documentation conform to the <a
+  href="../coding_guidelines.html">Coding Guidelines</a> for this
+  course?
+
+  <li>Does the structure of the code make sense?  For example, is the
+  processing of the requests actually being done in the processing
+  functions?
+
+</ul>
+
+<H2>Functionality (2.5 points)</H2>
+
+<ul>
+
+  <li><B>Use Case 1: <I>om</I> and <I>ou</I> Exchange Datagrams (1
+  point).</B>
+  <ul>
+    <li>Does the <I>ou</I> "listClasses" command line option work?
+    <li>Does the <I>ou</I> "exit" command line option work?
+  </ul>
+
+  <li><B>Use Case 2: <I>om</I> Writes a Log File (0.5 point).</B>
+  <ul>
+    <li>Does the log file have the proper name and is it located in the
+    current directory, regardless of where the program itself is
+    located?
+    <li>Does each line of the log file start with a properly formatted
+    timestamp, and is the associated message on the same line as the
+    timestamp?
+    <li>Are all significant events written to the log file?
+    <li>Is the log file easy to read?
+  </ul>
+
+  <li><B>Use Case 2a: Change Structure of <I>om</I> code (0.5
+  point).</B>
+  <ul>
+    <li>Are header files and function prototypes set up properly for
+    the log file and dispatch table modules?
+    <li>Are the header files used properly in the source modules that
+    define and reference the functions whose prototypes are in the
+    header files?
+    <li>Does <I>om</I> link and run properly using the new structure?
+  </ul>
+
+  <li><B>Use Case 3: The Object Broker First Appears (0.5).</B>
+  <ul>
+    <li>Is a proper log file generated, using the shared module
+    developed for Use Case 2a?
+    <li>Is the dispatch table set up properly, using the shared module
+    developed for Use Case 2a?
+    <li>Does <I>ou</I> send the four request types to <I>ob</I>
+    properly?
+    <li>Does <I>ob</I> respond properly to each of the four request
+    types?
+    <li>Does <I>ob</I> respond reasonably to invalid request types?
+  </ul>
+
+  <li><B>Use Case 4: <I>ob</I> and <I>om</I> Communicate (Multiply
+  project
+  grade by 1.05).</B>
+  <ul>
+    <li>Does <I>ob</I> generate unique names properly in response to
+    "hello" requests, and are they written to the log file properly?
+    <li>Does <I>ob</I> respond to "list managers" requests with a proper
+    list of managers?
+    <li>Does <I>ob</I> respond reasonably to "list" requests that are
+    not for "managers"?
+    <li>Does the list of managers accurately reflect intermixed "hello"
+    and "good-bye" requests?
+    <li>Does a "shutdown" request cause "exit" requests to be sent to
+    managers by <I>ob</I> before it exits itself?
+  </ul>
+
+  <li><B>Use Case 5: <I>ou</I> and <I>om</I> Communicate Through
+  <I>ob</I>
+  (Multiply project grade by 1.10).</B>
+  <ul>
+    <li>Does "list classes &lt;manager&gt;" produce the proper list of
+    classes, provided &lt;manager&gt; is valid?
+    <li>Does "list classes &lt;manager&gt;" generate reasonable behavior
+    if &lt;manager&gt; is not valid?
+  </ul>
+
+</ul>
+
+
+<HR>
+<address>Christopher Vickery<br>Computer Science Department,
+Queens College of CUNY</address>
+<HR></BODY></HTML>

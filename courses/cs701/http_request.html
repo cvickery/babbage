@@ -1,0 +1,95 @@
+<html><head><title>HTTP Requests</title></head>
+<body>
+<H1 align=center>HTTP Requests</H1>
+
+This material comes from a draft copy of  "Hypertext Transfer Protocol"
+dated 5 Nov 1993 by Tim Berners-Lee of CERN.<p>
+
+I have put a few notes of my own in here.  They are indicated by my
+initials in brackets: [ccv]<p>
+<blockquote>
+	"These header lines are sent by the client in a HTTP proptocol
+	transaction. ... The list of headers is terminated by an empty
+	line.<p>
+
+	"From:  ... this gives the name of the requesting user.  This
+	field may be used for logging purposes ...<p>
+
+	"Accept: This field contains a comma-separated list of representation
+	schemes (Content-Type metainformation values) which will be accepted
+	in response to this request. ... The set given may ... vary from
+	request to request from the same user. ... More than one occurrence
+	of the field is allowed ... If no Accept: field is present, then it
+	is assumed that text/plain and text/html are accepted.<p>
+<pre>
+[ccv]	The following BNF is slightly rewritten from what appears in the
+[ccv]	standard.
+[ccv]	[ xxx ]* means zero or more occurrences of xxx.
+[ccv]	q is a "quality" indicator between 0 and 1.0 -- see example below.
+[ccv]	mxs and mxb are maximum tolerable delay in seconds and maximum
+[ccv]	tolerable response message size.
+[ccv]	You don't have to worry about any of this for your project, but
+[ccv]	since you will see Lynx generating Accept: fields, I thought your
+[ccv]	might like to know what it is all about.
+</pre>
+<pre>
+            &ltfield> :=    Accept: &ltentry> [ ; &ltentry ]*
+            &ltentry> :=    &ltcontent_type> [, &ltparam> ]*
+            &ltparam> :=    &ltattr> = &ltfloat>
+            &ltattr>  :=    q | mxs | mxb
+            &ltfloat> :=    &ltANSI C floating-point constant
+	                    representation>
+</pre>
+	... an asterisk may be used in place of either the second half of
+	the content-type value, or both halves. ...<p>
+<pre>
+	Example:
+
+	    Accept: *.*, q=0.1
+	    Accept: audio/*, q=0.2
+	    Accept: audio/basic, q=1.0
+</pre>
+	may be interpreted as "if you have basic audio, send it; otherwise
+	send me some other audio, or failing that, just give me what you've
+	got.<p>
+
+	"Accept-Encoding:  Similar to Accept: but lists the Content-Encoding
+	types which are acceptable in the response.  [ccv: such as compressed
+	or zipped]<p>
+
+	"User-Agent:  This line, if present [ccv: your clients must include
+	this line] gives the software program used by the ... client.  This
+	is for statistical purposes and the tracing of protocol violations.
+	... The first white space delimited word must be the software
+	product name, with a ... slash and version designator.<p>
+
+	"Referer:  This optional header field allows the client to specify,
+	for the server's benefit, the address (URI) of the document from
+	which the URI in the request was obtained.  This allows the server
+	to generate lists of back-links to documents, for interest, logging,
+	etc.  It allows bad links to be traced for maintenance. ...<p>
+
+	"Authorization:  If this line is present it contains authorization
+	information.  The format is To Be Specified (TBS). ...<p>
+
+	"Charge To:  This line if present contains account information for
+	the costs of the application of the method requested.  [ccv: a
+	"method" is what we are calling a "protocol," like "http" or "file."]
+	The format is TBS. ...<p>
+
+	"Note: Server tolerance of bad clients.  Whilst it is seen
+	appropriate for [student-written] parsers to check full
+	conformance to this specification, it is recommended that
+	operational parsers be tolerant of deviations.  In particular,
+	lines should be regarded as terminated by the Line Feed, and
+	the preceeding Carriage Return character ignored.  Any HTTP
+	Header Field Name which is not recognized should be ignored
+	...<p>
+</blockquote>
+<hr>
+<address>
+Dr. Christopher Vickery<br>
+Queens College of CUNY
+</address>
+<hr>
+</html>

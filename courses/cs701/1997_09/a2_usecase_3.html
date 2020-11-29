@@ -1,0 +1,107 @@
+<HTML><HEAD><TITLE>Object Broker Project-- Use Case 3</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+Assignment 2, CS-701, Fall 1997
+<H1 align=center>Object Broker Project-- Use Case 3</H1>
+
+<H3 align=center> Use Case 3 -- The Object Broker First Appears</H3>
+
+<H3>Introduction</H3>
+
+The object broker is a third program that acts as an intermediary
+between object managers and object users.  The idea is that there might
+be several object managers running on the network, and users shouldn't
+have to know about where they are in order to use them.  Instead, object
+users will contact a single well-known object broker to find out what
+classes are being managed by what object managers.  Object users will
+then interact with object managers by going through the object
+broker.<p>
+
+This and the next use case will develop the basic communication
+patterns among the the object user, object broker, and object manager
+programs.  This case will establish communication between the object
+broker and the object user, the next case will add communication between
+the object manager and the object broker, and case five will establish
+communication between a user and a manager through the broker.  Use
+cases beyond that will implement more of the details of the CSSOOOBP
+protocol.
+
+<H3>Description</H3>
+
+The object broker for this use case is almost identical to the object
+manager you developed for Use Case #2.  The difference is in the set of
+request types that it recognizes:
+
+<center><table border>
+  
+  <tr><th>Request<br>Type
+      <th>Argument<br>List
+      <th>Return<br>Value
+      <th>Action
+  
+  <tr><td align=center><CODE>hello</CODE>
+      <td align=center>Anything
+      <td>"Hello acknowledged"
+      <td>Write a message to the log file that includes a unique name
+      for the program that sent the request.  See below for details.
+
+  <tr><td align=center><CODE>good-bye</CODE>
+      <td align=center>Anything
+      <td>"Good-bye acknowledged"
+      <td>Nothing
+
+  <tr><td align=center><CODE>list</CODE>
+      <td align=center>Anything
+      <td>A string that includes the Argument List.  Say something like,
+      "List &lt;Arg List&gt; not implemented." in the string.
+      <td>Nothing
+
+  <tr><td align=center><CODE>shutdown</CODE>
+      <td align=center>Anything
+      <td>Nothing
+      <td>Write a message to the log file that includes the Argument
+      List as part of the message, then exit <I>ob</I>.
+
+</table></center><p>
+
+In the next use case, the "hello" and "good-bye" requests will come from
+<I>om</I>, but for this use case, we will use <I>ou</I> to send them to
+<I>ob</I>.  For this use case, you can use the same <I>ou</I> that you
+used in the previous cases, and <I>om</I> is not used at all.<p>
+
+The unique name for a program that is mentioned for "hello" requests is
+to be in the form &lt;hostname&gt;:&lt;port&gt;, for example,
+"jaguar:10F3".  Given the <CODE>sockaddr_in</CODE> struct that is
+filled in by a call to <I>recvfrom()</I>, you can get the
+&lt;hostname&gt; by calling <I>gethostbyaddr()</I> and the integer
+value of remote program's port from the <CODE>sin_port</CODE> field of
+the <CODE>sockaddr_in</CODE> struct.<p>
+
+In my implementation I used global variables for the &lt;hostname&gt;
+and the <CODE>sockaddr_in</CODE> struct because the call to
+<I>recvfrom()</I> is in one part of the program (<I>main()</I>) and the
+"hello" request is processed in a separate function whose prototype
+allows only one string argument to be passed to it. You might be able
+to think of a way to avoid this use of global variables cleanly.<p>
+
+<H3>Documentation</H3>
+
+You do not need to change your <I>man</I> page for <I>om</I>, but your
+should check in a copy with revision number 3.1 as part of proper
+project management.  The <I>man</I> page for <I>ou</I> needs to be
+updated to show what the user may type on the command line and to tell
+what "hello," "good-bye," "list," and "shutdown" requests will do.  You
+will need to mention <I>ob</I> in your <I>ou</I> <I>man</I> page, but
+refer the reader to the separate man page for <I>ob</I> in the SEE ALSO
+section of the page for <I>ou</I>.<p>
+
+The <I>man</I> page for <I>ob</I>, like the pages for other network
+servers, is oriented more towards users who need to know how to start
+and stop the server than for end-users.  It would be appropriate to list
+the request types that <I>ob</I> recognizes and to tell what those
+requests would be used for.  Don't describe the internal logic of
+<I>ob</I>, that should be done in the comments in the code.
+
+<HR>
+<address>Christopher Vickery<br>Computer Science Department,
+Queens College of CUNY</address>
+<HR></BODY></HTML>

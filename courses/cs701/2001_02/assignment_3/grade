@@ -1,0 +1,82 @@
+#! /usr/local/bin/ksh
+
+. ~/fun/testit
+
+# Grading loop starts here
+dirs=$1
+if [[ $dirs == "" ]]
+then
+  dirs="*.dir"
+  dirs=${dirs//.dir/}
+fi
+for f in $dirs
+do
+  clear
+  grep ${f} ../Roster
+  read in?"Do it? "
+  if [[ $in == "" || $in == y* ]]
+  then
+  grep ${f} ../Roster >> ${f}.grade
+  cat boilerplate >> ${f}.grade
+  gvim -fn 7x14 -geometry "-0+0" ${f}.grade &
+    cd $f.dir
+    tar xvf ../$f
+    cd *
+    pwd
+    ls -ldF *
+
+    read in?"Name of README? "
+    [[ $in == "" ]] && in=README
+    vim $in
+
+    ls -lF RCS
+    read prg?"Name of program to make for version 1.1 if not qsh? "
+    [[ $prg == "" ]] && prg=qsh
+    co -r1.1 $prg.cc
+    g++ -g -Wall $prg.cc -o $prg
+    
+    print "Testing $prg ..."
+    print "  With PS1 set to ccv"
+    PS1="ccv " $prg ; print "Exit code was $?"
+    print "  With PS1 not set"
+    $prg ; print "Exit code was $?"
+    
+    read in?"Make clean: "
+    make clean
+    ls -F
+    rm -f *.cc *.h
+    ls -F
+    
+    read in?"lock Makefile and mk depend: "
+    co -l Makefile
+    make depend
+    
+    read in?"Edit Makefile: "
+    vim Makefile
+
+    read in?"ksh? "
+    [[ $in != "" ]] && ENV=~/.kshrc ksh
+    
+    read in?"Make latest version: "
+    make
+    
+    read in?"ksh? "
+    [[ $in != "" ]] && ENV=~/.kshrc ksh
+
+    read in?"Test it? "
+    [[ $in == "" ]] && . testit $prg
+
+    read in?"ksh? "
+    [[ $in != "" ]] && ENV=~/.kshrc ksh
+    
+    read in?"Check format of source files? "
+    [[ $in == "" ]] && chk_format *.cc *.h
+    read in?"Edit source files? "
+    [[ $in == "" ]] && vim *.cc *.h
+
+    read in?"Finished: "
+    cd ~/Courses/cs701/assignment_3
+  fi
+done
+
+    

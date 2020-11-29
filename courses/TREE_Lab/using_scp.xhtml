@@ -1,0 +1,176 @@
+<?php
+  $html_attributes = '';
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $html_attributes = 'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"';
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    echo "<?xml version='1.0' encoding='utf-8'?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+    <title>Working From Off Campus</title>
+    <link rel="shortcut icon" href="../cs081/favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+            href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen"
+            href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+            href="../css/style-print.css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>Working From Off Campus</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+        <p>
+          If you are not on campus and need to use the specialized software available on
+          the TREE domain computers, your choices are either to use the Remote Desktop
+          Connection (RDC) program to log into one of the computers in the lab or to get
+          the software you need and to install it on your home computer and work from
+          there.
+        </p>
+        <p>
+          The problem with RDC is that although it is free (it is provided as part of both
+          Windows and OS X; Linux users should investigate VNC for the same purpose), it can
+          be slow to use because every pixel that
+          changes on the screen has to be transmitted from the lab to your home computer.
+          Even with a good Internet connection, it can be frustrating to use.
+        </p>
+        <p>
+          Students in CS-343 using the Quartus software in the lab can download a free
+          “Web Edition” copy of that software from the <a
+          href="http://www.altera.com">Altera</a> web site. It’s a big download, and you
+          have to register with them to get the free license for running the program, but
+          for our purposes it is exactly the same as the software that runs in the lab.
+        </p>
+        <p>
+          Students using Dreamweaver and Fireworks, however, do not have access to free
+          versions of those programs to use at home. A good, free, programmer’s editor
+          will let you edit your code just about as efficiently as you can when using
+          Dreamweaver. There are several good alternatives to choose from. For Windows
+          users, you might use <a
+          href="http://notepad-plus.sourceforge.net/uk/site.htm">Notepad++</a> or <a
+          href="http://www.vim.org">Vim</a>, both of which are also installed on the
+          computers in the lab. <strong> Do not use the Notepad program that comes with
+          Windows: it is not a programmer’s editor and is not suitable for writing
+          code.</strong> Macintosh users might want to try either <a
+          href="http://www.barebones.com/products/textwrangler/">TextWrangler</a> or Vim.
+          Linux users probably already have a favorite programmer’s editor. If
+          not, Vim is probably easier to use than emacs, both of which are normally
+          included in all Linux distributions.
+        </p>
+        <p>
+          An excellent alternative to Dreamweaver is <a
+          href="http://www.aptana.com/">Aptana Studio</a>, which is available as either
+          a standalone program or as a plugin for the popular Eclipse development
+          environment.
+        </p>
+        <p>
+          Aptana Studio may not have as many features as Dreamweaver, but the ones it does
+          have are precisely the ones we need in our Web projects, including the ability
+          to upload code to a remore site, making it an ideal tool for us. It is available
+          for Windows, Macintosh, and Linux. Unfortunately, I have not written up any
+          documentation on how to use it yet.
+        </p>
+        <p>
+          Although we may use Fireworks or Photoshop for preparing images for the web, you may
+          use any program you find that is capable of producing the effects we use in the
+          course. I have found the free <a href="http://inkscape.org">Inkscape</a> program
+          to be good once you figure out how to use it. ImageMagick and the GIMP are two
+          other excellent no-cost tools to consider investigating for image processing.
+        </p>
+      </div>
+
+      <h2>Transferring Files</h2>
+      <div class="whitebox">
+        <p>
+          The main issue this page deals with is how to get your projects transferred from
+          your off-campus computer to the lab so I can check them. You <em>could</em> copy
+          your work onto a USB drive, bring it to The College, and transfer it to your
+          account using one of the computers in A-205. Alternatively, you can transfer the
+          files to your account over the Internet. Here’s how.
+        </p>
+        <p>
+          First, you need a free program that will let you log into your account from
+          off-campus and transfer files to (or from) the lab server machine, <span
+          class="computerName">Oak</span>. Aptana Studio can do the job, and is available
+          for Windows, Macintosh, and Linux. But if you prefer a simpler set up, Windows
+          users will find that <a href="http://winscp.net/eng/index.php">WinSCP</a> is
+          very good; Macintosh users will find that <a
+          href="http://rsug.itd.umich.edu/software/fugu/">Fugu</a> works very well. There
+          are programs with a graphical user interface for Linux too, but I personally
+          just use <span class="programName">scp</span> from the command line when working
+          with Linux, so I can’t suggest a particular graphical program, other than
+          Aptana Studio.
+        </p>
+        <p>
+          Install your program, and tell it to connect to any computer in the lab (even
+          one that someone else is using at the time is okay), giving the username and
+          password for your account. You cannot log into <span
+          class="computerName">Oak</span> directly, but using <span
+          class="programName">WinSCP</span>, <span class="programName">Fugu</span>, or
+          <span class="programName">scp</span>, logging into any computer in the lab
+          will give you direct access to your “home directory,” which is
+          actually located only on <span class="computerName">Oak</span>. You can copy
+          files and folders between your off-campus computer and your home directory using
+          drag and drop if you are using <span class="programName">WinSCP</span> or <span
+          class="programName">Fugu</span>. See the <span class="programName">scp</span>
+          “man page” for how to do it from Linux. <span
+          class="codeSnippet">scp a_file.xhtml [youraccountname]@cherry.cs.qc.cuny.edu:htdocs</span>
+          would copy a file named <span class="fileName">a_file.xhtml</span> from the
+          current directory to the <code>htdocs</code> directory in your <span
+          class="directoryName">H:</span> drive on <span class="computerName">Oak</span>,
+          for example.
+        </p>
+        <p>
+          <strong>[Starting Spring 2013, the following material is not important. Once
+          you have copied your files to <code>H:\htdocs</code> you can test your web site
+          using the Apache server running on Oak.]</strong>
+          But you are not done yet. Now you have to copy (or move) your project from your
+          home directory to your roaming profile. You cannot do this using <span
+          class="programName">WinSCP</span>, <span class="programName">Fugu</span>, or
+          <span class="programName">scp</span>; you have to be logged into one of the
+          machines in the lab either by sitting at it or by using RDC. Log in, open
+          Windows Explorer (I suggest clicking on the icon for the computer in the upper
+          left corner of the screen), and you will find that you have an <span
+          class="directoryName">H:</span> drive in addition to the usual <span
+          class="directoryName">C:</span> drive. Open your <span
+          class="codeSnippet">H:</span> drive, and you will find that it contains your
+          home directory, the place where you copied your work in the previous step. Just
+          drag your project into the proper directory (folder) under <span
+          class="directoryName">My Documents</span>, and you are ready to do a final check
+          of your project to make sure nothing went wrong in the transfer process.
+        </p>
+        <p class="standoutBlock">
+          Remember, your work will not be copied to your roaming profile on <span
+          class="computerName">Oak</span>, where I can access it, until you log out from
+          the computer you are using. To be safe, you should log out of the first computer
+          and log into another one to be sure the project got saved to your profile on
+          <span class="computerName">Oak</span> successfully.
+        </p>
+      </div>
+
+    </div>
+    <div id="footer">
+      <a href="../../">Vickery Home</a> — <a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a> — <a
+         href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS
+       </a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,222 @@
+<html><head><title>wc.cc</title></head>
+<body><center><h1>wc.cc</h1></center><hr><pre>
+      //  $Id$
+      /*
+       *  Does the same thing as the Unix wc command.
+       *
+       *  Functions
+       *
+       *    processFile()   Count characters, lines, etc. from one file.
+       *    printResults()  Print one line of results.
+       *    main()          Process command line options and file names.
+       *
+       *  Author: C. Vickery
+       *
+       *  Revision History
+       *
+       *    $Log$
+       */
+      #include &lt;getopt.h&gt;
+      #include &lt;stdio.h&gt;
+      #include &lt;string.h&gt;
+      #include &lt;unistd.h&gt;
+      
+      //  Global Constants
+      //  ------------------------------------------------------------------
+      const struct option long_options[] =
+      {
+        { "chars",            0, 0, 'c' },
+        { "lines",            0, 0, 'l' },
+        { "words",            0, 0, 'w' },
+        { "max-line-length",  0, 0, 'L' },
+        { "help",             0, 0, '?' },
+        { 0,                  0, 0, 0   },
+        
+      };
+      const char * const short_options = "clwL?";
+      
+      #define COUNT_CHARS 1
+      #define COUNT_WORDS 2
+      #define COUNT_LINES 4
+      #define COUNT_MAX   8
+      
+      //  Global Variables
+      //  ------------------------------------------------------------------
+      
+      //  Counters for totals across input files.
+      int totalChars = 0, totalWords = 0, totalLines = 0;
+      int totalMaxLine = 0;
+      
+      //  Counters for individual files.
+      int numChars = 0, numWords = 0, numLines = 0, maxLine = 0;
+      
+      //  processFile()
+      //  ------------------------------------------------------------------
+      /*
+       *    Counts chars, words, lines, and max line length for a single
+       *    file.
+       *
+       *    Arguments
+       *
+       *      file - an input stream open for reading
+       *
+       *    Global Variables
+       *
+       *      Initializes and updates counters for an individual file
+       *      (numChars, numWords, numLines, maxLine).
+       */
+      void
+      processFile( FILE * file )
+      {
+        char  buf[ 8192 ];
+      
+        numChars = numWords = numLines = maxLine = 0;
+        while ( 0 != fgets( buf, sizeof( buf ), file ) )
+        {
+          numLines++;
+          int s = strlen( buf );
+          numChars += s;
+          if ( --s &gt; maxLine )
+          {
+            maxLine = s;
+          }
+          if ( 0 != strtok( buf, " \t\n\r" ) )
+          {
+            numWords++;
+          }
+          while ( 0 != strtok( 0, " \t\n\r" ) )
+          {
+            numWords++;
+          }
+        }
+      }
+      
+      
+      //  printResult()
+      //  ------------------------------------------------------------------
+      /*
+       *    Prints one line, the counts for either one file, or for the
+       *    totals across files.
+       *
+       *    Arguments
+       *
+       *      options         - which counter(s) to print
+       *      cl, cw, cc, cm  - count of lines, words, chars, max
+       *      name            - string identifying the file or "total"
+       */
+      void
+      printResult(  int options, 
+                    int cl, int cw, int cc, int cm, 
+                    const char *name )
+      {
+        if ( options & COUNT_LINES )
+        {
+          printf( "%7d ", cl );
+        }
+        if ( options & COUNT_WORDS )
+        {
+          printf( "%7d ", cw );
+        }
+        if ( options & COUNT_CHARS )
+        {
+          printf( "%7d ", cc );
+        }
+        if ( options & COUNT_MAX )
+        {
+          printf( "%7d ", cm );
+        }
+        printf( "%s\n", name );
+      }
+      
+      
+      //  main()
+      //  ------------------------------------------------------------------
+      /*
+       *    Processes command line arguments and all files named on the
+       *    command line, counting bytes, words, and lines for each input
+       *    file.
+       *
+       *    Arguments:
+       *
+       *      argc, argv  - command line options and file names.
+       *      envp        - environment (not used).
+       */
+      int
+      main( int argc, char *argv[], char *envp[] )
+      {
+        //  Process command line options
+        int         options = 0x00;
+        extern int  optind;
+        int         c;
+      
+        while ( -1 != ( c = getopt_long(  argc, argv, short_options,
+                                          long_options, 0 ) ) )
+        {
+          switch ( c )
+          {
+            case 'c' :
+              options |= COUNT_CHARS;
+              break;
+            case 'w' :
+              options |= COUNT_WORDS;
+              break;
+            case 'l' :
+              options |= COUNT_LINES;
+              break;
+            case 'L' :
+              options |= COUNT_MAX;
+              break;
+            default:
+              fprintf( stderr, "Usage: wc [-cwlL] [file ...]\n" );
+              exit( 1 );
+          }
+        }
+        if ( 0 == options )
+        {
+          options = COUNT_CHARS | COUNT_WORDS | COUNT_LINES;
+        }
+      
+        //  Process stdin if no file names
+      
+        if ( optind &gt;= argc )
+        {
+          processFile( stdin );
+          printResult( options, numLines, numWords, numChars, maxLine, "" );
+          exit( 0 );
+        }
+      
+        //  Process each file named on the command line
+        int numFiles = 0;
+        for (int i = optind; i &lt; argc; i++ )
+        {
+          FILE *file = fopen( argv[i], "r" );
+          if ( 0 == file )
+          {
+            perror( argv[i] );
+            continue;
+          }
+          numFiles++;
+          processFile( file );
+          printResult(  options, 
+                        numLines, numWords, numChars, maxLine,
+                        argv[ i ] );
+      
+          //  Accumulate overall sums
+          totalLines += numLines;
+          totalChars += numChars;
+          totalWords += numWords;
+          if ( maxLine &gt; totalMaxLine )
+          {
+            totalMaxLine = maxLine;
+          }
+        }
+      
+        //  Print summary line if more than one file processed.
+        if ( numFiles &gt; 1 )
+        {
+          printResult(  options,
+                        totalLines, totalWords, totalChars, totalMaxLine,
+                        "total" );
+        }
+      }
+</pre><hr></body></html>

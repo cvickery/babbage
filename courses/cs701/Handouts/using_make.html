@@ -1,0 +1,432 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Using Make</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>Using <i>make</i></h1>
+</center>
+
+<h2>Introduction</h2>
+
+
+The <i>make</i> command invokes a project management tool that uses
+<i>rules</i> to determine what <i>commands</i> need to be executed in
+order to build <i>targets</i> based on <i>dependencies</i>.  Each of
+the italicized terms in this paragraph will be explained in this
+web page.<p>
+
+The <i>make</i> utility is used in virtually all software development
+environments, including UNIX, Windows, and other operating systems. 
+The program might be named <i>make</i>, <i>nmake</i>, <i>mk</i>, or
+<i>gmake</i>, or might be buried behind the "Build" button of an IDE
+(Integrated Development Environment), but it is virtually always
+there.<p>
+
+This web page introduces some basic concepts common to most
+implementations of <i>make</i>, but many of the details here are
+specific to the version used in our lab, which comes from the GNU
+project at MIT. There is a <a href="#references">Documentation and
+References</a> section below that you can consult for more information
+than what is given here.<p>
+
+The basic idea of <i>make</i> is that it can be used to automate common
+tasks efficiently.  The tasks you automate almost always involve
+manipulating <i>files</i> by issuing <i>commands</i>.  (The <i>make</i>
+utility is so general that just about every statement about it has to
+be qualified with phrases like "almost always," "usually," or
+"normally."  In the interest of simplicity, I'll skip some of those
+qualifiers in what follows.)
+
+<h2>The <i>make</i> Command Line</h2>
+
+You can invoke the <i>make</i> processor just by typing the name of the
+command with no command line options, but in this case, there must be a
+Makefile in the current directory to tell <i>make</i> what to do.  If
+there is no Makefile, but there is a subdirectory named RCS,
+<i>make</i> will attempt to check out its Makefile using the RCS
+<i>co</i> command.  There is a web
+page, <a href="./using_rcs.html">Using RCS</a>, available for further
+information on using RCS.  All but the simplest tasks (such as compiling a
+single source file into an executable file) require the use of a
+Makefile, and this web page is intended to help you write your own
+Makefiles.  To help get you started, there is a <a
+href="./skeleton_makefile.html">Skeleton Makefile</a> that you can use
+to get you started.  You might want to have a copy of that web page
+available to look at as you read this one.<p>
+
+Often, you supply one or more <i>targets</i> on the command line, which
+tell <i>make</i> what it is you want it to make.  Targets are described
+below.<p>
+
+To the right of the <i>make</i> command name and to the left of any
+targets you might specify on the command line, you may also provide
+values for <i>make</i> "macros", using <code>name=value</code> syntax. 
+(Macros are also called <i>make</i> <u>variables</u>), and are
+described in more detail <a href="#macros">below</a>.<p>
+
+For example, if you want <i>make</i> to use "-r1.3" for the value of
+its COFLAGS macro when making the target named "myprog," you could use
+the following <i>make</i> command line:
+
+<pre>
+      make COFLAGS="-r1.3" myprog
+</pre>
+
+<h2>Implicit Rules</h2>
+
+There are a lot of things that <i>make</i> knows how to do completely
+automatically by following a set of built-in <i>implicit rules</i>. 
+Other tasks have to be specified by <i>explicit rules</i> written by
+the user.<p>
+
+Most of <i>make</i>'s implicit rules are based on filename <i>pattern
+matching</i>.  For example, GNU <i>make</i> knows how to do the following file
+operations using its pattern matching rules:<p>
+
+<ul>
+
+  <li>Compile and link a file with an extension of <code>.cc</code> or
+  <code>.c</code> to produce an executable file with the same basename
+  as the <code>.cc</code> or <code>.c</code> file.
+
+  <li>Compile a <code>.cc</code> or <code>.c</code> file to produce the
+  corresponding <code>.o</code> file.
+
+  <li>Obtain a copy of any file by checking it out of an RCS or SCCS
+  database.
+  
+  <li>Link one or more .o files to produce an executable file.
+
+</ul>
+
+Since <i>make</i> knows how to do all these things automatically, they
+should never be specified in explicit rules.  If you were to use explict
+rules for any of these operations, (1) other people looking at your
+rules would be confused, and (2) you might make a mistake that could be
+avoided by using the implicit rules, which have been very carefully
+designed and tested.<p>
+
+There is a <a href = "./make_implicit_rules.html">web page with a fuller
+description of these implicit rules </a>.  There is also information
+about the the implicit rule for linking <a
+href="#implicit_link">below</a>.  You can find the complete list of
+implicit rules that GNU <i>make</i> knows about in the <i>info</i>
+pages or <i>make</i> manual, referenced in the<a
+href="#references">Documentation and References</a> section below.
+
+<h2>Explicit Rules</h2>
+
+Explicit Rules are typed into a file named <code>Makefile</code> in the
+current directory.  Makefiles may contain comments (beginning with a
+'#' character) and macro (variable) definitions as well as Explicit
+Rules.<p>
+
+An explicit rule has the following format:
+
+<pre>
+      &lt;target&gt; : [&lt;dependency list&gt;]
+      [&lt;command list&gt;]
+</pre>
+
+The <i>&lt;target&gt;</i> is usually the name of a file that you want
+<i>make</i> to build, but it can be a "phony" name that is used just to
+get <i>make</i> to execute some commands for you.  You can specify the
+rules that you want <i>make</i> to process by listing the target parts
+of those rules on the <i>make</i> command line, but if you don't give
+any targets on the command line, <i>make</i> will process the first
+rule it finds in the Makefile.  If there is no Makefile in the current
+directory (even after <i>make</i> tries its implicit rule for obtaining
+it from an RCS or SCCS database), you must give a target on the
+<i>make</i> command line, and <i>make</i> will try to build the target
+using only its implicit rules.<p>
+
+The first thing <i>make</i> does once it has selected a rule to process
+is to use implicit or explicit rules to bring all the files listed in
+the <i>&lt;dependency list&gt;</i> "up to date."  Once all the files in
+the dependency list are up to date (see below), <i>make</i> executes
+each of the commands in the <i>&lt;command list&gt;</i> for the rule. 
+If the dependency list is empty, <i>make</i> executes the command list
+for the rule unconditionally.<p>
+
+In order to be "up to date" a file must be present, and it must have
+been modified more recently than any files on its own dependency list. 
+A common example of this that you will encounter is when <i>make</i>
+uses one of its implicit rules to build a <code>.o</code> file from the
+corresponding <code>.cc</code> file: the target (the <code>.o</code>
+file) must have a more recent modification time than the file it
+depends on (the corresponding <code>.cc</code> file).  If it doesn't,
+it means that you have edited the <code>.cc</code> file since it was last
+compiled, so <i>make</i> automatically executes a <i>g++</i> command to
+compile the <code>.cc</code> file with the <code>-c</code> command line
+option.<p>
+
+Once all the files in the dependency list for a rule are up to date,
+<i>make</i> executes each command in the command list, if there are
+any. It doesn't matter if the commands actually build a file with the
+same name as the target, they just get executed.<p>
+
+<a name="implicit_link"><b>Note on Implicit Linking.</b></a>  Normally,
+no commands get executed unless a rule includes at least one command in
+its command list, but there is an important exception to this:  If rule
+consists of just a target with a list of .o files for its dependencies,
+<i>make</i> will bring all the .o files up to date using its implicit
+rules for compilation, and then will use another implicit rule to link
+all the .o files together to produce an executable file with the same
+name as the target.  One of the .o files in the dependency list must
+have the same basename as the target for this rule to work.  By the
+time you are finished with this web page, you should see that the line,
+
+<pre>
+    $(EXEC) : $(OBJS)
+</pre>
+
+in the <a href="./skeleton_makefile.html">Skeleton Makefile</a> is an
+example of how this implicit rule can be used.<p>
+
+There is a syntax rule that says that each command in the command list
+has to start with a <code>&lt;tab&gt;</code> character, so that
+<i>make</i> can tell where the list ends (by coming to a line that does
+not start with a <code>&lt;tab&gt;</code>).  If a command is too long
+to fit one one line, it can be continued by putting a '\' character at
+the end of lines that are to be continued.  Commands that are continued
+have to start with a <code>&lt;tab&gt;</code> on the first line, but
+any additional lines don't have to have one.<p>
+
+<B>Note:</B> Every command that <i>make</i> executes, whether because
+of an explicit or implicit rule, is executed by its own shell, which is
+the Bourne shell (<i>sh</i>) by default.  One implication of this is
+that features that are specific to <i>csh</i> or <i>tcsh</i> (like
+'<code>~/</code>' representing your home directory) won't work in the
+commands in a rule's command list.  Also, setting an environment
+variable in one command will have no effect during successive commands
+because each invocation of a shell maintains its own environment list. 
+You can <i>use</i> environment variables that were already set when
+<i>make</i> was started, though, (like <code>$HOME</code> to represent
+your home directory), but you have to make them look like <i>make</i>
+macros, which will be covered in the next section.<p>
+
+<B>Summary:</B>  Every rule has a target and either a dependency list or
+a command list (or both).  A missing dependency list means to execute
+the command list unconditionally.  For example, this rule causes the
+command, "make clean" to delete files that have been checked out of RCS
+without being locked, and then to remove some unwanted files:
+
+<pre>
+      clean :
+      <code>&lt;tab&gt;</code> rcsclean
+      <code>&lt;tab&gt;</code> rm core *.o *.bak
+</pre>
+
+<table width = 80% border=0 align=center><tr><td> (<i>The name "clean"
+is conventionally used as the target for the rule in a Makefile that
+removes all files from the project directory that can be regenerated
+either by checking them out of the RCS database or by rebuilding them
+using <i>make</i> rules.  See the <a
+href="./skeleton_makefile.html">Skeleton Makefile</a> web page for the
+definition of this and other "standard" rules.)</i></table><p>
+
+A missing command list means that bringing the dependencies up to date
+is all the user wants to do.  For example, the rule below causes
+<i>make</i> to process the rule with "depend" as its target (another
+"standard" rule), and then to build "myprog" (perhaps by using an
+implicit rule to compile and link <code>myprog.cc</code>, or perhaps by
+executing an explict rule for "myprog" that appears elsewhere in the
+Makefile):
+
+<pre>
+      all : depend myprog
+</pre>
+
+(The name "all" is conventionally used as the target for the rule
+in a Makefile that names all the other targets except "clean.")
+
+<a name="macros"><h2>Macros (<i>make</i> Variables)</h2></a>
+
+Strictly speaking you can write a Makefile that doesn't use any macros,
+but the <a href="./skeleton_makefile.html">Skeleton Makefile</a> uses
+several of them, and the <i>make</i> command itself uses some of them
+for its implicit rules. Knowing how to use them yourself can help you
+construct more flexible Makefiles than you can without them.<p>
+
+A macro is just the name of a string.  Wherever <i>make</i> finds a
+reference to a macro, which consists of a dollar sign followed by the
+macro name in parantheses, it substitutes the string for the reference
+to the name. Here are examples of a macro definition and a macro
+reference from a Makefile:
+
+<pre>
+      MYFLAGS = These words are the value of the macro named "MYFLAGS"
+      
+      default :
+      &lt;tab&gt; echo $(MYFLAGS)
+</pre> 
+
+Now, the command "make default" generates this output:
+
+<pre>
+      % make default
+      echo These words are the value of the macro named "MYFLAGS"
+      These words are the value of the macro named MYFLAGS
+</pre>
+
+The first output line is displayed by <i>make</i> as it shows you the
+command it is going to execute, and the second output line is the result
+of executing the <i>echo</i> command.<p>
+
+(The name "default" is conventionally used as the target for the first
+rule in a Makefile, so the commands "make default" and just plain "make"
+will have the same effect.)<p>
+ 
+You can define a macro in the Makefile as in the previous example, on
+the <i>make</i> command line, or by setting an environment variable. 
+Defining a macro on the command line overrides both the other two
+methods:
+
+<pre>
+      % setenv MYFLAGS good-bye
+      % make MYFLAGS=hello default
+      echo hello
+      hello
+</pre>
+
+Normally, defining a macro in the Makefile overrides defining an
+environment variable, but this can be reversed with the <code>-e</code>
+option on the <i>make</i> command line:
+
+<pre>
+      % make -e default
+      echo good-bye
+      goodbye
+      % make default
+      echo These words are the value of the macro named "MYFLAGS"
+      These words are the value of the macro named MYFLAGS
+</pre>
+
+It is perfectly all right to reference a <i>make</i> macro that isn't
+defined anywhere.  In this case, <i>make</i> will silently substitute an
+empty string for the reference.<p>
+
+<h2>Macros Used for Implicit Rules</h2>
+
+There are lots of these, but here are the ones you need to know about
+for this course:<p>
+
+<table align=center border=0>
+
+  <tr><td align=left><code>CXXFLAGS</code>
+      <td align=left>Used for <i>g++</i> commands
+
+  <tr><td align=left><code>CFLAGS</code>
+      <td align=left>Used for <i>gcc</i> commands
+
+  <tr><td align=left><code>COFLAGS</code>
+      <td align=left>Used for RCS <i>co</i> commands
+
+  <tr><td align=left><code>LDFLAGS</code>
+      <td align=left>Used for <i>g++</i> or <i>gcc</i> commands that
+      involve linking, normally to specify linker options.
+
+  <tr><td align=left><code>LDLIBS</code> or <code>LOADLIBES</code>
+      <td align=left>Used for <i>g++</i> or <i>gcc</i> commands that
+      involve linking, normally to specify library names.
+
+</table><p>
+
+<B>NOTE:</B>  <i>Make</i> also uses macros to name the commands that it
+generates for its implicit rules.  In particular, it uses the same
+macro name, <code>CC</code>, in its implict rules for  compiling
+<code>.c</code> files and in its implict rule for linking
+<code>.o</code> files.  This macro name is different from
+<code>CXX</code>, which is used in its implicit rule for compiling
+<code>.cc</code> files.  This convention "works" because the <i>gcc</i>
+and <i>g++</i> compiler drivers both use the same linker (<i>ld</i>)
+when linking <code>.o</code> files.<p>
+
+Thus, in the <a href="./skeleton_makefile.html">Skeleton Makefile</a>
+the rule,
+
+<pre>
+    $(EXEC) : $(OBJS)
+</pre>
+
+says to be sure all the .o files are "up to date," which will cause
+<i>make</i> to using its implicit rules for compiling .cc files (and/or
+.c files) into .o files.  It will generate the appropriate compiler
+driver command, <i>gcc</i> or <i>g++</i> for each file it has to
+compile, based on whether the source file name ends with .c or .cc
+respectively.  Then, regardless of what compiler driver was used to
+produce the .o files, <i>make</i> will use its single implicit rule for
+linking .o files to generate a <i>gcc</i> command to produce the
+executable file.<p>
+
+<h2>Suffix Substitution.</h2>
+
+Let's say you need a list of <code>.o</code> files that will be used in
+a rule that links the files into an executable file, and that you also
+need a list of the corresponding <code>.cc</code> files that will be
+passed to a <i>makedepend</i> command.  If you generate one list from
+the other, you eliminate the chance that the two lists will get out of
+sync with each other.  Here is an example that shows how to do it:
+
+<pre>
+      MY_SRCS = my_main.cc my_sub1.cc my_sub2.cc
+      MY_SRCS = $(MY_OBJS:.cc=.o)
+</pre>
+
+In this example, <code>MY_OBJS</code> is derived from
+<code>MY_SRCS</code> by substituting the suffix <code>.o</code> for all
+occurrences of the suffix <code>.cc</code>.  Later, both lists can be
+updated by editing just the definition of <code>MY_SRCS</code>. 
+<i>Note: there must be no spaces inside the parentheses.</i>
+
+<h2><a name="references">Documentation and Reference Material</a></h2>
+
+There is a web page with a <a
+href="./make_implicit_rules.html">Catalogue of <i>make</i>'s Implicit
+Rules</a> on this web site.<p>
+
+There is a <i>man</i> page for <i>make</i> availalable on any Unix system
+with <i>make</i> installed on it, but the most complete
+documentation is in GNU's <a name="info"><i>info</i></a> format.  Type
+"info make" to get started on that.  Unfortunately, <i>info</i> is hard
+to get used to.  It does web-like hypertext without a mouse.<p>
+
+There is also a full manual on GNU <i>make</i> that contains all the
+information you can get from <i>info</i>.  There is an HTML version of
+the manual available from <a
+href="ftp://ftp.gnu.org/pub/gnu/Manuals/">ftp.gnu.org</a>, and there is
+a PDF version of it <a href="./make_manual.pdf">here</a>.<p>
+
+There is a small book on <i>make</i> called "Managing Projects with
+<i>make</i>, Second Edition", written by Andrew Oram and Steve Talbott,
+and published by <a
+href="http://www.oreilly.com/catalog/make2/">O'Reilly and
+Associates</a>.  It's highly recommended for a good survey of the
+features available in the various implementations of <i>make</i> that
+are available.
+
+<hr>
+Last updated 2002-Apr-05<p>
+<i>Christopher Vickery<BR>Computer Science Department<BR>Queens College
+of CUNY</i>
+<hr></body></html>

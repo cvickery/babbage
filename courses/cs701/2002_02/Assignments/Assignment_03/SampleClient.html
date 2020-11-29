@@ -1,0 +1,71 @@
+<html><head><title>SampleClient.java</title></head>
+<body><center><h1>SampleClient.java</h1></center><hr><pre>
+      //  $Id$
+      
+      import java.io.*;
+      import java.net.*;
+      
+      //  Class SampleClient
+      //  ------------------------------------------------------------------
+      /**
+        *     This is a sample client for communicating with a server using
+        *     a stream socket.  The stream socket is a network connection,
+        *     but for this application, the server must be running on the
+        *     same computer as this client.
+        *
+        *     $Log$
+        *     
+        *     @author C. Vickery
+        */
+        public class SampleClient
+        {
+          //  main()
+          //  --------------------------------------------------------------
+          /**
+            *     If a port number is given as a command line argument, use
+            *     it.  Otherwise, the default port number is 0x8000 (32768).
+            *
+            *     Connects to the server, then reads lines from the user and
+            *     writes them to the server.  The user can exit by typing
+            *     Control-D at the beginning of a line (normal termination),
+            *     or by typing Control-C any time (abnormal termination.)
+            *     
+            *     @param  args  The command line arguments.  If args[0] is
+            *                   available, it specifies a port number.
+            *     @throws       IOException if anything goes wrong while
+            *                   communciating with the server.
+            *     @throws       UnsupportedEncodingException if there is a
+            *                   bug in the code.
+            */
+            public static void main(String[] args ) throws 
+                                   IOException, UnsupportedEncodingException
+            {
+              //  Decide what port to use
+              int port = 0x8000;
+              if (args.length &gt; 0)
+                port = Integer.parseInt( args[0] );
+              
+              //  Connect to the server if possible
+              InetAddress ia = InetAddress.getLocalHost();
+              Socket s = new Socket( ia, port );
+              System.out.println( "Connected to " + ia + " port " + port );
+      
+              //  Read lines from stdin and write them to the server.
+              OutputStream os = s.getOutputStream();
+              BufferedReader br = 
+                    new BufferedReader( new InputStreamReader( System.in ));
+              String str = null;
+              while ( null != (str = br.readLine() ) )  // Loop until EOF.
+              {
+                byte[] bytes = str.getBytes();
+                os.write( bytes );
+      
+                //  Exit if the user typed "SHUT"
+                if ( str.equals( "SHUT" ) )
+                  System.exit( 0 );
+              }
+              s.close();
+              System.exit( 0 );
+            }
+        }
+</pre><hr></body></html>

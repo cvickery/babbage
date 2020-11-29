@@ -1,0 +1,450 @@
+<HTML> <HEAD> <title> Frequently Asked Questions for CS-701 </title>
+<body bgcolor = #ffffd0>
+
+<h1 align=center>Frequently Asked Questions for CS-701</h1>
+
+This is a list of common questions students ask while taking CS-701.
+Most deal with details about using the workstations in one way or another.
+
+<hr><h2><a NAME="questions">Questions</a></h2><hr>
+
+<ol>
+<li> <a HREF="#q0">Hey, what's all this junk in my new account?</a>
+<li> <a HREF="#q1">How do I print Web pages from Netscape?</a>
+<li> <a HREF="#q2">How do I print mail messages?</a>
+<li> <a HREF="#q3">How do I organize my mail messages?</a>
+<li> <a HREF="#q4">How do I use a floppy disk?</a>
+<li> <a HREF="#q5">Why does every line of my program have <code>^M</code>
+at the end?</a>
+<li> <a HREF="#q9">Help! I got a "quota exceeded" message!</a>
+<li> <a HREF="#q6">Help! The mouse stopped working!</a>
+<li> <a HREF="#q7">Help! Something's wrong with the printer!</a>
+<li> <a HREF="#q8">Help! The workstation died!</a>
+<li> <a href="#q10">Help! I accidentally deleted a file!</a>
+<li> <a href="#q11">What happens if my phone connection goes down?</a>
+</ol>
+
+<hr>
+
+<h2> Answers </h2>
+
+<hr>
+
+<h2><a NAME="q0">Hey, what's all this junk in my new account?</a></h2>
+
+The proper form of this question is, "Golly, Dr. Vickery, what are all
+these interesting files and directories that you have set up for me in
+my new account?"<P>
+
+Well, since you asked so nicely, I'll tell you.  First of all, you will
+notice that you have directories named <code>Mail</code>, <code>bin</code>,
+<code>lib</code>, and <code>man</code>.  The <code>Mail</code> directory
+is discussed in <a HREF="#q3">How do I organize my mail messages?</a>.
+The other three directories are for your own personal versions of
+the corresponding directories in the system's <code>/usr</code> directory.
+You can put executable files that you develop into your <code>bin</code>
+directory, libraries that you build into your <code>lib</code> directory,
+and <i>man</i> pages under your <code>man</code> directory.  You can then
+use the files you developed just as if they had been provided by the system.
+The idea is to give you practice in installing programming projects without
+giving you superuser access to the real system-wide directories.<P>
+
+There is also a read-only copy of a file named <code>Makefile</code> in
+your home directory.  Each project you do will go in its own project
+directory, and the first thing you will do after creating the directory
+is to copy this file into it.  Then you can edit the copy as necessary
+to adapt it to the particular project you are working on.  The copy in
+your home directory is read-only so that you don't accidently change it.
+You will have to change permissions using the <i>chmod</i> command before
+you can edit the copies you make of it.<P>
+
+There are a few hidden files in your home directory that I put there, and
+several more that will show up as you run various programs like <i>pine</i>
+and <i>netscape</i>.  The files that I put there are editable by you, but
+I suggest that you make a copy of each one before making changes to it,
+just in case.  Here is a list of the files I put there and what they do:
+
+<dl>
+<dt><code>.cshrc</code><dd>This is the file you are most likely to want to
+edit yourself.  It contains the commands that the shell executes when you
+first log in or start a new copy of the shell running.  Note that we are
+using the <i>tcsh</i>, so the commnds here are specific to that shell.  There
+are many environment variables set here, and some command aliases are defined
+here.  Your idea of good aliases for commands might not agree with mine, so
+here is a list of aliases that I set up and what they do:
+
+<dl>
+<dt>.<dd>Show the pathname of your current working directory.
+<dt>..<dd>Change to the directory above the one you are in.
+<dt>cls<dd>Clear the screen.
+<dt>del<dd>Delete files, prompt for confirmation.
+<dt>dir<dd>Same as <i>ls</i>.
+<dt>ff<dd>Find File.  First argument is the top of a directory tree,
+the second is a filename, which may include wildcards if you put it
+in quotes.
+<dt>h<dd>Display the command-line history list.
+<dt>ispell<dd>Spell-check a file.
+<dt>j<dd>List jobs that are running in the background.
+<dt>ker<dd>Run Kermit
+<dt>l<dd>List file names, permissions, and sizes a screenful at a time.
+<dt>la<dd>List all file names, etc. including hidden files.
+<dt>log<dd>Clear the screen and exit the shell.
+<dt>ls<dd>List file names with the "<code>-F</code>" option, which means
+that directory names will have a '<code>/</code>' after them and that
+executable file names will have an '<code>*</code>' after them. <i>Note:</i>
+the way aliases are set up, this option applies to the other aliases that
+are based on this one, <i>l</i> and <i>la</i>.
+<dt>m<dd>It stands for "more" but it is an alias for <i>less</i>.  This
+is the program that lets you view text a screenful at a time.
+<dt>mail<dd>Run the <i>pine</i> email program.
+<dt>md<dd>Create a directory.
+<dt>mk<dd>Run the <i>make</i> utility.
+<dt>mv<dd>Rename a file or directory, asking for confirmation if the
+target file already exists.
+<dt>q<dd>Same as <i>log</i>.
+<dt>type<dd>Same as <i>less</i>.
+<dt>uuencode<dd>Simplified version of the <i>uuencode</i> command.  Give
+the name of the file to uuencode, and it produces a new file with the
+same name plus an extension of <code>.uue</code>.
+<dt>vt100<dd>If you have trouble running <i>vi</i> or <i>pine</i> with
+messages to the effect that they don't know about the terminal you are
+using, try giving this command.
+
+</dl>
+
+<dt>.login<dd>The commands in this file are executed by the shell
+when you log into the system.  I don't think you will need to change it.
+<dt>.Xdefaults<dd>This is the resource file that is loaded into the X
+Window Server when you log in.  We have to find out how CDE handles this
+one.
+
+<dt>.pinerc<dd>This is your <i>pine</i> options file.  You can edit it
+directly, but it is much better to use the "Setup/Config" options from
+Pine's "Main" menu instead.
+
+</dl>
+
+<ul>                 
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>                       
+                            
+<h2><a NAME="q1">How do I print Web pages from Netscape?</a></h2>
+
+You can't use Netscape's "print" option because it generates PostScript
+output and the printer in the lab doesn't recognize PostScript.
+Instead, select "Save as ..." from the File menu.  When the Save As ...
+dialog box pops up, use the Format for Saved Document drop down menu to
+select the "Text" option.  You can then print the text file on the
+printer in the lab.  Alternatively, you could save the document in
+PostScript form, take the file somewhere else and print it on a
+PostScript printer.<p>
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>
+
+<h2><a NAME="q2">How do I print mail messages?</a></h2>
+
+Type 'y' when the message is selected and it will print on the
+dot-matrix printer in the lab.  Alternatively, you can type 'e' to save
+the message in a file, and print the file.<P>
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>
+
+<h2><a NAME="q3">How do I organize mail messages?</a></h2>
+
+Your ~/Mail directory is used for saving mail messages.  All mail
+messages to you are stored in your "incoming mailbox," which is a file named
+<code>/var/mail/&lt;your_name&gt;</code>.  At any time, you can save
+messages in a "folder" by using the 's' command.  The advantage of
+moving messages to folders is that they no longer clutter up your list
+of messages when you start up pine; only the messages you haven't saved
+yet (the ones still in your inbox) will be listed.  Also, you can have
+different folders for different types of mail if you want.  You can
+always get to the messages you have put in a folder by using the 'g'
+command to change folders.<p>
+
+<b>Note:</b>  Mail messages left in your incoming mailbox are subject
+to random deletion!  On the other hand, all files in your directory
+tree (including, of course, your Mail subdirectory) are backed up twice
+a week.  If you care about your mail, save it in folders.<P>
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>
+
+<h2><a NAME="q4">How do I use a floppy disk?</a></h2>
+
+Insert a DOS-formatted diskette into the drive, and run the
+<i>volcheck</i> command.  When it completes, you will be able to copy
+files to/from the floppy by referring to the Unix directory
+/floppy/floppy0 as the root directory of the diskette.  When you are
+finished, use the <i>eject</i> command to get the diskette out of the
+drive.  <i>Note:</i> The <i>eject</i> command if your current working
+directory is on the floppy.  Be sure to <code>cd</code> back to your
+home directory before you try to eject a floppy.<p>
+
+As an alternative, you can use the CDE's FileManager application.  There
+is a option under the File menu that says "Check for floppy."  When you
+select it, it does the <i>volcheck</i> command for you and brings up
+a window for the floppy which can be used in the FileManager's usual sort
+of way.  Note that I consider the use of FileManager to be a good idea in
+the outside world, but <i>not in this course</i>.<P>
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>
+
+<h2><a NAME="q5">Why does every line of my program have
+<code>^M</code> at the end?</a></h2>
+
+If you use a DOS editor to create a text file and bring that file into
+the lab on a floppy, the <code>^M</code> characters show up.  They are
+ASCII carriage returns, put there by the DOS editor because DOS uses
+the convention that every line of a text file ends with both a carriage
+return and a linefeed.  The Unix convention is to terminate lines with
+just a linefeed.  The ASCII code for carriage return is 0x0D (decimal
+13) which looks to a Unix editor like Control-M (because M is the 13th
+letter of the alphabet), and displays as <code>^M</code>.  The presence
+or absence of carriage returns is normally immaterial to C compilers
+and text editors.  You can get rid of them in <i>vi</i> with this
+command sequence:  "<code>:%/^V^M//</code>" where <code>^V</code>
+means to type Control-V and <code>^M</code> means to type Control-M.
+At the bottom of the screen you will see just the <code>^</code> when
+you type the <code>^V</code> and the <code>M</code> when you type
+<code>^M</code>.<p>
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>
+
+<h2><a name="q9">Help! I got a "quota exceeded" message!</a></h2>
+
+You have a disk quota of 15 MB.  Once you exceed it, you will have to
+delete some files before you can do much of anything else.  This is a
+big chunk of file space to use up, so you probably have downloaded a
+bunch of stuff from the net, and you will have to get rid of
+something.  A painless way to start is to tell <i>netscape</i> to clean
+out its cache and to set its cache size to zero.  (It's under the
+"Options" menu.)<P>
+
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>
+
+<h2><a NAME="q6">Help! The mouse stopped working!</a></h2>
+
+The SPARCstations in the lab have a key called "<code>Alt Graph</code>"
+in the lower right corner of the main part of the keyboard which, when
+pressed, causes the mouse buttons to stop working.  It's easy to hit it
+accidentally without realizing it.  If you can move the mouse cursor
+but the buttons have no effect, try pressing this key; it works as a
+toggle, and pressing it again normally clears the problem.<p>
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a><p>
+</ul>
+
+<h2><a NAME="q7">Help! Something's wrong with the printer!</a></h2>
+
+<ol>
+
+<li>  If you print something and it does not come out, <b>do not repeat
+      the <i>lp</i> command!</b>  If the file does not print, there must be
+      something wrong, and repeating the command just queues up more
+      copies to be printed, which will tie up the printer with wasted
+      work when the problem is resolved.
+
+<li>  Be very careful about what you are printing.  Printing anything
+      more than a few pages at a time is inappropriate.  If you want
+      printed copies of long <i>man(1)</i> pages, redirect the output to
+      a file, copy the file to a diskette, and print the file on one
+      of the laser printers supplied by the Academic Computer Center.
+
+<li>  Be careful to print only plain text files.  Anything else will
+      cause problems.  It's not a good idea to use wildcards when
+      listing files to print because it is so easy to include binary
+      files inadvertently.
+
+<li>  <b>Never leave the lab with a print job pending.</b>  See the
+      next item for how to cancel a print job.  If you are unable to
+      cancel a print job successfully, send email to <i>vickery,
+      joshi at wizard,</i> or <i>peter at wizard.</i>  Note that the printer
+      has an internal buffer, and it may continue to print for a while
+      after you cancel a print job.  If you print a binary file, it
+      might fill up the print buffer with formfeed codes, causing lots
+      of pages to come out after you cancel the print job.  <A
+      HREF="#power">See below</A>.
+
+<li>  Become familiar with the commands for cancelling print jobs and
+      determining the status of jobs you have submitted for printing:
+
+<dl>
+
+<dt><code>cancel <i>&ltrequest-id&gt</i></code><dd>Cancels a print
+job.  The request-id was displayed when the lp command was given.
+
+<dt><code>lpstat</code><dd>Shows the <i>&ltrequest-id&gt</i> and status
+of all print jobs you have submitted but which have not completed
+printing yet.
+
+<dt><code>lpstat -o</code><dd>List the status of all output requests to
+the printer.
+
+<dt><code>lpstat -u</code><dd>List the status of all users' print
+requests.  In our lab, this and the previous command give the same
+information.
+
+</dl>
+</ol>
+
+<A NAME="power"><b>To Stop Printing a Binary File</b></A><P>
+If you do print a binary file and canceling the print job leaves you with
+pages spewing out of the printer because of control codes in the print
+buffer, you have no choice but to turn the power to the printer off, which
+clears the print buffer.  Position the paper to the top of a page before
+turning the printer back on.<P>
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>
+
+<h2><a NAME="q8">Help! The workstation died!</a></h2>
+
+First, be sure you are not dealing with the <a HREF=#q6>mouse
+buttons don't work</a> problem.  Be sure you have tried ^C to kill
+whatever program you are running.  If you can exit the window system
+(which logs you out), do so.  Then log back in and use <code>ps -fe |
+grep <i>&ltyour_account&gt</i></code> to see all processes that you
+have running on the workstation.  Use <code>kill
+<i>&ltprocess_id&gt</i></code> to delete all processes not related to your
+current login session.  If you kill a process and it doesn't go away,
+try using <code>-KILL</code> or <code>-TERM</code> as an argument to the
+<i>kill</i> command (before the <i>&ltprocess_id&gt</i>.)  If you can't
+log out and/or you can't log back in, try logging in to the problem
+computer from another one using <i>rlogin</i> and killing the problem
+processes from there.  See <a href="#q11">Lost Phone Connection</a> for more
+information on killing processes.<p>
+
+If none of these strategies works, send mail to <i>vickery,
+joshi at wizard,</i> and/or <i>peter at wizard</i> telling about the problem,
+and one of us will deal with it as soon as possible.<p>
+
+<i>Never try to reboot any of the workstations, and <b>never, never
+turn off the power to any of the workstations!</b></i><p>
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a><p>
+</ul>
+
+<h2><a name="q10">Help! I accidentally deleted a file!</a></h2>
+
+Unfortunately, there is no way to "undelete" a file once it is deleted.
+For this reason, it is critical for you to back up your work manually
+as often as you make enough changes that you wouldn't want to have
+to type things back in again.  If you are in the lab, you can copy
+your work onto a floppy disk.  See <a href="#q4">How to Use a Floppy</a>
+above for instructions.  If you are home, you will have to download your
+modified files using whatever communication program you have.<p>
+
+An easy way to guard against accidental deletions is to copy your project
+directory into a backup directory in your account periodically.  The
+<code>-r</code> option of the <i>cp</i> command lets you copy a whole
+tree with one command.  Of course, this doesn't protect you if the whole
+disk crashes.<p>
+
+Finally, the files in the lab are backed up to magnetic tape twice a
+week.  You can contact either <i>peter@wizard</i> or <i>joshi@wizard</i>
+to request a file to be restored from the most recent backup tape.  Backup
+days are Monday and Thursday.<p>
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>
+ 
+<h2><a name="q11">What happens if my phone connection goes down?</a></h2>
+
+After a while you will be logged out automatically.  If you were editing
+a file using <i>vi</i> you will get an email message from the editor
+telling you how you can recover the editing session you were in when the
+connection broke.<p>
+
+Even though you may be officially logged in for a while after your
+connection breaks, neither you nor anyone else will be able to access
+that login session.  You can log back in and start another login
+session though.<p>
+
+Sometimes recovery is not so clean as I just indicated.  When you log back
+into the same computer again, it is a good idea to look for processes that
+are still running from an earlier session and try to delete them.  You
+might want to do this if you were in the middle of editing a file when
+the connection went down: killing the <i>vi</i> process will get it to
+set up for you to recover the editing session.<p>
+
+The command to look at the processes that are running on the system is
+<i>ps</i>.  If you type <i>ps</i> with <code>-fe</code> as command line
+arguments, your get a list of all the processes running on the system
+that starts like this:
+
+<pre>
+     UID   PID  PPID  C    STIME TTY        TIME COMD
+    root     0     0 73   Feb 13 ?          0:01 sched
+    root     1     0 80   Feb 13 ?          5:34 /etc/init -
+    root     2     0 80   Feb 13 ?          0:03 pageout
+    root     3     0 80   Feb 13 ?         44:04 fsflush
+</pre>
+
+The <code>UID</code> column tells you which user started the process,
+the <code>PID</code> column tells the Process ID#, the <code>PPID</code>
+is the parent process ID, <code>STIME</code> is when the process started,
+<code>TTY</code> is the terminal from which the process was started,
+<code>TIME</code> is the amount of execution time the process has
+consumed, and <code>COMD</code> is the command line that started the
+process.<p>
+
+The task is to determine the <code>PID</code> of the process(es) you
+want to get rid of.  They should have your login name as
+<code>UID</code> and should have a <code>TTY</code> that is different
+from the one you are currently logged in on.  Look at this command and
+its output:
+
+<pre>
+vickery at babbage[~]> ps -fe | grep grep
+ vickery 14278   310  5 12:59:22 pts/3      0:00 grep grep
+vickery at babbage[~]> 
+</pre>
+
+It says that my process number 14278 (child of 310) is running from
+terminal "pts/3" and that it is executing a "grep grep" command.  If I
+am logged in from a terminal, I can now do "<code>ps -fe | grep
+vickery</code>" to see all the processes I am running and kill any that
+are <i>not</i> running from <code>pts/3</code>.  If I am logged in at
+the console, I will be logged in once for every application that I am
+running, and I will have to be careful to determine which processes I
+want to kill.  However if I am not careful enough, the worst that will
+happen is that I will kill an application I am running or maybe even
+log myself out.<p>
+
+The command to delete a process is <i>kill -KILL</i> with the
+<code>PID</code>(s) you want to kill listed as command line
+arguments.<p>
+
+
+
+<ul>
+<li><a HREF="#questions">Back to the Questions</a>
+</ul>
+ 
+
+<hr>
+<ul>
+<li><A HREF="index.html">CS-701 Home Page</A>
+</ul>
+
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+<A HREF="/">My Home Page</A>
+<HR> </BODY> </HTML>

@@ -1,0 +1,156 @@
+<?php
+  $this_dir = opendir('.');
+  $this_link = "";
+  $this_year = "";
+  $this_term = "";
+  while ($dir_entry = readdir($this_dir))
+  {
+    if (is_dir($dir_entry) && preg_match('/(\d{4})_(\d{2})/', $dir_entry, $year_term))
+    {
+      $this_year = $year_term[1];
+      $this_term = ($year_term[2] === '02') ? 'Spring' : 'Fall';
+      $this_link = $dir_entry;
+    }
+  }
+
+  header("Vary: Accept");
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+  stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+  stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+  )
+  {
+      header("Content-type: application/xhtml+xml");
+      header("Last-Modified: "
+      .gmdate('r', filemtime($_SERVER['SCRIPT_FILENAME'])));
+      print ("<?xml version=\"1.0\" encoding=\"utf-8\"
+  ?>
+  \n");
+  }
+  else
+  {
+  header("Content-type: text/html; charset=utf-8");
+  }
+?>  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Syllabus</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../css/style-print.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/syllabus.css" />
+  </head>
+  <body>
+      <h1>CS-90.3: Information and Intelligence<br/>Syllabus</h1>
+      <?php
+        echo <<<EOT
+        <p id='current-semester-link'>
+          [<a href='$this_link'>Schedule and Assignments for $this_term $this_year</a>]
+        </p>
+EOT;
+       ?>
+      <div class="standout-block">
+        This syllabus gives the intended structure and requirements for this course, but the actual
+        topics and amount of time spent on each topic varies from semester to semester.  The course
+        schedule for this semester, including exam dates and assignments to be handed in, is on <a
+        href="<?php echo $this_link;?>">this semester’s schedule page</a>.
+      </div>
+      <h2>Course Objectives</h2>
+      <div>
+        <p>
+          This syllabus is not ready yet.
+        </p>
+        <p>
+          Students who complete this course successfully will be able to:
+        </p>
+        <ul id="rubrics">
+          <li>
+          </li>
+        </ul>
+      </div>
+      <h2>Instructor</h2>
+      <div>
+        The instructor for the course is Dr. Christopher Vickery. See <a
+        href="../../contact_info.xhtml">Dr. Vickery’s Contact Information and Office Hours</a> for
+        that information.
+      </div>
+      <h2>Course Structure and Assessment</h2>
+      <div>
+        <p>
+          There are two 75 minute class meetings per week. Attendance will not be taken (except at
+          the beginning of the semester to verify your registration for the course), but students
+          who often miss class will probably fail the course. The reading assignments for the course
+          are listed below, and will be broken down further in the course schedule page for the
+          semester.
+        </p>
+        <h3>Assignments</h3>
+        <h3>Grading</h3>
+        <p>
+          Grades are posted on the web as soon as they are available.
+        </p>
+        <p class="standout-block">
+          Exam and assignment grades become permanent one week after they have been posted, even if
+          there has been a scoring error.  Be sure to check that your exam was scored correctly and
+          that the correct grade has been recorded (using the &ldquo;Check My Grades&rdquo; form on
+          the course schedule page) as soon as exams are returned.
+        </p>
+        <p>
+          The College has a standard policy for converting course averages into letter grades, which
+          I follow mechanically, except I compute fractional course averages and round
+          to the nearest integer, which gives you half a point of automatic grade inflation. For example,
+          the college policy specifies a grade of B+ for course averages between 87 and 90: because of
+          rounding, that means that any score between 86.5 and 89.5 is a B+.
+        </p>
+      </div>
+      <h2>Reference Material</h2>
+      <div>
+        <ul>
+          <li>James Gleick, <em>The Information</em>. Pantheon, 2011. ISBN-13: 978-0375423727</li>
+          <li>Brian Christian, <em>The Most Human Human</em>. Doubleday, 2011. ISBN-13: 978-0385533065</li>
+          <li>Edward Tufte, <em>Beautiful Evidence</em>, Graphics Press, 2006. ISBN-13: 978-0961392178
+          </li>
+        </ul>
+        <h3>Notes:</h3>
+        <ul>
+          <li>Both the Gleick and Christian books are available in electronic format. Both are <strong>required</strong>.
+          </li>
+          <li>Prof. Tufte has offerred to make copies of <em>Beautiful Evidence</em> 
+            available to students in this course for $10 each (below cost).
+          </li>
+        </ul>
+      </div>
+      <h2>Topics</h2>
+      <div>
+        <p>
+          Here is an idealized schedule of topics and assignments for the course. The actual
+          assignments <a href="<?php echo $this_link; ?>">are posted on a separate page</a>.
+        </p>
+        <table>
+          <tr>
+            <th>Classes</th><th>Topics</th><th>Assignments</th>
+          </tr>
+          <tr>
+          	<th>1-2</th>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+          	<th>14</th>
+            <td colspan="2" class='no-assignment'>Midterm Exam</td>
+          </tr>
+          <tr>
+          	<th></th>
+            <td colspan="2" class='no-assignment'>Final Exam</td>
+          </tr>
+        </table>
+      </div>
+
+    <div id="footer">
+      <a  href="../../">Vickery&nbsp;Home</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

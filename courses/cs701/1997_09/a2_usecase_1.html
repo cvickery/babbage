@@ -1,0 +1,224 @@
+<HTML><HEAD><TITLE>Object Broker Project -- Use Case 1</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+Assignment 2, CS-701, Fall 1997
+<H1 align=center>Object Broker Project -- Use Case 1</H1>
+
+
+<H3>Use Case 1 -- <I>om</I> and <I>ou</I> Exchange Datagrams</H3>
+
+Create a new directory for this project, and create an RCS subdirectory
+under it.  You are going to write two programs for this step (<I>ou</I>
+and <I>om</I>), which may each be built from single source files,
+<CODE>ou.cc</CODE> and <CODE>om.cc</CODE>.  Unless you decide to have
+more than one source file for each program, the Makefile for this
+project may consist of just the following two lines:
+
+<pre>
+      LDLIBS = -lsocket -lnsl
+      all : ou om
+</pre>
+
+<I>Make</I> automatically adds the <CODE>LDLIBS</CODE> macro to the g++
+command any time it uses an implicit rule to invoke the linker
+(<I>ld</I>), just as it adds the <CODE>CXXFLAGS</CODE> that you already
+know about.  The two libraries named in this macro are needed for any
+programs that use sockets.  However, if you build your programs on
+<I>qcunix1</I> you have to omit the <CODE>nsl</CODE> library because
+they don't use it and it isn't available there.<p>
+
+If you use the <I>strtok_r()</I> function in either of your programs,
+you will also have to modify the value of CXXFLAGS in your Makefile:
+
+<pre>
+      CXXFLAGS = -g -Wall -D_REENTRANT
+</pre>
+
+The two programs will communicate by exchanging datagrams.  Since you
+have sample code for stream sockets, but not for datagram sockets, here
+are the changes you will have to make to use datagrams:
+
+<OL>
+
+  <LI>The second argument to <I>socket()</I> has to be
+  <CODE>SOCK_DGRAM</CODE> instead of <CODE>SOCK_STREAM</CODE>.
+
+  <LI>The server uses <I>bind()</I> to establish its "well known" port
+  number, but it does not call <I>listen()</I> or <I>accept()</I>. 
+  Instead it calls <I>recvfrom()</I> to receive datagrams as they
+  arrive:
+
+<pre>
+      bytesReceived = recvfrom( well_known_socket_fd,
+                                buffer_to_receive_datagram,
+                                sizeof buffer_to_receive_datagram,
+                                0,  // Flags: none need to be set.
+                                &amp;sockaddr_for_sender,
+                                &amp;sockaddr_for_sender_size);
+</pre>
+
+  When a datagram arrives, <CODE>sockaddr_for_sender</CODE> will be
+  filled in with host address and port number for the datagram sender;
+  and sockaddr_for_sender_size is an <I>int</I> that you must
+  initialize before each call to <I>recvfrom()</I> with the size of a
+  <CODE>sockaddr_in</CODE> struct, and which the kernel will modify
+  with the size of the socket address before the call returns.  (This
+  is for generality so that datagrams could be sent and received using
+  different formats for the socket addresses on the client and server
+  ends.  We don't use this feature, but we have to make our code
+  consistent with it anyway.)
+
+  <LI>The server can send a datagram back to a client by using the
+  <I>sendto()</I> function:
+
+<pre>
+      bytesSent = sendto( well_known_socket_fd,
+                          message_to_send,
+                          strlen(message_send),
+                          0,  // Flags: none need to be set.
+                          &amp;sockaddr_for_sender,
+                          sockaddr_for_sender_size);
+</pre>
+
+  The <CODE>sockaddr_for_sender</CODE> would be the same struct that
+  was used in the matching call to <I>recvfrom()</I>.  Note that unlike
+  <I>recvfrom()</I>, the last argument is a value, not a pointer in
+  this function.
+
+  <LI>The client does not use <I>connect()</I>.  Instead it uses
+  <I>sendto()</I> to send a datagram message to the server, and then
+  uses <I>recvfrom()</I> to get the server's reply.  Since datagrams are
+  unreliable, it is possible that a message sent from the client won't
+  be received by the server, resulting in no reply!  That means that the
+  client might block forever waiting for a reply that isn't coming. 
+  Here is some pseudocode to deal with that possibility:
+
+<pre>
+      sendto( ... )
+      alarm(1)
+      br = recvfrom( ... )
+      if (-1 == br &amp;&amp; EINTR == errno)
+        server did not reply within one second
+</pre>
+
+  <LI>Neither the client nor the server uses <I>read()</I> or
+  <I>write()</I> for sending messages.  Everything is done using
+  <I>sendto()</I> and <I>recvfrom()</I>.
+
+</ol>
+
+Use the last four digits of your social security number as the
+well-known port number for your server.  There will be no conflicts
+with other students using the lab this semester.  However you have to
+have superuser privileges to use port numbers less than 1000, so the
+one person whose social security number ends with a number less than
+1000 will have to add 1000 to it (or treat the last three digits as a
+hexadecimal value).  If for some reason you do need more
+port numbers, there will be no conflicts if you use numbers between
+your assigned number and that number plus 60.<p>
+
+<center><B><I>om</I> for Use Case 1</B></center>
+
+The object manager accepts any number of command line arguments.  If
+the first argument is numeric, it is an alternate value for the
+program's well-known port number.  Other than the port number, all
+command line arguments are the names of classes to be managed by the
+program.  For this use case, the class names may be totally arbitrary
+strings.  Build a linked list of these class names.<p>
+
+Create a datagram socket and bind it to your assigned well-known port
+number.  When a datagram arrives it will be a <I>request</I> formatted
+as a text string with spaces as delimiters between <I>tokens</I>.  The
+first token in the datagram is a <I>request type</I> for selecting a
+function to call to process the request.  Pass the remainder of the
+datagram as a single argument to the appropriate processing function,
+which is returns a character string.  Send that string as a
+<I>reply</I> to the sender of the request.  Use a <I>dispatch table</I>
+as described in class to match request types with processing
+functions.  If a request has an unrecognized request type, send the
+string "*** unrecognized request ***" to the sender.<p>
+
+For this use case, <I>om</I> recognizes two request types, and processes
+them as follows:
+
+<center><table border>
+  
+  <tr><th>Request<br>Type<th>Argument<br>List<th>Returns
+  
+  <tr><td align=center><CODE>listClasses</CODE><td
+  align=center>Anything<td>The names of all the classes being mangaged,
+  separated by newlines.
+
+  <tr><td align=center><CODE>exit</CODE><td
+  align=center>Anything<td>Nothing.  Print the argument list, and exit
+  <I>om</I>.
+
+</table></center>
+
+Write to stdout each datagram received and each reply sent.<p>
+
+<center><B><I>ou</I> for Use Case 1</B></center>
+
+The first command line argument is the name of the host where <I>om</I>
+is running.  If the second command line argument is numeric, it is the
+port number to use instead of your well-known port number.  One
+additional argument is a string.  Send a datagram to the <I>om</I>
+server containing the command line string.  Print the reply that is
+returned by <I>om</I>, or an appropriate message if no reply is
+received within a reasonable amount of time, and exit.<p>
+
+<center><B>Documentation for Use Case 1</B></center>
+
+Write man pages for <I>ou</I> and <I>om</I>.  Add the following rule to
+your Makefile:
+
+<pre>
+      install_doc : ou.1 om.1
+      &lt;tab&gt;cp -f ou.1 om.1 $(HOME)/man/man1
+</pre>
+
+<center><B>Finishing Use Case 1</B></center>
+
+Test both your programs carefully.  Run <I>~vickery/bin/om_1</I> and be
+sure your <I>ou</I> works correctly with it.  My default port number is
+0x8000 (32768).  Run your <I>om</I> and make sure it works correctly
+with <I>~vickery/bin/ou_1</I>.  Be sure your programs work correctly
+when run on different computers.  Be sure you can run <I>ou</I> any
+number of times before telling <I>om</I> to exit.  Be sure your <I>om</I>
+handles invalid requests properly.  Be sure your <I>ou</I> gives an
+appropriate message if the host can't be located or if <I>om</I>
+doesn't respond.  Make sure the first line of each source file, man
+page, and the Makefile is a comment with the <CODE>$Id$</CODE> keyword
+in it.  Make sure there is a comment line with the <CODE>$Log$</CODE>
+keyword in it in each of these files.<p>
+
+Add the following rule to your Makefile:
+
+<pre>
+      install : install_doc ou om
+      &lt;tab&gt;cp -f ou om $(HOME)/bin
+      &lt;tab&gt;chmod 755 $(HOME)/bin/ou $(HOME)/bin/om
+</pre>
+
+<I>Note:</I> Your executable programs must be named <I>ou</I> and
+<I>om</I>.  Your source files may be named whatever you like, but when
+you pick the names, remember that their names will not change for
+different use cases.  I suggest that you use the names
+<CODE>om.cc</CODE> and <CODE>ou.cc</CODE>.<p>
+
+Be sure your source code follows the coding guidelines for this course
+before proceeding.  You should have been formatting and documenting your
+code as you wrote it.  Now is the time to proofread everything to make
+sure it looks right.<p>
+
+Check everything into rcs and be sure "make install" builds and
+installs everything correctly.  Be sure all the rcs keywords are
+expanded correctly in all the source files.  Revise source files, man
+pages, and the Makefile and check them in again as necessary.<p>
+
+Double check everything.  It is difficult to get <I>make</I> and rcs to
+recreate a use case properly once you start working on the next one.
+
+<HR>
+<address>Christopher Vickery<br>Computer Science Department,
+Queens College of CUNY</address>
+<HR></BODY></HTML>

@@ -1,0 +1,99 @@
+<HTML><HEAD><TITLE>rawreader.cc</TITLE></HEAD><BODY>
+<CENTER><H1>rawreader.cc</H1></CENTER><HR><PRE>
+//  $Id: rawreader.cc,v 1.1 2001/05/11 04:46:10 vickery Exp $
+
+/*
+ *    Illustrates reading characters from stdin with
+ *    mimimal pre-processing by the terminal i/o system.
+ *
+ *    C. Vickery
+ *    Spring 2001
+ *
+ *    $Log: rawreader.cc,v $
+ *    Revision 1.1  2001/05/11 04:46:10  vickery
+ *    Initial revision
+ *
+ *
+ */
+#include  &lt;fcntl.h>
+#include  &lt;stdio.h>
+#include  &lt;signal.h>
+#include  &lt;termios.h>
+#include  &lt;unistd.h>
+#include  &lt;sys/types.h>
+
+#include  "escapes.h"
+
+//  main()
+//  ------------------------------------------------------------
+/*
+ *    Puts the user's terminal into "raw" input mode in
+ *    which most, but not all, characters typed by the user
+ *    are dumped to the screen.  Line editing and automatic
+ *    conversion of '\r' to '\n' are suppressed.  Certain
+ *    control characters, however, continue to operate, such
+ *    as ^C, which kills the program, ^Q, ^S, ^O, ...
+ */
+int
+main( int argc, char* argv[] )
+{
+  struct termios termiosBuf;
+  char charBuf;
+  char outBuf[2];
+  char hexBuf[] = "0123456789ABCDEF";
+
+  //  You can experiment with the following lines 
+  int fd = 0;
+  fd = open( "/dev/tty", O_RDONLY );             // OK to take this out
+  printf( "fd is %d\n", fd );
+
+  //  Get a copy of the terminal i/o structure for this fd.
+  tcgetattr( fd, &termiosBuf );
+
+  //  Modify it
+  termiosBuf.c_iflag &= ~( ICRNL );             // \r to \n translation
+  termiosBuf.c_lflag &= ~( ECHO | ICANON | IEXTEN );    // line editing
+  termiosBuf.c_cc[VMIN]  = 1;       // Going to read one char at a time
+  termiosBuf.c_cc[VTIME] = 0;             // Return chars with no delay
+
+  //  Send the updated copy back to the termios handler
+  tcsetattr( fd, TCSANOW, &termiosBuf );
+
+  //  Read characters and print the hexadecimal
+  //  representation of their ASCII codes.
+  for ( ;; )
+  {
+    read( fd, &charBuf, 1 );
+    if ( charBuf == '\x1B' )
+    {
+      switch ( recognize_escape( fd ) )
+      {
+        case  unrecognized: write( 1, "?? ", 3 );
+                            break;
+        case  upArrow:      write( 1, "up ", 3 );
+                            break;
+        case  downArrow:    write( 1, "dn ", 3 );
+                            break;
+        case  leftArrow:    write( 1, "lf ", 3 );
+                            break;
+        case  rightArrow:   write( 1, "rt ", 3 );
+                            break;
+        case  deleteKey:    write( 1, "dl ", 3 );
+                            break;
+      }
+    }
+    else
+    {
+      outBuf[0] = hexBuf[ (charBuf >> 4) & 0x0F ];
+      outBuf[1] = hexBuf[ (charBuf >> 0) & 0x0F ];
+      write( 1, outBuf, 2 );
+      //  Start a new line when user types Enter.
+      if ( charBuf == '\r' )
+        write( 1, "\r\n", 2 );
+      else
+        write( 1, " ", 1 );
+    }
+  }
+}
+
+</PRE><HR></BODY></HTML>

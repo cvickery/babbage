@@ -1,0 +1,97 @@
+<HTML>
+<HEAD><TITLE>File Utility Program</TITLE></HEAD>
+<BODY BGCOLOR="#FFFFFF">
+Assignment 1, CS-701, Spring 1997
+<H1 ALIGN=center>File Utility Program</H1>
+<DL>
+<DT><B>Due Date:</B><DD>February 27, 1997
+
+<DT><B>Deliverables:</B><DD>
+
+When the assignment is complete, send me an email message telling me
+the path to the project directory.  The project directory is to contain
+an RCS subdirectory, and nothing else.  Consult "<a
+href="../using_rcs.html">Using RCS</a>" for information on how to set
+up your project directory and use RCS for project management.  In
+addition, the <code>~/man</code> directory tree is to contain a
+<i>man</i> page for the executable program.  See "<a
+href="../man_pages.html">How to Write a Man Page</a>" for information
+on how to prepare your <code>man</code> page.<p>
+
+You may also leave a <code>README</code> file in the project directory
+if you think that one is needed, but I neither expect nor require you
+to do so.
+
+<DT><B>Requirements:</B><DD>
+
+In addition to the information given here, be sure to consult the <A
+HREF="grading_form_1.html">Grading Form for this assignment</A>, which
+includes additional information about the requirements for this
+project.
+
+</DL>
+
+<H2>Project Description</H2>
+
+You are to write a utility program that can be used to find out
+information about files on a UNIX system.  In class I called the program
+<code>debe</code> in honor of an old utility program I used when I first
+started using computers (its name stood for "does everything but eat"!),
+but you may give your program any meaningful name you like.  You should
+follow the UNIX convention of naming your program with a terse mnemonic
+for what the program does.<p>
+
+The program accepts a set of command line arguments, and produces
+informative messages based on the arguments given.  Arguments may be
+given in any order, and may be repeated any number of times.  They are
+to operate as follows:
+
+<DL>
+<DT><CODE>-t</CODE><DD>The next argument is an entity name, and the program
+tells the type of entity it names, whether it is a regular file, a
+directory, a special file, etc.  Use the information returned by
+<i>stat()</i> to determine the type.  If the call to <i>stat()</i>
+fails, give an informative message, but do not abort the program.  (This
+rule holds for all error conditions your program encounters.)<p>
+<B>Optional:</B> If the entity is a regular file, tell whether it is a
+text file or a binary file.<p>
+
+<DT><CODE>-i</CODE><DD>The next argument is an entity name, and the
+program tells everything it can about that entity.<p>
+
+<DT><CODE>-s</CODE><DD>The next argument is an entity name.  If the
+<code>-s</code> argument has already appeared, tell whether this entity
+is the same one as the previous one or not.<p>
+
+<DT><CODE>-c</CODE><DD>The next argument is an entity name.  If the
+<code>-c</code> argument has already appeared and both entities are
+regular files, tell whether the files contain exactly the same
+information or not.<p>
+</DL>
+
+Write your program so that command line arguments can be entered in any
+sequence and any number of times.  The program must not terminate until
+all command line arguments have been processed, regardless of what the
+user types on the command line.  Do not write the program so that it
+interacts with the user.<p>
+
+You may add other "interesting" options to your program.  If you do, be
+sure to document them in your <i>man</i> page.<p>
+
+It is all right to write the program as a single source module.  Modify
+your Makefile so that the <i>make</i> command will build your program
+as its default target.<p>
+
+<HR>
+<UL>
+<LI> <A HREF="../gf.html">Standard Grading Form</A>.
+<LI> <A HREF="grading_form_1.html">Grading Form for this Assignment</A>.
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+
+<HR>
+
+</BODY>
+</HTML>

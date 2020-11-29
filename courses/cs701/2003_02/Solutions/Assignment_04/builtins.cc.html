@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>builtins.cc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</head>
+<center><h1>builtins.cc</h1></center>
+<hr>
+<pre>
+      //  $Id: builtins.cc,v 1.3 2003/04/11 03:48:16 vickery Exp $
+      
+      /*    Definitions of functions for jsh builtin commands.
+       *
+       *      $Log: builtins.cc,v $
+       *      Revision 1.3  2003/04/11 03:48:16  vickery
+       *      Implemented doAlias and doUnalias completely.
+       *
+       *      Revision 1.2  2003/04/04 23:32:28  vickery
+       *      Added doChdir and doEcho builtins.
+       *
+       *      Revision 1.1  2003/04/04 22:37:45  vickery
+       *      Initial revision
+       *
+       */
+      
+      #include "jsh.h"
+      #include "alias_table.h"
+      
+      #include &lt;stdio.h&gt;
+      #include &lt;stdlib.h&gt;
+      #include &lt;string.h&gt;
+      #include &lt;unistd.h&gt;
+      
+      //  Hack to get WIFEXITED to recognize "return JSH_ERR_RETURN"
+      //  as equivalent to "exit( 1 )".
+      #define JSH_ERR_RETURN  256
+      
+      //  doUnalias()
+      //  ------------------------------------------------------------------
+      /*
+       *  Deletes an alias.
+       */
+        int
+        doUnalias( const int argc, const char *argv[] )
+        {
+          if ( argc != 2 )
+          {
+            fprintf( stderr, "Usage: unalias &lt;name&gt;\n" );
+            return JSH_ERR_RETURN;
+          }
+          if ( deleteAlias( argv[1] ) != 1 )
+          {
+            return JSH_ERR_RETURN;
+          }
+          return 0;
+        }
+      
+      
+      //  doAlias()
+      //  ------------------------------------------------------------------
+      /*
+       *  Displays current aliases or defines a new one.
+       *
+       *    With no arguments, list all aliases.
+       *    With one argument, list the named alias
+       *    With two or more arguments, define a new one or replace existing
+       *    one.
+       */
+        int
+        doAlias( const int argc, const char *argv[] )
+        {
+          if ( 1 == argc )
+          {
+            listAliases();
+            return 0;
+          }
+      
+          //  Add or replace an alias
+          //  --------------------------------------------------------------
+          //  Create a single value from all arguments after the name
+          int len = 1;
+          for (int i = 2; i &lt; argc; i++ )
+          {
+            len += strlen( argv[i] );
+          }
+          if ( 1 == len )
+          {
+            //  No value: list value, if there is one.
+            const char *value = lookupAlias( argv[1] );
+            if ( value != 0 )
+            {
+              printf( "alias %s = %s\n", argv[1], value );
+            }
+            else
+            {
+              printf( "alias: \"%s\" is not defined\n", argv[1] );
+            }
+          }
+          else
+          {
+            char *key   = (char *) malloc( 1 + strlen( argv[1] ) );
+            err_check( "malloc alias key", __FILE__, __LINE__ );
+            strcpy( key, argv[1] );
+            char *value = (char *) malloc( len );
+            err_check( "malloc alias", __FILE__, __LINE__ );
+            strcpy( value, argv[2] );
+            for( int i = 3; i &lt; argc; i++ )
+            {
+              strcat( value, argv[i] );
+            }
+            defineAlias( key, value );
+          }
+          return 0;
+        }
+          
+      
+      //  doChdir()
+      //  ------------------------------------------------------------------
+      /*
+       *  Changes the shell's working directory.
+       */
+        int
+        doChdir( const int argc, const char *argv[] )
+        {
+          switch ( argc )
+          {
+            case 1:
+              {
+                char *home = getenv( "HOME" );
+                if ( 0 == home )
+                {
+                  fprintf( stderr, "Unable to determine home directory\n" );
+                  return JSH_ERR_RETURN;
+                }
+                if ( -1 == chdir( home ) )
+                {
+                  perror( home );
+                  return JSH_ERR_RETURN;
+                }
+                return 0;
+                break;
+              }
+      
+            case 2:
+              if ( -1 == chdir( argv[1] ) )
+              {
+                perror( argv[1] );
+                return JSH_ERR_RETURN;
+              }
+              return 0;
+              break;
+      
+            default:
+              fprintf(stderr, "Usage: cd [&lt;directory&gt;]\n" );
+              return JSH_ERR_RETURN;
+              break;
+              
+          }
+        }
+      
+      //  doEcho()
+      //  ------------------------------------------------------------------
+      /*
+       *  Echoes command line arguments.
+       */
+        int
+        doEcho( const int argc, const char *argv[] )
+        {
+          for (int i = 1; i &lt; argc; i++ )
+          {
+            printf( "%s ", argv[i] );
+          }
+          printf( "\n" );
+          return 0;
+        }
+        
+      //  doExit()
+      //  ------------------------------------------------------------------
+      /*
+       *  Exits the shell.
+       */
+        int
+        doExit( const int argc, const char *argv[] )
+        {
+          if ( argc &gt; 2 )
+          {
+            fprintf( stderr, "Usage: exit &lt;number&gt;\n" );
+            return JSH_ERR_RETURN;
+          }
+          if ( argc &gt; 1 )
+          {
+            exit( strtol( argv[1], 0, 0 ) );
+          }
+          else
+          {
+            exit( 0 );
+          }
+        }
+      
+      
+</pre><hr></body></html>

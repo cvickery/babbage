@@ -1,0 +1,375 @@
+<html><head><title>qclient.cc</title></head>
+<body><center><h1>qclient.cc</h1></center><hr><pre>
+      /*  $Id: qclient.cc,v 2.7 2002/05/18 22:12:02 vickery Exp $
+       *
+       *      This is a client program that acts as the intermediary between
+       *      the user and the qserver program for the Remote Shell Project.
+       *
+       *  Functions:
+       *
+       *      processMessage()  Process a message from the server.
+       *      useage()          Print command syntax.
+       *      main()            Main function for the module.
+       *
+       *      CS-701, Spring 2002
+       *      C. Vickery
+       *      
+       *
+       *	    $Log: qclient.cc,v $
+       *	    Revision 2.7  2002/05/18 22:12:02  vickery
+       *	    Took out a debugging message and cleaned up some of the error
+       *	    messages.
+       *
+       *	    Revision 2.6  2002/05/14 04:21:11  vickery
+       *	    Handle SC_SHUT messages to print message body from server.
+       *
+       *	    Revision 2.5  2002/05/12 04:31:19  vickery
+       *	    Allow remote host to be specified without -h, but check
+       *	    for dangling options.
+       *
+       *	    Revision 2.4  2002/05/12 00:46:29  vickery
+       *	    Basic client fucntionality in place now.
+       *	    Maintains state based on whether waiting for a command line
+       *	    or stdin, and sends appropriate types of messages to server.
+       *
+       *	    Revision 2.3  2002/05/07 05:07:55  vickery
+       *	    Snapshot: User authentication and prompt string processing.
+       *
+       *	    Revision 2.2  2002/05/06 06:32:08  vickery
+       *	    Introduced the message passing protocol.  Send CS_USER
+       *	    message in response to SC_LOGIN message.
+       *
+       *	    Revision 2.1  2002/04/25 02:59:56  vickery
+       *	    First revision for Assignment 4.
+       *	    Added -u command line option for specifying user id.
+       *
+       *	    Revision 1.2  2002/04/07 19:21:46  vickery
+       *	    Changed default host name from "localhost"
+       *	    to local host's name.  This way, the client
+       *	    can connect to a server running on the local
+       *	    machine without using the -h option.
+       *
+       *	    Revision 1.1  2002/03/28 19:57:51  vickery
+       *	    Initial revision
+       *
+       *
+       */
+      
+      #include "qclient.h"
+      //  Constants
+      //  ------------------------------------------------------------------
+      static const  int   HOSTNAME_MAX =   64;
+      static const  int   USERNAME_MAX =   32;
+      static const  int   BUF_SIZE     = 8192;
+      static const  int   NO_TIMEOUT   =   -1;  //  For poll()
+      static const  char  *VERSION =
+        "$Id: qclient.cc,v 2.7 2002/05/18 22:12:02 vickery Exp $";
+      
+      //  Module Globals
+      //  ------------------------------------------------------------------
+      static        char  hostName  [ HOSTNAME_MAX ];
+      static        char  serverName[ HOSTNAME_MAX ];
+      static        char  userName  [ USERNAME_MAX ];
+      
+      static        bool  awaiting_command = false;
+      
+      //  processMessage()
+      //  ------------------------------------------------------------------
+      /*
+       *    Do whatever needs to be done with a message from the server.
+       *
+       *    Arguments:    fd          Socket for writing to server.
+       *                  msg_header  Message header.
+       *                  msg_body    Message body.
+       *    Returns:      void
+       */
+      void
+      processMessage( int fd, msg_header_t msg_header, char * msg_body )
+      {
+        int   result;
+      
+        switch ( msg_header.msg_type )
+        {
+          case  SC_SHUT:
+                fprintf( stderr, "%sn", msg_body );
+                exit( 0 );
+                break;
+      
+          case  SC_LOGIN:
+                fprintf( stdout, "%sn", msg_body );
+                fflush( stdout );
+                msg_header.msg_type = CS_USER;
+                msg_header.msg_length = strlen( userName );
+                result = write_msg( fd, msg_header, userName );
+                if ( result &lt; 0 )
+                {
+                  perror( "Server socket" );
+                  exit( 1 );
+                }
+                break;
+      
+          case  SC_PROMPT:
+                fprintf( stdout, "%s", msg_body );
+                fflush( stdout );
+                awaiting_command = true;
+                break;
+      
+          case  SC_DENY:
+                fprintf( stderr, "Access to server deniedn" );
+                exit( 1 );
+                break;
+      
+          case  SC_STDOUT:
+                fprintf( stdout, "%s", msg_body );
+                break;
+                
+          case  SC_STDERR:
+                fprintf( stderr, "%s", msg_body );
+                break;
+      
+          default:
+            fprintf( stderr, "Bad switch at %s line %dn",
+                __FILE__, __LINE__ );
+            exit( 1 );
+        }
+        return;
+      }
+      
+      
+      //  usage()
+      //  ------------------------------------------------------------------
+      /*
+       *  Display usage message
+       */
+      void
+      usage( const char *cmdName )
+      {
+        fprintf( stderr, 
+            "Usage: %s [options]n"
+            " Options:n"
+            "   -p or --port &lt;num&gt; "
+                                 " Server's port number (default 0x8000)n"
+            "   -h or --host &lt;str&gt; "
+                                " Server's host name (default %s)n"
+            "   -u or --user &lt;name&gt;  User namen"
+            "   -v or --version     Print program version number and exitn"
+            "   -? or --help        Print this message and exitn", 
+            cmdName, hostName );
+      }
+      
+      
+      //  main()
+      //  ------------------------------------------------------------------
+      /*
+       *	Process command line arguments, establish communcation with
+       *	server, and manage interactions between the user and the server.
+       *
+       *  Arguments
+       *
+       *    The standard arguments to main().
+       */
+      int
+      main(int argc, char *argv[], char * envp[] ) 
+      {
+      
+        //  Get logged-on user's name
+        struct passwd *passwd_ptr = getpwuid( geteuid() );
+        if ( 0 == passwd_ptr )
+        {
+          perror( "username" );
+          exit( 1 );
+        }
+        strcpy( userName, passwd_ptr-&gt;pw_name );
+      
+        //  Get this host's name for default server name.
+        int result = gethostname( hostName, sizeof( hostName ) );
+        if ( result &lt; 0 )
+        {
+          perror( "Unable to determine local host name" );
+          exit( 1 );
+        }
+        strcpy( serverName, hostName );
+      
+        //  Process command line options
+        int           serverPort = 0x8000;
+        const char    *short_options = "p:h:?u:v";
+        const struct  option long_options[] =
+        {
+          { "port",     required_argument,  0,  'p' },
+          { "host",     required_argument,  0,  'h' },
+          { "help",     no_argument,        0,  '?' },
+          { "user",     required_argument,  0,  'u' },
+          { "version",  no_argument,        0,  'v' },
+          { 0,          0,                  0,  0   },
+        };
+      
+        int   optchar;
+        while ( -1 != ( optchar = getopt_long( argc, argv, short_options,
+                                  long_options, 0 ) ) )
+        {
+          switch ( optchar )
+          {
+            //  Server's well-known port number
+            case 'p':
+              serverPort = strtol( optarg, 0, 0 );
+              if (    ( serverPort &lt; 0 ) || ( serverPort &gt; 0xFFFF ) )
+              {
+                fprintf( stderr, "%s: invalid port numbern", optarg );
+                usage( argv[0] );
+                exit( 1 );
+              }
+              break;
+      
+            //  Server's host name
+            case 'h':
+              strcpy ( serverName, optarg );
+              break;
+      
+            //  User name
+            case 'u':
+              strcpy( userName, optarg );
+              break;
+      
+            //  Version number
+            case 'v':
+              printf( "%s: %sn", argv[0], VERSION );
+              exit( 0 );
+      
+            case '?':
+            default :
+              usage( argv[ 0 ] );
+              exit( 1 );
+          }
+        }
+        if ( optind &lt; argc )
+        {
+          //  Assume one dangling argument is host name.
+          strcpy( serverName, argv[ optind++ ] );
+          if ( optind &lt; argc )
+          {
+            fprintf( stderr, "Unexpected argument: %sn", argv[ optind ] );
+            usage( argv[ 0 ] );
+            exit( 1 );
+          }
+        }
+      
+      
+        //  Connect to the server
+        struct  hostent     *hp;
+        if ( 0 == (hp = gethostbyname( serverName ) ) )
+        {
+          fprintf( stderr,"%s: %s: unknown host.n", argv[ 0 ], serverName );
+          usage( argv[ 0 ] );
+          exit( EXIT_FAILURE );
+        }
+      
+        struct sockaddr_in  server_sockaddr;
+        memset( &server_sockaddr, 0, sizeof( server_sockaddr ) );
+        server_sockaddr.sin_family = AF_INET;
+        memcpy( &server_sockaddr.sin_addr, hp-&gt;h_addr, hp-&gt;h_length );
+        server_sockaddr.sin_port = htons( serverPort );
+      
+        int                 server_fd;
+        if ( ( server_fd = socket( AF_INET, SOCK_STREAM, 0 ) ) &lt; 0 )
+        {
+          perror( "socket" );
+          exit( EXIT_FAILURE );
+        }
+        if ( connect( server_fd, (struct sockaddr *) &server_sockaddr, 
+                                          sizeof ( server_sockaddr ) ) &lt; 0 )
+        {
+          perror( "connect" );
+          exit( EXIT_FAILURE );
+        }
+      
+        //  Initialize the array of pollfds
+        enum sources { user = 0, server = 1 };
+        struct pollfd           fds_to_read[ 2 ];
+        fds_to_read[ user   ].fd      = fileno( stdin );
+        fds_to_read[ user   ].events  = POLLIN;
+        fds_to_read[ server ].fd      = server_fd;
+        fds_to_read[ server ].events  = POLLIN;
+      
+      
+        //  Manage input from server and/or user.
+      
+        msg_header_t    msg_header;
+        char            *msg_body   = 0;
+        char            inBuf[ BUF_SIZE ];
+        int             bytesRead   = 0;
+        for ( ;; )
+        {
+          //  Wait for input.
+          if ( poll( fds_to_read, 2, NO_TIMEOUT ) &lt; 0 )
+          {
+            perror( "poll" );
+            exit( 1 );
+          }
+      
+          //  Read and process a server message.
+          if ( fds_to_read[ server ].revents & POLLIN )
+          {
+            result = read_header( server_fd, msg_header);
+            if ( result &lt; 0 )
+            {
+                perror( "reading msg from server" );
+                exit( 1 );
+            }
+            if ( 0 == result )
+            {
+              printf( "Server closed connection.n" );
+              exit( 0 );
+            }
+      
+            msg_body = new char [ msg_header.msg_length + 1];
+            memset( msg_body, '0', msg_header.msg_length + 1 );
+            result = read_body( server_fd, msg_header, msg_body );
+      
+            processMessage( server_fd, msg_header, msg_body );
+            delete [] msg_body;
+          }
+      
+          //  Read a line from the user, if there is one
+          if ( fds_to_read[ user ].revents & POLLIN )
+          {
+            bytesRead = read( STDIN_FILENO, inBuf, sizeof( inBuf ) );
+            if ( 0 == bytesRead )
+            {
+              //  End of input from stdin
+              msg_header.msg_type = CS_EXIT;
+              msg_header.msg_length = 0;
+              write_msg( server_fd, msg_header, inBuf );
+              close( server_fd );
+              fprintf( stderr, "n" );
+              exit( 0 );
+            }
+      
+            inBuf[ bytesRead ] = '0';  //  Terminate string.
+            if ( awaiting_command )
+            {
+              //  Send a command line to the server
+              while ( ( bytesRead &gt;= 0 ) 
+                   && ( ( 'r' == inBuf[ bytesRead - 1 ] )
+                     || ( 'n' == inBuf[ bytesRead - 1 ] ) ) )
+              {
+                inBuf[ --bytesRead ] = '0';
+              }
+              msg_header.msg_type = CS_CMD;
+              if ( '0' == inBuf[ 0 ] )
+              {
+                inBuf[ 0 ] = ' '; //  Avoid 0-length msg
+              }
+              awaiting_command = false;
+            }
+            else
+            {
+              //  Send raw input to as std input.
+              msg_header.msg_type = CS_STDIN;
+            }
+            msg_header.msg_length = strlen( inBuf );
+            write_msg( server_fd, msg_header, inBuf );
+          }
+        }
+      }
+      
+</pre><hr></body></html>

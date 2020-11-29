@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>perror.cc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</head>
+<center><h1>perror.cc</h1></center>
+<hr>
+<pre>
+      //  perror.cc
+      
+      /*  This is what perror() does.
+       */
+      
+      //  For access to errno
+      #include &lt;errno.h&gt;
+      
+      //  For access to fprintf and stderr
+      #include &lt;stdio.h&gt;
+      
+      //  For access to strerror
+      #include &lt;string.h&gt;
+      
+      //  perror()
+      //  ------------------------------------------------------------------
+      /*
+       *    Prints an error message, constructed from a caller-supplied
+       *    message, a colon, and a system-defined string determined by the
+       *    current value of errno.
+       */
+        void
+        perror( const char *msg )
+        {
+          fprintf(stderr, "%s: %s\n", msg, strerror( errno ) );
+          return;
+        }
+      
+      #include &lt;stdlib.h&gt;
+      //  main()
+      //  ------------------------------------------------------------------
+      /*
+       *    Invokes this perror with various values, supplied on the command
+       *    line, assigned to errno.
+       */
+        int
+        main( int argc, char *argv[], char *envp[] )
+        {
+          char  arg[80];
+          for (int i = 1; i &lt; argc; i++ )
+          {
+            memset( arg, '\0', sizeof( arg ) );
+            strncpy( arg, argv[i], sizeof( arg ) - 1 );
+            errno = strtoul( arg, 0, 0 );
+            perror( arg );
+          }
+          exit( 0 );
+        }
+</pre><hr></body></html>

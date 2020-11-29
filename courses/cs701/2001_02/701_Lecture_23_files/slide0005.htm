@@ -1,0 +1,196 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 22</title>
+<meta name=Description content="3-May-01: Parser">
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0005.htm');   
+  else
+    parent.location.href = "../701_Lecture_23.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=158 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=81 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=168 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=198 height=33 colspan=2></td>
+  <td width=81 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=81 height=33 align=center><font face="Times New Roman" size=5>Parser</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=196 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=192></td>
+  <td width=407 height=192 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=71 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=26 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=28 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=98 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=38 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=45 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=253 height=18 colspan=9><font face="Times New Roman" size=2>Creates
+    an array of tokens (C strings).</font><br>
+    </td>
+    <td width=136 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=407 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=270 height=16 colspan=7><font face="Times New Roman" size=1>Perform
+    alias substitution here.<span style="mso-spacerun: yes">  </span>(See next
+    slide.)</font><br>
+    </td>
+    <td width=98 height=16 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=407 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=365 height=16 colspan=13><font face="Times New Roman" size=1>There
+    must be “type tag” for each token that tells whether a token</font><br>
+    </td>
+    <td width=3 height=16></td>
+   </tr>
+   <tr>
+    <td width=39 height=14 colspan=4></td>
+    <td width=355 height=14 colspan=11><font face="Times New Roman" size=1>was
+    a single-quote string or a double-quote string.<span style="mso-spacerun:
+    yes">  </span>(Non-strings</font><br>
+    </td>
+    <td width=13 height=14 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=39 height=14 colspan=4></td>
+    <td width=368 height=14 colspan=14><font face="Times New Roman" size=1>can
+    be treated as double-quote strings, but “future versions” might</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=39 height=14 colspan=4></td>
+    <td width=134 height=14 colspan=5><font face="Times New Roman" size=1>need
+    more token types.)</font><br>
+    </td>
+    <td width=234 height=14 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=407 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=362 height=16 colspan=12><font face="Times New Roman" size=1>I/O
+    redirection symbols must be separate tokens, even if adjacent</font><br>
+    </td>
+    <td width=6 height=16 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=39 height=14 colspan=4></td>
+    <td width=106 height=14 colspan=4><font face="Times New Roman" size=1>to
+    other characters.</font><br>
+    </td>
+    <td width=262 height=14 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=407 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=285 height=16 colspan=8><font face="Times New Roman" size=1>Recognize
+    punctuation symbols as separate tokens:</font><br>
+    </td>
+    <td width=83 height=16 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=407 height=1 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=71 height=14><font face=Arial size=1>= | &amp; </font><font
+    face="Times New Roman" size=1>and</font><font face=Arial size=1> ; …</font><br>
+    </td>
+    <td width=288 height=14 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=407 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=353 height=16 colspan=10><font face="Times New Roman" size=1>Nothing
+    special to do about variable references, but think about</font><br>
+    </td>
+    <td width=15 height=16 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=39 height=14 colspan=4></td>
+    <td width=330 height=14 colspan=9><font face="Times New Roman" size=1>how
+    to recognize the end of a symbol for “future versions.”</font><br>
+    </td>
+    <td width=38 height=14 colspan=5></td>
+   </tr>
+  </table>
+  </td>
+  <td width=28 height=192></td>
+ </tr>
+ <tr>
+  <td width=475 height=79 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

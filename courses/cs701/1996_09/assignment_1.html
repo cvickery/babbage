@@ -1,0 +1,116 @@
+<HTML> <HEAD> <TITLE> File Copy Program </TITLE> </HEAD>
+<BODY>
+<H1 ALIGN=center>File Copy Program</H1>
+
+<DL>
+<DT><B>Due Date:</B><DD>October 10, 1996
+
+<DT><B>Deliverables:</B><DD>
+
+When the assignment is complete, send me an e-mail message telling me the
+path to the project directory.  The project directory
+is to contain an RCS subdirectory, and nothing else.  In
+addition, the <code>~/man</code> directory tree is to contain
+<i>man</i> pages for the executable program and for those functions
+indicated in the Project Steps, below.  You may also leave a
+<code>README</code> file in the project directory if you think that one
+is needed, but I neither expect nor require you to do so.
+
+<DT><B>Requirements:</B><DD>
+
+In addition to the information given here, be sure to consult the
+<A HREF="grading_form_1.html">Grading Form for this assignment</A>,
+which includes additional information about the requirements for this
+project.
+
+</DL>
+
+<H2>Project Overview</H2>
+
+Write a program, <i>vcopy</i>, that can be used to copy one file to
+another.<p>
+
+<!--
+Your assignment is to develop a program for converting textual information
+from one format into another.  For the assignment, your program will convert
+HTML documents into ANSI-formatted text.  However, it is to be designed so
+that it could be extended other input and output information formats.<P>
+-->
+
+<B>Note:</B>  You must use the features of the Unix programming environment
+described in this document, even though there might be "better" ways to do
+the same things.  One purpose of the assignment is to give you experience with
+the facilities specified here.<P>
+
+You are to do the exercise as a sequence of steps as listed below, and
+the code for each step is to have its own RCS version number.  Because you
+will have to add modules in some of the later steps, there should be a
+different version of the project Makefile for each step, too.<P>
+
+There is only one step for this assignment, but you should think of it
+as the first step of a multi-step project to develop a text-conversion
+system.<p>
+
+<H2>Project Steps</H2>
+
+<ol>
+
+<li><B>Write a file-copy program using Unix System Calls.</B>  Write a program
+that copies one file to another.  The input file is to be specified after
+a <CODE>-i</CODE> command line argument; use <I>stdin</I> if there is no
+<CODE>-i</CODE> command line argument.  The output file is to be specified
+after a <CODE>-o</CODE> command line argument; use <I>stdout</I> if there
+is no <CODE>-o</CODE> command line argument.<P>
+
+Your program must use the Unix system calls, <i>open()</i>, <I>read()</I>,
+and <I>write()</I> to do all i/o operations.  You must also provide a function
+name <I>vgetc()</I>, that operates the same way as the standard
+<I>fgetc()</I> library function, except that it takes a file descriptor
+as its argument rather than a <CODE>FILE*</CODE>.  In order for vgetc() to
+work, you will have to supply a function named <I>vopen()</I> that acts as an
+interface to <I>open()</I>, and does whatever buffer management is necessary
+for the fd.  You do <I>not</I> have to supply a "vputc" function, and
+<I>vopen()</I> does not have to do any buffer management for files that are
+opened for writing.<P>
+
+Use the numerical value of the environment variable, <CODE>V_BUF_SIZE</CODE>
+to determine how large a buffer <I>vopen()</I> is to allocate for each file
+it opens.  If <CODE>V_BUF_SIZE</CODE> is not valid, <i>vopen()</i>
+is to set <code>errno</code> to <code>EINVAL</code> (defined in <code>
+&lt;errno.h&gt;</code>) and return -1.<P>
+
+Buffer management will be discussed in class.<p>
+
+Put the source code for <I>vopen()</I> and <I>vgetc()</I> in a separate file
+from <I>main()</I>,
+and <CODE>#include</CODE> a header file containing function prototypes for
+these two functions in both your <CODE>.c</CODE> files. Be sure you write
+your code so that the file containing <I>main()</I> has access to no more
+information about <I>vopen()</I> and <I>vgetc()</I> than their function
+prototypes.<P>
+
+Write a <i>man</i> page for your program.  It may be
+brief, but it must be in standard <i>man</i> page format, and it must
+be installed properly.  Consult the <A HREF="../man_pages.html">man page handout</A>
+for this course and/or the
+<i>man</i> entry in Section 5 of the on-line <i>man</i> pages for information
+on how to mark up the text of your <i>man</i> page.<P>
+
+Write <I>man</I> pages for your two functions, <I>vopen()</I> and
+<I>vgetc()</I> in standard <I>man</I> page format, and install them in the
+proper section of your <CODE>~/man</CODE> tree.<P>
+
+<li>There is only one step for this assignment!
+
+</ol>
+
+<HR>
+<UL>
+<LI> <A HREF="../gf.html">Standard Grading Form</A>.
+<LI> <A HREF="grading_form_1.html">Grading Form for this Assignment</A>.
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>

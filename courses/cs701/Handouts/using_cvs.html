@@ -1,0 +1,449 @@
+<html><head><title>Using CVS</title></head>
+<body bgcolor = ffffff>
+<h1 align = center>Using CVS</h1>
+
+CVS is the "Concurrent Versions System," a project management tool
+which is available for free from <a
+href="http://www.cvshome.org">www.cvshome.org</a>.  There are several
+similar project management tools available commercially, but we use
+this one because (1) it is good, (2) its basic features are very
+similar to the commercial products available, (3) it is easy to use,
+and (4) it is free.  CVS is also designed to absorb pre-existing RCS
+(Revision Control System) projects, so for those users of RCS
+(available from <a href="http://www.gnu.ai.met.edu/fsf/fsf.html">The
+Free Software Foundation</a>), migration to CVS should be relatively
+simple.<p>
+
+There are three main advantages to using CVS over RCS.  First, CVS
+allows for multi-directory projects, which RCS does not.  Second, CVS
+allows for concurrent management of projects - in other words, multiple
+programmers can work on the same project, and CVS will assist in
+merging each programmer's work into the revisions of the others. 
+Third, CVS allows for remote access to repositories, so you can make
+your projects available to potential users and developers across the
+Internet.<p>
+
+There are two main features of CVS that we will use.  One is its
+provision for maintaining a complete history of each document (source
+code or documentation page) in your projects.  At any time you can
+recover earlier versions of files almost as easily as you can work with
+the current version.  The second feature is the facility that CVS
+provides for documenting changes you make to your files as you develop
+a project.  There are many more features that CVS can provide, but we
+will not take advantage of them in this course.  If you want to learn
+more, consult the <i>man</i> page for <i>cvs</i> and <a
+href="http://www.cvshome.org/docs/manual/cvs.html">the Cederqvist</a>,
+the main documentation for the CVS project. If you find the manual name
+puzzling, or have other questions about CVS, you may also wish to
+consult the official <a href="http://ccvs.cvshome.org/fom/fom.cgi">CVS
+FAQ</a>.<p>
+
+<h2>Setting Up the Repository</h2>
+
+CVS requires a central repository directory for all projects it manages
+on a local machine.  You can have multiple projects in a single
+repository.  Once you create the repository, CVS' internal recordkeeping
+is stored within that repository, but you can work on your projects
+anywhere.<p>
+
+To create the main CVS repository, first choose a directory on your
+local machine.  A typical choice is <i>/usr/local/cvsroot</i>.  Assuming
+that this is the directory you have chosen, you can initialize your
+repository with the command:
+
+<pre>
+   $ cvs -d /usr/local/cvsroot init
+</pre>
+
+You should set the environment variable <code>CVSROOT</code> to point to
+the CVS repository.  In C shell environments, this is achieved with the
+command:<p>
+
+<pre>
+   $ setenv CVSROOT /usr/local/cvsroot
+</pre>
+
+while in BASH or KornShell environments, you would use:<p>
+
+<pre>
+   $ export CVSROOT=/usr/local/cvsroot
+</pre>
+
+You may wish to place these environment variable settings in a global
+location such as <i>/etc/profile</i>, or in your local user
+initialization scripts, so that they are always accessible.
+
+<h2>Defining the Module</h2>
+
+Because CVS can handle multiple projects within a single repository,
+each project must be defined by a <i>module</i> to CVS' internal
+recordkeeping.  Modules are usually defined as a project existant under
+a single directory tree structure.  The first thing to do in creating
+your project is to create a master directory, appropriately-named for
+that project.  You will place all files related to that project in that
+directory or its subdirectories, so that CVS can easily import the
+entire directory tree.  In general, you should create the directories
+you know you'll need first; for instance, if you are creating a project
+called <i>project1</i>, you would create the following directories:<p>
+
+<pre>
+   $ mkdir project1
+   $ mkdir project1/man
+</pre>
+
+After that, you would use the following commands to register these
+directories inside the CVS repositories:
+
+<pre>
+   $ cd project1
+   $ cvs import -m "Created directory structure" project1 yourname start
+</pre>
+
+The format of the <i>import</i> command is as follows:  the <i>-m</i>
+directive provides a message that will be stored in CVS' logs,
+specified by the string after the directive.  <i>project1</i> is the
+directory under the CVSROOT in which the project will be stored.
+<i>yourname</i> should be replaced by your name - this is the <i>vendor
+tag</i> which specifies who has made the revisions; while the concept
+of vendors won't be used in this course, CVS requires that you specify
+one in the initial revision.  Finally, <i>start</i> tells CVS to
+initialize the project within the repository.  <p>
+
+The next step is to add the project to the CVS modules database, so
+that CVS can identify the project with a simple project name.  To do
+this, you must first get a working copy of the CVS modules file:
+
+<pre>
+   $ cvs checkout CVSROOT/modules
+   $ cd CVSROOT
+</pre>
+
+Open the <code>modules</code> file in a text editor and add the
+following at the bottom:
+
+<pre>
+   project1   project1
+</pre>
+
+The first <i>project1</i> specifies the <i>module name</i>, which you
+will use to refer to the project.  The second refers to the directory
+under the CVSROOT in which the file will be stored.<p>
+
+After you have saved the file, you must commit the changes you have
+made:
+
+<pre>
+   $ cvs commit -m "Added the project1 module." modules
+</pre>
+
+And finally, release the modules file.
+
+<pre>
+   $ cd ..
+   $ cvs release -d CVSROOT
+</pre>
+
+The <i>checkout</i> command seen above is used to check a module out
+from the repository - in other words, to obtain a copy for editing,
+review, or compilation.  The <code>CVSROOT/modules</code> module seen
+above is automatically provided by CVS; in the case of your project, you
+will check out the <code>project1</code> module you created above using
+the command:
+
+<pre>
+   $ cvs checkout project1
+</pre>
+
+The syntax of the <i>release</i> command is
+discussed in more detail in the CVS documentation.
+
+<h2>CVS Headers</h2>
+
+Whenever you start a new programming project, create an
+appropriately-named directory for that project.  You will place all
+files related to that project in that directory or its subdirectories,
+so that CVS can easily import the entire directory tree.  Each new
+source file, whether it is a <code>.cc</code> or a header file, starts
+like this:
+
+<pre>
+   // $Id$
+
+   /* SUMMARY
+    *
+    *
+    * REVISION HISTORY
+    *  $Log$
+    */
+</pre>
+
+The complete form of this <i>file header</i> is described in the <a
+href="./coding_guidelines.html">Coding Guidelines</a> for this course.
+Our attention here is on the <code>$Id$</code> and <code>$Log$</code>
+lines, which must be written with exactly the capitalization and
+punctuation shown here in order to work properly with CVS.  These are
+examples of CVS <i>keywords</i> (sometimes called CVS <i>macros</i>)
+which will be modified by CVS as you work on your project.  There is a
+<a
+href="http://www.cvshome.org/docs/manual/cvs_12.html#SEC99">list
+of all CVS keywords</a> you can look at if you wish, but you only need
+the two lines listed here for this course.  Note that these keywords
+appear on comment lines.  If they were placed anywhere else the compiler
+would recognize that they are not valid C or C++ code, and would produce
+syntax errors.<p>
+
+The other files that you will create for the projects in this course are
+the <code>Makefile</code> that goes in each project directory, and the
+<i>man</i> pages that you use to document your projects.  Comment lines
+in Makefiles start with a hash symbol in column 1:
+
+<pre>
+   #  $Id$
+
+   #  comments ...
+   #
+   #  $Log$
+   #
+</pre>
+
+Comments in <i>man</i> pages start with dot-backslash-quote:
+
+<pre>
+   .\"  $Id$
+   .\"
+   .\"  comments ...
+   .\"
+   .\"  $Log$
+   .\"
+   .TH ...
+</pre>
+
+Once you are comfortable working with these two CVS keywords, you might
+want to put some of the other keywords inside character strings so your
+program can use them as data for one reason or another (such as
+including the program's version number in the "About" message of a Help
+window).  However, that topic goes beyond the scope of this document.
+We will look at <code>$Id$</code> and <code>$Log$</code> again after
+going over some basic CVS concepts.<p>
+
+<h2>CVS Revisions</h2>
+
+You write the first version of your program just as you would if you
+weren't using CVS.  Use a text editor to create source files, compile
+them, test the code, and iterate through this process until you have a
+working program.  If the progam is simple, the development process might
+be complete at this stage.  For other programs, the first working
+program might be just the first step of a multi-step assignment.  In
+either case, you are now ready to put the source files under CVS
+management.  When you are adding a new source file to the repository,
+this is a two-step process; afterwards you will be able to check in your
+modifications with a single CVS command.<p>
+
+After you have created a new file or directory inside the project tree,
+enter the following command from the directory in which the new file or
+directory resides:
+
+<pre>
+   $ cvs add filename
+</pre>
+
+This will inform CVS to watch the file and prepare to add it to the
+repository.  You can <i>add</i> as many files as you like before you
+<i>commit</i> the changes; if you change your mind about adding the
+file, you can issue the command
+
+<pre>
+   $ cvs remove filename
+</pre>
+
+before you <i>commit</i>, and the file will be removed from the list of
+watched files.  After adding the file, you <i>commit</i> it:
+
+<pre>
+   $ cvs commit filename
+</pre>
+
+This copies the file into the CVS repository for the project.  What this
+really means is that the file, along with some additional information,
+will be copied into the CVS subdirectory and given a new name, which
+will consist of the original file name with ",v" at the end.  You can
+list the contents of the CVS subdirectory to verify this.  Do a long
+listing, and you will also notice that the database file (also called
+the "history" file) is made read-only.  From now on you can make changes
+to the file only by telling CVS that you want to do so.  You could
+change permissions on the history file and change its contents manually,
+but don't.  Really don't.<p>
+
+When you commit the changes, you must provide a message that will be
+stored in the history file, providing you with a continuous log of
+modifications made to the file.  This message should be a short summary
+of just what it is that makes this version of the file different from
+the previous version.  If you fixed a bug, tell what the bug was.  If
+you added a new feature, tell what the feature does.  If you changed
+comments, tell what kind of changes you made.  The log message does not
+have to be long, but it must be concrete and meaningful, not vague.<p>
+
+You have two options as to how to
+provide this message.  If you use the <i>cvs commit filename</i> command
+above, CVS will attempt to open an editor - specified by the environment
+variable EDITOR.  $EDITOR usually points to vi, but you can change the
+environment variable to select another editor.  Alternatively, you can
+specify a short message directly at the command line using the <i>-m</i>
+directive seen above:
+
+<pre>
+   $ cvs commit -m "Made some minor spelling corrections." filename
+</pre>
+
+A file need only be added to the repository once; once that is done, you
+report changes by using the <i>commit</i> command.  So from now on,
+after editing the file, be sure to issue <i>cvs commit filename</i> to
+copy those changes into the CVS repository and make them publically
+available.  This gives you the benefit of having a <i>stable</i> copy of
+a source file and a <i>working</i> copy - while the CVS repository may
+only contain code that you want to make public, you can carry around the
+working copy and make as many changes as you wish, finally only
+committing them when you are certain that the code works well.<p>
+
+As another option, you can issue the <i>cvs commit</i> directive in a
+directory without the <i>filename</i> to commit all of the files in that directory that have been
+edited.  However, as a rule, it's best to commit the files one at a time
+so that you can keep track of which files have been changed.
+
+<h2>Versioning and Tags</h2>
+
+At this point you have entered version 1.1 of each of your source files
+into the CVS repository.  Each time you add a file, it will be added
+into the repository as version 1.1; each time you modify a version and
+commit it to the repository, the version number will be incremented.
+You should not be alarmed that CVS keeps different version numbers for
+each file in a project - treat the revision numbers as internal
+recordkeeping numbers for CVS, and not as any meaningful 'release
+version' for your own use.<p>
+
+If for some reason you want to bring all of your files up to a certain
+revision number, you can use the <i>-r</i> option - for instance
+
+<pre>
+   $ cvs commit -r 3.0
+</pre>
+
+will bring all of the files in the repository - including those you
+haven't edited - up to version 3.0.  Correspondingly, you can use
+<i>-r</i> to retrieve a specific version of a file.  If the file
+<code>foobar.cc</code> is currently at version 3.0, and you decide that
+you want to re-examine revision 1.2, the command
+
+<pre>
+   $ cvs checkout -r 1.2 foobar.cc
+</pre>
+
+will check out the required version.<p>
+
+However, since revision numbers are usually not used for this purpose,
+and are difficult to keep aligned, CVS includes support for
+<i>tagging</i>.  You can use tags to mark a milestone release of a
+project without bringing all of the version numbers in synch.  To apply
+a tag, enter the base directory of your checked-out project, and use the
+<i>tag</i> directive to apply a tag name to the current version of your
+project.  For instance, if you wanted to label the current release of
+your project <code>rel-1-0</code>, you would issue the command:
+
+<pre>
+   $ cvs tag rel-1-0
+</pre>
+
+This tag will be applied to all of the current versions of the source
+files; after later revisions, if you wanted to return and check out
+<code>rel-1-0</code> of your project, you could use the <i>-r</i>
+directive:
+
+<pre>
+   $ cvs checkout -r rel-1-0 project1
+</pre>
+
+<h2>Keywords Again</h2>
+
+Once a file is under CVS management, you will see that checking it out
+gives you a file in which the keywords have been expanded.  The
+<code>$Id$</code> keyword will tell you the name of the file, its
+version number, who last modified it, and when.  We put this keyword on
+the first line of the file so this basic summary information is always
+the first thing anyone sees when they first look at the file.  The
+<code>$Log$</code> keyword will be expanded to give the complete
+modification history of the file, that is, comment lines from all the
+log messages you entered when checking in revised copies of the file
+along with the revision dates and numbers.  Be sure these log messages
+provide useful information for programmers who might need to work on a
+file after you.<p>
+
+<h2>Multiple Developers</h2>
+
+The primary difference between RCS and CVS is in the way the two systems
+handle multi-developer projects.  RCS uses <i>file locking</i> or
+<i>reserved checkouts</i>; in this system the first developer to want to
+edit a file checks out (or <i>reserves</i>) a copy of the source file.
+Once that copy is reserved, no other developer can get a copy for
+editing, although they can check out a copy for examination or
+compilation.  Only a reserved checkout can be checked back into the
+repository with modifications.<p>
+
+CVS provides support for reserved checkouts using the <i>-l</i> flag.
+To lock a file or branch, issue the command:
+
+<pre>
+   $ cvs admin -l
+</pre>
+
+Conversely, you can unlock the file or branch with the <i>-u</i> flag:
+
+<pre>
+   $ cvs admin -u
+</pre>
+
+However, file locking is considered a primitive method of revision
+control, and CVS was chiefly designed to provide a more sophisticated
+paradigm for multi-developer programming.  The Cederqvist contains CVS'
+rationale for supporting newer methods in the section <a
+href="http://www.cvshome.org/docs/manual/cvs_10.html#SEC95">Choosing
+Between Reserved or Unreserved Checkouts</a>; this material is too
+detailed to cover here.  In CVS' model, multiple developers can check
+out, edit, and commit their changes to a source file.  The first
+developer to check the file back in knows nothing about the subsequent
+developers; however the later developers are required to integrate their
+changes on check-in.  The CVS documentation covers this topic in far
+greater detail.
+
+<h2>CVS Documentation</h2>
+
+The chief documentation on CVS is found in the <i>man</i> page and at
+the main CVS webpage, at <a
+href="http://www.cvshome.org">www.cvshome.org</a>.  There is a pocket
+reference book for CVS commands:
+
+<pre>
+   Purdy, Gregor N <i>CVS Pocket Reference</i>.
+   O'Reilly &amp; Associates, 2000.  ISBN 0-596-00003-0.
+</pre>
+
+There is also a book by the same publisher on RCS and a similar package
+that comes with Solaris, called SCCS:
+
+<pre>
+   Bolinger, D. &amp; Bronson, T. <i>Applying RCS and SCCS</i>.
+   O'Reilly &amp; Associates, 1995.  ISBN 1-56592-117-9.
+</pre>
+
+Additionally, the same publisher has a book on <i>make</i>:
+
+<pre>
+   Oram, A. &amp; Talbott, S. <i>Managing Projects with Make</i>.
+   O'Reilly &amp; Associates, 1991. ISBN 0-937175-90-0.
+</pre>
+
+You can contact this publisher at <a
+href="http://www.oreilly.com">www.oreilly.com</a>.
+
+<hr><address>Christopher Vickery and Eric Shamow<br>Queens College of CUNY </address><p>
+<a href="http://babbage.cs.qc.edu">Home Page</a>
+<hr></body></html>

@@ -1,0 +1,147 @@
+<html><head><title>CS-701 Assignment 2</title>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+</head>
+<BODY bgcolor=#FFFFFF>
+<center>
+<h1>CS-701 Assignment 2</h1>
+</center>
+
+<h2>Requirements</h2>
+
+Write a C++ program named <i>precis</i>, which generates <u>exactly</u>
+the same output as the following shell script:
+
+<pre>
+  #! /bin/sh
+
+  for f
+  do 
+    wc $f
+  done
+</pre>
+
+Look up the <i>wc</i> command using <i>man wc</i>.  Test this script by
+typing it into a file such as  "count_stuff", making it executable (use
+<i>chmod +x count_stuff</i>), and typing <i>./count_stuff count_stuff
+count_stuff</i> as a command.  Be sure you understand the output and
+how the script works.<p>
+
+In additon to the lines the above script produces, your program is to
+output one more line, which gives the total number of lines, words, and
+characters in all files, plus one more line telling the number of files
+processed successfully.  Except for the very last line, the output of
+your program should exactly match the output of the <i>wc</i> command
+when multiple file names are entered on the command line.<p>
+
+Your program is also to output an appropriate error message if any of
+the files named on the command line don't exist or otherwise cannot be
+read, but except for the requirement to use <i>perror()</i> (see
+below), the format of these error messages does not have to match the
+error messages produced by <i>wc</i> exactly.<p>
+
+Your program must be coded according to the [&nbsp;<a
+href="../../Coding_Guidelines.html">Coding Guidelines</a>&nbsp;] for
+this course.  This includes the requirement that the program must
+compile and link with no error or warning messages, in addition to
+running correctly.  It also includes the requirement that the program
+must be properly documented.  However, you are not expected to use
+either the RCS or <i>make</i> development tools for this assignment.<p>
+
+<h2>Coding Requirements</h2>
+
+Create a project directory for the assignment as described in the coding
+guidelines.  Write the code as a single source module named
+<code>precis.cc</code>, which you are to compile into an executable file
+named <code>precis</code> using the following command line:
+
+<pre>
+      g++ -g -Wall -Wwrite-strings precis.cc -o precis
+</pre>
+
+The above command must produce no warning or error messages.<p>
+
+Although you will not use RCS for this assignment, the first line of
+precis.cc must be:
+
+<pre>
+      // $Id$
+</pre>
+
+Your code must use the following functions to perform the indicated
+tasks:<p>
+
+<center><table border=1 cellpadding=5 width=95%>
+
+  <tr>
+    <td width=10%>fopen()
+    <td>To open each file named on the command line.
+
+  <tr>
+    <td width=10%>perror()
+    <td>To print any error messages.
+
+  <tr>
+    <td width=10%>fgets()
+    <td>To read each line of a file.
+
+  <tr>
+    <td width=10%>strlen()
+    <td>To count how many characters there are in a line. 
+    (<i>fgets()</i> returns each line of the file as a string.)
+
+  <tr>
+    <td width=10%>strtok()
+    <td>To divide each line into "words" (tokens).  Just count how many
+    times <i>strtok()</i> is successful at getting a token out of a
+    line.
+
+</table></center><p>
+
+If the user types the name of a "binary" file as one of the command line
+arguments, your program does not have to do anything special about it;
+just assume that all files are text files.<p>
+
+Test your program carefully before creating the tar file and submitting
+it.  (Don't worry about making the project directory "clean" for this
+assignment as called for in the coding guidelines.)  You should use the
+following procedure to test your program:
+
+<pre>
+
+      % ./script a_file b_file c_file &gt; script.out
+      % ./precis a_file b_file c_file &gt; precis.out
+      % diff script.out precis.out
+</pre>
+
+Here, a_file, b_file, and c_file are the names of text files, some of
+which might not exist or might be unreadable by the user.  Substitute an
+appropriate set of file names when testing.  "./script" is the script
+given to you at the beginning of the Requirements section of this
+handout.  The <i>diff</i> command prints out those lines that are
+different between two files; the only lines that it should print are the
+two extra lines that <i>precis</i> prints compared to the script.<p>
+
+<h2>Due Date</h2>
+
+Send the tar file containing your project directory to me as an email
+attachment by midnight September 20.
+
+<!----------------------------------------------------------
+The idea is to introduce them to command line processing,
+fopen, fgets, feof, strtok.
+Don't use feof, use while( 0 != fgets(...))
+  ------------------------------------------------------- -->
+
+<!----------------------------------------------------------
+They can work together on the program.
+They have to test it using a diff script (I can supply
+that.)
+  -------------------------------------------------------- -->
+<!-----------------------------------------------------------
+Give them a sample exam question based on this assignment so
+they can see they cannot just memorize code even if they get
+it from someone else.
+  -------------------------------------------------------- -->
+
+<hr></body></html>

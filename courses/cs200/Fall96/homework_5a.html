@@ -1,0 +1,155 @@
+<HTML> <HEAD> <TITLE>Property List Project, Part 1</TITLE>
+</HEAD>
+
+<BODY>
+<H1 ALIGN=center>Property List Project, Part 1</H1>
+<H2>Introduction</H2>
+
+This assignment is being done as two separate homeworks.  The first half
+is called "Homework 5a" and is due on the day of the sixth class of the
+course (10/8; 10/11).  The second half is called "Homework 5b" and is
+due the week after the exam (10/29; 10/25).  [The Tuesday due date
+was changed to 10/15, even though there is no class that day.]<P>
+
+The project is to develop a package that implements a structure called a
+"Property List."  A property list is a list of elements, each of which
+consists of a name, a type, and a value.  Within a property list, the
+same name may occur multiple times, but each name-type combination must
+be unique.  The operations defined for a property list include
+<I>insert,</I> which adds an element to the list, <I>delete,</I> which
+removes an element from the list, and <I>getValue</I>, which retrieves a
+value given a name and type.<P>
+
+Homework 5a is to implement the first part of an interactive program
+that allows a user to insert entries into a property list.  Homework 5b
+is to implement the property list package itself.<P>
+
+<H2>Homework 5a</H2>
+
+Write a program containing a function definition for <I>main().</I> The
+program prompts the user to enter a name or a command.  If the string
+entered is "exit" the program terminates.  Otherwise, the program asks
+the user to enter the name of a data type.  Valid responses are "int,"
+"char," "long," "float," and "double."  Depending on the type name the
+user enters, the program then prompts for and reads in a value of the
+appropriate type.  The program then inserts the {name-type-value} triple
+into the property list, and prompts the user to enter another name or
+command.  The process repeats until the user enters "exit" in reply to
+the name or command prompt.<P>
+
+Here is an example of the execution of this program (named plist in this
+example):
+<PRE>
+  <b>qcunix1&gt;</b> plist
+  Enter name or command: <i>vickery</i>
+  Enter type of value: <i>int</i>
+  Enter integer value:<i> 100</i>
+  Integer insert: vickery 100
+  Insert succeeded
+  Enter name or command: <i>vickery</i>
+  Enter type of value: <i>float</i>
+  Enter float value: <i>3.14159</i>  
+  Float insert: vickery 3.14159
+  Insert succeeded
+  Enter name or command:<i> exit</i>
+  <b>qcunix1&gt;</b> 
+</PRE>
+
+For this part of the assignment, I am providing you with an object
+module named <code>plist.o</code> which contains the code for a set of
+functions named <i>insert()</i>, one for each of the recognized data
+types.  I am also providing you with a header file named
+<code>plist.h</code> that contains function prototypes for the
+<i>insert()</i> functions and a definition for an <code>enum</code>
+called <i>types</i>.<p>
+
+In the sample output above, the messages that start "Integer insert"
+and "Float insert" were output by the code in <code>plist.o</code> and
+all other messages were output by <i>main()</i>.<p>
+
+To do this part of the project, create a project directory, change to
+it, and copy all the files from <code>~vickery/CS-200/Homework_5</code>
+into it:<pre>
+  <b>qcunix1&gt;</b> cp ~vickery/CS-200/Homework_5/* .
+</pre>
+
+You will get one <code>.o</code> file, one <code>.h</code> file, and a
+<code>Makefile</code>.  If you name your own program file
+<code>main.cc</code>, all you need to do to build an executable program
+named <code>plist</code> is to type "gmake" (no arguments needed).<p>
+You can type "gmake clean" to delete unneeded files from the project
+directory before you submit it.<p>
+
+<h3>Notes: </h3>
+<ul>
+
+<li>You must put a "<code>#include "plist.h</code>" statement
+in your <code>main.cc</code> file, and your calls to <i>insert()</i>
+must match the prototypes given in <code>plist.h</code>.  This means
+that you must use the enum for <code>types</code> that I provided.  Look
+in <code>plist.h</code> to see how this was set up.  (Tuesday students:
+I changed the names of the enum values from "INT," etc. as given in
+class to "T_INT," etc.)
+
+<li>Your program must check that the user enters a valid data type name
+and not prompt for a value until the type name is valid (or the user
+types <code>^C</code> to abort the program!).  <b>Optional: </b>display
+a list of valid type names if the user enters something invalid, maybe
+like this:
+
+<pre>
+  <b>qcunix1&gt;</b> plist
+  Enter name or command: <i>vickery</i>
+  Enter type of value: <i>garbage</i>
+  Valid types are int, long, char, float, double, 
+  Enter type of value: <i>int</i>
+  Enter integer value: <i>100</i>
+  Integer insert: vickery 100
+  Insert succeeded
+  Enter name or command: <i>exit</i>
+  <b>qcunix1&gt;</b> 
+</pre>
+
+<li>Because of the way C++ stream input works, the user will be able
+to make your program "work funny" by doing such things as typing more
+than one character when prompted for a char value.  A particularly
+annoying "feature" is that the program will go into an endless loop
+displaying all its prompt messages over and over if the user types
+character(s) instead of numbers when prompted for a numeric value.
+There is no way to get around these problems using the parts of the
+language that we are using now, so we will just accept as a requirement
+that the user must type values in correctly.  Use <code>^C</code> if
+your program goes into that endless loop, by the way.
+
+<li>Put a text file in man page format in your project directory before
+you submit the program.  As described in the <a href=
+"http://babbage.cs.qc.edu/courses/cs200/using_unix/project.html#man_page">
+project management web page for this course,</a> this is a small text
+file that tells users how to use the program.  Be sure to type this file
+in the proper format.  (See the web page.)
+
+</ul>
+
+
+
+<H2>Homework 5b</H2>
+
+Don't work on this part of the assignment yet.  There is a
+<a href= "homework_5b.html">Separate Web Page</a> for it.<p>
+
+<HR>
+<UL>
+<LI><A HREF="index.html"> Fall 1996 Syllabus and Assignments </A>
+<LI><A HREF="../index.html"> CS-200 Home Page </A>
+</UL>
+
+<HR>
+<ADDRESS>
+Dr. Christopher Vickery<BR>
+Computer Science Department<BR>
+Queens College of CUNY<BR>
+<A HREF="/"> Home Page </A> 
+</ADDRESS>
+<HR>
+</BODY>
+</HTML>

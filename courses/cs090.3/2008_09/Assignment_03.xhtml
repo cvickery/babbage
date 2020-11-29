@@ -1,0 +1,236 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 3</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 3</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          Build an application that users log into. For this assignment, there are just two web pages: the first is a
+          login screen where the user enters his or her username (email address) and password. The second is a result
+          screen that tells the user whether the login was successful or not, and greets the user by name if the login
+          was successful. The application uses a database to hold usernames, passwords, and real names.&minus;&minus;
+        </p>
+      </div>
+
+      <h2>Description</h2>
+      <div>
+        <ol>
+          <li>
+            <h5>Set up your database.</h5>
+            <p>
+              Use pgAdmin (or any other mechanism you might prefer) to set up the <span class="functionName">user</span> table in your database so
+              it looks something like this:
+            </p>
+            <p><img src="images/users_screenshot.png" alt="databse screenshot" width="100%" /></p>
+            <p>
+              Be sure the <span class="functionName">user</span> column contains only valid email addresses; they do not
+              have to be QC email addresses. The <span class="functionName">password</span> and <span
+              class="functionName">name</span> columns may contain arbitrary text, but plausible passwords and
+              people&rsquo;s names will make the assignment much more fun. When you set up the columns, make sure the
+              &ldquo;Not null&rdquo; option is checked for each one. That way you won&rsquo;t have to worry about rows
+              having empty values for those fields.
+            </p>
+          </li>
+          <li>
+            <h5>Set up the login page.</h5>
+            <p>
+              Remove the &ldquo;needJS&rdquo; and <em>lorem ipsum</em> paragraphs from your site&rsquo;s index page, and
+              put in a form that uses the POST <span class="attributeName">method</span> attribute and <span
+              class="fileName">process_form.php</span> as the value of the <span class="attributeName">action</span>
+              attribute. Provide text <span class="tagName">input</span> elements with corresponding <span
+              class="tagName">label</span> elements for <span class="functionName">User</span> and <span
+              class="functionName">Password</span> entries.  And add a <span class="functionName">Submit</span> button
+              (<span class="tagName">input</span> element of <span class="attributeName">type</span> <span
+              class="attributeValue">submit</span>). Use CSS to make your login page look &ldquo;nice.&rdquo;
+            </p>
+            <p>
+              Use JavaScript to validate the form data as demonstrated in class. With JavaScript disabled, the user can
+              type anything (or nothing) into the form fields and submit it. But if JavaScript is enabled, the <span
+              class="functionName">Submit</span> button should be disabled except when the user has entered a valid
+              email address in the <span class="functionName">User</span> field and any non-empty string in the <span
+              class="functionName">Password</span> field. Use a regular expression to verify that the email address is
+              valid. Highlight fields that do not contain correct values. For example, the form might look like this if
+              the user enters an invalid email address:
+            </p>
+            <p><img src="images/login_screenshot.png" alt="login screenshot" width="100%" /></p>
+          </li>
+          <li>
+            <h5>Implement the action page.</h5>
+            <p>
+              To keep things simple, the <span class="fileName">process_form.php</span> file does not need to generate a
+              valid XHTML document. (That&rsquo;s why the file name ends in <span class="codeSnippet">.php</span>
+              instead of <span class="codeSnippet">.xhtml</span>.) All it has to do is to echo one of four messages:
+            </p>
+            <ol>
+              <li>You bad person, you!</li>
+              <li>Invalid email address.</li>
+              <li>User not in database.</li>
+              <li>Welcome, &lt;<em>user&rsquo;s name from database</em>&gt;!</li>
+            </ol>
+            <p>
+              You will need to do this part of the project incrementally. Start by echoing the user and password values
+              that you receive from the <span class="variableName">$_POST</span> superglobal array to make sure they are
+              coming in correctly. To avoid PHP errors, you need to test to see if the elements of the <span
+              class="variableName">$_POST</span> array that you are interested in are set before you try to access them.
+              See the first few lines of this course&rsquo;s <span class="fileName">template.xhtml</span> file for an
+              example of how to do this (for the <span class="variableName">$_SERVER</span> superglobal). If either of
+              the form variables is not set in the <span class="variableName">$_POST</span> array, die with the
+              &ldquo;bad person&rdquo; message. The <span class="functionName">die()</span> function echoes a message
+              and stops PHP processing:
+            </p>
+            <p  class="code_block">
+  die("&lt;h1&gt;You bad person, you!&lt;/h1&gt;");
+            </p>
+            <p>
+              The &ldquo;bad person&rdquo; might be a hacker trying to activate your form processor without actually
+              going through the login page, or it might be you because you set the form up incorrectly. In either case,
+              you can test this test by pretending to be a hacker: just use a URL like <span
+              class="codeSnippet">http://localhost/process_form.php</span> to run the script without using the form.
+            </p>
+            <p>
+              Once you know the form data is being submitted correctly, use <span
+              class="functionName">require_once()</span> to load the <span class="fileName">strip_quotes.php</span> file
+              shown in class to make sure there are no backslashes in front of any quotes the user has typed in either
+              form field. This file is not installed in the lab, so you will need to download it and put it in the same
+              directory as the <span class="fileName">process_form.php</span> file that references it. There is a
+              Catch-22: if you try to download a .php file from a web server, it will get executed instead of
+              downloaded. So I put it inside a .zip file named <a href="../strip_quotes.zip">strip_quotes.zip</a> that
+              you can download and extract into the proper directory. If you want to put <span
+              class="fileName">strip_quotes.php</span> in your <span class="directoryName">scripts</span> directory,
+              just use a relative pathname as the argument to <span class="functionName">require_once()</span>.
+            </p>
+            <p>
+              Once your form processor has established that there are no backslashes, it must cleanse the values typed
+              by the user by running <span class="functionName">htmlspecialchars()</span> to block SQL injection
+              attacks, as discussed in class.
+            </p>
+            <p>
+              I mentioned to some people after class that you would need to verify that the user field is a valid email
+              address using the PHP regular  expression function <span class="functionName">preg_match()</span>. That
+              was wrong: the <span class="functionName">user</span> value typed by the user is simply going to be
+              compared to whatever is in the database for this assignment.  As long as the database contains only valid
+              email addresses, it doesn&rsquo;t matter whether the user types a valid email address or not; you can use
+              whatever was in the <span class="functionName">user</span> field of the form (once it has been inoculated
+              against SQL injection attacks) in the WHERE clause of your query:
+            </p>
+            <p class="code_block">
+  $user = htmlentities($_POST['user'], ENT_QUOTES);
+  $query ="SELECT password, name FROM users WHERE \"user\" = '{$user}'";
+            </p>
+            <p>
+              Notes on the SQL query string: The capitalized key words do not need to be capitalized, but it is a
+              convention that makes the string easier to read. The <span class="functionName">password</span>, <span
+              class="functionName">name</span>, and <span class="functionName">user</span> words are column names; <span
+              class="functionName">user</span> had to be put in double quotes because it conflicts with a builtin
+              keyword that is automatically turned into the database user&rsquo;s login name. The other column names
+              could optionally be put inside double quotes also. Single quotes (as in <span
+              class="codeSnippet">'{$user}'</span>) are used to specify string values.
+            </p>
+            <p>
+              Once you do the database query, you can use the <span class="functionName">pg_num_rows()</span> function
+              to find out how many rows in the table match the user id (email address) entered on the form:
+            </p>
+            <p>
+  $result = pg_query($conn, $query);
+  $num_rows = pg_num_rows($result);
+            </p>
+            <p>
+              There are actually three possible query outcomes, indicated by <span
+              class="variableName">$num_rows</span>,  you need to deal with:
+            </p>
+            <ol>
+              <li>zero: The user id is not in the table.</li>
+              <li>one: The user id is unique in the table.</li>
+              <li>anything else: The user id occurs multiple times in the table.</li>
+            </ol>
+            <p>
+              The last case should not occur, and you could add a 'unique' constraint to the <span
+              class="functionName">user</span> column of the table so the database will prevent it from happening. But
+              even with that constraint, it is good programming practice to &ldquo;cover all bases.&rdquo;
+            </p>
+            <p>
+              As described above, you can simply use calls to <span class="functionName">die()</span> to handle the
+              different cases for this assignment.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have built and tested your web page, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;3</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

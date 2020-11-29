@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Debugging with gdb/ddd</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>Debugging with gdb/ddd</h1>
+</center>
+
+<h2>Introduction</h2>
+
+Despite our best efforts to make our programming errors as early in the
+program generation cycle as possible (so we can get syntax errors from
+the compiler, or at least unresolved symbol errors from the linker),
+some bugs are bound to lurk in the background until we test our
+executable code.  With some care, we can design our testing to help
+pinpoint bugs, but eventually we can be pretty certain the time will
+come for serious debugging.<P>
+
+There are two basic approaches to debugging: <b>instrumenting the
+code</b>, and <b>using an interactive debugger</b>.  One way to
+instrument C and C++ programs is to use the <I>assert()</I> facility
+that is defined (as a macro that calls a library function) in the
+<CODE>assert.h</CODE> header file.  You pass one argument to assert, an
+expression that must evaluate to a value of true or false.  If the
+expression is false when the reference to <I>assert()</I> is called,
+the program is aborted with an error message that tells the expression
+that failed, the file in which the error occurred, and the line number
+within the file of the <I>assert()</I> call.  The idea is that you make
+assertions that must be true for your program to operate correctly.  If
+an assertion fails, you know you have a bug and exactly where it
+occurred.  An especially attractive feature of using <I>assert()</I> is
+that you can effectively remove all <I>assert()</I> calls from your
+code without having to edit the source files.  (Editing a file always
+seems to make working programs stop working.  That's why you write the
+comments as you write your code rather than adding them after the
+program "works.")  If you define the preprocessor symbol,
+<code>NDEBUG</code> when you compile your code, all references to
+<I>assert()</I> are removed by the preprocessor before passing the code
+on to the compiler.  The usual way to accomplish this is to use the
+<code>-DNDEBUG</code> option on the <i>g++</i> command line.<P>
+
+The problem with using <I>assert()</I> is that you have to anticipate a
+bug in order to decide where to put in the assertions.  More often you
+find that a program doesn't work and have to locate the error without
+the help of <I>assert()</I> calls because you didn't anticipate the bug
+in the first place.  (<I>Assert()</I> is good when one person writes
+some code that will be used by other programmers' code. The first
+programmer inserts <I>assert()</I>s to check function preconditions so
+that the other programmers must pass parameter values that are in the
+proper range, for example.)<P>
+
+When you have to instrument your code in order to track down a bug, the
+general strategy is to insert output (print) statements that show the
+values of key variables at various points in the execution of the
+program.  Seeing which output statements get printed helps trace the
+flow of the program, and seeing the values of variables can help locate
+the same kind of problems that <I>assert()</I> does.  The problem with
+adding output statements to code is that you have to edit your code to
+put them in and then again after all the debugging is done, to take
+them out again.  As mentioned above, editing a source file is a prime
+way to introduce bugs into your code.  (When you think about it, it's
+the only way to introduce bugs!).  A much better alternative is to use
+an interactive debugger, which is the topic of this document.<P>
+
+To use an interactive debugger, you must use a compiler switch
+(<code>-g</code>) with <i>g++</i> to tell the compiler to put debugging
+information in the object module that it produces.  This debugging
+information is in its own special section of the object module, and is
+simply discarded by the system's program loader when the program is run
+without the debugger.  But if you run the program using the debugger,
+this information allows the debugger to show you the source code for
+each statement as it is executed, and to examine or modify the variables
+in your program as it executes.<P>
+
+Note that optimizing compilers may rearrange parts of your program so
+that the statements you wrote into your code might execute in a
+different sequence from the way you wrote them, and some statements
+might even get eliminated completely.  For this reason it is best not to
+use any optimization options while your code is under development.<P>
+
+<h2>Using <i>gdb</i></h2>
+
+The gdb debugger from the Free Software Foundation in many ways sets the
+standard for interactive debuggers because of its rich set of powerful
+features.  At the same time it can be very useful if you learn just the
+few commands given here.  For more information, consult the man page.
+There is a man page for gdb, but the "official" documentation is in the
+<I>info</I> system.  Type "<CODE>info gdb</CODE>" to access that
+material.  (If you type just "<CODE>info</CODE>" you can see what other
+GNU commands we have documentation for.)<P>
+
+Start gdb from the command line by typing the command "<CODE>gdb
+&lt;file&gt;</CODE>" where &lt;file&gt; is the name of the file you want
+to debug.  The next thing you will see (after some messages) is an
+asterisk prompt from gdb when it is ready for you to type a command.
+The first command you type will probably be "<CODE>b main</CODE>" which
+tells gdb to set a breakpoint at the beginning of your <i>main()</i>
+function.  A breakpoint is a place in your program where you want it to
+stop executing so that you can see what is going on.  In this case, you
+want to run your program at full speed until it gets past the
+initialization code that makes the call to <I>main()</I>.  The command
+to start the program running is just "<CODE>r</CODE>" (which stands for
+"<CODE>run</CODE>").  If your program processes command line arguments
+(using <CODE>argc</CODE> and <CODE>argv</CODE>), you enter the arguments
+you want to use on the run command line, and gdb will pass them on to
+your <I>main()</I> function.<P>
+
+So now your program has started running, and stopped at <I>main()</I>,
+with gdb issuing its asterisk prompt for you to enter more commands.
+The first two commands you will probably want to try are
+"<CODE>s</CODE>" (<CODE>step</CODE>) and "<CODE>n</CODE>"
+(<CODE>next</CODE>).  Both cause one statement of your program to
+execute; the difference is that <CODE>step</CODE> steps into function
+references, and <CODE>next</CODE> steps over them as if a function
+reference was just an expression being evaluated.  To single-step
+through your program, you need to keep repeating <CODE>n</CODE> (or
+<CODE>s</CODE>) commands; gdb lets you use the
+<CODE>&lt;Enter&gt;</CODE> key to repeat the last command you typed
+without actually retyping the command itself.  (This may seem trivial,
+but it reduces the number of keystrokes by 50%!)<P>
+
+If you step into a function and want the program to run at full speed
+until the function returns to its caller, you can use the
+"<CODE>fin</CODE>" (<CODE>finish</CODE>) command to do that.<P>
+
+If you want to set more breakpoints, you may do so at any time.  In
+addition to function names, you can use source code line numbers to tell
+where you want to set a breakpoint.  (Use the "<CODE>l</CODE>" command
+to list your program with line numbers.)  Once you have a breakpoint
+set, you can use the "<CODE>c</CODE>" (<CODE>continue</CODE>) command to
+let the program run at full speed until it reaches a breakpoint, aborts,
+or exits.  You can have as many breakpoints set as you wish.<P>
+
+To look at the value of a variable, use the "<CODE>p</CODE>"
+(<CODE>print</CODE>) command.  You can use <CODE>*</CODE> and
+<CODE>&amp;</CODE> to follow pointers and to see addresses, and you can
+use standard C/C++ syntax to look at parts of arrays or structures.  If
+you have an array called <CODE>x</CODE> and an <CODE>int</CODE> called
+<CODE>i</CODE>, you can type "<CODE>p x[i]</CODE>" to see the value of
+that element of the array, for example.<P>
+
+A particularly nice feature of gdb is that it can be used to do what is
+called "post-mortem" debugging.  If you run a program and it crashes
+(usually with an obscure message, like "segmentation violation"), there
+will be a file named "<CODE>core</CODE>" produced containing an image of
+memory at the time the program crashed.  (On Linux systems you might
+need to execute the statement "ulimit -c unlimited" to get core files;
+you might put it in your ~/.profile.) You can then invoke gdb (with
+no command line argument), and type the command "<CODE>core core</CODE>"
+in response to the asterisk prompt.  At this point you will probably
+issue the "<CODE>bt</CODE>" (<CODE>back trace</CODE>) or
+"<CODE>where</CODE>" command, which will tell you exactly <I>where</I>
+your program was executing when it aborted, and what the entire function
+calling sequence was that got you from <I>main()</I> to where your
+program died.  If your program died in a library function (probably
+because you passed it a parameter with a bad value), you can use the
+"<CODE>up</CODE>" command to move up the back trace stack until you get
+to the point in your own code where the problem occurred.<P>
+
+The <CODE>bt</CODE> command is also great if you use the <CODE>c</CODE>
+or <CODE>r</CODE> command, but your program aborts before it reaches a
+breakpoint or exits.<P>
+
+That's it.  That's enough of gdb to make it a productive tool for you to
+use.  You still need two more commands, though.  One is "<CODE>h</CODE>"
+(<CODE>help</CODE>) to access the builtin help system, and the other is
+"<CODE>q</CODE>" (<CODE>quit</CODE>) to exit the program.<P>
+
+<h2>Using <i>ddd</i></h2>
+
+The Dynamic Display Debugger, <a
+href="http://www.gnu.org/directory/ddd.html">ddd</a>, provides a
+graphical user interface to gdb, and comes to us from the Technical
+University of Braunschweig in Germany.  When you start ddd from the
+command line (usually with a file to be debugged as the command line
+argument), the first thing you will see is a gdb command line window,
+and you can use gdb as described above in that window.  (How
+exciting.)<P>
+
+However, there will be another window that will show the source code for
+your program, starting at <I>main()</I>.  (This is better than having to
+use the "<CODE>l</CODE>" command to list little snippits of your code,
+but still not really exciting ...)  There is also a little floating
+toolbar window with buttons for the gdb commands described above, as
+well as several others.  To set your breakpoint in <I>main()</I>, click
+on the function name in the source code window (it will highlight), and
+click on the red Break button in the little toolbar window.  Click on
+"Run" to run the program.<P>
+
+OK, now for the good part.  First, click on the name of a variable in
+the source code window, and click on the "Print()" button at the bottom
+of that same window.  You will see the "<CODE>p</CODE>" command to print
+the variable entered for you in the gdb console window, along with the
+result.  But the real beauty of ddd appears when you click on pointer,
+array, or structure variable and then click on the "Display()" button.
+A new window (the "Program Data" window) comes up that gives you a
+graphical display of your data.  If a datum is a pointer, you can click
+on the "Display*()" button of the Program Data window to follow the
+pointer: you'll see a box containing the name of the pointer variable,
+its address, and an arrow pointing to a second box that contains
+information about the memory location pointed to by the pointer
+variable.  The data values in the Program Data window are updated every
+time you step through a line of code.<P>
+
+The graphical display can be as complex as your data structures.  You
+can display as many different data items at the same time as you wish,
+and you can rearrange the layout of the graphical display to suit your
+preferences.  Experiment with it to get a full appreciation for how
+useful it is.<P>
+
+There is an option to have the Program Data, the source code, and the
+gdb console windows put into a single window frame, and you can adjust
+their relative sizes within the frame.  I find this useful on a
+workstation with a large screen, but the separate windows are more
+convenient on a smaller screen.  You can set your prefereneces from the
+Options menu that appears in each of the three main windows.  Don't
+forget to save your options using the option of that name so your
+preferences will still be in effect the next time you start ddd.<P>
+
+The man page for ddd is 50 pages long (!), so you can imagine that this
+is a very powerful tool.  What's nice about it is that, like gdb, you
+need to learn only a little bit about it to start using it
+effectively.<P>
+
+Exit ddd from the File menu's Quit choice (or type Alt-Q).<P>
+
+<hr>
+<address>
+Dr. Christopher Vickery<br>
+Computer Science Department<br>
+Queens College of CUNY</address>
+<a href="/">Home Page</a>
+
+<hr>
+</body>
+</html>
+

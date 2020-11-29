@@ -1,0 +1,136 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>States</title>
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <style type="text/css" media="all">
+      #state-prompt {	
+      	display:	none;
+        position: fixed;
+        padding: 0.3em;
+        overflow: hidden;
+        border: 1px solid #999;
+      	}
+      #state-prompt p {
+      	margin:  0;
+        padding: 0;
+        white-space: pre;
+        }
+        .highlight {
+        	background-color: #9cf;
+          color:						fff;
+          }
+       .underline { text-decoration: underline; }
+    </style>
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>States</h1>
+    </div>
+
+    <div id="content">
+      <p>
+        Hendrerit quam nibh euismod mutationem aliquip. Tincidunt in typi iis nonummy me. Sit mirum qui typi est eros.
+        Nostrud volutpat eros ut tincidunt putamus. Investigationes dynamicus mazim diam quod ut. Ut tincidunt te quam
+        laoreet dolore. Nam dolor legunt est insitam minim. Seacula gothica enim insitam wisi habent.
+      </p>
+            
+      <p>
+        Quis nostrud exercitation duis aute irure dolor ut labore et dolore magna aliqua. Cupidatat non
+          proident, consectetur adipisicing elit, ut enim ad minim veniam. Velit esse cillum dolore duis
+          aute irure dolor sunt in culpa. Ut labore et dolore magna aliqua.
+    	</p>
+      <p>
+        Ullamco laboris nisi eu fugiat nulla pariatur. Qui officia deserunt quis nostrud exercitation
+          ut aliquip ex ea commodo consequat. Duis aute irure dolor sunt in culpa. Ut aliquip ex ea commodo
+          consequat. Sed do eiusmod tempor incididunt cupidatat non proident, quis nostrud exercitation.
+    	</p>
+      <p>
+        Excepteur sint occaecat consectetur adipisicing elit, ut enim ad minim veniam. Velit esse cillum
+          dolore ullamco laboris nisi ut aliquip ex ea commodo consequat. Ut labore et dolore magna aliqua.
+          Qui officia deserunt ut enim ad minim veniam, cupidatat non proident.
+    	</p>
+      <p>
+        Fiant est qui eodem luptatum claritas. Dignissim elit nibh ullamcorper magna odio. Exerci ut nulla mutationem
+        eros non. <input type="text" id="state-input" /> Dolore in claritas cum quod dolore. Nisl lius
+        claram iis decima qui. Accumsan lius commodo lectores parum vel. Processus id duis mirum nunc erat.
+        Demonstraverunt imperdiet typi ipsum dignissim laoreet.
+      </p>
+      
+      <p>
+        Delenit parum claritatem exerci accumsan ullamcorper. Formas et nunc usus processus amet. Iusto te et est habent
+        in. Volutpat claritatem quam dolore lectorum sed. Possim praesent eodem sequitur amet ii. Eorum dignissim ea
+        duis veniam option. Illum quod lobortis blandit humanitatis commodo. Humanitatis est eleifend congue tincidunt
+        iriure.
+      </p>
+      
+      <p>
+        Est usus volutpat facilisis quarta consuetudium. Qui claritatem non eodem sollemnes dolore. Et decima formas
+        dolore nobis volutpat. Accumsan mazim typi luptatum laoreet decima. Nunc consuetudium blandit eu placerat magna.
+        Tincidunt ut eleifend dignissim option ut. Veniam nostrud ut typi claritatem elit. Nam legentis ipsum placerat
+        videntur clari.
+      </p>
+      
+      <p>
+        Congue option qui vulputate consectetuer quis. Vel claritatem littera blandit lius consectetuer. Wisi lectorum
+        in veniam claritatem dynamicus. Modo tempor feugait vel eodem lectorum. Sed et ullamcorper littera molestie
+        consuetudium. Augue facilisis humanitatis erat lobortis zzril. Minim quod notare possim quod anteposuerit. Iis
+        consectetuer veniam qui illum lectores.
+      </p>
+      
+      <p>
+        Ii notare ea quam quarta nibh.
+      </p>
+    </div>
+    <div id="state-prompt">Nothing to see here &hellip;</div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="../../../index.xhtml"><span class="">Vickery Home</span></a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+    <script type="text/javascript" src="scripts/core.js"></script>
+    <script type="text/javascript" src="scripts/state_select.js"></script>
+  </body>
+</html>

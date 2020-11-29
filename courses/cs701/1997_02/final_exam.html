@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<TITLE>Final Exam</TITLE>
+
+<META NAME="GENERATOR" CONTENT="Internet Assistant for Microsoft Word 2.04z">
+</HEAD>
+<BODY>
+<P>
+1. List the functions a server would use to set up a &quot;well-known&quot;
+socket for communicating with clients, and tell what each function
+does.
+<P>
+2. List the functions a client would use to connect to a server,
+and tell what each function does.  Assume the program already
+knows the server's host name and port number, and go from there.
+<P>
+3. Write a program that computes the value of   to 99,000,000
+places and prints how many digits it has completed whenever the
+user types  <TT><FONT SIZE=2 FACE="Courier New">^C</FONT></TT>.
+ You may assume that someone has already written a function named
+ <I>computePi()</I> that does the actual computation and that
+every time this function computes a digit, it increments a global
+<I>int</I> named <TT><FONT SIZE=2 FACE="Courier New">numDigits</FONT></TT>.
+ Assume that the function prototype for <I>computePi()</I> is
+given to you in a header file named  <TT><FONT SIZE=2 FACE="Courier New">piStuff.h</FONT></TT>.
+<P>
+4. Assume the program you wrote for Question 3 is in a file named
+ <TT><FONT SIZE=2 FACE="Courier New">miStuff.cc</FONT></TT> and
+that the source code for <I>computePI()</I> is in another file
+named  <TT><FONT SIZE=2 FACE="Courier New">pyStuff.cc</FONT></TT>.
+ Write a Makefile that will build a program named  <TT><FONT SIZE=2 FACE="Courier New">busyBusy</FONT></TT>
+by performing just those compilations and linking operations that
+are necessary when any of the three source files are edited.
+<P>
+5. Tell what the <I>ci</I> and <I>co</I> commands do, and tell
+what the <TT><FONT SIZE=2 FACE="Courier New">-l</FONT></TT> command
+line option does with <I>co</I>.
+<P>
+6. Assume you wrote a function named <I>readMsg()</I> that contains
+the statement,<BR>
+ <TT><FONT SIZE=2 FACE="Courier New">numBytes = read(skt, &amp;msgBuf,
+sizeof(msgBuf));<BR>
+</FONT></TT>Give the sequence of <I>gdb</I> commands that you
+would use to examine the value of numBytes and the contents of
+<TT><FONT SIZE=2 FACE="Courier New">msgBuf</FONT></TT> after this
+call to <I>read()</I>.  If you prefer, you may tell how you would
+do this using  <I>ddd</I> instead.  There is not enough time to
+single step through the whole program to get to this statement.
+<P>
+7. The behavior of <I>read()</I> is different depending on whether
+it is reading from a terminal, a disk file, or a stream socket.
+ Tell what these differences are, including how long the process
+might block and how to interpret the value returned by <I>read().</I>
+<P>
+8. Tell what &quot;network byte order&quot; refers to and what
+functions a distributed application must use to deal with it.
+ Be specific about the circumstances in which the functions must
+be used.
+<P>
+9. What must the kernel do when it performs a context switch between
+two processes?  How does this differ from what it must do to switch
+between two threads running in the same process?<BR>
+</BODY>
+</HTML>

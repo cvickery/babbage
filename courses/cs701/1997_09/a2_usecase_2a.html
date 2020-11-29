@@ -1,0 +1,191 @@
+<HTML><HEAD><TITLE>Object Broker Project-- Use Case "2a"</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+Assignment 2, CS-701, Fall 1997
+<H1 align=center>Object Broker Project-- Use Case "2a"</H1>
+
+<H3 align=center> Use Case "2a" -- Change Stucture of <I>om</I>
+Source Code</H3>
+
+<H3>Introduction</H3>
+
+This part of the project is not really a Use Case because the resulting
+program will seem no different to the user from the version of <I>om</I>
+that you already built.  In fact, it is possible that you already have
+written your program in a way that meets the requirements given here. 
+Just make sure that your code meets these requirements before you start
+to work on <a href = "a2_usecase_3.html">Use Case 3</a>.<p>
+
+The rationale for this step is that both <I>om</I> and the <I>ob</I> to
+be developed for Use Case 3 share some common features, so they should
+also share common code where possible.  In particular, both programs
+will generate a log file that has a name derived from the name of the
+program and which contains a timestamped list of messages.  Also, both
+programs receive datagrams that contain <I>requests</I>, which are
+strings that are in the general format:
+
+<pre>
+      &lt;request type&gt; &lt;argument&gt; ...
+</pre>
+
+Both <I>om</I> and <I>ob</I> use the &lt;request type&gt; (sometimes
+called the <I>keyword</I>)part of a request to select a <I>request
+processing function</I> to be called, and  pass a string consisting of
+all the &lt;argument&gt;s separated by spaces to the function.  The
+request processing function returns another string, called the
+<I>reply</I>.  (A client sends a request in a datagram to <I>om</I> or
+<I>ob</I>, and <I>om</I> or <I>ob</I> sends the reply in another
+datagram to the client.)<p>
+
+The requirement being introduced here is to implement log file
+management and request processing function management in separately
+compiled source modules.<p>
+
+<H3>Log File Management</H3>
+
+The interface to the log file could be implemented using two or three
+methods, one to open the file, one to write a message to it, and
+possibly a third one to close it.  The first method should be passed
+argv[0] from <I>main()</I> and do all the work to construct the proper
+name for the file and to create it.  The second method should be passed
+a string, and should generate a the full log message, including the
+timestamp, and write it to the log file.<p>
+
+Put functions prototypes for your log file management functions in a
+header file, put their definitions (implementations) in a
+<CODE>.cc</CODE> file, and adjust your Makefile so that building
+<I>om</I> links the object file for the main program with the object
+file for the log file management functions.  Be sure to
+<CODE>#include</CODE> the header file in both the source modules.  Here
+is what you might have in your Makefile, assuming you have defined the
+<CODE>OM_OBJS</CODE> and <CODE>LDFLAGS</CODE> macros properly:
+
+<pre>
+      om : $(OM_OBJS)
+      &lt;tab&gt; gcc $(OM_OBJS) $(LDFLAGS) -o om 
+</pre>
+
+<H3>Request Processing Function Management</H3>
+
+In the <a href="a2_usecase_1.html">description of Use Case 1</a>, you
+were told to construct a dispatch table for locating and calling request
+processing functions.  Pseudocode for <I>om</I> would include the
+following endless loop:
+
+<pre>
+      for (;;) {
+
+        1.  Receive a request in a datagram.
+
+        2.  Parse the datagram into two strings, the &lt;request
+        type&gt; and the list of &lt;argument&gt;s.
+ 
+        3.  Search for the &lt;request type&gt; in your dispatch
+        table, and call the request processing function, passing
+        it the second string (the list of &lt;argument&gt;s) as
+        its argument.
+ 
+        4.  If the &lt;request type&gt; was not in the
+        dispatch table, send a datagram containing the string
+        <CODE>"*** unrecognized request ***"</CODE> to the
+        client.
+ 
+        5.  If the &lt;request type&gt; <I>was</I> in the dispatch
+        table, send a datagram containing the string returned by
+        the request processing function to the client.
+ 
+        }
+</pre>
+
+Put the code for Steps 2 and 3 of this pseudocode into a separate source
+file.  You might have one function or two; I think a single function is
+easier to manage.  It would receive the datagram as an argument and
+would return either the <CODE>"*** unrecognized request ***"</CODE>
+string or whatever string was returned by the request processing
+function.  Put the function prototype for this function (these
+functions) in a separate header file, and <CODE>#include</CODE> this
+header file in both your main program's source file and the source file
+containing the function's (functions') definition(s).<p>
+
+What else you do for managing request processing functions depends on
+how you implemented your dispatch table.  If you used an array of
+structs as described in class, you need to make the array global to
+both the main <CODE>.cc</CODE> file and the one that contains the
+function(s) just described.  The way to manage that is to declare the
+array as an <CODE>extern</CODE> in the header file, and to provide the
+initialization of the array in (either) one of the <CODE>.cc</CODE>
+files.  Here is some sample code.  (<I>You</I> must use meaningful
+function and variable names!)
+
+<center>
+<table border=1>
+  <tr><th>fun.h<th>om.cc<th>fun.cc
+
+  <tr><td>typedef char *rpf(char *)<br><br>
+          rpf do_exit;<br>
+          rpf do_listClasses;<br><br>
+          struct dt {<br>
+          &nbsp;&nbsp;char *n;<br>
+          &nbsp;&nbsp;rpf *f;<br>
+          &nbsp;&nbsp;};<br><br>
+          extern dt tab[];<br><br>
+          // Prototype for parser/dispatcher<br>
+          char *p_a_d(char*);
+
+      <td>#include "fun.h"<br><br>
+          dt tab[] = {<br>
+          &nbsp;&nbsp;{"exit",        do_exit },<br>
+          &nbsp;&nbsp;{"listClasses", do_listClasses},<br>
+          &nbsp;&nbsp;};<br><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;...<br><br>
+          //  Step 2 of above algorithm<br>
+          recvfrom ( ... &d ... );<br>
+          //  Steps 2 &amp; 3 of above algorithm<br>
+          r = p_a_d(d);<br>
+          //  Steps 4 &amp; 5 of above algorithm<br>
+          sendto( ... r ... );
+          
+
+      <td>#include "fun.h"<br>
+          char*<br>
+          p_a_d(char *k_a) {<br><br>
+          &nbsp;&nbsp;// Break k_a into k and a<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;...<br><br>
+          &nbsp;&nbsp;// Find k in tab[]<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;...<br><br>
+          &nbsp;&nbsp;// Pass a to the processing function<br>
+          &nbsp;&nbsp;// and return whatever it returns<br>
+          &nbsp;&nbsp;return tab[i].f(a);<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;...<br><br>
+          &nbsp;&nbsp;}
+
+</table>
+</center>
+
+The decision about where to implement the actual request processing
+functions is up to you.  They could be defined in either of these
+<CODE>.cc</CODE> files, or in yet another one.  (Don't forget to
+<code>#include</code> the header file if you use another one.)<p>
+
+If you decide instead to use an object-oriented approach, you would
+have a class that holds the dispatch table and which has member
+functions for adding items to the table and for searching the table for
+a particular request type string.  In this implementation, the class
+declaration goes in the header file, and the class method definitions
+go in a separate <CODE>.cc</CODE> file.  You might reasonably decide to
+implement the dispatch table as a linked list if you follow this
+approach.<p>
+
+In either case, you will now need to update the definitions of
+<CODE>OM_OBJS</CODE> in your Makefile, and you will have to be sure to
+update the dependencies for each object module to include the proper header
+files:
+
+<pre>
+      depend : $(OM_SRCS) $(HDRS)
+      &lt;tab&gt; makedepend $(OM_SRCS)
+</pre>
+
+<HR>
+<address>Christopher Vickery<br>Computer Science Department,
+Queens College of CUNY</address>
+<HR></BODY></HTML>

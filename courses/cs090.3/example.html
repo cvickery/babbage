@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> My Page </title>
+    <script type="text/javascript" src="core.js"></script>
+    <script type="text/javascript">
+
+    //  Enable use of the console.log(), available with Firefox/Firebug,
+    //  Webkit, and Chrome (which is Webkit anyway).
+    if (typeof opera !== "undefined")
+    {
+      //  Opera
+      window.console = opera;
+      console.log = opera.postError;
+    }
+    else if (typeof window.console === "undefined")
+    {
+      //  All others
+      window.console = {};
+      window.console.log = window.alert;
+    }
+
+    //  Initialize the application
+    Core.start(
+      (function()
+      {
+        var theButton = null;
+        var myListener = function()
+          {
+            console.log("myListener");
+          };
+        return {
+          init: function()
+          {
+            console.log("init listener");
+            theButton = document.getElementById('myButton');
+            Core.addEventListener(theButton, "click", myListener);
+          }
+        };
+      })()
+    );
+    window.onload = function() { console.log("init handler"); };
+		var e = {
+			f : 123,
+			g : function() { console.log(e.f); }
+		};
+		var f=456;
+    </script>
+  </head>
+  <body>
+    <button id="myButton"></button>
+  </body>
+</html>

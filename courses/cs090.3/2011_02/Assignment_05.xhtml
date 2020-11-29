@@ -1,0 +1,127 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 5</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style>
+      img {border:1px solid red;}
+    </style>
+  </head>
+  <body id='urn:uuid:D23FCF74-58F9-4A63-AFD7-3FEC06A6CB3F'>
+    <h1>CS-90.3 Assignment 5<br/>
+    Due May 24</h1>
+    <div id="content">
+      <h2>Reading Assignment</h2>
+      <ul>
+        <li>
+          Study the PHP online manual information on PostgreSQL access functions: <em>pg_connect()</em>,
+          <em>pg_query()</em>, and <em>pg_fetch_assoc()</em> in particular. Also, look at the <em>htmlspecialchars()</em>,
+          <em>preg_replace()</em>, and <em>sha1()</em> functions.
+         </li>
+      </ul>
+      <h2>Assignment To Submit</h2>
+      <div>
+        <p>
+          The assignment is to validate users by checking the username and password supplied by the user against values
+          stored in database tables.
+        </p>
+        <p>
+          When you have finished the assignment, send me an email message, and I’ll check it out on babbage.
+        </p>
+          <ul class="standout-block">
+            <li>Be sure to sign your email so I know who sent it.</li>
+            <li>The Subject line of your message must be: <pre style="margin:0 2em;">CS-90.3 Assignment 5</pre>
+            </li>
+          </ul>
+        
+        <ol>
+          <li>
+            <h5>Set up your database.</h5>
+            <p>
+              Following the instructions given in class, be sure you can access your database on oak, and add two
+              tables to it named  users and emails. The users table is to have an id column of type serial,
+              a username column of type text, and a password column of type text. The emails column is to have an email
+              column of type text and a user_id column of type integer. emails.email must be not NULL and unique;
+              emails.user_id must have a foreign key constraint: it must reference users.id.
+            </p>
+            <p>
+              Populate your tables with information for at least two users. One of the users must have a username of
+              'Perfect Student', must have a password of 'e5e9fa1ba31ecd1ae84f75caaa474f3a663f05f4', and must have two
+              email addresses in the emails table. This password is the result of passing the string 'secret' to the
+              <em>sha1()</em> function.
+            </p>
+          </li>
+          <li>
+            <h5>Modify the login form page from Assignment 4.</h5>
+            <p>Add a second form to it with the legend of the fieldset saying “Assignment 5.”</p>
+            <p>This form is to have an action page named assignment_5.php, and must contain a text input for
+            the user’s name and three password inputs for password, new password, and new password again. Be sure
+            each input has a clear and meaningful associated label for it.
+          </p>
+          <p>
+            The last two password fields must be
+            present, but implementing the change-password feature that uses them will be an optional, extra-credit, part
+            of the assignment.</p>
+          </li>
+          <li>
+            <h5>Implement the login feature by looking up the user's name and password in the database.</h5>
+            <p>The page assignment_5.php, unlike the action page for Assignment 4 is simply to display one of
+            three messages:</p>
+            <ul>
+              <li>A message that tells the user he or she has logged in successfully.</li>
+              <li>A message that tells the user his or her name was not found in the database.</li>
+              <li>A message that tellse the user his or her name was found in the database but that the password entered
+              was incorrect.</li>
+            </ul>
+            <p>You would never give separate messages for the second and third cases in the real world. But this is an
+            academic exercise, and we want to be able to debug the code easily.</p>
+            <p class="standout-block">All passwords in the database are to be stored as sha-1 hashes of the password entered
+            by the user. If you would like to “salt” the hashes, you may do so, but you will have to then change the password
+            for user “Perfect Student” from the value given above to the hash of 'secret' with your salt added to it.</p>
+          </li>
+          <li>
+            <h5>Add an email lookup feature to the action page.</h5>
+            <p>When the user logs in successfully, include a list of all of his/her email addresses in the message displayed.</p>
+          </li>
+          <li>
+            <h5>Optional: Add a “change password” feature.</h5>
+            <p>
+              If you have the time and inclination, add code to the action page that lets the user change his or her password.
+            </p>
+            <p>If the user logs in successfully and if the “new password” input matches the “new password again” input (and they
+            are not blank), update the user’s password in the database.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </div>
+  </body>
+</html>

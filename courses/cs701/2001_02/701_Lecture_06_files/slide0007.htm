@@ -1,0 +1,182 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 6</title>
+<meta name=Description content="21-Feb-01: Pointer Arithmetic">
+<link rel=next href=slide0008.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0007.htm');   
+  else
+    parent.location.href = "../701_Lecture_06.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=78 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=240 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=74 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=118 height=33 colspan=2></td>
+  <td width=240 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=240 height=33 align=center><font face="Times New Roman" size=5>Pointer
+    Arithmetic</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=117 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=28 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=187></td>
+  <td width=392 height=187 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=181 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=43 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=43 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=35 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=363 height=21 colspan=12><font face="Times New Roman" size=3>If
+    you add an integer to a pointer, the compiler</font><br>
+    </td>
+    <td width=12 height=21 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=393 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=370 height=21 colspan=14><font face="Times New Roman" size=3>multiplies
+    the value of the integer by the size of</font><br>
+    </td>
+    <td width=5 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=393 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=224 height=21 colspan=8><font face="Times New Roman" size=3>the
+    variable type in memory.</font><br>
+    </td>
+    <td width=151 height=21 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=393 height=5 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=307 height=18 colspan=8><font face="Times New Roman" size=2>Useful
+    for traversing the elements of an array.</font><br>
+    </td>
+    <td width=47 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=393 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=347 height=18 colspan=10><font face="Times New Roman" size=2>Chars
+    always occupy bytes; shorts usually occupy 2</font><br>
+    </td>
+    <td width=7 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=393 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=351 height=18 colspan=12><font face="Times New Roman" size=2>bytes,
+    ints 4, and longs 8.<span style="mso-spacerun: yes">  </span>But this is
+    not required by</font><br>
+    </td>
+    <td width=3 height=18></td>
+   </tr>
+   <tr>
+    <td width=393 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=221 height=18 colspan=6><font face="Times New Roman" size=2>the C
+    language, which says only:</font><br>
+    </td>
+    <td width=133 height=18 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=393 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=243 height=16 colspan=4><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span>sizeof(short) &lt;= sizeof(int) &lt;=
+    sizeof(long)</font><br>
+    </td>
+    <td width=90 height=16 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=393 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=333 height=16 colspan=10><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span>sizeof(char) &gt;= 1, sizeof(short) &gt;=
+    2, and sizeof(long) &gt;= 4</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=43 height=187></td>
+ </tr>
+ <tr>
+  <td width=475 height=62 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

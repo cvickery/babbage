@@ -1,0 +1,46 @@
+<HTML><HEAD><TITLE>Check My Grades</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFC0>
+<center>
+<H1>Check CS-701 Grades</H1>
+<SCRIPT LANGUAGE=JavaScript>
+
+  // Strip all non-digits; check there are 9 digits remaining,
+  // and insert dashes in the proper places.
+  function fixDashes( f )
+  {
+    before = f.ssNo.value;
+    after="";
+    for (var i=0; i< before.length; i++)
+    {
+      if ( before.charAt(i) >= '0' && before.charAt(i) <= '9' )
+        after = after + before.charAt(i);
+    }
+    if ( after.length != 9 )
+    {
+      alert ( before + " is not a valid ID number" );
+      return false;
+    }
+    fixed="";
+    for (var i=0; i<=2; i++) fixed = fixed + after.charAt(i);
+    fixed = fixed + '-';
+    for (var i=3; i<=4; i++) fixed = fixed + after.charAt(i);
+    fixed = fixed + '-';
+    for (var i=5; i<=8; i++) fixed = fixed + after.charAt(i);
+    f.ssNo.value = fixed;
+
+    return true;
+  }
+
+</SCRIPT>
+<FORM METHOD=get
+      ACTION="http://babbage.cs.qc.edu/cgi-bin/gen_grades-txt">
+  Enter Your Code Word: <INPUT TYPE=text NAME="ssNo" WIDTH=9><BR>
+  <INPUT TYPE=submit VALUE="Show Me My Grades for CS-701">
+  <INPUT TYPE=hidden NAME=file VALUE="701-2002_02">
+</FORM>
+</center>
+
+<HR></BODY></HTML>

@@ -1,0 +1,237 @@
+<HTML> <HEAD> <TITLE> File Server Assignment </TITLE> </HEAD>
+<BODY>
+<H2>File Server/Client Assignment</H2>
+
+<DL>
+<DT><B>Due Date:</B><DD>November 28, 1995
+
+<DT><B>Deliverables:</B><DD>
+
+When the project is complete, send me an email telling the path to
+the project directory, which is to be empty except for the RCS subdirectory.
+You may use SCCS instead of RCS, but RCS is preferred.  Typing <i>make</i>
+in the project directory is to cause two programs, a client and a server,
+to be built.  Then, typing <i>make install</i> is to cause the executable
+files to be moved to ~/bin and the man pages for the two programs to be
+moved to ~/man/man1.  After <i>make install</i> the project directory
+must be empty again.  The <i>make</i> commands must require no interactions
+with the user, even if repeated again.
+<p>If you want to leave a message
+for me that doesn't belong in the <i>man</i> pages or your code documentation,
+you may leave a text file in the project directory named README, but a
+README file is neither required nor expected for this assignment.
+
+<DT><B>Requirements:</B><DD>
+
+In addition to the information given here, be sure to consult the
+<A HREF="grading_form_3.html">Grading Form for this assignment</A>,
+which includes additional information about the requirements for this
+project.
+
+</DL>
+
+<H2>Project Description</H2>
+
+<p>One program you are to write is an Internet server daemon
+which is to process file transfer requests from remote clients.  The
+server daemon is patterned after the Unix <i>ftpd(8)</i> daemon, which
+implements the protocol defined by the Internet standard, <A
+HREF="http://www.cis.ohio-state.edu/htbin/rfc/rfc959.html">RFC-959</A>.
+Your server, however will implement a simpler protocol than the one used
+by <i>ftpd</i>.  The other program is an <i>ftp</i> client that interacts
+with your server to allow users to transfer files between the server's and
+client's host machines.  Do not name your programs <i>ftpd</i> and <i>ftp</i>
+because those names should only be used by programs that implement the
+protocol specified in RFC-959.
+
+<p><i>Note:</i> Feel free to get a copy of RFC-959
+to look at, but please do not print it out in the lab.  It is very long,
+you do not need it to do this project.  Save a tree and save our
+printer!
+
+<H2>The Protocol</H2>
+
+<p>The protocol your client and server are to follow consists of an
+exchange of <i>requests</i> from the client to the server and
+<i>replies</i> from the server to the client.
+
+<p>Each request consists of
+a text line that begins with a keyword, any parameters needed by that
+keyword, and ends with the ASCII sequence
+<code>&ltcr&gt&ltlf&gt</code>.  No request will be more than 128
+characters long, including the termination characters, but one type of
+request (<code>STOR</code>, see below) is followed by a stream of bytes
+(the contents of a file) that the server reads without interpreting
+(it writes them to a file in its current working directory).
+
+<p>Each reply
+consists of a three-digit string of decimal characters followed by an
+explanatory phrase of text terminated by <code>&ltcr&gt&ltlf&gt</code>.
+The decimal string is designed to be
+interpreted by your client, and the text phrase is designed to be read
+by the user.  No reply will be more than 128 characters long, but some
+replies are followed by some number of bytes that the client reads and
+then writes either to a file or to the user's screen depending on the type
+of request that generated the reply.
+
+<h4>The <i>request keywords</i> and their parameters are as
+follows:</h4>
+
+<dl>
+<dt><code>PWD</code><dd>The client requests the server to return a
+string telling the current working directory on the server's host.
+<dt><code>CWD &ltpathname&gt</code><dd>The client requests the server to
+change its current working directory to the <code>&ltpathname&gt</code>
+specified in the command, which is given relative to the server's
+current working directory.
+<dt><code>DIR</code><dd>The client requests the server to send a
+reply containing a listing of the file
+names and sizes of all files in its current working directory.
+<dt><code>RETR &ltfilename&gt</code><dd>The client requests the server
+to send a reply specifying the number of bytes in the named file,
+followed immediately by the contents of the file.  The client writes
+the file into its own current working directory.
+<dt><code>STOR &ltfilename&gt &ltsize&gt</code><dd>The client requests the
+sever to store the named file, of the specified size, in the
+server's current working directory.  This message is always exactly
+56 bytes long, which allows for up to 32 bytes for the name of the file
+and up to 16 bytes for the size.  Immediately after this message, the
+client writes the contents of the file to the server, which writes the
+file into its own current working directory.
+</dl>
+
+<h4>The server uses the following <i>reply codes</i> to send messages to its
+clients:</h4>
+
+<dl>
+
+<dt><code>200 OK</code><dd>This code is used to indicate successful
+completion of a request that needs no other information.  It is used
+following successful processing of CWD and STOR commands.
+
+<dt><code>212 &ltsize&gt</code><dd>This code is the reply to a DIR,
+PWD, or RETR request, and specifies how many bytes the server is about
+to transmit.  It is always exactly 23 bytes long, which allows for a 16
+digit  &ltsize&gt parameter.  Immediately after the 23 byte message,
+the server sends &ltsize&gt bytes of information, which the client
+processes in a manner that depends on what type of request it made.
+
+<dt><code>500 Command Unrecognized</code><dd>A message from the client
+did not begin with one of the keywords that the server recognizes.
+<dt><code>501 Invalid Parameter</code><dd>A STOR, RETR, or CWD request
+could not be processed because of the value of a parameter.
+<dt><code>502 Command Not Implemented</code><dd>As you develop your
+programs in a sequence of steps, your client might make a request that
+you haven't implemented yet in your server, and this should be the
+server's reply.
+</dl>
+
+<h2>The User Interface</h2>
+The client program accepts the following <i>commands</i> from the user:
+<dl>
+
+<dt><code>pwd</code><dd>This command causes the client to send a PWD request to
+the server and to display the server's current working directory.
+
+<dt><code>ls</code><dd>This command causes the client to send a DIR request
+to the server and to display the directory listing that the server returns.
+
+<dt><code>cd &ltdirectory&gt</code><dd>This command causes the client to
+send a CWD request to the server.
+
+<dt><code>get &ltfilename&gt</code><dd>This command causes the client
+to send a RETR request to the server and to store the retrieved file in
+the client's current working directory.  The client displays the
+number of bytes in the file, and some sort of progress
+indicator as the file is received.  A satisfactory progress indicator
+would be to show the digits "9 8 7 ... " one at a time each time
+10% of the file is received.
+
+<dt><code>put &ltfilename&gt</code><dd>This command causes the client to
+send a STOR request to the server, followed by the contents of the named
+file.  This command also displays the number of bytes to be transferred
+and a progress indicator during transfer.
+
+<dt><code>exit</code><dd>This command causes the client to close its
+connection with the server and to exit.
+
+</dl>
+
+<h2>Development Steps</H2>
+
+The project is to be done as a sequence of steps, each of which is to
+correspond to an RCS major version number.  All the files needed to
+make version 1 of the program must have version numbers in the form
+"1.x" (where <i>x</i> can be any number greater than zero); all the
+files needed to make version 2 of the program must have version
+numbers in the form "2.x" and so on.
+
+<dl>
+
+<dt>Version 1<dd>
+
+Create client and server programs that connect with each other using the
+default port number assigned to you, and program both to accept an
+alternate port number from the command line.  Your default port number
+is the last four digits of your ID#.  (If the last four digits of your
+ID# are 0403 use 1413 instead.)  Select alternate port numbers from
+your assigned number plus a number between 1 and 10.
+
+<p>The server is to be a concurrent server which forks a process for
+each client connection.  The child processes are to execute a function
+which must be defined in a separate source file from the server parent
+process.
+
+<p>For this version, the client and server do not write or read anything
+over their socket connection.
+
+<p>Make sure the client program terminates normally if the user enters
+an <i>exit</i> command.  Make sure you can connect to the server
+repeatedly with your client.  Make sure you can connect to the server
+several times concurrently with your client.  Make sure the server
+leaves no zombie (defunct) processes.
+
+<dt>Version 2<dd>
+
+For this version, implement the user commands <i>pwd</i> and <i>cd.</i>
+The server can handle PWD and CWD requests using the <i>getcwd(3)</i> and
+<i>chdir(2)</i> calls.  The server should always be able to respond to
+PWD successfully, but <i>chdir(2)</i> may fail for various reasons, and
+the client and server must handle this situation properly.
+
+<dt>Version 3<dd>
+
+Implement the <i>ls</i> command.  You can use the <i>system(3)</i>
+function to run <i>ls(1)</i> with output redirected to a file.  The
+trick is that the name of the file must be unique across all concurrent
+clients.  A process can use <i>getpid(2)</i> to generate unique file
+names.  The /tmp directory is available for temporary files, so a
+temporary file might be in the form /tmp/&ltpid&gt, where &ltpid&gt is the
+decimal character representation of the process id returned by
+<i>getpid(2).</i> Use the <i>fstat(2)</i> call to determine the size
+of the temporary file in order to construct the <code>212 &ltsize&gt</code>
+reply message.  The server deletes the listing file after it has sent
+it to the client.
+
+<dt>Version 4<dd>
+
+Implement the <i>get</i> and <i>put</i> commands.  Once you have completed
+Version 3, there should be no new programming techniques involved in
+implementing these commands.
+
+<p>When you test Version 4, be sure you have the client and server
+using different working directories during file transfers or you are
+likely to get unpleasant results. 
+
+</dl>
+
+<HR>
+<UL>
+<LI> <A HREF="../gf.html">Standard Grading Form</A>.
+<LI> <A HREF="grading_form_3.html">Grading Form for this Assignment</A>.
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>

@@ -1,0 +1,241 @@
+#! /usr/local/bin/ksh
+
+# Usage: grade [<directory>]
+
+# If a directory is specified, use it.
+#  Otherwise, Process all .dir directories.
+
+dirs=$1
+if [[ $dirs == "" ]]
+then
+  dirs="*.dir"
+fi
+
+# Grading loop starts here
+
+for f in $dirs
+# for f in 999-99-9999.dir
+do
+  f=${f%.dir}
+  report=${PWD}/$f.grade
+  clear
+  grep $f ../Roster
+
+  if [[ -e $report ]]
+  then
+    print "Note: $f.grade already exists!"
+    read oas?"Overwrite, Append, or Skip? [oaS] "
+    case $oas in
+      [oO]*)  rm -f $f.grade
+              in=yes
+              ;;
+      [aA]*)  in=yes
+              ;;
+      *)      in=no
+              ;;
+    esac
+  else
+    read in?"Do it? "
+  fi
+
+  if [[ $in == "" || $in == y* ]]
+  then
+    if [[ ! -e $report ]]
+    then
+      grep $f ../Roster > $report
+      cat boilerplate >> $report
+    fi
+
+    cd $f.dir/*
+    if [[ $? != 0 ]]
+    then
+      cat <<!!! >> $report
+*** Your project was not under RCS management.  Unable to process.
+!!!
+      exit 1
+    fi
+
+    rm -f vickery_*
+    if [[ $(basename $PWD) == [vV]ickery ]]
+    then
+      cat <<!!! >> $report
+
+*** Your tar file did not contain a project subdirectory.
+
+Files Submitted
+===============
+!!!
+
+    else cat <<!!! >> $report
+
+Contents of your Project Subdirectory
+=====================================
+
+!!!
+    fi
+
+    /bin/ls -ldG * >> $report 2>&1
+    if [[ -e RCS ]]
+    then
+      print >> $report
+      print "RCS subdirectory:" >> $report 2>&1
+      /bin/ls -lG RCS >> $report
+    fi
+    /bin/ls -ldG RCS
+    if [[ $? != 0 ]]
+    then
+      cat <<!!! >> $report
+*** There is no RCS subdirectory.  Unable to proceed with evaluation.
+!!!
+      exit
+    fi
+
+    cat <<!!! >> $report
+
+Building your program using make:
+=================================
+
+make clean
+!!!
+make clean >> $report 2>&1
+print "" >> $report 2>&1
+print "Updating dependencies in case they are present:"
+co -l Makefile
+make depend
+ci Makefile
+print "Back to the report... "
+print "" >> $report 2>&1
+print "make ouch" >> $report 2>&1
+make ouch >> $report 2>&1
+if [[ $? != 0 ]]
+then
+CXXFLAGS="$CXXFLAGS -DTRUE=1 -DFALSE=0" make -e ouch >> $report 2>&1
+fi
+
+print "Checking out sources"
+co ouch.cc Makefile ouch.h
+
+    cat <<!!! >> $report
+
+RCS/make Project Management
+===========================
+
+  Did the make clean rule work correctly?
+
+    Yes.
+
+  Did the make ouch rule generate the correct g++ command, and did the
+  program compile correctly?
+
+    Yes.
+
+  Checking log messages:
+  $(rlog *.cc)
+  $(rlog *.h)
+
+  Was the description (entered the first time you checked each file
+  in) meaningful?
+
+    No, "Initial Version" is not a meaningful description of a file.
+    Yes.
+
+  Were the log messages terse, but meaningful?
+
+    Yes.
+
+  Were they grammatically correct?
+
+    Yes.
+
+Code Formatting
+===============
+$(chk_format *.cc *.h)
+!!!
+
+  chk_format *.cc *.h > /dev/null
+  if [[ $? != 0 ]]
+  then
+    cat <<!!! >> $report
+*** There are formatting errors in your code.  There should be no tab
+*** characters and no lines longer than 72 characters.
+!!!
+  fi
+
+cat <<!!! >> $report
+
+Coding Style
+================
+
+    Were the RCS keywords (\$Id$ and \$Log$) in their proper places
+    in the source file(s)?
+
+      Yes.
+
+    Did all source modules adhere to the Coding Guidelines for the
+    course?
+    
+    No, there were problems in the following area(s):
+      
+      Comment blocks for the files.
+      Comment blocks for the functions.
+      Spacing between comment leaders and comments.
+      Grammatical Errors.
+ 
+      Yes.
+
+
+Testing the program:
+=====================
+
+\$ ./ouch
+$(./ouch 2>&1)
+
+\$ ./ouch -?
+$(./ouch -? 2>&1)
+
+\$ ./ouch -x
+$(./ouch -x 2>&1)
+
+\$ ./ouch -c ls -l -F -G
+$(./ouch -c ls -l -F -G 2>&1)
+
+\$ ./ouch -c date
+$(./ouch -c date 2>&1)
+
+\$ chmod 755 /home/vickery/bin/ls
+$(chmod 755 /home/vickery/bin/ls)
+\$ ./ouch -c ls -lFG
+$(./ouch -c ls -lFG)
+$(chmod 644 /home/vickery/bin/ls)
+
+  Is the above output correct?
+    Yes.
+
+
+Other Notes.
+============
+
+    None.
+
+Assignment Grade: 5.0/5.0
+=========================
+
+!!!
+
+    xterm -geometry 80x50+10+10 -b 5 -e vim $report Makefile *.h *.cc
+
+    read in?"ksh? "
+    [[ $in == y* ]] && ENV=~/.kshrc ksh
+    
+    in=n
+    while [[ $in == n* ]]
+    do
+      read in?"Finished? "
+      [[ $in == n* ]] && ENV=~/.kshrc ksh
+    done
+    make clean
+    cd ~/Courses/cs701/2001_09/Assignment_03
+
+  fi
+
+done

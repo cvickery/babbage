@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Makefile</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</head>
+<center><h1>Makefile</h1></center>
+<hr>
+<pre>
+      # $Id: Makefile,v 1.8 2003/03/12 04:55:52 vickery Exp $
+      
+      LIB_DIR         = $(HOME)/lib
+      INC_DIRS        = -I/usr/local/java/include -I/usr/local/java/include/linux
+      
+      CXXFLAGS        = -g -Wall -Wwrite-strings $(INC_DIRS)
+      CXX_OBJS        = ListArgs.o
+      JAV_OBJS        = ListArgs.class
+      LIBS            = libla.so
+      
+      JNI_HDRS        = $(JAV_OBJS:.class=.h)
+      CXX_SRCS        = $(CXX_OBJS:.o=.cc)
+      JAV_SRCS        = $(JAV_OBJS:.class=.java)
+      
+      # Pattern rule for Java
+      %.class         : %.java
+      	jikes $&lt;
+      
+      # Default target
+      $(LIB_DIR)/$(LIBS)  : $(JAV_OBJS) $(LIBS)
+      	cp $(LIBS) $(LIB_DIR)
+      
+      run             : $(LIB_DIR)/$(LIBS)
+      	java ListArgs hello there
+      
+      $(JNI_HDRS)  : $(JAV_OBJS)
+      	javah -force $(JAV_OBJS:.class=)
+      
+      $(LIBS)         : $(CXX_OBJS)
+      	g++ -shared $&lt; -o $@
+      
+      depend          : $(CXX_SRCS) $(JNI_HDRS)
+      	makedepend -- $(CXXFLAGS) -- $(CXX_SRCS)
+      
+      clean           :
+      	rcsclean
+      	rm  -f *.o *.bak *.log *.stackdump core \
+            $(JAV_OBJS) $(LIBS) $(JNI_HDRS)
+      
+      # DO NOT DELETE
+      
+      ListArgs.o: /usr/include/stdio.h /usr/include/features.h
+      ListArgs.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+      ListArgs.o: /usr/lib/gcc-lib/i486-suse-linux/3.2/include/stddef.h
+      ListArgs.o: /usr/include/bits/types.h /usr/include/libio.h
+      ListArgs.o: /usr/include/_G_config.h /usr/include/wchar.h
+      ListArgs.o: /usr/include/bits/wchar.h /usr/include/gconv.h
+      ListArgs.o: /usr/lib/gcc-lib/i486-suse-linux/3.2/include/stdarg.h
+      ListArgs.o: /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h
+      ListArgs.o: /usr/include/stdlib.h /usr/local/java/include/jni.h
+      ListArgs.o: /usr/local/java/include/linux/jni_md.h ListArgs.h
+</pre><hr></body></html>

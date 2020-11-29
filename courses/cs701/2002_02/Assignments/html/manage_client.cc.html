@@ -1,0 +1,332 @@
+<html><head><title>manage_client.cc</title></head>
+<body><center><h1>manage_client.cc</h1></center><hr><pre>
+      //  $Id: manage_client.cc,v 2.3 2002/05/18 22:15:05 vickery Exp $
+      
+      /*    Process to manage one remote client.
+       *
+       *    Functions:  signal_handler  Handle signals.
+       *                do_prompt       Generate a prompt string.
+       *                process_message Process a message from the client.
+       *                manageClient    The function that manages one
+       *                                client.
+       *
+       *    $Log: manage_client.cc,v $
+       *    Revision 2.3  2002/05/18 22:15:05  vickery
+       *    Changed to use of the new recv_msg utility function.
+       *    Several cosmetic changes.
+       *
+       *    Revision 2.2  2002/05/14 04:18:29  vickery
+       *    Added signal handler for SIGCHLD and SIGUSR1.  SIGUSR1 indicates
+       *    server is shutting down.
+       *
+       *    Revision 2.1  2002/05/12 00:49:28  vickery
+       *    Initial version.
+       *
+       */
+      #define _GNU_SOURCE
+      #include "qserver.h"
+      
+      //  Global: Set by server process.
+      //  ------------------------------------------------------------------
+      
+      extern const char login_msg[];
+      
+      
+      //  Global: Separate copy for each manager process.
+      //  ------------------------------------------------------------------
+      extern  char  user_name[ USERNAME_MAX ];
+      extern  char  host_name[ HOSTNAME_MAX ];
+      
+      static  char  prompt_string[ PROMPTSTR_MAX ];
+      static  int   client_fd       = -1;
+      static  bool  authenticated   = false;
+      
+      char                  *client_ident   = 0;
+      vector&lt;const char *&gt;  stdin_vec;    //  Typeahead buffer
+      
+      //  Global: Set by processCommand()
+      //  ------------------------------------------------------------------
+              int   command_pid     = 0;          //  Command child
+              int   command_status  = 0;          //  Child exit code
+      
+      
+      //  signal_handler()
+      //  ------------------------------------------------------------------
+      /*
+       *    Handle signals received by this process.
+       *
+       *    In particular, the main (server) process sends SIGUSR1 to all
+       *    manager processes when a user enters a shutdown command.  The
+       *    response is to kill any command that is running, to send a
+       *    SC_SHUT message to the client, and to exit.
+       */
+      static void
+      signal_handler( int signum )
+      {
+        pid_t     signalling_child;
+        int       status;
+        
+        switch ( signum )
+        {
+          case SIGUSR1:
+      
+            //  Parent is telling us to shut down.
+            //  ------------------------------------------------------------
+            //  Determine whether there is a child process to kill, and kill
+            //  it.
+            if ( command_pid != 0 )
+            {
+              status = kill( command_pid, SIGTERM );
+              if ( status &lt; 0 )
+              {
+                writeLog( "***KILL A COMMAND FAILED ***", 
+                                                        strerror( errno ) );
+                _exit( 1 );
+              }
+            }
+          //  Tell client, and exit manager process.
+          send_msg( client_fd, SC_SHUT, "Server shutting down." );
+          _exit( 0 );
+          break;
+      
+          case SIGCHLD:
+      
+            //  Child (a command) has exited.
+            //  ------------------------------------------------------------
+            signalling_child = wait( &command_status );
+            if ( signalling_child != command_pid )
+            {
+              fprintf( stderr, 
+                       "Manager %d: child (%d) != command_pid (%d)n",
+                       getpid(), signalling_child, command_pid );
+              _exit( SHUTDOWN_EXIT );
+            }
+            command_pid = 0;
+            break;
+      
+          default:
+            fprintf( stderr, "Bad switch at %s line %dn", __FILE__,
+                                                                 __LINE__ );
+            _exit( SHUTDOWN_EXIT );
+        }
+        return;
+      }
+      
+      
+      //  do_prompt()
+      //  ------------------------------------------------------------------
+      /*
+       *    Generate prompt string.
+       *
+       *    Format:   [eee]uuu@hhh{ddd}&gt;
+       *              eee is exit status of previous command
+       *              uuu is user name
+       *              hhh is host name
+       *              ddd is current directory
+       */
+      void 
+      do_prompt( void )
+      {
+      
+        //  Convert command status to an exit code.
+        bool        exited      = false;
+        int         exit_code   = command_status;
+        const char *signal_name = 0;
+      
+        if ( WIFEXITED(command_status) )
+        {
+          exit_code = WEXITSTATUS(command_status);
+          exited = true;
+        }
+        else
+        {
+          if ( WIFSIGNALED(command_status) )
+          {
+            exit_code = WTERMSIG(command_status);
+            signal_name = strsignal( exit_code ); 
+          }
+          else
+          {
+            exit_code = WSTOPSIG(command_status);
+            signal_name = strsignal( exit_code );
+          }
+        }
+        
+        //  Reduce pathname of cwd to directory name only
+        char  path_buf[ PATHNAME_MAX ];
+        if ( getcwd( path_buf, PATHNAME_MAX ) &lt; 0 )
+        {
+          perror( "getcwd" );
+          exit( 1 );
+        }
+        char *dir = strrchr( path_buf, '/' );
+        if ( 0 == dir )
+        {
+          dir = path_buf;
+        }
+        else
+        {
+          dir++;
+        }
+      
+        //  Reduce fqdn of local host to hostname only
+        char host_buf[ HOSTNAME_MAX ];
+        strcpy( host_buf, host_name );
+        char *ptr = strchr( host_buf, '.' );
+        if ( ptr != 0 )
+        {
+          *ptr = 0;
+        }
+        
+        if ( exited )
+        {
+          sprintf( prompt_string, "[%d]%s@%s{%s}&gt; ",
+                                      exit_code, user_name, host_buf, dir );
+        }
+        else
+        {
+          sprintf( prompt_string, "[%d(%s)]%s@%s{%s}&gt; ",
+                         exit_code, signal_name, user_name, host_buf, dir );
+        }
+        return;
+      }
+      
+      
+      //  process_message()
+      //  ------------------------------------------------------------------
+      /*
+       *    Process a message received from a client.
+       *
+       *    Arguments:    fd          Socket for writing to client.
+       *                  msg_header  Message header.
+       *                  msg_body    Message body.
+       *    Returns:      void
+       */
+      void
+      process_message( int fd, msg_header_t msg_header, char *msg_body )
+      {
+        client_fd = fd;   //  Make it global
+        char  *stdin_buf_ptr;
+      
+        switch ( msg_header.msg_type )
+        {
+          case  CS_USER:
+                writeLog( "CS_USER", client_ident );
+                if ( 0 == strcmp( user_name, msg_body ) )
+                {
+                  writeLog( "AUTHENTICATED", client_ident );
+                  authenticated = true;
+                  do_prompt();
+                  send_msg( fd, SC_PROMPT, prompt_string );
+                }
+                else
+                {
+                  writeLog( "DENIED", client_ident );
+                  authenticated = false;
+                  send_msg( fd, SC_DENY, "" );
+                }
+                break;
+      
+          case  CS_SHUT:
+                writeLog( "CS_SHUT", client_ident );
+                _exit( SHUTDOWN_EXIT );
+                break;
+      
+          case  CS_EXIT:
+                writeLog( "CS_EXIT", client_ident );
+                close( fd );
+                _exit( 0 );
+                break;
+      
+          case  CS_CMD:
+                writeLog( "CS_CMD", client_ident );
+                //  Process this command
+                processCommandLine( fd, msg_body );
+                //  Prompt for the next one
+                do_prompt();
+                send_msg( fd, SC_PROMPT, prompt_string );
+                break;
+      
+          case  CS_STDIN:
+                writeLog( "CS_STDIN", client_ident );
+                stdin_buf_ptr = new char[ msg_header.msg_length ];
+                memmove( stdin_buf_ptr, msg_body, msg_header.msg_length );
+                stdin_vec.insert( stdin_vec.end(), stdin_buf_ptr );
+                break;
+      
+          default:
+            fprintf( stderr, "Bad switch (%d) at %s line %dn",
+                                  msg_header.msg_type, __FILE__, __LINE__ );
+            _exit( 1 );
+        }
+        return;
+      }
+      
+      
+      //  manageClient()
+      //  ------------------------------------------------------------------
+      /*
+       *    This is the initial function for the process that manages each
+       *    client.
+       *    
+       *    After initialization, this process issues command prompts, reads
+       *    command lines, and executes them.
+       *
+       *    This function never returns; it exits.
+       */
+      
+      void
+      manageClient( int client_fd, const char *cname )
+      {
+        char msg_buf[ MESSAGE_MAX ];
+        //  Clear signal handling inherited from parent process.
+        signal( SIGINT,  SIG_DFL );
+        signal( SIGTERM, SIG_DFL );
+      
+        //  Set up signal processing for this process.
+        signal( SIGCHLD, signal_handler );
+        signal( SIGUSR1, signal_handler );
+        signal( SIGPIPE, SIG_IGN );
+      
+        //  Client identification: host(pid)
+        client_ident = new char[ strlen(cname) + 10 ];
+        sprintf( client_ident, "%s(%d)", cname, getpid() );
+      
+        //  Initiate authentication.
+        int           result;
+        msg_header_t  msg_header;
+        msg_header.msg_type   = SC_LOGIN;
+        msg_header.msg_length = strlen( login_msg );
+        result = write_msg( client_fd, msg_header, login_msg );
+        if ( result &lt; 0 )
+        {
+          sprintf( msg_buf, "WRITE ERROR: %s", strerror( errno ) );
+          writeLog( msg_buf, client_ident );
+          close( client_fd );
+          _exit( 1 );
+        }
+      
+        //  Read and process messages from the connection until
+        //  client closes it, sends an EXIT message, or sends a SHUT
+        //  message.
+        while ( true )
+        {
+          char *msg_body = 0;
+          int result = recv_msg( client_fd, msg_header, &msg_body );
+          if ( result &lt; 0 )
+          {
+            sprintf( msg_buf, "RECEIVE ERROR: %s", strerror( errno ) );
+            writeLog( msg_buf, client_ident );
+            close ( client_fd );
+            _exit( 1 );
+          }
+      
+          //  Got a message; now process it
+          process_message( client_fd, msg_header, msg_body );
+          delete [] msg_body;
+      
+        }
+      
+      }
+      
+</pre><hr></body></html>

@@ -1,0 +1,31 @@
+2007-12-25
+
+  Changed college_calendar.xml to yyyy_mm-college_calendar.xml.
+	yyyy_mm is the name of the directory containing index.xhtml.
+
+2007-09-05
+
+  generate_calendar.php
+    Included from index.xhtml to generate calendar for a course.
+
+  index.xhtml
+    The index page for a course. Links to style sheets and to
+    generate_calendar.php are all set for a course which is under
+    courses/csxxx/yyyy_mm/
+
+  college_calendar.xml
+    All the events for a semester: first day of classes, holidays,
+    rescheduled days, etc. Must be updated each semester, which means
+    that previous semesters' index.xhtml pages will break each semester.
+    There is no xml schema; all you have to do is put in events with start
+    date, optional end date, and event descriptions using the current
+    file as a model.
+
+  courses/csxxx/yyyy_mm/index.xhtml
+    A copy of index.xhtml from this directory; should not need to be
+    changed.
+
+  courses/csxxx/yyyy_mm/course_calendar.xml
+    Use an existing one as a model. Use square brackets where you need
+    angle brackets on the web page.
+

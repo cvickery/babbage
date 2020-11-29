@@ -1,0 +1,96 @@
+<html><head><title>question_9.cc</title></head>
+<body><center><h1>question_9.cc</h1></center><hr><pre>
+      //  $Id$
+      
+      /*  This program is a solution to Question 9 on final exam:
+       *
+       *    Write a complete C++ program that uses a dispatch table to
+       *    invoke a function named on the command line.  The function is to
+       *    be passed an array of pointers to constant strings made up of
+       *    the remaining arguments on the command line following the
+       *    function name.  Construct a sample dispatch table that allows
+       *    the user to invoke either a function named echo() or a function
+       *    named reverse_echo().  The echo() function prints its arguments
+       *    on standard out, and reverse_echo() prints its argumetns in
+       *    reverse order.
+       *
+       *    $Log$
+       */
+      #include &lt;stdio.h&gt;
+      
+      //  Dispatch table setup
+      //  ------------------------------------------------------------------
+      typedef void func_t( int, const char*[] );
+      func_t  do_echo, do_reverse;
+      
+      struct dispatch_t
+      {
+        const char  *name;
+        func_t      *func;
+      } table[] =
+      {
+        { "echo",         do_echo     },
+        { "reverse_echo", do_reverse  },
+      };
+      static const int num_funcs = sizeof( table ) / sizeof( dispatch_t );
+      
+      
+      //  Dispatchable Functions
+      //  ==================================================================
+      
+      //  do_echo()
+      //  ------------------------------------------------------------------
+      /*
+       *    Print arguments in forward order.
+       */
+      void
+      do_echo( int argc, const char *argv[] )
+      {
+        for (int i = 0; i &lt; argc; i++ )
+          printf( "%s ", argv[i] );
+        printf( "\n" );
+      }
+      
+      //  do_reverse()
+      //  ------------------------------------------------------------------
+      /*
+       *    Print arguments in reverse order.
+       */
+      void
+      do_reverse( int argc, const char *argv[] )
+      {
+        for (int i = argc -1; i &gt;= 0; i-- )
+          printf( "%s ", argv[i] );
+        printf( "\n" );
+      }
+      
+      
+      //  main()
+      //  ------------------------------------------------------------------
+      /*
+       *    Invoke a function named on the command line, passing remaining
+       *    command line arguments as function arguments.
+       */
+      int
+      main( int argc, char *argv[], char *envp[] )
+      {
+        //  Check if there is a function name
+        if ( argc &lt; 2 )
+        {
+          fprintf( stderr, "Usage: question_9 function args\n" );
+          exit( 0 );
+        }
+      
+        //  Look up the function in the dispatch table, and invoke it.
+        for (int i = 0; i &lt; num_funcs; i++ )
+        {
+          if ( 0 == strcmp( argv[1], table[i].name ) )
+          {
+            table[i].func( argc - 2, (const char*[])&amp;argv[2] );
+            exit( 0 );
+          }
+        }
+        fprintf( stderr, "%s: unknown function name\n", argv[1] );
+        exit( 1 );
+      }
+</pre><hr></body></html>

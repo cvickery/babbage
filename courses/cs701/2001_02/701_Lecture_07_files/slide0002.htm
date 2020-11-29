@@ -1,0 +1,200 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 7</title>
+<meta name=Description content="22-Feb-01:  malloc() and free()">
+<link rel=next href=slide0005.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0002.htm');   
+  else
+    parent.location.href = "../701_Lecture_07.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=73 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=250 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=74 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=113 height=33 colspan=2></td>
+  <td width=250 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=250 height=33 align=center><font face="Times New Roman" size=5><i><span
+    style="mso-spacerun: yes"> </span>malloc()</i> and <i>free()</i></font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=112 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=210></td>
+  <td width=397 height=210 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=105 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=53 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=30 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=31 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=63 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=14 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=295 height=21 colspan=16><font face="Times New Roman" size=3>Used
+    for dynamic memory allocation.</font><br>
+    </td>
+    <td width=84 height=21 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=397 height=3 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=337 height=18 colspan=14><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span></font><font face="Times New Roman"
+    size=2><i>malloc()</i> takes the number of bytes to allocate and</font><br>
+    </td>
+    <td width=21 height=18 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=354 height=17 colspan=16><font face="Times New Roman" size=2>returns
+    a void pointer to the first byte, which must be</font><br>
+    </td>
+    <td width=4 height=17 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=204 height=17 colspan=9><font face="Times New Roman" size=2>cast
+    to the proper pointer type:</font><br>
+    </td>
+    <td width=154 height=17 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=397 height=2 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=245 height=16 colspan=9><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span>int *x; … x = (int *)malloc(3 *
+    sizeof(int));</font><br>
+    </td>
+    <td width=92 height=16 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=397 height=1 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=72 height=14 colspan=9></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=220 height=14 colspan=5><font face="Times New Roman" size=1>Allocates
+    memory for an array of three ints.</font><br>
+    </td>
+    <td width=93 height=14 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=397 height=3 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=358 height=18 colspan=18><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span></font><font face="Times New Roman"
+    size=2><i>free()</i> takes a pointer previously returned by <i>malloc()</i></font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=358 height=17 colspan=18><font face="Times New Roman" size=2>and
+    does the housekeeping to allow the memory to be</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=151 height=17 colspan=8><font face="Times New Roman" size=2>reallocated
+    again later.</font><br>
+    </td>
+    <td width=207 height=17 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=397 height=2 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=319 height=16 colspan=12><font face="Times New Roman" size=1>Does
+    nothing to the pointer value passed to it.<span style="mso-spacerun: yes"> 
+    </span>Beware of</font><br>
+    </td>
+    <td width=18 height=16 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=60 height=14 colspan=7></td>
+    <td width=335 height=14 colspan=14><font face="Times New Roman" size=1><u>dangling
+    pointers</u>! (Pointers that still point to heap (or stack)</font><br>
+    </td>
+    <td width=2 height=14></td>
+   </tr>
+   <tr>
+    <td width=60 height=15 colspan=7></td>
+    <td width=213 height=15 colspan=7><font face="Times New Roman" size=1>variables
+    that are no longer allocated.)</font><br>
+    </td>
+    <td width=124 height=15 colspan=8></td>
+   </tr>
+  </table>
+  </td>
+  <td width=38 height=210></td>
+ </tr>
+ <tr>
+  <td width=475 height=41 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

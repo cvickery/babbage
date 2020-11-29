@@ -1,0 +1,147 @@
+<html><head><title>logfile.cc</title></head>
+<body><center><h1>logfile.cc</h1></center><hr><pre>
+      //  $Id: logfile.cc,v 2.2 2002/05/12 00:44:02 vickery Exp $
+      
+      /*    Log file routines for the qserver module.
+       *
+       *    Functions
+       *
+       *      getTimestamp()  Returns string representing current time.
+       *      openLog()       Open log file, write signon message.
+       *      writeLog()      Append a message to log file.
+       *      closeLog()      Close log file.
+       *
+       *    C. Vickery
+       *    CS-701, Spring 2002
+       *
+       *    $Log: logfile.cc,v $
+       *    Revision 2.2  2002/05/12 00:44:02  vickery
+       *    Reduced most log file messages to a single line.
+       *
+       *    Revision 2.1  2002/04/25 03:06:38  vickery
+       *    First revision for Assignment 4.
+       *
+       *    Revision 1.2  2002/03/28 19:50:00  vickery
+       *    Completed implementing all functions.
+       *
+       *    Revision 1.1  2002/03/23 04:56:33  vickery
+       *    Initial revision
+       *
+       */
+      
+      #include "qserver.h"
+      #include &lt;time.h&gt;
+      
+      static const char*  VERSION       = "$Revision: 2.2 $";
+      static       char   timestamp[]   = "YYYY-MM-DD HH:MM:SS";
+      static const char*  ts_format     = "%Y-%m-%d %H:%M:%S";
+      static       FILE*  logfile       = stderr;
+      
+      //  updateTimestamp()
+      //  ------------------------------------------------------------------
+      /*
+       *    Upates the static global timestamp string.  The format of the
+       *    string is YYYY-MM-DD HH:MM:SS representing the current time of
+       *    day.
+       *
+       */
+      void
+      updateTimestamp()
+      {
+        time_t  now = time( 0 );
+        strftime( timestamp, sizeof(timestamp), 
+                  ts_format, localtime( &now ) );
+      }
+      
+      
+      //  openLog()
+      //  ------------------------------------------------------------------
+      /*
+       *    Initializes logfile, and writes an initial message to it.
+       *    Returns -1 if logfile cannot be opened.
+       */
+      int
+      openLog( const char *pathname, const char *msg, bool overwrite )
+      {
+        if ( overwrite )
+          logfile = fopen( pathname, "w" );
+        else
+          logfile = fopen( pathname, "a" );
+        if ( 0 == logfile )
+        {
+          perror( pathname );
+          exit( 1 );
+        }
+        updateTimestamp();
+        fprintf( logfile, "%sn", VERSION );
+        fprintf( logfile, "%s  SERVER (%d) STARTUPn", timestamp, getpid() );
+        if ( msg )
+        {
+          fprintf( logfile, "  %sn", msg );
+        }
+        fflush( logfile );
+        return 0;
+      }
+      
+      
+      //  writeLog()
+      //  ------------------------------------------------------------------
+      /*
+       *    Write a timestamped event name and message to the log file.
+       *    Empty strings will be substituted for null pointers.
+       *
+       *    Returns -1 if logfile is not initialized.
+       */
+      int
+      writeLog( const char *event_name, const char *msg )
+      {
+        if ( 0 == logfile )
+          return -1;
+        updateTimestamp();
+        int msg_len = sizeof( timestamp ) +
+                      ( event_name ? strlen( event_name ) : 0 ) +
+                      ( msg        ? strlen( msg ) : 0 ) +
+                      3;
+      
+        if ( (msg_len &lt; 80) || (0 == msg) )
+        {  
+          //  One line format
+          fprintf( logfile, "%s  %s", timestamp,
+            ( 0 == event_name ) ? "" : event_name );
+          if ( msg )
+          {
+            fprintf( logfile, ": %s", msg );
+          }
+          fprintf( logfile, "n" );
+        }
+        else
+        {
+          //  Two lines
+          fprintf( logfile, "%s  %sn   %sn", timestamp,
+            ( 0 == event_name ) ? "" : event_name,
+            ( 0 == msg )        ? "" : msg );
+        }
+        fflush( logfile );
+        return 0;
+      }
+      
+      
+      //  closeLog()
+      //  ------------------------------------------------------------------
+      /*
+       *    Writes a shutdown event and a message to logfile, and closes it.
+       *    Omits the message if it is null.
+       */
+      void
+      closeLog( const char * msg )
+      {
+        updateTimestamp();
+        fprintf( logfile, "%s  SERVER (%d) SHUTDOWNn", 
+                                                      timestamp, getpid() );
+        if ( msg )
+          fprintf( logfile, "    %sn", msg );
+        fflush( logfile );
+        fclose( logfile );
+      }
+      
+</pre><hr></body></html>

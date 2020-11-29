@@ -1,0 +1,87 @@
+<HTML> <HEAD> <title> Errata for Deitel & Deitel </title> <body>
+
+<H1>Errata</H1>
+
+<P>This is a list of typographics errors found in H. M. Deitel and P. J.
+Deitel, <i>C++ How to Program</i>, Prentice-Hall, 1994.
+
+<P>This list was compiled from the 7th printing.
+
+<h2>A General Problem</h2>
+
+Throughout the sample programs in the text and on the CD-ROM, the
+authors use a construct like this:
+
+<pre>
+    for (int i = 0; i < limitVal; i++) {
+      ...
+      }
+</pre>
+
+This code declares the variable <i>i</i> to have block scope
+within the <b>for</b> loop, which is fine.  The problem is that the
+authors rely on the behavior of older C++ compilers to give <i>i</i>
+scope that extends from the <b>for</b> statement onward in the function
+in which it appears, even after the end of the loop.  This construct is
+no longer valid in current drafts of the C++ standard, and the
+<i>g++</i> compiler issues warnings when compiling the code.<P>
+
+The general solution is to declare the loop index at the beginning of
+the function definition instead of inside the <b>for</b> statement.<P>
+
+<h2>Errata by Page</h2>
+ 
+<dl>
+
+<dt>Page 134<dd>The quotation should read, "Call <b>me</b> Ishmael."
+
+<dt>Page 223<dd>The comment that references "Fig. 3.10" should reference
+Fig. 3.8.
+
+<dt>Page 368<dd>The sentence that begins in the eighth line of the first
+paragraph in Section 6.11 should start with the word "There" instead
+of "The."
+
+<dt>Page 547<dd>The last sentence of the last full paragraph on the page
+repeats the last sentence of the previous paragraph.  Omit the second
+copy.
+
+<dt>Page 610<dd>The last word of the comment that starts on the seventh
+line of Fig 12.3 ("elements") appears at the beginning of the next line.
+It should be at the end of line 7.
+
+<dt>Page 620<dd>In the third item in the list of Objectives
+change the word "of" to "at."
+
+<dt>Page 625<dd>In the second line from the bottom of the page, change the
+word "an" to "and."
+
+<dt>Page 673<dd>It's not really a typographical error, but the function
+textFile should close print.txt before returning.  Adding the statement,
+<code>outPrintFile.close();</code> just before the last brace in the
+function would do it.
+
+<dt>Page 674<dd>The two functions on this page fail to check the validity
+of the user's input the way <i>updateRecord()</i> defined on the previous
+page does.  In both functions, the statement <code>cin >> account;</code>
+should be bracketed by "<code>do { ... } while (account < 1 || account > 100);
+</code>"  The code to issue the prompt should be moved inside this loop.
+
+<dt>Page 718<dd>On the first line, change "<b>insertNode</b>" to
+"<b>insertNodeHelper</b>."
+
+<dt>Page 758<dd>The ninth line of text from the top of the page says
+that <b>value &amp displayMask</b> evaluates to <b>1</b>, but it
+evaluates to <b>10000000 00000000</b>.  However, he logic of the
+program is correct, because <i>any</i> non-zero value is treated as
+"true" when C++ evaluates logical expressions.
+
+<dt>Page 764<dd>In the "Type" column of Fig. 16.13 change "negation" to
+"bitwise exclusive OR" or "bitwise XOR."
+
+</dl>
+
+<hr>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+<A HREF="/">Home Page</A>
+<hr></body> </html>

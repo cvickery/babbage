@@ -1,0 +1,47 @@
+
+In tonight's class there was a "problem Makefile" that I couldn't
+explain.  I think the problem is general enough to let everyone
+know about it.  If you recall the OBJS definition in the problem file
+had spaces in it:
+
+OBJS = $(SRCS: .cc = .o)
+
+And I said the problem was because of the spaces.  My mistake was to
+let the student talk me out of it!  Incidentally, he sent me another
+copy that still has the problem:
+
+OBJS = $(SRCS:.cc =.o)
+
+What these say is that OBJS is to be the same as SRCS, but with every
+occurence of the characters between the colon and the equal sign
+replaced by the characters between the equal sign and the closing
+parentheses.  But the filenames listed in SRCS don't have spaces
+before or after the .cc, so the pattern is never found, and OBJS ends
+up being exactly the same as SRCS.
+
+So now consider what happens given the following rule:
+
+ouch : $(OBJS)
+<tab>g++ $(OBJS) -o $@
+
+This says ouch depends on the .cc files, not the .o files.  It might as
+well have been written like this:
+
+ouch : $(SRCS)
+<tab>g++ $(SRCS) -o $@
+
+So make checks out all the .cc files but not the .h file, then
+compiles *all* the .cc files -- but can't find the .h file for any of
+them.
+
+But if you define OBJS correctly:
+
+OBJS = $(SRCS:.cc=.o)
+
+everything works fine.
+
+It's nice to make things look good by inserting spaces -- but not when
+they are significant to the software!
+
+Dr. Vickery
+

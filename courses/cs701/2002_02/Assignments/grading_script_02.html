@@ -1,0 +1,228 @@
+<html><head><title>grade</title></head>
+<body><center><h1>grade</h1></center><hr><pre>
+      #! /bin/bash
+      
+      # Usage: grade [&lt;directory&gt;]
+      
+      #   Grading script for CS-701 Assignment 2, Spring 2002
+      #     C. Vickery
+      
+      #   This script is invoked from a directory containing each
+      #   student's tar file, which has been extracted into a directory
+      #   named xxxx.dir, where xxxx is the student's ID number.
+      
+      #   The file ../../roster contains lines in the form:
+      #       email id name
+      
+      #   If a directory is specified, use it.
+      #   Otherwise, Process all directories in *.dir.
+      
+      dirs=$1
+      if [[ $dirs == "" ]]
+      then
+        dirs="*.dir"
+      fi
+      
+      # Grading loop starts here
+      
+      for f in $dirs
+      do
+        f=${f%.dir}
+        report=${PWD}/$f.grade
+        clear
+        grep $f ../../roster
+      
+        if [[ -e $report ]]
+        then
+          echo "Note: $f.grade already exists!"
+          echo -n "Overwrite, Append, or Skip? [oaS] "
+          read oas
+          case $oas in
+            [oO]*)  rm -f $f.grade
+                    in=yes
+                    ;;
+            [aA]*)  in=yes
+                    ;;
+            *)      in=no
+                    ;;
+          esac
+        else
+          echo -n "Do it? "
+          read in
+        fi
+      
+        if [[ $in == "" || $in == y* ]]
+        then
+          if [[ ! -e $report ]]
+          then
+            grep $f ../../roster &gt; $report
+            cat boilerplate &gt;&gt; $report
+          fi
+      
+          cd $f.dir/*
+          if [[ $? != 0 ]]
+          then
+            cat &lt;&lt;!!! &gt;&gt; $report
+      *** Your tar file did not contain a project subdirectory.  
+      *** Unable to process.
+      !!!
+            exit 1
+          fi
+      
+          rm -f vickery_*
+          if [[ $(basename $PWD) == [vV]ickery ]]
+          then
+            cat &lt;&lt;!!! &gt;&gt; $report
+      
+      *** Your tar file was made from within the project subdirectory
+          instead of from the directory above it.
+      
+      Files Submitted
+      ===============
+      !!!
+      
+          else cat &lt;&lt;!!! &gt;&gt; $report
+      
+      Contents of your Project Subdirectory
+      =====================================
+      
+      $(/bin/ls -lG)
+      
+      !!!
+          fi
+      
+          /bin/ls -ldG RCS &gt; /dev/null
+          if [[ $? != 0 ]]
+          then
+            cat &lt;&lt;!!! &gt;&gt; $report
+      *** There is no RCS subdirectory.
+      !!!
+          fi
+      
+          cat &lt;&lt;!!! &gt;&gt; $report
+      
+      Building your program:
+      ======================
+      
+      $(make wc 2&gt;&1)
+      
+      Testing the program:
+      =====================
+      
+      The grading program ran the following sequence of commands:
+      
+        $ /usr/bin/wc wc.cc nofile ../../boilerplate &gt; system.out 2&gt;&1
+        $ ./wc wc.cc nofile ../../boilerplate &gt; student.out 2&gt;&1
+        $ diff system.out student.out
+        $ ./wc --li -L ../../grade  (Test normal option processing.)
+        $ ./wc -x                   (Test invalid option processing.)
+        $ ./wc -?                   (Test help option processing.)
+        $ ./wc                      (Test reading from stdin.)
+      
+      The output of these commands appears below:
+      
+      Output of the diff command:  (Difference for nofile message is OK)
+      
+      !!!
+      rm -f student.out system.out
+      /usr/bin/wc wc.cc nofile ../../boilerplate &gt; system.out 2&gt;&1
+      ./wc wc.cc nofile ../../boilerplate &gt; student.out 2&gt;&1
+      diff system.out student.out &gt;&gt; $report 2&gt;&1
+      
+      cat &lt;&lt;!!! &gt;&gt; $report
+      
+      Output of the option processing tests:
+      
+      Following line should show 223 lines; longest is 70
+      $(./wc --li -L ../../grade)
+      
+      Following lines should an show error message, followed by help.
+      $(./wc -x 2&gt;&1)
+      
+      Following lines should show just your help message.
+      $(./wc -? 2&gt;&1)
+      
+      Output of the stdin test (3 lines, 16 words, 89 chars):
+      
+      !!!
+      ./wc &lt;&lt;!!! &gt;&gt; $report
+      This is some test data being entered from stdin.
+      It's just three lines long.
+      That's all.
+      !!!
+      
+      cat &lt;&lt;!!! &gt;&gt; $report
+      
+      End of program tests.
+      =====================
+      
+        Did the program run correctly?
+      
+          Yes.
+      
+      
+      Code Formatting and Coding Style:
+      =================================
+      
+      $(chk_format *.cc)
+      !!!
+        chk_format *.cc &gt; /dev/null
+        if [[ $? != 0 ]]
+        then
+          cat &lt;&lt;!!! &gt;&gt; $report
+      *** There is at least one formatting error in your code.
+          There should be NO tab characters and NO lines longer 
+          than 72 characters.
+      !!!
+        else
+          echo "    OK: No tabs and no long lines." &gt;&gt; $report
+        fi
+      
+          cat &lt;&lt;!!! &gt;&gt; $report
+      
+        NOTE:  If any of the following questions are answered both "Yes" and
+        "No" it means I made a mistake editing this grading report!  Let me
+        know, and I will fix it.
+        
+          Was the file comment block properly formatted?
+          Yes
+          No.  See the coding guidelines web page for this course.
+      
+          Were the comment blocks for all functions, including main()
+          properly formatted?
+          Yes
+          No.  See the coding guidelines web page for this course.
+      
+          Was the code properly indented?
+          Yes
+          No.  See the coding guidelines web page for this course.
+      
+          Were the function bodies properly commented?
+          Yes
+          No.  See the coding guidelines web page for this course.
+      
+          Were there spaces in the statements so they would be easy to read?
+          Yes
+          No.  See the coding guidelines web page for this course.
+      
+          Other notes?
+          No.
+      
+      
+      Assignment Grade: 5.0/5.0
+      =========================
+      
+      !!!
+      
+          xterm -geometry 80x64+250+0 -e vim  wc.cc &
+          xterm -geometry 80x64+10+0 -e vim  $report &
+          echo
+          echo Quit this shell to continue to next student.
+          /bin/bash
+          cd ~/Courses/cs701/2002_02/Assignment_02/Grading
+      
+        fi
+      
+      done
+      
+</pre><hr></body></html>

@@ -1,0 +1,204 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 5</title>
+<meta name=Description content="15-Feb-01: Revision Control System">
+<link rel=next href=slide0006.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0003.htm');   
+  else
+    parent.location.href = "../701_Lecture_05.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=37 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=322 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=51 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=33 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=77 height=33 colspan=2></td>
+  <td width=322 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=322 height=33 align=center><font face="Times New Roman" size=5>Revision
+    Control System</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=76 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=19 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=246></td>
+  <td width=410 height=246 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=51 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=47 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=35 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=28 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=148 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=184 height=21 colspan=11><a
+    href="http://babbage.cs.qc.edu/courses/cs701/Handouts/using_rcs.html"
+    target="_parent"><font face="Times New Roman" size=3>“Using RCS” web page</font></a><br>
+    </td>
+    <td width=209 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=411 height=3 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=372 height=18 colspan=15><font face="Times New Roman" size=2>Tells
+    all you need to know for Assignment 2, and more.</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=411 height=3 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=391 height=21 colspan=17><font face="Times New Roman" size=3>File
+    histories kept in the project’s RCS “database”</font><br>
+    </td>
+    <td width=2 height=21></td>
+   </tr>
+   <tr>
+    <td width=411 height=4 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=94 height=21 colspan=8><font face="Times New Roman" size=3>File
+    locking</font><br>
+    </td>
+    <td width=299 height=21 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=411 height=2 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=367 height=18 colspan=13><font face="Times New Roman" size=2>RCS
+    allows only one user to have an editable copy at a</font><br>
+    </td>
+    <td width=5 height=18 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=361 height=18 colspan=12><font face="Times New Roman" size=2>time;
+    any number of read-only copies may be checked</font><br>
+    </td>
+    <td width=11 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=81 height=17 colspan=6><font face="Times New Roman" size=2>out,
+    though.</font><br>
+    </td>
+    <td width=291 height=17 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=411 height=2 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=341 height=18 colspan=11><font face="Times New Roman" size=2>(<u>C</u>VS
+    allows <u>c</u>oncurrent modifications, and merges</font><br>
+    </td>
+    <td width=31 height=18 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=193 height=18 colspan=10><font face="Times New Roman" size=2>changes
+    into the master file.)</font><br>
+    </td>
+    <td width=179 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=411 height=3 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=149 height=21 colspan=10><font face="Times New Roman" size=3>Documenting
+    Files</font><br>
+    </td>
+    <td width=244 height=21 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=411 height=3 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=191 height=18 colspan=9><font face="Times New Roman" size=2>The
+    $Id$ and $Log$ Macros</font><br>
+    </td>
+    <td width=181 height=18 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=411 height=2 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=320 height=16 colspan=8><font face="Times New Roman" size=1>Must
+    be inside comments so compiler won’t get confused</font><br>
+    </td>
+    <td width=31 height=16 colspan=4></td>
+   </tr>
+  </table>
+  </td>
+  <td width=25 height=246></td>
+ </tr>
+ <tr>
+  <td width=475 height=25 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,701 @@
+<html><head><title></title>
+<center>
+<h1></h1>
+</center>
+<h2></h2>
+<hr></body></html>
+
+<!--$Id: Assignment_03.html,v 1.8 2002/04/18 14:48:47 vickery Exp $-->
+<html><head><title>Remote Shell - Version 1</title>
+<style type="text/css" media="screen">
+   body { font-family: sans-serif }
+</style>
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>Remote Shell - Version 1</h1>
+</center>
+
+<h2>Introduction</h2>
+
+This assignment will be the first in a series of assignments in which
+you will develop a "remote shell" facility.  Your remote shell will be
+based loosely on the <i>rsh</i> command that comes with most Unix
+systems, but unlike your previous project for this course, your remote
+shell will not attempt to mimic any existing command precisely.<p>
+
+<h2>Project Overview</h2>
+
+The nominal goal of these assignments is to develop a facility that allows
+users to enter command lines on one computer and to have them execute on
+another computer.  To do this, you will need to implement two programs,
+a <i>client</i>, which will read command lines typed by a user and pass
+them on to a remote <i>server</i>, which will process each command line
+and return the results to the client, which will display them on the
+user's console.<p>
+
+You will begin by developing the infrastructure for linking a client
+and server, and then add functionality built on this infrastructure in
+successive assignments.
+
+<h3>Project Management</h3>
+
+You are to use a single project directory for this assignment and all
+following assignments in this course.  The Makefile and all source
+files for the assignment are to be under RCS management as described in
+the <a
+href="http://babbage.cs.qc.edu/courses/cs701/Handouts/coding_guidelines.html">
+Coding Guidelines</a> for the course.  There is a <a
+href="http://babbage.cs.qc.edu/courses/cs701/Handouts/skeleton_makefile.html">
+Skeleton Makefile</a> you may use as a starting point for using the
+<i>make</i> command properly.<p>
+
+<h2>This Assignment</h2>
+
+This assignment is <b>Assignment 3</b> for the course.  All files you
+submit for this assignment must have RCS revision numbers in the form
+<b>1.xxx</b>, where <b>xxx</b> may be any number between 1 and 99.  But
+the first two characters of the revision numbers must be "1.".<p>
+
+For this assignment, you are to implement a server program to which
+client programs can connect.  The server will recognize several command
+line options, will manage a log file in which it will record its
+activity, and will accept connections from clients.  But it will not
+actually do anything having to do with its role as a command
+processor yet.<p>
+
+You will also implement a simple client program that you will be able to
+use to test your server.<p>
+
+<h2>The Server</h2>
+
+The server is to be an executable file named <i>qserver</i>.  It is to
+be built from at least the three source files listed below.  You may add
+extra source files to the project if you wish.<p>
+
+<center><table border=1 cellpadding=5 width="80%">
+  <tr>
+    <th>File Name
+    <th>Contents
+
+  <tr>
+    <td valign=top><code>qserver.h</code>
+
+    <td valign=top>The header file included in all other source files
+    used to build the <i>qserver</i> executable.
+
+  <tr>
+    <td valign=top><code>qserver.cc</code>
+
+    <td valign=top>Contains the <i>main()</i> function for the
+    program.
+    
+    <br>(May also contain other functions, but does not have to.)
+
+  <tr>
+    <td valign=top><code>logfile.cc</code>
+
+    <td valign=top>Contains the functions, <i>openLog()</i>,
+    <i>writeLog()</i>, and <i>closeLog()</i> described <a
+    href="#logfile">below</a>.
+    
+    <br>(May also contain other functions, but does not have to.)
+
+</table></center><p>
+
+The server is to recognize the following command line options:<p>
+
+<center><table border=1 cellpadding=5 width="80%">
+
+  <tr>
+    <td valign=top><b>-?</b>&nbsp;|&nbsp;<b>--help</b>
+
+    <td valign=top>Displays a usage message and exits the program.
+
+  <tr>
+    <td valign=top><b>-p</b>&nbsp;|&nbsp;<b>--port</b>
+
+    <td valign=top>This option must be followed by an argument, the
+    "well-known" port number, which the server will use for accepting
+    connections.  The user may enter the port number as a decimal,
+    octal, or hexadecimal constant using the syntax rules for numeric
+    literals in C/C++.  If this option is not specified, the port
+    number defaults to the last four digits of your social security
+    number.  If the last four digits of your social security number has
+    a decimal value less than 1024, add 1024 to it to get the default
+    value for this parameter.<p>
+
+    The server binds a socket to it's well-known port number, and uses
+    this socket to accept connections from clients.  Port numbers
+    between 0 and 1023 cannot be used unless the program is being run
+    by the super user.  (Optional:  Let the super user specify bind to
+    port numbers below 1024.)  Because port numbers are 16-bit unsigned
+    numbers, the value entered by the user must be between 0 and 65,535
+    (that is, between 0x0000 and 0xFFFF, which is between 00000 and
+    0177777).<p>
+
+    Use the standard library function <i>strtol()</i> to convert the
+    user's command line argument from a string to a numeric port
+    number.
+
+  <tr>
+    <td valign=top><b>-l</b>&nbsp;|&nbsp;<b>--logfile</b>
+
+    <td valign=top>The server will write messages to a file as it
+    runs.  (<a href="#logfile">See below</a>.)  The argument for this
+    option specifies the pathname for this file.  The default pathname
+    is to be "./qserver.log".
+
+  <tr>
+    <td valign=top><b>-o</b>&nbsp;|&nbsp;<b>--overwrite</b>
+
+    <td valign=top>This option does not take an argument.  If it is
+    specified, the server is to overwrite the logfile, if it exists. 
+    The default behavior is that the server will append messages to the
+    logfile if it exists.  "The logfile" means the file that will be
+    used for log messages during this invocation of the server.
+
+  <tr>
+    <td valign=top><b>-v</b>&nbsp;|&nbsp;<b>--version</b>
+
+    <td valign=top>This option is to cause the server to print a
+    message of the form: "qserver: $&#82;evision 1.1 $".  The part of
+    this message that is surrounded by dollar signs is to be produced
+    using the $&#82;evision$ RCS keyword, so the number will be the
+    actual revision number for your qserver.cc source file.  The server
+    exits immediately after printing the message if this option is
+    specified.
+
+</table></center>
+
+
+<h3><a name="logfile">The Log File</a></h3>
+
+The server is to write a message to a log file each time a "significant"
+event occurs.  Each message is to include the date and time at which the
+event occurred, and information about what the event was.  The date and
+time are to be in the format "YYYY-MM-DD HH:MM:SS" (4-digit year, 2
+digit month, day, hour, minute, and seconds), which will be referred to
+as a <i>timestamp</i>.<p>
+
+You can determine the current time and date using the <i>time(2)</i>
+kernel call, and you can create timestamp strings using the
+<i>strftime(3)</i> function.  You can use the <i>localtime(3)</i>
+function to convert the <i>time_t</i> value returned by <i>time(2)</i>
+into a <i>struct tm *</i> required by <i>strftime(3)</i>.<p>
+
+The table below gives the prototypes and requirements for the three
+functions that are required to be defined in logfile.cc.<p>
+
+<center><table border=1 cellpadding=5 width="80%">
+  <tr>
+    <th>Prototype
+    <th>Description
+
+  <tr>
+    <td valign=top><pre>
+int
+openLog( const char *pathname,
+         const char *msg,
+         bool        overwrite );
+</pre>
+
+    <td valign=top>Open the log file at <i>pathname</i> for writing if
+    possible. Open the file in append or overwrite mode depending on
+    the value of <i>overwrite</i>.
+    <br>Return -1 if the file cannot be opened.<p>
+
+    If the log file was opened successfully, write two lines to it. 
+    The first line is to be the current timestamp followed by the word
+    "STARTUP."  The second line is to be the <i>msg</i> argument,
+    indented four spaces (or an empty line if <i>msg</i> is a null
+    pointer).  Return 0 if no errors occur.
+
+  <tr>
+    <td valign=top><pre>
+int
+writeLog( const char *event_name,
+          const char *msg );
+</pre>
+
+    <td valign=top>Return -1 if the log file has not been opened.
+
+    <br>Otherwise, write two lines to the log file.  The first line is
+    to be the current timestamp followed by the <i>event_name</i>
+    string (or an empty string if <i>event_name</i> is a null
+    pointer).  The second line is to be the <i>msg</i> argument,
+    indented four spaces (or an empty line if <i>msg</i> is a null
+    pointer).  Return 0 if no errors occur.
+
+  <tr>
+    <td valign=top><pre>
+int
+closeLog( const char *msg );
+</pre>
+
+    <td valign=top>Return -1 if the log file has not been opened.
+
+    <br>Otherwise, write two lines to the log file.  The first line is
+    to be the current timestamp followed by the word "SHUTDOWN."  The
+    second line is to be the <i>msg</i> argument, indented four spaces
+    (or blank line if <i>msg</i> is a null pointer).  Close the log
+    file and return 0 if no errors occur.
+
+</table></center><p>
+
+<h3>Server Features</h3>
+
+For this assignment, the server will act as an <i>iterative server</i>. 
+That is, it will interact with just one client at a time.  The algorithm
+for this version of the server is:
+
+<ul>
+  <li>Process command line arguments
+  <li>Set up to accept connections on the well-known port
+  <li>Open the log file
+  <li>Wait for a client to connect.  When a client connects:
+  <ul>
+
+    <li>Write a message containing the connecting client's host name to
+    the log file
+    <li>Read whatever the client writes to the server, and write it to
+    the log file as it arrives.  (See below for what the client does.)
+    <li>When the client closes its end of the socket, the server closes
+    its end and waits for another client to connect.    
+  </ul>
+
+  <li>The server is to continue running until it either receives a
+  SIGINT signal, a SIGTERM signal, or a message from a client
+  consisting only of the string, "SHUT" (four characters).  In any
+  case, the server is to call <i>closeLog()</i> before exiting.  The
+  argument to <i>closeLog()</i> is to be "Normal Shutdown" if a SHUT
+  message is received from a client, or "Signal Received" if SIGINT is
+  received.  How to manage this feature is covered in the <a
+  href="#implement">How to Implement the Server</a> section below. 
+  Process Termination is covered in Section 7.3 of the Stevens textbook,
+  and signals are covered in Chapter 10.
+
+</ul>
+
+<h3><a name="implement">How to Implement the Server</a></h3>
+
+Limited as its functionality is, the server uses many features of the
+Unix kernel that we have not fully covered in class.  What follows are
+guidelines for implementing these various features.  These guidelines
+are presented as a sequence of development steps and "how-to"
+information for each step.  After coding and testing a step carefully,
+check in the file(s) you worked on so that each step will correspond to
+a new RCS revision number for at least one source file.
+
+<h4>Step 1.  Set up the project.</h4>
+
+Create your Makefile, starting with the <a
+href="http://babbage.cs.qc.edu/courses/cs701/Handouts/skeleton_makefile.html">
+Skeleton Makefile</a>, qserver.h, qserver.cc, and logfile.cc.  Code the
+<i>main()</i> function to process the command line arguments and print
+a message giving the values of the options so you can be sure they are
+being handled correctly.  Note that option processing is a bit harder
+for this assignment than for the <i>wc</i> project because some of the
+options take arguments.<p>
+
+When you look at the Skeleton Makefile, you will see that it redefines
+the CXXFLAGS variable to include the reference, $(DEBUG_FLAG).  The idea
+behind doing this is that if DEBUG_FLAG is not set in your environment
+when you run <i>make</i> to compile your code, this reference will have
+no effect because undefined variables expand to nothing.  But if you set
+this variable to -DDEBUG, either in your shell or on the <i>make</i>
+command line, then the C Preprocessor will run with the symbol DEBUG
+defined.  (You can type "DEBUG_FLAG=-DDEBUG make" to do this.)  For
+example, to check the result of option processing, you could insert code
+that looks like this in <i>main()</i>:
+
+<pre>
+#ifdef DEBUG
+  printf( "Logfile: %s (%s)\n"
+          "Port:    0x%04X (%d)\n",
+          logfilePath, (overwriteLogfile ? "overwrite" : "append" ),
+          wellKnownPort, wellKnownPort );
+#endif
+</pre>
+
+By compiling with DEBUG set, you can test various combinations of
+command line options and use the output printed by the code above to see
+if they were handled correctly.  Once you are satisfied with those
+tests, you can simply omit the -DDEBUG setting, and the above code will
+effectively be removed from your program without any editing changes on
+your part.  This is a somewhat crude use of conditional compilation
+(What if you want to debug another part of the program and not see the
+option processing output?), but you should become familiar with the
+technique.<p>
+
+<table align=center cellpadding=5 border=1 width=80%><tr><td>Don't lose
+track of the fact that learning how to use the project management tools
+(<i>make</i> and <i>rcs</i>) is a key goal of this assignment.  Use
+this assignment to help make sure you are fully comfortable with these
+tools.</table><p>
+
+Assuming <i>lnx0006</i> and <i>spinoza</i> are both available, be sure
+your code runs correctly on both systems before going on to the next
+step.  (This rule applies to each step of the development process.)  Be
+sure "make clean" leaves you with a clean project directory.  Be sure
+you have run "make depend" before you check in your Makefile.  Be sure
+"make" with no arguments builds <i>qserver</i> from a clean project
+directory.  (The <i>make</i> command automatically checks out
+everything it needs, including the Makefile, when there is an RCS
+subdirectory.)
+
+<h4>Step 2.  Implement the Log File Functions</h4>
+
+Now remove the code that printed the results of command line processing
+(or leave out the -DDEBUG setting if you followed the strategy
+described above), and re-code <i>main()</i> so that it exercises the
+log file functions by opening the log file, writing a message or two to
+it (use "TESTING" as the event name and anything you like as the
+messages), and closing it. You should use the <i>sleep(3)</i> function
+so there is a delay of a few seconds between opening and closing the
+log file to make sure the timestamp operations are working correctly.
+
+<h4>Step 3.  Accept Connections From Clients.</h4>
+
+In class, we went over the code to set up the server to wait for client
+connections on its "well-known" socket.  Here is semi-pseudo code that does it:
+
+<pre>
+    gethostname( thisHostName, MAX_HOST_NAME );
+    hp = gethostbyname( thisHostName );
+    memset( &amp;server_sockaddr, 0, sizeof( server_sockaddr ) );
+    server_sockaddr.sin_family = AF_INET;
+    memcpy( &amp;server_sockaddr.sin_addr, hp->h_addr_list[0], hp->h_length );
+    server_sockaddr.sin_port = htons( wellKnownPort );
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    bind(  server_fd,
+           (struct sockaddr *) &amp;server_sockaddr,
+            sizeof (server_sockaddr) );
+    listen( server_fd, BACKLOG );
+    socklen_t saSize = sizeof client_sockaddr;
+    client_fd = accept( server_fd,
+                    (struct sockaddr *) &amp;client_sockaddr, &amp;saSize );
+</pre>
+
+This is "semi-pseudo" code because it is real code, but several things
+have been omitted: the proper header files, declaring most of the
+variables, and error checking.  The <i>gethostname(), gethostbyname(),
+socket(), bind(), listen(),</i> and <i>accept()</i> calls should all be
+checked for success or failure, and the program should exit after
+calling <i>perror()</i> if any of them fail.  (You test if
+<code>hp</code> is a null pointer to check for an error after calling
+<i>gethostbyname()</i>; all the other functions return an integer value
+of -1 if they fail.)<p>
+
+A way to test your server at this point is to use a <a
+href="./Assignment_03/SampleClient.html">Sample Client</a> Java
+application.  You can get copies of both the Java and class files from
+~vickery/SampleClient.java and ~vickery/SampleClient.class on Spinoza. 
+There is also an executable version of this version of the server
+available at ~vickery/bin/qserver-1.1 on spinoza if you would like to
+run it to make sure you understand what it is supposed to be doing.<p>
+
+At this point, your server should accept a connection from a client,
+write a message to its log file, and exit.  Check the log file to make
+sure the connection message got written properly.<p>
+
+If your server encounters any errors before it makes its first call to
+<i>accept()</i>, it should write an error message to <i>stderr</i> and
+call <i>exit()</i> with a status code of 1 (the standard value to use
+when a program exits because of an error).  Once it is ready to accept
+connections, it should open the log file, with the second argument to
+the <i>openLog()</i> function being a string in the form:
+
+<pre>
+  qserver (<i>&lt;pid&gt;</i>) accepting connections at <i>&lt;host&gt;</i>:<i>&lt;port&gt;</i>
+</pre>
+
+In this string, <i>&lt;pid&gt;</i> is to be the process id for the
+program, which you can get using the <i>getpid(2)</i> function. 
+Substitute the computer's host name and the server's port number for
+<i>&lt;host&gt;</i> and <i>&lt;port&gt;</i> respectively.<p>
+
+You can use the following code to write connection messages to the log
+file:
+
+<pre>
+    hp = gethostbyaddr( (const char *)&amp;client_sockaddr.sin_addr, 4, AF_INET );
+    writeLog( "CONNECT", hp->h_name );
+</pre>
+
+
+<h4>Step 4.  Handle SIGINT and Normal Exit</h4>
+
+There are three ways to stop the server:
+
+<ol>
+  <li>If the server is running in the foreground, and you type Control-C
+  in the server's console window.  This will send an INT signal to the
+  server.
+  <li>If you give the command "kill <i>&lt;pid&gt;</i>" substituting the
+  server's actual process id for <i>&lt;pid&gt;</i>.  This will send a
+  TERM signal to the server.
+  <li>If one of the clients writes a "SHUT" message to the server.
+</ol>
+
+In cases (1) and (2), the server is to call <i>closeLog()</i> with
+"Signal Received" as the argument.  In case (3), the server is to call
+<i>closeLog()</i> with "Normal Exit" as the argument.  The server
+doesn't actually exit until after <i>closeLog()</i> has run.<p>
+
+There are a number of ways you could meet these requirements, but I am
+specifying the technique you are to use for this assignment as follows:
+
+<ul>
+    <li>Write a function definition that matches the following function
+    prototype:
+    <pre>
+      void f(int, char *);</pre>
+
+    Use a meaningful function name instead of "f".<p>
+    
+    This is the function that will be called just before the server
+    exits, no matter which of the three events listed above was the
+    cause for exiting.<p>
+
+    The first argument to this function will be the status code used in
+    a call to <i>exit()</i>.  We will arrange to use a special value
+    for this argument if the program is exiting because of a signal. 
+    The second argument is a string, which we will use as described
+    next.<p>
+
+    This function is to test the value of the first parameter.  If it
+    is zero or above, call <i>closeLog()</i> passing the second input
+    parameter as the argument to <i>closeLog()</i>.  If the first
+    parameter is negative, call <i>closeLog()</i> with the string
+    "Signal Received" as the argument.  (Optional: Put the signal number
+    in the string, such as "Signal 2 Received.")<p>
+    
+    <li>Set up so that the function described above will be called when
+    the program calls <i>exit()</i> using the GNU <i>on_exit()</i>
+    function.  This function is not part of ANSI C/C++, thus making your
+    program less portable than if you used the ANSI function
+    <i>atexit()</i>.  But it is very valuable, and since the GNU C/C++
+    runtime library is open source, its use seems justified here.  See
+    the <i>man</i> page for how to code invoke <i>on_exit()</i>.  It
+    should be called after the logfile has been opened and before the
+    server starts accepting connections from clients.<p>
+    
+    <li>Write a function definition that matches the following function
+    prototype:
+    <pre>
+      void f( int );</pre>
+
+    Use a meaningful function name instead of "f".<p>
+    
+    This is the "signal handler" function that will be called whenever
+    a TERM or INT signal is sent to the process.  It simply calls
+    <i>exit()</i> with a status code of minus 1.  Calling <i>exit()</i>
+    causes the function you registered using <i>on_exit()</i> to be
+    called automatically before the process actually exits.  How to
+    code that function was covered above.<p>
+
+    <li>At the same time you call <i>on_exit()</i>, also call
+    <i>signal()</i> two times, once so that your signal handler will
+    be called for SIGINT, and once so it will be called for SIGTERM.
+
+</ul>
+
+Test your program to be sure that it exits cleanly, and with the proper
+message written to the logfile, no matter which of the three events is
+used to terminate the server.<p>
+
+<h4>Step 5.   Reading From Clients</h4>
+
+There are several functions that can be used to read and write to and
+from sockets, but the basic ones are <i>read(2)</i> and <i>write(2)</i>.
+As kernel calls, these functions incur quite a bit of overhead compared
+to library functions, but using library functions with sockets adds its
+own problems to client/server communication.  Two other kernel calls
+that may be used with sockets are <i>recv(2)</i> and <i>send(2)</i>,
+which are just like <i>read(2)</i> and <i>write(2)</i>, except that they
+have another argument that can be used to set certain options for more
+advanced operations.  We'll stay with the simpler read and write
+functions for this project.<p>
+
+The idea of a socket connection is that it is a full-duplex (two-way)
+pipe connecting the client and server.  Whatever the client writes to
+its end of the socket pair, the server can read from its end; likewise,
+whatever the server writes to its end, the client can read from its
+end. There is no way for the server to read what it has written, and
+there is no way for the client to read what it has written.<p>
+
+An important point to remember is that stream sockets are, as their
+name implies, used to send <i>streams</i> of bytes between clients and
+servers.  For example, depending on network conditions, the server
+could receive a "SHUT" message with a single call to <i>read()</i> if
+the client executed either of the following two sequences of function
+calls:
+
+<pre>
+      write( fd, "SHUT", 4 );
+</pre>
+or
+<pre>
+      write( fd, "S",  1  );
+      write( fd, "HU", 2  );
+      write( fd, "T",  1  );
+</pre>
+
+We will deal with this issue in the next assignment, when we will adopt
+a protocol so that the server client and server will be able to identify
+the boundaries of the messages they send to each other.  For this
+assignment, the server is simply to write whatever it reads to the log
+file, and to exit if a single call to <i>read()</i> returns exactly the
+four characters S-H-U-T.<p>
+
+But in this assignment, you do need to convert the bytes you read into
+strings so you can work with the text received using standard string
+functions.  To do this, you need to append '\0' to the end of whatever
+characters are read from the socket:
+
+<pre>
+      int numBytes = read( fd, buf, sizeof buf );
+      buf[ numBytes ] = '\0';
+</pre>
+
+(Some people have been zeroing out the buffer using <i>memset()</i>
+before each call to <i>read()</i>, which will work.  But doing that is
+inefficient because it puts zeros in <i>all</i> the bytes of the buffer
+instead of just the one byte where it is needed.)<p>
+
+Once the server accepts a connection from a client, it enters an endless
+loop in which it reads from the socket, and writes to the logfile.  It
+exits this loop when the client closes its end of the socket or when a
+client sends a SHUT message.<p>
+
+If the client closes its end of the socket (for example, by exiting),
+the server's call to <i>read()</i> will return a value of 0
+(<i>numBytes</i> would be zero in the code above).  The server must
+also close its end of the socket (using <i>close()</i>) before looping
+back to accept another client connection.  If you fail to do this, the
+fd will remain open, and the server will eventually crash with too many
+open fds.<p>
+
+<h2>The Client</h2>
+
+The client for this assignment is quite simple.  It executes the
+following algorithm:
+
+<ol>
+    <li>Process command line options.
+    <li>Connect to the server.
+    <li>Repeat:
+    <ul>
+        <li>Read a line of text from the user using <i>fgets()</i>.
+        <li>Write the line to the server using <i>write()</i>.
+    </ul>
+</ol>
+
+The client needs to recognize the following command line
+options:<p>
+
+<table width=50% cellpadding=5 align=center border=1>
+  <tr>
+    <td><b>-p</b> | <b>--port</b>
+    <td>The server's port number to connect to.
+  <tr>
+    <td><b>-h</b> | <b>--host</b>
+    <td>The server's host name.
+  <tr>
+    <td><b>-?</b> | <b>--help</b>
+    <td>Print a usage message and exit.
+  <tr>
+    <td><b>-v</b> | <b>--version</b>
+    <td>Print the client's version number and exit.
+</table><p>
+
+Here is semi-pseudocode for connecting to the server:
+<pre>
+      hp = gethostbyname( serverName )
+      server_sockaddr.sin_family = AF_INET;
+      memcpy( &amp;server_sockaddr.sin_addr, hp->h_addr, hp->h_length )
+      server_sockaddr.sin_port = htons( serverPort )
+      server_fd = socket( AF_INET, SOCK_STREAM, 0 )
+      connect( server_fd, (struct sockaddr *) &amp;server_sockaddr,
+                                               sizeof server_sockaddr )
+</pre>
+
+As with the semi-pseudocode provided for the server, you have to supply
+the variable declarations and add the code to check for errors.<p>
+
+Once the call to <i>connect()</i> completes successfully, you can use
+<i>server_fd</i> as the first argument in your call to <i>write()</i>.<p>
+
+The client exits the loop at the end of its algorithm either when
+reaching the end of file on <i>stdin</i> or when the server closes its
+end of the socket.  End of file on <i>stdin</i> will happen if the user
+types Control-D at the beginning of a line.  You can test for it using
+<i>feof()</i>.  The client won't know that the server has closed its
+end of the socket until it tries to write to it, which means that the
+user has to type something in to get to the second part of the
+read/write loop.  The only reason the server should close its end of
+the socket before the client exits is if the user typed "SHUT," so you
+can make your client a little smarter by having it exit automatically
+if the user types "SHUT" (after first writing the message to the
+server!).<p>
+
+<h2>Final Testing and Submitting the Assignment</h2>
+
+As always, be sure your code adheres to the <a
+href="http://babbage.cs.qc.edu/courses/cs701/Handouts/coding_guidelines.html">
+Coding Guidelines</a> for this course.<p>
+
+You need to test your code carefully.  Be sure your Makefile is set up
+correctly by using the <i>touch</i> command to modify the modification
+times of the header, source, and object files and observing the commands
+that <i>make</i> generates in each case.  <p>
+
+Be sure "make depend" and "make clean" are working correctly. Be sure
+that "make clean" followed by "make depend" works properly.<p>
+
+Be sure you have entered meaningful log messages each time you checked
+in your various files.  (If not, the messages can be changed, but it's
+a lot of bother.  See the -m option of the <i>rcs</i> command.  Don't
+worry about minor typos.)  Double-check that all RCS keywords have been
+expanded properly in your .h and .cc files as well as your Makefile.<p>
+
+You can check for yourself that there are no long lines or tab
+characters in your code on both spinoza or lnx0006.  Give the
+following command:
+<pre>
+      ~vickery/bin/chk_format Makefile *.h *.cc
+</pre>
+There will be no output if your files are okay.<p>
+
+Be sure your code compiles and runs correctly on both spinoza and
+lnx0006.  You should be able to run the server on either one and run
+clients on the other.  Be sure you can run an endless sequence of
+clients, with the server exiting only when one of them sends a SHUT
+message or if one of the two signals is delivered to it.<p>
+
+Check the contents of your logfile to be sure it is formatted properly
+and contains the correct information.  Be sure the -o command line
+option works properly for the server.<p>
+
+When your assignment is ready, clean your project directory, create a
+tar file of it, and email the tar file to me at my babbage account, <a
+href="mailto:vickery@babbage.cs.qc.edu">vickery@babbage.cs.qc.edu</a>.<p>
+ 
+<b>The due date is midnight, April 16</b>.  If you don't have the
+project completed by then, send what you have done at that time so you
+can get partial credit.  The assignment will count approximately 10% of
+your course grade.<p>
+
+<h2>Solution</h2>
+
+Here are listings for my solution to this assignment:
+<ul>
+    <li><a href="./Assignment_03/Makefile.html">Makefile</a>
+    <li><a href="./Assignment_03/qserver.h.html">qserver.h</a>
+    <li><a href="./Assignment_03/qserver.cc.html">qserver.cc</a>
+    <li><a href="./Assignment_03/logfile.cc.html">logfile.cc</a>
+    <li><a href="./Assignment_03/qclient.h.html">qclient.h</a>
+    <li><a href="./Assignment_03/qclient.cc.html">qclient.cc</a>
+</ul>
+
+<hr></body></html>

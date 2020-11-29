@@ -1,0 +1,229 @@
+<HTML><HEAD><TITLE>CS-701 - Spring 2001 - Assignment 3</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+
+<BODY bgcolor=#FFFFCC> <!-- An authorized light yellow -->
+<center>
+<H1>CS-701 - Spring 2001 - Assignment 3</H1>
+</center>
+
+<H2>Due Date and Deliverables</H2>
+
+<center><B>
+This assignment is due by midnight, March 22.<p>
+</B></center>
+
+Send me an email with a tar file attached to it.  Be sure to
+put your name and ID number in the message part of the
+email.<P>
+
+The tar file is to contain a project directory named Assignment_3.  The
+project directory is to contain one file, named README, and one
+subdirectory, named RCS, <u>and nothing else</u>.  The RCS subdirectory
+must contain contain history files for a file named Makefile, at least
+two .cc files, and one .h file.  After extracting the contents of the
+tar file, I should be able to type "(g)make" in the project directory
+to build an executable file named <i>qsh</i>, corresponding to Version
+1.6 described below.  I should be able to all versions of the project
+using suitable <I>rcs</I> commands.<p>
+
+<b>Note: All code you submit for this assignment, and for all
+assignments in this course, must compile with no warning or error
+messages using the g++ compiler driver with the -Wall option.<p></b>
+
+<H2>Specifications</H2>
+
+The <i>qsh</i> program is a shell which recognizes three commands:
+<i>exit</i>, <i>quit</i>, and <i>print</i>, described below.  This
+version of the shell is to ignore all other commands, including blank
+lines.  The shell is to use the value of the "PS1" environment variable
+as its prompt string, if it is defined.  If it is not defined, it is to
+use a string of your choice, provided it contains at least one non-blank
+character and has a space at the end of it.<p>
+
+<H3>Builtin Command Summary</H3>
+<center><table border=0 cellpadding=5 width="80%">
+
+  <TR>
+    <TH>Command Name
+    <TH>Description
+
+  <TR>
+    <TD valign=top><CODE>exit [<I>n</I>]</CODE>
+    <TD valign=top>
+      <UL>
+        <LI>If there is more than one argument, write an error message
+        to <I>stderr</I> and do not exit the shell.  Set the command
+        completion code (The shell's "?" variable) to 2.
+        <LI>If <I>n</I> is omitted, exit the shell with an exit
+            code of 0.
+        <LI>If <I>n</I> can be converted to an <I>int</I> using
+        <I>strtoul()</I>, exit the shell with an exit code equal to the
+        numeric value of <I>n</I> modulo 256.
+        <LI>If there is a single command line argument, but it is not a
+        valid numeric string, write an error message to <I>stderr</I> and
+        do not exit the shell. Set the command completion code to 1.
+      </UL>
+
+  <TR>
+    <TD valign=top><CODE>quit</CODE>
+    <TD valign=top>If there are any command line arguments, write an
+    error message to <I>stderr</I>,do not exit the shell, and set the
+    command completion code to 1.  Otherwise exit the shell with a
+    return code value of 0.
+
+  <TR>
+    <TD valign=top><CODE>print</CODE>
+    <TD valign=top>Write all command line arguments, separated from each
+    other by a single space, to <I>stdout</I>.  Terminate the output
+    with a <I>newline</I>. Set the command completion code to the number
+    of command line arguments.
+
+</table></center>
+
+<H3>Coding Requirements</H3>
+
+The program is to consist of a <i>main()</i> function and two functions
+named <i>sh_exit()</i> and <i>sh_print()</i>.  The two functions must
+be defined in a source module separate from the one that contains
+<i>main()</i>.  (You may use two separate modules for <i>sh_exit()</i>
+and <i>sh_print()</i> if you prefer.)  The source modules must all
+<code>#include</code> a header file that contains function prototypes
+for the <i>sh_exit()</i> and <i>sh_print()</i> functions.<P>
+
+There must be a Makefile with appropriately-defined rules for the
+targets <I>qsh, clean,</I> and <I>depend</I>.<p>
+
+All source files, including the <I> Makefile</I> and the header file,
+must be commented according to the coding guidelines for this course,
+including properly coded $Id$ and $Log$ keywords.<p>
+
+You must develop the program using a series of revisions.  What follows
+is a list of versions, which must exist in the RCS history for the
+project.  However, your revision numbers do not have to match the exact
+revision numbers given here.  Instead, your README file is to contain a
+table that tells what revision number to use for each file in the
+project in order to construct a program with the features indicated
+below.
+
+<center><table border=1 cellpadding=5 width="90%">
+
+  <TR>
+    <TH>Version Number
+    <TH>Requirements
+  
+  <TR>
+    <TD valign=top>1.1    
+    <TD>There is one file, named <I>main.cc</I>, <I>qsh.cc</I>, or
+    something similarly meaningful.  The program prints the value of the
+    environment variable named "PS1" if it is defined.  If PS1 is not
+    defined the program either prints nothing, an error message, or a
+    default prompt string as described above.  The program then exits.
+
+  <TR>
+    <TD valign=top>1.2
+    <TD>The program enters an endless loop in which it prints the
+    prompt string and reads a command typed by the user using
+    <I>fgets()</I>.  The program doesn't print anything, except the
+    prompt string, each time through the loop.  Each prompt string must
+    be printed starting in the left margin of the user's window,
+    regardless of what the user types on the command line.  You may
+    assume the user will never type Control-D.  (What happens if s/he
+    does?) The user exits the program by typing Control-C.
+
+  <TR>
+    <TD valign=top>1.3
+    <TD>Break each command line into whitespace-separated tokens using
+    the <I>strtok()</I> or <I>strtok_r()</I> library function.  Set up
+    a dispatch table as described in class which has just one entry,
+    for the command named <I>exit</I>.  Implement this command,
+    according to the specifications given above, in a function named
+    <I>sh_exit()</I>.  If <I>sh_exit()</I> returns to <I>main()</I>, it
+    should return a value of 1 or 2 as described above.  But at this
+    point, <I>main()</I> should ignore the returned value.
+
+  <TR>
+    <TD valign=top>1.4
+    <TD>Add <I>Makefile</I> to the project, move the definition of
+    <I>sh_exit()</I> to a separate source module, and add a header file
+    with the function prototype for sh_exit() in it.  Both .cc files
+    must #include the same header file.  The Makefile is to contain
+    rules for the targets <I>qsh, clean,</I> and <I>depend</I>.
+
+  <TR>
+    <TD valign=top>1.5
+    <TD><I>Note: This is not the same as the Version 1.5 originally
+    given out in Lecture 8.</I>
+    <UL>
+      <LI>Implement the builtin <I>print</I> command in a function
+      named <I>sh_print()</I>.  Define the function in either the same
+      module as <I>sh_exit()</I> or in its own separate module.  Modify
+      the header file and Makefile to accommodate this change.
+      <LI>Implement the builtin <I>quit</I> command by setting up the
+      dispatch table to call <I>sh_exit()</I> for this command. Modify
+      <I>sh_exit()</I> so that it differentiates between <I>exit</I> and
+      <I>quit</I> commands, as described in the specifications.
+    </UL>
+
+  <TR>
+    <TD valign=top>1.6
+    <TD>This version includes a temporary hack, which will be cleaned up
+    later in the project.
+    <BR>Whenever a command returns to <I>main()</I>, save the return
+    value, modulo 256, as a string.  The temporary hack is this: If any
+    command line argument is "$?", substitute the string representation
+    of the previous command's return value for the argument.  Here is a
+    sample interchange that illustrates what this step should do:
+    <PRE>
+      <B>howdy> </B>exit this program now.
+      <I>exit: too many arguments</I>
+      <B>howdy> </B>print The previous command's exit code was $?
+      <I>The previous command's exit code was 2</I>
+      <B>howdy </B>
+    </PRE>
+
+</table></center>
+
+<H2>Grading Criteria</H2>
+
+The assignment will be graded on a ten point scale, as follows:
+
+<table cellpadding=5 border=1 width="50%">
+  <TR>
+    <TD>5 points
+    <TD>How well the project adheres to these specifications and
+    requirements, including both implicit and explicit requirements for
+    the use of <I>make</I> and <I>rcs</I>.
+  <TR>
+    <TD>5 points
+    <TD>How well the code adheres to the coding guidelines for the
+    course.
+</table>
+
+<H3>Collaboration</H3>
+
+You are encouraged to talk, exchange email, and use the course Discussion
+Board to discuss any and all aspects of this project with anyone you
+wish.<p>
+
+<B>HOWEVER:</B>
+<UL>
+  <LI>You may not let anyone else see your code or project files, nor
+  may you show your code or project files to anyone else.  This
+  includes both printed and electronic versions.
+  <LI>You must actually type every single keystroke associated with
+  this project yourself.  You are not to copy <U>anything</U> related
+  to this project from <U>anyone</U> else.
+  <LI>It is all right (and encouraged) to show error messages and/or
+  program output to other people when asking for help.
+  <LI>If in doubt about what is or is not allowed, get a clarification
+  from me before proceeding.
+</UL>
+
+If you get really stuck and can't get the help you need following these
+rules, send your problem to me, including copies of your files if you
+wish.  I will respond to such requests for help on a time-available
+basis.
+
+<HR></BODY></HTML>

@@ -1,0 +1,83 @@
+<HTML><HEAD><TITLE>Final Exam</TITLE>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<ol>
+
+  <B><LI></B>One process forks another one with <I>fd</I> #0 open for
+  reading, but the child process doesn't know whether the <I>fd</I> is
+  for a pipe, a stream socket, a disk file, or a terminal.  (There are
+  ways to find out which, but we don't need that information.) Answer
+  these questions:
+
+    <OL>
+    <LI>Assume the <I>fd</I> is for a SVR4 pipe.  Answer questions
+    <I>1a</I> through <I>1e</I> below.
+    <LI>Assume the <I>fd</I> is for a stream socket. .  Answer questions
+    1<I>a through 1</I>e below.
+    <LI>Assume the <I>fd</I> is for a terminal.  Answer questions
+    <I>1a</I> through <I>1e</I> below.
+    <LI>Assume the <I>fd</I> is for a disk file.  Answer questions
+    <I>1a</I> through <I>1e</I> below.
+    </OL>
+  <P>
+
+      <I>1a.</I> What would cause end of file to be reached on the
+      <I>fd</I>? <P>
+
+      <I>1b.</I> How would the child process detect end of file? <P>
+
+      <I>1c.</I> Under what condition would a call to <I>read()</I>
+      return a value greater than zero, but smaller than the number of
+      bytes that the process requested? <P>
+
+      <I>1d.</I> Under what condition would a call to <I>read()</I>
+      return a value of negative one? <P>
+
+      <I>1e.</I> Under what condition would a call to <I>read()</I>
+      return a value of zero? <P>
+
+  <B><LI></B>A process has two <I>fd</I>s open for reading and wants to
+  read from whichever one is ready for reading first.  How can this be
+  done?  Give as many details as you can. <P>
+
+  <B><LI></B>Here are some RCS questions:<P>
+
+      <I>3a</I>. What does the &quot;<CODE>-l</CODE>&quot; option do on
+      a <I>co</I> command? <P>
+
+      <I>3b</I>. The last revision of <CODE>myprog.cc</CODE> was number
+      2.7 and I just made some changes to it that are part of revision
+      level 3.  How do I check the file in? <P>
+
+      <I>3c</I>. The last revision of <CODE>x_file.cc</CODE> was number
+      7.2.  There are no changes to it for revision level 8, but it is
+      used in revision level 8.  What should I do?  (<I>Note:</I>
+      &quot;Ask Dr. Vickery&quot; is not an acceptable answer!) <P>
+
+      <I>3d</I>. What does the line, &quot;<CODE>static char
+      *rcs_version = $Id$;</CODE>&quot; have to do with the
+      <I>ident</I> command? <P>
+
+      <I>3e</I>. I made a mistake typing the log message when I checked
+      in a file.  How can I fix it? <P>
+
+  <B><LI></B>Define the following <I>make</I> terms: Implicit rule,
+  Explicit rule, target, dependency list, command list.  After defining
+  them, use them to describe what <I>make</I> does. <P>
+
+  <B><LI></B>Describe three ways to provide a value for the <I>make</I>
+  macro, <CODE>CXXFLAGS</CODE>. (&quot;Describe&quot; means to say more
+  than just to name the ways!)  Then tell how <I>make</I> uses the
+  <CODE>CXXFLAGS</CODE> macro.  Then tell what will happen if there is
+  <I>no</I> value assigned to the <CODE>CXXFLAGS</CODE> macro when it
+  is used by <I>make</I>. <P>
+
+  <B><LI></B>A. Describe as many ways as you can that datagram sockets
+  are different from stream sockets. <P> B. Describe as many ways as
+  you can that datagram sockets are like stream sockets. </ol>
+
+<HR>
+<address>Christopher Vickery<BR>Computer Science Department, Queens
+College of CUNY<HR>
+</BODY>
+</HTML>

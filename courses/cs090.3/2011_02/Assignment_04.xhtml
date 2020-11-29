@@ -1,0 +1,206 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 4</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style>
+      img {border:1px solid red;}
+    </style>
+  </head>
+  <body id='urn:uuid:8EC10AAE-3CEB-4C7D-8F6E-40AD78D06158'>
+    <h1>CS-90.3 Assignment 4<br/>
+    Due May 3</h1>
+    <div id="content">
+      <h2>Reading Assignment</h2>
+      <ul>
+        <li>
+          Study the PHP online manual information on sessions (the <em>session()</em> function and the <code>$_SESSION</code>
+          superglobal variable. Also, study the <em>fgetcsv()</em> and <em>ini_set()</em> functions.
+        </li>
+      </ul>
+      <h2>Assignment To Submit</h2>
+      <div>
+        <p>
+          This assignment is an exercise in using PHP’s session mechanism to manage visitors’ flow through a
+          web site that requires people to log into the site before using its special features. Your site’s “special
+          feature” is the form where users enter text and a color, and get to see their message squared and colored.
+        </p>
+        <p>
+          You will also practice processing a primitive sort of database: a CSV spreadsheet that contains user
+          names and passwords.
+        </p>
+        <p>
+          When you have finished the assignment, send me an email message, and I’ll check it out on babbage.
+        </p>
+          <ul class="standout-block">
+            <li>Be sure to sign your email so I know who sent it.</li>
+            <li>The Subject line of your message must be: <pre style="margin:0 2em;">CS-90.3 Assignment 4</pre>
+            </li>
+          </ul>
+        
+        <ol>
+          <li>
+            <h5>Set up your site.</h5>
+            <p>
+              You may need to modify the following setup if you have already set your site up differently from the
+              way we left it after Assignment 3. That’s okay but your setup must include the features listed here. Also
+              the presentation that follows assumes the setup given here, so you might have to interpret what’s said here
+              in light of changes you might have made. 
+            </p>
+            <p>
+              So far, your site has an index page that contains the form where users enter some text and a color, and
+              an “assignment_2.php” page that processes the form data from the index page. The structure of the site
+              is still to include those two pages.
+            </p>
+            <p>
+              Add two new pages: a login page (login.php) that includes a form where users enter their user name and
+              password, and a verification page (scripts/assignment_4.php, for example), which verifies that the user
+              has entered valid credentials. The login page is to be styled “nicely” and include the XHTML and CSS validation
+              links, but the assignment_4 page will
+              (utlimately) never be seen by users and need not be styled at all.
+            </p>
+          </li>
+          <li>
+            <h5>Implement the login feature.</h5>
+            <p>
+              Set up a simple form on the login page that provides a text <span class="tag">input</span> element for the user’s
+              name, and a password <span class="tag">input</span> for the password. Submitting the form sends the form data
+              to the assignment_4 page using the POST method. (Why POST?).
+            </p>
+            <p>
+              For now, the assignment_4 page is simply to display a message telling the user whether the login attempt
+              was successful or not. The implementation of this page is to work as follows:
+            </p>
+              <ol>
+                <li>
+                  Make sure the user name and password data are present in the <code>$_POST</code> array, and that neither
+                  is empty (after trimming away whitespace at the beginning and end of each string). If any of these
+                  preconditions fails, the user has not logged in successfully.
+                </li>
+                <li>
+                  Read the file named <em>users.csv</em> that I have saved at <a href="http://babbage.cs.qc.cuny.edu/Grading/903">
+                  users.csv</a> to see if the user name and password provided on your form are in this file. You can use the link
+                  to download a copy of the file to use while developing your site, but when you submit the assignment, your
+                  code is to use the file in the location given.
+                  <p>
+                    Here is PHP code that reads each line of the file and “dumps” it onto the web page:
+                  </p>
+<div class="code-block">
+&lt;?php
+  ini_set('auto_detect_line_endings', true);
+  $fp = fopen('../../users.csv', 'r') or die("Unable to open\n");
+  while ($line = fgetcsv($fp))
+  {
+    var_dump($line);
+  }
+?&gt;
+
+</div>
+                  <p>
+                    Note that the code goes outside of your site to access the file: PHP code can do that.
+                  </p>
+                  <p>
+                    You will see that the file contains four columns per row (taken from the spreadsheet that I use to
+                    inidividualize exams for students in this course): Exam Id, Student Id, Last Name, and First Name.
+                    For this assignment, use the Last Name column as the user name, and the Student Id column as the password.
+                  </p>
+                  <p>
+                    The algorithm you have to implement inside the <em>while</em> loop is to compare $line[1] to the
+                    password supplied by the user, and $line[2] to the user name. If both strings match, the user has
+                    logged in successfully, and an appropriate message is to be displayed. If the while loop completes without
+                    finding a match, an appropriate error message is to be displayed instead. You should use a <em>break</em>
+                    statement to exit the loop when a match is found rather than continue to go through the loop. You will
+                    need a boolean variable, initialized to <em>false</em> before entering the loop, and set to <em>true</em>
+                    when a match is found, to test whether the user logged in successfully or not. In pseudo-code:
+                  </p>
+<div class="code-block">
+  $found = false;
+  while ($line = ...
+  {
+    if user name and password match this line
+    {
+      $found = true;
+      break;
+    }
+  }
+  if ($found) echo successful login message
+  else        echo unsuccessful login message
+
+</div>
+                </li>
+              </ol>
+          </li>
+          <li>
+            <h5>Use session variables and <em>redirect</em> headers to manage the loging process.</h5>
+            <p>
+              Instead of having the assignment_4 page display messages, have it redirect the user either back to the
+              login page (if login was unsuccessful) or to the index page (if login was successful).
+            </p>
+            <p>
+              Here is sample code that redirects the user to the login page (assuming the login page is in the directory
+              above the assignment_4 page:
+            </p>
+<div class="code-block">
+  header("Location: ../login.php");
+</div>
+          </li>
+          <li>
+            <h5>Use session variables to manage the user’s flow through the site.</h5>
+            <p>
+              If the user accesses the index page or the assignment_2 page without logging in first, 
+              do an immediate redirect to the login page.
+            </p>
+            <p>
+              If the user accesses the index page after logging in, display a message above the form greeting him/her
+              by name.
+            </p>
+            <p>
+              Have the login page record the user’s name in <code>$_SESSION['logged-in-as']</code>.
+            </p>
+          </li>
+          <li>
+            <h5>Handle assignment_2 specially.</h5>
+            <p>
+              If the user goes directly to the assignment_2 page, record it in another session variable, and
+              have the login page return the user to that page instead of to the index page if login is successful
+            </p>
+          </li>
+          <li>
+            <p>
+              Validate and test your code carefully before submitting it.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </div>
+  </body>
+</html>

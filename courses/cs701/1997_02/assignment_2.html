@@ -1,0 +1,618 @@
+<HTML>
+<HEAD><TITLE>Ship in a Bottle</TITLE></HEAD>
+<BODY BGCOLOR="#FFFFFF">
+
+Assignment 2, CS-701, Spring 1997
+<H1 ALIGN=center>Ship in a Bottle</H1>
+
+<DL>
+<DT><B>Due Date:</B><DD>May 27, 1997
+
+<DT><B>Deliverables:</B><DD>
+
+When the assignment is complete, send me an email message telling me
+the path to the project directory.  The project directory is to contain
+an RCS subdirectory, and nothing else.  Consult "<a
+href="../using_rcs.html">Using RCS</a>" for information on how to set
+up your project directory and use RCS for project management.  In
+addition, the <code>~/man</code> directory tree is to contain
+<i>man</i> pages for the two executable programs.  See "<a
+href="../man_pages.html">How to Write a Man Page</a>" for information
+on how to prepare your <code>man</code> pages.<p>
+
+<DT><B>Requirements:</B><DD>
+
+The project is to be done as a sequence of Steps as outlined below. 
+You will not receive credit for work on a particular step unless all
+previous steps are complete.  All the files for a given Step (Makefile,
+source code, and documentation) must have RCS Revision numbers with the
+number to the left of the decimal point equal to the Step number given
+below.  After checking out the Makefile for a given step, typing "make
+STEP=&lt;<i>n</i>&gt; install" must build and install the executable
+and documentation files for that step. (&lt;<i>n</i>&gt; is the Step
+number.)<p>
+
+You may also leave a <code>README</code> file in the project directory
+if you think that one is needed, but I neither expect nor require you
+to do so.<p>
+
+In addition to the information given here, be sure to consult the <A
+HREF="grading_form_2.html">Grading Form for this assignment</A>, which
+includes additional information about the requirements for this
+project.
+
+</DL>
+
+<HR>
+
+<!-- AS-TOC_BEGIN{ -->
+
+
+	<UL>
+		<LI><A HREF="#as-h3-64870">Project Description</A>
+		<UL>
+			<LI><A HREF="#Step1">Step 1 -- Send strings from client to server</A>
+      <LI><A HREF="#Step2">Step 2 -- <I>Terminate</I> and <I>Value</I> 							                                   messages</A>
+      <LI><A HREF="#Step3">Step 3 -- Command File (<I>fe</I>) and Log File 																						 (<I>be</I>)</A>
+      <LI><A HREF="#Step4">Step 4 -- <I>Add</I> and <I>Change</I> messages</A>
+      <LI><A HREF="#Step5">Step 5 -- <I>Get</I> messages</A>
+      <LI><A HREF="#Step6">Step 6 -- <I>Curses</I> User Interface</A>
+      <LI><A HREF="#Step7">Step 7 -- Concurrent Server (Not Required)</A>
+      <LI><A HREF="#Ideas">Ideas for other features</A>
+		</UL>
+		<LI><A HREF="#as-h3-64871">Reference Tables</A>
+		<UL>
+			<LI><A HREF="#as-h3-64872">Data Type Codes</A>
+			<LI><A HREF="#as-h3-64873">Message Types</A>
+		</UL>
+	</UL>
+
+<!-- AS-TOC_END} -->
+
+<HR>
+
+<H3 ALIGN=center><A NAME="as-h3-64870">Project Description</A></H3>
+
+This is an exercise in distributed computing.  There are two programs
+to write.  In this document they will be called <i>fe</i> and <i>be</i>
+for "front-end" and "back-end" respectively, but you may give them any
+descriptive names you choose.<p>
+
+The <i>be</i> program is a network server, a program that runs
+continuously on some host.  It's job is to respond to requests from
+client programs, which are the <i>fe</i> program being run
+interactively by users.  The <i>be</i> maintains a database called a
+<i>property list</i>.  People use the <i>fe</i> program to add items to
+the property list and request information about it.<p>
+
+The project is called "Ship in a Bottle" because the operations of
+building and querying a property list are done by commands entered
+remotely from the computer that maintains the list.  The analogy is to
+building a wooden ship model inside a bottle using special tools from
+outside the bottle.<p>
+
+A property list is a data structure that contains
+{&lt;<i>name</i>&gt;&lt;<i>type</i>&gt;&lt;<i>value</i>&gt;} triples. 
+Each &lt;<i>name</i>&gt; may occur any number of times in the list, but
+each {&lt;<i>name</i>&gt;&lt;<i>type</i>&gt;} pair must occur no more
+than once in the list.  The names are arbitrary text strings, and the
+values are arbitrary numbers or text strings.  For example, a property
+list for a computer might have two properties named "host ID," one
+with  an integer value giving the computer's IP address and the other
+with a text string value giving the computer's fully qualified domain
+name.  ("babbage.cs.qc.edu"  is an example of a fully-qualified domain
+name.)<p>
+
+Code and document each step of the project separately.  Use the
+Makefile provided to you as a starting point for your own Makefile so
+that any step can be recreated when the project is complete.<p>
+
+<DL>
+<DT><B><A Name="Step1">Step 1 -- Send strings from client to server</A></B><DD><p>
+
+Write a server (<i>be</i>) that accepts socket connections on a
+"well-known" port number.  Your assigned well-known port number is the
+last four digits of your ID number.  (If your assigned port number is
+less than 1,000, add 1,000 to it.)  Allow the user to override the
+default port number by giving an alternate value as a command line
+argument.  Everyone has at least five port numbers they can use without
+conflicting with anyone else in the course: add 1, 2, 3, or 4 to you
+assigned number.<p>
+
+Write a client (<i>fe</i>) that takes a host name and and optional port
+number as command line arguments, and connects to your <i>be</i>
+running on that host. If the user doesn't supply a port number, use
+your assigned well-known port number.  This program prompts the user to
+enter a string.  If the user types "q", close the connection to the
+server, and exit the program.  Otherwise, write the string to the
+server, and prompt the user to enter another string.<p>
+
+When you write the string to the server, first send a 4-byte integer
+(in network byte order) telling how long the string is, and then write
+the string itself.  When <i>be</i> receives a string, it prints it out,
+and tries to read another string from the client.  When <i>be</i>
+detects end of file on the socket (the <i>read()</i> system call will
+return zero as the number of bytes read), it closes its end of the
+socket, and tries to accept a connection from another client.<p>
+
+For this step, the normal way to terminate <i>be</i> is to send it
+<code>SIGINT</code>.<p>
+
+<B>Notes:</B> For this and all succeeding steps, <i>fe</i> must run
+correctly on <i>qcunix1</i> as well as in the
+laboratory.  Of course you will have to recompile your program to run it
+on <i>qcunix1</i>, but it must not require any changes to the source
+code in order to compile and run the program there.  You do not have to
+be able to run <i>be</i> on <i>qcunix1</i>, however.<p>
+
+When you build your programs in the laboratory, they have to be linked
+with <code>libsocket.so</code> and <code>libnls.so</code>, which is set
+up in the sample Makefile. However, neither of these libraries is used
+on <i>qcunix1</i>.<p>
+
+<DT><B><A Name="Step2">Step 2 -- <I>Terminate</I> and <I>Value</I> 							 messages</A></B><DD><p>
+
+In this step we start to develop the protocol for exchanging messages
+between <i>be</i> and <i>fe</i> processes.<p>
+
+Each message begins with a "siab header", which consists of four 4-byte
+integers; each integer is transmitted in network byte order.  ("siab"
+stands for "Ship in a Bottle").  The first integer tells how many bytes
+there are in the entire message, including the header and any
+additional bytes that are part of the message.  The next integer tells
+the type of message being sent.  The message type will be either 0,
+meaning "Terminate," or 1, meaning "Data Value".  For data value
+messages, the third integer tells the type of data value being sent. 
+The data type will be 1, meaning "text string," 2, meaning "integer,"
+or 3, meaning "floating-point string."  The last integer in the header
+is the value of the integer if the data type is 2.  Otherwise, it is
+the length of the text or floating-point string, in bytes.<p>
+
+If you send the entire siab header using a single <i>write()</i> system
+call, the program that receives a message will be able to read the
+entire header with one call to <i>read()</i>.  Strictly speaking, you
+should not be able to count on this when using <code>SOCK_STREAM</code>
+sockets, but for our purposes it will "always" work.<p>
+
+ <blockquote>
+<HR>
+[<i>Experiment</i>: A client writes 1,000,000 bytes to a socket
+endlessly, and a server reads 1,000,000 bytes from the other end of the
+socket endlessly.  Run the client on <i>qcunix1</i>, <i>babbage</i>,
+and <i>cougar</i>, and run the server on <i>qcunix1</i> and on
+<i>babbage</i>.
+
+<center><table border>
+
+<TR><TH>Server<TH>Client<TH>Total Bytes<BR>Transferred<TH>Average
+<BR>Bytes per Read<TH>Minimum<BR>Bytes per Read<TH>Maximum<BR>Bytes per
+Read
+
+<TR><TD align=center>babbage<TD
+align=center>babbage<TD align=right>1,006.0M<TD align=right>94,995<TD
+align=right>576<TD align=right>131,072
+
+<TR><TD align=center>babbage<TD
+align=center>cougar<TD align=right>42.9M<TD align=right>4,222<TD
+align=right>1360<TD align=right>8,760
+
+<TR><TD align=center>babbage<TD
+align=center>qcunix1<TD align=right>18.7M<TD align=right>3,029<TD
+align=right>80<TD align=right>7,300
+
+<TR><TD align=center>qcunix1<TD
+align=center>babbage<TD align=right>19.1M<TD align=right>1,902<TD
+align=right>1,360<TD align=right>33,580
+
+<TR><TD align=center>qcunix1<TD
+align=center>qcunix1<TD align=right>153.1M<TD align=right>13,317<TD
+align=right>8<TD align=right>64,240
+
+</table></center><p>
+
+The important statistic here is the minimum number of bytes received by
+a single call to <i>read()</i>.  Except when both the client and server
+run on <i>qcunix1</i>, I never observed fewer bytes than the size of a
+complete siab header being read by the server.]
+
+<HR>
+
+</blockquote>
+
+
+If the data type is 1 or 3, the siab header is followed immediately by
+the string itself.<p>
+
+For this step, <i>fe</i> again connects to the server, and then prompts
+the user to enter a string.  If the string is "q" the program closes
+its socket connection to the server and exits.  If the string is "exit"
+the program writes a siab message with the message type field set to 0, then
+closes its socket connection to the server and exits.<p>
+
+If the user types a string consisting entirely of decimal digits,
+convert the string to an integer and send it to the server in a properly
+formatted siab data message.  If the string consists entirely of digits
+and exactly one period, send the string to the server as a
+floating-point string.  (Optional: accept plus and minus characters and
+an exponent field.)  If the string does not meet either of these
+criteria, send it to the server as a text string.<p>
+
+As in <A HREF="#Step1">Step 1</A>, <i>fe</i> continues to run until the user types "q" (or "exit") in response to the prompt.<p>
+
+For this step <i>be</i> displays each data value and its type.  It may
+seem silly, but floating-point strings must be converted to doubles
+(use <i>strtod()</i>) and printed using the <i>printf()</i>'s
+<code>%f</code> format.  (C++ programmers may use <code>cout</code>,
+but it still must be the double value that is output, not the string.)
+
+When a terminate message is received, the server prints an appropriate
+message and exits.<p>
+
+<DT><B><A Name="Step3">Step 3 -- Command File (<I>fe</I>) and Log File 						(<I>be</I>)</A></B><DD><p>
+
+When the server starts up, it opens a "log file" with a filename that
+consists of the program's name with "<code>.log</code>" at the end. 
+Use <code>argv[0]</code> to determine the program's name.  Instead of
+writing messages to <i>stdout</i>, write text messages to the log
+file.  Each log file message must include the time and date when it was
+written, the IP address (or hostname) of the computer that sent the
+message, the message type, the data type, and the data value.  Be sure
+the log file includes a message telling when the server exited, even if
+it is terminated by <code>SIGINT</code>.  It must be possible to read
+the latest message written to the log file as soon as it is written.<p>
+
+Add a command line option to <i>fe</i> that specifies a filename from
+which it reads commands.  Echo commands to the screen as they are read
+from the file.  If end of file is reached without a "q" or "exit"
+command, the program should do an automatic "q" command.  (If you
+prefer, you may make the program prompt for additional commands from
+the user if it reaches the end of the command file.)  Use "-f" to
+indicate the presence of a filename on the command line.  If there is
+no command file, <i>fe</i> runs interactively as usual.<p>
+
+<DT><B><A Name="Step4">Step 4 -- <I>Add</I> and <I>Change</I> messages</A></B><DD><p>
+
+Now the the client and the server both send messages to each other.  An
+exchange always begins with the client sending a <i>request</i> to the
+server and the server sending a <i>reply</i> to the client.  Requests
+and replies always alternate.  A request may consist of a sequence of
+siab messages, but for this step a reply always consists of exactly one
+siab message.<p>
+
+Now <i>fe</i> prompts the user to enter a command instead of just a data
+value.  Each command consists of a sequence of tokens separated by
+spaces.  (Use <i>strtok()</i> to parse command lines.)  The first token
+is a command name, which will be one of the following words:<p>
+
+<center>
+<table border>
+<TR><TH>Command<TH>Meaning
+
+<TR><TD align=center>q<TD>Exit <i>fe</i>.
+
+<TR><TD align=center>exit<TD>Send a terminate message to <i>be</i> and
+exit <i>fe</i>. 
+
+<TR><TD align=center>add<TD>Add a node to the property list.  There
+will be two more tokens on the command line.  The first is the name of
+the property node, and the second is the value of the node, with the
+data type implied by the format of that token, as in Step 2.  In the
+case of text string values, the value may consist of an arbitrary
+number of tokens.
+
+<TR><TD align=center>change<TD>Change the value of a node that is already in the
+property list.  The command line has the same syntax as <i>add</i>
+commands.
+</table>
+</center><p> 
+
+For both the <i>add</i> and <i>change</i> commands, <i>fe</i> will send
+two siab messages to the server.  The first message will have a
+message type of 2 for "add" or 3 for "change;" the last word of the
+header will tell the length of the property name, and the name itself
+will be sent immediately after the header.  The second message will
+be type 1 ("data"), and will send the property value as described for
+Step 2.<p>
+
+The server will send a single reply message after receiving a complete
+add or change request.  The message will be type 4 ("positive
+acknowledge") if the server was able to comply with the request or type
+5 ("negative acknowledge") if the server was unable to comply with the
+request.  The server will reply with a positive acknowledgement unless
+(1) The request was <i>add</i>, but the
+{&lt;<i>name</i>&gt;&lt;<i>type</i>&gt;} tuple already exists in the
+property list or (2) The request was <i>change</i> but the
+{&lt;<i>name</i>&gt;&lt;<i>type</i>&gt;} tuple does not exist in the
+property list.<p>
+
+The <i>fe</i> program does not prompt for a new command until it
+receives a reply from the server.  If the reply is a positive
+acknowledgement, <i>fe</i> justs prompts for the next command as
+usual.  However, if the reply is a negative acknowledgement <i>fe</i>
+displays an error message before issuing the next prompt.<p>
+
+<B>Note:</B>  Now that both programs need to read siab messages, write
+a single function that will read a complete siab message from a
+socket.  Put the code for this function in a separate source file, put
+the function prototype for the function into a header file, and link
+both <i>fe</i> and <i>be</i> to the common object file.  Of course, you
+may define other utility functions and put them in your
+separately-compiled module also.  There is a header file in
+<code>~vickery/CS-701/siab_utils.h</code> that you may use as a
+starting point for your own header file, if you like.<p>
+
+<DT><B><A Name="Step5">Step 5 -- <I>Get</I> messages</A></B><DD><p>
+
+Now add query commands to <i>fe</i>.  The new commands and their
+meanings are as follows:<p>
+
+<center><table border>
+<TR><TH>Command<TH>Meaning
+
+<TR><TD align=center>get value<TD>There will be two more tokens on the
+command line, the first is a property name, and the second is a
+property type, which will be one of the words, "string," "integer," or
+"float."  <i>fe</i> responds with a message giving the corresponding
+value or an error message indicating that the specified tuple does not
+exist in the property list.
+
+<TR><TD align=center>get types<TD>There is one more token on the
+command line, a property name.  <i>fe</i> displays a list of types
+defined for that name in the property list, or an indication that the
+specified name does not exist in the list at all.
+
+<TR><TD align=center>get names<TD>There are no more tokens on the
+command line. <i>fe</i> displays a list of all property names defined
+in the property list or a message saying that the list is empty.
+
+</table></center><p> 
+
+For "get value" commands, <i>fe</i> sends a siab message with message
+type equal to 6, data type of 1, 2, or 3 depending on the type
+specified by the user, and the rest of the message consists of the name
+length in the last word of the header and the name string itself
+following the message header.  The server replies with either a message
+type of 1 (data) or 5 (negative acknowledgement).<p>
+
+For "get types" commands, <i>fe</i> sends a siab message with message
+type equal to 7, data type of one (text), and the rest of the message
+consists of the name length in the last word of the header and the name
+string itself following the header.  The server replies with a message
+type of 4 (Positive Acknowledgement) message with a data type code of 4
+(type list) and a count of the number of types in the last word of the
+header.  The message header is followed by that number of additional
+integers containing codes for the types defined for the property name. 
+The integer codes are the same as always: 1 for text, 2 for integer,
+and 3 for floating-point.<p>
+
+For "get names" commands, <i>fe</i> sends a siab message with message
+type equal to 8, and the rest of the header must contain zeros.  The
+server replies with a message of type 4 (positive acknowledgement). 
+The last word of the header of this reply tells how many different
+property names there are.  The server then sends a type 1 (data value)
+message for each different name that occurs in the property list.  This
+list of names should be sent in alphabetical order, but that is not
+required.  If the list is empty, the acknowledgement message will have
+a length field of zero, and there will be no data value messages after
+it.<p>
+
+<DT><B><A Name="Step6">Step 6 -- <I>Curses</I> User Interface</A>
+</B><DD><p>
+
+Use the <i>curses</i> package to provide a full-screen user interface
+to <i>fe</i> instead of the command-line version.  The screen shows all
+property names in alphabetical order in one column.  The next two
+columns give the types and values for that name.  The user can use the
+arrow keys and &lt;<code>tab</code>&gt; key to scroll through the list
+and to move to diffent columns, and can edit the list by typing in new
+values.<p>
+
+<DT><B><A Name="Step7">Step 7 -- Concurrent Server</A></B><DD><p>
+
+<B>This step is optional!</B><p>
+
+Change from an iterative server to a concurrent server so that two
+users can view and edit the property list simultaneously without
+interfering with each other.  You will have to introduce a mechanism so
+that all clients are notified with the list is changed, and you will
+have to insure that changes made by one user do not conflict with
+changes made by another user at the same time.<p>
+
+<DT><B><A Name="Ideas">Ideas for Other Features</A></B><DD><p>
+
+  <UL>
+
+    <LI>Support quoted strings for property names and for text values.
+
+    <LI>Implement support for deleting nodes from the property list.
+
+    <LI>Add a command for saving the property list to a file.  A command
+    line option would tell the server to load the property list from a
+    file when it starts up.
+
+    <LI>Add more data types.  Money and dates are good candidates.
+
+    <LI>Timestamp changes to the property list, and let users query
+    creation and last modification times.
+
+    <LI>Make the property list hierarchical.  Each list has a key (such
+    as an IP address(?)) and users can query/edit different lists.
+
+    <LI>Distribute property lists across the network.  When <i>fe</i>
+    starts up it sends out a datagram asking what servers are available,
+    and lets the user select which one is to be the target of each
+    command.
+
+  </UL>
+
+</DL>
+<BR><BR><BR><BR><BR><BR>
+<HR>
+<H3 align=center><A NAME="as-h3-64871">Reference Tables</A></H3>
+<HR>
+<H4 ALIGN=center><A NAME="as-h3-64872">Data Type Codes</A></H4>
+
+
+All messages include a Data Type Code field in the header.  Here is a
+table of Data Type Code values, mnemonic names for the codes (that are
+used in the next table, but which do not need to be used in your code),
+and their meanings.<p>
+
+<center><table border>
+
+<TR><TH>Data<BR>Type<BR>Code<TH>Mnemonic<TH>Meaning
+
+<TR><TD align=center>0<TD>UNDEF<TD>Use this value in messages that do
+not use the the Data Type Code for anything else.
+
+<TR><TD align=center>1<TD>TEXT<TD>The message is followed by a text
+string.  The length of the text string, in bytes, is in the "Value or
+Length" field of the message.
+
+<TR><TD align=center>2<TD>INTEGER<TD>The "Value or Length" field of the
+message contains a two's complement integer in network byte order.
+
+<TR><TD align=center>3<TD>FLOAT<TD>The message is followed by a text
+string that represents a floating-point number.  The length of the
+string, in bytes, is in the "Value or Length" field of the message.
+
+<TR><TD align=center>4<TD>TYPE_LIST<TD>The message is followed by a list of
+integers.  The number of integers in the list is in the "Value or
+Length" field of the message.  If the Value or Length field contains
+zero, no integers follow the message header.
+
+</table></center><p>
+
+<HR>
+<H4 align=center><A NAME="as-h3-64873">Message Types</A></H4>
+Here is a summary of all the types of messages.  All messages start with
+a "message header" consisting of:
+
+<UL>
+
+  <LI><B>Message Length</B>.  A 4-byte integer in network byte order
+  giving the total number of bytes in the message, including any bytes
+  that follow the message header.
+
+  <LI><B>Message Type</B>.  A 4-byte integer in network byte order that
+  is a code for the type of message.  The table below lists the Message
+  Type Codes and their meanings.
+
+  <LI><B>Data Type</B>.  A 4-byte integer in network byte order that is
+  a code for the type of data that is conveyed with the message.  The
+  next table above lists the Data Type Codes and their meanings.  Some
+  message types do not use this field, in which case it is zero.
+
+  <LI><B>Value or Length</B>.  A 4-byte integer in network byte order
+  that contains either an integer value or the length of a string or
+  list that follows the message header.  Some message types do not use
+  this field, in which case it is zero.
+
+</UL><p>
+
+The message header may or may not be followed by additional information,
+depending on the Message Type and Data Type values.  See the table below
+for details.<p>
+
+<center><table border>
+<TR><TH>Msg<BR>Type<TH>Data<BR>Type<TH>Value or<BR>Length<TH>Meaning
+
+<TR><TD align=center>0<TD align=center>zero<TD
+align=center>zero<TD><B>Terminate Server</B>.  Message from client to
+server telling it to shut down.
+
+<TR><TD align=center>1<TD align=center>type code<TD align=center>value
+or length<TD><B>Data Value</B>.  The data type code is one of the
+values from the previous table, and the remainder of the message
+depends on the data type code.
+
+<TR><TD align=center>2<TD align=center>TEXT<TD align=center>length of
+name<TD><B>Add Node</B>.  Message from client to server telling it to
+add a node to the property list if possible.  This message is followed
+immediately by the property name, then by a Data Value message giving
+the value for the new node.  The {<i>&lt;name&gt;&lt;data type&gt;</i>}
+tuple must not exist in the property list for this message to succeed.
+
+<TR><TD align=center>3<TD align=center>TEXT<TD align=center>length of
+name<TD><B>Change Value</B>.  Message from client to server telling it
+to change the value of a node.  The property name follows this message,
+and the next message gives the new value.  The {<i>&lt;name&gt;&lt;data
+type&gt;</i>} tuple must already exist in the property list for this
+message to succeed.
+
+<TR><TD align=center>4<TD align=center>type code<TD align=center>value
+or length<TD><B>Ack</B> (Positive Acknowledgement).  Sent by server to
+client if it is able to process an Add or Change request successfully
+or to reply to any of the "Get" requests (see below)<p>
+
+<UL>
+
+  <LI>Ack following an "Add" or "Change" request will have the data
+  type code and value or length fields equal to zero.<p>
+
+  <LI>Ack following a "Get Value" message will have the data type code
+  and value or length set the same as for a Message Type 1 (Data Value)
+  message, and the message header will be followed by a string if the
+  type code is TEXT or FLOAT.<p>
+
+  <LI>Ack following a "Get Types" message will have the data type code
+  set to TYPE_LIST and the Value or Length field set to number of
+  <i>integer type codes</i> that follow immediately after the message
+  header.  The Value or Length field will be zero in this message if
+  the Get Types message specified a name that does not exist in the
+  list.<p>
+
+  <LI>Ack following a "Get Names" message will have the data type code
+  set to zero and the Value or Length field set to the number of Data
+  Value <i>messages</i> that will be sent immediately after this
+  message.  Each of those Data Value messages will specify a property
+  name as a TEXT item.  The value or length field of this Ack will be
+  zero if the list is empty.
+
+</UL>
+
+<TR><TD align=center>5<TD align=center>zero<TD
+align=center>zero<TD><B>Nak</B> (Negative Acknowledgement).  Sent by
+server to client if it is not able to process an Add, Change, or any of
+the "Get" requests successfully.
+
+<TR><TD align=center>6<TD align=center>type code<TD align=center>name
+length<TD><B>Get Value.</B>  Message from client to server asking for
+the value of a {&lt;<i>name</i>&gt;&lt;<i>type</i>&gt;} tuple.  The
+Data Type field specifies the property type, and the property name is
+sent immediately after the header with its length in the Value or
+Length field.
+
+<TR><TD align=center>7<TD align=center>TEXT<TD
+align=center>length<TD><B>Get Types.</B>  Message from client to server
+asking for a list of types that are defined for a particular property
+name.  The length of the property name is in the Value or Length field,
+and the property name itself follows the header.  The server replies
+with an Ack message that tells the number of types defined for the
+given name in its Value or Length field, followed immediately by that
+many integers, each of which contains a type code.  If the name does not
+occur in the property list, the Value or Length field of the Ack message
+will contain zero.
+
+<TR><TD align=center>8<TD align=center>zero<TD
+align=center>zero<TD><B>Get Names.</B> Message from client to server
+asking for a list of the different property names in the property
+list.  The server replies with an Ack message that tells how many names
+there are in its Value or Length field, followed by a Value message
+with a Data Type of TEXT for each of the names.  (If the list is empty,
+the Ack will indicate zero names, and no Value messages will be sent.)
+
+</table></center><p>
+<HR>
+<UL>
+<LI> <A HREF="../gf.html">Standard Grading Form</A>.
+<LI> <A HREF="grading_form_2.html">Grading Form for this Assignment</A>.
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+
+<HR>
+
+</BODY>
+</HTML>

@@ -1,0 +1,613 @@
+<HTML> <HEAD> <TITLE>Some Unix Commands</TITLE> </HEAD>
+
+<BODY BGCOLOR=#FFFFFF>
+
+<H1 ALIGN=center>Some Unix Commands</H1>
+
+<H2>Introduction</H2>
+
+This page gives you the basic Unix commands that you need to know in
+order to use the shell and to manage the files and directories in your
+Unix account, but doesn't claim to do too much more.<P>
+
+<A NAME="toc">Here is what's on this page:</A><P>
+
+<ol>
+<li><A HREF="#shell">Using the Shell to Enter Commands</A>
+  <ul>
+  <li><A HREF="#special">Continuation Lines and Background Commands</A>
+  <li><A HREF="#redirection">I/O Redirection</A>
+  </ul>
+<li><A HREF="#basic">Some Basic Commands</A>
+  <ul>
+  <li><A HREF="#redirection_examples">I/O Redirection Examples</A>
+    <ul>
+    <li><A HREF="#man">man</A>: View on-line documentation.
+    <li><A HREF="#lp">lp</A>: Print on the printer.
+    </ul>
+  <li><A HREF="#other">Some Other Commands</A>
+    <ul>
+    <li><A HREF="#more">more</A>: View text a screenful at a time.
+    <li><A HREF="#egrep">egrep</A>: Search files for text.
+    <li><A HREF="#find">find</A>: Search for files by name.
+    </ul>
+  </ul>
+<li><A HREF="#pathnames">File Names and Pathnames</A>
+    <ul>
+    <li><A HREF="#home">Home Directory Names</A>
+    </ul>
+<li><A HREF="#mkdir">Creating and Using Directories</A>
+<li><A HREF="#cp">Copying, Moving or Renaming, and Deleting Files</A>
+<li><A HREF="#wild">Wildcards</A>
+</ol>
+
+<H2><A NAME="shell">1. Using the Shell to Enter Commands</A></H2>
+
+Command lines are processed by a program called the <i>shell</i>.  Unix
+has traditionally provided a number of shell programs, each with its
+own syntax rules and special set of features.<P>
+
+All Unix systems provide
+a basic shell called the Bourne Shell, which is in
+<code>/bin/sh</code>.  An extension to the Bourne Shell is the Korn
+Shell, which is in <code>/bin/ksh</code>.  (These two shells are named for
+the people who wrote them.)  An alternate to <i>sh</i> and <i>ksh</i>
+that is based on certain features of the C language is called the "C
+Shell," which is in <code>/bin/csh</code>.  Finally, the C Shell has
+been extended, notably to make better use of the arrow keys during
+command entry, in the T-C Shell, which is in <code>/bin/tcsh</code>.<P>
+
+It's the <i>tcsh</i> that you will be using to enter commands when
+you use your Unix account.<P>
+
+It's possible to change your default shell, but it's not a good idea
+because we will assume you are using <i>tcsh</i> in all the examples we
+give in this course.  However, if you want to experiment with the other
+shells you can execute them just like any other Unix command.  For
+example, to try the Korn shell, just type "<i>ksh</i>" at a
+shell prompt.  You exit a shell by typing the <i>exit</i> command.<P>
+
+The shell is the program that issues a prompt string at the beginning
+of a line, waits for you to enter a command, executes the command, and
+issues the prompt for you to enter the next command.  The prompt string
+you will see is "<code>qcunix1> </code>" and, like everything else, can
+be changed to suit your preferences.  For the examples of shell commands
+we will use "<code>$ </code>" to mean whatever prompt string you have
+set up.<P>
+
+Each command line begins with the name of a command, optionally followed
+by command line arguments, and optionally followed by various operators.
+Spaces are used to separate the elements of the command line.<P>
+
+When you are typing a command to the <i>tcsh</i>, you can use the up
+and down arrow keys to scroll through the history list of commands you
+have previously entered that the shell maintains. Use the left and
+right arrows to move around within a command line, use
+<code>&lt;Backspace&gt;</code> to erase characters, or just type new
+characters into the middle of the line, and press
+<code>&lt;Enter&gt;</code> to run the command.<P>
+
+A command name is either the name of an executable file or the name of
+a command that is executed directly by the shell itself.  (You can set
+up <i>aliases</i> for command names, but we will ignore that for now.) When
+you type in a command line, the shell reads it and examines the first word.
+If it is the name of a built-in command, the shell executes it
+directly, and then issues a prompt for you to type another command.  If it
+is not the name of a built-in command, the shell searches a number of
+standard directories until it finds an executable file with the same
+name, and then executes the file.  When the file finishes executing,
+the shell issues a prompt for another command.  The message <code>"command
+not found"</code> means the command name was neither a shell built-in command
+nor the name of an executable file in any of the standard
+directories.<P>
+
+The list of directories that the shell searches to find executable
+files is called the <i>search path</i>.  Setting up the search path is
+an example of a built-in command.  It's one of the commands that is
+executed automatically when you log in and the shell starts
+executing.  The shell processes all the command lines in the file
+<code>~/.cshrc</code> whenever it starts running, and also processes
+the commands in <code>~/.login</code> when you first log in.  See
+<A HREF="#pathnames">Pathname Syntax</A> for an explanation of these
+file names.<P>
+
+<ul>
+<li><A HREF="#toc">Return to Table of Contents</A>
+</ul>
+
+<H3><A NAME="special">Continuation Lines and Background Commands</A></H3>
+
+Two special features of Unix shells are (1) you can continue a command
+from one line to the next by typing a \ character at the end of the
+first line, and (2) you can run a command in the background by
+terminating the command line with an &amp; character.  While the
+background command is still running, the shell issues another prompt on
+the screen so you can enter more command lines.  You can have pretty
+much any number of commands running in the background at the same
+time.<P>
+
+<b>Note:</b> If you log out of your account while a command is running
+in the background, it continues to run forever!  This will <i>not</i>
+endear you with the people who administer <i>qcunix1</i>, to say the
+least.  The <i>jobs</i> command (a <i>tcsh</i> built-in command) will
+tell you if you have any background commands running, and the
+<i>kill</i> command can be used to get rid of background commands.<P>
+
+<ul>
+<li><A HREF="#toc">Return to Table of Contents</A>
+</ul>
+
+<H3><A NAME="redirection">I/O Redirection</A></H3>
+
+<i>Note:</i>  This topic might not make much sense if you are not
+familiar with the Unix file system yet, but it is presented here
+because it is an important feature of all Unix shells.<P>
+
+If you already know about I/O redirection and pipes in DOS, you already
+know about I/O redirection and pipes in Unix, since DOS adopted the
+same syntax for the same concepts.  Even if you already know about I/O
+redirection, it's a good idea to read the material here, since
+<i>tcsh</i> includes some features you might not be familiar with.<P>
+
+Unix programs typically read input from the keyboard and write output
+to the terminal screen.  You can tell the shell that you want the
+program to read its standard input from a file rather than from the
+keyboard by <i>redirecting stdin</i>, and you can tell the shell that
+you want to write its standard output to a file rather than to the
+screen by <i>redirecting stdout</i>. Putting a <code>&lt;</code>
+character followed by a file name on the command line redirects stdin,
+and putting a <code>&gt;</code> character followed by a filename
+redirects <i>stdout</i>.  You can connect <i>stdout</i> from one
+program to <i>stdin</i> of another program by putting a <code>|</code>
+character between two commands on the same line, which is called a
+<i>pipe</i>.  Any number of commands can be piped together on one
+command line.<P>
+
+The shell will not allow you to redirect <i>stdout</i> to a file that
+already exists.  (There is an option to override this behavior.)
+However, you can redirect <i>stdout</i> so that it will be appended to
+the end of an existing file by using <code>&gt;&gt;</code> instead of
+<code>&gt;</code> as the redirection symbol.<P>
+
+Programs normally write error messages to the <i>stderr</i> output
+stream rather than to <i>stdout</i> so that the messages will be seen
+by the user even if <i>stdout</i> is redirected to a file or a pipe.
+The shell will let you redirect <i>stderr</i> if you want to, though.
+The syntax is to use &gt;&amp; instead of &gt; before the output file
+name.<P>
+
+In the C++ programs that you write, the <code>cout</code> output stream
+is connected to <i>stdout</i>, <code>cerr</code> and <code>clog</code>
+go to <i>stderr</i>, and <code>cin</code> comes from <i>stdin</i>.<P>
+
+You can see some examples of I/O redirection when you read the
+section on <A HREF="#basic">Basic Commands</A>.
+
+<ul>
+<li><A HREF="#toc">Return to Table of Contents</A>
+</ul>
+
+<h2><A NAME = "basic">2. Some Basic Commands</a></h2>
+
+<h4><A NAME="redirection_examples">I/O Redirection Examples</A></h4>
+
+First, we'll introduce some commands that we can use as examples of I/O
+redirection, introduced <A HREF="#redirection">earlier in this
+page</A>.<P>
+
+<A NAME="man">The first Unix command you should learn is called
+<i>man</i></A>.  All the Unix commands are documented in an on-line
+manual, and the <i>man</i> command is used to look at pages in that
+manual.<P>
+
+To start with a basic example,
+
+<pre>
+     $ man man
+</pre>
+
+will show you the <i>man</i> page for the <i>man</i> command itself.
+That is, it will tell you how to use the <i>man</i> command.  Try it,
+but don't get intimidated by the volume and density of what you see!.
+Unix <i>man</i> pages assume you already have a good idea of what you
+are doing.  (If you want a gentler introduction to Unix, you might want
+to look at the <A HREF="index.html#sobell">Sobell</A> book.<p>)
+
+Remember, in the examples, <code>"$ "</code> represents the prompt that
+the shell displays before reading the command line you type in.  In
+this example, the first <code>man</code> is the name of the command you
+want to run (<i>man</i>) and the second <code>man</code> is a command
+line argument, in this case the name of the command you want to know
+about.<P>
+
+You get to the next screenful of <i>man</i> output by pressing the
+spacebar, or you can quit <i>man</i> by pressing '<code>q</code>'.<P>
+
+Now, let's use I/O redirection to save the output of a <i>man</i>
+command in a file.  In this case, you would redirect stdout:
+
+<pre>
+     $ man man > man.out
+</pre>
+
+Instead of displaying the information on the screen, it will be saved
+in a file named <code>man.out</code>.<P>
+
+<A NAME="lp">For an example of input redirection, we'll use the
+<i>lp</i> command , which normally prints whatever it reads from the
+keyboard (stdin) on the printer.</A>  You can redirect stdin to come
+from the a file, though:
+
+<pre>
+     $ lp < man.out
+</pre>
+
+(This is not a great example because <i>lp</i> would have printed
+<code>man.out</code> without doing input redirection if you had
+just typed, "<code>lp man.out</code>".)<P>
+
+Finally, you could use a <i>pipe</i> to print the output of a
+<i>man</i> command without bothering to build a file:
+
+<pre>
+     $ man | lp
+</pre>
+
+In this case, the standard output of the <i>man</i> command doesn't
+appear on the screen, and it doesn't go to a file.  It is connected
+through the pipe dirctly to the input of the <i>lp</i> command, and
+gets printed on the printer.<P>
+
+<H3><A NAME="other">Some Other Commands</A></H3>
+
+<h4><a name="more">Scroll Through Text</a></h4>
+
+You have actually seen the next command, named <i>more</i>, because it
+was used implicitly by <i>man</i> to control the rate at which its
+output scrolls down the screen.  Like <i>lp</i>, <i>more</i> will
+process a (list of) files given on the command line, or will read from
+<i>stdin</i> if there are no filenames given on the command line.<P>
+
+<i>Example</i>: Scroll through the contents of <code>somefile</code>:
+
+<pre>
+     $ more somefile
+</pre>
+
+<i>Example</i>: Use a pipe to scroll through a long directory listing
+output by an <i>ls</i> command:
+
+<pre>
+     $ ls /usr/users | more
+</pre>
+
+You can use <i>more</i> to scroll forward or backwards in a file, or to
+look for certain words in the file.  Type '<code>?</code>' for help on
+these options at the "more" prompt.  Type '<code>q</code>' to quit
+<i>more</i> before you get to the end of the file.<P>
+
+<h4><a name="egrep">Search Files by Content</a></h4>
+
+A powerful utility command is <i>grep</i>, and a slightly more powerful
+version is <i>egrep</i>.  Use either of these commands to search a file
+or a group of files for a string.<P>
+
+<i>Example</i>: Search the files named <code>alpha</code>,
+<code>beta</code>, and <code>gamma</code> for the string "hello
+there".
+
+<pre>
+     $ egrep "hello there" alpha beta gamma
+</pre>
+
+The quotation marks are needed because there is a blank inside the
+string.  (Without the quotes the search would be for the word "hello"
+inside the files <code>there</code>, <code>alpha</code>,
+<code>beta</code>, and <code>gamma</code>.)<P>
+
+<i>Complicated Example</i>:  Let's say you have a project with several
+files in it and you think you sometimes spelled a variable
+<code>this_thing</code> and sometimes wrote it <code>thisThing</code>.
+The following command will find all occurrences of either string in all
+the files in the current directory:
+
+<pre>
+     $ egrep "this_*[tT]hing" *
+</pre>
+
+The second asterisk in the example is a <i>wildcard</i> that matches
+all filenames in the current directory.  The first command line
+argument is enclosed in quotes so the shell will not try to expand the
+asterisk there into file names.  The first argument is the search
+pattern for <i>egrep</i>, and it says to look for "this" followed by
+zero or more underscore characters, followed by either a lower or upper
+case 'T' followed by "hing."  The name of each file containing a match,
+along with all matching lines in the file, will be output.<P>
+
+For more information on <i>egrep</i> (or any other command!) see the
+<i>man</i> page.<P>
+
+<h4><a name="find">Search for Files by Name</a></h4>
+
+The <i>find</i> command is a very rich utility, but a fairly
+simple version of it can be used to search through an entire
+directory tree for files with particular names.
+
+<i>Example</i>: Find "<code>somefile</code>" in my account:
+
+<pre>
+     $ find $HOME -name somefile -print
+</pre>
+
+<i>Example</i>: Find all C++ files anywhere in the current
+directory or below:
+
+<pre>
+     $ find . -name "*.cc" -print
+</pre>
+
+
+At this point, it might be a good idea to become familiar with
+Unix files and directories so these utilities will make more
+sense!<P>
+
+<ul>
+<li><A HREF="#toc">Return to Table of Contents</A>
+</ul>
+
+<h2><A NAME="pathnames">3. File Names and Pathnames</A></h2>
+
+Normally, you will create files using an editor such as <i>pico</i>
+or <i>vi</i>, but to illustrate the rules for naming files, we
+will start with an unconventional way to bring a file into existence.
+You can create an empty file with the <i>touch</i> command:
+
+<pre>
+     $ touch a_new_file.that_i_touched.but_it_is empty
+</pre>
+
+The name of the file that was created by this example is
+"<code>a_new_file.that_I_touched.but_it_is</code>".  The example also
+created another file, named "<code>empty</code>."  (Most Unix commands
+work just as well on a list of file names as on a single one.)  You can
+also see that there are two periods in the first file name, and that it
+is pretty long.  It is a valid Unix file name, though.<P>
+
+<blockquote> Unix keeps track of the time a which a file was last
+modified, which is the most common use for <i>touch</i>.  If you
+<i>touch</i> a file that already exists, its modification time is
+changed, which can be useful sometimes when using the <i>make</i>
+utility that we will be dealing with elsewhere.  You usually create new
+files with a text editor, not with <i>touch</i>.  We introduced
+<i>touch</i> here so we could talk about file names without having to
+deal with the editor.</blockquote>
+
+To look at a list of the files that are in your current directory, use
+the <i>ls</i> command.  All by its self, <i>ls</i> just lists the names
+of all the files, but there are <i>command line arguments</i> that
+alter the output of the command.  For example,
+
+<pre>
+     $ ls -l
+</pre>
+
+will give a "long" listing that includes the name of the file, its
+size, when it was last modified, and its permissions.  (You shouldn't
+have to worry about permissions for a while, but it is an important
+feature of the Unix file system.)<P>
+
+<blockquote> There is an old joke about two Unix users who were
+discussing how arcane the system can be.  In particular, they were
+arguing about how many different meanings a period character has in
+Unix.  One claimed there were 47 different uses for the period, and the
+second claimed there were 48.  They argued for a long time until the
+first said in exasperation, "OK, you'll just have to list all your 48
+ways."  "Well," the second one said, "first, you can put one at the end
+of a sentence, ..." "Stop, stop," the first user said, "you're right.
+I forgot about that one!"  Well, you are about to see your first three
+uses of periods in Unix.</blockquote>
+
+Many times there are a lot of files in a directory that you really
+aren't interested in.  For your convenience, any file that has a name
+beginning with a period is invisible to the <i>ls</i> command ...
+unless you use the "-a" argument line option, which tells <i>ls</i> to
+list <i>all</i> files in the directory.  You can use the "-a" option
+alone or in conjunction with other options.  For example, you can get a
+long listing of all files using either of the following two commands:
+
+<pre>
+     $ ls -la
+     $ ls -l -a
+</pre>
+
+The next two uses of periods in Unix are "." and ".." which are the
+names for the current directory and its parent, respectively.  Assuming
+you know about files and directories in DOS, you know the idea of files
+and directories in Unix.  The main differences between a DOS filesystem
+and a Unix filesystem are:
+
+<ul>
+
+<li>When you type a pathname in DOS you use a '\' (backslash) character
+to separate parts of the path.  In Unix you use a '/' (forward slash)
+character to do the same thing.
+
+<li>DOS filenames are limited to 8 characters, a period, and a 3
+character extension.  As you saw earlier, Unix allows long pathnames
+and puts no restrictions on how many periods there are in a file name
+or how many characters follow a period.
+
+<li>DOS provides a few bits of attibute information about files:
+read-only, hidden, system, and archived.  Unix provides read, write,
+and execute <i>permission</i> bits for the file <i>owner</i>, the
+owner's <i>group</i>, and <i>others</i>.
+
+</ul>
+
+There are other important differences, but these are the most obvious
+ones to a user.<p>
+
+<ul>
+<li><A HREF="#toc">Return to Table of Contents</A>
+</ul>
+
+<H3><A NAME="home">Home Directory Names</A></H3>
+
+When you log in, a unique pathname identifies your <i>home
+directory</i>, which is where files will be created unless you use the
+<A HREF="#mkdir"> <i>cd</i> command</A> to change your <i>current
+working directory</i>.  For example, the pathname to Dr. Vickery's home
+directory is <code> /usr/users/vickery</code>.  If your user name is
+"abc1qc" your home directory will be <code>/usr/users/abc1qc</code>.<P>
+
+All the sample code from the textbook is available in the directory
+<code>CS-200/Examples</code> in Dr. Vickery's account.  You can refer
+to this directory using either the full pathname, <code>
+/usr/users/vickery/CS-200/Examples</code> or by using the
+<code>~</code> (tilde) character to get the shell to supply the
+pathname to Dr. Vickery's home directory for you:
+<code>~vickery/CS-200/Examples</code>.<P>
+
+You can refer to your own home directory in three different ways:
+
+<ul>
+
+<li>The characters <code>~/</code> at the beginning of a pathname refer
+to your home directory.
+
+<li>The environment variable <code>$HOME</code> refers to your home
+directory.  Unfortunately, setting and referencing environment
+variables is beyond the scope of this Web page.
+
+<li>The sequence <code>~&lt;user ID&gt;</code> refers to your home
+directory if you substitute your own account name for <code>&lt;user
+ID&gt;</code>.  This is just the general case of the example given for
+accessing Dr. Vickery's home directory.
+
+</ul>
+
+<ul>
+<li><A HREF="#toc">Return to Table of Contents</A>
+</ul>
+
+<H2><A NAME="mkdir">4. Creating and Using Directories</A></H2>
+
+Create a subdirectory of your current working directory with the
+<i>mkdir</i> command.  Remove a directory with the <i>rmdir</i>
+command.  Use the <i>cd</i> command to make another directory the
+current working directory.  The <i>cd</i> command with no command line
+arguments will make your home directory the current working directory
+no matter where your current working directory is at the time you issue
+the command.<P>
+
+You can use the <i>pwd</i> command to display the full pathname of your
+current working directory at any time.  Also, <i>tcsh</i> can put the
+last component of the pathname of the current working directory in your
+prompt string:
+
+<pre>
+     $ set prompt="$USER@qcunix1[%C]> "
+</pre>
+
+(Like, $HOME, $USER is a reference to an environment variable, in this
+case one that will produce your user ID.)  You could edit this
+<i>set</i> command into your <code>~/.cshrc</code> file so that your
+prompt string would be set up each time you log in.<P>
+
+<ul>
+<li><A HREF="#toc">Return to Table of Contents</A>
+</ul>
+
+<H2><A NAME="cp">5. Copy, Move, and Delete Files</A></H2>
+
+Use the <i>cp</i> command to copy a file, the <i>mv</i> command to move
+or rename a file, and the <i>rm</i> command to remove a file.<P>
+
+The following example copies file <code>abc</code> to <code>def</code>,
+moves file <code>ghi</code> into the parent of the current working
+directory without changing its name, moves file <code>jkl</code> to the
+subdirectory <code>sub</code> (which must already exist) with the new
+name <code>mno</code>, and finally removes all files used in the
+example:
+
+<pre>
+     $ cp abc def
+     $ mv ghi ..
+     $ mv jkl sub/mno
+     $ rm abc def ../ghi sub/mno
+</pre>
+
+<b>NOTE:</b> <i>There is no way to "undelete" a file once you have
+removed it!</i><P>
+
+For this reason, I strongly suggest that you always use the
+"<code>-i</code>" option with the <i>rm</i> command, which causes it to
+ask you to confirm each file you ask to remove.  The best way to do
+this is to make an <i>alias</i> for the <i>rm</i> command that includes
+the <code>-i</code> option.  Type this into your <code>~/.cshrc</code>
+file:
+
+<pre>
+     alias rm "rm -i"
+</pre>
+
+Now, whenever you type the <i>rm</i> command, the shell will add the
+<code>-i</code> argument before running the command, and you will
+be asked for confirmation before each file is deleted.<P>
+
+<ul>
+<li><A HREF="#toc">Return to Table of Contents</A>
+</ul>
+
+<H2><A NAME="wild">6. Wildcards</A></H2>
+
+Wildcards for matching file or directory names work a little
+differently in Unix from other systems.  The '<code>?</code>' character
+substitutes for any single character, and the '<code>*</code>'
+character substitutes for any sequence of zero or more characters.
+Unlike DOS, periods are part of the filename, not separators.  So, you
+can remove all files in the current directory by typing "<code>rm
+*</code>" instead of "<code>rm *.*</code>." In fact, "<code>rm
+*.*</code>" will remove only those files that have at least one
+period in their names.<P>
+
+Square brackets are used to list specific characters or a range of
+characters to substitute into potential file names.  For example, the
+command, "<code>ls [a-z]*</code>" will list the names of all files in
+the current directory that have names starting with a lower case letter
+of the alphabet, and not those that start with an upper case letter, a
+digit, or any other character.  (Note that the asterisk as a wildcard
+matches zero or more occurrences of <i>any</i> character, but as a
+pattern match character in <i>egrep</i> it matches zero or more
+occurrences of the character that immediately precedes it.)<P>
+
+Wildcards work across subdirectories.  The following example will copy
+all source files in all subdirectories that have names starting with a
+lower case letter into the directory <code>BACKUPS</code>:
+
+<pre>
+     $ cp [a-z]*/*.[ch]* BACKUPS
+</pre>
+
+<ul>
+<li><A HREF="#toc">Return to Table of Contents</A>
+</ul>
+
+<HR>
+
+<ul>
+<li><A HREF="index.html">Using Your Unix Account - Contents</A>
+<li><A HREF="/courses/cs200/index.html">CS-200 Home Page</A>
+</ul>
+
+</hr>
+
+<address>
+Christopher Vickery<BR>
+Ruben Luninyants<BR>
+Computer Science Department<BR>
+Queens College of CUNY</address><P>
+
+<HR>
+</BODY>
+</HTML>

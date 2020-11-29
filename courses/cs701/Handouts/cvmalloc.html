@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>cvmalloc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</header><body><center>
+<h1>cvmalloc</h1>
+</center>
+
+<p><a href="cvmalloc/cvmalloc.cc.html">cvmalloc.cc.</a> is
+a source module you can compile into a .o file and link with your
+application to help you check for memory allocation problems.  It
+intercepts all calls to <i>malloc()</i> and <i>free</i> (but not
+<i>realloc()</i>).  Aborts the program if it attempts to free
+what it did not allocate, and at exit, lists all un-freed
+allocations.</p>
+
+<p><a href="cvmalloc/main.cc.html">main.cc</a> is a sample main
+program that can be linked with cvmalloc.o to observe its
+behavior.</p>
+
+<p><a href="cvmalloc/cvmalloc.h.html">cvmalloc.h</a> is a header file
+that provides function prototypes for two functions in cvmalloc.o that
+may be called as an application runs to check for memory leaks.</p>
+
+<p>Works with the GNU C library, glibc.</p>
+
+<hr>
+<address>
+Dr. Christopher Vickery
+</address>
+Computer Science Department, Queens College of CUNY, Flushing, NY 11367
+<br><A HREF="mailto:vickery at babbage.cs.qc.edu">vickery at babbage.cs.qc.edu</A>
+
+<hr></body></html>

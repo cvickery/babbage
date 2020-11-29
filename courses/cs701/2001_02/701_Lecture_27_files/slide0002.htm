@@ -1,0 +1,224 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 26</title>
+<meta name=Description
+content="16-May-01: Signal Management (Stevens Chapter 10)">
+<link rel=next href=slide0003.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0002.htm');   
+  else
+    parent.location.href = "../701_Lecture_27.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=69 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=257 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=88 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=24 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=109 height=58 colspan=2></td>
+  <td width=257 height=58>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=30 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=197 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=257 height=33 colspan=3 align=center><font face="Times New Roman"
+    size=5>Signal Management</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=257 height=2 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=30 height=24></td>
+    <td width=197 height=24 align=center><font face="Times New Roman" size=4>(Stevens
+    Chapter 10)</font><br>
+    </td>
+    <td width=30 height=24></td>
+   </tr>
+  </table>
+  </td>
+  <td width=109 height=58 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=11 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=246></td>
+  <td width=414 height=246 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=27 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=52 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=52 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=66 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=32 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=27 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=31 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=359 height=21 colspan=17><font face="Times New Roman" size=3>The
+    kernel signals a process when some event</font><br>
+    </td>
+    <td width=37 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=56 height=20 colspan=8><font face="Times New Roman" size=3>occurs.</font><br>
+    </td>
+    <td width=340 height=20 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=414 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=166 height=18 colspan=8><font face="Times New Roman" size=2>Long
+    list of signal types.</font><br>
+    </td>
+    <td width=209 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=414 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=332 height=21 colspan=16><font face="Times New Roman" size=3>The
+    process has some choice about how to</font><br>
+    </td>
+    <td width=64 height=21 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=396 height=20 colspan=19><font face="Times New Roman" size=3>respond
+    to the signal, depending on what type it is:</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=414 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=62 height=18 colspan=6><font face="Times New Roman" size=2>Ignore
+    it.</font><br>
+    </td>
+    <td width=313 height=18 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=414 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=260 height=18 colspan=11><font face="Times New Roman" size=2>Catch
+    it and invoke a handler function.</font><br>
+    </td>
+    <td width=115 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=414 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=232 height=18 colspan=9><font face="Times New Roman" size=2>Let
+    the “default” action take place.</font><br>
+    </td>
+    <td width=143 height=18 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=414 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=348 height=16 colspan=12><font face="Times New Roman" size=1>May
+    cause the process to terminate or stop, or may be ignored.</font><br>
+    </td>
+    <td width=6 height=16></td>
+   </tr>
+   <tr>
+    <td width=414 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=292 height=18 colspan=12><font face="Times New Roman" size=2>But
+    some types of signal cannot be ignored.</font><br>
+    </td>
+    <td width=83 height=18 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=414 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=93 height=16 colspan=4><font face="Times New Roman" size=1>KILL
+    and STOP</font><br>
+    </td>
+    <td width=261 height=16 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=414 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=257 height=18 colspan=10><font face="Times New Roman" size=2>Use <i>signal()</i>
+    to set up a signal handler.</font><br>
+    </td>
+    <td width=118 height=18 colspan=6></td>
+   </tr>
+  </table>
+  </td>
+  <td width=21 height=246></td>
+ </tr>
+ <tr>
+  <td width=475 height=17 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+<HTML> <HEAD> <TITLE> Stdio Modules </TITLE> </HEAD>
+<BODY bgcolor=#f0f0f0>
+
+<H1 align=center>Stdio Modules</H1>
+
+<DL>
+<DT><B>Due Date:</B><DD>April 9, 1996<BR>
+Note that I expect to give your next assignment <i>before</i> Spring
+break, however.
+
+<DT><B>Deliverables:</B><DD>
+
+When the project is complete, send me an e-mail message telling me the
+path to the project directory for this assignment.<P>
+
+The project directory is to contain three source files, a Makefile, and
+a <a href="#report">report</a>.  In addition, the directory
+<code>~/man/man1</code> is to contain <i>man</i> pages for the
+executable programs you write for this project, and ~/man/man3</code>
+is to contain <i>man</i> pages for the library functions you develop
+for this assignment.<P>
+
+You may leave a
+<code>README</code> file in the project directory if you think that one
+is needed, but I neither expect nor require you to do so.<P>
+
+<DT><B>Requirements:</B><DD>
+
+In addition to the information given here, be sure to consult the
+<A HREF="grading_form_2.html">Grading Form for this assignment</A>,
+which includes additional information about the requirements for this
+project.
+
+</DL>
+
+<H2>Project Description</H2>
+
+Your assignment is to write replacement versions of two functions that
+are part of the standard C I/O library, which will be called
+"<code>stdio</code> in this assignment.  In addition to producing your
+own versions of these functions, you will use them to perform a timing
+experiment to determine the optimal buffer size for I/O on this system.<p>
+
+The two functions you are to write are <i>__filbuf()</i>, which is called
+internally by the <code>stdio</code> function <i>getc()</i>, and
+<i>fopen()</i>.  In addition, you will write a main program which exercises
+your functions by reading a large data file into memory.<p>
+
+The report, which you are to submit as a text file in the format of
+a research report, is to summarize your experiments with different
+buffer sizes for <i>__filbuf()</i>.  See the <a href="#report"> Written
+Report</a> section below for information on what to put in the report.<p>
+
+You are to do the assignment as a sequence of steps, which are outlined
+here:<p>
+
+<ol>
+
+<li>Copy the default Makefile into your project directory, and edit it
+so that you can make any of four executable programs.  One is to be
+called "<code>stdio</code>", and is to be made by linking the object
+module for the main program with the standard C library.  A second
+program is to be called "<code>myio</code>" (or something similar), and
+is to be made by linking three modules: your main program, and separate
+modules that contain your own versions of <i>__filbuf()</i> and
+<i>fopen()</i>.  The other two programs complete the permutations of
+combining the standard library functions and the two that you will
+write for this assignment.<p>
+
+<blockquote>
+It is a requirement for this project that the <i>same</i> main module
+works with both the system-supplied versions of <i>__filbuf()</i> and
+<i>fopen()</i> and with your own versions.  Likewise, your version of
+<i>__filbuf()</i> must work with the standard library version of
+<i>fopen()</i> and vice-versa.<p>
+</blockquote>
+
+<li>Write a main program which calls <i>fopen()</i> to open a data
+file for reading, reads the contents of the file one byte at a time
+using <i>getc()</i>, prints the number of bytes read, and exits.<p>
+
+The program is to accept an optional command line argument specifying
+the name of the data file that it is to read. The default name for the
+data file is to be <code>data.file</code>.<p>
+
+<li>Create an <code>RCS</code> subdirectory in your project directory,
+and put your Makefile and all source files for the assignment
+under <i>rcs</i> management.<P>
+
+<li>Use calls to the <i>times()</i> system call from your <i>main()</i>
+to determine the speed with which the data file is read by your
+program.  Display the results as the average number of microseconds of
+system and user time per byte read.  You will need to call
+<i>sysconf()</i> to determine the resolution of the clock on the system
+you are using.  (It's 100 Hz, but you must use <i>sysconf()</i> to get
+the value in your program.)<P>
+
+<li>Create a separate source file and write your own implementation of
+<i>__filbuf()</i>.  Your function must use the value of the environment
+variable <code>BUF_SIZE</code> at execution time to set the size of the
+buffer that it uses.  Use the <i>getenv()</i> library function for this.<P>
+
+Do some experiments with <code>BUF_SIZE</code> to see how it affects the
+time it takes to read a data file.  You will need a large data file to
+get a meaningful measure because of the granularity of the system clock.<P>
+
+<li>Create a separate source file and write your own version of
+<i>fopen()</i>.  Make sure it is compatible with both your own version
+of <i>__filbuf()</i> and with the version supplied with the standard
+I/O library.<P>
+
+</ol>
+
+<h2><a name="report">Written Report</a></h2>
+
+Use your version of <i>__filbuf()</i> to investigate the effects of
+different buffer sizes on the speed with which <i>getc()</i> reads
+from a file.<P>
+
+The report is a text file (not a word-processing document) that starts
+with a meaningful title and the author's name centered at the top of
+the page, followed by four sections with the following names:
+
+<ul>
+<li>Introduction<P>
+
+Introduce the problem of deterimining the optimal buffer size for
+<i>__filbuf()</i>.  Include an explanation of the relationship between
+<i>__filbuf()</i> and <i>getc()</i> here.<P>
+
+<li>Method<P>
+
+Tell how you determined the optimal buffer size for <i>__filbuf()</i>.  You
+should mention that you wrote a special version of <i>__filbuf()</i> for
+this experiment and what you were able to do with your <i>__filbuf()</i>
+(change the buffer size by setting an environment variable), but you should
+not document your program in any way because that is already done in your
+<i>man</i> pages and your code's comments.<P>
+
+Give enough information here so that someone else with access to your
+program could do the same experiments you did.<P>
+
+<li>Results<P>
+
+Provide a summary of the data you collected.  Do not give the raw data
+generated by your program, just a table that summarizes your data, 
+like Figure 3.1 in the textbook.<P>
+
+<li>Discussion<P>
+
+Interpret your results here.<P>
+
+</ul>
+<HR>
+<UL>
+<LI> <A HREF="../gf.html">Standard Grading Form</A>.
+<LI> <A HREF="grading_form_2.html">Grading Form for this Assignment</A>.
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>

@@ -1,0 +1,143 @@
+head	1.4;
+access;
+symbols;
+locks
+	vickery:1.4; strict;
+comment	@# @;
+
+
+1.4
+date	2001.10.12.16.13.09;	author vickery;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2001.10.11.20.00.24;	author vickery;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2001.10.11.19.57.34;	author vickery;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.10.04.19.40.43;	author vickery;	state Exp;
+branches;
+next	;
+
+
+desc
+@Makefile for the ouch! project.
+@
+
+
+1.4
+log
+@Updated dependencies.
+@
+text
+@# $Id: Makefile,v 1.3 2001/10/11 20:00:24 vickery Exp vickery $
+
+#   $Log: Makefile,v $
+#   Revision 1.3  2001/10/11 20:00:24  vickery
+#   Added .o and .bak files to clean rule.
+#
+#   Revision 1.2  2001/10/11 19:57:34  vickery
+#   Added depend and default rules; ran depend.
+#
+#   Revision 1.1  2001/10/04 19:40:43  vickery
+#   Initial revision
+#
+
+LDFLAGS = -g
+SRCS    = ouch.cc
+HDRS    = ouch.h
+
+default : ouch
+
+clean   :
+	rcsclean
+	rm -f core *.o *.bak ouch
+
+depend  : $(SRCS) $(HDRS)
+	makedepend -- $(CXXFLAGS) -- $(SRCS)
+
+
+# DO NOT DELETE
+
+ouch.o: ouch.h /usr/include/assert.h /usr/include/features.h
+ouch.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+ouch.o: /usr/include/errno.h /usr/include/bits/errno.h
+ouch.o: /usr/include/linux/errno.h /usr/include/asm/errno.h
+ouch.o: /usr/include/limits.h /usr/include/bits/posix1_lim.h
+ouch.o: /usr/include/bits/local_lim.h /usr/include/linux/limits.h
+ouch.o: /usr/include/bits/posix2_lim.h /usr/include/sys/stat.h
+ouch.o: /usr/include/bits/types.h
+ouch.o: /usr/lib/gcc-lib/i586-mandrake-linux/2.95.3/include/stddef.h
+ouch.o: /usr/include/bits/stat.h /usr/include/stdio.h
+ouch.o: /usr/lib/gcc-lib/i586-mandrake-linux/2.95.3/include/stdarg.h
+ouch.o: /usr/include/libio.h /usr/include/_G_config.h
+ouch.o: /usr/include/bits/stdio_lim.h /usr/include/stdlib.h
+ouch.o: /usr/include/sys/types.h /usr/include/time.h /usr/include/endian.h
+ouch.o: /usr/include/bits/endian.h /usr/include/sys/select.h
+ouch.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+ouch.o: /usr/include/sys/sysmacros.h /usr/include/alloca.h
+ouch.o: /usr/include/string.h /usr/include/unistd.h
+ouch.o: /usr/include/bits/posix_opt.h /usr/include/bits/confname.h
+ouch.o: /usr/include/getopt.h
+@
+
+
+1.3
+log
+@Added .o and .bak files to clean rule.
+@
+text
+@d1 1
+a1 1
+# $Id: Makefile,v 1.2 2001/10/11 19:57:34 vickery Exp vickery $
+d4 3
+d30 1
+a30 1
+ouch.o: ouch.h /usr/include/stdio.h /usr/include/features.h
+d32 6
+d39 1
+d41 6
+a46 2
+ouch.o: /usr/include/bits/types.h /usr/include/libio.h
+ouch.o: /usr/include/_G_config.h /usr/include/bits/stdio_lim.h
+@
+
+
+1.2
+log
+@Added depend and default rules; ran depend.
+@
+text
+@d1 1
+a1 1
+# $Id: Makefile,v 1.1 2001/10/04 19:40:43 vickery Exp $
+d4 3
+d19 1
+a19 1
+	rm -f core ouch
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 1
+a1 1
+# $Id$
+d3 4
+a6 1
+#   $Log$
+d8 7
+a14 1
+clean :
+d18 15
+@

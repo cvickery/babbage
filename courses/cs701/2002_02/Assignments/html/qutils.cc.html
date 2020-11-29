@@ -1,0 +1,198 @@
+<html><head><title>qutils.cc</title></head>
+<body><center><h1>qutils.cc</h1></center><hr><pre>
+      //  $Id: qutils.cc,v 1.4 2002/05/18 22:09:01 vickery Exp $
+      
+      /*  Utility functions used by both the client and the server.
+       *
+       *  Remote shell project, CS-701, Spring 2002
+       *
+       *  Functions:
+       *
+       *    read_header() Reads the header of a message.
+       *    read_body()   Reads the body of a message, given the header.
+       *    write_msg()   Writes a header and message.
+       *    send_msg()    Create header and write message.
+       *
+       */
+      
+      #include "qutils.h"
+      #include "qclient.h"
+      #include "qserver.h"
+      
+      //  read_header()
+      //  ------------------------------------------------------------------
+      /*
+       *    Read a message header.  Puts the message length and type code
+       *    into host byte order.
+       *
+       *    Arguments:  fd      The fd to read from.
+       *                header  Reference to the msg_header_t struct to be 
+       *                        read.
+       *    Returns:    -1      If an error occured while reading.
+       *                 0      If end of input is reached.
+       *                &gt;0      If the header is read successfully.
+       */
+      int
+      read_header( int fd, msg_header_t &header )
+      {
+        char  *buffer = new char[ sizeof(msg_header_t) ];
+        size_t soFar = 0;
+        ssize_t numRead = 0;
+        while ( soFar &lt; sizeof(msg_header_t) )
+        {
+          numRead = read( fd, 
+                          &buffer[soFar], 
+                          sizeof(msg_header_t) - soFar );
+          if ( numRead &lt; 0 )
+          {
+            delete [] buffer;
+            return -1;
+          }
+          if ( 0 == numRead )
+          {
+            delete [] buffer;
+            return 0;
+          }
+          soFar += numRead;
+        }
+        //  Convert byte array to msg_header_t
+        memcpy( &header, buffer, sizeof(msg_header_t) );
+        delete [] buffer;
+        header.msg_length  = ntohl( header.msg_length );
+        header.msg_type    = ntohl( header.msg_type );
+        return (int) sizeof(msg_header_t);
+      
+      }
+      
+      
+      //  read_body()
+      //  ------------------------------------------------------------------
+      /*
+       *    Given a message header and a buffer, read the body of a message.
+       *
+       *    Arguments:  fd      The fd to read from.
+       *                header  The msg_header_t struct containing the body
+       *                        length.
+       *                buffer  Pointer to buffer to hold the message.
+       *    Returns:     0  If end of input is reached.
+       *                -1  If an error occurs.
+       *                &gt;0  If the operation is successful.
+       */
+      int
+      read_body( int fd, msg_header_t header, char *buffer )
+      {
+        size_t  soFar = 0;
+        ssize_t numRead = 0;
+        while ( soFar &lt; (unsigned) header.msg_length )
+        {
+          numRead = read( fd, &buffer[soFar], header.msg_length - soFar );
+          if ( numRead &lt; 0 )
+          {
+            return -1;
+          }
+          if ( 0 == numRead )
+          {
+            return 0;
+          }
+          soFar += numRead;
+        }
+        return (int) header.msg_length;
+      }
+      
+      
+      //  write_msg()
+      //  ------------------------------------------------------------------
+      /*
+       *    Writes a message to a socket.  Puts the message length and type
+       *    code into network byte order.
+       *
+       *    Arguments:  fd          The fd to write to.
+       *                msg_header  The msg_header_t struct to write.
+       *                msg_body    The body of the message to write.
+       *    Returns:    0           If both writes succeeded.
+       *               -1           If either write failed.
+       */
+      int
+      write_msg(  int fd, 
+                  const msg_header_t msg_header, 
+                  const char *msg_body )
+      {
+        msg_header_t buf;
+        buf.msg_type    = htonl( msg_header.msg_type );
+        buf.msg_length  = htonl( msg_header.msg_length );
+        int result = write( fd, &buf, sizeof( buf ) );
+        if ( result &lt; 0 )
+          return -1;
+        result = write( fd, msg_body, msg_header.msg_length );
+        if ( result &lt; 0 )
+          return -1;
+        return 0;
+      }
+      
+      
+      //  send_msg()
+      //  ------------------------------------------------------------------
+      /*
+       *    Create a message header and then write it and the body.
+       *
+       *    Arguments:  fd          The fd to write to.
+       *                msg_type    Type code for the message type.
+       *                msg_body    The body of the message to write.
+       *    Returns:    0           If successful.
+       *               -1           If either the call to write_msg failed.
+       */
+      int
+      send_msg( int fd, const int32_t msg_type, const char *msg_body )
+      {
+        msg_header_t buf;
+        buf.msg_type    = msg_type;
+        buf.msg_length  = strlen( msg_body );
+        int result =  write_msg( fd, buf, msg_body );
+        if ( result &lt; 0 )
+        {
+          writeLog( "SEND MSG FAILURE", strerror( errno ) );
+        }
+        return result;
+      }
+      
+      //  recv_msg()
+      //  ------------------------------------------------------------------
+      /*
+       *    Receive a message on a socket.
+       *
+       *    Allocates memory for the message body, so it is the caller's
+       *    responsibility to free it.
+       *
+       *    Note:       This function blocks until a message is received.
+       *
+       *    Arguments:
+       *
+       *          fd          The fd to read from.
+       *          msg_header  Reference to the message header to read into.
+       *          msg_body    Output parameter will point to message body.
+       *          
+       *    Returns:
+       *          Result of reading message body.
+       */
+      int
+      recv_msg( int fd, struct msg_header_t& msg_header, char **msg_body )
+      {
+        int result = read_header( fd, msg_header );
+        if ( result &lt;= 0 )
+        {
+          close( fd );
+          return -1;
+        }
+        
+        *msg_body = new char[ msg_header.msg_length + 1 ];  
+        memset( *msg_body, '0', msg_header.msg_length + 1 );
+      
+        result = read_body( fd, msg_header, *msg_body );
+        if ( result &lt; 0 )
+        {
+          close( fd );
+          return -1;
+        }
+        return result;
+      }
+</pre><hr></body></html>

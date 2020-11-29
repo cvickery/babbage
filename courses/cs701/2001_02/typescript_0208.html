@@ -1,0 +1,87 @@
+<HTML><HEAD><TITLE>typescript_0208</TITLE></HEAD><BODY><PRE>
+Script started on Thu Feb  8 18:26:24 2001
+$ mkdir RCS
+$ ls -l
+total 9
+drwx------   2 vickery  users       8192 Feb  8 18:26 RCS
+-rw-------   1 vickery  users        653 Feb  8 18:19 printargs.c
+-rw-------   1 vickery  users          0 Feb  8 18:26 typescript
+$ ci printargs.c
+RCS/printargs.c,v  <--  printargs.c
+enter description, terminated with single '.' or end of file:
+NOTE: This is NOT the log message!
+>> This program prints all its command line arguments, one
+>> per line.
+>> .
+initial revision: 1.1
+done
+$ ls -l
+total 8
+drwx------   2 vickery  users       8192 Feb  8 18:27 RCS
+-rw-------   1 vickery  users          0 Feb  8 18:26 typescript
+$ ls -l RCS
+total 1
+-r--------   1 vickery  users        900 Feb  8 18:27 printargs.c,v
+$ make printargs
+co -q RCS/printargs.c,v printargs.c
+gcc  -Wall -g printargs.c  -o printargs
+rm -f printargs.c
+$ ls
+RCS         printargs   typescript
+$ ls -l RCS
+total 1
+-r--------   1 vickery  users        900 Feb  8 18:27 printargs.c,v
+$ printargs hello *
+Argument 01: hello
+Argument 02: RCS
+Argument 03: printargs
+Argument 04: typescript
+$ co printargs.c
+RCS/printargs.c,v  -->  printargs.c
+revision 1.1
+done
+$ cat printargs.c
+// $Id: printargs.c,v 1.1 2001/02/08 23:26:58 vickery Exp $
+/*
+ *  Functions
+ *    main()    Prints all command line arguments, one per line.
+ *
+ *  C. Vickery
+ *  Spring, 2001
+ *
+ *  Revision History
+ *  $Log: printargs.c,v $
+ * Revision 1.1  2001/02/08  23:26:58  vickery
+ * Initial revision
+ *
+ *
+ */
+#include <stdio.h>
+#include <stdlib.h>
+
+//  Function main()
+//  ------------------------------------------------------------------
+/*
+ *  Prints all command line arguments, one per line.
+ *
+ *    argc  Number of arguments
+ *    argv  Array of argument strings
+ *    Returns: 0 (EXIT_SUCCESS)
+ *
+ */
+  int main( int argc, char *argv[] )
+  {
+    int i;
+    for ( i=1; i<argc; i++)
+    {
+      printf( "Argument %02d: %s\n", i, argv[i] );
+    }
+    exit( EXIT_SUCCESS );
+    return 0;
+  }
+
+$ exit
+
+script done on Thu Feb  8 18:29:35 2001
+</PRE></BODY></HTML>
+

@@ -1,0 +1,71 @@
+
+  First, here is the PHP book I am recommending:
+
+    PHP Solutions: Dynamic Web Design Made Easy
+    David Powers
+    Friends of Ed, 2006
+    ISBN 978-1-5909-731-6
+
+  I am recommending it rather than requiring it because you may be comfortable
+  learning PHP some other way, such as by using the online documentation at
+  http://php.net -- which is very good and includes sample code throughout.
+
+  Also, we will be working with a PostgreSQL database, and the Powers book uses
+  MySQL. The differences are relatively minor, but you won't be able to use the
+  examples from the book exactly as they are presented.
+
+  Second, I updated my form_handler.js after class today; you can see the
+  updated version on the Assignment_4_Solution.xhtml web page. I've written a
+  guide to the new version below.
+
+  So, please submit Assignment 4 immediately if you have not already done so.
+  (The keyup listener covered today is not required.)
+
+  And have a great Spring break!
+
+  Dr. Vickery
+
+  Notes On My Assignment 4 Solution
+
+    The sample solution I have provided shows how to set up event listeners for
+    keyup, change, and submit events using an anonymous self-executing function
+    to provide a private "namespace" for the application to work in. I think
+    that part is pretty clear, but let me know if not.
+
+    The other thing my solution does is to use some well-established JavaScript
+    techniques to reduce the size of the code a lot compared to how you might
+    write equivalent code in an object oriented language like Java or a
+    procedural language like C or C++. In particular, my solution dynamically
+    alters DOM tree node objects to so that they carry three additional pieces
+    of informtion around with them.
+
+      1. There is an element that has an error message associated with the two
+      input elements for this assignment, and a reference to that element is
+      added to the input element objects; I used the name 'msg' for the variable
+      that holds this reference. It is initialized during init() and used
+      during validateElement(), which changes the class values of this element
+      to control its visibilty.
+
+      2. There is a boolean variable named isValid associated with the two input
+      elements, kept in the same DOM tree objects as #1 above. Until
+      validateElement() has been called for an element, this variable is
+      undefined. Simply assigning a value to it creates it if it does not
+      already exist.
+
+      3. There is a regular expression for each input element that is used to
+      test whether an element's value is valid or not. Adding these regular
+      expressions to the input elements' DOM objects as the variable named regex
+      is the big change in today's version of the code. The regex variables are
+      initialized in init() and used in validateElement() to perform the
+      validation. Handling the regular expressions this way eliminated the two
+      separate functions for handling changes to the two different input
+      elements; now change events for both elements go to the same function,
+      (changeListener()), which simply passes 'this' on to validateElement().
+
+    There are also changes in today's code, compared to the previous version, to
+    deal with keyup events.
+
+    I think studying today's version of the sample code will be helpful even
+    though you (should) have already studied the previous version.
+
+                                      ###

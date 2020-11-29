@@ -1,0 +1,233 @@
+#! /bin/bash
+
+# Usage: grade [<directory>]
+
+# If a directory is specified, use it.
+#  Otherwise, Process all .dir directories.
+
+dirs=$1
+if [[ $dirs == "" ]]
+then
+  dirs="*.dir"
+fi
+
+# Grading loop starts here
+
+for f in $dirs
+do
+  f=${f%.dir}
+  report=${PWD}/$f.grade
+  clear
+  grep $f ../roster
+
+  if [[ -e $report ]]
+  then
+    echo "Note: $f.grade already exists!"
+    echo -n "Overwrite, Append, or Skip? [oaS] "
+    read oas
+    case $oas in
+      [oO]*)  rm -f $f.grade
+              in=yes
+              ;;
+      [aA]*)  in=yes
+              ;;
+      *)      in=no
+              ;;
+    esac
+  else
+    echo -n "Do it? "
+    read in
+  fi
+
+  if [[ $in == "" || $in == y* ]]
+  then
+    if [[ ! -e $report ]]
+    then
+      grep $f ../roster > $report
+      cat boilerplate >> $report
+    fi
+
+    cd $f.dir/*
+    if [[ $? != 0 ]]
+    then
+      cat <<!!! >> $report
+*** Your tar file did not contain a project subdirectory.
+*** Unable to process.
+!!!
+      exit 1
+    fi
+
+    rm -f vickery_*
+    if [[ $(basename $PWD) == [vV]ickery ]]
+    then
+      cat <<!!! >> $report
+
+*** Your tar file was made from within the project subdirectory
+    instead of from the directory above it.
+
+Files Submitted
+===============
+!!!
+
+    else cat <<!!! >> $report
+
+Contents of your Project Subdirectory
+=====================================
+
+$(/bin/ls -lG)
+
+!!!
+    fi
+
+    /bin/ls -ldG RCS > /dev/null
+    if [[ $? != 0 ]]
+    then
+      cat <<!!! >> $report
+*** There is no RCS subdirectory.
+!!!
+    fi
+
+    cat <<!!! >> $report
+
+Building your program:
+======================
+
+$(make wc 2>&1)
+
+Testing the program:
+=====================
+
+The grading program ran the following sequence of commands:
+
+  $ /usr/bin/wc wc.cc nofile ../../boilerplate > system.out 2>&1
+  $ ./wc wc.cc nofile ../../boilerplate > student.out 2>&1
+  $ diff system.out student.out
+  $ ./wc --lines -L ../../grade   (Test normal option processing.)
+  $ ./wc --li -L ../../grade      (Test normal option processing.)
+  $ ./wc -x                       (Test invalid option processing.)
+  $ ./wc -?                       (Test help option processing.)
+  $ ./wc                          (Test reading from stdin.)
+
+The output of these commands appears below:
+
+Output of the diff command:  (Difference for nofile message is OK)
+
+!!!
+rm -f student.out system.out
+/usr/bin/wc wc.cc nofile ../../boilerplate > system.out 2>&1
+./wc wc.cc nofile ../../boilerplate > student.out 2>&1
+diff system.out student.out >> $report 2>&1
+
+cat <<!!! >> $report
+
+Output of the option processing tests:
+
+Following line should show 227 lines; longest is 70
+$(./wc --lines -L ../../grade)
+
+Following line should show 227 lines; longest is 70
+$(./wc --li -L ../../grade)
+
+Following lines should an show error message, followed by help.
+$(./wc -x 2>&1)
+
+Following lines should show just your help message.
+$(./wc -? 2>&1)
+
+Output of the stdin test (3 lines, 16 words, 89 chars):
+
+!!!
+./wc <<!!! >> $report
+This is some test data being entered from stdin.
+It's just three lines long.
+That's all.
+!!!
+
+cat <<!!! >> $report
+
+End of program tests.
+=====================
+
+  Did the program run correctly?
+
+    Yes.
+
+
+Code Formatting and Coding Style:
+=================================
+
+$(chk_format *.cc)
+!!!
+  chk_format *.cc > /dev/null
+  if [[ $? != 0 ]]
+  then
+    cat <<!!! >> $report
+*** There is at least one formatting error in your code.
+    There should be NO tab characters and NO lines longer
+    than 72 characters.
+!!!
+  else
+    echo "    OK: No tabs and no long lines." >> $report
+  fi
+
+    cat <<!!! >> $report
+
+  NOTE:  If any of the following questions are answered both "Yes" and
+  "No" it means I made a mistake editing this grading report!  Let me
+  know, and I will fix it.
+
+    Was the file comment block properly formatted?
+
+      Yes
+      No.  See the coding guidelines web page for this course.
+
+    Were the comment blocks for all functions, including main()
+    properly formatted?
+
+      Yes
+      No.  See the coding guidelines web page for this course.
+
+    Was the code properly indented?
+
+      Yes
+      No.  See the coding guidelines web page for this course.
+
+    Were the function bodies properly commented?
+
+      Yes
+      No.  See the coding guidelines web page for this course.
+
+    Were there spaces in the statements so they would be easy to read?
+
+      Yes
+      No.  See the coding guidelines web page for this course.
+
+    Other notes:
+
+      None
+
+
+Assignment Grade: 10.0/10.0
+===========================
+
+!!!
+
+    xterm -geometry 80x64+514+0 -e vim  wc.cc &
+    xterm -geometry 80x64+10+0 -e vim  $report &
+    echo
+    echo Quit this shell to continue to next student.
+    /bin/bash
+
+#   in=n
+#   while [[ $in == n* ]]
+#   do
+#     echo -n "Finished? "
+#     read in
+#     [[ $in == n* ]] && ENV=~/.kshrc ksh
+#   done
+    cd ~/Courses/cs701/2003_02/Assignment_02
+
+  fi
+
+done
+

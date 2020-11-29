@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>alias_table.cc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</head>
+<center><h1>alias_table.cc</h1></center>
+<hr>
+<pre>
+      //  $Id: alias_table.cc,v 1.1 2003/04/11 03:48:16 vickery Exp $
+      
+      /*  Alias table management.
+       *
+       *    $Log: alias_table.cc,v $
+       *    Revision 1.1  2003/04/11 03:48:16  vickery
+       *    Initial revision
+       *
+       */
+      
+      
+      #include &lt;map&gt;
+      
+      #include "alias_table.h"
+      
+      //  Declare the type and the table
+      //  ------------------------------------------------------------------
+      struct ltstr
+      {
+        bool 
+        operator()(const char* s1, const char* s2) const
+        {
+          return strcmp(s1, s2) &lt; 0;
+        }
+      };
+      
+      typedef std::map&lt; const char *, 
+                        const char *,
+                        ltstr       &gt; alias_table_t;
+      
+      alias_table_t alias_table;
+      
+      //  listAliases()
+      //  ------------------------------------------------------------------
+      /*
+       *    Writes all aliases to stdout.
+       */
+        void
+        listAliases( void )
+        {
+          alias_table_t::iterator p;
+          //  List all alias names and their values.
+          for ( p = alias_table.begin(); p != alias_table.end(); p++ )
+          {
+            printf( "alias %s = %s\n", p-&gt;first, p-&gt;second );
+          }
+          return;
+        }
+      
+      //  defineAlias()
+      //  ------------------------------------------------------------------
+      /*
+       *    Define or redefine an alias.
+       */
+        void
+        defineAlias( const char *name, const char *value )
+        {
+          alias_table[ name ] = value;
+          return;
+        }
+      
+      //  lookupAlias()
+      //  ------------------------------------------------------------------
+      /*
+       *    Returns the value of an alias, or null if none.
+       */
+        const char *
+        lookupAlias( const char *key )
+        {
+          alias_table_t::iterator result = alias_table.find( key );
+          if ( result != alias_table.end() )
+            return result-&gt;second;
+          else
+            return 0;
+        }
+      
+      //  deleteAlias()
+      //  ------------------------------------------------------------------
+      /*
+       *    Removes an alias from the table.
+       */
+        int
+        deleteAlias( const char *name )
+        {
+          return alias_table.erase( name );
+        }
+</pre><hr></body></html>

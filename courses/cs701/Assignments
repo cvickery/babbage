@@ -1,0 +1,338 @@
+<html><head><title>Remote Shell - Version 1</title></head>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+<center>
+<h1>Remote Shell - Version 1</h1>
+<font color="red">
+<h1>This Web Page is Incomplete<h1>
+<h2>$Id: Assignment_03.html,v 1.2 2002/03/25 04:37:51 vickery Exp vickery $</h2>
+</font>
+</center>
+
+<h2>Introduction</h2>
+
+This assignment will be the first in a series of assignments in which
+you will develop a "remote shell" facility.  Your remote shell will be
+based loosely on the <i>rsh</i> command that comes with most Unix
+systems, but unlike your previous project for this course, your remote
+shell will not attempt to mimic any existing command precisely.<p>
+
+<h2>Project Overview</h2>
+
+The nominal goal of these assignments is to develop a facility that allows
+users to enter command lines on one computer and to have them execute on
+another computer.  To do this, you will need to implement two programs,
+a <i>client</i>, which will read command lines typed by a user and pass
+them on to a remote <i>server</i>, which will process each command line
+and return the results to the client, which will display them on the
+user's console.<p>
+
+You will begin by developing the infrastructure for linking a client
+and server, and then add functionality built on this infrastructure in
+successive assignments.
+
+<h3>Project Management</h3>
+
+You are to use a single project directory for this assignment and all
+following assignments in this course.  The Makefile and all source
+files for the assignment are to be under RCS management as described in
+the <a
+href="http://babbage.cs.qc.edu/courses/cs701/Handouts/coding_guidelines.html">
+Coding Guidelines</a> for the course.  There is a <a
+href="http://babbage.cs.qc.edu/courses/cs701/Handouts/skeleton_makefile.html">
+Skeleton Makefile</a> you may use as a starting point for using the
+<i>make</i> command properly.<p>
+
+<h2>This Assignment</h2>
+
+This assignment is <b>Assignment 3</b> for the course.  All files you
+submit for this assignment must have RCS revision numbers in the form
+<b>1.xxx</b>, where <b>xxx</b> may be any number between 1 and 99.  But
+the first two characters of the revision numbers must be "1.".<p>
+
+For this assignment, you are to implement a server program to which
+client programs can connect.  The server will recognize several command
+line options, will manage a log file in which it will record its
+activity, and will accept connections from clients.  But it will not
+actually do anything having to do with its role as a command
+processor yet.<p>
+
+You will also implement a simple client program that you will be able to
+use to test your server.<p>
+
+<h2>The Server</h2>
+
+The server is to be an executable file named <i>qserver</i>.  It is to
+be built from at least the three source files listed below.  You may add
+extra source files to the project if you wish.<p>
+
+<center><table border=1 cellpadding=5 width="80%">
+  <tr>
+    <th>File Name
+    <th>Contents
+
+  <tr>
+    <td valign=top><code>qserver.h</code>
+
+    <td valign=top>The header file included in all other source files
+    used to build the <i>qserver</i> executable.
+
+  <tr>
+    <td valign=top><code>qserver.cc</code>
+
+    <td valign=top>Contains the <i>main()</i> function for the
+    program.
+    
+    <br>(May also contain other functions, but does not have to.)
+
+  <tr>
+    <td valign=top><code>logfile.cc</code>
+
+    <td valign=top>Contains the functions, <i>openLog()</i>,
+    <i>writeLog()</i>, and <i>closeLog()</i> described <a
+    href="#logfile">below</a>.
+    
+    <br>(May also contain other functions, but does not have to.)
+
+</table></center><p>
+
+The server is to recognize the following command line options:<p>
+
+<center><table border=1 cellpadding=5 width="80%">
+
+  <tr>
+    <th>Option
+    <th>Controls What?
+
+  <tr>
+    <td valign=top>-? <i>or</i>
+    <br>--help
+
+    <td valign=top>Displays a usage message and exits the program.
+
+  <tr>
+    <td valign=top>-p <i>or</i>
+    <br>--port
+
+    <td valign=top>This option must be followed by an argument, the
+    "well-known" port number, which the server will use for accepting
+    connections.  The user may enter the port number as a decimal,
+    octal, or hexadecimal constant using the syntax rules for numeric
+    literals in C/C++.  If this option is not specified, the port
+    number defaults to the last four digits of your social security
+    number.  If the last four digits of your social security number has
+    a decimal value less than 1024, add 1024 to it to get the default
+    value for this parameter.<p>
+
+    The server binds a socket to it's well-known port number, and uses
+    this socket to accept connections from clients.  Port numbers
+    between 0 and 1023 cannot be used unless the program is being run
+    by the super user.  (Optional:  Let the super user specify bind to
+    port numbers below 1024.)  Because port numbers are 16-bit unsigned
+    numbers, the value entered by the user must be between 0 and 65,635
+    (that is, between 0x0000 and 0xFFFF, which is between 00000 and
+    0177777).<p>
+
+    Use the standard library function <i>strtol()</i> to convert the
+    user's command line argument from a string to a numeric port
+    number.
+
+  <tr>
+    <td valign=top>-l <i>or</i>
+    <br>--logfile
+
+    <td valign=top>The server will write messages to a file as it
+    runs.  (<a href="#logfile">See below</a>.)  The argument for this
+    option specifies the pathname for this file.  The default pathname
+    is to be "./qserver.log".
+
+  <tr>
+    <td valign=top>-o <i>or</i>
+    <br>--overwrite
+
+    <td valign=top>This option does not take an argument.  If it is
+    specified, the server is to overwrite the logfile, if it exists. 
+    The default behavior is that the server will append messages to the
+    logfile if it exists.  "The logfile" means the file that will be
+    used for log messages during this invocation of the server.
+
+  <tr>
+    <td valign=top>-v <i>or</i>
+    <br>--version
+
+    <td valign=top>This option is to cause the server to write a
+    message of the form: "qserver: $Revision 1.1 $".  The part of this
+    message that is surrounded by dollar signs is to be produced using
+    the $Revision: 1.2 $ RCS keyword, so the number will be the actual
+    revision number for your qserver.cc source file.  The server exits
+    immediately if this option is specified.
+
+</table></center>
+
+
+<h3><a name="logfile">The Log File</a></h3>
+
+The server is to write a message to a log file each time a "significant"
+event occurs.  Each message is to include the date and time at which the
+event occurred, and information about what the event was.  The date and
+time are to be in the format "YYYY-MM-DD HH:MM:SS" (4-digit year, 2
+digit month, day, hour, minute, and seconds), which will be referred to
+as a <i>timestamp</i>.<p>
+
+You can determine the current time and date using the <i>time(2)</i>
+kernel call, and you can create timestamp strings using the
+<i>strftime(3)</i> function.  You can use the <i>localtime(3)</i> function
+to convert the <i>time_t</i> value returned by <i>time(2)</i> into a
+<i>struct tm *</i> required by <i>strftime(3)</i>.<p>
+
+The table below gives the prototypes and requirements for the three
+functions that are required to be defined in logfile.cc.<p>
+
+<center><table border=1 cellpadding=5 width="80%">
+  <tr>
+    <th>Prototype
+    <th>Description
+
+  <tr>
+    <td valign=top><pre>
+int
+openLog( const char *pathname,
+         const char *msg,
+         bool        overwrite );
+</pre>
+
+    <td valign=top>Open the log file at <i>pathname</i> for writing if
+    possible. Open the file in append or overwrite mode depending on
+    the value of <i>overwrite</i>.
+    <br>Return -1 if the file cannot be opened.<p>
+
+    If the log file was opened successfully, write two lines to it. 
+    The first line is to be the current timestamp followed by the word
+    "STARTUP."  The second line is to be the <i>msg</i> argument,
+    indented four spaces (or an empty line if <i>msg</i> is a null
+    pointer).  Return 0 if no errors occur.
+
+  <tr>
+    <td valign=top><pre>
+int
+writeLog( const char *event_name,
+          const char *msg );
+</pre>
+
+    <td valign=top>Return -1 if the log file has not been opened.
+
+    <br>Otherwise, write two lines to the log file.  The first line is
+    to be the current timestamp followed by the <i>event_name</i>
+    string (or an empty string if <i>event_name</i> is a null
+    pointer).  The second line is to be the <i>msg</i> argument,
+    indented four spaces (or an empty line if <i>msg</i> is a null
+    pointer).  Return 0 if no errors occur.
+
+  <tr>
+    <td valign=top><pre>
+int
+closeLog( const char *msg );
+</pre>
+
+    <td valign=top>Return -1 if the log file has not been opened.
+
+    <br>Otherwise, write two lines to the log file.  The first line is
+    to be the current timestamp followed by the word "SHUTDOWN."  The
+    second line is to be the <i>msg</i> argument, indented four spaces
+    (or blank line if <i>msg</i> is a null pointer).  Close the log
+    file and return 0 if no errors occur.
+
+</table></center><p>
+
+<h3>Server Features</h3>
+
+For this assignment, the server will act as an <i>iterative server</i>. 
+That is, it will interact with just one client at a time.  The algorithm
+for this version of the server is:
+
+<ul>
+  <li>Process command line arguments
+  <li>Set up to accept connections on the well-known port
+  <li>Open the log file
+  <li>Wait for a client to connect.  When a client connects:
+  <ul>
+
+    <li>Write a message containing the connecting client's host name to
+    the log file
+    <li>Read whatever the client writes to the server.  Write a message
+    to the log file telling how many bytes were read each time something
+    is received.  (See below for what the client does.)
+    <li>When the client closes its end of the socket, the server closes
+    its end and waits for another client to connect.    
+  </ul>
+  <li>The server is to continue running until it either receives a
+  SIGINT signal or receives a message from a client consisting only of
+  the string, "SHUT" (four characters).  In either case, the server is
+  to call <i>closeLog()</i> before exiting.  The argument to
+  <i>closeLog()</i> is to be "Normal Shutdown" if a SHUT message is
+  received from a client, or "Signal Received" if SIGINT is received.
+</ul>
+
+<h3>How to Implement the Server</h3>
+
+Limited as its functionality is, the server uses many features of the
+Unix kernel that we have not fully covered in class.  What follows are
+guidelines for implementing these various features.  These guidelines
+are presented as a sequence of development steps and "how-to"
+information for each step.  After coding and testing a step carefully,
+check in the file(s) you worked on so that each step will correspond to
+a new RCS revision number for at least one source file.
+
+<h4>Step 1.  Set up the project.</h4>
+
+Create your Makefile, starting with the [&nbsp;<a
+href="http://babbage.cs.qc.edu/courses/cs701/Handouts/skeleton_makefile.html">Skeleton
+Makefile</a>&nbsp;], qserver.h, qserver.cc, and logfile.cc.  Code the
+<i>main()</i> function to process the command line arguments and print
+a message giving the values of the options so you can be sure they are
+being handled correctly.  Note that option processing is a bit harder
+for this assignment than for the <i>wc</i> project because some of the
+options take arguments.<p>
+
+<b>Don't lose track of the fact that learning how to use the project
+management tools (<i>make</i> and <i>rcs</i>) is a key goal of this
+assignment.  Use this assignment to help make sure you are fully
+comfortable with these tools.</b><p>
+
+Assuming <i>lnx0006</i> and <i>spinoza</i> are both available, be sure
+your code runs correctly on both systems before going on to the next
+step.  (This rule applies to each step of the development process.)  Be
+sure "make clean" leaves you with a clean project directory.  Be sure
+you have run "make depend" before you check in your Makefile.  Be sure
+"make" with no arguments builds <i>qserver</i> from a clean project
+directory.  (The <i>make</i> command automatically checks out
+everything it needs, including the Makefile, when there is an RCS
+subdirectory.)
+
+<h4>Step 2.  Implement the Log File Functions</h4>
+
+Now remove the code that printed the results of command line
+processing, and re-code <i>main()</i> so that it exercises the log file
+functions by opening the log file, writing a message or two to it (use
+"TESTING" as the event name and anything you like as the messages), and
+closing it. You should use the <i>sleep(3)</i> function so there is a
+delay of a few seconds between opening and closing the log file to make
+sure the timestamp operations are working correctly.
+
+<h4>Step 3.  Accept Connections From Clients.</h4>
+
+To be written ...
+
+<h4>Step 4.  Handle SIGINT and Normal Exit</h4>
+
+To be written ...
+
+<h2>The Client</h2>
+
+To be written ...
+
+<h2>Testing and Submitting the Assignment</h2>
+
+To be written ...
+
+<hr></body></html>

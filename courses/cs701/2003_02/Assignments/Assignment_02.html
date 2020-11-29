@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>CS-701 Assignment 2</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>CS-701 Assignment 2</h1>
+</center>
+
+<h2>DUE: Midnight February 19</h2>
+<hr>
+
+<h2>Introduction</h2>
+
+<p>This is an exercise in "coding to specifications."  Following the <a
+href="../../Handouts/coding_guidelines.html">Coding Guidelines for this
+Course</a>, you are to write a C++ program which exactly mimics the
+Unix <i>wc</i> command.</p>
+
+<h2>Requirements</h2>
+
+<p>Read the <i>man</i> page for the <i>wc</i> command, and experiment
+with
+it to make sure you understand what the program does.  Then, write a
+single source module named <code>wc.cc</code> which performs exactly
+the same operations as the wc command.</p>
+
+<h3>Command Line Options</h3>
+
+<p>Use the <i>getopt_long()</i> function to process the following
+command line options:</p>
+
+<p class="indent">
+  <table cellpadding=5 border=1>
+    <tr><td><th>Option
+        <th>Interpretation
+    <tr><td><td>-c <i>or</i> --chars
+        <td> Print the number of characters only.
+    <tr><td><td>-l <i>or</i> --lines
+        <td> Print the number of lines only.
+    <tr><td><td>-w <i>or</i> --words
+        <td> Print the number of words only.
+    <tr><td><td>-L <i>or</i> --max-line-length
+        <td> Print the length of the longest line only.
+    <tr><td><td>-? <i>or</i> --help
+        <td> Print a "usage" message and exit.
+  </table>
+</p>
+
+<p>Options may be combined, so that "-c -w" (or -cw) will print the
+counts for both the number of characters and the number of words.</p>
+
+<p><b>Note:</b> if you use Forbin, which does not support the
+getopt_long() function, to test your program you will have to ignore
+the long versions of the options and process only the short versions
+(-c, -l, -w, and -L) using the <i>getopt()</i> function.  Extra credit:
+write your code so it compiles without modification on either forbin or
+Linux.</p>
+
+<h3>Other Requirements</h3>
+
+<ul>
+
+  <li>If an input file cannot be opened using <i>fopen()</i>, use
+  <i>perror()</i> to print an appropriate error message, and then
+  process all other files named on the command line.
+
+  <li>Use the <i>strtok()</i> function to break each line of text into
+  "words."
+
+  <li>Each counter is to be right-justified in a seven-character field,
+  followed by a single space.<p>
+
+  <li>Do not deal with wide characters or any environment variables.<p>
+
+  <li>Results for non-text files are "undefined."  That is, your program
+  is still considered "correct" no matter what it prints when given
+  non-textual files as input provided the program does not terminate
+  because of the presence of such files in the input list.
+
+</ul>
+
+<h3>Testing</h3>
+
+Test your program to be sure it handles all combinations of options
+and any number of input file names (including zero).  Except for error
+messages for files that can't be read, your progam's output should be
+exactly the same as the output of the system's <i>wc</i> command.  You
+should use the <i>diff</i> command to check for this.  For example,
+one of your tests might be run as follows:
+<pre>
+    ./wc -lw file1 file2 file3 > out1
+    /usr/bin/wc -lw file1 file2 file3 > out2
+    diff out1 out2
+</pre>
+(The above <i>diff</i> command should produce no output.)
+
+<h3>Project Submission</h3>
+
+<p>Follow the instructions in the Coding Guidelines web page for
+creating a tar file of your "clean" project directory.  For this
+assignment, you will not be using <i>make</i> or <i>rcs</i> for project
+management, so your tar file should contain just the following: your
+project directory, which is to contain only the file named wc.cc and an
+empty subdirectory named <code>RCS</code>.  There must be no other
+files in the tar file.</p>
+
+<p>When your assignment has been coded and tested on your linux virtual
+machine, send me an email message with the subject line, "CS-701:
+Assignment 2".  Put your name and id number in the body of the message,
+and include your tar file as an attachment.  You may send the project
+from any Unix system on which you have an email account.  I will test
+your program on CygWin or, if that doesn't work, on Dijkstra.  (If you
+send the assignment using the pine email program on linux, attach the
+tar file by typing Control-J while the cursor is in the heading part of
+your message.)</p>
+
+<p>Submit the assignment to me using my account (<i>vickery</i>) on
+Dijkstra.</p>
+
+<hr></body></html>
+

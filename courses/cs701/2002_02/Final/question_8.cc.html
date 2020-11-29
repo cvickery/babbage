@@ -1,0 +1,73 @@
+<html><head><title>question_8.cc</title></head>
+<body><center><h1>question_8.cc</h1></center><hr><pre>
+      //  $Id$
+      
+      /*  This is a solution to Question 8 on the Final Exam:
+       *
+       *    Write a complete C++ program that executes a command entered by
+       *    the user on the command line.  If there are no command line
+       *    arguments, the program is to do nothing, except to exit
+       *    normally.  If the command that the user enters fails to execute,
+       *    print an appropriate error message ant terminate with an exit
+       *    code of 1.  If the command does execute, your program is to
+       *    print the exit code from the command before exiting normally.
+       *
+       *    $Log$
+       */
+      #include &lt;stdio.h&gt;
+      #include &lt;stdlib.h&gt;
+      #include &lt;unistd.h&gt;
+      #include &lt;wait.h&gt;
+      
+      //  main()
+      //  ------------------------------------------------------------------
+      /*
+       *    If there are command line arguments, fork a child to execute the
+       *    command specified there, print the command's exit code, and
+       *    exit.
+       *
+       *    Arguments:  argc    Number of command line arguments.
+       *                argv    Command line arguments.
+       *                envp    Environment vector.
+       */
+      int
+      main( int argc, char *argv[], char *envp[] )
+      {
+        //  Check if there is a command to execute.
+        if ( argc &lt; 2 )
+          exit( 0 );
+      
+        //  Fork a process to execute the command.
+        pid_t pid = fork();
+        switch ( pid )
+        {
+          case -1:
+            perror( "fork" );
+            exit( 1 );
+            break;
+      
+          case 0:
+      
+            //  Child: execute the command.
+            execvp( argv[1], &amp;argv[1] );
+            perror( "execvp" );
+            exit( 1 );
+            break;
+      
+          default:
+      
+            //  Parent: print child's exit code, or its termination status
+            //  if it did not exit.
+            int status;
+            wait( &amp;status );
+            if ( WIFEXITED(status) )
+            {
+              printf( "%s: exit code was %d\n", 
+                                             argv[1], WEXITSTATUS(status) );
+              exit( 0 );
+            }
+            printf( "%s: terminated with status %04X\n", argv[1], status );
+            exit( 1 );
+        }
+      }
+</pre><hr></body></html>

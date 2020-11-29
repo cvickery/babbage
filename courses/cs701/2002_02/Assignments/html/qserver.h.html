@@ -1,0 +1,82 @@
+<html><head><title>qserver.h</title></head>
+<body><center><h1>qserver.h</h1></center><hr><pre>
+      //  $Id: qserver.h,v 2.5 2002/05/18 22:06:55 vickery Exp $
+      
+      /*    Header file for the qserver module of the qsh project.
+       *
+       *    C. Vickery
+       *    CS-701 Spring 2002
+       *
+       *    $Log: qserver.h,v $
+       *    Revision 2.5  2002/05/18 22:06:55  vickery
+       *    Increased MESSAGE_MAX so buffer used when reading from child command
+       *    would not be to small.
+       *
+       *    Revision 2.4  2002/05/12 00:39:50  vickery
+       *    Moved global constants here.  Added includes for STL.  Added
+       *    prototypes for manageClient() and processCommandLine().
+       *
+       *    Revision 2.3  2002/05/07 05:07:30  vickery
+       *    Added pwd.h.
+       *
+       *    Revision 2.2  2002/05/06 06:35:19  vickery
+       *    Consolidated #includes and added #include for utils.h.
+       *
+       *    Revision 2.1  2002/04/25 03:06:38  vickery
+       *    First revision for Assignment 4.
+       *
+       *    Revision 1.2  2002/03/28 19:51:35  vickery
+       *    Changed prototype for closeLog(): It takes a string argument.
+       *
+       *    Revision 1.1  2002/03/23 04:56:33  vickery
+       *    Initial revision
+       *
+       */
+      #ifndef __QSERVER_H__
+      #define __QSERVER_H__
+      
+      //  Common header files
+      #include &lt;errno.h&gt;
+      #include &lt;getopt.h&gt;
+      #include &lt;limits.h&gt;
+      #include &lt;netdb.h&gt;
+      #include &lt;pwd.h&gt;
+      #include &lt;signal.h&gt;
+      #include &lt;stdio.h&gt;
+      #include &lt;stdlib.h&gt;
+      #include &lt;string.h&gt;
+      #include &lt;unistd.h&gt;
+      #include &lt;wait.h&gt;
+      #include &lt;sys/types.h&gt;
+      #include &lt;sys/socket.h&gt;
+      
+      #include &lt;vector&gt;
+      #include &lt;algo.h&gt;
+      
+      #include "qprotocol.h"
+      #include "qutils.h"
+      
+      //  Log File function prototypes
+      //  ------------------------------------------------------------------
+      int   openLog( const char *filename, const char *msg, bool overwrite );
+      int   writeLog( const char *event_name, const char * msg );
+      void  closeLog( const char * msg );
+      
+      //  Other prototypes
+      //  ------------------------------------------------------------------
+      void manageClient( int, const char * );
+      void processCommandLine( int, const char * );
+      
+      //  Global Constants
+      //  ------------------------------------------------------------------
+      static const int    HOSTNAME_MAX  =   256;
+      static const int    USERNAME_MAX  =    32;
+      static const int    PATHNAME_MAX  =   256;
+      static const int    PROMPTSTR_MAX =   256;
+      static const int    MESSAGE_MAX   =  8192;
+      static const int    SIGNAL_EXIT   =    -1;
+      static const int    SHUTDOWN_EXIT =    -2;
+      
+      #endif
+      
+</pre><hr></body></html>

@@ -1,0 +1,116 @@
+<HTML><HEAD><TITLE>Assignment 3</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+
+<H2>UNIX and C Programming</H2>
+<H1>Assignment 3</H1>
+</center>
+
+<H2>Deliverables and Due Date</H2>
+
+Put all source files for this project in a tar file, and email the zip
+file to me by midnight of the date of the final exam, <B>May 20</B>.<p>
+
+Be sure to put your name and ID number in the body of your email
+message.  Also tell me any optional parts of the assignment that you
+have completed in your email message.
+
+<H2>Introduction</H2>
+
+At this point, you have code which parses command lines into individual
+commands.  You have also written code that uses a dispatch table to
+process built-in commands.  The remainder of the project is to build
+a complete shell, building on your existing code.  The Development Steps
+outlined below will lead you through this process.
+
+<H2>Development Steps</H2>
+
+<ol compact>
+  
+  <LI><B>Parse Individual Commands.</B>  Use your <I>strtok()</I> from
+  Assignment 2 to tokenize individual commands.  Tokens are separated
+  by space, tab, &lt;, and &gt; characters.  Print out each token for
+  each command to verify that this step works correctly.<p>
+
+  <B>Optional:</B> Recognize <I>all</I> I/O redirection operators as
+  separate tokens.<p>
+
+  <B>Optional:</B> (<I>hard</I>) Treat quoted strings as single
+  tokens.  This can include single quotes and backslashes as well as
+  double quotes.<p>
+
+  <LI><B>Build Argument List.</B>  Before determining whether a command
+  is built-in or external, construct an argument list for the command
+  based on the tokens entered by the user.  You may impose a limit of
+  10 on the number of command line arguments a user may enter, but in
+  this case, if there are more than 10, you must issue a warning
+  message saying that additional arguments are being ignored.  Do not
+  include I/O redirection symbols or their arguments in the list of
+  command-line arguments.<p>
+
+  <B>Optional:</B>  Use <I>malloc()</I> to allocate memory for the
+  pointers in the argument list dynamically instead of putting a fixed
+  limit on the number of allowed arguments.  Don't forget to free
+  (<I>free()</I>) each list.<p>
+  
+  <B>Optional:</B>  Put all the information about each command,
+  including I/O redirection information. into a <CODE>struct</CODE>
+  like this one:
+
+<pre>
+    struct cmd_info {
+      char   *cmd_name;
+      char   *argv[10];
+      char   *stdin[2];
+      char   *stdout[2];
+      char   *stderr[2];
+      char  **envp;
+      };
+</pre>
+
+  Whether you build the complete structure or just the argument list, be
+  sure it is correct either by printing it out or by examining it using
+  <I>gdb</I>.<p>
+
+  <LI><B>Process Built-in Commands.</B>  Use the dispatch table
+  developed [&nbsp;<a HREF="qshell.html">earlier</A>&nbsp;] to process
+  the first token in each command.  Modify the prototype for built-in
+  commands to match the one for <I>main()</I>.  When you have this
+  working, you should be able to enter the following command line: "ls;
+  exit; date" and the program should report that ls is not a built-in
+  command, then exit.<p>
+
+  <LI><B>Recognize External Commands.</B>  If a command name is not in
+  your list of built-in commands, look for it in each directory listed
+  in the PATH environment variable.  If found, print the complete
+  pathname of the file.  If not found, print an error message
+  indicating that the file cannot be found.<p>  
+
+  <LI><B>Execute External Commands.</B>  Fork a process to execute each
+  external command, and execute it.  If the command exits with a
+  non-zero exit code, print its value.<p>
+
+  <LI><B>Set Shell Variables.</B>  PS1 and PATH should have immediate
+  visible effects, but all variables should be saved.  Modify the
+  environment passed to a command based on the settings of these
+  variables.<p>
+  
+  <LI><B>Set.</B>  Implement the <I>set</I> built-in command.
+
+  <LI><B>Aliases.</B>  Implement the <I>alias</I> built-in command.
+  
+  <LI><B>Variable Substitution.</B>  For each reference to a shell
+  variable in a command line, substitute the value of the corresponding
+  shell variable before tokenizing the command.<p>
+  
+  <LI><B>Pattern Substitution.</B>  It should be obvious to you how to
+  do this.<p>
+
+  <LI><B>Control Structures.</B>  Implement <I>case</I>, <I>if</I>, and
+  <I>for</I>.  For full credit, you need to extend your shell to
+  implement at least one control structure not already available in the
+  <I>KornShell.</I>
+
+</ol>
+
+<HR></BODY></HTML>

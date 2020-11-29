@@ -1,0 +1,115 @@
+<?php
+  if (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+  <title>Email Registration</title>
+
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="css/style-all.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="screen"
+        href="css/style-screen.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="print"
+        href="css/style-print.css"
+  />        
+
+  <style type="text/css" media="all">
+    form {
+      width: 90%;
+      margin: auto;
+      }
+    legend {
+      font-weight: bold;
+      }
+    td {
+      text-align: center;
+      }
+  </style>
+  <script type="text/javascript" src="js/student_email.js">
+  </script>
+
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>Email Registration</h1>
+  </div>
+
+  <div id="content">
+    <form method="post" action="student_email.php">
+      <fieldset>
+        <legend>Register your email address
+        </legend>
+
+        <p>I use very restrictive spam filters for email, so the only way
+        you can count on being able to send email to me is if you register
+        your email address(es) with me here so that I can put you on my
+        whitelist of current students.</p>
+
+        <p>Also, I regularly send email messages to my students to make
+        announcements or correct mistakes that I make in class.  I use this
+        same whitelist as my mailing list for these announcements, so
+        it&rsquo;s doubly important for you to register your email here.</p>
+
+        <p>You may register multiple addresses; just complete this form for
+        each address you want to register.</p>
+
+        <p>If you want to drop an email address from my whitelist and
+        mailing list, just send me an email message telling me what address
+        to drop.</p>
+
+        <table summary="Name, ID, and email input fields.">
+          <tr>
+            <th><label for="last_name">Your Last Name</label></th>
+            <th><label for="student_id">Your 4-digit student ID</label></th>
+            <th><label for="email">Your email address</label></th>
+          </tr>
+          <tr>
+            <td><input id="last_name" type="text" size="30"/></td>
+            <td><input id="student_id" type="text" size="4" /></td>
+            <td><input id="email" type="text" size="30" /></td>
+          </tr>
+        </table>
+        <input type="submit" value="Submit Email"/>
+      </fieldset>
+    </form>
+  </div>
+
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>
+    </p>
+    <p><em>Last updated
+      <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.</em>
+    </p>
+  </div>
+</body>
+</html>

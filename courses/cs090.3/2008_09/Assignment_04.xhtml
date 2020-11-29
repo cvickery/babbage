@@ -1,0 +1,174 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 4</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 4</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          For this assignment, you are to add two features to the login page you developed for Assignment 3: (1) Use
+          JSON to return an object with information (or lack thereof) for the user who attempted to log in, and (2)
+          Create the visual appearance that the loging form is replaced for 2" with status information about the login
+          attempt, followed by the reappearance of the login form. This is not supposed to be a realistic application;
+          rather, it is an exercise in using PHP objects, JSON, JavaScript timers, and JavaScript DOM manipulation.
+        </p>
+      </div>
+
+      <h2>Description</h2>
+      <div>
+        <ol>
+          <li>
+            <h5>Establish an AJAX link between the JavaScript and PHP sides of the application.</h5>
+            <p class="run-in">
+              If you have not already done so, modify your code from Assignment 3 so that the form is never actually
+              submitted. Instead, when the user changes the contents of the user and/or password fields of the form in
+              such a way that valid data have been entered, create an XMLHttpRequest object, and use it to send the form
+              data as URL-encoded form data (use the <span class="functionName">setRequestHeader()</span> function to do
+              this as shown on page 311 of the textbook.)
+            </p>
+            <p>
+              Use Firebug to verify that the form processor is returning the same data it did for Assignment 3. When
+              that is working, change the form processor so that it echoes a string that does not include any XHTML
+              tags; the JavaScript code will take care of displaying the string in the next step of the assignment.
+            </p>
+          </li>
+          <li>
+            <h5>Replace the contents of the form with the <span class="variableName">responseText</span> from the form processor.</h5>
+            <p class="run-in">
+              Make sure the entire content of the form is one element, either a <span class="tagName">div</span> or a
+              <span class="tagName">fieldset</span>, and save a reference to this element during the <span
+              class="functionName">init()</span> function. Note that there will be stray text node children of the form
+              because XML preserves the whitespace structure of the document; you can discard those nodes, which will
+              have a <span class="variableName">nodeType</span> value of 3.
+            </p>
+            <p>
+              When the XMLHttpRequest completes, create a text node <span
+              class="codeBlock">document.createTextNode(theRequest.responseText);</span> and add it to the form <span
+              class="codeBlock">theForm.appendChild(&hellip;)</span>.
+            </p>
+            <p>
+              Set a timer to execute another function as described in Chapter 5 of the text. Use a value somewhere
+              between 2 and 4 seconds. When the timer times out, remove the text node child from the form, and add the
+              original child back again.
+            </p>
+            <p>
+              Desireable features include: wrap the text returned by the form processor inside an <span
+              class="tagName">h2</span> or other element; clear the password field when the original form contents are
+              restored; allow the user to click on the form to get rid of the message without having to wait for the
+              timeout to finish (be sure to clear the timeout and remove the click listener).
+            </p>
+          </li>
+          <li>
+            <h5>Use JSON to send a PHP object in response to the XMLHttpRequest.</h5>
+            <p class="run-in">
+              For this part of the assignment, you are to create a PHP object that encapsulates the results of the SQL
+              query rather than just a summary string as done so far. In anticipation of &ldquo;further
+              developments&rdquo; in this project, you are to create the object in a general way so that different
+              queries and different results might be accommodated using the same basic structure. The main overhead this
+              implies is that you will need to establish a <span class="key-word">class</span> that describes these
+              objects; creating an actual object will be the job of various helper methods that belong to the class.
+            </p>
+            <h4>
+              New contents of <span class="fileName">process_form.php</span>):
+            </h4>
+            <ol>
+              <li>
+                <h5>Create a class to hold all the information from one row of your Users table.</h5>
+                <p class="code-block">
+ <span class="keyword">class</span> User
+ {
+   <span class="keyword">public</span> $email, $name, $password;
+ }
+                </p>
+                <p>
+                  The class name does not have to match the table name, but it is a reasonable convention to follow.
+                  Likewise, the list of variables would reasonably be named for the column names of the table for this
+                  application. Normally, class variables should be declared <span class="keyword">private</span> (or
+                  possibly <span class="keyword">protected</span>) rather than <span class="keyword">public</span>, but
+                  you are going to send instances of the class as JSON encoded strings, and the PHP <span
+                  class="functionName">json_encode()</span> encodes only public variables, so there is no choice in the
+                  matter.
+                </p>
+              </li>
+             </ol>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have built and tested your web page, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;4</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

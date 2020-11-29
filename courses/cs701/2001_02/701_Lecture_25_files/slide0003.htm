@@ -1,0 +1,199 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 25</title>
+<meta name=Description content="10-May-01: Asynchronous Commands">
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0003.htm');   
+  else
+    parent.location.href = "../701_Lecture_25.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=29 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=339 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=30 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=69 height=33 colspan=2></td>
+  <td width=339 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=339 height=33 align=center><font face="Times New Roman" size=5>Asynchronous
+    Commands</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=67 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=194></td>
+  <td width=398 height=194 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=59 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=10 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=27 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=29 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=126 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=44 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=47 height=18 colspan=8><font face="Times New Roman" size=2>Syntax</font><br>
+    </td>
+    <td width=334 height=18 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=399 height=2 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=122 height=16 colspan=8><font face="Times New Roman" size=1>&amp;
+    at end of command</font><br>
+    </td>
+    <td width=238 height=16 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=399 height=2 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=106 height=18 colspan=9><font face="Times New Roman" size=2>Implementation</font><br>
+    </td>
+    <td width=275 height=18 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=399 height=2 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=355 height=16 colspan=14><font face="Times New Roman" size=1>Shell
+    issues prompt for next command without waiting for child</font><br>
+    </td>
+    <td width=5 height=16></td>
+   </tr>
+   <tr>
+    <td width=39 height=15 colspan=4></td>
+    <td width=95 height=15 colspan=7><font face="Times New Roman" size=1>process
+    to finish.</font><br>
+    </td>
+    <td width=265 height=15 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=399 height=1 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=151 height=16 colspan=9><font face="Times New Roman" size=1>But
+    must avoid “zombies.”</font><br>
+    </td>
+    <td width=209 height=16 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=399 height=1 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=169 height=16 colspan=10><font face="Times New Roman" size=1>Must
+    return exit status to user.</font><br>
+    </td>
+    <td width=191 height=16 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=399 height=2 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=360 height=16 colspan=15><font face="Times New Roman" size=1>May
+    be handled by calling <i>waitpid()</i> just before issuing prompts.</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=399 height=1 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=290 height=14 colspan=10><font face="Times New Roman" size=1><i><span
+    style="mso-spacerun: yes"> </span>waitpid()</i> can be coded so it doesn’t
+    block (WNOHANG)</font><br>
+    </td>
+    <td width=49 height=14 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=399 height=3 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=201 height=18 colspan=14><font face="Times New Roman" size=2>Full
+    Job Control Management</font><br>
+    </td>
+    <td width=180 height=18 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=399 height=2 colspan=19></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=185 height=16 colspan=12><font face="Times New Roman" size=1>See
+    Chapters 9 and 10 in Stevens</font><br>
+    </td>
+    <td width=175 height=16 colspan=3></td>
+   </tr>
+  </table>
+  </td>
+  <td width=37 height=194></td>
+ </tr>
+ <tr>
+  <td width=475 height=57 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

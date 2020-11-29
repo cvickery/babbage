@@ -1,0 +1,619 @@
+<html><head><title>process_command.cc</title></head>
+<body><center><h1>process_command.cc</h1></center><hr><pre>
+      //  $Id: process_command.cc,v 2.5 2002/05/19 00:46:41 vickery Exp $
+      
+      /*  Parse and execute a command line.  Manages interactions with the
+       *  client during execution.
+       *
+       *  Functions:  
+       *              do_exit             The exit builtin command.
+       *              do_shut             The shut(down) builtin command.
+       *              do_chdir            The cd builtin command.
+       *              do_echo             The echo builtin command.
+       *              
+       *              processCommandLine  Process a command line.
+       *
+       *    $Log: process_command.cc,v $
+       *    Revision 2.5  2002/05/19 00:46:41  vickery
+       *    Close stdin pipe when getting zero byte message from client.
+       *    But child executing the command gets eof after just line is
+       *    written to the pipe.
+       *
+       *    Revision 2.4  2002/05/19 00:20:41  vickery
+       *    Deleted a debugging comment.
+       *
+       *    Revision 2.3  2002/05/18 22:16:59  vickery
+       *    Implemented forked builtin and external commands, including
+       *    parenting acting as liason between child and client.
+       *
+       *    Revision 2.2  2002/05/14 04:20:30  vickery
+       *    Added sending SC_SHUT message to client in do_shut.
+       *
+       *    Revision 2.1  2002/05/12 00:50:07  vickery
+       *    Initial version.
+       *    Handles exit, shutdown, chdir as non-forking builtins.
+       *    Recognizes echo as forking builtin, but does not fork.
+       *    Treats all other commands as "Unrecognized."
+       *
+       */
+      
+      #include &lt;fcntl.h&gt;
+      #include &lt;sys/poll.h&gt;
+      
+      #include "qserver.h"
+      
+      //  Globals
+      //  ------------------------------------------------------------------
+      extern char                 *server_home;
+      extern char                 *client_ident;
+      
+      extern int                  command_pid;
+      extern int                  command_status;
+      extern vector&lt;const char *&gt; stdin_vec;    //  Typeahead buffer
+      
+      static vector&lt;const char *&gt; token_vec;
+      
+      //  Builtin Commands
+      //  ==================================================================
+      
+      typedef int builtin_func_t( int, int, const char *[] );
+      static builtin_func_t do_exit, do_shut, do_chdir, do_echo;
+      struct dispatch_t
+      {
+        const char            *func_name;
+        const builtin_func_t  *func_ptr;
+      };
+      
+      dispatch_t  no_fork[] =
+      {
+        { "exit",     do_exit   },
+        { "q",        do_exit   },
+        { "shut",     do_shut   },
+        { "shutdown", do_shut   },
+        { "cd",       do_chdir  },
+      };
+      const int num_no_fork = sizeof( no_fork ) / sizeof( dispatch_t );
+      
+      dispatch_t  do_fork[] =
+      {
+        { "echo",     do_echo   },
+        { "print",    do_echo   },
+      };
+      const int num_do_fork = sizeof( do_fork ) / sizeof( dispatch_t );
+      
+      
+      //  No-fork Builtins
+      //  ==================================================================
+      
+      //  do_exit()
+      //  ------------------------------------------------------------------
+      /*
+       *    Exit the manager, which will break the connection to the client.
+       *    User may specify the exit code on the command line.
+       */
+      int
+      do_exit( int fd, int argc, const char *argv[] )
+      {
+        int exit_code = 0;
+        if ( argc &gt; 1 )
+        {
+          exit_code = strtoul( argv[ 1 ], 0, 0 );
+        }
+        _exit( exit_code );
+      }
+      
+      //  do_shut()
+      //  ------------------------------------------------------------------
+      /*
+       *    Exit the manager, indicating to the server that it is to
+       *    shutdown.
+       */
+      int
+      do_shut( int fd, int argc, const char *argv[] )
+      {
+        send_msg( fd, SC_SHUT, "Shutting down the server.n" );
+        _exit( SHUTDOWN_EXIT );
+      }
+      
+      //  do_chdir()
+      //  ------------------------------------------------------------------
+      /*
+       *    Change the current working directory.
+       *
+       *    If no arguments, change to the server's startup directory
+       *    (server_home).
+       */
+      int
+      do_chdir( int fd, int argc, const char *argv[] )
+      {
+        int result = 0;
+        if ( argc == 1 )
+        {
+          result = chdir( server_home );
+        }
+        else
+        {
+          result = chdir( argv[ 1 ] );
+        }
+        if ( result &lt; 0 )
+        {
+          send_msg( fd, SC_STDERR, strerror( errno ) );
+          return 1;
+        }
+        return 0;
+      }
+      
+      
+      //  Forkable Builtins
+      //  ==================================================================
+      
+      //  do_echo()
+      //  ------------------------------------------------------------------
+      /*
+       *    Write command line arguments to stdout.
+       *    Return the number of command line arguments as a development
+       *    aid.
+       */
+      int
+      do_echo( int fd, int argc, const char *argv[] )
+      {
+        for ( int i = 1; i &lt; argc; i++ )
+        {
+          printf( "%s ", argv[ i ] );
+        }
+        printf( "n" );
+        fflush( stdout );
+        return argc;
+      }
+      
+      
+      //  processCommandLine()
+      //  ==================================================================
+      /*
+       *    Parse and execute a command line.
+       *
+       *    Arguments:    client_fd   Socket connection to the client.
+       *                  cmd_line    The command line to be processed.
+       */
+      void
+      processCommandLine( int client_fd, const char *cmd_line )
+      {
+        char          msg_buf[ MESSAGE_MAX ];
+        char          *msg_body = 0;
+        msg_header_t  msg_header;
+        int           result    = 0;
+      
+        //  Tokenize the command line into an argument vector
+        vector&lt;const char *&gt;::iterator  vi;
+      
+        token_vec.erase( token_vec.begin(), token_vec.end() );
+        char buf[ strlen( cmd_line) + 1 ];
+        strcpy( buf, cmd_line );
+        const char *token = strtok( buf, " tnr" );
+        while ( token != 0 )
+        {
+          token_vec.insert( token_vec.end(), token );
+          token = strtok( 0, " tnr" );
+        }
+        int num_tokens = token_vec.size();
+        if ( num_tokens == 0 )
+          return;
+      
+      
+        //  Build the argument vector, removing I/O redirection operators
+        //  and operands.
+        const char *redirect_stdin  = 0;
+        const char *redirect_stdout = 0;
+        const char *redirect_stderr = 0;
+        const char *arg_vector[ num_tokens + 1 ];
+        int         arg_count       = 0;
+      
+        for ( vi = token_vec.begin(); vi &lt; token_vec.end(); vi++ )
+        {
+      
+          //  Check for redirection operators
+          int redirect_type = -1;
+          if ( 0 == strcmp( *vi, "&lt;" ) )
+              redirect_type = 0;
+          if ( 0 == strcmp( *vi, "&gt;" ) )
+              redirect_type = 1;
+          if ( 0 == strcmp( *vi, "2&gt;" ) )
+              redirect_type = 2;
+          
+          if ( redirect_type &gt;= 0 )
+          {
+            if ( ++vi == token_vec.end() )
+            {
+              send_msg( client_fd, 
+                               SC_STDERR, "Missing redirection operandn" );
+              return;
+            }
+            switch ( redirect_type )
+            {
+              case 0:
+                redirect_stdin = *vi;
+                break;
+              case 1:
+                redirect_stdout = *vi;
+                break;
+              case 2:
+                redirect_stderr = *vi;
+                break;
+              default:
+                fprintf( stderr, "Bad switch at %s line %dn",
+                                                       __FILE__, __LINE__ );
+                exit( 1 );
+            }
+          }
+          else
+          {
+            //  No redirection for this token; add it to arg vector.
+            arg_vector[ arg_count++ ] = *vi;
+          }
+        }
+        //  Add null pointer to end of argument vector
+        arg_vector[ arg_count ] = 0;
+      
+        //  Execute non-forking builtins.
+        for ( int i = 0; i &lt; num_no_fork; i++ )
+        {
+          if ( 0 == strcmp( arg_vector[ 0 ], no_fork[ i ].func_name ) )
+          {
+            command_status = 
+                  no_fork[ i ].func_ptr( client_fd, arg_count, arg_vector );
+            return;
+          }
+        }
+      
+        //  Not a non-forking builtin, so the command, whether builtin or
+        //  external, requires a separate process.
+      
+        //  Create pipes for child's stdin/stdout/stderr
+        int stdin_pipe[2], stdout_pipe[2], stderr_pipe[2];
+        if ( pipe( stdin_pipe ) &lt; 0 )
+        {
+          perror( "stdin_pipe" );
+          exit( 1 );
+        }
+        if ( pipe( stdout_pipe ) &lt; 0 )
+        {
+          perror( "stdout pipe" );
+          exit( 1 );
+        }
+        if ( pipe( stderr_pipe ) &lt; 0 )
+        {
+          perror( "stderr pipe" );
+          exit( 1 );
+        }
+      
+        //  Fork child to execute the command
+        //  ----------------------------------------------------------------
+        command_pid = fork();
+        switch ( command_pid )
+        {
+      
+          //  Error
+          //  --------------------------------------------------------------
+          case -1:
+            perror( "fork a command" );
+            exit( 1 );
+      
+          case 0:
+      
+            //  Child Process
+            //  ============================================================
+      
+            //  Child: Clean up pipes
+            //  ------------------------------------------------------------
+            close( stdin_pipe [ 1 ] );
+            close( stdout_pipe[ 0 ] );
+            close( stderr_pipe[ 0 ] );
+      
+            //  Child: Connect stdin/out/err to pipe or file.
+            //  ------------------------------------------------------------
+            if ( redirect_stdin != 0 )
+            {
+              //  Stdin redirection; don't need stdin pipe at all.
+              close( stdin_pipe[ 0 ] );
+              //  Open the input file.
+              result = open( redirect_stdin, O_RDONLY );
+              if ( result &lt; 0 )
+              {
+                //  Input redirection failed.
+                sprintf( msg_buf, 
+                              "Input redirection: %sn", strerror( errno) );
+                send_msg( client_fd, SC_STDERR, msg_buf );
+                exit( 1 );
+              }
+              if ( dup2( result, STDIN_FILENO ) &lt; 0 )
+              {
+                perror( "dup2 redirect to stdin" );
+                exit( 1 );
+              }
+              if ( close( result ) &lt; 0 )
+              {
+                perror( "close stdin" );
+                exit( 1 );
+              }
+            }
+            else
+            {
+              //  Stdin not redirected; connect it to its pipe.
+              if ( dup2( stdin_pipe[ 0 ], STDIN_FILENO ) &lt; 0 )
+              {
+                perror( "dup2 pipe to stdin" );
+                exit( 1 );
+              }
+            }
+      
+            if ( redirect_stdout != 0 )
+            {
+              //  Stdout redirection; don't need stdout pipe at all.
+              close( stdout_pipe[ 1 ] );
+              //  Open the output file (No Clobber!)
+              result = open( redirect_stdout, 
+                                        O_WRONLY | O_CREAT | O_EXCL, 0666 );
+              if ( result &lt; 0 )
+              {
+                //  Output redirection failed.
+                sprintf( msg_buf, 
+                             "Output redirection: %sn", strerror( errno) );
+                send_msg( client_fd, SC_STDERR, msg_buf );
+                exit( 1 );
+              }
+              if ( dup2( result, STDOUT_FILENO ) &lt; 0 )
+              {
+                perror( "dup2 redirect to stdout" );
+                exit( 1 );
+              }
+              if ( close( result ) &lt; 0 )
+              {
+                perror( "close stdout" );
+                exit( 1 );
+              }
+            }
+            else
+            {
+              //  Stdout not redirected; connect it to its pipe.
+              if ( dup2( stdout_pipe[ 1 ], STDOUT_FILENO ) &lt; 0 )
+              {
+                perror( "dup2 pipe to stdout" );
+                exit( 1 );
+              }
+            }
+      
+            if ( redirect_stderr != 0 )
+            {
+              //  Stderr redirection; don't need stderr pipe at all.
+              close( stderr_pipe[ 1 ] );
+              //  Open the output file
+              int mode = O_WRONLY | O_CREAT;
+              if ( redirect_stdout && 
+                    ( strcmp( redirect_stdout, redirect_stderr ) != 0 ) )
+              {
+                mode |= O_EXCL;   //  Not shared with stdout
+              }
+              result = open( redirect_stderr, mode , 0666 );
+              if ( result &lt; 0 )
+              {
+                //  Error redirection failed.
+                sprintf( msg_buf, 
+                              "Error redirection: %sn", strerror( errno) );
+                send_msg( client_fd, SC_STDERR, msg_buf );
+                exit( 1 );
+              }
+              if ( dup2( result, STDERR_FILENO ) &lt; 0 )
+              {
+                perror( "dup2 redirect to stderr" );
+                exit( 1 );
+              }
+              if ( close( result ) &lt; 0 )
+              {
+                perror( "close stderr" );
+                exit( 1 );
+              }
+            }
+            else
+            {
+              if ( dup2( stderr_pipe[ 1 ], STDERR_FILENO ) &lt; 0 )
+              {
+                perror( "dup2 pipe to stderr" );
+                exit( 1 );
+              }
+            }
+      
+            //  Child: Execute do-fork builtins
+            //  ------------------------------------------------------------
+            for ( int i = 0; i &lt; num_do_fork; i++ )
+            {
+              if ( 0 == strcmp( arg_vector[ 0 ], do_fork[ i ].func_name ) )
+              {
+                command_status = 
+                  do_fork[ i ].func_ptr( client_fd, arg_count, arg_vector );
+                _exit( command_status );
+              }
+            }
+      
+            //  Child: Execute external command.
+            //  ------------------------------------------------------------
+            execvp( arg_vector[ 0 ], (char **)arg_vector );
+            perror( "execvp failed" );
+      
+            //  Child: Give up.
+            //  ------------------------------------------------------------
+            send_msg( client_fd, SC_STDERR, "Unrecognized command.n" );
+            _exit( 1 );
+               
+          default:
+      
+            //  Parent Process
+            //  ============================================================
+      
+            //  Parent: Clean up pipes
+            //  ------------------------------------------------------------
+            close( stdin_pipe [ 0 ] );
+            close( stdout_pipe[ 1 ] );
+            close( stderr_pipe[ 1 ] );
+      
+            //  Parent: Manage std out/err and client (stdin) messages
+            //  ------------------------------------------------------------
+            if ( ! redirect_stdin )
+            {
+              //  Write anything in the typeahead buffer to the child's
+              //  stdin.
+              vector&lt;const char *&gt;::iterator it = stdin_vec.begin();
+              while ( it != stdin_vec.end() )
+              {
+                result = write( stdin_pipe[ 1 ], *it, strlen( *it ) );
+                stdin_vec.erase( it++ );
+              }
+            }
+      
+      
+            //  Structs for polling.
+            struct pollfd poll_list[ 3 ];
+            int     nfds, client_index, stdout_index, stderr_index;
+      
+            //  Event Loop:  Read from client, child stdout, and/or child
+            //  stderr, and write to child stdin and/or client.  Continue
+            //  until child's stdout and stderr are both closed.
+      
+            bool stdout_isalive = ! redirect_stdout;
+            bool stderr_isalive = ! redirect_stderr;;
+      
+            while ( stdout_isalive || stderr_isalive )
+            {
+              //  Initialize the pollfd structs.
+              
+              client_index = stdout_index = stderr_index = -1;
+              nfds = 0;
+      
+              //  Always accept input from client
+              poll_list[nfds].fd      = client_fd;
+              poll_list[nfds].events  = POLLIN;
+              poll_list[nfds].revents = 0;
+              client_index = nfds++;
+              
+              //  Accept input from stdout if it wasn't redirected and
+              //  hasn't closed yet.
+              if ( stdout_isalive )
+              {
+                poll_list[nfds].fd      = stdout_pipe[ 0 ];
+                poll_list[nfds].events  = POLLIN;
+                poll_list[nfds].revents = 0;
+                stdout_index = nfds++;
+              }
+              
+              //  Accept input from stderr if it wasn't redirected and
+              //  hasn't closed yet.
+              if ( stderr_isalive )
+              {
+                poll_list[nfds].fd      = stderr_pipe[ 0 ];
+                poll_list[nfds].events  = POLLIN;
+                poll_list[nfds].revents = 0;
+                stderr_index = nfds++;
+              }
+      
+              //  Wait for input.
+              int poll_result = 0;
+              poll_result = poll( poll_list, nfds, -1 );
+              if ( poll_result &lt; 0 )
+              {
+                perror( "poll" );
+                if ( errno == EINTR )
+                {
+                  //  Ignore calls to poll that were caused by being
+                  //  interrupted.
+                  continue;
+                }
+                else
+                {
+                  exit( 1 );
+                }
+              }
+      
+              //  Check if this was a timeout.
+              //    Will occur only if last arg to poll() was &gt; 0.
+              if ( 0 == poll_result )
+              {
+                continue;
+              }
+      
+              //  Read from each active source, and generate messages
+              //  accordingly.
+              
+              for (int source = 0; source &lt; nfds; source++ )
+              {
+              if ( poll_list[source].revents & POLLIN )
+              {
+                //  Receive and process a message from the client.
+                if ( source == client_index )
+                {
+                  result = recv_msg( client_fd, msg_header, &msg_body );
+                  if ( (unsigned ) msg_header.msg_length == 
+                                                        strlen( msg_body ) )
+                  {
+                    switch ( msg_header.msg_type )
+                    {
+                      case CS_STDIN:
+                        if ( 0 == msg_header.msg_length )
+                        {
+                          close( stdin_pipe[ 1 ] );   //  Indicate eof
+                        }
+                        else
+                        {
+                          // Ignore error writing; client may have exited.
+                          result = write( stdin_pipe[ 1 ], msg_body,
+                                                    msg_header.msg_length );
+                        }
+                        delete [] msg_body;
+                        break;
+      
+                      default:
+                        fprintf( stderr, "*** Received message type %d "
+                                 "while waiting for stdin from client %sn",
+                                  msg_header.msg_type, client_ident );
+                        exit( 1 );
+                        break;
+                    }
+                  }
+                  continue;
+                }
+      
+                //  Process input from child's stdout or stderr.
+                memset( msg_buf, '0', sizeof( msg_buf ) );
+                result = read( poll_list[source].fd, msg_buf, 
+                                                        sizeof( msg_buf ) );
+                if ( result &gt; 0 )
+                {
+                  int32_t msg_type = 
+                         ( source == stderr_index ) ? SC_STDERR : SC_STDOUT;
+                  send_msg( client_fd, msg_type, msg_buf );
+                }
+                else
+                {
+                  //  Error or end of file from stdout or stderr.
+                  if ( source == stdout_index )
+                    stdout_isalive = false;
+                  else
+                    stderr_isalive = false;
+                }
+              }
+              else
+              {
+                if ( source == stdout_index )
+                  stdout_isalive = false;
+                else if ( source == stderr_index )
+                  stderr_isalive = false;
+              }
+            }
+          }
+          return;
+        }
+        //  Should not fall out of fork() switch.
+        fprintf( stderr, "Invalid switch at %s line %dn",
+                                                       __FILE__, __LINE__ );
+        exit( 1 );
+      }
+      
+</pre><hr></body></html>

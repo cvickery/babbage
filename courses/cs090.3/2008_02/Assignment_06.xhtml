@@ -1,0 +1,128 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 6</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 6</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+      	<p>
+          Using JavaScript to validate the user&rsquo;s email address is a usability enhancement for the user: if the
+          email address is wrong, they get immediate feedback with the error field highlighted and the keyboard focus
+          placed in the correct field automatically. But it does not guarantee that the 
+          <span class="propertyName">action</span> script (<span class="fileName">loginOrRegister.xhtml</span>) will
+          actually receive a valid email address from the user: a malicious user could easily send a forged request as
+          part of a cross-site scripting (XSS) attack on your site.
+        </p>
+        <p>
+          You have to validate all form data on the server side, whether it is validated on the client side or not,
+        	and that is what you are to do for the email address for this assignment.
+        </p>
+      </div>
+
+      <h2>Project Description</h2>
+      <div>
+      	<p>
+        	For testing purposes, you need to be able to submit both valid and invalid email addresses to the server.
+          Rather than just turn off JavaScript validation as I suggesed in class on April 10, you are to add a checkbox
+          to the form to control whether the email address is to be validated (by JavaScript) or not. Have your
+          <span class="functionName">submit</span> listener check the value of this checkbox (which should have an initial
+          value of <span class="codeSnippet">checked</span>) and have it allow the form to submit if
+          this checkbox is unchecked OR the email address passes your regular expression test. (That is, it calls 
+          <span class="functionName">preventDefault()</span> only if the checkbox is checked AND the email address is not
+          valid.)
+        </p>
+        <p>
+          Once you have the JavaScript side of the project working, augment the code on the server side so that instead
+          of simply displaying what the user typed, the code uses a PHP <span class="variableName">preg</span> regular
+          expression to see whether the email is valid or not. The web page must then display one of two messages telling
+          whether the user supplied a valid QC email address or not. Whichever message it displays, the message should
+          include the email string that was submitted.
+        </p>
+        <p>
+        	Note that there is a <span class="functionName">trim()</span> function available for you to use to get rid of
+          whitespace on the ends of a string, which will make your regular expression a bit simpler.
+        </p>
+        <p>
+          Remember, the way to approach this assignment is to use the PHP manual available at 
+          <a href="http://www.php.net/manual/en/">www.php.net/manual/en/</a> to look up the aspects of the PHP language
+          and Perl-compatible regular expressions that you need to use.
+        </p>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have tested your web pages, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;6</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

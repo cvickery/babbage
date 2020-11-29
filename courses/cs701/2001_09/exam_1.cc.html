@@ -1,0 +1,49 @@
+<html><head><title>exam_1.cc</title></head>
+<body><center><h1>exam_1.cc</h1></center><hr><pre>
+      // Solution to Exam 1, Question 6
+      
+      #include &lt;stdio.h&gt;
+      #include &lt;sys/stat.h&gt;
+      #include &lt;sys/types.h&gt;
+      #include &lt;unistd.h&gt;
+      int
+      main( int argc, char *argv[], char *envp[] )
+      {
+        const char *args[] =
+        {
+          { "/bin/ls" },
+          { "-l"      },
+          { "-a"      },
+          { "-F"      },
+          { 0         },
+        };
+        const char *env[] =
+        {
+          { "SHELL=/bin/sh" },
+          { "USER=vickery"  },
+          { 0               },
+        };
+      
+        struct stat sb;
+        if ( -1 == stat( "/bin/ls", &sb ) )
+        {
+          perror( "stat" );
+          exit(1);
+        }
+        uid_t user  = geteuid();
+        gid_t group = getegid();
+      
+        if ( 
+             ( (user  == sb.st_uid) && (sb.st_mode & 0100) == 0100 )  ||
+             ( (group == sb.st_gid) && (sb.st_mode & 0010) == 0010 )  ||
+             (                         (sb.st_mode & 0001) == 0001 )
+           )
+        {
+          execve( args[0], (char*const*)args, (char*const*)env );
+          perror( "exec" );
+          exit( 1 );
+        }
+        fprintf( stderr, "permission denied\n" );
+        exit( 1 );
+      }
+</pre><hr></body></html>

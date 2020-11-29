@@ -1,0 +1,232 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-731 Lecture 14</title>
+<meta name=Description content="22-Mar-01: Makefile Notes">
+<link rel=next href=slide0005.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0004.htm');   
+  else
+    parent.location.href = "../701_Lecture_14.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=99 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=199 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=100 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=20 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=139 height=33 colspan=2></td>
+  <td width=199 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=199 height=33 align=center><font face="Times New Roman" size=5>Makefile
+    Notes</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=137 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=16 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=272></td>
+  <td width=398 height=272 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=73 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=83 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=10 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=37 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=21 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=41 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=34 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=178 height=18 colspan=6><font face="Times New Roman" size=2>Form
+    of log file messages.</font><br>
+    </td>
+    <td width=202 height=18 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=398 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=183 height=18 colspan=7><font face="Times New Roman" size=2>Introduced
+    HDRS variable.</font><br>
+    </td>
+    <td width=197 height=18 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=398 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=260 height=18 colspan=13><font face="Times New Roman" size=2>Command
+    for <i>qsh</i> target is linker-only.</font><br>
+    </td>
+    <td width=120 height=18 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=398 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=216 height=16 colspan=8><font face="Times New Roman" size=1>No
+    need for CFLAGS or CXXFLAGS</font><br>
+    </td>
+    <td width=143 height=16 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=398 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=301 height=16 colspan=12><font face="Times New Roman" size=1>Note
+    use of CXX, which must be defined in the user’s</font><br>
+    </td>
+    <td width=58 height=16 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=39 height=14 colspan=4></td>
+    <td width=74 height=14 colspan=2><font face="Times New Roman" size=1>environment.</font><br>
+    </td>
+    <td width=285 height=14 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=398 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=376 height=18 colspan=18><font face="Times New Roman" size=2>The <i>depend</i>
+    rule depends on the sources and header files</font><br>
+    </td>
+    <td width=4 height=18></td>
+   </tr>
+   <tr>
+    <td width=18 height=17></td>
+    <td width=200 height=17 colspan=10><font face="Times New Roman" size=2>being
+    present in the directory.</font><br>
+    </td>
+    <td width=180 height=17 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=398 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=169 height=16 colspan=6><font face="Times New Roman" size=1>Note
+    use of “</font><font face=Arial size=1>-- $(CFLAGS) --</font><font
+    face="Times New Roman" size=1>”</font><br>
+    </td>
+    <td width=190 height=16 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=398 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=356 height=18 colspan=16><font face="Times New Roman" size=2>The <i>clean</i>
+    rule uses a shell script to remove read-only</font><br>
+    </td>
+    <td width=24 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=18 height=17></td>
+    <td width=380 height=17 colspan=19><font face="Times New Roman" size=2>versions
+    of source header files, and to issue messages for</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=18 height=17></td>
+    <td width=186 height=17 colspan=8><font face="Times New Roman" size=2>writeable
+    (locked) versions.</font><br>
+    </td>
+    <td width=194 height=17 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=398 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=219 height=16 colspan=9><font face="Times New Roman" size=1>Script
+    is executed by Bourne shell (<i>sh</i>).</font><br>
+    </td>
+    <td width=140 height=16 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=398 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=260 height=16 colspan=11><font face="Times New Roman" size=1>Use
+    “@” to suppress printing of the command.</font><br>
+    </td>
+    <td width=99 height=16 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=398 height=1 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=347 height=16 colspan=14><font face="Times New Roman" size=1>Uses
+    ‘;’ to separate commands and ‘\’ to continue across lines.</font><br>
+    </td>
+    <td width=12 height=16 colspan=2></td>
+   </tr>
+  </table>
+  </td>
+  <td width=37 height=272></td>
+ </tr>
+ <tr>
+  <td width=475 height=15 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

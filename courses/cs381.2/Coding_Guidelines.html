@@ -1,0 +1,168 @@
+<HTML><HEAD><TITLE>Coding Guidelines</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Coding Guidelines</H1>
+</center>
+
+This document adds to, and in one case replaces, material on pages 34-35
+in the Reek book, <I>Pointers on C</I>.<p>
+
+First, I disagree with Reek's point number 4.  The problem with
+&lt;tab&gt; characters, in addition to indenting code too much, is that
+their meaning (how wide a tab stop is) is always interpreted by
+software.  Your editor, my editor, a printer, and commands such as
+<I>cat</I>, <I>less</I>, and <I>tail</I> might all substitute different
+numbers of spaces for each &lt;tab&gt; character in your source code,
+making it very difficult to read.  The only solution is to type spaces
+explicitly to indent your code, or better yet, to use a "real editor"
+to substitute spaces whenever you press the Tab key to indent your code.
+On UNIX, <I>pico</I> is easy to use, but is not useful for editing
+source code because, among other things, it does not allow you to
+substitute spaces for &lt;tab&gt; characters.  On Windows, Notepad has
+the same problems.  However, <I>vim</I> is a good programming editor for
+UNIX, and <I>pfe</I>, [&nbsp;<a
+HREF="ftp://babbage.cs.qc.edu/pub/vickery/pfe101i.zip">available
+here</A>&nbsp;], is a good programming editor for Windows.<p>
+
+Also, I find that an indent of 2 spaces is perfectly legible, whereas
+the problem of code getting squeezed at the right side of the page when
+using an indent of 8 is very constrictive, contrary to what Reek says.
+For this course, you can use any size indent you want, <B>but in no case
+is any line of code, whether it is part of a statement or a comment, to
+extend past column 72.</B><p>
+
+<H2>File Header</H2>
+
+Each source file is to start with a block of comments that tells about
+the contents of the file.  The first line of the comment block must
+contain the name of the file, and nothing else.  After that, put a brief
+summary of what the file contains.  Be sure to list the name of every
+method defined in the file in the order in which they appear in the
+file.  After the function name, put a <I>brief</I> summary of what the
+function does.  Put your name someplace in the file header block.<p>
+
+For example:
+<PRE>
+      /*  printargs.c
+       *
+       *    This is the main module for the printargs application.
+       *
+       *      main    Prints command line arguments and environment
+       *              variables.
+       *
+       *    C. Vickery
+       *    Spring 1999
+       */
+</PRE>
+
+Put <CODE>#include</CODE> directives after the file header comment block.
+
+<H2>Global Variables</H2>
+
+If the module includes definitions or references to global variables,
+precede them with another comment block that identifies them.<p>
+
+For example:
+<PRE>
+      /*  Global Variables   */
+</PRE>
+
+<H2>Function Headers</H2>
+
+<I>Every</I> function you define, <B>including <I>main()</I></B> must
+be preceded by a comment block that tells what parameters are passed to
+it, what value it returns, and an outline of the algorithm implemented
+by the function.  If the function uses or modifies any global
+variables, they must be listed too.<p>
+
+Use some sort of horizontal line, such as a row of dashes or asterisks
+to make it easy to find the beginning of a function header.  Don't put
+horizontal lines elsewhere in the file.<p>
+
+For example:
+<PRE>
+      /*  main()
+       *  --------------------------------------------------
+       *
+       *  Parameters
+       *
+       *    arc   Number of command line arguments.
+       *    argv  Array of command line argument strings.
+       *    envp  Array of environment variable strings.
+       *
+       *  Return Value
+       *
+       *    0     Normal program exit
+       *    1     Error exit
+       *
+       *  Calls do_print to print the command line arguments,
+       *  then prints the environment variables and exits.
+       *
+       */
+</PRE>
+
+<H2>In-line Comments</H2>
+
+If you use meaningful names for your variables, there is no need to use
+comments to say anything about them, but in some cases a brief statement
+on the same line as they are declared can be helpful.  Use your own
+judgement on this.<p>
+
+If a function implements a complex algorithm, use a comment line to
+introduce the steps in the algorithm.  These comments should parallel
+the algorithm outline given in the function header.<p>
+
+For example (assuming the function header given above):
+<PRE>
+      /* Call do_print to print the command line arguments.  */
+      <I>&lt;code to call do_print goes here&gt;</I>
+      
+      /* Print the environment variables and exit.           */
+      <I>&lt;Code to print the environment variables and exit goes here.&gt;</I>
+</PRE>
+
+<H2>Comment Boxes</H2>
+
+Some people think that using asterisks to put boxes around comments is a
+sign of careful, professional programming.  I think it's a waste of
+time, and makes it very difficult to edit the comments later on.<p>
+
+For example:
+<PRE>
+      /***************************
+       *                         *
+       *  Life is too short to   *
+       *  spend time drawing     *
+       *  boxes around comments! *
+       *                         *
+       ***************************/
+</PRE>
+
+<H2>Write Comments First</H2>
+
+I know you're going to ignore this one, but I really mean it!  Write the
+comments <I>before</I> you write the code, not afterwards.<p>
+
+There are two reasons for this rule:
+
+<OL>
+    <LI>If you write the comments first, it means you have thought out
+    what you are going to do ahead of time.  Organizing the structure of
+    your program before you start coding is a critical part of writing
+    programs that work right and keep on working after they are released
+    to users.
+    
+    <LI>It's a fact of programming life that editing a file inevitably
+    introduces unintended changes.  Nothing is more frustrating than
+    slaving to debug some code into submission just before a deadline
+    only to find that its broken again after you've gone through the
+    whole thing adding comments.  It's the classic student programmer's
+    lament, "I didn't change anything and it just stopped working." 
+    Inevitably this follows a quick editing pass just to add comments
+    but which inadvertantly changed some code too.  Worst of all, when
+    this happens you have no way of knowing where to look for the bug
+    because you've just edited a whole lot of code and the error could
+    be anywhere.
+
+</OL>
+<HR></BODY></HTML>

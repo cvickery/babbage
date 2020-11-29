@@ -1,0 +1,54 @@
+
+  Final Project
+
+  XHTML:  OK
+  CSS:    Two errors (lines 56 and 60)
+
+  Functionality:
+
+    Very nice design of the user interface.
+    
+    Got as far as trying to look email up in database, but
+    fails. The problem was trying to use the email address
+    supplied by the user as an array key in the array of DOM
+    elements returned by getElementsByTagName(). You have to
+    iterate over that array:
+      foreach ($volunteerEmails as $volunteerEmail)
+      {
+        // If the user input matches one in the database
+        if ($clientObj->email === $volunteerEmail->nodeValue)
+        { ...
+ 
+    Your efforts to walk the DOM tree starting at an email
+    node were doomed to failure: in XML, there are text
+    nodes between siblings if there was whitespace between
+    them. A better approach would have been to loop over
+    user nodes:
+
+      $users = $volunteer_DOM->getElementsByTagName("user");
+      foreach ($users as $user)
+      {
+        $email =
+        $user->getElementsByTagName('email')->item(0)->nodeValue;
+        if ($clientObj->email === $email)
+        {
+          $password =
+          $user->getElementsByTagName('password')->item(0)->nodeValue;
+          if ($password === $clientObj->password )
+          {
+            ...
+ 
+    JSON processing works; JavaScript event processing
+    works. PHP setup and database setup okay.
+
+  Code: Good ... except for the logic errors!
+
+  Late: 0 days
+
+  Score:  95
+
+  Doing the DOM processing based only on the info given in
+  class, on the assignment sheet, and in the PHP
+  documentation is *hard*. But the code structure given
+  above would make it too *easy* -- right?
+

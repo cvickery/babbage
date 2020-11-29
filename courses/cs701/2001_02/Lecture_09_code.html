@@ -1,0 +1,86 @@
+<HTML><HEAD><TITLE>Lecture 9 Code</TITLE></HEAD><BODY>
+
+<center>
+<h1>Length of an Array</h1>
+</center>
+
+A common problem in C is to deal with arrays which don't
+have a "natural" length.  If you can determine the length
+needed when an array is declared, you just declare the
+length of the array inside the square brackets of the
+delclaration.  And if you can determine the size needed when
+the program is running you can use <i>malloc()</i> to
+allocate the memory for the array.<p>
+
+But sometimes there is no way of knowing how big to make the
+array, so you pick a size that seems "big enough" but not "too
+big."  The problem, of course, is that your ideas about how
+big "big enough" and "not too big" are might change, and you
+have to recompile the program with a bigger or smaller
+length for the array.<p>
+
+A variation on this problem is when you make up a table,
+like a dispatch table, to which you will want to add entries
+as the project develops.<p>
+
+In both cases, you want to (a) minimize the number of code
+changes you need to make to change the size of the array,
+and (b) write code that stays within the bounds of the
+array, even when the size of the array changes.<p>
+
+<h2>Named Constants</h2>
+
+If you are going to pick the length of an array and there is
+any chance that the length might need to be changed later,
+use a named literal constant to specify the size of the array, and
+use the name wherever code loops through the elements of the
+array.  To change the size of the array, just change the
+value of the named constant and all the code will adjust to
+deal with the new length automatically.<p>
+
+Use the preprocessor directive, <code>#define</code> to
+define a named constant.  Whatever appears after the
+constant name on the #define line becomes the value
+associated with the name.  The preprocessor then substitutes
+the value wherever the name appears in the code before
+passing the code on to the compiler for translation into
+assembly language.  The <code>#define</code> statement goes
+near the beginning of the file so it will be easy to find
+and change.<p>
+
+<pre>
+      #define NUM_FRIBBLES 12
+      . . .
+      int fribble[ NUM_FRIBBLES ];
+      . . . 
+      for ( int i = 0; i &lt; NUM_FRIBLES; i++ ) ...
+
+</pre>
+
+<h2>Adjustable Arrays</h2>
+
+You can get the compiler to determine the length of an array
+by providing a list of initializer values when you declare
+it:
+
+<pre>
+      int frobble[] = { 1, 3, 5, 6, 2, 4, };
+</pre>
+
+Now you need some way to find out the length so you can use
+it to limit loops, etc.  You can use the <i>sizeof</i>
+operator to find out how many bytes of memory the array
+occupies.  If you divide that by the size of one element of
+the array, you get its length:
+
+<pre>
+      const int numFrobbles = sizeof( frobble ) / sizeof( int );
+</pre>
+
+Now you can use <code>numFrobbles</code> in your code just
+the way you would use <code>NUM_FRIBBLES</code> in the
+previous example.<p>
+
+<hr>
+</BODY>
+</HTML>

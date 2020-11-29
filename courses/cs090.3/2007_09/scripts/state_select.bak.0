@@ -1,0 +1,225 @@
+// Javascript Document
+var States = 
+{
+  stateInput:     null,
+  statePrompt:    null,
+  numMatches:     0,    //  Number of states in prompt list
+  highlightIndex: -1,   //  Index in prompt list, if any
+  curState:       -1,   //  Index in allStates of currently selected state, if any
+  
+  init: function()
+  {
+    stateInput = document.getElementById('state-input');
+    statePrompt = document.getElementById('state-prompt');
+    statePrompt.style.backgroundColor = "#eee";
+    statePrompt.style.opacity = "0.7";
+    stateInput.value = "";
+    Core.addEventListener(stateInput, "focus", States.showPrompt);
+    Core.addEventListener(stateInput, "keypress", States.keyHandler);
+    Core.addEventListener(stateInput, "keyup", States.showPrompt);
+    Core.addEventListener(stateInput, "blur", States.blurHandler);
+    Core.addEventListener(document, "size", States.setXY);
+    Core.addEventListener(document, "scroll", States.setXY);
+    States.setXY();
+  },
+
+  blurHandler: function(evt)
+  {
+    console.log("blurHandler:");
+    States.hidePrompt();
+  },
+  
+//  keyHandler()
+//  ----------------------------------------------------------------------------------
+/*  Process Enter and arrow keys; pass others to prompt generator.
+ */
+  keyHandler: function(evt)
+  {
+//    console.log("keyHandler: "+evt.keyCode);
+    evt = evt ? evt :document.event;
+    if (evt.keyCode == 40)
+    {
+      // Down Arrow
+      if (States.highlightIndex < (States.numMatches - 1)) States.highlightIndex++;
+    } else if (evt.keyCode == 38)
+    {
+      //  Up Arrow
+      if (States.highlightIndex > 0) States.highlightIndex--;
+    } else if (evt.keyCode == 13)
+    {
+      //  Enter
+			if ((States.numMatches > 1) && (States.highlightIndex < 0)) States.curState = -1;
+      States.hidePrompt();
+//      return;
+    }
+    else
+    {
+      States.highlightIndex = -1;
+    }
+		States.showPrompt();
+  },
+
+//  filter()
+//  -------------------------------------------------------------------
+/*    Update the filtered list, highlighting one if requested. Sets
+ *    numMatches and curState.
+ */
+  filter: function()
+  {
+    stateInput.style.backgroundColor = "#fff";
+    var str = stateInput.value.toLowerCase();
+    States.numMatches = 0;
+    var lastMatchIndex = -1;
+    var i = 0;
+    var returnVal = "";
+
+    while ((States.numMatches < 8) && (i < States.allStates.length))
+    {
+      var pos = States.allStates[i].toLowerCase().indexOf(str);
+      if (pos >= 0)
+      {
+        var paraType ="<p>";
+        if ( States.numMatches == States.highlightIndex)
+        {
+          paraType = "<p class='highlight'>";
+          States.curState = i;
+        }
+        returnVal += paraType+States.allStates[i]+"</p>";
+        States.numMatches++;
+        lastMatchIndex = i;
+      }
+      i++; 
+    }
+    if (States.numMatches == 0)
+    {
+      returnVal += "<p>No Match</p>";
+      States.curState = -1;
+    }
+    if (States.numMatches == 1) States.curState = lastMatchIndex;
+    return returnVal;
+  },
+
+//  setXY()
+//  ---------------------------------------------------------------
+/*  Position and size the prompt.
+ */
+  setXY: function()
+  {
+    x = stateInput.offsetLeft;
+    y = stateInput.offsetTop + stateInput.offsetHeight;
+    obj = statePrompt;
+    do
+    {
+      if (obj.scrollTop != undefined)   y -= obj.scrollTop;
+      if (obj.scrollLeft != undefined)  x -= obj.scrollLeft;
+      obj = obj.parentNode;
+    } while (obj);
+    statePrompt.style.left = x + "px";
+    statePrompt.style.top = y + "px";
+    statePrompt.style.width = stateInput.offsetWidth + "px";
+  },
+
+//  showPrompt()
+//  -------------------------------------------------------------------
+/*    Generate filtered list and display the prompt
+ */
+  showPrompt: function()
+  {
+//    console.log("showPrompt:");
+    statePrompt.innerHTML = States.filter();
+    statePrompt.style.display = "block";
+  },
+  
+//  hidePrompt()
+//  -------------------------------------------------------------------
+/*  On Enter or blur, update text box contents and hide the prompt.
+ */
+  hidePrompt: function()
+  {
+//    console.log("hidePrompt: "+((States.curState >= 0)?States.allStates[States.curState]:"no current state"));
+    if (States.curState >= 0)
+    {
+      stateInput.value = States.allStates[States.curState].substring(0, 2);
+      stateInput.style.backgroundColor = "#cfc";
+    }
+    else
+    {
+      stateInput.value = "";
+      stateInput.style.backgroundColor = "#fcc";
+    }
+    statePrompt.style.display = "none";
+    States.highlightIndex = -1;
+  },
+
+  allStates: [
+    "AL Alabama",
+    "AK Alaska",
+    "AS American Samoa",
+    "AZ Arizona",
+    "AR Arkansas",
+    "CA California",
+    "CO Colorado",
+    "CT Connecticut",
+    "DE Delaware",
+    "DC District Of Columbia",
+    "FM Federated States Of Micronesia",
+    "FL Florida",
+    "GA Georgia",
+    "GU Guam",
+    "HI Hawaii",
+    "ID Idaho",
+    "IL Illinois",
+    "IN Indiana",
+    "IA Iowa",
+    "KS Kansas",
+    "KY Kentucky",
+    "LA Louisiana",
+    "ME Maine",
+    "MH Marshall Islands",
+    "MD Maryland",
+    "MA Massachusetts",
+    "MI Michigan",
+    "MN Minnesota",
+    "MS Mississippi",
+    "MO Missouri",
+    "MT Montana",
+    "NE Nebraska",
+    "NV Nevada",
+    "NH New Hampshire",
+    "NJ New Jersey",
+    "NM New Mexico",
+    "NY New York",
+    "NC North Carolina",
+    "ND North Dakota",
+    "MP Northern Mariana Islands",
+    "OH Ohio",
+    "OK Oklahoma",
+    "OR Oregon",
+    "PW Palau",
+    "PA Pennsylvania",
+    "PR Puerto Rico",
+    "RI Rhode Island",
+    "SC South Carolina",
+    "SD South Dakota",
+    "TN Tennessee",
+    "TX Texas",
+    "UT Utah",
+    "VT Vermont",
+    "VI Virgin Islands",
+    "VA Virginia",
+    "WA Washington",
+    "WV West Virginia",
+    "WI Wisconsin",
+    "WY Wyoming",
+    "AE Armed Forces Africa",
+    "AA Armed Forces Americas (except Canada)",
+    "AE Armed Forces Canada",
+    "AE Armed Forces Europe",
+    "AE Armed Forces Middle East",
+    "AP Armed Forces Pacific"
+    ]
+
+};
+
+  Core.start(States);
+

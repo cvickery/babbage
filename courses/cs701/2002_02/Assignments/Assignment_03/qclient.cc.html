@@ -1,0 +1,241 @@
+<html><head><title>qclient.cc</title></head>
+<body><center><h1>qclient.cc</h1></center><hr><pre>
+      /*  $Id: qclient.cc,v 1.2 2002/04/07 19:21:46 vickery Exp $
+       *
+       *      This is a client program that acts as the intermediary between
+       *      the user and the qserver program for the Remote Shell Project.
+       *
+       *  Functions:
+       *
+       *      main()  Main function for the module.
+       *
+       *      CS-701, Spring 2002
+       *      C. Vickery
+       *      
+       *
+       *	    $Log: qclient.cc,v $
+       *	    Revision 1.2  2002/04/07 19:21:46  vickery
+       *	    Changed default host name from "localhost"
+       *	    to local host's name.  This way, the client
+       *	    can connect to a server running on the local
+       *	    machine without using the -h option.
+       *
+       *	    Revision 1.1  2002/03/28 19:57:51  vickery
+       *	    Initial revision
+       *
+       *
+       */
+      
+      #include "qclient.h"
+      #include &lt;getopt.h&gt;
+      
+      #include &lt;netdb.h&gt;
+      #include &lt;netinet/in.h&gt;
+      #include &lt;poll.h&gt;
+      #include &lt;sys/types.h&gt;
+      #include &lt;sys/socket.h&gt;
+      #include &lt;arpa/inet.h&gt;
+      
+      //  Constants
+      //  ------------------------------------------------------------------
+      static const  int   HOSTNAME_MAX = 64;
+      static const  int   BUF_SIZE     = 8192;
+      static const  char  *VERSION =
+        "$Id: qclient.cc,v 1.2 2002/04/07 19:21:46 vickery Exp $";
+      
+      //  Module Globals
+      //  ------------------------------------------------------------------
+      static        char  hostName  [ HOSTNAME_MAX ];
+      static        char  serverName[ HOSTNAME_MAX ];
+      
+      //  usage()
+      //  ------------------------------------------------------------------
+      /*
+       *  Display usage message
+       */
+      void
+      usage( const char *cmdName )
+      {
+        fprintf( stderr, 
+            "Usage: %s [options]n"
+            " Options:n"
+            "   -p or --port &lt;num&gt; "
+                                 " Server's port number (default 0x8000)n"
+            "   -h or --host &lt;str&gt; "
+                                " Server's host name (default %s)n"
+            "   -v or --version     Print program version number and exitn"
+            "   -? or --help        Print this message and exitn", 
+            cmdName, hostName );
+      }
+      
+      
+      //  main()
+      //  ------------------------------------------------------------------
+      /*
+       *	Process command line arguments, establish communcation with
+       *	server, and manage interactions between the user and the server.
+       *
+       *  Arguments
+       *
+       *    The standard arguments to main().
+       */
+      int
+      main(int argc, char *argv[], char * envp[] ) 
+      {
+        //  Get this host's name for default server name.
+        int result = gethostname( hostName, sizeof( hostName ) );
+        if ( result &lt; 0 )
+        {
+          perror( "Unable to determine local host name" );
+          exit( 1 );
+        }
+        strcpy( serverName, hostName );
+      
+        //  Process command line options
+        int           serverPort = 0x8000;
+        const char    *short_options = "p:h:?v";
+        const struct  option long_options[] =
+        {
+          { "port",     required_argument,  0,  'p' },
+          { "host",     required_argument,  0,  'h' },
+          { "help",     no_argument,        0,  '?' },
+          { "version",  no_argument,        0,  'v' },
+          { 0,          0,                  0,  0   },
+        };
+      
+        int   optchar;
+        while ( -1 != ( optchar = getopt_long( argc, argv, short_options,
+                                  long_options, 0 ) ) )
+        {
+          switch ( optchar )
+          {
+            //  Server's well-known port number
+            case 'p':
+              serverPort = strtol( optarg, 0, 0 );
+              if (    ( serverPort &lt; 0 ) || ( serverPort &gt; 0xFFFF ) )
+              {
+                fprintf( stderr, "%s: invalid port numbern", optarg );
+                usage( argv[0] );
+                exit( 1 );
+              }
+              break;
+      
+            //  Server's host name
+            case 'h':
+              strcpy ( serverName, optarg );
+              break;
+      
+            //  Version number
+            case 'v':
+              printf( "%s: %sn", argv[0], VERSION );
+              exit( 0 );
+      
+            case '?':
+            default :
+              usage( argv[0] );
+              exit( 1 );
+          }
+        }
+      #ifdef DEBUG
+        fprintf( stderr,  "  Host: %sn  Port: 0x%04X (%d)n",
+                          serverName, serverPort, serverPort );
+      #endif
+      
+        //  Connect to the server
+        struct  hostent     *hp;
+        if ( 0 == (hp = gethostbyname( serverName ) ) )
+        {
+          fprintf( stderr,"%s: %s: unknown hostn", argv[ 0 ], serverName );
+          exit( EXIT_FAILURE );
+        }
+      
+        struct sockaddr_in  server_sockaddr;
+        memset( &server_sockaddr, 0, sizeof( server_sockaddr ) );
+        server_sockaddr.sin_family = AF_INET;
+        memcpy( &server_sockaddr.sin_addr, hp-&gt;h_addr, hp-&gt;h_length );
+        server_sockaddr.sin_port = htons( serverPort );
+      
+        int                 server_fd;
+        if ( ( server_fd = socket( AF_INET, SOCK_STREAM, 0 ) ) &lt; 0 )
+        {
+          perror( "socket" );
+          exit( EXIT_FAILURE );
+        }
+        if ( connect( server_fd, (struct sockaddr *) &server_sockaddr, 
+                                          sizeof ( server_sockaddr ) ) &lt; 0 )
+        {
+          perror( "connect" );
+          exit( EXIT_FAILURE );
+        }
+      
+        printf( "Connected to %s:%dn",  serverName, serverPort );
+      
+        //  Initialize the array of pollfds
+        struct pollfd           fds_to_read[2];
+        fds_to_read[0].fd = fileno( stdin );
+        fds_to_read[0].events = POLLIN;
+        fds_to_read[1].fd = server_fd;
+        fds_to_read[1].events = POLLIN;
+      
+        //  Allow the user to exchange text messages with the server.
+        //  Continue until server closes its end of the socket.
+        char  inBuf[ BUF_SIZE ];
+        int   bytesRead = 0;
+        for ( ;; )
+        {
+          if ( poll( fds_to_read, 2, -1 ) &lt; 0 )
+          {
+            perror( "poll" );
+            exit( EXIT_FAILURE );
+          }
+      
+          //  Process a server message, if there is one
+          if ( fds_to_read[1].revents & POLLIN )
+          {
+            bytesRead = read( server_fd, inBuf, sizeof ( inBuf ) );
+            if ( bytesRead &lt; 0 )
+            {
+                perror("socket read");
+                exit( EXIT_FAILURE );
+            }
+            if ( 0 == bytesRead )
+            {
+              printf( "exit: server closed connectionn" );
+              exit( EXIT_SUCCESS );
+            }
+      
+            //  Write to stdout exactly what the server wrote to our socket.
+            inBuf[ bytesRead ] = '0';
+            printf( "%s", inBuf );
+            fflush( stdout );
+      
+          }
+      
+            //  Process a user message, if there is one
+      
+            if ( fds_to_read[0].revents & POLLIN )
+            {
+              if ( feof( stdin ) )
+              {
+                close(server_fd);
+                exit(EXIT_SUCCESS);
+              }
+              bytesRead = read( STDIN_FILENO, inBuf, sizeof( inBuf ) );
+              if ( 0 == bytesRead )
+              {
+                //  End of user input
+                close( server_fd );
+                exit( 0 );
+              }
+              while ( ( bytesRead &gt;= 0 ) 
+                   && ( ( 'r' == inBuf[ bytesRead - 1 ] )
+                     || ( 'n' == inBuf[ bytesRead - 1 ] ) ) )
+              {
+                inBuf[ --bytesRead ] = '0';
+              }
+              write( server_fd, inBuf, bytesRead );
+            }
+          }
+        }
+      
+</pre><hr></body></html>

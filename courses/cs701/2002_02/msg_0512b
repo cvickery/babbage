@@ -1,0 +1,23 @@
+
+There are executable copies of my current versions of qserver and
+qclient in ~vickery/bin on both spinoza and lnx0006.  A good way to
+see what is going on is to log in multiple times (to either machine)
+and run the server in one window and client(s) in other window(s).
+Run the server in the background (put & at the end of the command
+line), and you can monitor the log file as the server writes to it
+using the following command:
+
+  tail -f qserver.log
+
+The tail command shows you the last n lines (10 by default); the -f
+option tells tail to "follow" the file.  That is, instead of exiting,
+it displays new lines as they get written to it.  Type Control-C to
+exit the tail command.
+
+My server recognizes exit, shut, and echo commands, but no external
+commands so far.  And so far, manager processes don't send SC_SHUT
+messages to clients; they just get killed when the server shuts down.
+
+Hope this helps,
+Dr. Vickery
+

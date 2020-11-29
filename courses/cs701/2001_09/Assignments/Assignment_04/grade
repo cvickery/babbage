@@ -1,0 +1,209 @@
+#! /usr/local/bin/ksh
+
+# Usage: grade [<directory>]
+
+# If a directory is specified, use it.
+#  Otherwise, Process all .dir directories.
+
+dirs=$1
+if [[ $dirs == "" ]]
+then
+  dirs="*.dir"
+fi
+
+# Grading loop starts here
+
+for f in $dirs
+do
+  f=${f%.dir}
+  report=${PWD}/$f.grade
+  clear
+  grep $f ../Roster
+
+  if [[ -e $report ]]
+  then
+    print "Note: $f.grade already exists!"
+    read oas?"Overwrite, Append, or Skip? [oaS] "
+    case $oas in
+      [oO]*)  rm -f $f.grade
+              in=yes
+              ;;
+      [aA]*)  in=yes
+              ;;
+      *)      in=no
+              ;;
+    esac
+  else
+    read in?"Do it? "
+  fi
+
+  if [[ $in == "" || $in == y* ]]
+  then
+    if [[ ! -e $report ]]
+    then
+      grep $f ../Roster > $report
+      cat boilerplate >> $report
+    fi
+
+    cd $f.dir/*
+    if [[ $? != 0 ]]
+    then
+      cat <<!!! >> $report
+*** Your tar file did not contain a project subdirectory.  
+*** Unable to process.
+!!!
+      exit 1
+    fi
+
+    rm -f vickery_*
+    if [[ $(basename $PWD) == [vV]ickery ]]
+    then
+      cat <<!!! >> $report
+
+*** Your tar file was made from within the project subdirectory
+    instead of from the directory above it.
+
+Files Submitted
+===============
+!!!
+
+    else cat <<!!! >> $report
+
+Contents of your Project Subdirectory
+=====================================
+
+!!!
+    fi
+
+    /bin/ls -lG >> $report
+    /bin/ls -ldG RCS
+    if [[ $? != 0 ]]
+    then
+      cat <<!!! >> $report
+*** There is no RCS subdirectory.
+*** Unable to proceed with evaluation.
+!!!
+      exit
+    fi
+
+    cat <<!!! >> $report
+
+Building your program using make:
+=================================
+
+make clean
+!!!
+make clean >> $report 2>&1
+print "" >> $report 2>&1
+print "Locking Makefile for testing make depend" >> $report 2>&1
+co -l Makefile >> $report 2>&1
+print "" >> $report 2>&1
+print "make depend" >> $report 2>&1
+make depend >> $report 2>&1
+ci Makefile
+
+# Basic make
+print "" >> $report 2>&1
+print "make" >> $report 2>&1
+/usr/bin/make >> $report 2>&1
+
+# Compile just one when .cc file changes
+print "" >> $report 2>&1
+print "touch ouch.cc" >> $report 2>&1
+/bin/touch ./ouch.cc >> $report 2>&1
+print "make" >> $report 2>&1
+/usr/bin/make >> $report 2>&1
+
+# Recompile all when header changes.
+print "" >> $report 2>&1
+print "touch ouch.h" >> $report 2>&1
+/bin/touch ./ouch.h >> $report 2>&1
+print "make" >> $report 2>&1
+/usr/bin/make >> $report 2>&1
+
+    cat <<!!! >> $report
+
+RCS/make Project Management
+===========================
+
+  Did the make clean, make depend, and make rules work
+  correctly?
+
+    Yes.
+
+  Checking log messages:
+  $(rlog *.cc *.h)
+
+  Were the log messages okay?
+
+  Yes.
+
+
+Code Formatting
+===============
+$(chk_format *.cc *.h)
+!!!
+
+  chk_format *.cc *.h > /dev/null
+  if [[ $? != 0 ]]
+  then
+    cat <<!!! >> $report
+*** There are formatting errors in your code.  There should be no tab
+    characters and no lines longer than 72 characters.
+!!!
+  fi
+
+cat <<!!! >> $report
+
+Coding Style
+================
+
+    Did all source modules adhere to the Coding Guidelines for the
+    course?
+    
+*** No, there were problems in the following area(s):
+        
+      Comment blocks for the files.
+      Comment blocks for the functions.
+      Spacing between comment leaders and comments.
+      Grammatical Errors.
+
+
+Testing the program:
+=====================
+
+  (Manually checked whether prompt strings are managed correctly,
+  whether continuation lines are managed correctly, and whether simple
+  external commands are executed correctly.)
+
+  Did the program operate correctly?
+    Yes.
+
+
+Other Notes.
+============
+
+    None.
+
+Assignment Grade: 5.0/5.0
+=========================
+
+!!!
+
+    xterm -geometry 80x50+10+10 -e vim $report Makefile *.h *.cc &
+    
+    print Quit this shell to continue to next student.
+    ENV=~/.kshrc ksh
+    
+#   in=n
+#   while [[ $in == n* ]]
+#   do
+#     read in?"Finished? "
+#     [[ $in == n* ]] && ENV=~/.kshrc ksh
+#   done
+    make clean
+    cd ~/Courses/cs701/2001_09/Assignment_04
+
+  fi
+
+done

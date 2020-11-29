@@ -1,0 +1,756 @@
+<!-- $Id: Assignment_04.html,v 2.6 2002/05/19 11:53:04 vickery Exp $ -->
+<html><head><title>Assignment 4</title>
+
+<style type="text/css" media="screen">
+    body { font-family: sans-serif }
+</style>
+<style type="text/css">
+    .NOTE 
+    { 
+      margin-left:      5%;
+      margin-right:     5%;
+      background-color: #ffcccc;
+      padding:          1em;
+    }
+    pre
+    {
+      margin-left:      5%;
+      margin-right:     5%;
+      padding:          1em;
+      background-color: #ccffcc
+    }
+</style>
+
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>Remote Shell - Version 2</h1>
+<!--
+<font color=red>
+<h2>Incomplete: $Revision: 2.6 $</h2>
+</font>
+-->
+</center>
+<h2>Introduction</h2>
+
+This is a continuation of the "remote shell" project started in
+Assignment 3.  The goals for this version of the assignment are:
+
+<ul>
+    <li>Design and implement a protocol for the exchange of messages
+    between clients and the server.
+    <li>Modify the server so it can handle multiple clients concurrently
+    instead of iteratively.
+    <li>Implement command processing by the server.
+</ul>
+
+<h2>The Protocol</h2>
+
+Clients and the server communicate by exchanging <i>messages</i>.  In
+general, clients send <i>request messages</i> to the server, and the
+server sends <i>reply messages</i> to the client.  Each message
+consists of a fixed-length <i>message header</i> followed immediately
+by a variable-length<i>message body</i>.  The length of a message body
+is specified in the "msg_length" field of the message header, and may
+be zero.<p>
+
+A message header consists two 32-bit integer values, the msg_length
+field mentioned above, followed by a msg_type field to be described
+below.  Because the C/C++ languages do not specify the size of an
+<i>int</i>, we will use a new type, called <i>int32_t</i> for these
+integers to be sure they are 32 bits long on all platforms.  The
+following code will provide a definition of this data type on all
+platforms that I have tested: lnx0006 (Linux on IBM S/390), spinoza
+(Linux on IA_32), forbin (OSF/1 on Alpha), and babbage (Solaris on
+UltraSPARC):
+
+<pre>
+  #include &lt;stdlib.h&gt;
+  #include &lt;sys/types.h&gt;
+
+  #ifndef int32_t
+  typedef int int32_t;
+  #endif
+</pre>
+
+That is, some of these systems predefine int32_t in stdlib.h, some in
+sys/types.h.  On others, the type is not defined in any header file, but
+the size of an <i>int</i> is 32 bits anyway.<p>
+
+The msg_type field is to be an integer constant with the following
+values and meanings defined.  The names listed should be declared as
+int32_t constants, and you must be sure to convert these values (as well
+as the msg_length values) to network byte order before sending them over
+a socket connection.<p>
+
+<table bgcolor=#ffccff align=center width=80% border=1 cellpadding=5>
+
+<tr>
+    <th colspan=3><p>Client to Server Messages<p>
+
+<tr>
+    <th>Name
+    <th>Value
+    <th>Description
+
+<tr>
+    <td>CS_SHUT
+    <td align=center>101
+
+    <td>Message from <b>C</b>lient to <b>S</b>erver telling the server
+    to <b>shut</b> down.  The message body has a length of zero.  The
+    server responds by sending a SC_SHUT message (see below) to
+    all clients (including the one that sent the CS_SHUT message to it,
+    writing an appropriate message to the log file, closing it, and
+    exiting.  <i>Note: This type code is unnecessary, and may be omitted
+    if you wish.</i>
+
+<tr>
+    <td>CS_EXIT
+    <td align=center>102
+
+    <td>Message from Client to Server to indicate that the client is
+    exiting.  The server responds by writing an appropriate message to
+    the log file and releasing all resources associated with this
+    client.  The message body has a length of zero.  This type code
+    should be used when the client encounters end of file on
+    <i>stdin</i> (because the user typed Control-D at the beginning of
+    a line after being prompted to enter a command).
+
+<tr>
+    <td>CS_USER
+    <td align=center>103
+
+    <td>Message from Client to Server giving the login name of the local
+    user.  This message is sent in response to a SC_LOGIN message
+    from the server.  The message body contains the user's login
+    name.  You can determine a user's login name by using the nested
+    function calls <i>getpwuid( geteuid() )</i>.  But the user may
+    override this name using the -u or --user command line option.
+
+<tr>
+    <td>CS_CMD
+    <td align=center>104
+
+    <td>The client sends a complete command line in the message body.
+
+<tr>
+    <td>CS_STDIN
+    <td align=center>105
+
+    <td>The client uses this message type to send anything the user
+    types between the time a command has been sent to the server and the
+    receipt of the next SC_PROMPT message from the server.
+</table>
+
+<p>
+
+<table bgcolor=#ffccff align=center width=80% border=1 cellpadding=5>
+<tr>
+    <th colspan=3><p>Server to Client Messages<p>
+
+<tr>
+    <th>Name
+    <th>Value
+    <th>Description
+
+<tr>
+    <td>SC_SHUT
+    <td align=center>201
+
+    <td>The server sends this message to each connected client just
+    before it exits.
+
+<tr>
+    <td>SC_LOGIN
+    <td align=center>202
+
+    <td>The server sends this message to a client as soon as the client
+    connects to it.  The message body is a message telling the server's
+    name, current version, host name, and port number, which the client
+    prints for the client to see.  The client responds with the user's
+    login name, as described above.<p>
+    
+    Sample message body:
+    <pre>
+QC Remote Shell version 2.3 On spinoza.qc.edu port 0x8000
+    </pre>
+
+<tr>
+    <td>SC_DENY
+    <td align=center>203
+
+    <td>The server sends this message if the effective user id for the
+    user name sent in response to a SC_LOGIN message does not match
+    the euid of the server process.  Note that actually attempting to
+    authenticate users is beyond the scope of this project.  The body of
+    this message is empty.  The client responds by sending a CS_EXIT
+    message, and exiting.
+
+<tr>
+    <td>SC_PROMPT
+    <td align=center>204
+
+    <td>The server sends this message to a client to indicate that it is
+    ready to accept a command line for processing.  The client prints
+    the message body on the user's console, waits for the user to enter
+    a command line, and replies to the server with a CS_CMD message.
+
+<tr>
+    <td>SC_STDOUT
+    <td align=center>205
+
+    <td>The server uses this message to send standard output generated
+    by a command being executed.  The client prints the output on the
+    user's console.
+
+<tr>
+    <td>SC_STDERR
+    <td align=center>206
+
+    <td>The server uses this message to send error output generated by a
+    command being executed.  The client prints the output on the user's
+    console.
+
+
+</table>
+
+<h2>Starting the Assignment</h2>
+
+All files for this assignment are to have RCS revision numbers in the
+form 2.x.  Lock all your source files from Assignment 3 for editing, and
+use the command, <i>ci -f -r2 *.h *.cc Makefile</i> to check them in
+with revision numbers 2.1.  The log file message can simply be something
+like, "First revision for Assignment 4," for all the files.<p>
+
+All new files that you add to the project (such as <i>qprotocol.h</i>
+described below) must also be checked in the first time with the "-r2"
+option.  You will be prompted for both a file description and a log
+message for each new file checked in this way, so be prepared to enter
+proper information for both prompts.<p>
+
+To start the assignment, modify qclient.cc so it handles the -u and
+--user options.<p>
+
+The next step is to define all the protocol constants listed above in a
+header file that is to be included in both qclient.cc and qserver.cc. 
+I suggest that you name this header file <i>qprotocol.h</i>.  Be sure
+you document it and code it to handle nested includes of itself in the
+usual way.  This header file is also the proper place to define
+<i>int32_t</i>.<p>
+
+At this point you should modify your client and server to make sure they
+exchange protocol messages properly.  Still using an iterative server as
+in Assignment 3, code your server and client so the client connects to
+the server, and exchanges a proper set of messages with the server.  But
+for this version of the project, there will be no SC_STDOUT, SC_STDERR,
+or CS_STDIN messages.  The server will not actually exeute commands
+entered by the user.  But you can test the other messages.  The body of
+SC_PROMPT messages should be the value of the server's PS1 environment
+variable if it is defined; if PS1 is not defined, use the prompt string,
+"qserver> ".  For this version of the project, you do not need to handle
+concurrent input from different sources.  The client and server should
+simply alternate sending messages to each other.  The client, however,
+will have to recognize two special commands that the user might type,
+<i>exit</i> and <i>shut</i>, and send the proper types of messages to
+the server in those cases.<p>
+
+Test this version of the assignment carefully and check all files into
+the RCS database before proceeding further in the project.<p>
+
+<h3>Design Changes</h3>
+
+In prototyping this project, I made two changes to the foregoing
+description that you may want to incorporate in your project.  You are
+not required to make these changes, but you may find them useful.<p>
+
+The first change is to remove the recognition of the <i>shut</i> and
+<i>exit</i> commands from the client; simply pass all command lines on
+to the server, and let them be recognized and processed at that end. 
+However, I programmed my client to send a CS_EXIT message to the server
+when it encounters end of file while reading a command from the user. 
+This change means that the client always actively informs the server
+when it is exiting, which makes the server a bit easier to implement. 
+This reasoning could be extended so that the client sets up an
+<i>on_exit()</i> function that sends an SC_EXIT message to the server in
+all situations, including receipt of a signal.<p>
+
+The second change is to have the prompt string not be the value of the
+PS1 environment variable.  Rather, have the server generate a prompt
+string that includes the user's name, the server's host name, and the
+current working directory (call <i>getcwd()</i> for the latter).  This
+prompt string will be less distracting and more informative that the
+usual value of PS1, which needs have various environment variables
+recognized and substituted in order to be readable.  Note that the
+current working directory will change when you implement the <i>cd</i>
+builtin command (see below), so you will need to generate this string
+each time you are going to send it.
+
+<h3>Messaging Utility Functions</h3>
+
+I found that writing the following functions helped in developing
+the project.<p>
+
+<table bgcolor=#ffccff align=center width=80% border=1 cellpadding=5>
+
+<tr>
+    <th>Function Prototype
+    <th>Description
+
+<tr>
+    <td valign=top><i>int&nbsp;read_header(&nbsp;int,&nbsp;msg_header_t&nbsp;&amp;&nbsp;);</i>
+    <td>The first parameter is the fd of a socket from which to read a
+    4-byte header.  The second parameter is a reference to a struct
+    (defined in qprotocol.h) with two fields of type <i>int32_t</i>,
+    which this function fills in with integer values in proper byte
+    order.
+
+<tr>
+    <td valign=top><i>int&nbsp;read_body(&nbsp;int,&nbsp;msg_header_t,&nbsp;char&nbsp;*&nbsp;);</i>
+    <td>Given a socket and a header, this function reads a message body.
+    I decided to have the caller allocate the memory for the message
+    body, but you could have this function do it instead.
+
+<tr>
+    <td valign=top><i>int&nbsp;recv_msg(&nbsp;int,&nbsp;msg_header_t&nbsp;&amp;char&nbsp;**&nbsp;);</i>
+    <td>Given a socket, a reference to a header, and a pointer to a
+    variable of type char&nbsp;*, this function reads a message header
+    from the socket, fills in the header, allocates memory for the
+    message body, and reads in the message body.  The caller is
+    responsible for freeing the message body using delete[].
+
+<tr>
+    <td valign=top><i>int&nbsp;write_msg(&nbsp;int,&nbsp;const&nbsp;msg_header_t,&nbsp;const&nbsp;char&nbsp;*&nbsp;);</i>
+    <td>Write a message header and message body to a socket.
+
+<tr>
+    <td valign=top><i>int&nbsp;send_msg(&nbsp;int,&nbsp;const&nbsp;int32_t,&nbsp;const&nbsp;char&nbsp;*&nbsp;);</i>
+    <td>Given a socket, a message type, and a message body, construct a
+    message header, and call <i>write_msg()</i> to transmit it.
+
+</table><p>
+
+Source code for these functions are available if you want to use them:
+<ul>
+    <li><a href="./html/qutils.h.html">qutils.h</a>
+    <li><a href="./html/qutils.cc.html">qutils.cc</a>
+</ul>
+
+<h2>Managing Concurrent Clients</h2>
+
+As described in class, the server is to be a concurrent server, and the
+design you are to use is to fork a separate "manager" process for each
+concurrent client.  Managing these manager processes is the topic of
+this section.<p>
+
+Every time the server accepts a connection from a client, it forks a
+child to manage the client.  If any manager's client enters a
+"shutdown" command, that manager must notify the server process, which
+in turn must notify all the manager processes so they can send SC_SHUT
+messages to each of their clients and exit.  We will use signals to
+handle the interprocess communication (IPC) both from the managers to
+the server and from the server to the managers.<p>
+
+<h3>Technical Note</h3>
+
+<div class=NOTE>
+
+  There is a technicality that needs to be cleared up before proceeding
+  to how to work the signals.  You have already used <i>on_exit()</i>
+  to set up an exit handler to make sure the server always shuts down
+  cleanly, which continues to be a good idea for this assignment.<p>
+   
+  However, when the server forks a manager process, the manager gets a
+  complete copy of the server's memory, its open fds, <i>etc.</i>  This
+  "etc." includes both the server's signal handlers and exit
+  handlers.<p>
+   
+  If the manager process called any of the <i>exec()</i> functions, the
+  signal handlers and exit handlers would get reset to their default
+  values (because the signal and exit handler functions would no longer
+  be in the manager's memory).  But for this project, the manager
+  processes do <i>not</i> call exec because of the programming overhead
+  that would be needed to pass parameters from the server to a
+  manager.  [Actually, you <i>can</i> write the code to be executed by
+  a manager as a separately executable file if you like; it's not all
+  that difficult.]  Here I'm assuming the manager simply calls the
+  following function, instead of exec, to do its work:
+
+  <pre>
+    void manageClient( int fd, const char *client_host );
+  </pre>
+
+  This function should be defined in a separate .cc file to keep it
+  logically separate from the code of the manager process.<p>
+
+  The manager process can cancel the signal handling set up by the
+  server process by using SIG_DFL for the second argument it passes
+  to <i>signal()</i>:
+  <pre>
+    signal( SIGTERM,  SIG_DFL );
+    signal( SIGINT,   SIG_DFL );
+    signal( SIGCHLD,  SIG_DFL );
+  </pre>
+  Figure 10.1 of the textbook lists all signal names and their default
+  actions.<p>
+
+  However, there is no way (that I know of) to unset on-exit
+  functions.  You can call <i>on_exit()</i> again to add another
+  function to the list of functions to be called when the process
+  exits, but you can't remove items from this list.<p>
+
+  It's not elegant, but a solution to this problem is to have the
+  manager processes always call <i>_exit()</i> when they exit and never
+  call <i>exit()</i>.  See section 7.3 of the textbook for more details
+  about the differences between <i>exit()</i> and <i>_exit()</i>.
+
+</div>
+<p>
+
+Whenever a process terminates, the kernel sends SIGCHLD to its parent,
+but the default action is to ignore this signal.  So the server must
+call <i>signal()</i> in order to have its signal handler called when a
+manager exits.  This signal handler uses <i>getpid()</i> to find out
+which child is exiting, then uses <i>waitpid()</i> to get the child's
+exit code and to let the child leave the zombie state.<p>
+
+The manager process should call _exit(0) to exit normally, or _exit(1)
+if it encounters an error.  But it uses a special exit code,
+SHUTDOWN_EXIT (minus 2) when it exits because of a client's shutdown
+command.  The manager's SIGCHLD handler checks for this exit code after
+calling <i>waitpid()</i> and kills all the other manager processes when
+this occurs.  I used a vector&lt;pit_t&gt; list in the server to keep
+track of the active manager processes, and killed each manager
+individually so I could be sure each one completed and was harvested by
+<i>waitpid()</i>.  You could also create a process group for the manager
+processes as described by a student in class, but you would't be able to
+tell when all the managers have exited.<p>
+
+<h3>Note:</h3>
+<div class=NOTE>
+The exit code returned by the WEXITSTATUS() macro will be an unsigned
+integer between 0 and 255 (0x00 and 0xFF).  If you define SHUTDOWN_EXIT
+to be -2 and the manager passes SHUTDOWN_EXIT to <i>_exit()</i> (see
+below) it will appear to have a value of 254 (0x000000FE) instead of -2
+(0xFFFFFFFE).  Don't let this bug you!
+</div><p>
+
+The manager processes should catch whatever signal you use to kill them
+(SIGINT or SIGTERM), and write a SC_SHUT message to their clients before
+exiting.<p>
+
+You should verify that all of the process management issues described
+here are working before proceeding to actual command line processing. 
+You could use the following command interpreter while testing this part
+of the assignment:
+
+<pre>
+    int processCommandLine( int fd, const char *command_line )
+    {
+      if ( 0 == strcmp( "exit", command_line ) )
+        _exit( 0 );
+      if ( 0 == strcmp( "shut", command_line ) )
+        _exit( SHUTDOWN_EXIT );
+      send_msg( fd, SC_STDOUT, "Unrecognized Command" );
+      return 0;
+    }
+</pre>
+
+<h2>Command Line Processing</h2>
+
+There are three types of commands to process: builtin commands that must
+execute from the same process as the client manager, builtin commands
+that must execute as a separate process, and external commands, which
+always must execute as a separate process.<p>
+
+The builtin commands that must execute from the same process as the
+client manager are <i>exit</i>, <i>shutdown</i>, and <i>cd</i>.  The
+exit and shutdown commands must run from the manager process because
+the manager process must be the one that exits!  It's exit code
+(SHUTDOWN_EXIT or not) will tell the server process whether to shut
+down or not.  The cd command must also execute from the manager's
+process because it calls <i>chdir(2)</i> to do its work, and chdir
+changes the current working directory of the process that called it; if
+it were executed from a child process, it would have no effect once the
+child process exits.<p>
+
+There is one other builtin command you are to implement, and that one
+should execute from a child process in order to enable I/O
+redirection.  (I/O redirection is an optional part of this assignment.)
+That command is <i>echo</i>.  For this assignment, have your echo
+command exit with an exit code equal to the number of command line
+arguments it received; you can use that value in your prompt string to
+help verify that it is being handled correctly.<p>
+
+External commands are to be executed using the <i>execvp(3)</i> library
+call.  This function is easier to use than the <i>execve(2)</i> kernel
+call because execve requires you to specify the full pathname to the
+command file, whereas execvp will search your process' PATH to find the
+executable file.  So, by using execvp you avoid having to tokenize PATH
+and search each directory in the list for an executable file.  The
+tradeoff is that execvp takes only two arguments, so you cannot change
+a command's environment.  (You can add code to do that in the "next
+assignment" for this course!)<p>
+
+<h3>Tokenizing a Command Line</h3>
+
+You can use <i>strtok()</i> to separate a command line into
+whitespace-separated tokens, as you did in the <i>wc</i> assignment at
+the beginning of the semester.  Here is a sketch of some code that
+builds an argument vector out of a command line, treating I/O
+redirection tokens (&lt; and &gt;) specially:
+
+<pre>
+  static vector<const char *> token_vec;
+  const char *token = strtok( buf, " \t\n\r" );
+  while ( token != 0 )
+  {
+    token_vec.insert( token_vec.end(), token );
+    token = strtok( 0, " \t\n\r" );
+  } 
+  int num_tokens = token_vec.size();
+
+  for ( vi = token_vec.begin(); vi < token_vec.end(); vi++ )
+  {
+    if ( 0 == strcmp( *vi, "&lt;" ) )
+    {
+      redirect_stdin = *(++vi);  // Need to check for null pointer.
+    }
+    else
+      arg_vector[ ++arg_count ] == *vi;
+  }
+  //  Add null pointer to end of argument vector (required when calling
+  //  execvp).
+  arg_vector[ arg_count ] = 0;
+
+</pre>
+
+ 
+<h3>Dispatch Tables</h3>
+
+By making the prototypes for builtin commands as similar to
+<i>main()</i> as possible, we can accomplish two things: (1) We can use
+the same data structures and procedures for parsing the command line no
+matter which of the three types of commands we are working with, and (2)
+we can use a single function prototype for all builtin commands,
+allowing us to use a <i>dispatch table</i> to call the functions that
+implement the builtin commands.  Dispatch tables use the function
+pointers, which do not exist in Java.<p>
+
+Here is the prototype we want to use for one of our builtin commands, in
+this case, the function that implements the echo command:
+
+<pre>
+  int do_echo( int argc, char *argv[] );
+</pre>
+ 
+The dispatch table is to consist of an array of structs, each of which
+contains the name of a builtin command as a string, and a <i>pointer</i>
+to the function that will handle that command name.  The struct we want
+needs to include a field for a "pointer to a function that receives an int
+and a char*[] and returns an int."  Here is a typedef for such a beast:
+
+<pre>
+  typedef int builtin_func_t( int argc, char *argv[] );
+</pre>
+
+(If you want your builtin commands to be able to send messages directly
+to clients, you could add another int paramter for the fd of the socket
+connecting to the client.)<p>
+
+Now you can write prototypes for all your builtin functions like this:
+
+<pre>
+  builtin_func_t do_exit, do_shut, do_chdir, do_echo;
+</pre>
+
+You can define the struct of command names and function pointers like
+this:
+
+<pre>
+  struct dispatch_t
+  {
+    const char            *func_name;
+    const builtin_func_t  *func_ptr;
+  };
+</pre>
+
+And you can build your array of command names and pointers to functions
+like this:
+
+<pre>
+  dispatch_t  no_fork[] =
+  {
+    { "exit",     do_exit   },
+    { "q",        do_exit   },
+    { "shut",     do_shut   },
+    { "shutdown", do_shut   },
+    { "cd",       do_chdir  },
+  };
+const int num_no_fork = sizeof( no_fork ) / sizeof( dispatch_t );
+</pre>
+
+As the name of the array implies, there should be separate dispatch
+table arrays for those builtins that require a fork() and those that
+don't.  Note also that you can easily set up multiple command names
+pointing to the same function, which act essentially like builtin
+command aliases.  Finally, note that the constant num_no_fork gives the
+number of entries in the array, even if the number of entries grows or
+shrinks in future versions of the project.<p>
+
+Finally, here is code that checks if a command name (arg_vector[0]) is
+one of the do_fork[] commands, and calls the corresponding function if
+it is:
+
+<pre>
+  for ( int i = 0; i < num_no_fork; i++ )
+  {
+    if ( 0 == strcmp( arg_vector[ 0 ], no_fork[ i ].func_name ) )
+    {
+      command_status =
+            no_fork[ i ].func_ptr( client_fd, arg_count, arg_vector );
+      return;
+    }
+  }
+</pre>
+
+If execution falls through the for loop instead of returning, it means
+that the command name wasn't found in the no-fork dispatch table, and
+the program has to fork a child process, which will then look for the 
+command name in the do-fork dispatch table, or try to use execvp to
+execute the command if it is not there.
+
+<h3>Global Variables</h3>
+
+Global variables can make program management very error-prone.  It's
+difficult to keep track of what functions modify the global variables,
+what ones access their values, and what functions don't use them at all.
+But global variables can be useful because they avoid a lot of parameter
+passing, which can be difficult to keep track of.  For example, client
+managers must keep track of exit code of each command that it executes
+because that is the value of the "$?" shell variable (to be implemented
+in Assignment 8 of this project).  So it makes sense to use a global
+variable, named command_status in the previous code, to keep track of
+each command's exit code.  It might be set by a no-fork builtin, by a
+do-fork builtin, or by an external command (the code you get by calling
+<i>wait()</i> or <i>waitpid()</i>).  And in this assignment, you can use
+its value as part of the prompt string sent to the client for each
+command.<p>
+
+You should minimize the scope of global variables by declaring them static
+wherever possible.  A static variable (or constant) declared outside of
+any function definition is visible only to the functions defined in the
+.cc file where it appears.<p>
+
+The bottom line here is that global variables are sometimes necessary,
+but should be used carefully.
+
+<h3>Overview of Command Processing</h3>
+
+Before looking at how to manage I/O for commands being executed, here is
+a birds-eye view of what we want to accomplish:
+
+<ul>
+
+  <li>The client toggles between two different states once it has
+  completed the initial user-authentication exchage with the server:
+  (1) When it gets a SC_PROMPT message from the server, it displays the
+  prompt, and blocks until the user enters a command line.  When it has
+  the command line, it sends it to the server in a CS_CMD message, and
+  enters the other state.  (2) From the time it sends a CS_CMD message
+  until it receives another SC_PROMPT message, the client sends any
+  input it receives from <i>stdin</i> to the server in CS_STDIN
+  messages.
+
+  <li>The server forks a process to manage each client connection.  The
+  manager process authenticates the user and sends a SC_PROMPT message
+  to the client.  When it gets a CS_CMD message, the manager parses the
+  command line, and tries to execute the command as a no-fork builtin, a
+  do-fork builtin, or a as an external command.  No-fork builtins can
+  send SC_STDOUT and/or SC_STDERR messages to the client.  But commands
+  that require forking have to be handled as follows:
+  
+  <ul>
+
+    <li>The manager process is the parent of the command process. 
+    Before forking, it creates three pipes (using <i>pipe(2)</i>, one
+    for the child's stdin, one for the child's stdout and one for its
+    stderr.  After forking, the manager closes the reading side of the
+    stdin pipe, and the writing side of both these pipes, and then goes
+    into a polling loop in which it waits for input from the client
+    (CS_STDIN messages; it writes the message body to the client's
+    stdin pipe), from the stdout pipe (it sends SC_STDOUT messages to
+    the client), or from the stderr pipe(it sends SC_STDERR messages to
+    the client).  The manager continues to poll for input until both the
+    stdin and stderr pipes are closed.  It uses SIGCHLD to harvest the
+    exit codes of the child processes used to execute do-fork or
+    external commands.
+
+    <li>The child of the manager closes the writing side of the stdin
+    pipe and the writing sides of the stdout and stderr pipes.  It uses
+    <i>dup2()</i> to transfer the reading side of the stdin pipe to fd
+    number 0, and two more calls to <i>dup2()</i> to set up stdout and
+    stderr.  Then it checks if the command name is in the do-fork
+    dispatch table, and executes it if it is.  If not, it calls execvp
+    to try to execute an external command.  If the call to execvp fails
+    it means the user has entered an invalid command name, and the child
+    process should write a message saying "Unknown command." to stderr
+    (which the manager process will pass on to the client in a SC_STDERR
+    message).  The child process must always exit.
+
+  </ul>
+
+</ul>
+
+<h2>Submitting the Assignment</h2>
+
+The assignment is due by midnight on the last day of exams (Friday, May
+24.)  Create a tar file of your clean project directory, and add to it a
+text file named README (spelled and capitalized just like that) that
+tells how much of the project you finished so I can tell what parts to
+test and what not to test.  This is not a documentation file, just a
+note that tells what parts of the project do and don't work.<p>
+
+There will be no extensions for the project and no INC grades for the
+course.<p>
+
+The final exam will be based in large part on the concepts involved in
+doing the project (managing sockets, processes, signals, pipes,
+etc.).   Rather than have the project due before the final, I am
+providing you with my solution for you to study from.  If you decide to
+copy any of my code in the final version of your project, you may do
+so, but indicate what code you copied in your README file.  If you use
+my code as a model and write your own code based on that model, you
+don't have to mention that in your README file.  <i>Warning:</i>  My
+code works (Mostly!  See "Known Bugs" below.), but my model for doing
+the project is probably different from what you have already started. 
+Trying to change your code to use parts of mine will probably cause
+more problems than if you just write your own code.  And you're not
+allowed just to submit all my own code back to me!<p>
+
+<h2>Links to Dr. Vickery's Code</h2>
+
+<ul>
+  <li><a href="./html/qprotocol.h.html">qprotocol.h</a>
+  <li><a href="./html/qclient.h.html">qclient.h</a>
+  <li><a href="./html/qserver.h.html">qserver.h</a>
+  <li><a href="./html/qutils.h.html">qutils.h</a>
+  <li><a href="./html/logfile.cc.html">logfile.cc</a>
+  <li><a href="./html/manage_client.cc.html">manage_client.cc</a>
+  <li><a href="./html/process_command.cc.html">process_command.cc</a>
+  <li><a href="./html/qclient.cc.html">qclient.cc</a>
+  <li><a href="./html/qserver.cc.html">qserver.cc</a>
+  <li><a href="./html/qutils.cc.html">qutils.cc</a>
+</ul>
+
+<h3>Known Bugs in Dr. Vickery's Code</h3>
+
+<ul>
+
+  <li>Unable to write more than one line of input to a command's stdin
+  except by redirection.</i>
+
+  <li>There are four source modules with over 300 lines of code each;
+  they should be broken into smaller modules.
+
+</ul>
+<hr></body></html>

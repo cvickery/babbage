@@ -1,0 +1,148 @@
+<HTML><HEAD><TITLE>Object Broker Project-- Use Case 4</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+Assignment 2, CS-701, Fall 1997
+<H1 align=center>Object Broker Project-- Use Case 4</H1>
+
+<H3 align=center> Use Case 4 -- <I>ob</I> and <I>om</I> Communicate</H3>
+
+<H3>Changes to <I>om</I></H3>
+
+Now we modify <I>om</I> so that it interacts with <I>ob</I> instead of
+<I>ou</I>.  Before entering the endless loop to receive requests,
+<I>om</I> writes a "hello" request to <I>ob</I>.  If <I>ob</I> does not
+respond, <I>om</I> exits.  Otherwise, it writes the hostname for
+<I>ob</I> in a logfile message, such as "Communicating with object
+broker running on jaguar."<p>
+
+Whenever <I>om</I> exits, it first writes a "good-bye" request to
+<I>ob</I>.<p>
+
+<I>Optional</I>:  Make <I>om</I> handle <CODE>SIGINT</CODE> the same
+way as an "exit" request.<p>
+
+Except for sending "hello" and "good-bye" requests to <I>ob</I>,
+<I>om</I> for this case is basically the same as it was for Use Case
+2a. The one thing that changes is that <I>om</I> no longer binds its
+socket to a particular port number.  The kernel will assign a port
+number when the socket is first written to (when <I>om</I> sends the
+"hello" request), and the <I>ob</I> learns what that port number is
+when it receives the "hello" request from <I>om</I>.<p>
+
+<H3>Changes to <I>ob</I></H3>
+
+Now <I>ob</I> maintains a list of currently active object managers. 
+This list is updated as <I>ob</I> receives "hello" and "good-bye"
+requests from <I>om</I> programs.  (You can also use <I>ou</I> to trick
+<I>ob</I> because the present design of <I>ou</I> does not check what
+the user types.)<p>
+
+When the user sends a "shutdown" request to <I>ob</I>, it sends "exit"
+requests to all currently active <I>om</I> programs.<p>
+
+Here is a summary of how <I>ob</I> responds to requests for this use
+case:
+
+<center><table border>
+  
+  <tr><th>Request<br>Type
+      <th>Argument<br>List
+      <th>Return<br>Value
+      <th>Action
+  
+  <tr><td align=center><CODE>hello</CODE>
+      <td align=center>Anything
+      <td>"Hello acknowledged"
+      <td>Write a message to the log file that includes a unique name
+      for the program that sent the request.  Add the unique name to a
+      list of "registered object managers."
+
+  <tr><td align=center><CODE>good-bye</CODE>
+      <td align=center>Anything
+      <td>"Good-bye acknowledged"
+      <td>Remove the sender's unique name from the list of registered
+      object managers.
+
+  <tr><td align=center><CODE>list</CODE>
+      <td align=center>Anything
+      <td>If the Argument list is the token, "managers," a string
+      containing the names of all registered object managers. 
+      Otherwise, a string saying like the one returned for Use Case 3.
+      <td>Depends on the Argument List
+
+  <tr><td align=center><CODE>shutdown</CODE>
+      <td align=center>Anything
+      <td>Nothing
+      <td>Send an "exit" request to each <I>om</I> on the list of
+      registered object managers.  Write a message to the log file that
+      includes the Argument List as part of the message, then exit
+      <I>ob</I>.
+
+</table></center><p>
+
+There are three different changes you are making to <I>ob</I> for this
+use case:
+
+<ol>
+  <li>Update the list of registered object managers in response to
+  "hello" and "good-bye" requests.
+  <li>Return the list of registered object managers in response to "list
+  managers" requests.
+  <li>Send "exit" requests to registered object managers in response to
+  "shutdown" requests.
+</ol>
+
+I recommend that you implement and test each of these three changes
+separately.  If you try to do them all at once, it will be too hard to
+debug problems that come up because there will be too much new code to
+keep track of.  Initially, the list can be just a list of names, and
+you can examine it using <I>gdb</I> or <I>ddd</I> as <I>ob</I> runs. 
+Then you can implement the "list managers" request.  Finally, augment
+the list so that it has both the name and <CODE>sockaddr_in</CODE>
+struct for each manager, and use the <CODE>sockaddr_in</CODE> struct
+for sending "exit" requests to the registered managers.
+
+<H3>Testing</H3>
+
+It's important to test your programs carefully.  There are three types
+of conditions you need to test, and your should test them in the order
+listed here: (1) Normal input.  Assume all three programs and the user
+behave as expected, and be sure they interact properly.  (2) Boundary
+conditions.  Check that the programs work correctly when inputs on
+internal conditions are an the ends of their allowable range.  For
+example, what if the use asks for the list of managers when the list is
+empty?  What happens if all the managers send "good-bye" requests, and
+then a new manager sends another "hello" request?  (3)  Error
+conditions.  What if the user enters an invalid request type, or too few
+or too many arguments on the command line?  What if the <I>ob</I>
+receives a "good-bye" request from a program that is not on the list of
+registered object managers?<p>
+
+Concentrate your effort on testing on the boundary conditions to
+be sure your programs are as robust as possible.<p>
+
+<H3>Testing <I>ob</I>'s List Management</H3>
+
+There is a logical problem in testing this use case.  There is no way to
+cause an <I>om</I> to exit except by shutting down the <I>ob</I>, which
+means there is no way to be sure that <I>ob</I> manages deletions from
+its list of managers correctly.  You can't use <I>ou</I> to send a
+good-bye message on behalf of a manager because each invocation of
+<I>ou</I> gets a different port number, so there is no way to generate
+the same unique host:port combination that <I>ob</I> uses to identify
+managers.<p>
+
+You can use <I>~vickery/bin/om_4</I> to do this test in either of two
+ways.  First, my <I>om_4</I> implements the feature of sending a
+"good-bye" message when it receives a SIGINT.  Also, if you set the
+environment variable <CODE>OM_TIMEOUT</CODE> to a non-zero numerical
+value, the program will exit any time it waits that many seconds
+without receiving any datagrams.
+
+<H3>Documentation</H3>
+
+Update your man pages for <I>ou</I>, <I>ob</I>, and <I>om</I>.
+
+<HR>
+<address>Christopher Vickery<br>Computer Science Department,
+Queens College of CUNY</address>
+<HR></BODY></HTML>

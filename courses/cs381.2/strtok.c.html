@@ -1,0 +1,65 @@
+<HTML><HEAD><TITLE>strtok.c</TITLE></HEAD><BODY>
+<CENTER><H1>strtok.c</H1></CENTER><HR><PRE>
+/*  $Id: strtok.c,v 1.1 1999/03/23 14:15:26 vickery Exp $
+ *
+ *    Replaces the library function of the same name.
+ *
+ *      This one tells you what the termination character was and
+ *      where to continue scanning.
+ *
+ *      C. Vickery
+ *      CS-381.2
+ *      Spring 1999
+ *
+ *      $Log: strtok.c,v $
+ * Revision 1.1  1999/03/23  14:15:26  vickery
+ * Initial revision
+ *
+ */
+
+#include &lt;stdlib.h>
+#include "strtok.h"
+
+size_t strspn(  const char *s, const char *set );
+size_t strcspn( const char *s, const char *set );
+
+//  strtok()
+//  ------------------------------------------------------------------
+char *
+strtok(       char  *whence,
+        const char  *terms,
+              char **next,
+              char  *termch ) {
+
+char  *token;
+
+
+  //  See if there is work to do
+  if ( whence == NULL || *whence == '\0' ) {
+
+    *termch = '\0';
+    *next = NULL;
+    return NULL;
+
+  }
+
+  //  Do the work
+  token = whence + strspn( whence, terms );
+  if ( *token == '\0' ) {
+    *termch = '\0';
+    *next = NULL;
+    return NULL;
+  }
+  *next  = token + strcspn( token,  terms );
+  *termch = **next;
+
+  //  See if there will be more work to do
+  if ( **next != '\0' ) {
+    *((*next)++) = 0;
+  }
+
+  //  Done
+  return token;
+
+}
+</PRE><HR></BODY></HTML>

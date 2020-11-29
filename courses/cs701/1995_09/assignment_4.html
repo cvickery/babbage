@@ -1,0 +1,96 @@
+
+<HTML> <HEAD> <TITLE> X Window Client Exercise </TITLE> </HEAD>
+<BODY>
+<H2>X Window Client Exercise</H2>
+
+<DL>
+<DT><B>Due Date:</B><DD><p>December 19, 1995</p>
+
+<DT><B>Deliverables:</B><DD>
+
+<p>The deliverables for this exercise are the same as for 
+<A href="assignment_3.html">Exercise 3</A> except that you
+are to modify the <A href="ftp://babbage.cs.qc.edu/pub/vickery/Motif_Sample.tar.gz">sample program</A> that I provided you to act as a graphical user
+interface for your client program.</p>
+<p>When you have completed the exercise, send me e-mail telling me the
+project directory.</p>
+
+
+<DT><B>Requirements:</B><DD>
+
+<p> All you have to do for this exercise is to supply
+a working program; there is no requirement for additional documentation,
+although I will look at it if you provide it.</p>
+
+
+<DT><B>Description:</B><DD>
+
+<p>Your client program for Exercise 3 executed an algorithm that can be
+summarized as:
+<OL>
+<LI>Use command line arguments to establish a connection with the server.
+<LI>Obtain a command string from stdin.
+<LI>Send a command to the server.
+<LI>Read a reply from the server.
+<LI>Write a message to stdout.
+</OL>
+
+<p>For this exercise, you are to modify the sample program so that it
+replaces the client program that you developed in Assignment 3.  
+Your server from Assignment 3 remains unchanged.  The process
+can be thought of as adding your client program to the sample code or as
+adding the sample code to your client.  At least for purposes of exposition,
+we will think of the sample program as a replacement for your client.  That
+is, you will add parts of your client's code to the sample program.</p>
+
+<p>First, you will need to extract the code for Step 1 of the above algorithm
+and add it to the <i>main()</i> function in file <code>main.c</code> of
+the sample program.  The code has to be inserted after the application calls
+<i>XtVaAppInitialize()</i> so that any toolkit command line arguments will
+be removed before your program looks for the hostname and port number
+arguments.</p>
+
+<p>The other part of the exercise is to take the remainder of your
+client program and edit it into the <i>commandCallback()</i> function
+in <code> do_command.c</code>.  The sample program gets the command
+line entered by the user in an array named <code>cmd</code>, so you
+will have to do something so that either the code from your client uses
+this variable name or so the sample code uses your variable name
+instead of <code>cmd</code>.  Whichever way you go, be sure the
+variable you use is declared as a <code>char</code> <i>pointer</i>
+rather than as a <code>char</code> <i>array</i>, since
+<i>XmStringGetLtoR()</i> mallocs the memory for the buffer, and has to
+be passed a pointer to a pointer rather than a pointer to an array.</p>
+
+<p>
+Your client's
+interactions with the server can then use the same code as before in
+place of the sample application's use of <i>popen()</i> to process the
+user's command.  You will have to change all <i>printf()</i> statements
+in your client so that they update the contents of the application's
+text widget, using the sample code in <i>commandCallback()</i> as a model.</p>
+
+<p>One issue is how to manage the socket variable that is initialized
+in <i>main()</i> but which needs to be referenced in <i>commandCallback()</i>.
+The simplest solution is to make it a global variable.</p>
+
+<DT><B>Grading:</B><DD>
+<p>This exercise will count approximately 3% of your course grade.  You
+will get full credit for constructing a program that combines the functionality
+of your Assignment 3 client with the user interface of the sample program.  You
+do <i>not</i> need to add any functionality or fix any residual bugs in your
+code for
+Assignment 3 in order to get full credit for this exercise, assuming only that your
+program for Assignment 3 has at least basic functionality.</p>
+<p>Good Luck!</p>
+
+</DL>
+
+<HR>
+<UL>
+<LI> <A HREF="../coding_guidelines.html">Coding Guidelines</A>.
+</UL>
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>

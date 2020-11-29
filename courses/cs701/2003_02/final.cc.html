@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>final.cc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</head>
+<center><h1>final.cc</h1></center>
+<hr>
+<pre>
+      //  final.cc
+      
+      /**********************************************************************
+       *
+       *    Solutions to Final Exam Questions
+       *
+       *    C. Vickery
+       *    CS-701, Spring 2003
+       *
+       *********************************************************************/
+      
+      #include &lt;cstdio&gt;
+      
+      #include &lt;errno.h&gt;
+      #include &lt;poll.h&gt;
+      #include &lt;stdlib.h&gt;
+      #include &lt;unistd.h&gt;
+      #include &lt;wait.h&gt;
+      
+      //  err_check()
+      //  -------------------------------------------------------------------
+      /*
+       *    Prints system-defined error message and exits if an error has
+       *    occurred.
+       */
+        void err_check( const char *msg )
+        {
+          if ( errno == 0 )
+            return;
+          perror( msg );
+          exit( 1 );
+      }
+      
+      
+      //  main()
+      //  -------------------------------------------------------------------
+      /*
+       *    Treats argv[1] through argv[argc-1] as a command line.  Executes
+       *    the command, acting as a proxy for the target command's stdin,
+       *    stdout, and stderr.
+       */
+        int
+        main( int argc, char *argv[], char * envp[] )
+        {
+          int   num     = 0;
+          int   status  = 0;
+          char  buf[8192];
+      
+          //  Check command line arguments
+          if ( argc == 1 )
+          {
+            fprintf( stderr, "Usage: final arg ...\n" );
+            exit( 1 );
+          }
+          status = access( argv[1], X_OK );
+          if ( status != 0 )
+          {
+            perror( argv[1] );
+            exit( 1 );
+          }
+      
+          //  Create proxy pipes
+          int fd_in[2], fd_out[2], fd_err[2];
+          pipe( fd_in   );
+          err_check( "fd_in" );
+          pipe( fd_out  );
+          err_check( "fd_out" );
+          pipe( fd_err  );
+          err_check( "fd_err" );
+      
+          //  fork ...
+          pid_t target = fork();
+          err_check( "fork" );
+          if ( target == 0 )
+          {
+            //  Child: Do redirection 
+            dup2( fd_in[0], 0 );
+            err_check( "dup in" );
+            close( fd_in[0] );
+            close( fd_in[1] );
+      
+            dup2( fd_out[1], 1 );
+            err_check( "dup out" );
+            close( fd_out[0] );
+            close( fd_out[1] );
+      
+            dup2( fd_err[1], 2 );
+            err_check( "dup err" );
+            close( fd_err[0] );
+            close( fd_err[1] );
+      
+            //  Execute the command
+            execve( argv[1], &amp;argv[1], envp );
+            perror( argv[1] );
+            exit( 1 );
+          }
+          
+          //  Parent: Close unneeded fds
+          close( fd_in[0]   );
+          close( fd_out[1]  );
+          close( fd_err[1]  );
+      
+          //  Set up for polling
+          struct pollfd poll_list[] =
+          {
+            { STDIN_FILENO, POLLIN, 0 },
+            { fd_out[0],    POLLIN, 0 },
+            { fd_err[0],    POLLIN, 0 },
+          };
+      
+          //  Act as proxy for the command
+          for ( ;; )
+          {
+            fprintf( stderr, "Type something: " );
+            poll( poll_list, 3, -1 );
+      
+            //  Check stdin
+            if ( poll_list[0].revents != 0 )
+            {
+              num = read( STDIN_FILENO, buf, sizeof( buf ) );
+              err_check( "read stdin" );
+              write( fd_in[1], buf, num );
+            }
+      
+            //  Check stdout
+            if ( (poll_list[1].revents &amp; (POLLERR|POLLHUP|POLLNVAL)) != 0 )
+            {
+              //  Error: assume child has terminated
+              fprintf( stderr, 
+                              "Out.revents: %04X\n", poll_list[1].revents );
+              break;
+            }
+            if ( (poll_list[1].revents &amp; POLLIN) != 0 )
+            {
+              //  Read from stdout
+              num = read( fd_out[0], buf, sizeof( buf ) );
+              if ( num &lt; 0 )
+              {
+                perror( "Reading out" );
+                break;
+              }
+              buf[num] = '\0';
+              fprintf( stderr, "%s.out: %s", argv[1], buf );
+            }
+      
+            //  Check stderr
+            if ( (poll_list[2].revents &amp; (POLLERR|POLLHUP|POLLNVAL)) != 0 )
+            {
+              //  Error: assume child has terminated
+              fprintf( stderr, 
+                              "Err.revents: %04X\n", poll_list[2].revents );
+              break;
+            }
+      
+            if ( (poll_list[2].revents&amp;POLLIN) !=0 )
+            {
+              //  Read from stderr
+              num = read( fd_err[0], buf, sizeof( buf ) );
+              if ( num &lt; 0 ) 
+              {
+                perror( "Reading err" );
+                break;
+              }
+              buf[num] = '\0';
+              fprintf( stderr, "%s.err: %s", argv[1], buf );
+            }
+      
+          }
+          
+          //  Error from stderr or stdout.  Harvest the child.
+          wait( &amp;status );
+          if ( WIFEXITED( status ) )
+          {
+            printf( "%s has exited with exit code %d\n",
+                    argv[1], WEXITSTATUS( status ) );
+          }
+          else
+          {
+            printf( "%s has terminated with no exit code\n",
+                    argv[1] );
+          }
+          exit( 0 );
+        }
+</pre><hr></body></html>

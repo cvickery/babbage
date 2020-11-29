@@ -1,0 +1,533 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Setting Up JavaScript Applications</title>
+
+    <link rel="shortcut icon" href="../cs343/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>Settng Up JavaScript Applications</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+        <p>
+          Sometimes a JavaScript-enhanced web page needs just a little code to add a nice little feature. But far more
+          often the JavaScript features are significant enough to warrent using one or more libraries to provide a
+          higher-level infrastructure than that provided by the JavaScript browsers alone.  For example, in our course,
+          we use the Core library developed and presented in the Yank and Adams <cite>Simply JavaScript</cite> book,
+          which provides two different types of infrastructure for our JavaScript-enhanced applications:
+        </p>
+        <ol>
+          <li>
+            The Core library provides a browser-independent way to manage event handlers, <span
+            class="functionName">Core.addEventListener()</span> and some related functions (<span
+            class="functionName">Core.removeEventListener()</span>, <span
+            class="functionName">Core.preventDefault()</span>, and <span
+            class="functionName">Core.stopPropagation()</span>, and <span class="functionName">Core.Start()</span>).
+            These functions are needed because Internet Explorer has traditionally used a different event management
+            model from all other browsers; using these functions means your code never has to deal with these browser
+            differences.
+          </li>
+          <li>
+            The Core library also provides some very useful functions that simply are missing from the JavaScript
+            specification. They let you used DOM element 
+            <span class="tech-term" title="the class attribute of elements">class</span>es as easily as 
+            <span class="functionName">document.getElementById()</span> and <span
+            class="functionName">document.getElementsByTagName()</span> let you work with element 
+            <span class="tech-term" title="the id attribute of elements">id</span>s and 
+            <span class="tech-term" title="the names of elements">tag name</span>s.
+          </li>
+        </ol>
+        <p>
+          There are several popular JavaScript libraries in wide-spread use: <a href="http://JQuery.com/">jQuery</a>, <a
+          href="http://www.prototypejs.org/">Prototype</a>, and the <a href="http://developer.yahoo.com/yui/">Yahoo!
+          User Interface Library (YUI)</a>, for example.  These libraries provide overlapping functionalities, but it is
+          perfectly reasonable to use more than one of the in a single web application.  In addition to major libraries,
+          there are also lots of &ldquo;snippets&rdquo; of JavaScript that get added to web pages that provide useful
+          features: perhaps ones that you wrote yourself for an earlier project; perhaps some that a previous developer
+          working on a client&rsquo;s site produced; perhap some &ldquo;neat&rdquo; effect from another site that seems
+          perfect for the one you are working on.
+        </p>
+        <p>
+          The point is that real-world JavaScript programming almost always requires your code to &ldquo;play
+          nice&rdquo; with someone else&rsquo;s code that is going to be loaded into the browser along with yours: code
+          that you did not write and code that you might not have the time or inclination to study just to find out what
+          it does and/or how it does it.
+        </p>
+        <p>
+          There are two issues that have to be dealt with:
+        </p>
+        <ol>
+          <li>
+            The first one is global variables. In JavaScript, any variable that is defined outside of any function or
+            object can be referenced from within any function or object. The same holds true for variables that are
+            defined inside a function or object unless they are declared using the <span class="codeSnippet">var</span>
+            keyword. The problem here is that you might pick the same name for one of your global variables that
+            &ldquo;the other guy&rdquo; chose for one of hers, a recipe for obscure bugs plaguing both your code and the
+            other code you are sharing the browser with. Global variables must be eliminated or at least reduced to an
+            absolute minimum.
+            <p>
+              The problem is that you need to be able to share variables among the various functions in your program,
+              and the option of passing everything from one function to another as a big set of parameters is messy,
+              error-prone, and inefficient. (People have tried it.) But sharing a well-documented set of
+              application-specific variables is actually a good thing. The goal is to set up your application so that
+              it can have access to its own set of shared variables without conflicting with the browser-wide global
+              variables.
+            </p>
+            <p>
+              Global variables are actually properties of the global object that the browser creates, the <span
+              class="variableName">window</span> object.
+            </p>
+            <p>
+              The major libraries hide their library-specific global variables as much as possible. For example, if you
+              use the Yahoo Interface Library, it will create exactly one global variable, named <span
+              class="variableName">YAHOO</span>, and then put all its globals in that object. (Techncially, the name is
+              <span class="variableName">window.YAHOO</span>, but for browser-wide globals, you can omit the name of the
+              containing object.) If you use the Core library from the Yank and Adams book, it will create exactly one
+              global variable, named <span class="variableName">Core</span>. If you use jQuery, it will create three
+              global variables, named <span class="variableName">jQuery</span>, <span
+              class="variableName">_jQuery</span>, and <span class="variableName">$</span>. The Prototype global
+              variable is named <span class="variableName">Prototype</span>, but it also uses a global variable named
+              <span class="variableName">$</span>. (Note the name conflict; there are way to deal with it, but it cannot
+              be ignored if you want to use both libraries.)
+            </p>
+            <p>
+              Furthermore, browsers use the global object to hold all sorts of internal houskeeping information. (I just
+              looked at the <span class="variableName">window</span> object in the browser that I have open right now
+              and found 100 global variables there.) It&rsquo;s a minefield trying to avoid interfering with other
+              libraries and the browser&rsquo;s own global variables.
+            </p>
+          </li>
+          <li>
+            The second issue is similar to the first one in that it also deals with different programs interfering with
+            each other. But in this case, the issue is the DOM tree: the browser creates a JavaScript tree of objects
+            using the global variable <span class="variableName">window.document</span> (again, the
+            &ldquo;window.&rdquo; part is usually omitted when talking about it). By extension, all the nodes in the DOM
+            tree are global variables too: any piece of JavaScript code can get access to any node in the DOM tree by
+            calling <span class="functionName">document.getElementByTagName()</span> or various other techniques. The
+            issue here is event handlers, which are references to functions that get attached to well-known global
+            variables within DOM tree nodes. For example, if you write a function to validate the data a user enters on
+            a form, you can put a reference to your function in the the form object&rsquo;s <span
+            class="variableName">submit</span> property. The problem with this is that since the DOM is global, some
+            other JavaScript code could do the same thing. Depending which code gets initialized first, either setting
+            up your code&rsquo;s submit event handler could destroy another program&rsquo;s handler, or another program
+            could destroy the reference to your submit event handler when it sets up its own.
+            <p>
+              The solution to this problem is simple: use the event <em>listener</em> mechanism instead of the event
+              <em>handler</em> mechanism.  A node in the DOM tree can have just one handler for a particular type of
+              event, but there can be multiple listeners: the browser keeps an internal list of all listener functions
+              for a node&rsquo;s events and calls them all when the event triggers. There is more overhead associated
+              with listeners compared to handlers, but it is trivial compared to the impact of code that doesn&rsquo;t
+              work! (Event handlers are sometimes safe to use: for example, if you use JavaScript to create a node and
+              add it to the DOM tree, it is highly unlikely that some other JavaScript code is going to find it, and you
+              can safely use handlers for the events associated with that node.)
+            </p>
+          </li>
+        </ol>
+        <p>
+          The remainder of this document goes through the process of setting up a JavaScript application that creates no
+          global variables (properties of the global <span class="variableName">window</span> object), but which has any
+          number of application-global variables and functions. For this example, the application will use the Core
+          library from the Yank and Adams book for setting up event listeners.
+        </p>
+
+      </div>
+      <h2>Getting Started</h2>
+      <div class="whitebox">
+        <p>
+          All JavaScript applications go through two stages: first some initialization code is run to get the
+          application ready to start handling events, then the application reacts to events that occur. That is, the
+          initialization code sets up event listeners and application-global variables, then the event listeners get
+          called by the browser when events, such as mouse clicks and keyboard actions, happen.
+        </p>
+        <p>
+          The Core library defines a function, <span class="functionName">Core.start()</span> that can be used to set up
+          your application&rsquo;s initialization code as soon as the browser has finished building the DOM tree for the
+          web page. Since your application will include functions that respond to events, your initialization code needs
+          access to the complete DOM tree in order to be able to attach your event listeners to the desired DOM
+          elements. This implies that your initialization function may be defined as soon as your JavaScript code file
+          is processed by the browser, but it must not actually execute until the browser has completed building the DOM
+          Tree.
+        </p>
+        <p>
+          The Core library defines a function named <span class="functionName">Core.start()</span> to handle getting
+          your initialization function to run at the right time. (It makes your initialization function an event
+          listener for the <span class="variableName">window.onload event</span>.) <span
+          class="functionName">Core.start()</span> requires you to name your initialization function <span
+          class="functionName">init()</span>, and it requires your <span class="functionName">init()</span> function to
+          be defined inside an object; you pass that object to <span class="functionName">Core.start()</span>. For
+          example, assuming a web page has already loaded <span class="fileName">core.js</span>, and except for the fact
+          that it creates a global varible named <span class="variableName">myObject</span>, this would work:
+        </p>
+        <p class="codeBlock">
+var myObject = {};
+myObject.init = function() { /* initialize your application here */ };
+Core.start( myObject );
+        </p>
+        <p>Equivalently:</p>
+        <p class="codeBlock">
+var myObject = { init: function() { /* initialize your application here */ };
+Core.start( myObject );
+        </p>
+        <p id="no-global-1">
+          You can eliminate the global variable quite easily:
+        </p>
+        <p class="code-block">
+Core.start( { init: function() { /* initialize your application here */ } } );
+        </p>
+        <p>
+          What <span class="functionName">Core.start()</span> does is to install your <span
+          class="functionName">init()</span> function as an event listener for the <span
+          class="variableName">window.onload</span> event, which the browser automatically triggers when it finishes
+          building the DOM tree for the web page.
+        </p>
+        <p>
+          By the way, if you had a big application that you divided into separate modules, you could initialize the
+          modules separately by calling <span class="functionName">Core.start()</span> multiple times. Because the <span
+          class="functionName">init()</span> functions are event listeners rather than event handlers, they don&rsquo;t
+          interfere with each other, and because they are defined inside different objects, their names do not conflict
+          with each other either:
+        </p>
+        <p class="code-block">
+Core.start( { init: function() { /* initialize the one module of your application here */ } });
+Core.start( { init: function() { /* initialize the another module of your application here */ } });
+        </p>
+      </div>
+      <h2>Real Applications Have Event Listeners</h2>
+      <div>
+        <p>
+          The previous section is a good start, but the functions in real applications have more than just comments in
+          them! And that&rsquo;s where things start to get complicated.
+        </p>
+        <p>
+          Let&rsquo;s build an application that actually has an event listener. Now there have to be two functions:
+          <span class="functionName">init()</span> and the event listener, which we will call <span
+          class="functionName">myListener()</span>. To be realistic, the application will also need to connect the
+          listener to some event arising from some node in the DOM tree. For an example, here is a web page with a
+          button on it; the goal is to attach an event listener to <span class="variableName">click</span> events on the
+          button:
+        </p>
+        <p class="code-block">
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt; My Page &lt;/title&gt;
+    &lt;script type="text/javascript" src="scripts/core.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="scripts/myscript.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;button id="myButton" /&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+        </p>
+        <p>
+          We would like to set this up by creating an object like this to pass to <span
+          class="functionName">Core.start</span>:
+        </p>
+        <p class="code-block">
+{
+  myListener: function(evt) { console.log("myListener"); },
+  init: function() { Core.addEventListener(theButton, "click", myListener); }
+}
+        </p>
+        <p>
+          Aside from the fact that <span class="variableName">theButton</span> isn&rsquo;t defined yet, this code does
+          not work because the variable named <span class="variableName">myListener</span> is not in scope inside
+          function <span class="functionInit">init()</span>. You might think it would be since both are defined inside
+          the same object. But it&rsquo;s not: inside a function, a simple variable name refers to a local variable
+          defined inside that function or (since JavaScript allows functions to be defined inside function) to a
+          variable defined in a containing function (or a containing function&rsquo;s containing function &hellip;).
+          Finally, if the search through all level of enclosing functions fails, JavaScript will look for the variable
+          in the global object, <span class="variableName">window</span>. It&rsquo;s as if the previous example had been
+          written:
+        </p>
+        <p class="code-block">
+{
+  myListener: function(evt) { console.log("myListener"); },
+  init: function() { Core.addEventListener(theButton, "click", <span style="font-weight:bold;">window.</span>myListener); }
+}
+        </p>
+        <p>
+          Here is a solution that works but has problems:
+        </p>
+        <p class="code-block">
+var myObject = {
+  myListener: function(evt) { console.log("myListener"); },
+  init: function() { Core.addEventListener(theButton, "click", <span style="font-weight:bold;">myObject.</span>myListener); }
+  };
+Core.start( myObject );
+        </p>
+        <p>
+          The problems are:
+        </p>
+        <ol>
+          <li>
+            The global variable <span class="variableName">myObject</span> can&rsquo;t be eliminated the way we did <a
+            href="#no-global-1">earlier</a> because it has to be used to reference the object from within <span
+            class="functionName">init()</span>.
+          </li>
+          <li>
+            If we try to encapsulate our applicaton inside the named object, <span class="variableName">myObject</span>,
+            every reference to a shared variable or function name in the whole application has to be prefaced with <span
+            class="variableName">myObject.</span>&mdash;a major typing nuisance at best, and a likely source of hard to
+            locate bugs under normal circumstances.
+          </li>
+        </ol>
+        <p>
+          What we really want to do is to wrap a function around our entire application so that JavaScript will find all
+          our application&rsquo;s function and variable names before it &ldquo;escapes&rdquo; to the global object,
+          <span class="variableName">window</span>.
+        </p>
+        <p>
+          This works (except <span class="variableName">theButton</span> is still not defined):
+        </p>
+        <p class="code-block">
+function myWrapperFunction()
+{
+  function myListener(evt) { console.log("myListener"); }
+  var myObject = {
+    init: function() { Core.addEventListener(theButton, "click", myListener); }
+    }
+
+    return myObject;
+}
+Core.start( myWrapperFunction() );
+        </p>
+        <p>
+          To get the argument to pass to <span class="functionName">Core.start()</span> (an object containing a function
+          named <span class="functionName">init()</span>), we call <span
+          class="functionName">myWrapperFunction()</span>, which returns <span class="variableName">myObject</span>,
+          which JavaScript passes as the argument to <span class="functionName">Core.start()</span>.
+        </p>
+        <p>
+          We&rsquo;ve eliminated the need to qualify all the references to our shared variables and functions with an
+          object name, and we eliminated using a global variable for the object that gets passed to <span
+          class="functionName">Core.start()</span>&mdash;but we&rsquo;ve now introduced a different global variable:
+          <span class="variable-name">myWrapperFunction</span>. Sigh.
+        </p>
+        <p>
+          But wait! JavaScript allows you to define functions with no name. Just define the function inside
+          parentheses:
+        </p>
+        <p class="code-block">
+(function() { console.log("Hello, my name is"); })
+        </p>
+        <p>
+          That function definition is pretty useless because there is no name you could use to call the function.  BUT,
+          you can call it when you define it the way you call any function, by putting a pair of parentheses after it:
+        </p>
+        <p class="code-block">
+(function() { console.log("Hello, my name is"); })()
+        </p>
+        <p>
+          Note that we are playing loose with semicolons here: the previous two examples look like expressions (part a
+          statement) because they do not end with semicolons. But JavaScript does not actually require a semicolon at
+          the end of a statement. If it has a complete statement when it gets to the end of a line, it will consider
+          that the end of a statement and go on to the next line. So this code gives an error:
+        </p>
+        <p class="code-block">
+(function() { console.log("Hello, my name is"); })
+()
+        </p>
+        <p>
+          In this case, JavaScript will not know what to do with the parentheses on the second line and will generate a
+          syntax error. Adding a semicolon after them doesn&rsquo;t do any good: the first line could be a complete
+          statement and nothing you can do will convince JavaScript otherwise.  This problem shows up in <span
+          class="keyWord">return</span> statements because a return value is optional. For example:
+        </p>
+        <p class="code-block">
+  return
+  {}
+        </p>
+        <p>
+          Here, the first statement is treated as a complete <span class="keyWord">return</span> statement with no
+          return value, and the second line is simply the definition of an empty object that is not saved, sort of like
+          defining an anonymous function but not calling it. We will come back to this digression in the last code
+          sample. For now, we have a mechanism for creating a namespace for our application without creating any global
+          variables. Just replace <span class="functionName">myWrapperFunction()</span> with an anonymous self-executing
+          function and use it as the argument to <span class="functionName">Core.start()</span>:
+        </p>
+        <p class="code-block">
+Core.start(
+  ( function()  /* start of anonymous self-executing function *
+    {           /* start of our application's namespace */
+      function myListener(evt) { console.log("myListener"); }
+      var myObject = {
+        init: function() { Core.addEventListener(theButton, "click", myListener); }
+        }
+      return myObject;
+    }           /* end of our application's namespace */
+  )()           /* end of the anonymous self-executing function and its invocation */
+);              /* end of the call to Core.start()
+        </p>
+        <p>
+          To make it work, we need to define and initialize <span class="variableName">theButton</span>. If we need to
+          reference it from other parts of the application it would look like this:
+        </p>
+        <p class="code-block">
+Core.start(
+  ( function()  /* start of anonymous self-executing function *
+    {           /* start of our application's namespace */
+      function myListener(evt) { console.log("myListener"); }
+      <span style="font-weight:bold;">var theButton = null;</span>
+      var myObject = {
+          init: function()
+          {
+            <span style="font-weight:bold;">theButton = document.getElementsByTagName('button')[0];</span>
+            Core.addEventListener(theButton, "click", myListener);
+          }
+        }
+      return myObject;
+    }           /* end of our application's namespace */
+  )()           /* end of the anonymous self-executing function and its invocation */
+);              /* end of the call to Core.start()
+        </p>
+        <p>
+          If the only refernce to <span class="variableName">theButton</span> is from within <span
+          class="functionName">init()</span>, good programming practice says to make it local to that function and keep
+          it out of the application&rsquo;s &ldquo;global&rdquo; namespace:
+        </p>
+        <p class="code-block">
+Core.start(
+  ( function()  /* start of anonymous self-executing function *
+    {           /* start of our application's namespace */
+      function myListener(evt) { console.log("myListener"); }
+      <span style="font-weight:bold;">/* theButton declaration removed from here */</span>
+      var myObject = {
+          init: function()
+          {
+            <span style="font-weight:bold;">var</span> theButton = document.getElementsByTagName('button')[0];
+            Core.addEventListener(theButton, "click", myListener);
+          }
+        }
+      return myObject;
+    }           /* end of our application's namespace */
+  )()           /* end of the anonymous self-executing function and its invocation */
+);              /* end of the call to Core.start()
+        </p>
+        <p>
+          Or eliminate it entirely. (This is arguably harder code to read, so it&rsquo;s up to the programmer to decide
+          whether this or the previous example is &ldquo;better.&rdquo;):
+        </p>
+        <p class="code-block">
+Core.start(
+  ( function()  /* start of anonymous self-executing function *
+    {           /* start of our application's namespace */
+      function myListener(evt) { console.log("myListener"); }
+      var myObject = {
+          init: function()
+          {
+            <span style="font-weight:bold;">/* theButton initialization statement removed from here */</span>
+            Core.addEventListener(<span style="font-weight:bold">document.getElementsByTagName('button')[0]</span>, "click", myListener);
+          }
+        }
+      return myObject;
+    }           /* end of our application's namespace */
+  )()           /* end of the anonymous self-executing function and its invocation */
+);              /* end of the call to Core.start()
+        </p>
+        <p>
+          As an added touch, we can eliminate the application-global variable, <span
+          class="variableName">myObject</span>, being careful not to trigger the return-without-semicolon issue
+          mentioned above:
+        </p>
+        <p class="code-block">
+Core.start(
+  ( function()  /* start of anonymous self-executing function *
+    {           /* start of our application's namespace */
+      function myListener(evt) { console.log("myListener"); }
+      <span style="font-weight:bold;">return {</span>
+          init: function()
+          {
+            Core.addEventListener(document.getElementsByTagName('button')[0], "click", myListener);
+          }
+        }<span style="font-weight:bold;">; /* semicolon added here */</span>
+           <span style="font-weight:bold;">/* return statement removed from here */</span>
+    }           /* end of our application's namespace */
+  )()           /* end of the anonymous self-executing function and its invocation */
+);              /* end of the call to Core.start()
+        </p>
+        <p>
+          A final note: when a function returns, all its local variables cease to exist.  New copies of them will be
+          created if the function is executed again, but the original set is lost when the function returns. In a
+          language like C or C++, a function that returns a reference to a local variable is an error: the reference is
+          to a part of memory that has been freed up for other uses. But our application framework returns a reference
+          to a local variable (the object containing the <span class="functionName">init()</span> method), yet it works
+          because JavaScript implements what is called a <span class="techTerm">closure</span>: for so long as any part
+          of that object <em>and its environment</em> exists, the entire environment is preserved. For example, in the
+          version of our example where <span class="variableName">theButton</span> was defined in the scope of the
+          anonymous self-executing function (an &ldquo;application-global&rdquo; variable), it would still continue to
+          be accessible to our event handler long after the self-executing function had returned. Closures are supported
+          by other programming languages (Lisp, Python, and Ruby are notable examples), but &ldquo;don&rsquo;t try this
+          in C!&rdquo;
+        </p>
+      </div>
+      <h2>Summary</h2>
+      <div>
+        <p>
+          This page has shown how to set up a JavaScript application so that it has its own space in which to name
+          shared variables and functions without creating any global variables. Although the example is for an
+          application that uses the Core library of the Yank and Adams book, the same technique adapts easily to work
+          with any other library.
+        </p>
+        <p>
+          JavaScript&rsquo;s nested functions, self-executing anonymous functions, and closures all work together to
+          provide the desired environment for an application to work in. The one drawback is that syntax errors can be
+          hard to find: once braces and/or parentheses become unbalanced, the framework&rsquo;s code:
+        </p>
+        <p class="code-block">Core.start((function(){<em>&lt;your&nbsp;code&nbsp;goes&nbsp;here&gt;</em>return{init:function(){<em>&lt;and&nbsp;here&gt;</em>}};})());</p>
+          <p>
+          can make mistakes difficult to locate. To deal with this problem, add code to the framework incrementally, and
+          immediately type closing braces and parentheses right after you type in an opening one, then go back and fill
+          in the middle.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../">Vickery Home</a> &mdash; <a href="../cs090.3">CS-90.3 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,82 @@
+<!doctype html public "-//IETF//DTD HTML//EN">
+<HTML>
+
+<HEAD>
+
+<TITLE>Final Exam</TITLE>
+
+<META NAME="GENERATOR" CONTENT="Internet Assistant for Word 1.00">
+<META NAME="SUBJECT" CONTENT="701">
+<META NAME="AUTHOR" CONTENT="Christopher Vickery">
+<META NAME="KEYWORDS" CONTENT="05/23/95">
+<META NAME="OPERATOR" CONTENT="Christopher Vickery">
+</HEAD>
+
+<BODY>
+<h1 align=center>CS-701 Final Exam, Spring 1995</h1>
+<P>
+<A NAME="here"></A>1. What is the relationship between SCCS keywords
+and the SCCS subcommands, &quot;get&quot; and &quot;edit?&quot;
+<P>
+The next two questions refer to the following function definition.
+<HR>
+<blockquote><pre><code>
+char *
+myFunc(int fd, int *numBytes) {
+  char *buffer;
+  *numBytes = read(fd, buffer, *numBytes);
+  if (*numBytes &lt; 0) {
+    perror(&quot;read in myFunc&quot;);
+    return (char *) NULL;
+    }
+  return buffer;
+  }
+</code></pre></blockquote>
+<HR>
+
+2. Explain what is wrong with the use of the variable <TT>buffer</TT>
+in the function definition, and show how to correct it.
+<P>
+3. Write a block of comments that would introduce this function
+definition properly.
+<P>
+4. What two pieces of information must be specified identically
+by a client and a server in order to create a socket connection
+between them?  What system call does the client use to pass this
+information to the kernel?  What system call does the server use
+to pass this information to its kernel?
+<P>
+5. How does an X Window client start its event loop executing?
+ How does the client's code receive control once the event loop
+starts?
+<P>
+6. Two processes use a pipe for inter-process communication. 
+One process calls:
+<P>
+<TT>read(fd, buffer, 1024);</TT>
+<P>
+Under what conditions would execution of this call cause the following
+actions?
+<P>
+A) The call blocks.  When would it return?
+<P>
+B) The call returns a value of -1.
+<P>
+C) The call returns a value of 0.
+<P>
+D) The call returns a value between 1 and 1023.
+<P>
+E) The call returns a value of 1024.
+</BODY>
+
+<hr>
+<ul>
+<li><a href="/courses/cs701/">CS-701 Home Page</a>
+<li><a href="/">Dr. Vickery's Web Site</a>
+</ul>
+<hr>
+<Address>Dr. Christopher Vickery<br>
+Computer Science Department<br>
+Queens College of CUNY</Address>
+<hr>
+</HTML>

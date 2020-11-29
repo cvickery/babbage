@@ -1,0 +1,161 @@
+<html><head><title>CS-701 Assignment 3</title>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+</head>
+<BODY bgcolor=#FFFFFF>
+<center>
+<h1>CS-701 Assignment 3</h1>
+</center>
+
+<h2>Introduction</h2>
+
+This is the first version of a project we will be developing throughout
+this semester: to write an interactive shell, akin to <i>sh</i>,
+<i>csh</i>, <i>bash</i>, etc.  In the spirit of Unix shell-naming, we
+will call <u>ou</u>r <u>sh</u>ell, <i>ouch</i>.<p>
+
+This first version of the shell won't actually be an interactive
+program.  Instead, <i>ouch</i> will execute a "sub-command" that the
+user enters on the ouch command line following a <code>-c</code>
+command line option.<p>
+
+For example, the following would be a valid invocation of <i>ouch</i>:
+
+<pre>
+      % ouch -c ls -l
+</pre>
+
+In this example, the '%' is the user's shell's prompt, ouch is the name
+of the command, -c is the -c command line option, and the sub-command to be
+executed is "ls -l".
+
+<h2>Requirements</h2>
+
+Write a C++ program named <i>ouch</i>, which accepts the command line
+option "-c" followed by a sub-command line.  Your program is to print
+the full pathname of the executable file given as the name of the
+sub-command, or an error message if such an executable file cannot be
+found.  If the executable file is found, build the parameters for the
+<i>execve()</i> system call and execute the sub-command.  If the
+<i>execve()</i> command fails, print an appropriate error message.<p>
+
+If the user enters any option other than "-c" or omits the "-c" before
+the sub-command line, it is an error, and your program is to print an
+error message showing proper invocation syntax, and exit.  However, if
+the user gives no command line arguments at all, the program is to exit
+normally, with no error message.<p>
+
+Your program must be coded according to the [&nbsp;<a
+href="../../Coding_Guidelines.html">Coding Guidelines</a>&nbsp;] for
+this course.  This includes the requirement that the program must
+compile and link with no error or warning messages, in addition to
+running correctly.  It also includes the requirement that the program
+must be properly documented.<p>
+
+You are to use RCS to manage the files in this project.  For this
+assignment, that means the files named Makefile and ouch.cc.  Be sure
+both files contain proper $Id$ and $Log$ RCS macros in appropriate
+places.  (See the Coding Guidelines if in doubt.)<p>
+
+Because the project uses only a single source module,
+<code>ouch.cc</code>, there is no need for a <i>make</i> rule for
+building the executable file, <i>ouch</i>.  Thus, in addition to
+comments and variable definitions, the Makefile for the assignment is
+to include only a rule for the target "clean" like the following:
+
+<pre>
+      clean :
+      &lt;tab&gt; rcsclean
+      &lt;tab&gt; rm -f core ouch
+</pre>
+
+<h2>Project Management Requirements</h2>
+
+Create a project directory for the assignment as described in the coding
+guidelines.  Write the code as a single source module named
+<code>ouch.cc</code>, which you are to compile into an executable file
+named <code>ouch</code> using the following command line:
+
+<pre>
+      make ouch
+</pre>
+
+The above command must be expanded by <i>make</i> to the following
+command, which must produce no warning or error messages:
+
+<pre>
+      g++ -g -Wall -Wwrite-strings ouch.cc -o ouch
+</pre>
+
+This example assumes that <code>ouch.cc</code> is already in the
+project directory.  If it and the Makefile are absent, <i>make</i> will
+check them out first, and remove ouch.cc at the end.<p>
+
+Note that the following variables must be defined either in your
+Makefile or in your environment:
+
+<pre>
+        CC = g++
+        CXXFLAGS = -g -Wall -Wwrite-strings
+</pre>
+
+When I test your program, they will both be defined in my environment.
+
+<h2>Coding Requirements</h2>
+
+Your code must use the following functions to perform the indicated
+tasks:<p>
+
+<center><table border=1 cellpadding=5 width=95%>
+
+  <tr>
+    <td width=10%>getopt()
+    <td>To process command line options.
+
+  <tr>
+    <td width=10%>perror()
+    <td>To print any error messages due to system call failures.
+
+  <tr>
+    <td width=10%>fprintf()
+    <td>To print error messages to stderr, other than the ones that
+    <i>perror()</i> handles.
+
+  <tr>
+    <td width=10%>getenv()
+    <td>To get the value of the PATH environment variable.
+
+  <tr>
+    <td width=10%>strtok()
+    <td>To divide the value of the PATH environment variable into a list
+    of directories.
+
+  <tr>
+    <td width=10%>stat()<br>getuid()<br>getgid()
+    <td>To determine if a file exists, and if the user has permission to
+    execute it.
+
+  <tr>
+    <td width=10%>execve()
+    <td>To execute the file.
+
+</table></center><p>
+
+<h2>Due Date</h2>
+
+Test your program carefully before creating the tar file and submitting
+it.<p>
+
+Create a clean project directory (a directory containing only the RCS
+subdirectory, with Makefile,v and ouch.cc,v in the RCS subdirectory
+under RCS control), put the project directory into a tar file, and send
+the tar file to me as an email attachment by <b>midnight October
+18</b>.  Note: when I extract the contents of your tar file, I should
+get a subdirectory under the current directory for your project
+directory, and an RCS subdirectory under that.<p>
+
+<b>Be sure the Subject line of your email message says, "CS-701
+Assignment 3."</b>
+
+<hr></body></html>
+

@@ -1,0 +1,52 @@
+<html><head><title>ouch.h</title></head>
+<body><center><h1>ouch.h</h1></center><hr><pre>
+      //  $Id: ouch.h,v 1.2 2001/10/12 16:14:10 vickery Exp $
+     
+      /*    Main header file for the ouch project.
+       *
+       *    $Log: ouch.h,v $
+       *    Revision 1.2  2001/10/12 16:14:10  vickery
+       *    Added limits.h and test for PATH_MAX.
+       *
+       *    Revision 1.1  2001/10/11 19:57:34  vickery
+       *    Initial revision
+       *
+       */
+      #ifndef __OUCH_H__
+      #define __OUCH_H_
+     
+      #include &lt;assert.h&gt;
+      #include &lt;errno.h&gt;
+      #include &lt;limits.h&gt;
+      #include &lt;sys/stat.h&gt;
+      #include &lt;stdio.h&gt;
+      #include &lt;stdlib.h&gt;
+      #include &lt;string.h&gt;
+      #include &lt;unistd.h&gt;
+     
+      #ifndef PATH_MAX
+      #define PATH_MAX 8192
+      #endif
+     
+      #define DEBUG
+      #define ABORT_IF( test, msg ) \
+        if ( test ) \
+        { \
+          if ( 0 != errno ) \
+            perror( msg ); \
+          else \
+            fprintf( stderr, "%s\n", msg ); \
+          exit( 1 ); \
+        }
+     
+      struct dirNode_t
+      {
+        char      *dirName;
+        dirNode_t *nextNode;
+      };
+     
+      extern dirNode_t *pathHead;
+     
+      #endif
+     
+</pre><hr></body></html>

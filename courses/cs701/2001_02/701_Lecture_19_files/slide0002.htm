@@ -1,0 +1,155 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-701 Lecture 19</title>
+<meta name=Description content="19-Apr-01: Dealing with Errors">
+<link rel=next href=slide0005.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0002.htm');   
+  else
+    parent.location.href = "../701_Lecture_19.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=71 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=254 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=85 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=111 height=33 colspan=2></td>
+  <td width=254 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=254 height=33 align=center><font face="Times New Roman" size=5>Dealing
+    with Errors</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=110 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=28 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=185></td>
+  <td width=410 height=185 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=98 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=234 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=24><font face="Times New Roman" color=black size=4>•</font></td>
+    <td width=357 height=24 colspan=7><font face="Times New Roman" size=4>System
+    calls return –1 on errors, and set</font><br>
+    </td>
+    <td width=35 height=24 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=410 height=1 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=18 height=24></td>
+    <td width=358 height=24 colspan=8><font face="Times New Roman" size=4><i>errno</i>
+    to an integer code telling what the</font><br>
+    </td>
+    <td width=34 height=24 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=410 height=1 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=18 height=24></td>
+    <td width=120 height=24 colspan=5><font face="Times New Roman" size=4>problem
+    was.</font><br>
+    </td>
+    <td width=272 height=24 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=410 height=6 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=18 height=25><font face="Times New Roman" color=black size=4>•</font></td>
+    <td width=359 height=25 colspan=9><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span></font><font face="Times New Roman"
+    size=4><i>extern int errno</i> #defined in </font><font face=Arial size=4>&lt;errno.h&gt;</font><font
+    face="Times New Roman" size=4>.</font><br>
+    </td>
+    <td width=33 height=25 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=410 height=5 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=24 height=21 colspan=3></td>
+    <td width=15 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=371 height=21 colspan=8><font face="Times New Roman" size=3><i>perror(char*
+    m);<span style='mso-tab-count:1'>   </span>// Write error msg to stderr</i></font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=410 height=6 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=24 height=21 colspan=3></td>
+    <td width=15 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=340 height=21 colspan=7><font face="Times New Roman" size=3><i>strerror(int
+    e);<span style='mso-tab-count:1'>   </span>// Get string associated</i></font><br>
+    </td>
+    <td width=31 height=21></td>
+   </tr>
+   <tr>
+    <td width=410 height=6 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=24 height=21 colspan=3></td>
+    <td width=348 height=21 colspan=4><font face="Times New Roman" size=3><i><span
+    style="mso-spacerun: yes">                                   </span>//<span
+    style="mso-spacerun: yes">  </span>with error number e</i></font><br>
+    </td>
+    <td width=38 height=21 colspan=5></td>
+   </tr>
+  </table>
+  </td>
+  <td width=25 height=185></td>
+ </tr>
+ <tr>
+  <td width=475 height=64 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

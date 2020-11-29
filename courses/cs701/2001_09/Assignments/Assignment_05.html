@@ -1,0 +1,240 @@
+<html><head><title>Assignment 5</title>
+
+</head>
+<body>
+<center>
+<h1>The Ouch Shell</h1>
+<h2>Version 3.x</h2>
+</center>
+
+<h2>Introduction</h2>
+
+In this assignment you will continue development of a Unix shell
+program you began in Assignments 3 and 4.  This assignment gives you
+the opportunity to add features to the somewhat rudamentary shell
+specified in Assignment 4, and adds the requirement that you write a
+man page for your shell.
+
+<h2>Project Management</h2>
+
+All files for this assignment are to have version numbers in the range
+3.1 through 3.x.  Check out each file from Assignment 4 for editing
+and, without making any changes, check it in again as version 3.1 in a
+manner analogous to the way you started work on Assignment 4.
+
+
+<h2>Requirements for Version 3.x</h2>
+
+Each function description starts with the function prototype for the
+function.
+
+<h3>getCommandLine()</h3>
+
+<pre>
+    int getCommandLine( char *buf, int max );
+</pre>
+
+This code should not need to be changed from what you wrote for
+Assignment 4.
+
+<h3>getSubCommands()</h3>
+
+<pre>
+    subcommand_t* getSubcommands( char *buf );
+</pre>
+
+You might not need to change your code for Assignment 4 for this
+function.  But whereas you were required only to handle simple command
+lines in the previous assignment, this assignment will test whether you
+actually can handle multiple commands separated by semicolons
+correctly.  Handling an ampersand at the end of a command line will be
+tested if you mention it in your man page, but is not required.  Be
+sure to test all kinds of quoting as mentioned in Assignment 4.  If
+there are any limitations on what your code handles properly here, be
+sure to list them in the BUGS section of your man page.
+
+
+<h3>tokenize()</h3>
+
+<pre>
+  token_t *tokenize( const subcommand_t *cmd );
+</pre>
+
+Your tokenize function should handle quotes and I/O redirection
+operators correctly for this assignment.  (These features were not
+tested for Assignment 4.)  There should be no need to surround
+redirection operators with spaces.  Thus the strings ">out" and
+">&nbsp;&nbsp;out" are equivalent.  Either one should both result in a
+single token_t node with the <i>token</i> member pointing to "out" and
+the <i>tag</i> member equal to T_redirect_out.
+
+<h3>expandToken()</h3>
+
+<pre>
+    char *expandToken( const char *token )
+</pre>
+
+
+The $? token should be handled properly in this Assignment.  In
+addition, you may optionally include support for $$ (the shell's
+process id).
+
+<h3>executeCommand()</h3>
+
+<pre>
+    int executeCommand( subcommand_t *cmd );
+</pre>
+
+For this assignment, you are to handle builtin commands using a dispatch
+table as outlined in class.<p>
+
+Use this prototype for all builtin functions:
+
+<pre>
+      typedef int builtin_t( int, char **, char ** );
+</pre>
+
+Then you can use this struct for the dispatch table entries:
+
+<pre>
+struct dispatch_t 
+{
+      const char  *const cmdName;
+      builtin_t   *function;
+      bool        canFork;
+};
+</pre>
+
+The purpose of the <i>canFork</i> member of the struct is to mark
+whether it is all right to fork a separate process to execute the
+builtin command or not.  The cd and exit builtin commands must not
+execute in separate processes because they have to modify ouch's
+process.  But other builtins can be executed in separate processes, and
+will have to if their input or output streams are redirected.
+
+<h2>Builtin Commands</h2>
+
+Set up your builtin command dispatch table so it associates the
+following command names and functions:<p>
+
+<table align="center" border="1" cellpadding="5">
+
+<tr>
+  <th>Command Name
+  <th>Function
+  <th>Can Fork?
+
+<tr>
+  <td>exit
+  <td><i>doExit()</i>
+  <td>No
+
+<tr>
+  <td>quit
+  <td><i>doExit()</i>
+  <td>No
+
+<tr>
+  <td>print
+  <td><i>doPrint()</i>
+  <td>Yes
+
+<tr>
+  <td>cd
+  <td><i>doCd()</i>
+  <td>No
+
+</table><p>
+
+(Thought question:  What would be a better way to have two different
+names for the same command, as accomplished by the first two entries in
+the above table?)<p>
+
+<h3><i>exit</i> and <i>quit</i></h3>
+Typing either of these commands should exit the shell.<p>
+
+Optional:  Study Chapter 10 of the Stevens book and modify <i>ouch</i>
+so it does not exit if the user types Control-C.  Be sure this feature
+works correctly whether the user has started typing a command line when
+s/he types Control-C or not.
+
+<h3><i>print</i></h3>
+
+This is ouch's version of other shells' <i>echo</i> command.  It prints
+each of its command line arguments separated from each other by exactly
+one space. While the <i>doPrint()</i> function is simple to implement,
+what it prints out will tell whether your <i>tokenize()</i> function is
+implemented correctly.  It also tests whether result codes and token
+expansion are working correctly.<p>
+
+<i>Code this function so that it's own result code is equal to the
+number of command line arguments it prints.</i><p>
+
+Sample output:
+<pre>
+      ouch> date; print The value of '$?' is $?
+      Mon Dec 10 19:22:36 EST 2001
+      The value of $? is 0
+      ouch> print "Previous result code was:   " $?
+      Previous result code was:    6
+      ouch>
+</pre>
+
+<h2>I/O Redirection</h2>
+
+If your <i>tokenize()</i> function is working, this part is quite
+simple to implement.  While building the argument vector to pass as the
+second argument to <i>execve()</i> or to a builtin_t function, pull out
+any redirection tokens, opening the specified file with the proper mode
+based on the type of redirection.  After forking, use the <i>dup2()</i>
+system call to put the fd in its proper "slot" (0 for stdin, 1 for
+stdout).  For example, you could declare an int named
+stdinRedirection_fd that is initialized to -1 for each command.  If you
+find a token of type T_redirect_in, open the file named by the token for
+reading (O_RDONLY) and save the fd returned by <i>open()</i> in
+stdinRedirect_fd.  Then after forking, you have the child process
+execute code like:
+
+<pre>
+      if ( stdinRedir_fd != -1 )
+      {
+        dup2( stdinRedir_fd, 0 );
+        close( stdinRedir_fd );
+      }
+</pre>
+
+Here are the flags to use for opening the three types of output
+redirection.  In all cases, the mode value (the third argument passed to
+<i>open()</i>) should be 0666.  (Remember that the 0 means octal.)<p>
+
+<table align="center" border="1" cellpadding="5">
+  <tr>
+    <td>T_redirect_out
+    <td>O_WRONLY | O_CREAT | O_EXCL
+  <tr>
+    <td>T_redirect_append
+    <td>O_WRONLY | O_APPEND
+  <tr>
+    <td>T_redirect_clobber
+    <td>O_WRONLY | O_CREAT | O_TRUNC
+</table>
+
+<h2>ouch.1</h2>
+
+Provide a <i>man</i> page for the project in a file named
+<code>ouch.1</code>, which is to be under RCS management (with a
+revision number of 3.x) just like the other files you wrote for this
+assignment.  You may optinally have man and man/man1 subdirectories in
+your project directory, and you may include an "install" target for
+your man page that installs it there.<p>
+
+Your man page will be graded on grammatical correctness and meaningfulness
+of content in addition to proper formatting, as described in the man
+pages document listed in the course schedule.
+
+<h2>Due Date</h2>
+
+You may accept this assignment as late as midnight December 21, but no
+later.
+
+<hr> </body></html>

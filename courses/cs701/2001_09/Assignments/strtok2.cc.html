@@ -1,0 +1,78 @@
+<html><head><title>strtok2.cc</title></head>
+<body><center><h1>strtok2.cc</h1></center><hr><pre>
+      /* $Id: strtok2.cc,v 1.2 2001/11/01 20:01:52 eric Exp $ */
+      
+      /* SYNOPSIS
+       *
+       * strtok2.cc - strtok2
+       *
+       * The strtok2() function splits the string pointed to by the buf 
+       * parameter into a sequence of tokens, each of which is delimited by a
+       * byte equal to one of the bytes in the delim_list parameter.  That 
+       * byte is then copied into the delim_storage variable.
+       *
+       * strtok2() can be called repeatedly to extract all of the tokens in 
+       * the string.  When the final token is reached, or if there are no
+       * tokens to return, strtok2() will return a NULL pointer.
+       *
+       *
+       * REVISION HISTORY
+       *
+       * $Log: strtok2.cc,v $
+       * Revision 1.2  2001/11/01 20:01:52  eric
+       * Corrected error detecting end of string and erroneous return of NULL
+       *
+       * Revision 1.1  2001/10/23 21:30:02  eric
+       * Initial revision
+       *
+       */
+      
+      #include &lt;stdio.h&gt;
+      #include &lt;string.h&gt;
+      #include &lt;stdlib.h&gt;
+      #include "strtok2.h"
+      
+      /*  Function strtok2()
+       *  --------------------------------------------------------------------
+       *
+       *    strtok2() aims to be a threadsafe version of strtok(). 
+       *    If there are multiple trailing delimiters, this implementation
+       *    will return only the first one, and will then ignore the next
+       *    group of delimiters.
+       *
+       *    PARAMETERS:
+       *      buf           - the string to tokenize
+       *      delim_storage - location in which to store delimiter
+       *      delim_list    - list of delimiters
+       *
+       *    RETURNS
+       *      char *        - a single string extracted from buffer
+       *
+       */
+      
+      char *strtok2( char **buf, char *delim_storage, char *delim_list )
+      {
+         int index = 0;
+         char *token;
+      
+         /* skip adjacent delimiters */
+      
+      
+         while ( ( index == 0 ) &amp;&amp; ( **buf != '\0' ) )
+         {
+            index = strcspn( *buf, delim_list );
+            *buf += ( index + 1 );
+         }
+      
+         if ( *( *buf - ( index + 1 ) ) == '\0' )
+            return NULL;
+      
+      
+         token = (char *)malloc( sizeof( char ) * ( index + 1 ) );
+         strncpy( token, *buf - ( index + 1 ), index );
+         token[ index ] = '\0';
+         *delim_storage = *( *buf - 1 ); 
+      
+         return token; 
+      }
+</pre><hr></body></html>

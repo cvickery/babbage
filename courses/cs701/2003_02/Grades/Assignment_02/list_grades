@@ -1,0 +1,14 @@
+#! /app/gnu/bin/bash
+
+rm -f .temp$$
+for f in *.grade
+do
+  echo -n $(grep ${f/.grade/} ../roster | \
+            head -n 1|cut -d ' ' -f 2-)$'\t' >| .temp1$$
+  echo $(grep "Assignment Grade" $f |sed "s/Assignment //" ) \
+        >> .temp1$$
+  cat .temp1$$ >> .temp$$
+  rm .temp1$$
+done
+sort -k 3 .temp$$
+rm -f .temp$$

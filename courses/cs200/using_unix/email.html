@@ -1,0 +1,184 @@
+<HTML> <HEAD> <title> Using E-Mail </title> </HEAD>
+<body BGCOLOR=#ffffff>
+
+<H1 ALIGN=center>Using E-Mail</H1>
+
+<H2>Introduction</H2>
+
+This page tells you how to use your <i>qcunix1</i> account to send and
+receive electronic mail.  You can use e-mail to interact your
+instructor without the constraint scheduling a meeting during regular
+office hours.  In addition, we will use e-mail to make announcements to
+the entire class, so be sure to read you e-mail regularly.<P>
+
+The program you will use read, compose, and send e-mail messages is called
+<i>pine.</i>  There are several such programs available for Unix, but
+<i>pine</i> is relatively easy to use, has a lot of good features, and
+is a command line program, which means you don't have to be using the
+X Window System to use it.  (Besides, the X Window program that is
+available doesn't have as many features.)<P>
+
+To become familiar with the e-mail system, you should use it to send mail
+to yourself a few times and to read the messages you sent.<P>
+
+<H2>E-mail Addresses</H2>
+
+Your e-mail address consists of two parts separated by the '<code>@</code>'
+character.  The first part is your Unix account ID, and the second part
+is the Internet hostname for the computer where you have your account, namely
+<code>qcunix1.acc.qc.edu</code>.  Anyone in the world who knows your
+e-mail address and has access to the Internet can send you e-mail, and
+vice-versa.<P>
+
+When you send e-mail to someone else who has an account on qcunix1.acc.qc.edu,
+you can use just the user's account name without the '<code>@</code>' or
+the hostname.<P>
+
+You might encounter the phrase, "Fully Qualified Domain Name" (FQDM).  It just
+means the hostname with all the dotted parts in place.  Your account is on
+the <i>host</i> <code>qcunix1</code>, which is in the Academic Computer
+Center (acc) domain in the Queens College (qc) domain in the Educational
+Institution (edu) domain.  The FQDM for the computer in Dr. Vickery's
+office is <code>babbage.cs.qc.edu</code>.  The host is named babbage, and
+it is in the Computer Science Department (cs) domain of Queens College (qc)
+in the edu domain.<P>
+
+<H2>Starting Pine</H2>
+
+Start pine by typing <i>pine</i> and the shell prompt.  The screen will clear,
+some information will be displayed, and there will be a menu of command
+characters at the bottom of the screen.  The first time you run pine, you
+will be asked if you would like to get e-mail telling you how to configure
+the program.  It's a good idea to say yes.<P>
+
+Because of the variety of ways you can configure pine, we won't describe
+what you will see on the screen because it won't be the same for everyone.
+Instead, we will just tell you what command to use to perform various
+operations.<P>
+
+<H2>Sending Mail</H2>
+
+Use the Compose command to create a message.  (Type '<code>c</code>'.)
+The top part of the screen will show the <i>headers</i> for the message,
+which include lines for "To:" and "Subject:".  Type the address of the
+person to whom you want to send the mail on the "To:" line, and a brief
+statement of what the message is about in the "Subject:" line.  Do not
+send mail messages without a meaningful Subject: line because it makes
+it harder for the recipient to process incoming messages.  It is
+especially important to remember this when sending messages to the
+person who is going to assign you a grade in the course!<P>
+
+There may be other lines displayed in the Header section of your message,
+but you may safely ignore them all.  (There is configuration option that
+makes them not show up.)<P>
+
+Use the arrow key to move below the Header section into the "Message Text"
+section and type in the message you want to send.  If you look, you will
+see that the menu choices at the bottom of the screen change when you
+go into the Message Text section because you will have entered a text
+editor.  Unless you configure pine differently, the editor you will be
+using to compose messages will be <A HREF="editing.html#pico">pico</a>,
+which is the same editor your can invoke directly from a command line
+prompt to edit your program files if you wish.<P>
+
+When you finish composing your message, type '<code>^X</code>' (That's
+the character '<code>X</code>' while holding the <code>Ctrl</code>
+key.)  Pine will ask you to confirm that you want to send the message,
+which you do by typing '<code>Y</code>' or '<code>y</code>.'  (Unlike
+the rest of the Unix world, <i>pine</i> commands are not case sensitive.)<P>
+
+When you send a message, a copy of it will be made in a file named
+<code>sent-mail</code> in your <code>~/Mail</code> directory.  Pine
+will create this directory for you the first time you run it, and it
+will create the <code>sent-mail</code> file the first time you send a
+message.  This feature means that there is no need for you to mail
+yourself a copy of the messages that you send to others.  You will
+see how to get back to these saved messages below.<P>
+
+<H2>Receiving Mail</H2>
+
+When someone sends you mail, the system puts it into your "incoming
+mailbox," which is a file in the <code>/var/spool/mail</code> directory
+with the same name as your User ID.  When you start up pine you will
+see a list of all the mail messages that are in your incoming mailbox.
+If you don't see the list, you will have to type the '<code>l</code>'
+command to display it.  (You can configure pine to do this
+automatically when it starts up by configuring the
+"initial-keystroke-list" option.)<P>
+
+Use the up and down arrow keys to select the message you want to read,
+and press '<code>Enter</code>' to see the contents of the message.<P>
+
+The secret to using e-mail effectively is figuring out what to do with a
+message after you have read it.  There are several options available to
+you, which are not all mutually exclusive.  You can select any of these
+options either while you are looking at the message itself or while it
+is selected in your list of messages.<P>
+
+<blockquote>
+<dl>
+<dt>D - Delete the message.<dd>The message doesn't really go away until
+you exit <i>pine</i>, so you can do other things with it after marking
+it for deletion.
+<dt>U - Undelete the message.<dd>In case you didn't mean to press
+'<code>D</code>'.
+<dt>R - Reply to the message.<dd>This is a quick way to compose a message
+with the To: and Subject: headers all filled in for you.  The original
+message will be copied into your reply for reference purposes.  It's a
+good idea to delete the irrelevant parts of the original message so the
+other person can figure out what part of it your reply pertains to.
+<dt>S - Save the message.<dd>If you don't save or delete the message it
+stays in your incoming mailbox.  This is fine until you get a bunch of
+old messages sitting in there and it makes spotting the new ones
+difficult.  When you save a message, pine asks you for the name of
+a "folder," and you type in the name of a file where you want to save
+that message.  The file will be created in your <code>~/Mail</code>
+directory (if it does not already exist), along with your
+<code>sent-mail</code> folder.  You can create different folders for mail from
+different people, or whatever scheme you like.  When you want to look
+at the messages in a folder, use ...
+<dt>G - Go to folder<dd>Use this to select a folder of messages to
+work with.  If you want a list of your folders, use the '<code>^T</code>'
+command after you type '<code>g</code>'.
+<dt>E - Extract the message<dd>Use this command to copy the message to
+a file in your home directory instead of (or in addition to) into one
+of the folders in your Mail directory.  This option is useful for saving
+messages that you want to look at some other way than by using pine.  An
+example would be the message that pine mails to you telling you how to
+configure pine.
+</dl>
+</blockquote>
+
+<H2>Exiting Pine</H2>
+
+Exit pine by typing '<code>q</code>'.
+
+<H2>Menus and Help</H2>
+
+You can type commands that don't appear at the bottom of the screen.  You
+can cycle through all the commands that are available with the '<code>o</code>'
+command.  You can always get help by typing '<code>?</code>'.<P>
+
+<H2>Configuring Pine</H2>
+
+If you said "yes" when pine asked about sending you information about
+itself, you will receive an e-mail message that tells you about the
+various configuration options that are available.  This is a good
+document to have if you want to change pine's behavior in any way.<P>
+
+You configure pine by going to the Main menu (type '<code>m</code>') and
+selecting "Setup."  From there you select "Config" and set or change
+the configuration options you want.  Even without the documentation that
+gets sent to you, you can probably figure out what most of the options
+do from their names.  Don't be afraid to experiment.<P>
+<hr>
+
+<UL>
+<LI><A HREF="index.html">Using Your Unix Account - Contents</A>
+<LI><A HREF="/courses/cs200/index.html">CS-200 Home Page</A>
+</UL>
+
+<hr>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+<A HREF="/">Home Page</A>
+<hr> </body> </html>

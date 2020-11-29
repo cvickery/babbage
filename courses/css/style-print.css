@@ -1,0 +1,243 @@
+/*  style-print.css
+ */
+
+html, body {
+  background-color: white;
+  color: black;
+  margin:0;
+  padding:0;
+  line-height:1;
+  font-size:9pt;
+  }
+div, h2+div, #rubrics {
+  border:none;
+}
+p, li {
+  text-align: justify;
+  }
+p {
+  margin:0;
+  }
+
+hr {
+  display:none;
+  }
+
+table {
+  width:            80%;
+  margin:           auto;
+  border-collapse:  collapse; 
+  border:           solid 1px black;
+  background-color: white;
+  color:            black;
+  }
+
+td {
+  border:           1px solid black;
+  padding:          0.1em 0.5em;
+  vertical-align:   top;
+  }
+th {
+  border:           1px solid black;
+  text-align:       center;
+  padding:          0.1em 0.5em;
+  }
+
+h5 {
+  font-size:        1em;
+  display:          inline;
+  }
+
+ol {
+  list-style-type:  decimal;
+  }
+
+ol ol {
+  list-style-type:  lower-latin;
+  }
+
+ol ol ol {
+  list-style-type:  lower-roman;
+  }
+
+#header, #content {
+  margin:0;
+  padding:0;
+  width:100%;
+  font-family:  serif;
+  }
+
+#footer {
+  display:none;
+  }
+
+h1, h2, h3 {
+  font-family:      sans-serif;
+  page-break-after: avoid;
+  }
+
+.whitebox {
+  margin:auto;
+  padding:0;
+  border:none;
+  overflow:visible;
+  }
+
+/* Make font size for codeBlocks give 80 chars in 6.5"
+ *
+ *    We have 468 points (39 picas) to work with.
+ *    But how wide is a character?
+ *
+ *      For uniformly spaced fonts, the font width
+ *      calculation is 1440 divided by the pitch. Pitch
+ *      is the number of characters that can fit in 1
+ *      horizontal inch. ... For mixed-pitch character
+ *      sets, the width calculation is the width of the
+ *      12-pitch space character (that is, 1440 divided
+ *      by 12).
+ *      http://publib.boulder.ibm.com/infocenter/printer/v1r1/
+ *      index.jsp?topic=/com.ibm.printers.printerinformation/
+ *      ic5g2mst248.htm
+ *
+ *  So I figure 80 characters in 6.5" is 12.3 characters per inch.
+ *  And there are 72 points in an inch.  So 72/12.3 is a point size
+ *  of something less than 6.
+ *
+ *  Setting the point size here to 10 causes ie and ff both to print
+ *  80 chars in about 6.7"
+ *
+ *  So 9 seems like a nice number, don't you think?
+ *  ccv 2005-10-14
+ */
+.codeblock, .codeBlock, .code_block {
+  font-size:         6pt;
+  font-family:      monospace;
+  white-space:      pre;
+  background-color: white;
+  color:            black;
+  border:           1px solid black;
+  margin:           1em auto;
+  width:            100%;
+  }
+
+.subscript {
+  font-size:        0.8em;
+  position:         relative;
+  top:              0.4em;
+  }
+
+.superscript {
+  font-size:        0.8em;
+  position:         relative;
+  top:              -0.4em;
+  }
+.align-left {
+  text-align:        left;
+  }
+.align-right {
+  text-align:        right;
+  }
+.align-center {
+  text-align:        center;
+  }
+
+/* "Activity Question" */
+.aq {
+  background-color: #cfc;
+  color:            #303;
+  }
+.aq:after {
+  counter-increment:  aq;
+  content:            " " counter(aq) ": ";
+  }
+
+.tagname, .tagName, .tag_name,
+.nodename, .nodeName, .node_name,
+.attributename, .attributeName, .attribute_name {
+  font-family:      monospace;
+  font-size:        0.9em;
+  background-color: transparent;
+  color:            green;
+  }
+
+.tagname:before, .tagName:before, .tag_name:before {
+  content:          "<";
+  }
+  
+.tagname:after, .tagName:after, .tag_name:after {
+  content:          ">";
+  }
+  
+.standoutbox, .standoutBox, .standout_box,
+.standoutblock, .standoutBlock, .standout_block {
+  border:           solid 1px green;
+  text-align:       justify;
+  background-color: #efe;
+  color:            #303;
+  padding:          .5em 1em;
+  width:            90%;
+  }
+
+.underline {
+  text-decoration:   underline;
+  }
+
+.propertyname,  .propertyName,  .property_name,
+.booktitle,     .bookTitle,     .book_title,
+.functionname,  .functionName,  .function_name {
+  font-style:       italic;
+  }
+
+.variablename, .variableName, .variable_name,
+.directoryname, .directoryName, .directory_name,
+.pathname, .pathName, .path_name,
+.optionname, .optionName, .option_name {
+  font-family:      monospace;
+  font-size:        0.9em;
+  }
+
+.filename, .fileName, .file_name,
+.programname, .programName, .program_name,
+.computername, .computerName, .computer_name {
+  font-style:       italic;
+  }
+
+.menuitem, .menuItem, .menu_item,
+.url, .URL {
+  font-family:      monospace;
+  font-size:        0.9em;
+  }
+
+.codesnippet,     .codeSnippet,     .code_snippet,
+.optionvalue,     .optionValue,     .option_value,
+.attributevalue,  .attributeValue,  .attribute_value,
+.variablevalue,   .variableValue,   .variable_value {
+  font-size:        0.9em;
+  font-family:      monospace;
+    }
+
+.techterm, .techTerm, .tech_term {
+  text-decoration:  underline;
+  }
+
+.keyword, .keyWord, .key_word {
+  font-weight:      bold;
+  }
+
+.procedurelist, .procedureList, .procedure_list {
+  }
+
+.notyet, .notYet, .not-yet, .not_yet,
+.incompletepage, .incompletePage, .incomplete_page,
+.pageincomplete, .pageIncomplete, .page_incomplete {
+  text-align:       center;
+  color:            red;
+  background-color: #999;
+  font-size:        1.3em;
+  padding:          0.5em;
+  }
+
+.inlineList, .inline, .inLine,
+.runin, .runIn, .run_in {
+  display: inline; padding: 0; margin: 0.1em;
+  }

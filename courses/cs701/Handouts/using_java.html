@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Using Java on Dijkstra</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+    div.ans { font-weight: bolder; background: #ccffcc; margin:1em; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>Using Java on Dijkstra</h1>
+</center>
+
+<h2>Introduction</h2>
+
+<p>This page summarizes the information you need for building Java
+applications on Dijkstra.  It may or may not remain relevant after the
+Spring 2003 semester.</p>
+
+<h2>Installed Software</h2>
+
+<p>Version 1.4.1 of Sun's Software Development Kit for Java is
+installed in /usr/local/j2sdk1.4.1_01.  To avoid having to change setup
+parameters every time I install a new version, there is a symbolic link
+from that directory to /usr/local/java.</p>
+
+<p>The SDK commands related to Java (javac, java, javah, javadoc, etc.)
+are in /usr/local/java/bin, so that directory must be in your PATH in
+order to use them.</p>
+
+<p>IBM's speedy Jikes compiler (<i>jikes</i>) is in /usr/local/bin, a
+common place to put locally-installed software (as opposed to the
+programs that are installed with the SuSE Linux distribution), so you
+need to be sure that directory is in your PATH too.</p>
+
+<p>The jikes compiler uses the environment variable JIKESPATH to locate
+the standard class libraries that are used by Java programs.  This
+variable has to be set to /usr/local/java/jre/lib/rt.jar for the jikes
+compiler to work.  (In class I erroneously named this variable
+"JIKES_HOME" instead of "JIKESPATH.")</p>
+
+<p class="indent">A nice feature of the jikes compiler comes when you
+invoke it with the "++" command line option.  For example, the command,
+<i>jikes&nbsp;++&nbsp;*.java</i> will compile all .java files in the
+current directory, but the compiler will not exit.  Instead, it will
+prompt you to press Enter when you want to compile your .java files
+again.  Like <i>make</i>, jikes is smart and will recompile only those
+.java files that have changed since the last compilation.  If you log
+into Dijkstra from two different windows, you can set the jikes compiler
+running in one window while you edit and test your code in another
+one.</p>
+
+<p>To use JNI, you need to #include the jni.h header file in your .cc
+program.  Furthermore, jni.h #includes jni_md.h, so you need to tell
+the g++ compiler driver what directories to search for these two header
+files using the "-I" command line option.  You can do this using
+<i>make</i> by setting CXXFLAGS as follows:</p>
+
+<p class="indent">
+CXXFLAGS = -g -Wall =Wwrite-strings -I/usr/local/java/include \
+<br>-I/usr/local/java/linux</p>
+
+<h2>Libraries</h2>
+
+<p>To use JNI, your C++ functions have to be in a shared library.  In
+order for the Java VM to load a library ( <i>System.loadLibrary()</i>
+), the directory containing the library has to be part of the
+LD_LIBRARY_PATH, which, like PATH, is a colon-separated list of
+directories.  If the library file is in the current directory, you can
+just put . in the value of this variable.  For example, here's a rule
+from a Makefile that could be used to run the "HelloWorld" sample
+program from the JNI tutorial at Sun:</p>
+
+<p class="indent">
+
+run : libhello.so HelloWorld.class
+<br>&lt;tab&gt;LD_LIBRARY_PATH=.:$(LD_LIBRARY_PATH) java HelloWorld</p>
+
+<p>This rule uses a feature of the shell that lets you set the value of
+an environment variable just for the execution of a single command; once
+the command completes, the variable returns to its original value. 
+There is nothing that says the rule would have to be written this way,
+but the example gives you a chance to see another way to use environment
+variables.</p>
+
+
+<hr>
+</body>
+</html>

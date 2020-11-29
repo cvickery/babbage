@@ -1,0 +1,246 @@
+<html>
+<head>
+<title>Dispatch Table Example</title>
+</head>
+
+<body>
+<h1 align=center>Dispatch Table Example</h1>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#dot_h">The <i>sample.h</i> Header File</a>
+<li><a href="#dot_cc">The <i>sample.cc</i> Source File</a>
+<li><a href="#rules">The <i>rules.cc</i> Source File</a>
+</ul>
+
+<h2>Introduction</h2>
+
+This page shows how a <i>dispatch table</i> can be implemented in C or C++.
+A dispatch table is a way of associating a function with a string or
+numeric value in a general way.  The concepts illustrated include data
+structure initialization, typedefs for functions, and calling functions
+through pointers.<p>
+
+The code is taken from a real application, which is described very
+briefly here so you can get an idea of what the code is trying to
+accomplish.<p>
+
+The application does a random number sampling experiment in order to
+test some hypotheses about what strategies people use to estimate
+time intervals.  The experimenters who use the program type in the
+name of the strategy they want to test, and at one point the program
+has to call a different function depending on the name of the strategy
+the experimenter typed in.<p>
+
+<h2><a name="dot_h">The <i>sample.h</i> Header File</a></h2>
+
+The name of the header file for this program is <code>sample.h</code>.
+There are two sampling strategies, and the header file begins by
+setting up symbolic names for numerical constants that can be used
+to identify these strategies, plus another constant that should "never"
+be used:
+
+
+<blockquote><pre>
+#define UNDEFINED_STRATEGY	0
+#define RANDOM_R_STRATEGY	1
+#define RANDOM_NR_STRATEGY	2
+</pre></blockquote>
+
+As the '<code>#</code>' at the beginning of each line indicates, these
+lines are handled by the preprocessor.  Wherever one of the names listed
+here appears in a source code file, the preprocessor will substitute the
+text that appears on the remainder of the line.  That is, wherever the
+program uses the symbol <code>RANDOM_R_STRATEGY</code>, the compiler will
+see the character <code>1</code> because of preprocessor text substitution.<p>
+
+<blockquote> In C++ it would have been better to use integer
+constants rather than these preprocessor definitions because then the
+compiler would be able to check that the symbols are being used
+properly as integers.  But I didn't.  In fact, these symbolic
+constants were never actually used for anything in this program, but
+I have left them in this Web page just to give some idea of how they
+<i>might</i> be used.<p> </blockquote>
+
+The program needs to put pointers to functions into a data structure.  The
+functions all take two arguments of types <i>int</i> and <i>bool</i> and
+return an <i>int</i>, so here is the definition of a new data type for
+such functions, and the definition of a structured data type that includes
+a pointer to such a function:
+
+<blockquote><pre>
+typedef		int chooseDist_t(int, bool);
+
+struct strategy {
+  char		*name;
+  int		type;
+  chooseDist_t	*chooseDist;
+  };
+</pre></blockquote>
+
+Now the header file can provide the equivalent of function prototypes
+for some functions of type <i>chooseDist_t</i>:
+
+<blockquote><pre>
+extern chooseDist_t	noStrategy, selRandom_r, selRandom_nr;
+</pre></blockquote>
+
+There will be a list of <i>strategy</i> <code>struct</code>s, and as
+we shall see, there will be <code>numStrategies</code> elements in this
+array:
+
+<blockquote><pre>
+extern const strategy	strategyList[];
+extern const int	numStrategies;
+</pre></blockquote>
+
+<h2><a name="dot_cc">The <i>sample.cc</i> Source File</a></h2>
+
+This source code file <code>#include</code>s the header
+file we just defined.  In addition, this file is the one that actually
+initializes the global data declared in the header file:
+
+<blockquote><pre>
+#include "sample.h"
+
+const strategy	strategyList[] = {
+
+//               - name ----    - type ----------       - chooseDist -
+		{"undefined",	UNDEFINED_STRATEGY,	noStrategy	},
+		{"random_wr",	RANDOM_R_STRATEGY,	selRandom_r	},
+		{"random_wor",	RANDOM_NR_STRATEGY,	selRandom_nr	},
+
+                };
+
+const int	numStrategies = sizeof(strategyList) / sizeof(strategy);
+
+</pre></blockquote>
+
+<blockquote>The comment line is to help you remember the names of
+the three fields of the data structures being initialized.</blockquote>
+
+There are several things to notice about these two statements.
+First, the number of elements in <code>strategyList[]</code> is
+determined by the number of initializers coded.  This version of the
+program initializes 
+just three elements, and the compiler will give us this value in the
+constant
+<code>numStrategies</code> using the <i>sizeof</i> operator (which is
+part of the C and C++ languages, not a function).<p>
+
+It so happens that the three
+preprocessor constants have the same numerical values as the
+subscripts of their array elements, but this is not a requirement in
+order for this code to work properly.  The three initialization lines
+could appear in any order, and the type codes would be properly
+assoicated with the corresponding names and function pointers..<p>
+
+The point of all this is that the array
+can be redefined easily when the experimenters decide they want to
+add new strategies to the program.<p>
+
+<h3>Determining Which Strategy to Use</h3>
+
+Here is the code that reads and interpets a strategy name from a
+text file:
+
+<blockquote><pre>
+int		i;
+bool		found = false;
+char		strategy[80];
+ifstream	configFile("config.dat", ios::in);
+
+  //  Be sure config.dat opened all right.
+  if (!configFile) {
+
+    cerr << "Unable to open \"config.dat\"" << endl;
+    exit(EXIT_FAILURE);
+
+    }
+
+  //  Read strategy name and locate it in strategyList
+  configFile >> strategy;
+
+  for (i = 0; i < numStrategies; i++) {
+
+    if (!strcasecmp(strategy, strategyList[i].name)) {
+
+      found = true;
+      strategyType = strategyList[i].type;
+      break;
+
+      }
+
+    }
+
+    if (!found) {
+
+      cerr << "\"" << strategy << "\" is not a valid strategy name"
+           << endl;
+      exit(EXIT_FAILURE);
+
+      }
+
+</pre></blockquote>
+
+Read the <i>man</i> page for <i>strcasecmp()</i> to see how that
+function works.<p>
+
+When the above piece of code finishes executing,
+a global integer named <i>strategyType</i> will have a value of
+0, 1, or 2, corresponding to the names <code>UNDEFINED_STRATEGY</code>, 
+<code>RANDOM_R_STRATEGY</code>, or <code>RANDOM_NR_STRATEGY</code>.<p>
+
+<h3>Using the Dispatch Table</h3>
+
+Here is some code from the part of the program that actually does
+the timing experiment:<p>
+
+<blockquote><pre>
+      //  Select first reference distribution
+      refDist = strategyList[strategyType].chooseDist(target, true);
+
+      //  Get a matching sample
+      while (!match(refDist, target, grand(0))) {
+
+        refDist = strategyList[strategyType].chooseDist(target, false);
+
+	} 
+</pre></blockquote>
+
+This is the code that demonstrates calling a function using a
+pointer.  Remember, <i>chooseDist</i> is the name of a member of the
+<i>strategy</i> data structure that holds a pointer to a function of
+type <i>chooseDist_t</i>.<p>
+
+<blockquote> <i>Exercise:</i> Figure out how to improve the program
+so that we could guarantee that <i>strategyType</i> has the proper
+subscript value without counting on the programmer to set the
+predefined constants <code>UNDEFINED_STRATEGY</code>,
+<code>RANDOM_R_STRATEGY</code>, and <code>RANDOM_NR_STRATEGY</code>
+to the values 0, 1, and 2 respectively.</blockquote>
+
+
+<h2><a name="rules">The <i>rules.cc</i> Source File</a></h2>
+
+Just for completeness, here is the function definition for one of
+the functions of type <i>chooseDist_t</i>:
+
+<blockquote><pre>
+#include "sample.h"
+
+int
+selRandom_r(int target, bool first) {
+
+  return rand() % numDists;
+
+  }
+</pre></blockquote>
+
+<hr>
+<address>Dr. Christopher Vickery<br>
+Queens College fo CUNY<br>
+<hr>
+</body>
+</html>
