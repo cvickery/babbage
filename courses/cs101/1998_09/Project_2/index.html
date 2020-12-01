@@ -1,0 +1,574 @@
+<HTML><HEAD><TITLE>Project 2</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 2: <CODE>Checkerboard</CODE></H1>
+</center>
+<H2>Due Date and Deliverables</H2>
+This project is due by <B>midnight December 3, 1998</B>.<p>
+
+Send me a zip file containing the following files:
+<CODE><UL>
+    <LI>Checkerboard.java
+    <LI>CBException.java
+    <LI>Move.java
+    <LI>Piece.java
+    <LI>Square.java
+</UL>
+</CODE>
+This handout describes the contents of these files.<p>
+
+The project will be graded on a 10 point scale.  You may hand the
+project in up to one week late, but there will be a penalty of 0.2
+points (2%) for each day it is late.<p>
+
+<B>The project will not be accepted for credit after the cutoff date of
+December 10, 1998.</B><p>
+
+<H2>Do Your Own Work</H2>
+
+<blockquote><b>For this and all assignments in this course, you must
+write and document your code yourself.  Furthermore, you must not make
+code related to the assignment available to others in the course.  If I
+discover that you have not followed either of these rules I will give
+you a failing grade in the course and possibly request the college to
+take disciplinary action.<p></b></blockquote>
+
+If I assign you a failing grade in the course as a result of this policy
+before the deadline date for dropping the course without evaluation, I will
+request the Dean of Students to forbid you from dropping the course.  In
+the past, the Dean has honored this sort of request.<p>
+
+Actually, there is no point in trying to submit code that is not your
+own because you will be tested on your ability to write code during
+exams, and the exams will count much more than the projects in your
+course grade.<p>
+
+If you cannot write the code on your own, hand in what you can do
+anyway; you will receive partial credit for your work.
+
+<H2>Questions and Changes</H2>
+
+There is a page with answers to [&nbsp;<a href="FAQ.html">Frequently
+Asked Questions</a>&nbsp;] (FAQs) about the project.  Please consult
+that page before sending me email about problems with the project.<p>
+
+Rather than update this page when I make changes to the assignment or to
+the code I am supplying to you, there is a separate web page for
+[&nbsp;<a href="changes.html">Project Changes</a>&nbsp;].  I will send
+email to everyone whenever there are changes.
+
+<H2>Project Description</H2>
+
+This is the second of three related projects.  In the first one, you
+wrote a command-line, non-graphical, user interface for a checkers
+playing program.  In this project you will write your own
+implementation of the Checkerboard class (and related classes).  In the
+final project of the series, you will develop a graphical user
+interface to replace the command line interface.<p>
+
+For this project, you are to write four classes and an interface
+corresponding to the four .java files listed in the <B>Deliverables</B>
+section.  (Piece is an interface, not a class.)  The idea is to develop
+a set of classes that can be used by any type of user interface (command
+line, browser, or windowed) that lets users interact with a
+checkerboard, either to play a game, solve a "checkers problem," or
+whatever else someone might decide to do.<p>
+
+As for the first project, I recommend very highly that you do the
+project in a sequence of development steps.  People who did not follow
+this advice for the first project and tried to do the whole thing at
+once have, in general, had to take a leave of absence from the college
+while they sought medical attention for their green tongues and itching
+foot bottoms.  <I>Do not take this advice lightly!</I><p>
+
+The development steps you are to follow follow:
+
+<OL>
+
+  <H3><LI>Run My Code</H3>
+
+I am supplying you with working class files for both the part
+of the project that you have to write and for the user interface.
+Because things have changed a little since Project 1, I am providing
+you with a set of class files for the user interface that work with
+the Checkerboard and related classes that you are to write.  I have
+put my user interface classes into a jar file named
+<CODE>Vickery_UI.jar</CODE>.  To get you started, I am also supplying
+your with "perfect" versions of the class files you are to develop. 
+These are in another jar file, Vickery_CB.jar.<p> 
+
+Your first development step is to create a project directory to work
+in, and to put my two jar files in it.  In this web page, I will assume
+that your project directory is <CODE>C:\MyProjects\Project_2</CODE>,
+but of course you can use any directory you like.  You can either
+download a zip file containing the two jar files or you can extract
+them directly if you have the WinZip Internet add-on installed.  To
+download the zip file, <I>right-click</I> on the following link and
+select "Save Link As..." or "Save Target As..." depending on which
+brand of browser you are using.
+
+<UL>
+    <LI>[&nbsp;<a HREF="Vickery.zip">Vickery.zip</A>&nbsp;]
+</UL>
+
+If you have the WinZip Internet add-on, you can just left-click on the above
+link and extract the two jar files to your project directory. 
+Otherwise, run WinZip to extract the two jar files after downloading
+Vickery.zip.<p>
+
+Once you have the two jar files in your project directory, you can use
+the following command to set your CLASSPATH to use them:
+
+<pre>
+      set CLASSPATH=Vickery_UI.jar;Vickery_CB.jar
+</pre>
+
+Then you can run my version of the code with the following command:
+<pre>
+      java Checkers_UI
+</pre>
+
+Type "help" to see all the commands available.  Be sure to try the
+"list" and "moves" commands with different pieces on the board to see
+what they do.<p>
+
+There should be no surprises here, so now you can start writing your
+own versions of the classes in Vickery_CB.jar.
+
+  <H3><LI>Set Up to Use Your Own Code</H3>
+
+The idea for developing the project is to start with my class files, and
+to replace them, one-by-one, with your own.  You will use the classes in
+<CODE>Vickery_UI.jar</CODE> throughout the project, but you will be
+writing your own versions of the ones in <CODE>Vickery_CB.jar</CODE>. 
+You can use the <CODE>jar</CODE> command to see the contents of a jar
+file, as the following interaction demonstrates:
+
+<pre>
+C:\MyProjects\Project_2> jar tvf Vickery_CB.jar
+   688 Fri Nov 06 17:05:46 EST 1998 META-INF/MANIFEST.MF
+  4255 Fri Nov 06 15:31:44 EST 1998 Checkerboard.class
+   408 Fri Nov 06 15:31:44 EST 1998 CBException.class
+  1464 Fri Nov 06 15:31:44 EST 1998 Move.class
+   330 Fri Nov 06 16:26:26 EST 1998 Piece.class
+  1633 Fri Nov 06 15:31:44 EST 1998 Square.class
+C:\MyProjects\Project_2> 
+</pre>
+
+The first line of output is for housekeeping information that
+<CODE>jar</CODE> puts at the beginning of the file, and the other five
+lines show the names and sizes of the files inside the jar file.  As you
+can see, the five class files you are to implement for this project are
+there.<p>
+
+To get started, <I>extract</I> my class files from Vickery_CB.jar, and
+modify your <CODE>CLASSPATH</CODE> so that the JVM will find them.  You
+can use the following two commands to do this:
+
+<pre>
+C:\MyProjects\Project_2> jar xvf Vickery_CB.jar
+C:\MyProjects\Project_2> set CLASSPATH=.;Vickery_UI.jar
+C:\MyProjects\Project_2> 
+</pre>
+
+You can look at the documentation for the <CODE>jar</CODE> command in
+<CODE>...\jdk1.1.x\docs\tooldocs\win32\index.html</CODE>, where
+"<CODE>...</CODE>" represents the directory where you installed the
+JDK, and "<CODE>x</CODE>" is whatever version of the JDK you are
+using.  You can view this web page by using the "File->Open Page" menus
+in Netscape Navigator or the "File->Open" menus in Internet Explorer. 
+Briefly, the <CODE>tvf</CODE> option letters tell <CODE>jar</CODE> to
+<u><b>t</b></u>est the jar file (check the validity and list the
+contents), and the <CODE>xvf</CODE> option letters tell it to
+e<b><u>x</u></b>tract the contents of the file.<p>
+
+The <CODE>set CLASSPATH</CODE> command tells the JVM to look in the
+"current directory" (that's the dot part) and in
+<CODE>Vickery_UI.jar</CODE> for class files.  I'd like you to
+understand this setting a little bit:  If you change your current
+directory (by using the <CODE>cd</CODE> command), that means that the
+JVM will search for class files in that directory (because "dot" always
+represents whatever directory is the current directory), and in a copy
+of <CODE>Vickery_UI.jar</CODE> in <I>that</I> directory, and it
+probably isn't there.  You could make it so the proper class files are
+found regardless of your current directory by using absolute pathnames
+in your <CODE>set</CODE> command, like this:
+
+<pre>
+  set&nbsp;CLASSPATH=C:\MyProjects\Project_1;C:\MyProjects\Project_2\Vickery_UI.jar
+</pre>
+
+But as you can see, that's a lot of typing.  The point is that if you
+try to run a Java program and get a "class not found" error message it
+means that the JVM doesn't know where to look to find a class file that
+it is needs to load.  The more you understand about
+<CODE>CLASSPATH</CODE>, the better able you will be to troubleshoot
+this kind of problem.<p>
+
+<blockquote>
+<CODE>CLASSPATH</CODE> is an "environment variable" whose value is a
+semicolon-separated list of directories, zip files, and jar files that
+the JVM will search in order to locate class files to be loaded.
+</blockquote>
+At this point you should be able to run the program using my code the
+same way as in the previous step.  The difference between the steps is
+that the JVM will now look in the current directory instead of
+<CODE>Vickery_CB.jar</CODE> for class files, so that you can start
+replacing my class files with your class files in the next step.
+
+  <H3><LI>Implement the CBException class</H3>
+
+To start, create the file <CODE>CBException.java</CODE> containing the
+code for the exception class objects thrown by various Checkerboard
+methods.  You can use the code I gave out for the first project as your
+model, but type in your own copy, with your own comments.  When you
+compile your program, the class file will replace my
+<CODE>CBException.class</CODE> in your project directory, but you should
+still be able to run the program.<p>
+
+For each class you are to write, I will give you a "synopsis" of what
+the class should look like as a way of telling your what methods,
+constructors, and fields your class is to implement.  I have made the
+synopses look sort of like Java source code, but they aren't real code,
+so don't try to compile them!  To start, here is the synopsis for class
+CBException.<p>
+
+<B>Synopsis:</B>
+
+<pre>
+public synchronized class CBException extends java.lang.Exception {
+
+// Fields:
+   private java.lang.String CBException.message;
+
+// Constructors:
+   CBException(java.lang.String);
+
+// Methods:
+   public java.lang.String CBException.toString();
+
+   }
+</pre>
+
+<font size=-1><I>This synopsis, and all others in this handout, were
+generated by [&nbsp;<a
+HREF="http://babbage.cs.qc.edu/courses/cs101/Synopsis.html">
+Synopsis.java</A>&nbsp;], which you might (or might not) find
+interesting to look at.</I></font><p>
+
+  <H3><LI>Implement the Square Class</H3>
+
+This is essentially the same as the Square class you wrote during the
+Second Exam.<p>
+
+<B>Synopsis:</B><p>
+<pre>
+public synchronized class Square extends java.lang.Object
+    implements Piece {
+
+// Fields:
+   private int Square.row;
+   private int Square.col;
+   private int Square.piece;
+   private Square Square.next;
+
+// Constructors:
+   public Square(int,int,int) throws CBException;
+   public Square(int,int,int,Square) throws CBException;
+
+// Methods:
+   private void Square.initSquare(int,int,int,Square) throws CBException;
+   public Square Square.getNext();
+   public void Square.setNext(Square);
+   public java.lang.String Square.toString();
+
+   }
+</pre>
+
+The first three arguments to the constructors are a row, column, and
+piece.  The last argument of the second constructor is an initial value
+for the <CODE>next</CODE> field.  Your code is to verify that the row,
+column, and piece values are valid, and throw a CBException with an
+appropriate error message if any of them is not valid.  You do not have
+to provide the private method, <I>initSquare()</I>.  I used it so I
+wouldn't have to write the same code twice in the constructors.<p>
+
+The String returned by <I>toString()</I> should be in the format you
+used on the Second Exam
+(<B>[</B><I>row</I><B>][</B><I>column</I><B>]=</B><I>piece</I>).  That
+is, your <CODE>Square</CODE> should produce an equal sign where mine
+gave a colon and a space.  This way, you (and I!) can see that your class
+is being used instead of mine.
+
+  <H3><LI>Implement the Checkerboard Class</H3>
+
+<B>Synopsis:</B><p>
+<pre>
+public synchronized class Checkerboard extends java.lang.Object
+    implements Piece {
+
+// Fields:
+   private int[][] Checkerboard.theBoard;
+
+// Constructors:
+   public Checkerboard();
+
+// Methods:
+   public static boolean Checkerboard.isBlack(int);
+   public static boolean Checkerboard.isRed(int);
+   public static boolean Checkerboard.isPawn(int);
+   public static int Checkerboard.kingRow(int);
+   public void Checkerboard.zero();
+   public void Checkerboard.init();
+   public boolean Checkerboard.validate(int,int);
+   public int Checkerboard.occupant(int,int);
+   public int Checkerboard.pickUp(int,int);
+   public boolean Checkerboard.addPiece(int,int,int);
+   public Move Checkerboard.getMoves();
+   public Move Checkerboard.getMoves(int,int);
+   public boolean Checkerboard.isMove(int,int,int,int);
+   public boolean Checkerboard.isJump(int,int,int,int);
+   public java.lang.String Checkerboard.toString();
+   public Square Checkerboard.getBoardList() throws CBException;
+
+   }
+</pre>
+
+The constructor in my code does nothing, and could be omitted.<p>
+
+The three static "is" methods return true if the argument passed to
+them is a Piece code for a piece of the type indicated by the name of
+the method.<p>
+
+Static method <I>kingRow()</I> returns the index of the row that will
+make the piece passed to it into a king (7 if the piece is black, or 0
+if the piece is red.)<p>
+
+Method <I>zero()</I> clears theBoard so all elements have
+<CODE>NO_PIECE</CODE>.<p>
+
+Method <I>init()</I> initializes the board for a new game by clearing
+the board and putting <CODE>RED_PAWN</CODE> and <CODE>BLACK_PAWN</CODE>
+pieces in the appropriate elements of theBoard.<p>
+
+The <I>toString()</I> method overrides the method inherited from the
+superclass, <CODE>Object</CODE>.  It must return a printable
+representation of the board, with all the pieces on it.  There are a
+couple of issues to deal with here.  First, you have to return one
+String that will print as 8 lines.  You do this by putting your
+system's "line separator" String between lines.  (On Windows, this will
+be two characters, ASCII carriage return (<CODE>'\r'</CODE>, which is
+0x0D) and linefeed (<CODE>'\n'</CODE>, which is 0x0A).  On UNIX, there
+will be just a linefeed.)  You need to determine the proper line
+separator to use because I may be checking your program on a
+non-Windows system.  The second issue is that you have to compare each
+square of the board to each of the possible pieces to see what letter
+to add to the String for that square.  Another issue is that the row
+numbers <I>decrease</I> as you go down the screen.  Here is some
+pseudocode to help you with this method:<p>
+
+<pre>
+      Create an empty StringBuffer object.
+      Call <CODE>System.getProperty("line.separator")</CODE> to get the line
+      separator String for your system.
+      for rows 7 through 0 {
+        for columns 0 through 7 {
+          append " . ", " r ", " R ", " b ", or " B " to the StringBuffer,
+          depending on the occupant of the square.
+        }
+        append the line separator to the StringBuffer
+      }
+      return the StringBuffer.
+</pre>
+
+My code puts some labels on the left side and along the bottom.  I'll
+leave how to do that as an exercise for you to do on your own.<p>
+
+Method <I>validate()</I> receives a row and column, and verifies that
+they identify a square on the board and that the square is black.  It
+returns false if any of these conditions is not met.  The lower-left
+corner of theBoard is <CODE>theBoard[0][0]</CODE>, the upper left
+corner is <CODE>theBoard[7][0]</CODE>, etc.<p>
+
+Method <I>occupant()</I> returns one of the piece values
+(<CODE>NO_PIECE</CODE>, <CODE>RED_PAWN</CODE>, etc.), depending on what
+occupies the specified row and column of theBoard.  <B>Note:</B>  This
+method assumes that the row and column numbers are between 0 and 7.  You
+will get an <CODE>ArrayOutOfBoundsException</CODE> if they are not.<p>
+
+Method <I>pickUp()</I> receives row and column numbers, removes
+whatever piece is on that square, and returns the code for that piece.
+<B>Note:</B>  This method assumes that the row and column numbers are
+between 0 and 7.  You will get an
+<CODE>ArrayOutOfBoundsException</CODE> if they are not.<p>
+
+Method <I>addPiece()</I> receives a piece code, a row number, and a
+column number as its three parameters (in that order, from left to
+right).  If the row and column square are on the board, black, and
+unoccupied, the piece is put in that square.  If the row and column
+squares are on the board and black, and if the piece is a pawn and the
+square is occupied by a pawn of the same color, the piece on the board
+is converted into a king.  The method returns false if the piece is not
+a valid piece, if the square is not a black square on the board, or if
+the piece cannot be added to the designated square.<p>
+
+There are two <I>getMoves()</I> methods.  The one that takes two
+arguments expects to receive a row and column, and returns a linked
+list of all the moves or jumps that can be made by the piece on the
+indicated square.  The value returned will be <CODE>null</CODE> if the
+square is not occupied or if the occupant can't make any moves.  It is
+very useful as a "helper" for the other <I>getMoves()</I> method.  We
+will also use it directly in the third project for highlighting the
+possible moves from a square that the user clicks on.<p>
+
+The second <I>getMoves()</I> returns a linked list of <I>all</I> the
+moves possible on the Checkerboard, and it does this by stringing
+together all the linked lists returned by <I>getMoves(int,int)</I> for
+each of the (black) squares on the board.  Checkers_UI uses this
+method to implement the <I>moves</I> command.<p>
+
+Which moves are valid from a particular square depends on the color and
+type of piece that occupies the starting square, as well as the colors of any
+pieces next to the starting square.  The way to manage this complexity
+is to decompose it into simpler problems.  For example, here is a
+possible algorithm for <I>getMoves(int,int)</I>:
+
+<pre>
+  if the starting row/column is not occupied, return null.
+  for each of the four target rows adjacent to this row
+    for each of the four target columns adjacent to this column
+      validate the target row/column (on board and black)
+      if isMove(starting row/column, target row/column), add the move to
+      the list
+      if isJump(starting row/column, target row/column), add the move to
+      the list.
+  return the list
+</pre>
+
+
+Here is an algorithm for <I>isMove()</I>:<p>
+<pre>
+  If the piece is a black pawn and the move is to the source row plus 1
+  and the destination square is plus or minus one relative to the source
+  column and the destination square is not occupied, return <I>true</I>.
+
+  If the piece is a red pawn and the move is to the source row minus 1
+  and the destination square is plus or minus one relative to the source
+  column and the destination square is not occupied, return <I>true</I>.
+
+  If the piece is a black king and the move is to the source row plus
+  or minus 1 and the destination square is plus or minus one relative
+  to the source column and the destination square is not occupied,
+  return <I>true</I>.
+
+  If the piece is a red king and the move is to the source row plus 1
+  and the destination square is plus or minus one relative to the source
+  column and the destination square is not occupied, return <I>true</I>.
+  
+  Return <I>false</I>.
+</pre>
+
+Use a similar algorithm for <I>isJump()</I>.  The rules for a jump are
+that the desitination must be two rows and two columns away from the
+source row/column, the destination square must not be occupied, and
+the  intervening square must be occupied by a piece of the opposite
+color.<p>
+
+The <I>getBoardList()</I> method is used by Checkers_UI to implement the
+<I>list</I> command.  We worked on a version of this code in Lecture.
+
+
+  <H3><LI>Implement the Move Class</H3>
+
+<B>Synopsis:</B><p>
+
+
+<pre>
+public synchronized class Move extends java.lang.Object
+    implements Piece {
+
+// Fields:
+   private int Move.fromRow;
+   private int Move.fromCol;
+   private int Move.toRow;
+   private int Move.toCol;
+   private int Move.piece;
+   private boolean Move.isJump;
+   private Move Move.next;
+
+// Constructors:
+   public Move(int,int,int,int,int,boolean,Move);
+
+// Methods:
+   public Move Move.getNext();
+   public void Move.setNext(Move);
+   public boolean Move.isJump();
+   public java.awt.Point Move.getFrom();
+   public java.awt.Point Move.getTo();
+   public java.lang.String Move.toString();
+
+   }
+</pre>
+
+The purpose of this class is to define the objects that make up a linked
+list of possible moves and jumps.  It holds the starting and ending
+positions of the move or jump, the <CODE>Piece</CODE> code for the piece
+making the move or jump, a boolean that will be true if the "move" is
+actually a jump, and a <CODE>Move</CODE> object reference that is used
+for creating and traversing a linked list of <CODE>Move</CODE>s.<p>
+
+The arguments passed to the constructor must be in the sequence listed
+here: <CODE>fromRow</CODE>, <CODE>fromCol</CODE>, <CODE>toRow</CODE>,
+<CODE>toCol</CODE>, <CODE>piece</CODE>, <CODE>isJump</CODE>,
+<CODE>next</CODE>.<p>
+
+Note that this class' <I>isJump()</I> method is independent of the
+method with the same name in class <CODE>Checkerboard</CODE>.  This one
+just returns the value passed as the sixth argument to the
+constructor.<p>
+
+The <I>getFrom()</I> and <I>getTo()</I> methods return the starting and
+ending positions of the move or jump.  Because methods can return only
+one thing but we need both a row and column number to identify a
+position, these methods return a reference to an object that has two
+fields (<CODE>x</CODE> and <CODE>y</CODE>) that hold the integer row and
+column numbers of the position.  Rather than create a new class to hold
+these data, I used the <CODE>java.awt.Point</CODE> class.  You could use
+this class instead of pairs of ints to hold the values inside the
+<CODE>Move</CODE> objects if you wanted to.  Don't forget to import
+<CODE>java.awt.*</CODE> in your code.
+
+
+  <H3><LI>Implement the Piece Interface</H3>
+
+<B>Synopsis:</B>
+<pre>
+public interface Piece {
+
+// Fields:
+   public static final int Piece.NO_PIECE;
+   public static final int Piece.RED_PAWN;
+   public static final int Piece.RED_KING;
+   public static final int Piece.BLACK_PAWN;
+   public static final int Piece.BLACK_KING;
+
+// Constructors:
+
+// Methods:
+
+   }
+</pre>
+
+You should be able to assign arbitrary values to these five constants,
+as long as they are all different from one another, and your program
+should run without any changes.  Note, however, that you will need to
+recompile class Checkerboard so that it finds out about the new values
+you used.
+
+</OL>
+<HR>
+<center>
+[&nbsp;<a href="changes.html">Changes to this Assignment</a>&nbsp;]<BR>
+[&nbsp;<a href="FAQ.html">FAQs for the Assignment</a>&nbsp;]
+</center>
+<HR></BODY></HTML>

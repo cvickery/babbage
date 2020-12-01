@@ -1,0 +1,300 @@
+<HTML><HEAD><TITLE>MP3_Audio.java</TITLE></HEAD><BODY>
+<CENTER><H1>MP3_Audio.java</H1></CENTER><HR><PRE>
+//  MP3_Audio.java
+
+import java.io.*;
+import javax.swing.*;
+
+//  Class MP3_Audio
+//  ------------------------------------------------------------------
+/**   Captures the information from the first audio frame in a MP3
+  *   file, if present.  Determines the offset and length of the audio
+  *   stream, so it can be written using this class' write() method.
+  *
+  *     @author   C. Vickery
+  *     @version  2.0 - September 30, 1999
+  */
+  public class MP3_Audio
+  {
+    //  Lookup Tables
+    //  --------------------------------------------------------------
+    /** Name of the MPEG Phase                                      */
+    public static final String[]  phaseName  =
+    {
+                                "MPEG-2.5 (unofficial)",
+                                "reserved",
+                                "MPEG-2",
+                                "MPEG-1"
+    };
+
+    /** Name of the Layer Number                                    */
+    public static final String[]  layerName =
+    {
+                                "Reserved Layer Code",
+                                "Layer III",
+                                "Layer II",
+                                "Layer I",
+    };
+
+    /** Name of the Emphasis Type                                   */
+    public static final String[]  emphasisType  =
+    {
+                                "none",
+                                "50/15 ms",
+                                "reserved",
+                                "CCIT J.17",
+    };
+
+    /** Table of Bit Rates at which audio was encoded               */
+    public static final int[][]   bitRateTable  =
+    {
+    //  V1L1,   V1L2,   V1L3,   V2L1,   V2L2&3
+      { 0,      0,      0,      0,      0       },
+      { 32000,  32000,  32000,  32000,  8000    },
+      { 64000,  48000,  40000,  48000,  16000   },
+      { 96000,  56000,  48000,  56000,  24000   },
+      { 128000, 64000,  56000,  64000,  32000   },
+      { 160000, 80000,  64000,  80000,  40000   },
+      { 192000, 96000,  80000,  96000,  48000   },
+      { 224000, 112000, 96000,  112000, 56000   },
+      { 256000, 128000, 112000, 128000, 64000   },
+      { 288000, 160000, 128000, 144000, 80000   },
+      { 320000, 192000, 160000, 160000, 96000   },
+      { 352000, 224000, 192000, 176000, 112000  },
+      { 384000, 256000, 224000, 192000, 128000  },
+      { 416000, 320000, 256000, 224000, 144000  },
+      { 448000, 384000, 320000, 256000, 160000  },
+      { -1,     -1,     -1,     -1,     -1      },
+    };
+
+    /** Table of Sampling Rates from the original audio stream      */
+    public static final int[][] sampleRateTable =
+    {
+    //  MPEG-1  MPEG-2  MPEG-3
+      { 44100,  22050,  11025 },
+      { 48000,  24000,  12000 },
+      { 32000,  16000,  8000  },
+      { -1,     -1,     -1    },
+    };
+
+    /** The disk file containing the compressed audio stream.       */
+    File      file        = null;
+    /** The length of the disk file.                                */
+    long      fileLength  = 0;
+    /** Where the Frame starts in the file.                         */
+    long      offset      = 0;
+    /** How long the audio section is.                              */
+    long      audioLength = 0;
+
+    //  Header bits
+
+    /** Buffer to hold the four MPEG header bytes                   */
+    byte[]    inBuf = new byte[4];
+
+    int       phaseCode;            //  0-3
+    int       layerCode;            //  0-3
+    int       protectionBit;
+    int       brCode;               //  0-15
+    int       srCode;               //  0-3
+    int       paddingBit;
+    int       privateBit;
+    int       channelMode;          //  0-3
+    int       modeExtension;        //  0-3
+    int       copyrightBit;
+    int       originalBit;
+    int       emphasisCode;         //  0-3
+
+    //  Values derived from header bits
+
+    /** Column index for Bit Rate Table                             */
+    int       brColumn;       //  0-4: V1L1, V1L2, V1L3, V2L1, V2L2&3
+    /** Column index for Sample Rate Table                          */
+    int       srColumn;       //  0-2: MPEG-1, MPEG-2, MPEG-2.5
+    int       bitRate;        //  0 == "free"  -1 == "invalid"
+    int       sampleRate;
+    int       paddingSize;    //  zero, 4 (L-I), 1 (L-II/III) bytes
+    int       frameSize;      //  2 to 8,064 bytes
+    double    samplesPerFrame;  // 384 (L-I) or 1152 (L-II/III)
+    double    secondsPerFrame;  //  Time interval
+    int       secondsInFile;
+    int       minutesInFile;
+
+    /** Array of messages displayed when showInfo() is invoked      */
+    String[]  infoMessages  = { "Not a valid MPEG audio file" };
+
+    //  Constructor
+    //  --------------------------------------------------------------
+    /**
+      *   Given a File, find the first MPEG frame, then extract and
+      *   interpret the information encoded in the frame's header.
+      *
+      *     @param  f The file to be examined.
+      *     @throws Invalid_MPEG_FileException if the MPEG header
+      *     sync. pattern (11 binary 1s starting on a byte boundary)
+      *     cannot be found.
+      */
+      public MP3_Audio( File f, boolean id3v1Present )
+                                     throws Invalid_MPEG_FileException
+      {
+        FileInputStream fis = null;
+        file          = f;
+        fileLength    = f.length();
+
+        try
+        {
+          fis = new FileInputStream( file );
+
+          //  Search for 11 ones, and read the MPEG header
+          inBuf[0] = 0;
+          while ( (inBuf[0] & 0xFF) != 0xFF && offset &lt; fileLength )
+          {
+            offset += fis.read( inBuf, 0, 1 );
+          }
+          inBuf[1] = 0;
+          while ( (inBuf[1] & 0xE0) != 0xE0 && offset &lt; fileLength )
+          {
+            offset += fis.read( inBuf, 1, 1 );
+          }
+          if ( offset &lt; fileLength - 2 )
+          {
+            //  Found complete header for first audio frame;
+            //  Record offset and length
+            fis.read( inBuf, 2, 2 );
+            fis.close();
+
+            offset -= 2;  // leave offset pointing to start of header
+            audioLength =
+                      fileLength - offset - (id3v1Present ? 128 : 0 );
+          }
+          else
+          {
+            fis.close();
+            throw new Invalid_MPEG_FileException( 
+                                               "Missing sync field" );
+          }
+        }
+        catch ( FileNotFoundException fnf )
+        {
+          throw new Invalid_MPEG_FileException(  "File not found" );
+        }
+        catch ( IOException ioe )
+        {
+          throw new Invalid_MPEG_FileException(
+                                               "Error reading file" );
+        }
+
+        //  Extract Frame info from the header
+        phaseCode     = (inBuf[1] >> 3) & 3;
+        layerCode     = (inBuf[1] >> 1) & 3;
+        protectionBit = inBuf[1] & 1;
+        brCode        = (inBuf[2] >> 4) & 15;
+
+        if ( brCode == 15 )
+        {
+          throw new Invalid_MPEG_FileException(
+                                                 "Invalid Bit Rate" );
+        }
+        srCode        = (inBuf[2] >> 2) & 3;
+        paddingBit    = (inBuf[2] >> 1) & 1;
+        privateBit    = inBuf[2] & 1;
+        channelMode   = (inBuf[3] >> 6) & 3;
+        modeExtension = (inBuf[3] >> 4) & 3;
+        copyrightBit  = (inBuf[3] >> 3) & 1;
+        originalBit   = (inBuf[3] >> 2) & 1;
+        emphasisCode  = inBuf[3] & 3;
+       
+        //  Calculate derived values
+        brColumn = (phaseCode == 3) ? (3 - layerCode) :
+                                             (layerCode == 3) ? 3 : 4;
+        bitRate = bitRateTable[brCode][brColumn];
+        paddingSize = (paddingBit == 0) ? 0 :
+                                             (layerCode == 3) ? 4 : 1;
+        srColumn = (phaseCode == 3) ?     0   //  MPEG-1
+                    : ((phaseCode == 2) ? 1   //  MPEG 2
+                      :                   2); //  MPEG 2.5
+        sampleRate = sampleRateTable[srCode][srColumn];
+        frameSize = (layerCode == 3) ?
+                        (12 * bitRate / sampleRate + paddingSize) :
+                          (144 * bitRate / sampleRate + paddingSize);
+        samplesPerFrame = (layerCode == 3) ? 384.0 : 1152;
+        secondsPerFrame = samplesPerFrame / sampleRate;
+        secondsInFile = (int) (audioLength / frameSize *
+                                                     secondsPerFrame);
+        minutesInFile = secondsInFile / 60;
+        secondsInFile -= minutesInFile * 60;
+
+        //  Sanity Checks on header content
+        if (  phaseCode == 1  ||
+              layerCode == 0  ||
+              brCode == 15    ||
+              srCode == 3 )
+        {
+          throw new Invalid_MPEG_FileException(
+                     f.getAbsolutePath() + ": Failed Sanity Checks" );
+        }
+
+        //  Generate nice messages about the frame
+        infoMessages = new  String[9];
+        infoMessages[0] = f.getName();
+        infoMessages[1] = "Phase: " + phaseName[ phaseCode ];
+        infoMessages[2] = "Layer: " + layerName[ layerCode ];
+        infoMessages[3] = "Bit Rate is " + (bitRate/1000) + "KB";
+        infoMessages[4] = "Sample Rate is " + (sampleRate/1000) +
+                                                                "KHz";
+        infoMessages[5] = (int)(1000 * secondsPerFrame) +
+                          " msec per Frame";
+        infoMessages[6] = "Estimated file duration is " +
+                          minutesInFile + ":" +
+                          (secondsInFile &lt; 10 ? "0" : "") +
+                          secondsInFile;
+        infoMessages[7] = " ";
+        infoMessages[8] = "Vickery Version 2.0";
+
+        return;
+
+      }
+
+    //  Getters
+    //  --------------------------------------------------------------
+    public String getPhase()      { return phaseName[ phaseCode ];  }
+    public String getLayer()      { return layerName[ layerCode ];  }
+    public int    getBitRate()    { return bitRate;                 }
+    public int    getSampleRate() { return sampleRate;              }
+    public double getSecondsPerFrame()  { return secondsPerFrame;   }
+    public String getFileDuration() { return minutesInFile + ":" +
+                                    (secondsInFile &lt; 10 ? "0" : "") +
+                                    secondsInFile;                  }
+    //  Method showInfo()
+    //  --------------------------------------------------------------
+    /**
+      *   Put up a dialog box showing all the information derived from
+      *   the first frame header in the file.
+      */
+      public void showInfo() {
+        JOptionPane.showMessageDialog( null,
+                                  infoMessages,
+                                  "MP3 Header Information",
+                                  JOptionPane.DEFAULT_OPTION );
+      }
+
+    //  Method write()
+    //  --------------------------------------------------------------
+    /**
+      *   Reads the audio section from this file, and writes it to
+      *   fos.
+      *
+      *     @param fos  File output stream to which audio info is to
+      *                 be written.
+      */
+      public void write( FileOutputStream fos ) throws IOException
+      {
+        byte[]          ioBuf       = new byte[8192];
+        int             numRead     = 0;
+        FileInputStream fis         = new FileInputStream( file );
+        fis.skip( offset );
+        // write the audio stream
+      }
+
+  }
+
+</PRE><HR></BODY></HTML>

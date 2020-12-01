@@ -1,0 +1,112 @@
+<HTML><HEAD><TITLE>FileWriter_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>FileWriter_ex.java</H1></CENTER><HR><PRE>
+//  FileWriter_ex.java
+
+import java.io.*;
+
+//  Class FileWriter_ex
+//  ------------------------------------------------------------------
+/**
+  *     Illustrates the use of a FileWriter to write characters to a
+  *     file.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 Fall 1999
+  */
+  class FileWriter_ex
+  {
+
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Writes some characters to the file named on the command
+      *   line, provided the file does not already exist.
+      *
+      *   @param  argv[0] Name of a file.
+      *   @throws IOException if file cannot be written.
+      */
+      public static void main( String[] argv ) throws IOException
+      {
+      File        f;
+      FileWriter  fw;
+
+        // Check file name is present and file does not exist.
+        if ( argv.length != 1 )
+        {
+          System.err.println( "Usage: java FileWriter_ex &lt;file>" );
+          System.exit( 1 );
+        }
+        f = new File( argv[0] );
+        if ( f.exists() )
+        {
+          System.err.println( "Error: " + f.getName() + " exists." );
+          System.exit( 1 );
+        }
+
+        //  Write some characters to the file using the default
+        //  encoding, which converts Unicode characters (two bytes
+        //  each) to single bytes containing ASCII codes.
+
+        //  Note that everything written goes on one "line" in the
+        //  file.
+        fw = new FileWriter( f );
+        fw.write( "This is a string with stuff." );
+        fw.write( 33 ); // Numeric code for an ASCII character.
+        fw.write( "No more stuff." );
+        fw.close();
+        System.exit( 0 );
+      }
+    }
+
+//  Class BufferedWriter_ex
+//  ------------------------------------------------------------------
+/**
+  *     Illustrates the use of a BufferedWriter to write characters to
+  *     a file.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 Fall 1999
+  */
+  class BufferedWriter_ex
+  {
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Writes some characters to the file named on the command
+      *   line, provided the file does not already exist.
+      *
+      *   @param  argv[0] Name of a file.
+      *   @throws IOException if file cannot be written.
+      */
+      public static void main( String[] argv ) throws IOException
+      {
+      File            f;
+      BufferedWriter  bw;
+
+        // Check file name is present and file does not exist.
+        if ( argv.length != 1 )
+        {
+          System.err.println("Usage: java BufferedWriter_ex &lt;file>" );
+          System.exit( 1 );
+        }
+        f = new File( argv[0] );
+        if ( f.exists() )
+        {
+          System.err.println( "Error: " + f.getName() + " exists." );
+          System.exit( 1 );
+        }
+
+        //  Construct a BufferedWriter using a FileWriter
+        bw = new BufferedWriter( new FileWriter( f ) );
+        //  Write some characters to the file.  Method newLine()
+        //  breaks the file into lines of text.
+        bw.write( "This is a string with stuff." );
+        bw.newLine(); // What gets written depends on the operating system.
+        bw.write( "No more stuff." );
+        bw.newLine();
+        bw.close();
+        System.exit( 0 );
+      }
+    }
+
+</PRE><HR></BODY></HTML>

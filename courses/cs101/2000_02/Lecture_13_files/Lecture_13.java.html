@@ -1,0 +1,93 @@
+<HTML><HEAD><TITLE>Lecture_13.java</TITLE></HEAD><BODY>
+<CENTER><H1>Lecture_13.java</H1></CENTER><HR><PRE>
+//  Lecture_13.java
+
+//  Class Lecture_13
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates accessing methods in a class hierarchy.  In
+  *   particular, methodC is defined in both SubClass and SuperClass,
+  *   so which methodC gets called depends on the type of object used
+  *   to access it.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0  - Spring 2000
+  */
+  public class Lecture_13
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Prints messages using Strings returned by various SuperClass
+    *   and SubClass methods.
+    *
+    *   @param  argv  Not used.
+    *   @return Void.
+    */
+    public static void main( String[] argv )
+    {
+      Object      objRef    = new Object();
+      SuperClass  superRef  = new SuperClass();
+      SubClass    subRef    = new SubClass();
+
+      System.out.println( "superRef " + superRef.methodB() );
+      System.out.println( "superRef " + superRef.methodC() );
+
+      System.out.println( "subRef " + subRef.methodC() );
+      System.out.println( "subRef " + subRef.methodD() );
+
+      superRef = subRef;
+      System.out.println( "superRef " + superRef.methodB() );
+      System.out.println( "superRef " + superRef.methodC() );
+
+      //  The following statement would compile all right, but
+      //  would cause a ClassCastException when executed.
+  //  subRef = (SubClass) new SuperClass();
+
+      //  The next two statements would work if the previous one
+      //  didn't fail because the superclass object can be used
+      //  to reach both methods.
+  //  System.out.println( "subRef " + subRef.methodB() );
+  //  System.out.println( "subRef " + subRef.methodC() );
+
+      //  The following statement would cause a runtime exception
+      //  if execution ever reached it while subRef was actually
+      //  pointing to a superclass object.  No way to get to
+      //  methodD from the superclass.
+  //  System.out.println( "subRef " + subRef.methodD() );
+
+    }
+  }
+
+
+//  Class SuperClass
+//  ------------------------------------------------------------------
+/**
+  *   Provides methods B and C.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring 2000
+  */
+  class SuperClass
+  {
+    String methodB() { return "SuperClass methodB"; }
+    String methodC() { return "SuperClass methodC"; }
+  }
+
+
+//  Class SubClass
+//  ------------------------------------------------------------------
+/**
+  *   Extends SuperClass, and provides methods C and D.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring 2000
+  */
+  class SubClass extends SuperClass
+  {
+    String methodC() { return "SubClass methodC"; }
+    String methodD() { return "SubClass methodD"; }
+  }
+
+</PRE><HR></BODY></HTML>

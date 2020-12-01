@@ -1,0 +1,73 @@
+<HTML><HEAD><TITLE>CountWords.java</TITLE></HEAD><BODY>
+<CENTER><H1>CountWords.java</H1></CENTER><HR><PRE>
+import java.io.*;
+import java.util.*;
+
+//  Class CountWords
+//  ------------------------------------------------------------------
+/**
+  *   Extracts words from text files, adds them to a SortedWordList,
+  *   then prints the list.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 February, 2000
+  */
+  public class CountWords
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Reads lines from all the files named on the command line,
+    *   extracts words from them, and adds the words to a
+    *   SortedWordList, then prints the resulting list.
+    *
+    *   @param  argv List of files to process.
+    *   @return Void.
+    */
+    public static void main( String[] argv )
+    {
+      SortedWordList  swl  = new SortedWordList();
+      BufferedReader  br   = null;
+
+      //  Go through all the files named on the command line.
+      for (int f=0; f &lt; argv.length; f++ )
+      {
+        String          str     = null;
+        StringTokenizer st      = null;
+        int             howMany = 0;
+
+        try
+        {
+          br = new BufferedReader( new FileReader( argv[f] ) );
+
+          // Read and tokenize the file.
+          while ( (str = br.readLine()) != null )
+          {
+            st = new StringTokenizer( str,
+                                "\"'{}+-=][;:&lt;>.,/?!@#$%^&*() \t\n" );
+            while ( st.hasMoreTokens() )
+            {
+              swl.addWord( st.nextToken() );
+              howMany++;
+            }
+          }
+        }
+        catch ( IOException ioe )
+        {
+          System.err.println( ioe.getMessage() );
+          continue;
+        }
+        System.out.println( "Added " + howMany + " words from file " +
+                                                              argv[f] );
+      }
+
+      //  Print all the entries in the SortedWordList
+      for ( int i=0; i&lt;swl.size(); i++ )
+      {
+        System.out.println( swl.counterAt(i) + "\t" + swl.wordAt(i) );
+      }
+    }
+  }
+
+</PRE><HR></BODY></HTML>

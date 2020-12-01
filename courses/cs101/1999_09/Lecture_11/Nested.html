@@ -1,0 +1,50 @@
+<HTML><HEAD><TITLE>Nested.java</TITLE></HEAD><BODY>
+<CENTER><H1>Nested.java</H1></CENTER><HR><PRE>
+//  Nested.java
+
+//    Note the use of the same variable names in different contexts.
+
+public class Nested
+{
+  public static void main( String[] argv )
+  {
+
+  int     myDepth = 0;
+  String  myName  = "main";
+
+    System.out.println( myDepth + ": " + myName );
+    method_A( myName, myDepth );
+    System.out.println( myDepth + ": Returned to " + myName);
+  }
+
+  private static void method_A( String callerName, int callerDepth )
+  {
+  int     myDepth = callerDepth + 1;
+  String  myName  = "method_A";
+
+    System.out.println( myDepth + ": " + myName +
+                                          " called by " + callerName);
+    method_B( myName, myDepth );
+    System.out.println( myDepth + ": Returned to " + myName);
+  }
+
+  private static void method_B( String callerName, int callerDepth )
+  {
+  int     myDepth = callerDepth + 1;
+  String  myName  = "method_B";
+    System.out.println( myDepth + ": " + myName +
+                                          " called by " + callerName);
+    method_C( myName, myDepth );
+    System.out.println( myDepth + ": Returned to " + myName);
+  }
+
+  private static void method_C( String callerName, int callerDepth )
+  {
+  int     myDepth = ++callerDepth;
+  String  myName  = "method_C";
+    System.out.println( myDepth + ": " + myName +
+                                          " called by " + callerName);
+  }
+
+}
+</PRE><HR></BODY></HTML>

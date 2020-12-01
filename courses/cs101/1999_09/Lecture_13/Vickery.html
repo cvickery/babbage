@@ -1,0 +1,128 @@
+<HTML><HEAD><TITLE>Vickery.java</TITLE></HEAD><BODY>
+<CENTER><H1>Vickery.java</H1></CENTER><HR><PRE>
+//  Vickery.java
+
+import java.util.*;
+
+//  Class Vickery
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates: Static initialization, the "isa" relationship,
+  *   and polymorphism.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Fall 1999
+  */
+  public class Vickery
+  {
+
+    //  Static initialization occurs after the class is loaded
+    //  into memory, but before the constructor or any methods
+    //  are invoked.
+    static Vector v = new Vector();
+    static Object o = v;  //  Vector is a subclass of Object, so it's
+                          //  okay to use an Object reference variable
+                          //  to hold a reference to a Vector object.
+
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Performs various operations to illustrate the "isa"
+      *   relationship and polymorphic behavior of the toString()
+      *   method.
+      *
+      *   NOTE: All refernces to "o.toString()" could be replaced by
+      *   just "o" because the compiler knows it can get the String
+      *   representation of any object by invoking its toString()
+      *   method.  The method is named explicitly here just to try to
+      *   make it clearer what is going on.  "Real code" wouldn't put
+      *   in the ".toString()" parts.
+      *
+      *   @param  argv  Command line arguments; not used.
+      */
+      public static void main(String[] argv )
+      {
+        //  Intially, o contains a reference to a Vector (an empty
+        //  one), so Vector's toString() method is used, and "[]"
+        //  is printed.
+        System.out.println( o.toString() );
+
+        //  Now assign a reference to an Object to o, so Object's
+        //  toString() is used, and the hashcode for the object is
+        //  printed.
+        o = new Object();
+        System.out.println( o.toString() );
+
+        //  Now assign a reference to a Vectory (a subclass of
+        //  Vector) to o.  If the Vectory is empty, it's toString()
+        //  method returns a special String for printing.
+        o = new Vectory();
+        System.out.println( o.toString() );
+
+        //  But if the Vectory is not empty, class Vector's toString()
+        //  method is used.  Because the variable o is declared as a
+        //  reference to an Object, not to a Vector (or Vectory), we
+        //  have to use a cast to tell the compiler that o really will
+        //  refer to an object that has an add() method when the
+        //  program runs.
+        ((Vector)  o).add( "'A String Object'" );
+        ((Vectory) o).add( "'Another String Object'" );
+        System.out.println( o.toString() );
+
+        //  Here's what happens if we use a cast to promise that o
+        //  o will refer to a Vector and then we break that promise.
+        o = new Object();
+        ((Vector) o).add( "Anything" ); // But there is no o.add()!
+        System.out.println( "End of Program" );
+      }
+    }
+
+  //  Class Vectory
+  //  ----------------------------------------------------------------
+  /**
+    *   "Vickery's Vector" extends class Vector and overrides Vector's
+    *   toString() method to handle empty Vectors in a special way.
+    *   But if the Vector is not empty, class Vector's toString()
+    *   method is used to determine the value to return.
+    *
+    *     @author   C. Vickery
+    *     @version  1.0 - Fall 1999
+    */
+    class Vectory extends Vector
+    {
+
+      //  Method toString()
+      //  ------------------------------------------------------------
+      /**
+        *   Overrides Vector's toString() method (which overrides
+        *   Object's toString() method) to handle empty Vectors in a
+        *   special way.
+        *
+        *   @return Either a special message or the String returned by
+        *   the superclass' toString() method.
+        */
+        public String toString()
+        {
+          //  Note that "size()" is equivalent to "this.size()" in the
+          //  following statement.  Since a Vectory "isa" Vector, and
+          //  since class Vectory does not override size(), class
+          //  Vector's size() method will be used on "this" object.
+          if ( size() == 0 )
+          {
+            return "The Vectory is empty";
+          }
+          //  Illustrate using the superclass's toString() method to
+          //  do some of the work this class needs to do.
+          return super.toString();
+        }
+
+      //  Constructor
+      //  ------------------------------------------------------------
+      /**
+        *   Invokes the superclass's default constructor.  Needed so
+        *   that a Vectory gets intialized properly.
+        */
+        public Vectory() { super(); }
+    }
+    
+</PRE><HR></BODY></HTML>

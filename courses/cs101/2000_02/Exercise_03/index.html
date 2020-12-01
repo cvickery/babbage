@@ -1,0 +1,407 @@
+<HTML><HEAD><TITLE>Exercise 3</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Exercise 3</H1>
+</center>
+
+<H2>Introduction</H2>
+This is the first part of a two-part assignement.  The overall
+assignment is to write a Java application that will print an
+alphabetical list of all the words in some text files, along with a
+count of how often each word occurs.
+
+<H2>Description</H2>
+
+Your assignment for this week is to write a Java application that gets
+the words out of the text files and uses two classes that I am supplying,
+SortedWordList and WordCounter, to do the work of creating the list of
+words and their frequencies.<p>
+
+In Lecture 5 (February 17) we developed an application that does almost
+all the work you need to do.  That code is presented again here as a
+sequence of development steps.<p>
+
+It's a good idea to write a little bit of code and test to make sure it
+works before writing more code.  That way, when something goes wrong,
+you know the problem has to be in the little bit of code that you just
+wrote.  The alternative strategy is to write a lot of code and then to
+try to get the whole thing to work.  This strategy is a big temptation,
+but inevitably causes problems when you have to locate possibly
+multiple errors that cause your program not to perform as expected.<p>
+
+
+The goal of this exercise is to get words out of text files.  This
+can't be done directly, so we have to break it down into sub-goals. 
+Java provides a class called <I>StringTokenizer</I> that can get words
+out of strings, so our first sub-goal is to convert text files into
+strings that we can process using the StringTokenizer class.  Well, the
+<I>BufferedReader</I> class has a method called <I>readLine()</I> that
+will read a line of text from a file and return it as a Java String
+object, and this is the approach we will use.  (Another approach might
+be to read characters from the files and figure out where the words are
+by examining each character read.  But the BufferedReader approach is
+much easier to use, so that is the technique you are to use.)  It turns
+out that you have to have another Java type of object, a
+<I>FileReader</I> in order to create a BufferedReader, so our next
+sub-goal is to create a FileReader for each of the text files we want
+to process.  In order to create a FileReader, you need the name of the
+file that you want to read from, and that leads to the next sub-goal: how
+to know what files to process.  For that, we will use the technique
+used in Exercise 2, which is to have the user type the names of the
+files on the command line.  Unfortunately, the user might type things on
+the command line that aren't really the names of files, and we will get
+an IOException if we try to create a FileReader based on a bad file
+name.<p>
+
+
+<H3>Step 1</H3>
+
+We will work backwards from the lowest-level sub-goal.  So our first
+version of the the code will try to create a FileReader for each file
+name the user types on the command line.  If the FileReader constructor
+throws any IOExceptions, we will simply print an error message and
+continue creating FileReaders for any other names the user supplied.<p>
+Here's the code:
+
+<pre>
+<HR>
+//  CountWords.java
+import java.io.*;
+public class CountWords
+{
+  public static void main( String[] argv )
+  {
+    FileReader fr = null;
+
+    for ( int f=0; f&lt;argv.length; f++ )
+    {
+      try
+      {
+        fr = new FileReader( argv[f] );
+        System.out.println( "Created a FileReader for file " +
+                                                           argv[f] );
+      }
+      catch ( IOException ioe )
+      {
+        System.err.println( "Error: " + ioe.getMessage() );
+      }
+    }
+  }
+}
+<HR>
+</pre>
+
+To save space, I'm leaving out the comments, but you should write your
+javadoc comments for the code as you go along.<p>
+
+The IOException and FileReader classes are both found in the java.io
+package, so we import all the classes from that package.  We went over
+the idea behind the try/catch blocks in class.  Read chapter 14 of the
+text if you don't understand it.  Or just try running the above program
+with various things on the command line to see what is going on.  The
+alternative to try/catch would be to put "throws IOException" on the
+first line of main:
+<pre>
+  public static void main( String[] argv ) throws IOException
+</pre>
+
+The problem with this approach is that the program will abort with a
+long error message (a "stack trace") if a user should happen to make a
+mistake in typing one of the names of the files.  The way we are doing
+it we can print a more helpful message and continue processing other
+files.<p>
+
+<B>Thought Questions: </B>How many variables named fr are there?  How
+many FileReader objects are created?  How many of the FileReader
+objects can be used at a time?  What happens if the user doesn't type
+any file names on the command line?<p>
+
+<H3>Step 2</H3>
+
+Now add the code to create a BufferedReader for each command line
+argument:
+<pre><hr>
+//  CountWords.java
+import java.io.*;
+public class CountWords
+{
+  public static void main( String[] argv )
+  {
+    FileReader      fr = null;
+    BufferedReader  br = null;
+
+    for ( int f=0; f&lt;argv.length; f++ )
+    {
+      try
+      {
+        fr = new FileReader( argv[f] );
+        br = new BufferedReader( fr );
+        System.out.println( "Created a BufferedReader for file " +
+                                                           argv[f] );
+      }
+      catch ( IOException ioe )
+      {
+        System.err.println( "Error: " + ioe.getMessage() );
+      }
+    }
+  }
+}
+
+<hr></pre>
+
+Be sure to test this version of the program before doing Step 3.<p>
+
+<B>Thought Questions: </B>Is the variable fr really needed?  How could
+it be eliminated?  What is the purpose of invoking System.out.println()
+each time through the loop?<p>
+
+<H3>Step 3</H3>
+
+For this step, use readLine() to read each line of each file.  To verify
+that the program is working, print out each line, preceded by its file
+name.
+
+<pre><hr>
+//  CountWords.java
+import java.io.*;
+public class CountWords
+{
+  public static void main( String[] argv )
+  {
+    FileReader      fr    = null;
+    BufferedReader  br    = null;
+    String          line  = null;
+
+    for ( int f=0; f&lt;argv.length; f++ )
+    {
+      try
+      {
+        fr = new FileReader( argv[f] );
+        br = new BufferedReader( fr );
+
+        while ( (line = br.readLine()) != null )
+        {
+          System.out.println( argv[f] + ": " + line );
+        }
+      }
+      catch ( IOException ioe )
+      {
+        System.err.println( "Error: " + ioe.getMessage() );
+      }
+    }
+  }
+}
+
+<hr></pre>
+
+There are other ways to loop through the lines of a file, but this form
+of while loop, which combines the reading of a line with the test to see
+if the end of the file has been reached, is the most parsimonious way to
+write the code.  (If you don't believe me, try to come up with a better
+way!)<p>
+
+<B>Thought Questions: </B>What does <I>readLine()</I> return?  How many
+variables named line are there?  How many String objects are there?  Why
+is "readLine()" preceeded by "br."? What happens if the user types in
+the name of a .class file?<p>
+
+<H3>Step 4</H3>
+Now we're up almost to the top of our goal list: to extract words from
+the lines of text that we are reading.
+
+<pre><HR>
+//  CountWords.java
+import java.io.*;
+import java.util.*;
+public class CountWords
+{
+  public static void main( String[] argv )
+  {
+    FileReader      fr    = null;
+    BufferedReader  br    = null;
+    String          line  = null;
+    StringTokenizer st    = null;
+    String          token = null;
+
+    for ( int f=0; f&lt;argv.length; f++ )
+    {
+      try
+      {
+        fr = new FileReader( argv[f] );
+        br = new BufferedReader( fr );
+
+        while ( (line = br.readLine()) != null )
+        {
+          st = new StringTokenizer( line );
+          while ( st.hasMoreTokens() )
+          {
+            System.out.println( st.nextToken() );
+          }
+        }
+      }
+      catch ( IOException ioe )
+      {
+        System.err.println( "Error: " + ioe.getMessage() );
+      }
+    }
+  }
+}
+<HR></pre>
+
+Class StringTokenizer is in the java.util package, so be sure to import
+the classes from that package when you get to this step.<p>
+
+As shown in class, this code assumes that a "token" (what we want to be
+a "word") is any sequence of characters surrounded by whitespace. 
+Whitespace means blanks, tabs, and line separators.  The
+StringTokenizer constructor has an alternate form that takes a String
+as a second argument, and the characters in that second string will be
+used as delimiters for the tokens it returns.  For example, you could
+use the string literal, <CODE>"&nbsp;\t\n.,!;:()"</CODE> as the second
+argument to get the constructor in order to treat both whitespace and
+punctuation marks as delimiters.  You would want to have a more
+elaborate version if your text files contain other characters in it,
+like square brackets(&nbsp;&nbsp;), angle
+brackets(&nbsp;&lt;&gt;&nbsp;), curly brackets (&nbsp;{}&nbsp;), or any
+other characters in them.<p>
+
+<B>Thought Questions:</B>If there are 3 text files, and each one
+contains 6 lines of text, how many StringTokenizers will be created?
+How many StringTokenizers can the program access at a time?  If I didn't
+show you the <I>hasMoreTokens()</I> and <I>nextToken()</I> methods, how
+would you know they exist and how to use them? Can you come up with a
+second argument for the StringTokenizer constructor that will do a good
+job if you give your program a Java source file as one of its inputs?<p>
+
+<H3>Step 5</H3>
+
+This step goes beyond what we did in class on February 17th.  It uses
+the class SortedWordList that I am supplying to create a sorted word
+list (<I>duh-oh!</I>) from the words extracted from the text files. 
+After all the text files have been processed, the program prints the
+entries in the sorted word list.  Rather than give you the entire
+program, I'll just show you how to use the methods in [&nbsp;<a
+HREF="DOCS/index.html">SortedWordList</A>&nbsp;] and let you integrate
+them into your program yourself:<p>
+
+Create a SortedWordList object:
+<pre>
+  SortedWordList swl = new SortedWordList();
+</pre>
+
+Instead of printing each word as it is retrieved from a StringTokenizer,
+add it to the sorted word list:
+
+<pre>
+  swl.addWord( st.addWord() );
+</pre>
+
+After processing all the files, loop through the sorted word list,
+printing the counter and word for each element in the array:
+<pre>
+  for (int i=0; i&lt;swl.size(); i++)
+  {
+    System.out.println( swl.counterAt(i) + "\t" + swl.wordAt(i) );
+  }
+</pre>
+
+In order to compile your program for this step, you will need to have
+the SortedWordList.class and WordCounter.class files in the same
+directory as your CountWords.java file when you compile it.  I have put
+these two class files inside a zip file called [&nbsp;<a
+HREF="Vickery_E3.zip">Vickery_E3.zip</A>&nbsp;] that you can download by
+clicking on the link.  Once you have downloaded that file, extract its
+contents to the directory containing your CountWords.java file, and you
+will be able to compile your program successfully.  You don't have to
+import anything to use these classes because they are in the same
+package as your CountWords package, namely the "anonymous" package
+consisting of all classes in your current working directory.  (The zip
+file contains another file named Manifest.mf in a directory called
+meta-inf.  This is because I used jar to create the zip file; you can
+simply ignore this extra material, or even delete it if you prefer.)<p>
+
+<B>Thought Questions: </B>How many SortedWordList objects should this
+program create?  Given your answer, where should the "new
+SortedWordList" statement be?  How important is it for you to use the
+variable name "swl" in your program?<p>
+
+<H2>Submit the Assignment</H2>
+
+After you have tested the final version of your program using different
+text files and are sure it is working properly, put your .java file
+(and nothing else) in a zip file, and email it to me with "Submitting
+Exercise 3" on the Subject line and with your name and ID number in the
+body of the message.<p>
+
+I assume you wrote all the javadoc comments for the program back when
+you started Step 1 and don't need to be reminded again to do that.  But
+it would be a good idea to double check that you have proper @author
+and @version tags in the comments before the class definition and that
+you have a proper @param tag in the comments before the main method.<p>
+
+<HR>
+
+<H2>Answers to Thought Questions</H2>
+
+<B>Step 1: </B>One. As many as the number of command line arguments. One
+at a time (any others are eligible for garbage collection). The loop
+will be exectuted zero times and the program will exit without printing
+anything.<p>
+
+<B>Step 2: </B>No, it's just used to as a bridge between creating the
+FileReader and the BufferedReader.  Those two statements could be
+combined into the following single statement:
+
+<pre>
+  br = new BufferedReader( new FileReader( argv[f] ) );
+</pre>
+This is called "functional composition," and is used by good programmers
+to save unnecessary steps because compact code is often easier to
+understand than programs with unnecessary steps.  A good compiler would
+generate the same code whichever way it was written, so it's not a
+matter of computational efficiency, and there is a fine line between
+writing "compact" code and writing "cryptic" code that is hard to
+understand because it is <I>too</I> compact.  At this stage of your
+career it is probably better to err in the direction of being more clear
+at the expense of being a little more wordy.<p>
+The print statement is there to tell us that the program is working. 
+When we test a version of the program we have to be sure that our test
+really does confirm that the program is doing what we expect it to.<p>
+
+<B>Step 3: </B>The <I>readLine()</I> method returns a String that
+contains all the characters in one line of a text file, with the line
+separator characters (carriage return and linefeed) removed from the end
+of the line.  There is one variable named line, but the program will
+create as many String objects as there are lines of text in all the
+files the program processes.  The "br." tells the run time system which
+BufferedReader we want to use for reading the next line.  In this
+program, only one BufferedReader object exists at a time, but we still
+have to make the connection between the method and the particular
+BufferedReader to be used for reading.  If the user types in the name of
+any kind of file that does not contain lines of text, such as a .class
+file, the Strings that readLine() returns will contain bytes that aren't
+character codes, and printing them will result in gibberish on the
+screen.<p>
+
+<B>Step 4:</B>Three times six (18) StringTokenizer objects will be
+created.  There is just one st variable, so the program can access just
+one StringTokenizer at a time.  You would use your web browser to look
+at C:\jdk1.2.2\docs\api\index.html, and scroll through the classes to
+the entry for StreamTokenizer.  Here's a possiblility for the second
+argument: <CODE>" \t\n,.!?;:()[]<>{}+-*/#$%^&|\\'\"="</CODE><p>
+
+<B>Step 5:</B>There should should be just one SortedWordList object
+created to hold all the words in all the files, so you have to create
+it (i.e., put the "new SortedWordList" statement) before the outermost
+loop in the program &mdash; the one that loops through the file names on the
+command line.  Likewise, you have to put the loop to print out the list
+after the end of that file loop.  The variable name swl is arbitrary
+and perhaps a bit obscure.  I picked it because it is the only variable
+in the program that references a <u>S</u>orted<u>W</u>ord<u>L</u>ist
+object.  If you think the name is too obscure, you should pick a more
+meaningful one.
+
+<HR></BODY></HTML>

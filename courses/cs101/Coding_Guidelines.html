@@ -1,0 +1,279 @@
+<HTML><HEAD><TITLE>Coding Guidelines</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Coding Guidelines</H1>
+</center>
+
+<H2>Introduction</H2>
+
+This web page deals with the important issue of what your code looks
+like when viewed in a window or when printed on a piece of paper.  It's
+easy to focus on getting the code to compile into a working program and
+to lose track of the fact that programs normally have long lives after
+they start working.  Of course, the programs you write for college
+courses are not typical in this way, but in the "real world" most of the
+work on a program comes as bugs are fixed and features are added after
+the original version of the code starts working.  It's critical to write
+your code so that programmers who come after you will be able to
+navigate through your code efficiently and to understand its design
+quicky.<p>
+
+To this end, companies that employ programmers normally have a set of
+"Programming Standards" that all programmers must adhere to when they
+write code. There are similar standards for how you write code for
+CS-101, but instead of calling them "standards," I prefer to call them
+"guidelines" because I am willing to let you modify them in case you
+have another style that accomplishes the same goals as the rules given
+here.<p>
+
+I have an ulterior motive here, by the way.  If you write your code
+following these guidelines, I will have a lot easier time grading your
+programs!  I will be able to locate the code for your classes and
+methods quickly, I'll be able to understand the design of your methods
+easily, and I'll be able to locate and evaluate errors most readily. 
+So, although we are working in an academic environment, there is a good
+parallel between your writing clear code for me to grade and your
+writing clear code for other programmers to maintain in the real world.
+
+<H2>Tabs and Indentation</H2>
+
+The following are rules that you must follow when you write your code:
+
+<UL>
+    <LI>  All code and comments must be indented to show the lexical
+    structure of the program.  Basically, this means that each opening
+    brace must cause subsequent lines to be indented by a fixed number
+    of columns, and that each closing brace must cause subsequent lines
+    to be un-indented by the same amount.<P>
+
+    The number of spaces you indent for each lexical level is your
+    choice, but I strongly recommend that you use a value of either two
+    or four spaces.  (I use two).  The reason is that a larger number of
+    spaces leads to very wide lines of code, which often end up wrapping
+    around either as you enter them or when they are viewed later (by
+    me).  An indent of just one space is hard to read.<P>
+    
+    <B>Exception:</B>  If there are no statements, or just one
+    statement between a pair of braces, you may put the opening and
+    closing brace on the same line.<p>
+
+    <B>It is a firm rule for this course that no lines in your
+    code, whether Java statements or comments, are to extend beyond
+    column 72.</B><p>
+
+    <LI>There must be no <CODE>&lt;tab&gt;</CODE> characters in your
+    code.<p>
+    
+    The advantage of <CODE>&lt;tab&gt;</CODE> characters is that a
+    single character code in your program will automatically line
+    things up.  The problem is that the "automatic" lining up has to be
+    done by software, either by your editor, by the software that
+    prints your code, or perhaps by a different editor that someone
+    else uses to view your code later on.  But there is no universal
+    interpretation for these <CODE>&lt;tab&gt;</CODE> codes, so your
+    editor might have tab stops set at every eight columns, the printer
+    might have them set at every five columns, and my editor might have
+    them set at every two columns.  What a mess.  Fortunately all
+    program editors provide an option to substitute the correct number
+    of spaces to give the effect as a <CODE>&lt;tab&gt;</CODE> code
+    when you press the <CODE>Tab</CODE> key on the keyboard, but by
+    putting in the correct number of space characters, the code always
+    looks the same whether it's in your editor, going to a printer, or
+    in my editor.<p>
+
+    You must not press the <CODE>Tab</CODE> key when editing a program
+    file using Notepad (Windows) or Pico (UNIX).  These are primitive
+    text editors that cannot be set to substitute spaces for tabs; you
+    can't even set the tab spacing using these editors.  Either type
+    the spaces to indent your code manually, or get a good programmer's
+    editor, such as the free Programmer's File Editor (PFE) described
+    on the [&nbsp;<a HREF="Development_Tools.html">Development
+    Tools</A>&nbsp;] web page.<p>
+
+    A useful feature of PFE (and similar editors) is that you can
+    indent or unindent a block of statements by selecting them and
+    pressing <CODE>Tab</CODE> or <CODE>Shift-Tab</CODE>, respectively. 
+    This feature is very useful when you change the lexical structure
+    of your code, such as by removing an <CODE>if</CODE> statement, and
+    need to fix up the indentation.<p>
+
+    <LI>Always leave space between "comment leaders" and comment text. 
+    The margin makes it much easier to read the comments.<p>
+<PRE>
+    //These comments have no
+    //margin and are very
+    //difficult to read.
+    
+    //  These comments have two
+    //  spaces after the comment
+    //  leader (the //) and are
+    //  easier to read.
+</PRE>
+</UL>
+
+<H2>Files and Classes</H2>
+
+Put each class or interface that you write into a separate
+<CODE>.java</CODE> file, even if the class is not public.  This modular
+design will make it easier to maintain your code, because there is less
+code to deal with at a time.<p>
+
+The exceptions to this rule are anonymous and other inner classes. 
+Since they are defined inside another class, they pretty obviously
+can't be defined in separate files.<p>
+
+<H2>Commenting Your Code</H2>
+
+It's a good idea to put the name of each source file in a comment at the
+very beginning of the file.  That way, you can easily tell what file
+you are editing as soon as it appears on the screen of your text
+editor.<p>
+
+Put a block of comments just before each class, interface, or method in
+each source file.  These comments should start with a line that tells
+what is being defined, such as:
+
+<pre>
+    //  Class Xyx
+or    
+    //  Interface Abc
+or
+    //  Method abc()
+
+</pre>
+
+Then put a comment line with a row of dashes, or equal signs, or
+asterisks, or whatever you like to make the comment block easy to find
+when scrolling through the file.  Don't use this type of comment line
+elsewhere; the idea is to show where a class, interface, or method
+begins, and nothing else.<p>
+
+Next put a "javadoc" comment block.  (see [&nbsp;<a
+HREF="#javadoc">below</A>&nbsp;] for information on running
+<I>javadoc</I>.)  A javadoc comment block starts with <CODE>/**</CODE>
+(note there must be at least two asterisks) and ends with
+<CODE>*/</CODE>.  Asterisks at the beginning of lines inside a javadoc
+comment block are ignored, but everything else will be used by javadoc
+to generate HTML documentation for your code.<p>
+
+The first thing inside a javadoc block has to be a sentence (capitalize
+the first word and end with a period) that tells what the class,
+interface, or method does. The style for this sentence is to start with
+a present-tense verb with the name of the class, interface, or method
+as the implicit subject.  For example, instead of saying "Interface Abc
+defines the methods that must ...", say "Defines the methods that must
+...".  There can be more than one sentence in the description, but
+early versions of javadoc limited the description to just one, and it's
+better to make your description brief rather than wordy.<p>
+
+After the description, use javadoc "tags" to tell about specific
+features of the class, interface, or method.  A javadoc tag starts with
+an <CODE>@</CODE> character followed immediately by the name of the
+tag.  We will use just three of these javadoc tags for this course:
+
+<UL> <LI><CODE>@author</CODE>  This tag goes in the javadoc comment
+    block that goes before a class or interface.  You may have more
+    than one <CODE>@author</CODE> tag in a file (for example when you
+    use some code that I provided and added your own code to it), but
+    the first <CODE>@author</CODE> tag in every source file you submit
+    must have your name <I>and nothing else</I> after your name on the
+    line with the <CODE>@author</CODE> tag.  For example,<p>
+
+<pre>
+    // @author J. Jones
+    // @author C. Vickery
+</pre>
+
+    would be okay.  But, 
+
+<pre>
+    //  @author J. Jones ID 123-45-6789
+</pre>
+
+    would not be okay.  The reason for this is not due to anything about
+    javadoc.  Rather, it's because I use programs to help me grade your
+    programs, and my grading programs impose this requirement.<p>
+
+    Note that "author" must be lower case and spelled correctly, and
+    that there must be no spaces between the <CODE>@</CODE> and the word
+    "author."<p>
+    
+    <LI><CODE>@param</CODE>  This tag goes in the comment block that
+    goes at the beginning of a method.  Use one
+    <CODE>@param</CODE> tag for each parameter passed to the method,
+    even if the method does not actually use the parameter (such as the
+    command line arguments passed to <I>main()</I>). 
+    After the tag, put one or more spaces, the name of the parameter,
+    one or more additional spaces, and a sentence describing the
+    purpose of the parameter. The sentence may be continued onto the
+    following line if necessary, but should be kept brief.
+
+    <LI><CODE>@return</CODE>.  This tag also goes in the comment block
+    that goes at the beginning of a method.  There should be just one
+    <CODE>@return</CODE> tag for each method.  After the tag, put a
+    sentence that describes the value returned by the method.
+
+    <LI><CODE>@throws</CODE>.  Use one of these tags for each exception
+    type listed in the <I>throws</I> clause of a method, if there is
+    one.  After the tag, put the name of the type of exception that
+    might be thrown, followed by a sentence that tells what situation
+    would cause the method to throw the exception.
+
+</UL>
+
+You can see a file that is documented according to these guidelines
+[&nbsp;<a HREF="PrintArgs/PrintArgs.html">here</A>&nbsp;]
+
+<a name="javadoc"><H2>Running <I>javadoc</I></H2></a>
+
+The <I>javadoc</I> command generates HTML documentation pages for your
+programs by extracting information from the comments in your code.  The
+output of the javadoc command changed somewhat between JDK versions
+1.1.x and 1.2.  Most notably, the earlier version used graphical images
+(GIFs) as labels for the various parts of the generated pages, making it
+necessary to copy those images along with the web pages in order to view
+the documentation properly.  The later version produces a self-contained
+set of pages.<p>
+
+To run <I>javadoc</I>, first create a directory under your project
+directory to hold the HTML files produced by <I>javadoc</I>.  If you
+named this directory <CODE>docs</CODE>, the command to generate the
+documentation for all the .java files in your project directory would be
+
+<pre>
+    javadoc -author -d docs *.java
+</pre>
+
+You need the <CODE>-author</CODE> switch to get javadoc to process your
+<CODE>@author</CODE> tags.  They are ignored by default.  The
+<CODE>-d</CODE> switch is immediately followed by the name of the
+directory where you want to save the HTML (and other) files generated by
+running the <I>javadoc</I> command.  Finally, <CODE>*.java</CODE> uses
+the asterisk wildcard to generate a list of all files that have names
+ending with .java.<p>
+
+You can view the files generated by javadoc by using a web browser,
+even though you are not connected to the Internet.  Use the browser's
+File menu, select open, select the directory where you saved the HTML
+output, and select the file named <CODE>index.html</CODE> to start
+browsing your documentation!<p>
+
+You can click on the following link now to look at the web pages
+generated by the Java 2 version of <I>javadoc</I> for the sample code
+given above:
+
+<UL>
+
+    <LI>[&nbsp;<a
+    HREF="http://babbage.cs.qc.edu/courses/cs101/PrintArgs/HTML_20/PrintArgs.html">PrintArgs.html
+    generated by javadoc version 1.2</A>&nbsp;]
+
+</UL>
+
+Note that you are not to submit javadoc output to me.  I will generate
+it myself when I grade your project.
+
+<HR></BODY></HTML>

@@ -1,0 +1,93 @@
+<HTML><HEAD><TITLE>Puzzle Constructor Algorithm</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Puzzle Class Algorithms</H1>
+</center>
+Here is pseudodode for the Puzzle constructor and findWord method,
+as given in recitation on April 23.<p>
+
+<H2>Constructor</H2>
+
+<pre>
+  public Puzzle( String fileName ) throws Exception {
+
+    try {
+      Create BufferedReader from the fileName. (Called br in this
+      algorithm.)
+      }
+    catch (IOException e) {
+      throw new Exception("cannot access puzzle file")
+      }
+
+    try {
+
+      //  First line of the file tells the number of rows
+      inBuf = br.readLine()
+      if inBuf == null throw "empty puzzle file"
+      numRows = Integer.parseInt(inBuf)
+      if numRows is less than 1, throw "invalid number of rows"
+
+      //  Second line of the file is the first row of the puzzle;
+      //  remember how many characters it has.
+      inBuf = br.readLine()
+      if inBuf == null throw "invalid puzzle file"
+      numCols = inBuf.length()
+
+      convert inBuf to uppercase
+      convert inBuf to an array of char in the first row of thePuzzle:
+        thePuzzle[0] = new char[ inBuf.length() ];
+        inBuf.getChars( 0, inBuf.length(), thePuzzle[0], 0 );
+
+
+      //  Read remaining lines of the puzzle
+      for rows 1 to the end
+        inBuf = br.readLine()
+        if inBuf == null throw "invalid puzzle file (too short)"
+        if inBuf.length != numCols throw "wrong line length"
+        convert inBuf to upper case
+        convert inBuf to an array of char in this row of thePuzzle
+
+      }
+    catch IOException, throw "error reading puzzle file"
+    catch NumberFormatException, throw "invalid number of rows"
+
+    Now you could put in another loop to read the word list from the
+    remaining lines of the file, but that is not required for this
+    assignment.
+
+  }
+</pre>
+
+<H2>findWord()</H2>
+<pre>
+  public Answer findWord( String targetWord ) {
+  
+    Convert targetWord to upper case
+    Convert targetWord to an array of char, called targetChars in this
+      algorithm.  Length of targetChars is called len in this algorithm.
+    For each row, r, in the puzzle {
+      For each column, c, in the row {
+        If targetChars[0] != thePuzzle[r][c]
+          continue  // try next column
+        found = true // assume we will find a match
+        For each direction, d, between 0 and 7 {
+          If r + (len - 1) * deltaY[d] is not between 0 and numRows OR
+             c + (len - 1) * deltaX[d] is not between 0 and numCols
+             continue // try next direction
+          For each char in targetChars {
+            If targetChars[i] != thePuzzle[r + deltaY[d][c +deltaX[d]
+              found = false
+              break
+            } // next char
+          If found is still true, return new Answer(r, c, d)
+          } // next direction
+        } // next column
+      } // next row
+
+    Each row, column, and direction combination has been tested without
+    finding a match, so return null            
+
+  }
+</pre>
+
+<HR></BODY></HTML>

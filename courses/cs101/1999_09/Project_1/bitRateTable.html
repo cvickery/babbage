@@ -1,0 +1,38 @@
+<HTML><HEAD><TITLE>Bit Rate Table</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Bit Rate Table</H1>
+</center>
+<HR>
+<PRE>
+    /** Table of Bit Rates at which audio was encoded  */
+    public static final int[][]   bitRateTable  =
+    {
+    //  Ph 1L-I   Ph1 L-II    Ph1 L-III  Ph2 L-I    Ph2 L-II&amp;III
+      { 0,        0,          0,         0,         0       },
+      { 32000,    32000,      32000,     32000,     8000    },
+      { 64000,    48000,      40000,     48000,     16000   },
+      { 96000,    56000,      48000,     56000,     24000   },
+      { 128000,   64000,      56000,     64000,     32000   },
+      { 160000,   80000,      64000,     80000,     40000   },
+      { 192000,   96000,      80000,     96000,     48000   },
+      { 224000,   112000,     96000,     112000,    56000   },
+      { 256000,   128000,     112000,    128000,    64000   },
+      { 288000,   160000,     128000,    144000,    80000   },
+      { 320000,   192000,     160000,    160000,    96000   },
+      { 352000,   224000,     192000,    176000,    112000  },
+      { 384000,   256000,     224000,    192000,    128000  },
+      { 416000,   320000,     256000,    224000,    144000  },
+      { 448000,   384000,     320000,    256000,    160000  },
+      { -1,       -1,         -1,        -1,        -1      },
+    };
+
+</PRE>
+
+"Ph" is the phase (MPEG-1 or MPEG-2).  "L" is the layer (I, II, or
+ III). The "-1" values in the last row indicate an invalid row index. 
+ The "0" values in the first row may mean that there may be special
+ software (or hardware) that will determine the bit rate through some
+ mechanism outside this table.<p>
+
+<HR></BODY></HTML>

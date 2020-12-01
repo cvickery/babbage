@@ -1,0 +1,90 @@
+<HTML><HEAD><TITLE>Quiz_3b.java</TITLE></HEAD><BODY>
+<CENTER><H1>Quiz_3b.java</H1></CENTER><HR><PRE>
+//  Quiz_3b.java
+
+/*
+
+    Write an application that puts up a JFrame with a File->Exit menu
+    item.  When the user clicks on either File->Exit or the "close"
+    button in the title bar, the application exits.
+
+*/
+
+import javax.swing.*;
+import java.awt.event.*;
+
+//  Class Quiz 3b
+//  ------------------------------------------------------------------
+/**
+  *   Meets the requirements given above.
+  *   Uses instance variables.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring, 2000
+  */
+  public class Quiz_3b
+  {
+    JFrame   jf              = new JFrame( "Quiz 3b" );
+    JMenuBar mb              = new JMenuBar();
+    JMenu    fileMenu        = new JMenu( "File" );
+    JMenuItem  exitMenuItem  = new JMenuItem( "Exit" );
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Creates an applciation that can exit.
+    *
+    *     @param  argv  - Command line arguments; not used.
+    *     @return Void.
+    */
+    public static void main( String[] argv )
+    {
+
+      //  Create an object of class Quiz_3b.
+      //  The constructor will do all the work.
+      new Quiz_3b();
+
+      //  main() has nothing left to do ...
+
+    }
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+  /**
+    *   Initializes the user interface for the application.
+    */
+    public Quiz_3b()
+    {
+      //  Initialize the visible components.
+      jf.setJMenuBar( mb );
+      mb.add( fileMenu );
+      fileMenu.add( exitMenuItem );
+
+      //  Display the application
+      jf.pack();
+      jf.show();
+
+      //  Listen for window closing events from the JFrame
+      jf.addWindowListener( new WindowAdapter()
+      {
+        public void windowClosing( WindowEvent we )
+        {
+          System.exit( 0 );
+        }
+      }
+      );
+
+      //  Listen for File->Exit events
+      exitMenuItem.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          System.exit( 0 );
+        }
+      }
+      );
+
+    }
+  }
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,66 @@
+<HTML><HEAD><TITLE>Summit.java</TITLE></HEAD><BODY><PRE>
+//  Summit.java
+
+//    This is Code 1
+
+import java.io.*;
+import java.util.*;
+
+//  Class Summit
+//  -------------------------------------------------------------------
+/**
+  *   Reads lines from the user and sums valid ints.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class Summit {
+
+  //  main()
+  //  -----------------------------------------------------------------
+  /**
+    *   Reads numbers and prints their sum.
+    *
+    */
+    
+    public static void main(String[] args) throws IOException {
+
+    BufferedReader  br = new BufferedReader(
+                          new InputStreamReader(System.in));
+    String          inBuf, tkn;
+    StringTokenizer st;
+    int             sum = 0;
+
+      System.out.print( "Enter numbers: " );
+      while ( null != (inBuf = br.readLine()) ) {
+
+        st = new StringTokenizer( inBuf );
+
+        while ( st.hasMoreTokens() ) {
+
+          tkn = st.nextToken();
+
+          try {
+
+            sum += Integer.parseInt( tkn );
+
+            }
+
+          catch ( NumberFormatException e ) {
+            System.err.println(
+              "Error: \"" + tkn + "\" is not a number" );
+
+            }
+
+          }
+
+        System.out.print( "Enter numbers: " );
+        }
+
+      System.out.println( "The sum is " + sum );
+
+      }
+
+    }
+
+</PRE></HR></HTML>

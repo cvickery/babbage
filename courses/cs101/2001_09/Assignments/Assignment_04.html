@@ -1,0 +1,176 @@
+<html><head><title>Assignment 4</title>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+</head>
+<BODY bgcolor=#FFFFFF>
+<center>
+<h1>Assignment 4</h1>
+</center>
+
+<h2>Introduction</h2>
+
+This is the first part of a multi-part assignment, which will
+ultimately allow a user to examine the contents of Java class files. 
+Material given in this assignment about the structure of Java class
+files is also available on the web at <a
+href="http://java.sun.com/docs/books/vmspec/index.html">
+http://java.sun.com/docs/books/vmspec/index.html</a>.  A more
+accessible form is provided in the book, <i>Inside the Java 2 Virtual
+Machine</i> by Bill Venners (McGraw-Hill, 1999).
+
+<h2>This Assignment</h2>
+
+Write a class named ClassFile which extends class java.io.File.  The
+constructor for this class is to receive a String giving the pathname of
+a class file.  After invoking the superclass' constructor that takes the
+same String, the constructor is to verify that the class file is a valid
+Java class file by performing the following tests:
+
+<ul>
+  <li>The file name passed to the constructor must refer to a file that
+  is readable by the user.
+  <li>The filename must end with ".class"
+  <li>The first four bytes of the file must contain the value
+  0xCAFEBABE.
+</ul>
+
+If any of these tests fails, the constructor is to thow a
+ClassFileException object with an appropriate message associated with
+it.  Put the definition of class ClassFileException in a separate .java
+file. Encountering end of file at any point while reading the file
+should also cause the constructor to throw a ClassFileException with an
+appropriate message.<p>
+
+If all the tests pass, read the file's minor version number and major
+version number, which are two-byte unsigned integer values.  Save them
+in ClassFile instance variables with appropriate names.<p>
+
+Next, read another two-byte unsigned integer value that tells how many
+entries there are in the constant pool.  Create an array of
+ConstantPoolEntry objects of this length.  Then create the actual
+ConstantPoolEntry objects for the array.  The constructor for the
+ConstantPoolEntry class reads the information from the file in order to
+initialize each object.<p>
+
+<ul>
+
+  <li>The structure of ConstantPoolEntry information in the class file
+  is described in [&nbsp;<a href="ConstantPoolEntries.html">the
+  ConstantPoolEntries web page</a>&nbsp;]
+
+  <li>The design of the ConstantPoolEntry class is described [&nbsp;<a
+  href="#cp_entry">below</a>&nbsp;]
+
+</ul>
+
+After the constant pool, read the following two-byte unsigned integer
+values:
+
+<ol>
+  <li>access_flags
+  <li>this_class
+  <li>super_class
+  <li>intefaces_count
+  <li>interfaces[]
+</ol>
+
+Note that interfaces is an array of values, and that the length of the
+array is given by interfaces_count.<p>
+
+Following the above information, there are three more arrays, each of
+which is preceded by a two-byte count giving the size of the array:
+
+<ul>
+  <li>fields_count and an array of FieldInfo objects
+  <li>methods_count and an array of MethodInfo objects
+  <li>attibutes_count and an array of AttributeInfo objects 
+</ul>
+
+Classes FieldInfo, MethodInfo, and AttributeInfo will be described later
+if we need them.<p>
+
+The following table summarizes the values that will be found in the
+access_flags field, which will contain the sum (actually, the bit-wise
+OR) of any number of the values listed here:<p>
+
+<table align=center width=80% cellpadding=5 border=1>
+  <tr>
+    <th>Flag Name
+    <th>Value
+    <th>Interpretation
+    <th>Where used
+
+  <tr>
+    <td>ACC_PUBLIC
+    <td>0x0001
+    <td>Declared public; may be accessed from outside its package.
+    <td>Classes and interfaces
+
+  <tr>
+    <td>ACC_FINAL
+    <td>0x0010
+    <td>Declared final; no subclasses allowed.
+    <td>Classes only
+
+  <tr>
+    <td>ACC_SUPER
+    <td>0x0020
+    <td>Treat superclass methods specially when invoked by the
+    <i>invokespecial</i> instruction.
+    <td>Classes and interfaces
+
+  <tr>
+    <td>ACC_INTERFACE
+    <td>0x0200
+    <td>Type is an interface, not a class.
+    <td>All interfaces, no classes
+
+  <tr>
+    <td>ACC_ABSTRACT
+    <td>0x0400
+    <td>Type is abstract; may not be instantiated.
+    <td>All interfaces, some classes
+</table>
+
+
+<h2>The <i>toString()</i> Method</h2>
+
+Class ClassFile is to have a <i>toString()</i> method which returns a
+string in the form "xxx:M.m" where <i>xxx</i> is the name of the class
+defined in the class file, <i>M</i> is the major_version of the file,
+and <i>m</i> is the minor version of the file.
+
+<h2>The <i>main()</i> Method</h2>
+
+For testing purposes, provide class ClassFile with a main method which
+creates a new ClassFile object for each file name supplied on the
+<i>java</i> command line.  For each ClassFile object created
+successfully, print the value returned by its <i>toString()</i>
+method.  If the user types a file name that does not turn out to be a
+valid class file, catch the ClassFileException thrown by the
+constuctor, print the message associated with it, and continue on to
+the next class file on the command line, if any.
+
+<a name="cp_entry"><h2>Class ConstantPoolEntry</h2></a>
+
+The constructor for ConstantPoolEntry is to receive a reference to a
+DataInputStream Object, read the next byte from that stream, which will
+be the tag for the next entry in the constant pool.  Save the tag in a
+private instance variable, but provide a public getConstantType() method
+that lets user classes get this value as an int.  Save the information
+associated with the tag in other instance fields.  Provide a
+<i>toString()</i> method that returns the name of the constant type and
+the value(s) associated with it.  Any tag value other than those listed
+in the [&nbsp;<a href="./ConstantPool.html">ConstantPool.html</a>&nbsp;]
+web page should cause the constructor to throw a RuntimeException with a
+"bad tag" message.<p>
+
+The constructor for class ClassFile could profitably print a message
+giveing each constant pool index and the value returned by its
+ConstantPoolEntry's <i>toString()</i> method during development.  These
+messages should be written to System.err so they will be synchronized
+with any RuntimeException messages that happen to get thrown.
+
+
+<hr></body></html>
+

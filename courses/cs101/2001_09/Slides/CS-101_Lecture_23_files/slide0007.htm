@@ -1,0 +1,195 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 23</title>
+<meta name=Description content="30-Nov-01: Interface WindowListener">
+<link rel=next href=slide0006.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0007.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_23.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=30 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=320 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=17 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=70 height=33 colspan=2></td>
+  <td width=337 height=33 colspan=2>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=337 height=33 align=center><font face="Times New Roman" size=5>Interface
+    WindowListener</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=68 height=33></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=202></td>
+  <td width=350 height=202 colspan=2>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=38 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=117 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=229 height=21 colspan=15><font face="Times New Roman" size=3>See </font><a
+    href="http://babbage.cs.qc.edu/courses/cs101/2001_09/Slides/CS-101_Lecture_23_files/WindowListener_ex.java.html"
+    target="_parent"><font face="Times New Roman" size=3>WindowListener_ex.java</font></a><br>
+    </td>
+    <td width=103 height=21></td>
+   </tr>
+   <tr>
+    <td width=350 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=311 height=18 colspan=13><font face="Times New Roman" size=2>Prints
+    a message for each of the seven types of</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=205 height=17 colspan=11><font face="Times New Roman" size=2>WindowEvents
+    that can occur:</font><br>
+    </td>
+    <td width=106 height=17 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=350 height=2 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=55 height=16 colspan=5><font face="Times New Roman" size=1>Activated</font><br>
+    </td>
+    <td width=235 height=16 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=350 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=39 height=16 colspan=2><font face="Times New Roman" size=1>Closed</font><br>
+    </td>
+    <td width=251 height=16 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=350 height=2 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=44 height=16 colspan=3><font face="Times New Roman" size=1>Closing</font><br>
+    </td>
+    <td width=246 height=16 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=350 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=67 height=16 colspan=7><font face="Times New Roman" size=1>Deactivated</font><br>
+    </td>
+    <td width=223 height=16 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=350 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=66 height=16 colspan=6><font face="Times New Roman" size=1>Deiconified</font><br>
+    </td>
+    <td width=224 height=16 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=350 height=2 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=51 height=16 colspan=4><font face="Times New Roman" size=1>Iconified</font><br>
+    </td>
+    <td width=239 height=16 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=350 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=44 height=16 colspan=3><font face="Times New Roman" size=1>Opened</font><br>
+    </td>
+    <td width=246 height=16 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=350 height=2 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=208 height=18 colspan=12><font face="Times New Roman" size=2>windowClosing(
+    ) is special …</font><br>
+    </td>
+    <td width=103 height=18></td>
+   </tr>
+  </table>
+  </td>
+  <td width=85 height=202 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=49 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

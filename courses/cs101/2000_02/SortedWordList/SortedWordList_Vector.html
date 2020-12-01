@@ -1,0 +1,110 @@
+<HTML><HEAD><TITLE>SortedWordList_Vector.java</TITLE></HEAD><BODY>
+<CENTER><H1>SortedWordList_Vector.java</H1></CENTER><HR><PRE>
+//  SortedWordList.java
+
+import java.util.*;
+
+//  Class SortedWordList
+//  ------------------------------------------------------------------
+/**
+  *   Maintains a list of WordCounter objects in alphabetical order.
+  *   Uses a Vector instead of an array to hold the list.
+  *
+  *   Note to the student:
+  *     A Vector can hold references to any type of object, but this
+  *     code always puts references to WordCounter objects in the
+  *     Vector.  Vector's get() method is defined as returning a
+  *     reference to an object of class Object, but we know that the
+  *     reference is really always to an object of class WordCounter.
+  *     So there are lots of casts in this code to tell the Java
+  *     compiler that we know that the Objects returned by get() are
+  *     really WordCounters.  The rationale for these casts should
+  *     become clear after we cover Chapter 9.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0
+  */
+  class SortedWordList
+  {
+
+  /**  The Vector for "this" list.                                  */
+  //  The default constructor gives an initial capacity of 10.
+  private Vector  theList = new Vector();
+
+  //  Method addWord()
+  //  ----------------------------------------------------------------
+  /**
+    *   Adds a word to the list in it's proper alphabetic position.
+    *   If the word is already in the list, add one to its counter
+    *   instead of adding it to the list again.
+    *
+    *   @param  theWord The word to be added.
+    *   @return         True if the word was added, or false if it was
+    *                   just counted.
+    */
+    public boolean addWord( String theWord )
+    {
+
+      theWord = theWord.toLowerCase();
+
+      for (int i=0; i&lt;size(); i++ )
+      {
+        if ( theWord.equals(
+                        ((WordCounter)theList.get( i )).word ) )
+        {
+          //  Found matching word already in list -- increment counter
+          ((WordCounter)theList.get( i )).counter++;
+          return false;
+        }
+        if ( theWord.compareTo(
+                    ((WordCounter)theList.get( i )).word ) &lt; 0 )
+        {
+          //  Found alphabetically higher word -- insert this one here
+          theList.insertElementAt( new WordCounter( theWord ), i );
+          return true;
+        }
+      }
+      //  Word not found; append it.
+      theList.insertElementAt( new WordCounter( theWord ), size() );
+      return true;
+    }
+
+  //  Method wordAt()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the word at a particular position in the Vector.
+    *
+    *     @param  i The index of the word to return.
+    */
+    public String wordAt( int i )
+    {
+      return ((WordCounter)theList.get( i )).word;
+    }
+
+  //  Method counterAt()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the counter at a particular position in the Vector.
+    *
+    *     @param  i The index of the counter to return.
+    */
+    public int counterAt( int i )
+    {
+      return ((WordCounter)theList.get( i )).counter;
+    }
+
+  //  Method size()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the number of WordCounters in theList.
+    *
+    *   @return The number of WordCounter objects s in the list.
+    */
+    public int size()
+    {
+      return theList.size();
+    }
+
+  }
+
+</PRE><HR></BODY></HTML>

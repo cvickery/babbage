@@ -1,0 +1,31 @@
+<HTML><HEAD><TITLE>BuildString.java</TITLE></HEAD><BODY>
+<CENTER><H1>BuildString.java</H1></CENTER><HR><PRE>
+//  BuildString.java
+
+import java.util.*;
+
+public class BuildString {
+static String[] sList = { "First String",
+                          "Second String",
+                          "Waterboy" };
+
+  public static void main(String[] argv) {
+  Vector vec = new Vector();
+    for (int vi=0; vi&lt;sList.length; vi++) {
+      vec.addElement(sList[vi]);
+    }
+    System.out.println( generateString(vec) );
+  }
+
+  public static String generateString(Vector v) {
+  String NL = System.getProperty( "line.separator" );
+  StringBuffer sb = new StringBuffer();
+    for (int i=0; i&lt;v.size(); i++) {
+      sb.append(i + ": " + v.elementAt( i ) + NL );
+    }
+    return sb.toString();
+  }
+}
+
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,202 @@
+<HTML><HEAD><TITLE>Project 3c</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 3c</H1>
+</center>
+<H2>Deliverables and Due Date</H2>
+
+Send me email with an attached jar or zip file containing LibraryManager.java
+by midnight, December 7.
+
+<H2>How to Create the Jar or Zip File</H2>
+
+From the directory containing your LibraryManager.java file, give this
+command:
+<pre>
+      jar cvf project3c.jar LibraryManager.java
+</pre>
+
+Then, just attach the file named project3c.jar to your email message,
+and send it to me.<p>
+
+If you wish, you may use WinZip or a similar utility to create the file
+you send me.  You can even use the jar command to create a zip file:
+<pre>
+    jar cvf Project_3c.zip LibraryManager.java
+</pre>
+<H2>Working Code</H2>
+
+I am supplying working code for this project in two zip files:
+<ul>
+    <LI>[&nbsp;<a HREF="Project_3c.zip">Project_3c.zip</A>&nbsp;]
+    <BR>Right-click (or shift-click) on this link to download the file
+    into a directory where you can test it.
+    <LI>[&nbsp;<a HREF="LibraryManager_3c.zip">LibraryManager_3c.zip</A>&nbsp;]
+    <BR>Right-click (or shift-click) on this link to download the file
+    into the same directory you used for Project_3c.zip
+</ul>
+To run the program, first give this command at the DOS prompt:
+
+<pre>
+    set CLASSPATH=Project_3c.zip;LibraryManager_3c.zip
+</pre>
+
+Now, from the directory that has the downloaded zip files in it, give the
+command:
+
+<pre>
+    java LibraryManager
+</pre>
+
+Note that this will load LibraryManager.class from the zip file, but
+only if there is not a LibraryManager.class file in the current
+directory, so it's a good idea to download the .jar file into an empty
+directory.<p>
+
+You should be able to use this program to create multiple instances of
+the LibraryManager's JFrame, and you should be able to create new
+library files and to add MP3 files to them.  There is a Close All menu
+item that is not implmented yet, so nothing will happen if you click on
+it.<p>
+
+You can view the documentation for all my code either [&nbsp;<a
+HREF="Docs_3c">online</A>&nbsp;] or by downloading [&nbsp;<a
+HREF="Docs_3c.zip">Docs_3c.zip</A>&nbsp;].  If you download the zip
+file, you should use Winzip (or the command, <CODE>jar xvf
+Docs_3c.zip</CODE>) to unzip the files into their own directory, and
+then use your web browser to look at the file <CODE>index.html</CODE> in
+that directory.
+
+<H2>Project Description</H2>
+
+This project adds the event handler for File->New->Library File to the
+code you should now have working for Project 3b.  (If not, you can see
+[&nbsp;<a HREF="LibraryManager_3b.html">my code for Project
+3b</A>&nbsp;].)  This project also adds a JButton to the JFrame's
+content pane that can be used to add individual MP3 files to a library
+file.<p>
+
+There are two ways you could structure this part of the project, but
+whichever one you choose, be sure you have Project 3b working before you
+work on this one.
+
+<OL>
+
+  <LI>You could structure your code the same way I did in the code given
+  in Lecture 25: Have an anonymous class implement the ActionListener
+  interface for the "New Library" menu item, but have the
+  <I>actionPerformed()</I>
+  method do nothing but invoke another method, the one I called
+  <I>newLib()</I> in the code I gave.  Then do all the work in
+  <I>newLib()</I>, keeping the anonymous class small.
+  
+  <LI>You could create a separate, named, class to hold the event
+  handler for the New Library menu item.  All the logic in my
+  <I>newLib()</I> method would go in this class'
+  <I>actionPerformed()</I> method.
+  
+  <LI>You could combine the two previous techniques by using an
+  anonymous class implement the ActionListener interface, but put all
+  the logic for creating a new library file inside that class'
+  <I>actionPerformed()</I> method.  <u><I>This is not a good
+  technique</I></u> because it makes the anonymous class too big.  Use
+  anonymous classes only for small amounts of code.
+
+  <LI>You could have a separate class with a single
+  <I>actionPerformed()</I> method for the action listeners for all menu
+  items and buttons.  <u><I>This is not a good technique</I></u>
+  because the <I>actionPerformed()</I> method then has to test the
+  ActionEvent object passed to it each time to figure out what it is
+  supposed to do. Although you will see this kind of code elsewhere,
+  don't do it.  It adds extra processing time to the event handler as
+  it figures out what it is supposed to do, and more importantly it
+  leads to complicated code that is difficult to understand and likely
+  to contain bugs.
+
+</OL>
+
+
+<H3>Some Notes on the Sample Code</H3>
+
+The sample code in Lecture 25 is lifted directly from my own program,
+so you will have to make some changes to get it to work in your own
+program.  You should write your own version rather than try to get mine
+to work, though.  You will learn more that way.<p>
+
+In my program, I used an instance variable named <CODE>library</CODE>
+to hold a reference to the MP3_Library object representing the library
+file being managed.  If <CODE>library</CODE> is null it means the user
+has not selected a library file to manage yet (and the Add File button
+is disabled).  When the user selects a new library file, it is possible
+that there is already a library file open.  If there is one open, you
+have to check if the MP3_Library object has changed since last being
+written to disk and to call <CODE>library</CODE>.<I>write()</I> if it
+has changed.  <CODE>library</CODE>.<I>isChanged()</I> will return true
+if the file needs to be written and will return false if not.  I put
+this logic inside a method called <I>close()</I>, but you could put it
+directly inside <I>newLib()</I> (or directly in
+<I>actionPerformend()</I>) if you prefer.  My sample code makes sure
+the new library file can be initialized and that the new MP3_Library
+object for it can be created before closing the currently open library;
+the local variable <CODE>lib</CODE> is used to hold the reference to
+the new library before using it to replace this library manager's
+<CODE>library</CODE> reference.<p>
+
+There are annotations on the sample code (in the lecture notes)
+pointing out exceptions that might occur.  My code enclosed all the
+statements that might throw any kind of exception (as well as several
+more lines of code) inside a big <I>try</I> block, and used a single
+<I>catch</I> block on class Exception (the superclass of all exception
+classes) to handle any failure.
+
+<H3>Adding an MP3 File to a Library</H3>
+
+Here is the code I used as the Add File button's event handler:
+<PRE>
+        addFile.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            JFileChooser  jfc   = new JFileChooser( startDir );
+            int           reply = jfc.showOpenDialog( gui );
+            if ( reply == JFileChooser.APPROVE_OPTION )
+            {
+              File f = jfc.getSelectedFile();
+              try
+              {
+                if ( library.add( f ) )
+                {
+                  JOptionPane.showMessageDialog( gui,
+                    "Added " + f.getName() +
+                    " to " + library.getFileName() );
+                }
+                else
+                {
+                  JOptionPane.showMessageDialog( gui,
+                    "Not Added: Duplicate file." );
+                }
+              }
+              catch ( Invalid_MPEG_FileException imfe )
+              {
+                JOptionPane.showMessageDialog( gui,
+                  "Not Added: " + imfe.getMessage() );
+              }
+            }
+          } } );
+</PRE>
+
+The trick here is that MP3_Library.<I>add()</I> returns false if it was
+unable to add a valid MP3 file to the library because the file is
+already in the library, but it also might throw 
+an Invalid_MPEG_FileException if the file you give it is not a valid MP3
+file.  So there is an <I>if</I> statement to check for the duplicate
+entry problem, and a <I>try/catch</I> pair to handle the invalid MP3
+file possibility.<p>
+<HR>
+Remember to document your code using proper javadoc comments and tags.
+Also, be sure no lines are longer than 72 characters, and be sure there
+are no tab characters in your code.  (Set your editor to expand tabs to
+spaces.)<p>
+
+<HR></BODY></HTML>

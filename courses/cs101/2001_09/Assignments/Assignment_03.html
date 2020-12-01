@@ -1,0 +1,166 @@
+<html><head><title>CS-101 Assignment 3</title>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+</head>
+<BODY bgcolor=#FFFFFF>
+<center>
+<h1>CS-101 Assignment 3</h1>
+</center>
+
+<h2>Description</h2>
+
+The assignment is to develop a class hierarchy that can be used to
+obtain and print the user's name in various ways.<p>
+
+The base class is to be an <i>abstract</i> class named <b>Hello</b>. 
+This class is to provide the following:
+
+<ul>
+  <li>A protected String named <i>msg</i>.
+  <li>A <i>toString()</i> method which overrides the <i>toString()</i>
+  method inherited from class Object.  This method is to return the
+  value of <i>msg</i>.
+  <li>A public static void main method, the logic of which is described
+  below.
+</ul>
+
+One subclass of Hello is to be named <b>HelloGUI</b>.  It is to have
+just one constructor, a no-arg constructor which uses JOptionPane to
+ask the user to enter his/her name.  The constructor is to initialize
+<i>msg</i> to the String, "Hello, xxx, my name is yyy." where xxx is to
+be replaced by the String returned by the JOptionPane, and yyy is to be
+your own name.  This class does <i>not</i> implement any methods or
+define any instance variables.<p>
+
+A second subclass of Hello is to be named <b>HelloCL</b>.  It is to
+have just one constructor, which receives a reference to an array of
+strings (<i>i.e.</i>, String[]).  This constructor is to initialize the
+variable <i>msg</i> to the String, "Hello xxx, my name is yyy.".  In
+this case, xxx is to be replaced with the concatenation of all the
+Strings in the array passed to it, separated by spaces, and yyy is to
+be your own name.  This class does <i>not</i> implement any methods or
+define any instance variables.<p>
+
+A third subclass of Hello is to be named <b>HelloBR</b>.  It is to have just
+one constructor, a no-arg constructor which uses a BufferedReader to
+ask the user to enter his/her name.  The constructor is to initialize
+<i>msg</i> to the String, "Hello, xxx, my name is yyy." where xxx is to
+be replaced by the String returned by the BufferedReader's
+<i>readLine()</i> method, and yyy is to be your own name.  This class
+does <i>not</i> implement any methods or define any instance
+variables.<p>
+
+<h2>The Hello.<i>main()</i> Method</h2>
+
+The user will run the application using the command line,
+"java&nbsp;Hello&nbsp;xxx", which will cause the superclass to be loaded
+(but not instantiated) and it's <i>main()</i> method to run.  What this
+method does depends on what the user types in place of "xxx" on the
+command line:
+
+<ul>
+
+    <li>If xxx is nothing (args.length is 0), create an object of class HelloBR.
+
+    <li>If xxx is the single string "ask" (args.length is 1 and args[0]
+    equals "ask"), create an object of class HelloGUI.
+
+    <li>If xxx is anything else, use the args parameter to create an
+    object of class HelloCL.
+
+</ul>
+
+After creating the object, print it.  Note that the following two
+statements are equivalent; you may use either version in your program:
+
+<pre>
+    System.out.println( o );
+    System.out.println( o.toString() );
+</pre>
+
+<h2>Using BufferedReader</h2>
+
+We haven't covered class BufferedReader yet, but the slides for Lecture
+10 include sample code you can use to read a string from the user as the
+program runs.  The code looks a bit messy because the BufferedReader
+constructor takes an object of class Reader as it's argument, and
+System.in (the object reference used to read from the user) can't be
+used directly because it is of type InputStream.  The code in the slides
+is equivalent to the following:
+
+<pre>
+    try
+    {
+      InputStreamReader isr = new InputStreamReader( System.in );
+      BufferedReader    br  = new BufferedReader( isr );
+      msg = br.readLine();
+    }
+    catch ( IOException ioe )
+    {
+      System.err.println( ioe );
+      System.exit( 1 );
+    }
+</pre>
+
+The try/catch statements are needed to handle the possible exceptions
+that might be caused by the I/O operations.  We will cover those after
+the exam.<p>
+
+The InputStreamReader constructor receives the InputStream, System.in,
+and gives us an object that is a subclass of class Reader, so it can be
+used as the argument passed to the BufferedReader constructor.  The
+code in the slides eliminates the variable <i>isr</i> because it is
+never needed again in the program.  It's more compact and more efficient
+than the code above, but a bit more obscure.  You can use either type of
+code in your program.
+
+<h2>Developing and Testing Your Program</h2>
+
+Create four files for this assignment, Hello.java, HelloBR.java,
+HelloCL.java, and HelloGUI.java.<p>
+
+Start by coding Hello.java, but leave the main method empty.  Then
+create class HelloGUI, and add the code to Hello.<i>main()</i> that
+tests to see if a HelloGUI object is to be created, and do so if
+appropriate.  But if args[0] is not "ask", just exit the program
+without doing anything.  Test to be sure this version of the program
+"works" no matter what you type on the "java&nbsp;Hello" command
+line.<p>
+
+Now write HelloCL.java and add the code to Hello.<i>main()</i> to test
+if args.length is greater than zero <i>after</i> the test if args.length
+is 1 and args[0] is "ask."  If args.length is 0, just exit the program
+without doing anything. Test to be sure this version of the program
+"works" no matter what you type on the "java&nbsp;Hello" command
+line.<p>
+
+Finally, write HelloBR.java and add the code to Hello.<i>main()</i> to
+create a HelloBR object if args.length is zero. Test to be sure this
+version of the program "works" no matter what you type on the
+"java&nbsp;Hello" command line.<p>
+
+To simplify your code, remember that any object you create will be a
+subclass of your abstract superclass, Hello.  You don't need a different
+variable for each object reference.  For example, the following
+statement is perfectly legal:
+
+<pre>
+      Hello h = new HelloGUI();
+</pre>
+
+<h2>Submit The Assignment</h2>
+
+When you have the program properly coded and tested, put the four .java
+files in a jar file named Assignment_03.jar and send it to me as an
+email attachment.  Remember: your code must be properly formatted (no
+tabs, no lines longer than 72 characters), properly indented, and must
+have proper <i>javadoc</i> comments for all classes and methods,
+including proper @author, @param, and @return <i>javadoc</i> tags.<i>
+
+The assignment is due by <b>midnight, October 23.</b><p>
+
+See the policy on <a href="../administrivia.html#assignments"> Homework
+and Exams </a> in the Course Administration Page for this course for
+information about my cheating policy for homework assignments.<p>
+
+<hr></body></html>

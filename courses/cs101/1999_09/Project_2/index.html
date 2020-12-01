@@ -1,0 +1,144 @@
+<HTML><HEAD><TITLE>Music Library Project</TITLE>
+<LINK REL=stylesheet
+HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css" MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Music Library Project</H1>
+</center>
+
+<H2>Overview</H2>
+This project will be a library manager for a user's MP3 collection.  It
+is patterned on the Music Library feature of the Music Match Jukebox,
+but it is much more modest than that because the library is not
+integrated with any sort of MP3 player or recorder.  Rather, it will
+provide just a list of MP3 files along with information about the music
+in each file.  Information about an MP3 file will come from both the
+contents of the file and from information supplied by the user
+interactively.
+
+<H2>Objects Used in this Project</H2>
+The following list summarizes the major classes needed for this
+project.  S<p>
+<table align=center cellpadding=5 border=0 width=80%>
+
+  <TR>
+    <TH align=left valign=bottom>Class Name
+    <TH align=left valign=bottom>Number of Instances
+    <TH align=left valign=bottom>Description
+
+  <TR>
+    <TD valign=top>LibraryManager
+    <TD valign=top>One
+    <TD valign=top>The user interface for the application -- the class
+    you are to write for this project.
+
+  <TR>
+    <TD valign=top>MP3_Library
+    <TD valign=top>One
+    <TD valign=top>Container for information about all the MP3 files in
+    the user's library.  Used by class LibraryManager.
+
+  <TR>
+    <TD valign=top>MP3_File
+    <TD valign=top>One for each MP3 file in the library
+    <TD valign=top>Holds specific information about one MP3 file.  Used
+    by class MP3_Library.
+
+  <TR>
+    <TD valign=top>MP3_Header
+    <TD valign=top>One for each MP3File object.
+    <TD valign=top>Holds information extracted from the first audio
+    frame of an MP3 file.  None of this information can be changed by
+    the user.  Used by class MP3_File.
+
+  <TR>
+    <TD valign=top>ID3V1_Info
+    <TD valign=top>Zero or one for each MP3File object.
+    <TD valign=top>If present, holds ID3V1 tag information for a MP3 file.
+    Used by class MP3_File.
+
+  <TR>
+    <TD valign=top>ID3V2_Info
+    <TD valign=top>Zero or on for each MP3File object.
+    <TD valign=top>If present, holds ID3V2 tag information for a MP3 file.
+    Used by class MP3_File.
+
+</table>
+
+<H2>Project Structure</H2>
+
+The command line to start the program will be "<CODE>java LibraryManager
+<I>&lt;library&gt;</I></CODE>".  That is, the initial class to be loaded
+will be <CODE>LibraryManager</CODE>, and the user may optionally specify
+the name of a library file to start working with.<p>
+
+The user interface will implement the following algorithm:
+
+<PRE>
+      If a library file name was specified on the command line, create a
+      File object for the file.  Otherwise put up a JFileChooser dialog
+      so that the user can select a library file to work with.
+      
+      If the library file specified by the user does not exist yet,
+      create it and initialize it as a "Queens College MP3 Library"
+      file.  If the file already exists, verify that it is a valid
+      Queens College MP3 Library.
+
+      Create a MP3_Library object using the library file selected by
+      the user.
+      
+      Add all the files located in the same directory as the library
+      file as well as all files in directories below that to the
+      library.
+      
+      Write the library file to disk.
+
+</PRE>
+
+[&nbsp;<a HREF="../Lecture_18">Lecture 18</A>&nbsp;] covers the
+assignment in more detail<p>
+
+<H2>Classes Provided</H2>
+
+  I am providing you with all the classes you need to do the first part
+  of the project.  All you need to do is to use them, along with
+  JOptionPanel, to interact with the user to get a valid library file
+  created.  Right click [&nbsp;<a HREF="vickery.exe">this
+  link</A>&nbsp;] to download a self-extracting file with my classes in
+  it. (Left click on the link if you prefer to extract the files over
+  the web.)<p>
+
+  You can [&nbsp;<a HREF="DOCS">view the documentation for these
+  classes from the web</A>&nbsp;] (left-click).  Alternatively, you can
+  right-click [&nbsp;<a HREF="vickery_docs.exe">this link</A>&nbsp;] to
+  download a self-extracting file so you can view the documentation
+  from your computer. (Left click on the link if you prefer to extract
+  the files over the web.)<p>
+
+<H2>Sample MP3 Files</H2>
+
+  You can [&nbsp;<a HREF="../Project_1/Sample_MP3_Files">download
+  sample MP3 files</A>&nbsp;] to your computer for testing your
+  program.<p>
+
+<H2>Additional Work</H2>
+
+  Once you have the basic project working, I suggest you implement
+  class FileIterator.  As mentioned in Lecture 18, the "trick" is that
+  the constructor and method <I>next()</I> must "look ahead" to see
+  what file, if any, will be next.  Method <I>hasNext()</I> needs to
+  test the result of that lookahead operation.  The other issue is to
+  keep track of whether a particular filename returned by
+  File.<I>list()</I> is actually a file or a directory.  Note, by the
+  way, that there are some things in this list that are neither files
+  nor directories, so it's not always true, for example, that
+  <I>isDirectory()</I> will always return <I>true</I> for a file name
+  for which <I>isFile()</I> returns <I>false</I>, and
+  <I>vice-versa</I>.<p>
+  
+  In a similar vein, you should try writing a recursive method to
+  accomplish the same thing as class FileIterator.  It's easier to do,
+  so what advantage, if any, is there to writing FileIterator?<p>
+
+<HR></BODY></HTML>

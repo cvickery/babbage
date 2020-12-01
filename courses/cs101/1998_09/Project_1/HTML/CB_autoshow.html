@@ -1,0 +1,49 @@
+<HTML><HEAD><TITLE>CB_autoshow.java</TITLE></HEAD><BODY><PRE>
+//  CB_autoshow.java
+
+import java.util.StringTokenizer;
+
+//  Class CB_autoshow
+//  -------------------------------------------------------------------
+/**
+  *   Set, Reset, or Toggle the autoshow option.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class CB_autoshow extends CB_Processor {
+
+  //  Constructor
+  //  -----------
+  public CB_autoshow() { setName( "autoshow" ); }
+
+  //  process()
+  //  ---------
+  public void process ( StringTokenizer st, Checkerboard cb )
+    throws CBException {
+
+    if ( st.countTokens() == 0 ) {
+      Checkers_UI.setAutoshow( ! Checkers_UI.getAutoshow() );
+      return;
+      }
+
+    if ( st.countTokens() == 1 ) {
+      String option = st.nextToken();
+      if ( option.equalsIgnoreCase( "on" ) ) {
+        Checkers_UI.setAutoshow( true );
+        return;
+        }
+      if ( option.equalsIgnoreCase( "off" ) ) {
+        Checkers_UI.setAutoshow( false );
+        return;
+        }
+      }
+
+    //  Value is not on or off, or more than one value.
+    throw new CBException( "Usage: autoshow [on | off]");
+
+    }
+
+  }
+
+</PRE></HR></HTML>

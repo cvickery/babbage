@@ -1,0 +1,60 @@
+<HTML><HEAD><TITLE>Method doClose()</TITLE></HEAD><BODY>
+<CENTER><H1>Method <I>doClose()</I></H1></CENTER><HR><PRE>
+    //  Method doClose()
+    //  ------------------------------------------------------------
+    /**
+      *   Close this library, if there is one.  Prompt user to save
+      *   changes if needed.
+      */
+      void doClose()
+      {
+        //  If instance variable library is null, there is no
+        //  MP3_Library object to close.
+        if ( library == null )
+        {
+          return;
+        }
+
+        //  Prompt the user to approve saving changes, if
+        //  there are any.
+        if ( library.isChanged() )
+        {
+          int reply = JOptionPane.showConfirmDialog(
+            gui,
+            library.getFileName() + ": Save changes?",
+            "Confirm Changes", JOptionPane.YES_NO_OPTION );
+          if ( reply == JOptionPane.YES_OPTION )
+          {
+            try
+            {
+              library.write();
+            }
+            catch ( IOException ioe )
+            {
+              //  Better than just displaying an error
+              //  message would be to ask the user what to
+              //  do about the problem. (retry or cancel)
+              JOptionPane.showMessageDialog( gui,
+                "Error: " + ioe.getMessage(),
+                "Write Failed",
+                JOptionPane.ERROR_MESSAGE );
+            }
+          }
+          else
+          {
+            //  User elected to abandon changes.
+            JOptionPane.showMessageDialog(
+              gui,
+              "Not Saved",
+              "File Not Saved",
+              JOptionPane.INFORMATION_MESSAGE );
+          }
+        }
+        //  Clean up the user interface for this
+        //  LibraryManager.
+        library = null; //  Indicate there is no MP3_Library
+        gui.setTitle( "Library Manager" );
+        fileClose.setEnabled( false );
+        addFile.setEnabled( false );
+      }
+</PRE><HR></BODY></HTML>

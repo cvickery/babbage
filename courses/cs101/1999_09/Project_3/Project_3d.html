@@ -1,0 +1,196 @@
+<HTML><HEAD><TITLE>Project 3d</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 3d</H1>
+</center>
+<H2>Deliverables and Due Date</H2>
+
+Send me email with an attached jar or zip file containing LibraryManager.java
+by midnight, December 14.
+
+<H2>Working Code</H2>
+
+I am supplying working code for this project in two zip files:
+<ul>
+    <LI>[&nbsp;<a HREF="Project_3d.zip">Project_3d.zip</A>&nbsp;]
+    <BR>Right-click (or shift-click) on this link to download the file
+    into a directory where you can test it.
+    <LI>[&nbsp;<a HREF="LibraryManager_3d.zip">LibraryManager_3d.zip</A>&nbsp;]
+    <BR>Right-click (or shift-click) on this link to download the file
+    into the same directory you used for Project_3d.zip
+</ul>
+To run the program, first give this command at the DOS prompt:
+
+<pre>
+    set CLASSPATH=Project_3d.zip;LibraryManager_3d.zip
+</pre>
+
+Now, from the directory that has the downloaded zip files in it, give the
+command:
+
+<pre>
+    java LibraryManager
+</pre>
+
+Note that this will load LibraryManager.class from the zip file, but
+only if there is not a LibraryManager.class file in the current
+directory, so it's a good idea to download the .zip file into an empty
+directory.<p>
+
+This version of the program should do everything except
+display the list of MP3 files in the center of the Library
+Manager window.  (Let me know if you have any trouble
+running it.)<P>
+
+You can view the current documentation for all my code either [&nbsp;<a
+HREF="Docs_3d">online</A>&nbsp;] or by downloading [&nbsp;<a
+HREF="Docs_3d.zip">Docs_3d.zip</A>&nbsp;].  If you download the zip
+file, you should use Winzip (or the command, <CODE>jar xvf
+Docs_3d.zip</CODE>) to unzip the files into their own directory, and
+then use your web browser to look at the file <CODE>index.html</CODE> in
+that directory.
+
+<H2>Project Description</H2>
+
+This project adds event handlers for all remaining user
+interface components, handles multiple LibraryManager
+instances correctly, includes an "Exit All" File menu item,
+and adds tool tips to all menu items and the "Add File"
+button.<P>
+
+Be sure you have Project 3c working before you work on this
+one.  You can look at my [&nbsp;<a
+href="LibraryManager_3c.html">LibraryManager.java for
+Project 3c</a>&nbsp;] if you want help catching up.<P>
+
+This is a "clean things up" step in prepation for the last step of the
+project we will get to this semester, [&nbsp;<a
+HREF="Project_3e.html">Project 3e</A>&nbsp;].  The idea is now to
+implement the things that were optional in previous steps.  Opening a
+library should enable the "Add File" button and "Close" menu item;
+closing a library should disable them.  In my code I took advantage of
+this step to make the labels on the menu items shorter.  This is
+justified by adding tool tip text to each one that gives a fuller
+explanation of what each one does.<p>
+
+Handling multiple instances of the LibraryManager requires some work to
+coordinate the multiple instances.  A LibraryManager shouldn't be able
+to open a library file that is already open by another LibraryManager. 
+Also, the "Exit All" menu item needs to make sure all currently open
+LibraryManagers give the user the opportunity to save changes to their
+libraries before exiting.<p>
+
+You can handle multiple instances as follows:
+
+<OL>
+
+  <LI>Create a static Vector to hold references to all LibraryManager
+      instance.  If you called this Vector "instances" you could add
+      this line to LibraryManager's constructor or <I>init()</I> 
+      method: <pre>instances.add( this );</pre>
+      
+  <LI>Whenever the user closes a window or selects File->Exit, execute
+  this line of code before calling <I>dispose()</I>:
+  <pre>instances.remove( this );</pre>
+  
+  <LI>Whenever the user selects File->Close All, iterate over
+  <I>instances</I>, and call each instance's <I>doClose()</I> method. 
+  That method should check if the MP3_Library has changed and if so, it
+  should ask the user whether to save the changes or not, and call
+  library.write() if the user says yes.  (See [&nbsp;<a
+  HREF="../Lecture_26">Lecture 26</A>&nbsp;] for a fuller description
+  of <I>doClose()</I>.)
+  
+  <LI>Whenever the user selects File->Open, iterate over
+  <I>instances</I>, and see if any library manager is working with the
+  same file as the user has selected.  For example, here is some code
+  from my <I>doOpen()</I> method (the one that is called from the
+  File->Open event handler):
+
+<pre>
+          file = jfc.getSelectedFile();
+          try
+          {
+            file = new File ( file.getCanonicalPath() );
+            if ( ! MP3_Library.isLibraryFile( file ) )
+            {
+              throw new Exception( "Invalid Library File" );
+            }
+            if ( isOpen( file ) ) // <B>See Below</B>
+            {
+              throw new Exception( "Already open." );
+            }
+            lib = new MP3_Library( file );
+            doClose();
+            library = lib;
+            gui.setTitle( "Library Manager: " + library.getFileName() );
+            fileClose.setEnabled( true );
+            addFile.setEnabled( true );
+          }
+          catch ( Exception e )
+          {
+            JOptionPane.showMessageDialog(
+              gui,
+              "Error: " + e.getMessage(),
+              "Unable to Open Library",
+              JOptionPane.ERROR_MESSAGE );
+          }
+
+</pre>
+
+  And here is the method <I>isOpen()</I> that does the work we are
+  talking about:
+
+<PRE>
+    //  Static Method isOpen()
+    //  --------------------------------------------------------------
+    /**
+      *   Tells whether a File is currently open by any LibraryManager
+      *   instance.
+      *
+      *     @param  file The File object to be checked.
+      *     @return true if a LibraryManager instance has the file
+      *             open.
+      */
+      public static boolean isOpen( File file )
+      {
+        Iterator iter = instances.iterator();
+        while ( iter.hasNext() )
+        {
+          LibraryManager lm = (LibraryManager) iter.next();
+          if ( lm.library != null )
+          {
+            File f = lm.library.getFile();
+            if ( f.equals( file ) )
+            {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+</PRE>
+
+  In my code, <I>library</I> is a reference to the MP3_Library
+  currently open by the LibraryManager.  Because <I>doOpen()</I> is a
+  static method in the LibraryManager class, it has direct access to
+  this field, given a reference to an instance of the class.  To make
+  this code work, I had to add method <I>getFile()</I> to class
+  MP3_Library.  When you downloaded Project_3d.zip you got the updated
+  version of MP3_Library.class that contains this new method.
+
+</OL>
+
+Once you get this step working, move on to [&nbsp;<a
+HREF="Project_3e.html">Project 3e</A>&nbsp;]!
+
+<HR>
+Remember to document your code using proper javadoc comments and tags.
+Also, be sure no lines are longer than 72 characters, and be sure there
+are no tab characters in your code.  (Set your editor to expand tabs to
+spaces.)<p>
+
+<HR></BODY></HTML>

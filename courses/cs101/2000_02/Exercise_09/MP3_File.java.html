@@ -1,0 +1,123 @@
+<HTML><HEAD><TITLE>MP3_File.java</TITLE></HEAD><BODY>
+<CENTER><H1>MP3_File.java</H1></CENTER><HR><PRE>
+//  MP3_File.java
+
+import java.io.*;
+import javax.swing.*;
+
+//  Class MP3_File
+//  ------------------------------------------------------------------
+/**
+  *   Extends class File to provide support for MP3 audio files.
+  *   MP3 files contain optional ID3V1 and/or ID3V2 tag information,
+  *   as encoded audio data.  This class acts as a holder for those
+  *   three parts of an MP3 file, along with a write() method, which
+  *   will write a new file that has both tags present. (Maybe we'll
+  *   get rid of the ID3v1 tags when ID3V2_Tag is working.)
+  *
+  *     @author   C. Vickery
+  *     @version  2.0 - Spring, 2000
+  */
+  public class MP3_File extends File
+  {
+    public  ID3V1_Tag id3v1 = null;
+    private MP3_Audio audio = null;
+    public  ID3V2_Tag id3v2 = null;
+
+    //  Constructor
+    //  --------------------------------------------------------------
+    /**
+      *   Initializes the object with the tag and audio data from the
+      *   file.  If the file is not a valid MP3 audio file, the object
+      *   will be initialized with default values for the tags and an
+      *   empty audio section.
+      */
+      public MP3_File( String fileName )            throws IOException
+      {
+        super( fileName );
+
+        id3v1 = new ID3V1_Tag( this );
+        try
+        {
+          audio = new MP3_Audio( this, !id3v1.isModified() );
+        }
+        catch ( Invalid_MPEG_FileException ie )
+        {
+          JOptionPane.showMessageDialog(  null,
+                                   getName() + ": " + ie.getMessage(),
+                                   "Invalid MP3 File",
+                                   JOptionPane.INFORMATION_MESSAGE );
+        }
+        id3v2 = new ID3V2_Tag( this );
+
+      }
+
+    //  Method isModified()
+    //  --------------------------------------------------------------
+    /**
+      *   Returns true if either tag has been modified.
+      *   Future Version: Test if audio section is modified too.
+      *
+      *     @return True if either tag has been modified; false
+      *             otherwise.
+      */
+      public boolean isModified()
+      {
+        return id3v1.isModified() || id3v2.isModified();
+      }
+
+    //  Method setModified()
+    //  --------------------------------------------------------------
+    /**
+      *   Sets the modification state of both tags.
+      *   Future Version: Likewise for the audio section, too.
+      *
+      *     @param  state State to be applied to the the tags.
+      *
+      */
+      public void setModified( boolean state )
+      {
+        id3v1.setModified( state );
+        id3v2.setModified( state );
+      }
+
+    //  Method write()
+    //  --------------------------------------------------------------
+    /**
+      *   Writes the two tags and the audio information to the disk.
+      *   The new information is written to a temporary file so the
+      *   old information can be written from the original file if
+      *   necessary.  The original file is then renamed with a .bak
+      *   extension if doBackup is true, and the temporary file is
+      *   then renamed over the original.
+      *
+      */
+      public void write( boolean doBackup )         throws IOException
+      {
+        File  temp = File.createTempFile( "qqq", null );
+        FileOutputStream fos = new FileOutputStream( temp );
+
+        //  Write the temporary file
+        id3v2.write( fos );
+        if ( audio != null )
+        {
+          audio.write( fos );
+        }
+        id3v1.write( fos );
+        fos.close();
+
+        //  Create backup if required.
+        if ( doBackup )
+        {
+          File back = new File( getAbsolutePath() + ".bak" );
+          back.delete();  // Delete previous backup, if present.
+          renameTo( back );
+        }
+
+        //  Rename new over original.
+        delete();
+        temp.renameTo( this );
+      }
+  }
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,95 @@
+<HTML><HEAD><TITLE>OhOh.java</TITLE></HEAD><BODY>
+<CENTER><H1>OhOh.java</H1></CENTER><HR><PRE>
+//  OhOh.java
+
+//  Class Ohoh
+//  ------------------------------------------------------------------
+/**
+  *   This is class OhOh from Lecture 8 with additional code to
+  *   illustrate multiple instantiations of a class and using
+  *   references to different instances' methods and fields.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0
+  */
+  public class OhOh
+  {
+    //  Instance variables
+    int     i;
+    double  d;
+    boolean b;
+
+    //  Class variables
+    static int      si;
+    static double   sd;
+    static boolean  sb;
+
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Create instantiate class OhOh three times, and manipulate
+      *   static and instance fields.
+      */
+      public static void main( String[] argv )
+      {
+      //  Instantiate the class and modify both instance and class
+      //  variables.
+      OhOh ohoh_1 = new OhOh();
+
+        ohoh_1.aMethod( " Using ohoh_1 before assigning values" );
+        ohoh_1.b  = true;
+        ohoh_1.i  = 3;
+        OhOh.sb   = true;
+        OhOh.si   = 4;
+        ohoh_1.aMethod( " Using ohoh_1 after assigning values" );
+
+      //  Declare additional reference variables.
+      OhOh ohoh_2, ohoh_3, ohoh_4;
+
+        //  Instantiate, and modify both instance and class variables.
+        ohoh_2 = new OhOh();
+        ohoh_3 = ohoh_2;
+        ohoh_4 = new OhOh();
+
+        ohoh_2.i  = 5;
+        ohoh_3.i  = 6;
+        ohoh_4.i  =7;
+        ohoh_1.aMethod( " Using ohoh_1" );
+        ohoh_2.aMethod( " Using ohoh_2" );
+        ohoh_3.aMethod( " Using ohoh_3" );
+        ohoh_4.aMethod( " Using ohoh_4" );
+
+        //  Not recommended, but you can use an instance reference to
+        //  access static fields.
+        ohoh_4.sd = 3.14;
+        System.out.println(
+          "Using an instance reference to access a class variable: " +
+                                                          ohoh_1.sd );
+      }
+
+      //  Method aMethod()
+      //  ------------------------------------------------------------
+      /**
+        *   Prints the values of all instance and static variables.
+        */
+        void aMethod( String msg )
+        {
+          System.out.println( "aMethod (" + this + ") " + msg +":\n" +
+                              "\ti\td\tb\tsi\tsd\tsb\n" +
+                              "\t" + i + "\t" + d + "\t" + b +
+                              "\t" + si + "\t" + sd + "\t" + sb );
+        }
+
+    //  Constructor
+    //  --------------------------------------------------------------
+    /**
+      *   Prints the value of "this" each time the class is
+      *   instantiated.
+      */
+      public OhOh()
+      {
+        System.out.println( "Constructor: " + this );
+      }
+
+  }
+</PRE><HR></BODY></HTML>

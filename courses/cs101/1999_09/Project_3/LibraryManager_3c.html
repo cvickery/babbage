@@ -1,0 +1,319 @@
+<HTML><HEAD><TITLE>LibraryManager.java</TITLE></HEAD><BODY>
+<CENTER><H1>LibraryManager.java</H1></CENTER><HR><PRE>
+// LibraryManager.java
+
+//  This is Project 3c -- Standard Menus
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+
+//  Class LibraryManager
+//  ------------------------------------------------------------------
+/**
+  *   Provides a Graphical User Interface for managing MP3 library
+  *   files.
+  *
+  *   @author   C. Vickery
+  *   @version  Version 3c - November, 1999
+  */
+  public class LibraryManager
+  {
+    static final String[] aboutMsg = {
+      "MP3 Library Manager",
+      "Version 3c",
+      " ",
+      "C. Vickery"
+    };
+
+    /** Counter for number of LibraryManager instances.             */
+    static int    instanceCount = 0;
+    /** Container for references to all instances,
+      * Used for Close All menu item.                               */
+    static Vector instances     = new Vector();
+
+    JFrame      gui = new JFrame( "MP3 Library Manager" );
+    JMenuBar    mb          = new JMenuBar();
+    JMenu       fileMenu    = new JMenu( "File" );
+    JMenu       helpMenu    = new JMenu( "Help" );
+    JMenu       fileNew     = new JMenu( "New" );
+    JMenuItem   fNewLib     = new JMenuItem( "Library File" );
+    JMenuItem   fNewMgr     = new JMenuItem( "Library Manager" );
+    JMenuItem   fileOpen    = new JMenuItem( "Open Library" );
+    JMenuItem   fileExit    = new JMenuItem( "Exit" );
+    JMenuItem   fileExitAll = new JMenuItem( "Exit All" );
+    JMenuItem   helpAbout   = new JMenuItem( "About" );
+
+    //  Save instance number for determining initial screen position.
+    int         myInstance  = instanceCount;
+
+    /** Button for adding one MP3 file to the library               */
+    JButton     addFile     = new JButton( "Add MP3" );
+    String      startDir    = ".";  //  For selecting library file  */
+    /** Each LibraryManager manages just one library file at a time;
+      * this is it.  A value of null means there is none yet.       */
+    MP3_Library library     = null;
+
+
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Displays a frame with a standard menu bar.
+      *
+      *   @param  argv Not used
+      */
+      public static void main( String argv[] )
+      {
+        new LibraryManager().init();
+      }
+
+    //  Constructor
+    //  --------------------------------------------------------------
+    /**
+      *   Counts number of instances, and adds this one to the
+      *   instances container.
+      */
+      public LibraryManager() {
+        instanceCount++;
+        instances.add( this );
+      }
+
+    //  Method init()
+    //  --------------------------------------------------------------
+    /**
+      *   Initializes the user interface.  This method's signature was
+      *   chosen so it could be part of an applet should the interest
+      *   in doing that occur.
+      */
+      public void init()
+      {
+        //  Add menu items to menus
+        gui.setJMenuBar( mb );
+
+        fileNew.add(  fNewLib     );
+        fileNew.add(  fNewMgr     );
+        fileMenu.add( fileNew     );
+        fileMenu.add( fileOpen    );
+        fileMenu.add( fileExitAll );
+        fileMenu.add( fileExit    );
+        fileMenu.insertSeparator( 2 );
+        mb.add( fileMenu );
+
+        helpMenu.add( helpAbout );
+        mb.add( helpMenu );
+
+
+        //  Display the application.
+        addFile.setEnabled( false );
+        gui.getContentPane().add( addFile );
+        gui.pack();
+        Dimension win = gui.getSize();
+        Dimension scr = Toolkit.getDefaultToolkit().getScreenSize();
+        gui.setLocation(
+          (scr.width  / 2 - win.width  / 2 + myInstance * 15)
+            % scr.width,
+          (scr.height / 2 - win.height / 2 + myInstance * 15)
+            % scr.height );
+        gui.setVisible( true );
+
+        //  Event handler: Window Closing.
+        gui.addWindowListener( new WindowAdapter() {
+          public void windowClosing( WindowEvent we ) {
+            if ( --instanceCount == 0 )
+            {
+              close();
+              System.exit( 0 );
+            }
+            else
+            {
+              close();
+              gui.dispose();
+            }
+          } } );
+
+        //  Event handler: File->Exit menu item.
+        fileExit.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            if ( --instanceCount == 0 )
+            {
+              close();
+              System.exit( 0 );
+            }
+            else
+            {
+              close();
+              gui.dispose();
+            }
+          } } );
+
+        //  Event handler: Help->About menu item.
+        helpAbout.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            JOptionPane.showMessageDialog(
+              gui, aboutMsg,
+              "About MP3 Library Manager",
+              JOptionPane.PLAIN_MESSAGE );
+          } } );
+
+        //  Event handler: File->New->Library Manager menu item.
+        fNewMgr.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            new LibraryManager().init();
+          } } );
+
+        //  Event handler: File->New->Library menu item.
+        fNewLib.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            newLib();
+          } } );
+
+        //  Event handler: File->Open menu item.
+        /*** NOT IMPLEMENTED YET ***/
+        fileOpen.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae) {
+            fileOpen();
+          } } );
+
+
+        //  Event handler: File->Close All menu item.
+        /***  NOT IMPLEMENTED YET ***/
+
+
+        //  Event handler: Add File button.  Adds an MP3 file
+        //  to the library.
+        addFile.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            JFileChooser  jfc   = new JFileChooser( startDir );
+            int           reply = jfc.showOpenDialog( gui );
+            if ( reply == JFileChooser.APPROVE_OPTION )
+            {
+              File f = jfc.getSelectedFile();
+              try
+              {
+                if ( library.add( f ) )
+                {
+                  JOptionPane.showMessageDialog( gui,
+                    "Added " + f.getName() +
+                    " to " + library.getFileName() );
+                }
+                else
+                {
+                  JOptionPane.showMessageDialog( gui,
+                    "Not Added: Duplicate file." );
+                }
+              }
+              catch ( Invalid_MPEG_FileException imfe )
+              {
+                JOptionPane.showMessageDialog( gui,
+                  "Not Added: " + imfe.getMessage() );
+              }
+            }
+          } } );
+
+      }
+
+    //  Method newLib()
+    //  ------------------------------------------------------------
+    /**
+      *   Interacts with the user to create a new MP3 Library file
+      *   and open it as the current file.
+      */
+      public void newLib()
+      {
+        File          file  = null;
+        JFileChooser  jfc   = new JFileChooser( startDir );
+        MP3_Library   lib   = null;
+
+        if ( jfc.showOpenDialog( gui ) ==
+            JFileChooser.APPROVE_OPTION )
+        {
+          file = jfc.getSelectedFile();
+          try
+          {
+            if ( file.exists() )
+            {
+              throw new Exception( "File Exists" );
+            }
+            file = new File ( file.getCanonicalPath() );
+            MP3_Library.initializeLibraryFile( file );
+            lib = new MP3_Library( file );
+            close();
+            library = lib;
+            startDir = file.getParent();
+            addFile.setEnabled( true );
+            gui.pack();
+          }
+          catch ( Exception e )
+          {
+            JOptionPane.showMessageDialog(
+              gui,
+              "Error: " + e.getMessage(),
+              "Unable to Create Library",
+              JOptionPane.ERROR_MESSAGE );
+          }
+        }
+      }
+
+
+    //  Method close()
+    //  ------------------------------------------------------------
+    /**
+      *   Close this library, if there is one.  Prompt user to save
+      *   changes if needed.
+      */
+      void close()
+      {
+        if ( library == null )
+        {
+          return;
+        }
+
+        instances.remove( library );
+        if ( library.isChanged() )
+        {
+          int reply = JOptionPane.showConfirmDialog(
+            gui,
+            library.getFileName() + ": Save changes?",
+            "Confirm Changes", JOptionPane.YES_NO_OPTION );
+          if ( reply == JOptionPane.YES_OPTION )
+          {
+            try
+            {
+              library.write();
+            }
+            catch ( IOException ioe )
+            {
+              JOptionPane.showMessageDialog( gui,
+                "Error: " + ioe.getMessage(),
+                "Write Failed",
+                JOptionPane.ERROR_MESSAGE );
+            }
+          }
+          else
+          {
+            JOptionPane.showMessageDialog(
+              gui,
+              "Not Saved",
+              "File Not Saved",
+              JOptionPane.INFORMATION_MESSAGE );
+          }
+        }
+      }
+
+
+    //  Method fileOpen()
+    //  ------------------------------------------------------------
+    /**
+      *   Interacts with the user to open an existing MP3 Library.
+      */
+      public void fileOpen()
+      {
+        JOptionPane.showMessageDialog( gui, "Not Implemented Yet" );
+      }
+  }
+
+
+    
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,202 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 9</title>
+<meta name=Description content="11-Oct-01: Abstract Classes and Interfaces">
+<link rel=next href=slide0004.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0002.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_09.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=38 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=399 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=31 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=38 height=33></td>
+  <td width=401 height=33 colspan=2>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=401 height=33 align=center><font face="Times New Roman" size=5>Abstract
+    Classes and Interfaces</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=36 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=21 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=224 colspan=2></td>
+  <td width=411 height=224 colspan=2>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=47 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=37 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=138 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=17 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=60 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=10 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=16 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=261 height=18 colspan=8><font face="Times New Roman" size=2>Abstract
+    classes cannot be instantiated.</font><br>
+    </td>
+    <td width=132 height=18 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=411 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=372 height=16 colspan=14><font face="Times New Roman" size=1>They
+    provide some, but not all, method definitions needed to make</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=39 height=15 colspan=4></td>
+    <td width=85 height=15 colspan=3><font face="Times New Roman" size=1>a
+    useful object.</font><br>
+    </td>
+    <td width=287 height=15 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=411 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=321 height=18 colspan=9><font face="Times New Roman" size=2>Interfaces
+    declare method signatures that a class</font><br>
+    </td>
+    <td width=72 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=18 height=17></td>
+    <td width=331 height=17 colspan=10><font face="Times New Roman" size=2>implementing
+    the interface must define or inherit.</font><br>
+    </td>
+    <td width=62 height=17 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=411 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=364 height=16 colspan=13><font face="Times New Roman" size=1>Provides
+    a “contract” – If a class implements an interface, objects</font><br>
+    </td>
+    <td width=8 height=16></td>
+   </tr>
+   <tr>
+    <td width=39 height=14 colspan=4></td>
+    <td width=334 height=14 colspan=10><font face="Times New Roman" size=1>of
+    that class can be used to call the methods of the interface.</font><br>
+    </td>
+    <td width=38 height=14 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=411 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=349 height=18 colspan=12><font face="Times New Roman" size=2>A
+    class can <i>extend</i> exactly one other class, but it can</font><br>
+    </td>
+    <td width=44 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=18 height=17></td>
+    <td width=244 height=17 colspan=7><font face="Times New Roman" size=2><i>implement</i>
+    any number of interfaces.</font><br>
+    </td>
+    <td width=149 height=17 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=411 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=347 height=16 colspan=11><font face="Times New Roman" size=1>Interfaces
+    solve the ambiguity problem of multiple inheritance</font><br>
+    </td>
+    <td width=25 height=16 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=39 height=15 colspan=4></td>
+    <td width=322 height=15 colspan=8><font face="Times New Roman" size=1>(which
+    of two methods with identical signatures would be</font><br>
+    </td>
+    <td width=50 height=15 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=39 height=14 colspan=4></td>
+    <td width=348 height=14 colspan=12><font face="Times New Roman" size=1>inherited?)
+    by implementing interface methods in the subclass.</font><br>
+    </td>
+    <td width=24 height=14 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=411 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=69 height=18 colspan=5><a
+    href="http://babbage.cs.qc.edu/courses/cs101/Classes_AbstractClasses_Interfaces.html"
+    target="_parent"><font face="Times New Roman" size=2>Web Page</font></a><br>
+    </td>
+    <td width=324 height=18 colspan=12></td>
+   </tr>
+  </table>
+  </td>
+  <td width=24 height=224></td>
+ </tr>
+ <tr>
+  <td width=475 height=47 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

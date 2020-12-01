@@ -1,0 +1,170 @@
+<HTML><HEAD><TITLE>Quiz 2 Answer</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Quiz 2 Answer</H1>
+</center>
+<H2>Question</H2>
+Write a method named <I>howTrue</I> that computes the percentage of
+elements in a two-dimensional array of <I>boolean</I>.  The percentage is
+returned as a <I>float</I>.  See <A
+href="Lecture_Notes_5/sld016.htm">[the lecture notes]</a> for details.
+
+<H2>Solution</H2>
+
+<pre>
+
+//  Quiz2.java
+//
+//    Quiz 2 Solution
+//    Spring 1998
+//
+//    @author   C. Vickery
+//
+
+//  class run
+//  -------------------------------------------------------------------
+/**
+  *     This class is never instantiated.  It is loaded into the JVM
+  *     to provide access to static methods main() and howTrue()
+  */
+class run {
+
+  //  main()
+  //  -----------------------------------------------------------------
+  /**
+    *   This method was not part of the quiz.  It is included here to
+    *   demonstrate how method howTrue() could be called.
+    */
+  public static void main( String[] argv ) {
+
+  //  An array to be tested for truthfulness
+  boolean[][]   b = { { false, false, true },
+                      { true, true, false, false },
+                      { false, true, true, true },
+                      };
+
+    //  Determine how true b is, print the result, and exit.
+    System.out.println( "b is " + howTrue( b ) + "% true." );
+    System.exit( 0 );
+
+    }
+
+  //  howTrue()
+  //  -----------------------------------------------------------------
+  /**
+    *   This is the answer to the quiz
+    */
+  static float howTrue( boolean[][] x ) {
+
+  int   numTrue = 0;
+  int   numElements = 0;
+
+    // Count the total number of elements and how many are true
+    for ( int row = 0; row < x.length; row++ ) {
+
+      numElements += x[ row ].length;
+
+      for ( int col = 0; col < x[ row ].length; col++ ) {
+
+        if ( x[row][col] ) {
+
+          numTrue++;
+
+          }
+
+        }
+
+      }
+
+    //  Return the percentage of the elements that are true.
+
+    if ( numElements > 0 ) {
+
+      return (float) 100 * numTrue / numElements;
+      
+      }
+
+    else {
+
+      return 0;
+
+      }
+
+    }
+
+  }
+
+</pre>
+
+<H2>Comments</H2>
+
+All that was required was the method definition.  What you see above is
+a complete .java file that illustrates how the method could be
+called.<p>
+
+For this illustration, the method has been declared <I>static</I>, but
+that was not required for the Quiz.<p>
+
+Note that the name of the file is <CODE>Quiz2.java</CODE>, but the name
+of the class is <CODE>run</CODE>.  Why is that all right?  What is the
+name of the .class file, and how do you run this application?<p>
+
+<h2>More than you wanted to know about the <I>return</I> statement</H2>
+
+The <I>return</I> statement is tricky.  You can't do integer arithmetic
+because the fraction gets lost:
+
+<pre>
+          return 100 * numTrue / numElements; // returns no fraction
+          return numTrue / numElements * 100; // returns zero
+</pre>
+
+You can use a cast to fix things up, but you have to be careful:
+
+<pre>
+          return (float) 100 * numTrue / numElements;   // ok
+</pre>
+
+This works, but perhaps not for the reason you think.  It forces "100"
+to be a float.  Then since the expression involves a float, the two
+integer variables are promoted to floats for doing the computation. 
+Contrast that with this:
+
+<pre>
+          return (float) ( 100 * numTrue / numElements ); // no fraction
+</pre>
+
+That does the calculation using all integers, and then converts the
+result to float.  Since the method has to return a float anyway, the
+cast is redundant and doesn't solve the problem either.<p>
+
+I mentioned to some people after class that the problem could be fixed
+by changing the constant "100" to "100.".  The difference is that the
+former is an integer, and the latter is a real.  But doing that
+generated a syntax error!  The reason is that 100. is of type double,
+not float.  So this doesn't work:
+
+<pre>
+          return 100. * numTrue / numElements;          // Syntax Error!
+</pre>
+
+Why?  Because the two integers are promoted to doubles to match the
+100., and you can't implicitly "downcast" that result to a float for the
+return value.  So, this works:
+
+<pre>
+          return (float) 100. * numTrue / numElements;  // ok
+</pre>
+
+The constant 100 is made into a float, then the integers are promoted to
+floats, and the result is a float.  But this doesn't work:
+
+<pre>
+          return (float) numTrue / numElements * 100.;  // Syntax Error!
+</pre>
+
+Here, <CODE>numTrue</CODE> is promoted to a float, but 100. is still a
+double, so numTrue is promoted again to a double (as well as
+numElements), and the result of the expression is a double.<p>
+
+<HR></BODY></HTML>

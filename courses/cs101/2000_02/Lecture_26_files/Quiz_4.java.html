@@ -1,0 +1,47 @@
+<HTML><HEAD><TITLE>Quiz_4.java</TITLE></HEAD><BODY>
+<CENTER><H1>Quiz_4.java</H1></CENTER><HR><PRE>
+//  Quiz_4.java
+/*
+    The program for this quiz was required only to respond
+    to button presses by appending "Hello" to the text area.
+    It was not required to respond to window closing events,
+    and the application has no menu bar or menus.
+
+    The only "trick" is that the JTextArea has to be static
+    in order for the anonymous inner class' actionPerformed
+    method to be able to access it.  The other objects in
+    the user interface could be static too, but it seemed
+    easier to do it using local variables for them.
+*/
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class Quiz_4
+{
+  static JTextArea jt = new JTextArea();
+  public static void main(String[] argv)
+  {
+    JFrame jf = new JFrame( "Quiz 4" );
+    Container cp = jf.getContentPane();
+    cp.add(jt, BorderLayout.CENTER);
+    cp.add(new JLabel("North"), BorderLayout.NORTH);
+    cp.add(new JLabel("West"), BorderLayout.WEST);
+    cp.add(new JLabel("East"), BorderLayout.EAST);
+    JButton jb = new JButton("Hello");
+    cp.add(jb, BorderLayout.SOUTH);
+    jf.pack();
+    jf.show();
+    jb.addActionListener( new ActionListener()
+    {
+      public void actionPerformed( ActionEvent ae )
+      {
+        jt.append(" Hello " );
+      }
+    }
+    );
+  }
+}
+
+</PRE><HR></BODY></HTML>

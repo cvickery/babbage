@@ -1,0 +1,43 @@
+//  Lecture_10.java
+
+/**  Illustrates polymorphism.
+ *
+ *    @author C. Vickery
+ */
+  public class Lecture_10
+  {
+    public static void main( String[] args )
+    {
+      ClassX x = new ClassX();
+      ClassY y = new ClassY();
+      x.methodA();
+      x = y;
+      x.methodA();
+    }
+  }
+
+/** Superclass that provides a methodA() method.
+ * 
+ *    @author C. Vickery
+ */
+  class ClassX
+  {
+    public void methodA()
+    {
+      System.out.println( "ClassX: methodA()" );
+    }
+  }
+
+/** Subclass that overrides the superclass' methodA() method.
+ *
+ *    @author C. Vickery
+ */
+  class ClassY extends ClassX
+  {
+    public void methodA()
+    {
+      System.out.println( "ClassY: methodA()" );
+    }
+  }
+
+

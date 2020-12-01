@@ -1,0 +1,181 @@
+<HTML><HEAD><TITLE>Lecture Notes 2</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Notes for CS-101 Week 2</H1>
+</center>
+<H2>Note</H2>
+
+Because Tuesday is a virtual Thursday this week at the college, the
+class meets as recitations.
+
+<H2>Code Documentation (Comments)</H2>
+
+The purpose of the comments is to help the next programmer to find
+his or her way around in the code easily.  Remember, users never see
+the comments, so information for users doesn't go here.<p>
+
+Each <CODE>.java</CODE> file starts with a <I>File Header</I>, which
+is a set of <CODE>//</CODE> comment lines that include:
+
+<UL>
+    <LI>Name of the file
+    <LI>Contents of file.   (What classes, etc.)
+    <LI>@author
+</UL>
+
+Each class and method definition gets its own heading, which looks like
+this:
+<pre>
+    //  <I>&lt;class or method name&gt;</I>
+    //  -----------------------------
+    /**
+     *  <I>&lt;Description of the class or method&gt;</I>
+     */
+</pre>
+
+<UL>
+  <LI><B>Indentation</B> - Use 2 or three spaces per indentation level.
+  Don't use tab characters (most editors can be set to expand tabs to
+  spaces automatically).
+  <LI><B>Line Width</B> - All lines less than 72 columns wide.
+  <LI><B>Spacing</B> - Follow textbook guidelines.  (One space on each
+  side of operators, blank line before and after <B>if</B>,
+  <B>while</B>, etc.)
+</ul>
+  
+<H2>Submitting Programs</H2>
+
+Attach all source files (Java and HTML), not class files.  Be sure file
+names are preserved.  It's all right to send a single zip file
+containing all the source files; this avoids the problems of mail
+systems that change file names or don't allow multiple attachments to
+email.  Get WinZip from <a
+href="http://www.winzip.com">www.winzip.com</a> for free if you don't
+already have it.
+
+<H2>Recursion</H2>
+A recursive method calls itself either directly or indirectly.  Many
+problems can be solved efficiently and elegantly using recursion, but
+the Fibonacci program on page 197 is not one of them!
+<center><table border=1 cellpadding=5>
+  <TR>
+    <TH align=center>Fibonacci number
+    <TH align=center>Number of Calls
+    <TH align=center>Ratio
+  <TR>
+    <TD align=center>0
+    <TD align=center>1
+    <TD align=center>&nbsp;
+  <TR>
+    <TD align=center>1
+    <TD align=center>1
+    <TD align=center>1.0
+  <TR>
+    <TD align=center>2
+    <TD align=center>3
+    <TD align=center>3.0
+  <TR>
+    <TD align=center>3
+    <TD align=center>5
+    <TD align=center>1.667
+  <TR>
+    <TD align=center>4
+    <TD align=center>9
+    <TD align=center>1.8
+  <TR>
+    <TD align=center>5
+    <TD align=center>15
+    <TD align=center>1.667
+  <TR>
+    <TD align=center>6
+    <TD align=center>25
+    <TD align=center>1.667
+  <TR>
+    <TD align=center>7
+    <TD align=center>41
+    <TD align=center>1.640
+  <TR>
+    <TD align=center>8
+    <TD align=center>67
+    <TD align=center>1.634
+  <TR>
+    <TD align=center>9
+    <TD align=center>109
+    <TD align=center>1.626
+  <TR>
+    <TD align=center colspan=3> &#133;
+  <TR>
+    <TD align=center>31
+    <TD align=center>4,356,617
+    <TD align=center>1.618
+  <TR>
+    <TD align=center>32
+    <TD align=center>7,049,155
+    <TD align=center>1.618
+  <TR>
+    <TD align=center colspan=3> &#133;
+</table></center>    
+
+We say that the <I>complexity</I> of the computation grows
+exponentially. The number of calls is approximately proportional to
+1.618 raised to the Fibonacci number being computed.
+"Big O" notation is used to represent the "order of magnitude" of the
+size of a computation.  It's <I><B>O</B></I>(1.618<sup>n</sup>) for
+recursive computation of Fibonacci numbers.<p>
+
+<H2>Iterative Fibonacci</H2>
+
+Here's pseudocode for a method that computes a Fibonacci number
+iteratively:
+
+<pre>
+  long Fibonacci( int n ) {
+    if ( n < 0 ) return -1   // error condition
+    if ( n < 2 ) return  n   // base conditions
+    fBack2 = 0; fBack1 = 1
+    for (int i = 0; i < n; i++) {
+      f = fBack1 + fBack2
+      fBack2 = fBack1
+      fBack1 = f
+      }
+    return f
+    }
+</pre>
+Try it and compare it's speed with the recursive program on page 197!
+
+<H2>Array Objects</H2>
+<B>Syntax</B>
+<pre>
+    int x[] = new int[5];
+
+    int x[];
+    x = new int[5];
+
+    Generalize "int" to any primitive type or class.
+</pre>
+
+<CODE>x.length</CODE> is an <I>instance variable</I> -- there is a
+different one for each Array object.<p>
+
+It's also an example of a <I>final</I> variable -- it's value can't be
+changed.
+
+<H2>Search an Array</H2>
+<UL>
+  <LI>Linear Search - <I><B>O</B></I>(<I>n</I>)
+  <LI>Binary Search - <I><B>O</B></I>(<I>log(n)</I>)
+</UL>
+
+<H2>Doubly-Subscripted Array (Matrix)</H2>
+<UL>
+  <LI>Each row same size: <CODE>int b[][] = new int[3][3]</CODE>
+  <LI>Each row different: <CODE>int b[][] = new int[2][]</CODE><BR>
+                      <CODE>b[0] = new int[5]</CODE><BR>
+                     <CODE> b[1] = new int[3]</CODE>
+</UL>
+
+"Ragged Array" = different size rows.<p>
+
+Count elements in a ragged array - page 259 in book.
+
+<HR></BODY></HTML>

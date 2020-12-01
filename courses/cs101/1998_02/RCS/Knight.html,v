@@ -1,0 +1,372 @@
+head	1.4;
+access;
+symbols;
+locks
+	vickery:1.4; strict;
+comment	@# @;
+
+
+1.4
+date	98.02.20.21.24.22;	author vickery;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.02.20.21.23.32;	author vickery;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.02.17.19.54.51;	author vickery;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.02.17.19.53.37;	author vickery;	state Exp;
+branches;
+next	;
+
+
+desc
+@Dexcription of Project 1, Spring 1998
+@
+
+
+1.4
+log
+@Addendum on Feb 20 so TourUI does all I/O.  Tour now
+implements the toString() method to support this.
+@
+text
+@<HTML><HEAD><TITLE>Knight's Tour Project</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Knight's Tour Project</H1>
+<H2>CS-101 Project 1</H2>
+<H2>Spring 1998</H2>
+</center>
+
+<blockquote>
+<H2>NOTE: All programming projects submitted for grading in this course must
+be your own work.  It's all right to <I>talk</I> to others about the
+project, but there must be no exchange of code by any means.  Failure to
+follow this policy will result in a failing grade in the course and
+possible disciplinary action by the college.  An automated analysis
+system is used to help enforce this policy for this course.</H2>
+</blockquote>
+
+<H3>This project description is subject to change, but this is basically
+accurate as it stands.  I will notify everyone of changes by email,
+bulletin board, and in class.</H3>
+
+<H2>Introduction</H2>
+
+This project is an exercise in array manipulation, and is based on
+Exercise 5.22 and 5.23 in the textbook, <I>Java How to Program</I> by
+Deitel &amp; Deitel.<p>
+
+The Knight's Tour problem is a standard one in the history of chess, and
+is also a classic programming project for introductory computer science
+students.  But, before you go search the Web for how to do it, read the
+exercises in the book, read this web page, and work on it yourself. 
+It's the only way to learn!<p>
+
+Still, there is a very nice web page that let's you "play the game" at
+<a href="http://home.earthlink.net/~tfiller/knight.htm">[this
+site]</a>.  I encourage you to visit it to get a feeling for what makes
+the problem interesting.  Be sure you know how a Knight moves on a
+chessboard and what the object of the Knight's Tour problem is before
+you visit the site, though.  It's not explained there.  (Read the
+textbook.)<p>
+
+For our project, you will build a user interface and constuct tours as
+separate objects.  I will provide you with a class file for each
+(<CODE>TourUI.class</CODE> for the user interface (UI) and
+<CODE>Tour.class</CODE> for the tours).  First you will build your own
+Tour class, which must work with my TourUI, then you will build your own
+TourUI class, which must work with both your own Tour class and mine.<p>
+
+<H2>Code I am supplying</H2>
+
+<B>Note:</B> Hold down the &lt;Shift&gt; key when you click on the links
+in the following paragraph so that you will download the class files
+instead of viewing them in a browser window.<p>
+
+The <a
+href=
+"ftp://babbage.cs.qc.edu/pub/vickery/CS-101/KnightsTour_1/TourUI.class"><CODE>[TourUI.class]</CODE></a>
+file that I am providing is an application that interacts with the user
+through the command line.  It prompts the user to enter a number
+between 1 and 64, which is the square a tour is to start on.  It then
+prints the length of the tour obtained, and then 8 rows of numbers
+showing the sequence of squares visited by the tour.<p>
+
+Actually, that's only what <CODE>TourUI.class</CODE> appears to do.  It
+does some of its work using the [<a
+href="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/KnightsTour_1/Tour.class"><CODE>[Tour.class]</CODE></a>]
+file that I am providing you.  The <CODE>Tour</CODE> class provides a
+<I>constructor</I> and two methods:
+
+<UL>
+
+  <LI><CODE>Tour( int startSquare )</CODE> is a constructor for the 
+      Tour class.  After the main() method in class TourUI gets the
+      starting square number from the user, it creates a new Tour
+      object, passing the starting square number as an argument, using
+      a statement like:
+
+<pre>
+      Tour t = new Tour( firstSquare );
+</pre>
+
+      (A constructor looks just like a method, with two special features.
+      (1) It is called whenever a new object of a class is created, and
+      (2) it can receive arguments, but cannot return a value.)<p>
+
+      The Tour constructor computes a tour using whatever algorithm it
+      decides to use. In our case, it uses the heuristic algorithm
+      described in the book.<p>
+
+  <LI><CODE>int getLength()</CODE> is a method that returns the length
+      of the tour (a value between 1 and 64).  After constructing a
+      Tour, main() gets its length using a statement like:
+
+<pre>
+      int len = t.getLength();
+</pre>
+
+  <LI><CODE>void showTour()</CODE> is a method that displays the the
+      sequence of squares visited on the chessboard.  In our case, it
+      prints 8 rows of 8 numbers on System.out.
+
+</UL>
+
+<H2>Developing the Project</H2>
+
+<OL>
+
+    <LI>Put the two class files I supplied in a directory, and load the
+    TourUI class into the Java Virtual Machine.  If you are using the
+    JDK, the command would be "java TourUI".  You don't have to load the
+    Tour class into the JVM; it will be loaded automatically when a Tour
+    object is created.<p>
+    Test the program to be sure it behaves as you expect it to.  Note
+    that the columns of output line up nicely.  What happens if the
+    user specifies 4 as the starting square?<p>
+    
+    <LI>Write your own TourUI.java that does the same thing as mine. 
+    Do <I>not</I> provide a graphical user interface.  Do <I>not</I>
+    make an applet out of it.  Just write it as a command-line
+    application.  Be sure it works with my Tour.class file.<p>
+    
+    <B>Note:</B> In case you don't know how to read the number that the
+    user types in, I wrote a [<a
+    href="Sample_Code/ReadANum.java">sample program that you can
+    study</a>] to see one way to do it.  Apparently this was not
+    covered in all the recitation sections of CS-95 last semester.<p>
+
+    <LI>Write your own Tour.java.  Do this in three substeps: (a)
+    Provide a constructor that sets the tour length to the starting
+    square number (this is stupid, but it verifies that you can pass a
+    number to the constructor); have getLength() return what it thinks
+    is the tour length, and have showTour() print "hello".  Test it to
+    be sure it works.  (b) Set up an 8x8 array of integers initialized
+    with a set of numbers you will recognize, and have showTour() print
+    that when it is called.  Test it to be sure it works.  (c)  Now
+    initialize that 8x8 array with all zeros, and have the constructor
+    fill in the values with the sequence in which the squares are
+    visited.  Make sure your Tour class works with my TourUI class as
+    well as with your own.<p>
+
+    At this point you have met the requirements for the project.  Save
+    your work, and continue with the following optional steps, if you
+    want to.
+
+    <LI>Provide a graphical user interface for TourUI.  It can be either
+    an applet or an application.  The starting square number can be
+    entered in a text field, or if you already know about such things,
+    you could draw a mini-chessboard and let the user click on the
+    starting square.  The output still goes to System.out.
+    
+    <LI>Provide a graphical user interface for Tour.  When showTour() is
+    called, it creates a picture of a chessboard with numbers in each
+    square showing the sequence of visits.  The output goes in its own
+    window, not the one built by TourUI.
+
+    <LI>Implement the brute force algorithm described in the book.  Now
+    there has to be a second Tour constructor.  This one receives no
+    arguments, randomly picks a starting square, and picks moves
+    randomly.  Modify TourUI to ask the user how many tours to run. 
+    Call showTour() only if a complete tour is found, and keep track of
+    how many tours of each length are found; print that array when all
+    the tours have been created.
+
+</OL>
+
+<H2>Submit the Project</H2>
+
+Send your TourUI.java and Tour.java source files to Dr. Vickery by
+email when you are finished.  The project will be "on time" if your
+email is dated before midnight on the due date, Febrary 26.  You may
+submit the project as late as March 5, but will you will lose 5% of the
+project grade for each day it is late.  The project will not be
+accepted for credit after March 5.  You can get partial credit for a
+non-working program.
+
+<H2>Project Grading</H2>
+
+Projects will be graded on the basis of program correctness [30%],
+coding style (how well did you use the Java language) [30%], code
+documentation [20%], and user interface design [20%].  You will get full
+credit for the user interface design if it is as good as the user
+interface I provided in TourUI.class.  Extra-credit work will be
+noted, but I'm not sure how it will figure into your course average yet.
+
+<HR>
+<H2>February 20 Addendum</H2>
+
+You don't have to read this if you don't want to.<p>
+
+I was thinking about the project after class last night, and I realized
+that the design is flawed a bit in two ways.  First, the showTour()
+method is not a good idea.  All input and output should be done by the
+TourUI class.  For this project it doesn't make any difference, but if
+we want to change to a graphical user interface, both TourUI and Tour
+will have to be changed, and that is not a Good Thing.  Logically, only
+TourUI should have to be changed to change the user interface. 
+Secondly, every class of object in Java has a toString() method that
+knows how to convert the object to some kind of printable
+representation.  If a class doesn't define its own toString() method,
+it inherits one from class Object, which prints the name of the class
+and a number that identifies the instance to the Java Virtual Machine. 
+By adding an appropriate toString() method to Tour (one that returns a
+String object that can be printed to display the final chessboard) you
+can get TourUI to show the results by changing:
+
+<pre>
+      t.showTour();
+</pre>
+to:
+<pre>
+      System.out.println( t.toString() );
+</pre>
+
+The Big Deal here is that since every Java object has a toString()
+method either explicitly or by inheritance from class Object, you can
+pass any object as a parameter to System.out.println(), and it will
+print the String it gets back by calling that object's toString()
+method.  So the statement I just showed you can be written just as:
+
+<pre>
+      System.out.println( t );
+</pre>
+
+This is way cool.<p>
+
+So I modified my TourUI.java and Tour.java to work with this better
+model of the project.  My new TourUI makes the call to
+System.out.println(&nbsp;t&nbsp;) instead of to t.showTour(), and my
+new Tour has a toString() method that returns a printable string
+representing the chessboard at the end of the tour.  For backwards
+compatibility, my new Tour class still has the showTour() method, but
+it works by doing System.out.println(&nbsp;toString()&nbsp;).  You can
+use my new Tour class with your TourUI as well as with my old TourUI,
+but my new TourUI works only with my new Tour class.  If you want to
+use my new class files for this project instead of the old ones, you
+can get them here: <a
+href="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/KnightsTour_2/TourUI.class">
+[TourUI.class]</a>&nbsp;&nbsp;<a
+href="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/KnightsTour_2/Tour.class">
+[TourUI.class]</a>.
+
+<HR></BODY></HTML>
+@
+
+
+1.3
+log
+@Added Grading Criteria and How To Submit.
+@
+text
+@d55 3
+a57 2
+The [<a
+href="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/TourUI.class"><CODE>TourUI.class</CODE></a>]
+d66 1
+a66 1
+href="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/Tour.class"><CODE>Tour.class</CODE></a>]
+d184 57
+@
+
+
+1.2
+log
+@First "real" description of the project.
+@
+text
+@d7 10
+a21 2
+</center>
+
+d55 7
+a61 6
+The <a href="TourUI.class"><CODE>TourUI.class</CODE></a> file that I am
+providing is an application that interacts with the user through the
+command line.  It prompts the user to enter a number between 1 and 64,
+which is the square a tour is to start on.  It then prints the length
+of the tour obtained, and then 8 rows of numbers showing the sequence
+of squares visited by the tour.<p>
+d64 4
+a67 4
+does some of its work using the <a
+href="Tour.class"><CODE>Tour.class</CODE></a> file that I am providing
+you.  The <CODE>Tour</CODE> class provides a <I>constructor</I> and two
+methods:
+d113 2
+a114 1
+    that the columns of output line up nicely.<p>
+d116 4
+a119 4
+    <LI>Write your own TourUI.java that does the same thing as mine.  Do
+    <I>not</I> provide a graphical user interface.  Do <I>not</I> make
+    an applet out of it.  Just keep it simple.  Be sure it works with my
+    Tour.class file.<p>
+d121 6
+d131 9
+a139 8
+    is the tour length, and have showTour() print "hello".  (b) Set up
+    an 8x8 array of integers initialized with a set of numbers you will
+    recognize, and have showTour() print that when it is called.  (c) 
+    Now initialize that 8x8 array with all zeros, and have the
+    constructor fill in the values with the sequence in which the
+    squares are visited.  Make sure your Tour class works with my TourUI
+    class as well as with your own.<p>
+    
+d164 20
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d5 7
+d14 123
+a136 11
+The description of this project is not ready yet, but you should
+study Exercises 5.22 and 5.23 at the end of Chapter 5 to prepare
+for it.<p>
+
+<B>Note:</B>  Your project will be <I>based on</I> those
+two exercises, but will not be the same as either one of them.<p>
+
+There is a web page where you can play with the Knight's Tour
+problem at <a href="http://home.earthlink.net/~tfiller/knight.htm"> [this
+link] </a>.  You might want to try it while you are waiting for me to
+prepare our project.<p>
+d138 7
+a144 1
+Stay tuned!
+d146 1
+@

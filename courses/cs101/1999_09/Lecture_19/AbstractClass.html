@@ -1,0 +1,65 @@
+<HTML><HEAD><TITLE>AbstractClass.java</TITLE></HEAD><BODY>
+<CENTER><H1>AbstractClass.java</H1></CENTER><HR><PRE>
+// AbstractClass.java
+
+//  Note that this file generates two class files when you
+//  compile it.  Note also that AbstractClass.class and
+//  ChildOfAbstract.class both contain valid main()
+//  methods, so either one can be run as an application.
+
+//  If you run AbstractClass, it runs to completion
+//  normally without ever instantiating the class.
+
+//  If you run ChildOfAbstract, however, you will see a
+//  run-time error because you can't instantiate class
+//  AbstractClass, and abs contains a null reference when
+//  the line indicating "run-time error" is reached.  The
+//  error will be a NullPointerException.
+
+//  Class AbstractClass
+//  -------------------------------------------------------
+import java.util.*;
+public abstract class AbstractClass implements Iterator
+{
+  // Define a non-abstract method.
+  public static void main( String[] argv )
+  {
+    System.out.println( "Abstract is as abstract does." );
+  }
+  // Declare an abstract method.
+  public abstract void notImplemented( int x );
+}
+
+//  Class ChildOfAbstract
+//  -------------------------------------------------------
+class ChildOfAbstract extends AbstractClass
+{
+  static  AbstractClass   abs;
+  static  ChildOfAbstract coa;
+
+  public static void main( String[] argv )
+  {
+    System.out.println( "Son of a gun!" );
+
+//  abs = new AbstractClass();    &lt;<== Compile-time error
+    coa = new ChildOfAbstract();
+
+    abs.notImplemented( 3 );   // &lt;<== Run-time error
+    coa.notImplemented( 5 );
+//  abs = coa;                    &lt;<== Compile-time error
+    abs.notImplemented( 7 );  //  &lt;<== Never reached.
+  }
+
+  //  Must satisfy the interface contract of the superclass
+  public boolean  hasNext() { return false; }
+  public Object   next()    { return null;  }
+  public void     remove()  { return;       }
+
+  //  Must implement the abstract method of the superclass
+  public void notImplemented( int x )
+  {
+    System.out.println( "x is " + x );
+  }
+}
+
+</PRE><HR></BODY></HTML>

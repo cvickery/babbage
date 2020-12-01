@@ -1,0 +1,37 @@
+<HTML><HEAD><TITLE>BoxLayout_2_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>BoxLayout_2_ex.java</H1></CENTER><HR><PRE>
+//  BoxLayout_2_ex.java
+
+import java.awt.*;
+import javax.swing.*;
+
+public class BoxLayout_2_ex
+{
+  public static void main( String[] argv )
+  {
+    JFrame jf = new JFrame( "BoxLayout_2_ex" );
+    jf.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Container cp = jf.getContentPane();
+    Box b = new Box( BoxLayout.X_AXIS );
+    cp.add( b, BorderLayout.CENTER );
+
+    Box b1 = Box.createVerticalBox();
+    Box b2 = Box.createVerticalBox();
+
+    b.add( b1 );
+    b.add( b2 );
+
+    b1.add( new JButton( "First" ) );
+    b1.add( new JButton( "Second" ) );
+    b1.add( new JButton( "Third" ) );
+    b2.add( new JButton( "Fourth" ) );
+    b2.add( new JButton( "Fifth" ) );
+
+    jf.pack();
+    jf.setLocation( 200, 150 );
+    jf.show();
+  }
+
+}
+
+</PRE><HR></BODY></HTML>

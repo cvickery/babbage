@@ -1,0 +1,100 @@
+<HTML><HEAD><TITLE>Prototype_0.java</TITLE></HEAD><BODY><PRE>
+
+//  Prototype_0.java
+
+//    Prototyping the checkers GUI.
+//    Lecture 25
+//    December 3, 1998
+
+import java.awt.*;
+import java.awt.event.*;
+
+//  Class Prototype_0
+//  ------------------------------------------------------------------
+/**
+  *   Manages a Frame containing a checkerboard Panel.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class Prototype_0 extends Frame {
+
+  private Panel panel = new Panel();
+  private Panel[][] squares = new Panel[8][8];
+  private static final int BORDER_WIDTH = 5;
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+  Prototype_0( String title ) { super( title ); }
+
+  //  main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Instantiates Prototype and calls its init() mentod.
+    *
+    */
+    public static void main( String[] argv ) {
+
+    Prototype_0 gui = new Prototype_0( "Checkers Prototype 0" );
+    gui.init();
+  }
+
+  //  init()
+  //  -----------------------------------------------------------------
+  /**
+    *   Initializes the GUI.
+    *
+    */
+    public void init() {
+
+      addWindowListener( new FrameControl() );
+      add( panel );
+      panel.setBackground( Color.red );
+      panel.setLayout (new GridLayout( 8, 8 ) );
+
+      for ( int row = 0; row < 8; row++ )
+        for (int col=0; col < 8; col++ ) {
+          squares[row][col] = new Panel();
+          if ( (row % 2) != (col % 2) )
+            squares[row][col].setBackground( Color.black );
+        panel.add( squares[row][col] );
+        }
+
+      setSize( 300, 300 );
+      show();
+    }
+
+  //  paint()
+  //  ----------------------------------------------------------------
+  /**
+    *   Makes the panel containing the checkerboard square, centered,
+    *   and as large as possible within the Frame.
+    *
+    */
+    public void paint( Graphics gc ) {
+
+    Insets    i = getInsets();
+    Dimension d = new Dimension(), dg = getSize();
+    int x, y;
+
+      d.width = dg.width - ( i.left + i.right + 2 * BORDER_WIDTH );
+      d.height = dg.height - ( i.top + i.bottom + 2 * BORDER_WIDTH );
+      d.width = Math.max( 0, d.width );
+      d.height = Math.max( 0, d.height );
+      if ( d.width > d.height ) d.width = d.height;
+      else d.height = d.width;
+      panel.setSize( d );
+
+      x = (i.left + i.right + dg.width) /
+            2 - d.width / 2 - BORDER_WIDTH;
+      y = (i.top + i.bottom + dg.height) /
+            2 - d.height / 2 - BORDER_WIDTH;
+
+      panel.setLocation( x, y );
+      panel.validate();
+
+    }
+  }
+
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,201 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 15</title>
+<meta name=Description content="2-Nov-01: HexDump Program">
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0006.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_15.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=72 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=252 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=85 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=34 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=112 height=33 colspan=2></td>
+  <td width=252 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=252 height=33 align=center><a
+    href="http://babbage.cs.qc.edu/courses/cs101/2001_09/Slides/CS-101_Lecture_15_files/HexDump.java.html"
+    target="_parent"><font face="Times New Roman" size=5>HexDump Program</font></a><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=111 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=242></td>
+  <td width=409 height=242 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=125 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=39 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=35 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=27 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=26 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=44 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=9 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=295 height=21 colspan=12><font face="Times New Roman" size=3>Usage:
+    <i>java HexDump &lt;filename(s)&gt;</i></font><br>
+    </td>
+    <td width=97 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=410 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=322 height=18 colspan=11><font face="Times New Roman" size=2>Supply
+    as many file names as you want after the</font><br>
+    </td>
+    <td width=49 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=147 height=17 colspan=5><font face="Times New Roman" size=2>HexDump
+    class name</font><br>
+    </td>
+    <td width=224 height=17 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=410 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=207 height=21 colspan=9><font face="Times New Roman" size=3>Displays
+    16 bytes per line.</font><br>
+    </td>
+    <td width=185 height=21 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=410 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=333 height=18 colspan=12><font face="Times New Roman" size=2>At
+    the left is the offset into the file of the first line</font><br>
+    </td>
+    <td width=38 height=18 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=410 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=371 height=18 colspan=16><font face="Times New Roman" size=2>Then
+    16 pairs of hexadecimal digits (one pair per byte),</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=342 height=17 colspan=13><font face="Times New Roman" size=2>with
+    embedded spaces to make them easier to read.</font><br>
+    </td>
+    <td width=29 height=17 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=410 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=318 height=18 colspan=10><font face="Times New Roman" size=2>At
+    the right are the characters for any bytes that</font><br>
+    </td>
+    <td width=53 height=18 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=248 height=17 colspan=8><font face="Times New Roman" size=2>represent
+    printable ASCII characters.</font><br>
+    </td>
+    <td width=123 height=17 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=410 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=200 height=16 colspan=4><font face="Times New Roman" size=1>Non-ASCII
+    bytes print as dots here.</font><br>
+    </td>
+    <td width=150 height=16 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=410 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=364 height=21 colspan=17><font face="Times New Roman" size=3>Good
+    for looking at the “raw” contents of Java</font><br>
+    </td>
+    <td width=28 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=365 height=20 colspan=18><font face="Times New Roman" size=3>class
+    files, but can be used to examine any file.</font><br>
+    </td>
+    <td width=27 height=20></td>
+   </tr>
+  </table>
+  </td>
+  <td width=26 height=242></td>
+ </tr>
+ <tr>
+  <td width=475 height=21 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

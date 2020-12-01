@@ -1,0 +1,62 @@
+<HTML><HEAD><TITLE>Lecture Notes 24</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Lecture Notes 24</H1>
+<H2>Window and Mouse Event Basics</H2>
+</center>
+
+<H2>Notes</H2>
+The following code was used to show various features of window and mouse
+event procesing.<p>
+<OL>
+
+  <li>A <CODE>Frame</CODE> is a Java class that provides a window with
+  a title bar and other <I>decorations</I> provided by the operating
+  system's <I>window manager.</I>  The MS Windows window manager
+  provides decorations that include buttons to minimize, maximize, and
+  close a Frame.
+
+  <li>You have to write code to get the "close window" button to do
+  anything.
+
+  <li>Event listeners are interfaces, that are added to graphical
+  objects, such as Frames.  The class that implements the interface may
+  be the same class as the one that generates the graphical object, or
+  it may be a different class.
+
+  <LI>Event adapters are classes that implement an interface with
+  methods that don't do anything.  You can extend an adapter class and
+  override just the methods you want to actually implement.
+
+  <LI>Java calls minimizing a window "iconifying" it.
+
+  <LI>Each event listener method receives an object that contains
+  information about the event.  Classes <CODE>MouseEvent</CODE>,
+  <CODE>KeyEvent</CODE>, and <CODE>WindowEvent</CODE> provide methods
+  for getting at that information for mouse, keyboard, and window
+  events.  We looked at some of the MouseEvent information.
+
+  <LI>Bit masks are numbers that have just one bit set (equal to one)
+  in them.  You can use the <B>&amp;</B> operator to tell if an int has
+  the bit corresponding to a bit in a mask set.  Example:
+
+<pre>
+public void mouseClicked( MouseEvent me ) {
+int mods = me.getModifiers();
+  if ( (mods & InputEvent.BUTTON3_MASK) != 0 )
+    System.out.println( "Button 3" );
+}
+</pre>
+
+</OL>
+
+<H2>Sample Code</H2>
+<UL>
+  <LI>[&nbsp;<a HREF="FrameControl_1.html">Frame Control 1</A>&nbsp;]
+  <LI>[&nbsp;<a HREF="FrameControl_2.html">Frame Control 2</A>&nbsp;]
+  <LI>[&nbsp;<a HREF="MouseControl_0.html">Mouse Control 0</A>&nbsp;]
+  <LI>[&nbsp;<a HREF="MouseControl_1.html">Mouse Control 1</A>&nbsp;]
+</UL>
+
+<HR></BODY></HTML>
+

@@ -1,0 +1,70 @@
+<HTML><HEAD><TITLE>Blinker.java</TITLE></HEAD><BODY>
+<CENTER><H1><blink>Blinker.java</blink></H1></CENTER>
+
+<B>Note:</B> In class on December 17 I indicated that the calls to
+<I>paint()</I> in this code should be changed to call <I>repaint()</I>.
+That was a mistake; the blinking is too eratic if you use repaint,
+because the awt treats calls to <I>repaint()</I> as low-priority
+requests to schedule updating the component "in the future."
+
+<HR><PRE>
+
+//  Blinker.java
+
+import java.awt.*;
+
+//  Class Blinker
+//  -------------------------------------------------------------------
+/**
+  *   Blinks a Component
+  *
+  *   @author C. Vickery
+  *
+  */
+  class Blinker extends Thread {
+
+  private int       _delay;
+  private Component _component;
+  private Color     _first, _second;
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+  /**
+    *     Stashes the component, colors, and blink time; starts the
+    *     thread going.
+    */
+    public Blinker( Component component,
+                    Color first, Color second, int delay ) {
+
+      _component  = component;
+      _first      = first;
+      _second     = second;
+      _delay      = delay;
+
+      start();
+
+    }
+
+  //  run()
+  //  --------------------------------------------------------------
+  /**
+    *     Blinks the component.
+    */
+  public void run() {
+    while (true) {
+      try {
+        _component.setForeground( _first );
+        _component.paint( _component.getGraphics() );
+        Thread.sleep( _delay );
+        _component.setForeground( _second );
+        _component.paint( _component.getGraphics() );
+        Thread.sleep( _delay );
+      }
+      catch (InterruptedException e) {}
+    }
+  }
+
+}
+
+
+</PRE><HR></BODY></HTML>

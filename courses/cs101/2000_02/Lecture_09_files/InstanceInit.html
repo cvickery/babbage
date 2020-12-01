@@ -1,0 +1,92 @@
+<HTML><HEAD><TITLE>InstanceInit.java</TITLE></HEAD><BODY>
+<CENTER><H1>InstanceInit.java</H1></CENTER><HR><PRE>
+//  InstanceInit.java
+
+//  Class InstanceInit
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates the sequence of steps that new goes through to
+  *   initialize an object.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - March, 2000
+  */
+  public class InstanceInit
+  {
+
+    //  Statement(s) executed when the class is loaded.
+    static {
+      System.out.println( "Static Initialization." );
+    }
+
+    //  After memory for the object has been zeroed out, execute
+    //  assignments that are on variable declarations.
+    int x;
+    int y = x + 1;
+    int z = y + 1;
+
+    //  You can't have arbitrary statements outside of any method.
+    //  They have to be in static { ... } blocks, or inside methods.
+    //  System.out.println( "You can't." );
+
+  //  Constructors
+  //  ----------------------------------------------------------------
+  /**
+    *   There are two: a no-arg constructor that does nothing except
+    *   print the values of the instance variables, and another one
+    *   that prints the values of the variables and then assigns a
+    *   value (passed as a parameter) to one of the variables.
+    */
+    public InstanceInit()
+    {
+      System.out.println( "x in no-arg constructor is " + x );
+      System.out.println( "y in no-arg constructor is " + y );
+      System.out.println( "z in no-arg constructor is " + z );
+      return;
+    }
+
+    public InstanceInit( int val )
+    {
+      System.out.println( "x in other constructor is " + x );
+      System.out.println( "y in other constructor is " + y );
+      System.out.println( "z in other constructor is " + z );
+      //  Assign a new value to x.
+      x = val;
+      return;
+    }
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Creates some objects of class InstanceInit and prints the
+    *   values of instance variables.
+    *
+    *     @param  argv  Not used.
+    *     @return Void.
+    */
+    public static void main( String[] argv )
+    {
+      //  This message prints after static initialization.
+      System.out.println( "Main Starting." );
+
+      InstanceInit ii = new InstanceInit( 33 );
+      System.out.println( "x in main is " + ii.x );
+      System.out.println( "y in main is " + ii.y );
+      System.out.println( "z in main is " + ii.z );
+
+      /* InstanceInit */ ii = new InstanceInit();
+      System.out.println( "x in main is " + ii.x );
+      System.out.println( "y in main is " + ii.y );
+      System.out.println( "z in main is " + ii.z );
+
+      ii = new InstanceInit( 66 );
+      ii.y = 99;
+      System.out.println( "x in main is " + ii.x );
+      System.out.println( "y in main is " + ii.y );
+      System.out.println( "z in main is " + ii.z );
+
+      return;
+    }
+  }
+
+</PRE><HR></BODY></HTML>

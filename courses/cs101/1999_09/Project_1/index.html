@@ -1,0 +1,318 @@
+<HTML><HEAD><TITLE>Project 1 - MP3 File Information</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 1 - MP3 File Information</H1>
+</center>
+
+<H2>Submission and Grading</H2>
+
+This project is due by midnight September 30.<p>
+
+Remember, projects for this course are not graded; they are designed to
+help you master programming concepts that you will be tested on in the
+next exam (October 7).  If you submit the project on time, I will
+provide you with feedback on your programming style or, if there is a
+bug, with a suggested fix before the exam.  I encourage you to work on
+the project alone because that is the best way to learn the concepts
+involved.  But if you get stuck, feel free to get help any way you wish
+in order to move forward on the program.  If you don't understand how
+do the project on your own you probably won't be able to pass the
+exam.<p>
+
+I will not be able to accept more than one submission of the project
+per person, so wait until you are ready to submit the "real thing"
+before you send your project to me.  If you work with someone else,
+send me just one copy of the project.  There is nothing to be gained by
+sending me the same thing from different people.<p>
+
+You should precede each class and method with a javadoc comment block. 
+Put in a sentence telling what the class or method does.  Be sure there
+is a proper <I>javadoc</I> @author tag with your name in the comments
+preceding the class definition.  Be sure you spell and capitalize the
+tag exactly right (all lower case, no space between the "@" and
+"author," and "author" spelled correctly).  The only things on the line
+containing the @author tag must be (from left to right) an optional
+asterisk, the tag, and your name.  See the sample code for Lecture 1
+for an example of how to prepare this.<p>
+
+For method definitions, put in @param and @return tags to tell what
+parameters are passed to the method, and what value it returns.  There
+should be a separate @param tag for each parameter (or none if there
+are no parameters) that consists of the name of the parameter and what
+it is used for.  The @return tag should just describe the value the
+method returns, and may be omitted if the method's return type is
+void.<p>
+
+When your program is ready, <I>attach</I> your MP3FileInfo.java class
+to an email message and send it to me at <CODE>vickery@qc.edu</CODE>. 
+Be sure you send the file as an attachment or I won't be able to save,
+compile, and run it.<p>
+
+<H2>Introduction</H2>
+
+This project will give you some practice working with files and objects
+using Java.  To make things interesting, the files you will work with
+will be "MP3" files, which hold music that can be played on a computer
+or on any of several portable devices.  This Introduction gives you a
+bit of background on MP3, but is not strictly needed to do the
+project.  In later projects you will extend this program to let users
+build a catalog of their music, and playlists that can be used by MP3
+players to play sets of MP3 files.  If you are not interested in
+learning about MP3 files, you can jump to the [&nbsp;<a
+HREF="#project_description">Project Description</A>&nbsp;] further down
+on this page.<p>
+
+MP3 is a way of storing music (or other audio) in computer disk files. 
+It's popular because there are programs that will convert music CDs
+into MP3 format, which people then play on their computer or transfer
+into portable MP3 walkman-like players.  The audio information is
+compressed, so the files are relatively small (compared to a
+non-compressed copy of the same audio information), making it possible
+to transfer MP3 files over the Internet fairly easily.  Exchanging MP3
+files over the net is illegal when copyrighted material is sent, but
+otherwise is perfectly legal.<p>
+
+If you don't already know about the software, free music, and hardware
+that are available for dealing with MP3 encoded music, here are some
+links for you:
+
+<UL>
+
+  <LI>[&nbsp;<a HREF="http://www.mp3.com">www.mp3.com</A>&nbsp;]  This
+  site provides links to a lot of useful other sites for additonal
+  information about MP3.  It is also one of several sites that offers
+  lots of free, legal MP3 files for downloading.
+
+  <LI>[&nbsp;<a HREF="http://www.winamp.com">www.winamp.com</A>&nbsp;] 
+  This site provides an excellent, free,  MP3 player for Windows
+  computers.
+
+  <LI>[&nbsp;<a
+  HREF="http://www.musicmatch.com">www.musicmatch.com</A>&nbsp;]  This
+  site provides an excellent, free, MP3 player/ripper for Windows.  A
+  ripper is a program that will create MP3 files from CD audio tracks.
+  
+  <LI>[&nbsp;<a HREF="http://www.real.com">www.real.com</A>&nbsp;] 
+  Another player/ripper (their RealJukebox).  Last I looked, this one
+  had more features than MusicMatch.  But watch out, their web site will
+  make you insist you want the free version several times before it will
+  give it to you!
+  
+</UL>
+
+<H3>MP3 File Structure</H3>
+
+[&nbsp;<a HREF="http://drogo.cselt.stet.it/mpeg/">The Moving Picture
+Experts Group</A>&nbsp;] (MPEG) has developed a number of standards for
+digital encoding of audio and visual information, including
+
+<UL>
+  <LI>MPEG-1, the standard for storage and retrieval of moving pictures
+  and audio on storage media (approved Nov. 1992)
+  <LI>MPEG-2, the standard for digital television (approved Nov.
+  1994)
+  <LI>MPEG-4 version 1, the standard for multimedia applications
+  (approved Oct. 1998)
+  <LI>MPEG-4 version 2 (to be approved December 1999)
+  <LI>MPEG-7 the content representation standard for multimedia
+  information search, filtering, management and processing (to be
+  approved July 2001).
+</UL>
+
+Names like MPEG-1, MPEG-2, etc. are called "phases."  Within a phase,
+there are several "layers."  MP3 refers to Layer III of MPEG Phase 1. 
+What follows is a description of MP3 files, but you will see that the
+information is encoded so that a program could process any of several
+phases and layers.<p>
+
+Think of an MP3 file as a steam of bytes.  The file is divided into a
+sequence of audio frames followed by an optional section of textual
+information.  We will be paying considerable attention to that textual
+information, called the <I>ID3 tag</I>, which occupies exactly the last
+128 bytes of an MP3 file if it is present.  But first some background on
+the frames.<p>
+
+<H4>Frames and Frame Headers</H4>
+
+When audio information is stored digitally, the analog audio signal is
+sampled periodically, and the intensity at each sample point is recorded
+as a binary number.  If you later convert the binary numbers to voltages
+and apply those voltages to an audio amplifier you will recreate the
+original audio signal, thus reproducing the sound.  Three important
+factor affect the fidelity of digital recordings: (1) How often the
+original signal is sampled.  Audio CDs use a sample rate of 44 KHz,
+which was chosen because it allows all pitches humans can hear to be
+reproduced.  (2) How many bits are used for each sample.  The more bits
+there are, the more accurately the amplitude of the signal is recorded. 
+Using 8 bits per sample, for example, allows the recording to
+differentiate among 256 different amplitudes for each sample.  Audio CDs
+use 12 bits per sample (24 bits per sample for stereo).  (3) Compression
+is a way of reducing the number of bits used to hold a recording.  MP3
+uses a lossy compression scheme based on the psychoacoustic properties
+of the audio signal.  That's a way of saying that MP3 throws away some
+of the bits in a recording (that the "lossy" part), and it decides which
+ones to lose based on what parts of the sound are most important to the
+human hearing process (that's the psychoacoustic part).  The bottom line
+on all this is that the more bits you keep in your recording, the closer
+it approximates the quality of an audio CD.  But it turns out that a lot
+of bits can be thrown out before most of us can hear the difference.<p>
+
+MP3 files can be made from audio CDs or other sources with different
+sampling frequencies and number of bits per sample.  Then the
+information is encoded into MP3 form with a particular its
+psychoacoustic compression algorithm, which uses some smaller number of
+bits per sample compared to the original recording.  This process
+results in a particular <I>bit rate</I>, the number of bits used to
+encode each second of music.  MP3 bit rate values range from 8,000 (8K)
+to 448,000 (448K) bits per second of music.  Good music fidelity can be
+obtained with a bit rate of 64K, and "near CD quality) with rates above
+300K.  Naturally, the higher the bit rate, the larger the MP3 file for
+a given piece of music.<p>
+
+An MP3 file is divided into frames which contain 1152 samples each. 
+Each frame has a <I>header</I>, which is four bytes of encoded
+information that tells the frame's bit rate, whether it is monophonic or
+stero, etc.  Normally, all the frames in an MP3 file are recorded the
+same way so the frame headers all look alike, but there is a scheme
+called variable bit rate encoding (VBR) that is sometimes used to vary
+the bit rate for different parts of the file.  We will assume for our
+projects that our MP3 files don't use VBR.<p>
+
+The class MP3header that I am supplying examines the first MP3 frame
+header in a file. The class constructor decodes the header information,
+and the <I>showInfo()</I> method displays some of the information it
+finds in a dialog box in a human readable form.<p>
+
+<H4>ID3 Tags</H4>
+
+The last 128 bytes of an MP3 may (or may not) contain textual
+information describing the music that is encoded in the audio frames. 
+This is where you'll find the name of the track, the artist's name, and
+so on.  You can tell if a file has an ID3 tag by reading the last 128
+bytes of the file and seeing if the first three of those bytes contain
+the characters, "TAG".  Information on how to work with ID3 tags comes
+in the [&nbsp;<a HREF="#extra_work">Extra Work</A>&nbsp;] part of this
+page.<p>
+
+<H2><a NAME="project_description">Project Description</A></H2>
+
+Your program is to be a Java application that lets a user select a file
+and view information about the contents of the file.  If the file is in
+MP3 format, the program shows information about how the audio
+information was encoded.  If the file contains an ID3 tag, the program
+displays that information for the file too.<p>
+
+The program runs in an endless loop that terminates when the user elects
+not to select another file for viewing.  From the user's perspective,
+the program works like this:
+
+<ol>
+
+    <LI>A dialog box appears that the user can use to select a file.
+
+    <LI>When a file has been selected, a message box appears that tells
+    the name and location of the file, its size, and information about
+    how it is encoded if it is an MP3 file.
+
+    <LI>Another message box appears.  If the file is an MP3 file, the
+    message gives information about the ID3 information for the file. 
+    Otherwise, the message says there is no ID3 information in the
+    file. 
+
+    <LI>When the user dismisses the second message box, the file
+    selection box appears again and the user can select another file for
+    viewing.  If the user clicks on the Cancel button or doesn't select
+    any file when clicking on the OK button, the program exits.
+
+</ol>
+
+<H2>Working Version</H2>
+
+You should download and run a working version of this project to become
+familiar with it.  First create a directory on your computer that you
+will use for developing this project, then click on [&nbsp;<a
+HREF="Vickery_1.exe">Vickery_1.exe</A>&nbsp;] to extract three class files
+into that directory.  <I>Notes on downloading:</I> If your browser asks
+whether to download the file or run it in place, it's easier to run it
+in place.  If you are nervous about running a file from my computer,
+you can download it instead and scan it for viruses before running it. 
+The file size is 36,578 bytes.  You should end up with three files,
+with the sizes indicated, in your project directory:
+
+<ul>
+  <LI><CODE>MP3FileInfo.class</CODE> (1,168 bytes)
+  <LI><CODE>ID3V1info.class</CODE> (4,405 bytes)
+  <LI><CODE>MP3header.class</CODE> (4,776 bytes)
+</ul>
+
+To run the program, change to the project directory and type the
+command, <b>java MP3FileInfo</b>.  To see what the program can do with
+MP3, files, you need to have some on your computer.  If you click on
+[&nbsp;<a HREF="Sample_MP3_Files">Sample MP3 Files</A>&nbsp;] you will
+see a directory listing with some files you can download.  I picked
+these samples because they are relatively small, but even so each one
+is over a megabyte.  Most browsers will let you download the files
+either by right clicking on a file name or by holding the shift key as
+you click on a file name.  You can save these files any place on your
+disk that you find convenient, then use my version of the program to
+navigate to one of them.  Each time you select a file, the program will
+put up two message boxes giving information about the file.  It will
+work for any file, but the information is interesting only for MP3s.<p>
+
+Your assignment is to write the equivalent of <CODE>MP3FileInfo</CODE>. 
+The good news is that you are free to use the ID3V1info and MP3header
+classes that I have supplied when you do your project.  These two
+classes are the ones that actually process the information in the MP3
+files and put up the messages boxes.  See below for more informaion.<p>
+
+You need to study the documentation for all three of these classes.  Do that
+by clicking on [&nbsp;<a HREF="doc/index.html">docs</A>&nbsp;], which
+gives the documentation generated by <I>javadoc</I> for my code.<p>
+
+<H2>Writing Your Program</H2>
+
+You should have a project directory that contains my three class
+files.  I recommend very strongly that you create a separate directory
+some place on your disk just for this project so you can manage your
+files better.  (I would create a directory named C:\My&nbsp;Projects
+and a subdirectory named C:\My Projects\Project_1, but you may prefer
+to organize your disk differently.)  In this same directory, create a
+java application that defines the class MP3FileInfo.  The first time
+you compile your program, your own MP3FileInfo.class file will replace
+the one I supplied, but my MP3header and IDV1info classes will remain
+in place, and your program will be able to use them.<p>
+
+Using the sample code from Lecture 6 as a model, code your MP3FileInfo
+application so that the user can select files.  If a file selected
+actually exists, use the File object returned by
+JFileChooser.<I>getSelectedFile()</I> to construct a new MP3header
+object.  Use a reference to that object to call the MP3header method
+<I>showInfo()</I>.  Each time your user selects a file, s/he should see
+a dialog box giving information about how the recording was encoded. 
+When that part of the program works, add the code to create an
+ID3V1info object and call its <I>showInfo()</I> method.<p>
+
+<H3><a NAME="extra_work">Extra Work</A></H3>
+
+You can double your credit for this project by doing some extra work!<p>
+ 
+But that's a joke!!  Because projects don't count towards your course
+average at all, double credit is still nothing.  However, doing some
+extra work is a good way to improve your programming skills, so here is
+a description of some extra work you can do.<p>
+
+You do not need to actually read from a file in order to do this
+project.  In future projects we will be developing a program that can be
+used to develop an MP3 library and MP3 playlists.  At the present time,
+my plans for those projects will not require you to process the contents
+of MP3 files in any way.  What you could do for extra work would be to
+develop your own versions of MP3header and ID3V1info.  What follows is
+some information to get you started on them.<p>
+
+<H4>ID3 Tag and MP3 Header Processing</H4>
+
+This web page is getting too long, so I'll put information about
+[&nbsp;<a HREF="TagAndHeaderProcessing.html">Tag and
+Header Processing</A>&nbsp;] in a separate document.<p>
+
+<HR></BODY></HTML>

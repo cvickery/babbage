@@ -1,0 +1,63 @@
+<HTML><HEAD><TITLE>Library.java</TITLE></HEAD><BODY>
+<CENTER><H1>Library.java</H1></CENTER><HR><PRE>
+//  Library.java
+
+import java.io.*;
+
+//  Class Library
+//  ------------------------------------------------------------------
+/**
+  *   Provides methods and fields for managing an MP3 library file.
+  *
+  *     This version includes only two of the static methods for this
+  *     class to illustrate some File I/O operations for Lecture 15.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 Fall 1999
+  */
+  public class Library
+  {
+    //  The "magic string" that is at the start of all library files.
+    private static final String _tag = "QCMP3LIB";
+
+    //  Method isLibraryFile()
+    //  --------------------------------------------------------------
+    /**
+      *   Verifies that a File can be read, and that it has the proper
+      *   magic string at the beginning.
+      *
+      *   @param  f The File to be checked.
+      *   @return true if the file is a valid library file.
+      */
+      public static boolean isLibraryFile( File f ) throws IOException
+      {
+        if ( f != null && f.isFile() && f.canRead() )
+        {
+          //  Read the magic string into a byte array.
+          byte[] id = new byte[ _tag.length() ];
+          FileInputStream fis = new FileInputStream( f );
+          fis.read( id, 0, _tag.length() );
+
+          //  Return true if the string read matches the magic string.
+          return _tag.equals( new String( id ) );
+        }
+        else
+        {
+          return false;
+        }
+      }
+
+      //  Method initializeLibraryFile()
+      public static void initializeLibraryFile( File f )
+                                                      throws IOException
+      {
+        //  Create the file if it doesn't already exist, and write the
+        //  magic string to the beginning
+        FileWriter fw = new FileWriter( f );
+        fw.write( _tag );
+        fw.close();
+      }
+
+  }
+
+</PRE><HR></BODY></HTML>

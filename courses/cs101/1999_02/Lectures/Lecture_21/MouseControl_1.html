@@ -1,0 +1,106 @@
+<HTML><HEAD><TITLE>MouseControl_1.java</TITLE></HEAD><BODY>
+<CENTER><H1>MouseControl_1.java</H1></CENTER><HR><PRE>
+//  MouseControl_1.java
+
+import java.awt.*;
+import java.awt.event.*;
+
+//  Class MouseControl_1
+//  -------------------------------------------------------------------
+/**
+  *   Prints information about mouse events as they occur.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class MouseControl_1 extends Frame {
+
+    //  Constructor
+    //  --------------------------------------------------------------
+    MouseControl_1( String title ) { super( title ); }
+
+  //  main()
+  //  -----------------------------------------------------------------
+  /**
+    *   Creates a Frame, and adds Window and Mouse Listeners to it.
+    *
+    */
+    public static void main( String[] argv ) {
+
+    MouseControl_1 mc = new MouseControl_1( "Mouse Control 1" );
+
+      mc.addWindowListener( new FrameControl() );
+      mc.addMouseListener( new MouseControl() );
+      mc.setSize( 200, 200 );
+      mc.show();
+
+    }
+
+  }
+
+//  Class FrameControl
+//  -------------------------------------------------------------------
+/**
+  *   Exits applications when user clicks the Close Window button.
+  *
+  *   @author C. Vickery
+  *
+  */
+  class FrameControl extends WindowAdapter {
+    public void windowClosing( WindowEvent we ) {
+      System.exit( 0 );
+    }
+  }
+
+//  Class MouseControl
+//  -------------------------------------------------------------------
+/**
+  *   Displays information about each mouse event as it occurs.
+  *
+  *   @author C. Vickery
+  *
+  */
+  class MouseControl implements MouseListener {
+
+  //  mouseXXX()
+  //  -----------------------------------------------------------------
+  /**
+    *   These are the five methods that must be defined in order to
+    *   implement the MouseListener interface.  There is a
+    *   MouseAdapter that would save the problem of having to write
+    *   all these methods, but this application shows them all.
+    *
+    */
+    public void mouseClicked( MouseEvent me ) {
+      System.out.print( "clicked:\t" );
+      System.out.println( me.paramString() );
+    }
+
+    public void mouseEntered( MouseEvent me ) {
+      System.out.print( "entered:\t" );
+      System.out.println( me.paramString() );
+    }
+
+    public void mouseExited( MouseEvent me ) {
+      System.out.print( "exited: \t" );
+      System.out.println( me.paramString() );
+    }
+
+    public void mousePressed( MouseEvent me ) {
+      System.out.print( "pressed:\t" );
+      System.out.println( me.paramString() );
+      int mods = me.getModifiers();
+        if ( (mods & InputEvent.BUTTON3_MASK) != 0 )
+          System.out.println( "Button 3" );
+    }
+
+    public void mouseReleased( MouseEvent me ) {
+      System.out.print( "released:\t" );
+      System.out.println( me.paramString() );
+      if ( me.isPopupTrigger() )
+        System.out.println("  Popup!" );
+    }
+
+  }
+
+</PRE><HR></BODY></HTML>

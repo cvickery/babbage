@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<B><FONT FACE="Arial" SIZE=4><P ALIGN="CENTER">Exam 2 Continued</P>
+</B></FONT><P>Just when you thought Exam 2 was over and done with, I've come up with this:</P>
+<P>You may receive as much as full credit for Questions 1 and 2 on the exam by submitting your answers as working <CODE>.java</CODE> files by midnight on Tuesday May 12. The file names are to be <CODE>Exam.java</CODE> for Question 1, and <CODE>Q_2.java</CODE> for Question 2; make your <CODE>Q_2</CODE> class public.  You must include a proper <CODE>@author</CODE> tag in a comment in both files, but you do not need to otherwise document these programs.</P>
+<P>Note that this kind of question will also appear on the final exam, so it is important for you to practice writing code like this now.  There won't be any opportunity for a "Final Exam Continued."</P>
+<B><P>Note: This is still part of the Exam.  You must do your own work, and I will automatically fail anyone for the entire course who does not abide by this rule.</P>
+</B><P>I am providing [ <A HREF="Sample_Code/X.java">source code for class X</A> ] that you may use to check out your <CODE>Exam</CODE> class before submitting it. (Right-click on the link to download the file.)</P>
+<P>Here are the two questions again:</P>
+<P>1.&#9;Answer this question on the back of the <I>second</I> sheet.</P>
+<P>Write a complete Java application that defines a public class named <FONT FACE="Courier New" SIZE=3>Exam</FONT>, which contains public methods named <I>main(), getArgs(), </I>and<I> moreThan()</I>, and a private reference to a Vector, named <FONT FACE="Courier New" SIZE=3>vec</FONT>. When the program runs, it puts each of its command line arguments into <FONT FACE="Courier New" SIZE=3>vec</FONT>, and then executes this statement:</P>
+<P>&#9;<FONT FACE="Courier New" SIZE=3>new X().init();</P>
+</FONT><P>[This is so some other code can call the methods in your program’s <FONT FACE="Courier New" SIZE=3>Exam</FONT> class.]</P>
+<P>The method named <I>getArgs()</I> receives no parameters and returns a reference to <FONT FACE="Courier New" SIZE=3>vec</FONT>.  The method named <I>moreThan()</I> receives an <I>int</I> argument and returns <FONT FACE="Courier New" SIZE=3>true</FONT> if the number of elements in <FONT FACE="Courier New" SIZE=3>vec</FONT> is greater than the value of the argument.</P>
+<I><P>Notes:</I>  (1) This program does no I/O.  (2) You are not to write any code that calls the methods defined in this class.  (3) Do not import anything not actually needed by the code that you write.  (4) Class <FONT FACE="Courier New" SIZE=3>Exam</FONT> is never instantiated.</P>
+<P>Here is how this will be graded (<I>Read this, it includes hints on how to write the code!</I>):</P>
+<P ALIGN="CENTER"><CENTER><TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=590>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<B><P>Points</B></TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<B><P>Item</B></TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>1</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Use of the correct import statement(s); syntax of import statement(s).</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>4</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Syntax and content of the class declaration line.  (public, private, protected, or nothing; extends or implements or nothing.)</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>5 for each of the 3 methods.</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Syntax and content of each method declaration line. (public, private, protected, or nothing; return type, argument list; throws or nothing.)</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>5</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Declaration and initialization of each data field (public, private, protected, or nothing; static or not; class or method scope; use of proper constructor.)</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>3</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Syntax and structure of the code that uses <I>addElement()</I> to add command line argument strings to <FONT FACE="Courier New" SIZE=3>vec</FONT>.</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>1</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Proper <FONT FACE="Courier New" SIZE=3>return</FONT> statement for <I>getArgs()</I></TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>5</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Proper use of Vector’s <I>size()</I> method and proper <FONT FACE="Courier New" SIZE=3>return</FONT> statement in <I>moreThan()</I>.</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>2</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Miscellaneous syntax issues: braces, parentheses, etc.</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>25</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Maximum points you can lose for this question.</TD>
+</TR>
+</TABLE>
+</CENTER></P>
+
+<P>&nbsp;</P>
+<P>2.&#9;Answer this question on the back of the <I>third</I> sheet.</P>
+<P>Write a Java application that prompts the user to enter the name of a file, and then reads all the lines in that file.  When the program has read the entire file, it prints the longest line in the file and terminates.  If the user enters the name of a file that does not exist or if an error occurs while reading the file, the program prints an informative message and exits.</P>
+<I><P>Notes:</I> (1) Construct a BufferedReader from an InputStreamReader for reading from System.in. (2) Construct a BufferedReader from a FileReader for reading from the file.  (3) Use BuffereReader’s <I>readLine()</I> method to read strings from the file.  (4) I expect the whole program to be done in <I>main()</I> without needing to define any other methods.</P>
+<P>Here is how this question will be graded:</P>
+<P ALIGN="CENTER"><CENTER><TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=590>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<B><P>Points</B></TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<B><P>Item</B></TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>1</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Use of the correct import statement(s); syntax of import statement(s).</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>4</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Syntax and content of the class declaration line.  (public, private, protected, or nothing; extends or implements or nothing.)</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>5</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Syntax and content of the method declaration line for <I>main()</I>. (public, private, protected, or nothing; return type, argument list; throws or nothing.)</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>5</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Declaration and initialization of each data field (public, private, protected, or nothing; static or not; class or method scope; use of proper constructor.)</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>5</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Proper construction and use of use of a BufferedReader for reading the file.</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>5</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Proper use of <I>try</I> and <I>catch</I> to handle IOExceptions.</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>5</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Logic and syntax of code to find the longest line in the file.</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>2</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Miscellaneous syntax issues: braces, parentheses, etc.</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="TOP">
+<P>25</TD>
+<TD WIDTH="84%" VALIGN="TOP">
+<P>Maximum points you can lose for this question.</TD>
+</TR>
+</TABLE>
+</CENTER></P>
+
+<P ALIGN="CENTER"><IMG SRC="Images/Autumn_Leaves.gif" WIDTH=492 HEIGHT=19></P>
+</BODY>
+</HTML>

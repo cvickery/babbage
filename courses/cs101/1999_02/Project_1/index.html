@@ -1,0 +1,257 @@
+<HTML><HEAD><TITLE>Project 1</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 1</H1>
+</center>
+
+<H2>Deliverables and Due Date</H2>
+
+This project is due by midnight <B>March 23, 1999</B>.  It will be
+graded on a ten-point scale, and you will lose 0.2 point for each day
+it is late.  The absolute cutoff for submitting the project is March
+30.<p>
+
+Send me an email with a zip file containing one .java file that
+implements the user interface to Drawing classes, as described in this
+web page.  Do not send any other files.  Be sure to put your name and ID
+number in the body of the email message, and put "Project 1" in the
+Subject: line of the message.
+
+<H2>Cheating Policy</H2>
+
+<B>Don't!</B><p>
+
+Anyone who either gives code to someone else or who uses someone else's
+code for any part  of any project in this course will automatically
+fail the course.  <I>Note that both the giver and the receiver will
+fail the course.</I> People caught cheating are also subject to
+disciplinary action by the college.<p>
+
+The purpose of the projects is for you to learn how to program by
+writing code.  There is no substitute for doing it yourself.  If you
+need help, ask me, or post a message to the course newsgroup as
+described on the [&nbsp;<a
+HREF="http://babbage.cs.qc.edu/courses/cs101/index.html#newsgroup">home
+web page for the course</A>&nbsp;].
+
+<H2>Project Description</H2>
+
+I am providing you with seven class files, which you can use to practice
+using the program.  One of these class files, named
+<CODE>Vickery_UI.class</CODE>, implements a command-line user interface
+that uses the other classes to give users a way to create simple line
+drawings.  Your assignment for this project is to write a user interface
+class equivalent to <CODE>Vickery_UI</CODE>.  Your program must use the
+other class files I am supplying to implement the actual drawing
+operations.<p>
+
+Use this link to [&nbsp;<a HREF="vickery.zip">link to
+vickery.zip</A>&nbsp;] to get a copy of the seven class files I am
+supplying.  Exactly how to get this link to work depends on your
+browser.  For me, the following works:  With Netscape Navigator version
+4.5 I use the left mouse button, and click on the "Save File ..."
+button in the dialog box that comes up.  With Microsoft Internet
+Explorer version 4.0, I use the right mouse button and select "Save
+Target as ..." from the drop-down menu.  You should end up with an 11 KB
+zip file on your hard drive.<p>
+
+You can either save the file in your project directory, or in your
+C:\temp directory.  Once you have downloaded the zip file, extract its
+contents to your project directory.  You should have the following
+files: <CODE>Vickery_UI.class</CODE>, <CODE>Drawing.class</CODE>,
+<CODE>CDrawing.class</CODE>, <CODE>GDrawing.class</CODE>,
+<CODE>DrawingException.class</CODE>, <CODE>_DrawingItem.class</CODE>,
+and <CODE>GDrawing$_DrawingCanvas.class</CODE>.<p>
+
+You can run the program by changing to the project directory and typing,
+
+<PRE>
+    java Vickery_UI
+</PRE>
+
+This will run the program in interactive mode.  You can also run it in
+"script mode."  To do that, prepare one or more files containing
+commands, and name those files on the command line after the initial
+class name.  The commands are described next.<p>
+
+<H3>Commands</H3>
+
+The user interface recognizes the following commands:
+
+<pre>
+   help                  Display this message
+   quit                  Exit the program
+   new width height      Start a new character drawing
+   win width height      Start a new bitmap drawing
+   line x1 y1 x2 y2      Draw a line from (x1,y1)
+                         to (x2,y2)
+   rectangle x y w h     Draw a rectangle with
+                         upper left corner at
+                         (x,y), width w, and height h
+   circle x y d          Draw a circle with
+                         center (x,y) and diameter d
+   show                  Show the drawing
+   hide                  Hide the drawing
+   clear                 Clear the drawing
+   list                  List drawn items
+   select n              Highlight item n
+   erase [n]             Erase item n, or the
+                         selected item if n is omitted
+</pre>
+
+You should experiment with the program to make sure you are comfortable
+with how it works before proceeding.
+
+<H2>Project Description</H2>
+
+You are to write a Java program that accepts the commands listed above
+and uses the classes Drawing, CDrawing, GDrawing, and DrawingException
+to implement a simple drawing program.  The program is to run as an
+application (not as an applet), and must recognize any number of command
+line arguments.  If there are no command line arguments, the program is
+to read commands from System.in, but if there are any command line
+arguments, the program is to assume that each argument is the name of a
+file containing commands, and it is to read and executes commands from
+each file in succession until there are no more files.  If a command
+line argument names a file that doesn't exist, your program is to print
+a message and continue by processing the next file.<p>
+
+For your first version of the program, use the ReadStrings programs
+provided in class as models, and make sure you can read from either
+System.in or from command files.  For this first version, I suggest that
+you create a method (I called mine processCommands, but you can use any
+name you like) that receives a BufferedReader object passed to it by
+<I>main()</I>.  Have the method print a message each time it is called
+so you can verify that it is being called correctly.  I found it
+convenient to pass the name of the file or the string "stdin" to this
+method so that it would have a way to include information about what it
+was reading from in the message it prints, and I suggest that you do
+something similar, for the reason about to be explained.<p>
+
+You can use any name you want for the main class of your application ...
+any name except Vickery_UI!<p>
+
+<blockquote><I>
+Once you have your first version of your program working, <B>save a
+copy of it</B>.  You won't get credit for a program that doesn't work,
+so always keep a working version of the program on hand, even if it
+doesn't do everything required for the project.  You will get partial
+credit for submitting an incomplete but working program.
+</blockquote></I>
+
+For your second version of the program, modify your command-processing
+method so that it actually reads each command, tokenizes it, and just
+prints the name of the command so you can verify that this much works
+correctly.  If the commands come from System.in, your program must
+print a prompt string that leaves the cursor on the same line as the
+prompt before reading each command.  It is optional whether or not you
+print this prompt message when reading from a file.  I passed the
+filename argument to my processCommands method with the special name
+"stdin" meaning System.in so I could decide whether or not to print
+prompt strings, but you are not required to do this if you don't want
+to. When you have this version working, <B>save a copy of it!</B><p>
+
+Next, test if the name of the command is "quit," and exit the program if
+it is.  When that works, you can also add the code for the "help"
+command.  Note that by using the system property, "line.separator" as
+shown in class, you can print a multi-line message with just one call to
+System.out.println().  If the command is neither "quit" nor "help",
+print an error message and continue reading commands.  When you have this
+version working, <B>save a copy of it!</B><p>
+
+Now you are ready to start linking your program to the other class files
+I have supplied.  You needed all seven of my class files to try out the
+program at the beginning, but so far you haven't needed any of them to
+make your own program work.  From now on, be sure there are copies of my
+class files in your project directory as you work.  (It doesn't matter
+whether you have a copy of <CODE>Vickery_UI.class</CODE> any more
+because you are replacing it with your own program.<p>
+
+You should examine the [&nbsp;<a HREF="docs">documentation for my class
+files</A>&nbsp;] before proceding.  In particular, look at the
+documentation for classes [&nbsp;<a
+HREF="docs/Drawing.html">Drawing</A>&nbsp;] and [&nbsp;<a
+HREF="docs/DrawingException.html">DrawingException</A>&nbsp;].  The
+following description assumes you will be familiar with those files.<p>
+
+The first command you need to implement after quit and help is "new." 
+If the user enters a new command, make sure there were exactly three
+tokens on the command line. (That means <I>countTokens()</I> should
+return a value of 2 after you use <I>nextToken()</I> to get the command
+name.)  Use <I>Integer.parseInt()</I> to convert the two tokens from
+<CODE>String</CODE>s to <CODE>int</CODE>s.  This method will throw a
+NumberFormatException if the string passed to it is not a valid number,
+so you have to catch this exception and print an error message (to
+System.err) it that happens.  Once you have the numeric values for the
+width and height, create a new CDrawing object, passing the width and
+height as parameters to the constructor.  To make the new drawing
+appear in your window, just pass a reference to the drawing object to
+<I>System.out.print()</I>.  (This works by calling the object's
+<I>toString()</I> method.)  When you have this version working, <B>save
+a copy of it!</B><p>
+
+Next add the code to recognize and implement the "line." command.  This
+command must be followed by four numeric tokens, which are to be passed
+to the drawing's <I>drawLine()</I> method.  You don't have to do any
+checking of the values the user supplies for the four numbers because
+<I>drawLine()</I> will check to be sure they are legitimate.  If not,
+<I>drawLine()</I> will throw a DrawingException exception, which you
+must catch.  The DrawingException object that is thrown will have a 
+String associated with it giving the coordinate that was invalid.  You
+are to get a copy of this String for building an appropriate error
+message by calling the exception object's <I>getMessage()</I> method. 
+When you have this version working, <B>save a copy of it!</B><p>
+
+Now add the code for the "rectangle" and "circle" commands.  You have
+to handle DrawingExceptions for these commands too.  When you have this
+version working, <B>save a copy of it!</B><p>
+
+
+Use the <I>hide()</I>, <I>show()</I>, and <I>clear()</I> methods to
+implement the corresponding commands.  These methods do not throw
+exceptions.  When you have this version working, <B>save a copy of
+it!</B><p>
+
+Implement the "list" command by printing the String returned by the
+<I>listItems()</I> method.  When you have this version working, <B>save
+a copy of it!</B><p>
+
+<blockquote><I> The select and erase commands use an integer argument
+typed by the user. From the user's perspective, this number should be
+between one and the number of elements currently in the drawing to
+correspond to the output of the list command.  But the methods in class
+Drawing require these numbers to use zero to refer to the first
+element, not one.  You have to subtract one from the value the user
+types.</I></blockquote>
+
+Implement the "select" command by converting the token on the command
+line to an int and passing it to <I>highlightItem()</I>.  Be sure to
+handle a DrawingException if it occurs.  When you have this
+version working, <B>save a copy of it!</B><p>
+
+Implement the "erase" command as follows:  If there is a token after
+the command, convert it to an int and pass the int to
+<I>deleteItem()</I>.  Handle a DrawingException if it is thrown.  If
+there is no toke after the command call the version of
+<I>deleteItem()</I> that does not take an argument.  Handle a
+DrawingException if it is thrown.  When you have this version working,
+<B>save a copy of it!</B><p>
+
+Implement the "win" command by creating an object of class GDrawing
+instead of CDrawing.  When you have this version working, <B>save it!</B><p>
+
+Test your program carefully to be sure it handles all normal conditions
+properly and prints good messages for all error conditions.  Remember,
+the only error checking you have to do when processing commands is to
+make sure the user has typed a valid command name and the correct number
+of tokens depending on which command name was typed.  All other errors
+are detected by class Drawing (or one of its subclasses), and you have
+to catch the thrown  DrawingException when this occurs. 
+DrawingException objects always have a String that you can get by
+calling <I>getMessage()</I>, which you should use in general to make
+your error messages more meaningful.<p>
+
+Double check the @author, @param, and @return tags in your javadoc
+comments before submitting your project.<p>
+
+<HR></BODY></HTML>

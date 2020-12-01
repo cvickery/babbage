@@ -1,0 +1,128 @@
+<HTML><HEAD><TITLE>CB_move.java</TITLE></HEAD><BODY><PRE>
+//  CB_move.java
+
+import java.util.StringTokenizer;
+
+//  class CB_move
+//  ----------------------------------------------------------------
+/**
+  *   Processes move commands by finding out from/to squares,
+  *   validating, and moving piece.
+  *
+  *   @author C. Vickery
+  *
+  */
+  class CB_move extends CB_Processor {
+
+
+    //  Constructor
+    //  -----------
+    public CB_move() { setName( "move" ); }
+
+
+    //  process()
+    //  ---------
+    /**
+      *   Performs various checks to make sure the proposed move
+      *   adheres to the rules of checkers.
+      *
+      *   Handles jumping and kinging.
+      */
+    public void process( StringTokenizer st, Checkerboard cb )
+        throws CBException {
+
+    String  tkn;
+    int     val, r1, c1, r2, c2;
+
+      //  Check command syntax
+      if ( st.countTokens() != 2 ) {
+
+        throw new CBException( "Usage: move <from> <to>");
+
+        }
+
+      //  Check from/to squares are on-board and black.
+
+      tkn = st.nextToken();
+      try {
+
+        val = Integer.parseInt( tkn );
+        r1 = val / 10; c1 = val % 10;
+        r1--; c1--;
+        if ( !cb.validate( r1, c1 ) ) return;
+        tkn = st.nextToken();
+        val = Integer.parseInt( tkn );
+        r2 = val / 10; c2 = val % 10;
+        r2--; c2--;
+        if ( !cb.validate( r2, c2 ) ) return;
+
+        }
+
+      catch ( NumberFormatException e ) {
+
+        throw new CBException(
+          "Error: \"" + tkn + "\" is not a number." );
+
+        }
+        
+
+      //  Try to pick up the piece on the source square.
+      val = cb.pickUp( r1, c1 );
+
+      if ( val == 0 ) {
+
+        throw new CBException(
+          "There is no piece to pick up at " + (r1+1)+(c1+1) + ".");
+
+        }
+
+      //  Be sure target is not occupied
+      if ( Checkerboard.NO_PIECE != cb.occupant( r2, c2 ) ) {
+
+        cb.addPiece( val, r1, c1 );  // Restore piece to starting pos.
+        throw new CBException(
+          "Cannot move to " + (r2+1)+(c2+1) + " because it is occupied.");
+
+        }
+
+      if ( cb.isMove( val, r1, c1, r2, c2 ) ) {
+
+        //  Make the move
+        cb.addPiece( val, r2, c2 );
+        //  Check for king
+        if ( cb.isPawn( val ) && r2 == cb.kingRow( val ) ) {
+          cb.addPiece( val, r2, c2 );
+          }
+        return;
+        }
+
+      if ( cb.isJump( val, r1, c1, r2, c2 ) ) {
+
+        int jr = ( r2 > r1 ) ? r1 + 1 : r1 - 1;
+        int jc = ( c2 > c1 ) ? c1 + 1 : c1 - 1;
+        
+        if ( (cb.isBlack( val ) &&
+              !cb.isBlack( cb.occupant( jr, jc ) ) ) ||
+             (!cb.isBlack( val ) &&
+              cb.isBlack( cb.occupant( jr, jc ) ) ) ) {
+
+          // Make the jump
+          cb.addPiece( val, r2, c2);
+          cb.pickUp( jr, jc );
+          if ( cb.isPawn( val ) && r2 == cb.kingRow( val ) ) {
+            cb.addPiece( val, r2, c2 );
+            }
+          return;
+          }
+
+        }
+
+      cb.addPiece( val, r1, c1 );
+      throw new CBException( "No valid move or jump from " +
+        (r1+1)+(c1+1 ) + " to " + (r2+1)+(c2+1) + "." );
+
+      }
+
+    }
+
+</PRE></HR></HTML>

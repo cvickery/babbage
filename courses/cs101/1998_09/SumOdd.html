@@ -1,0 +1,78 @@
+<HTML><HEAD><TITLE>SumOdd.java</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>SumOdd.java</H1>
+</center>
+<PRE>
+//  SumOdd.java
+//
+//    Sum the odd columns of a matrix
+//    This was the problem for Quiz 1, Spring 1998
+//
+
+import java.io.*;
+
+//  Class SumOdd
+//  -------------------------------------------------------------------
+/**
+  *   Uses sumodd method to add up the values in the odd-
+  *   numbered columns of a doubly-scripted array.
+  *
+  *   @author C. Vickery
+  *
+  */
+
+  public class SumOdd {
+
+  //  main()
+  //  ---------------------------------------------------------------
+  /**
+    *   Uses sumOdd() to add the values in the odd-numbered columns
+    *   of a ragged array, and prints the result.
+    */
+    public static void main( String[] args ) {
+
+    int[][] anArray = {
+
+      { 1,  2,  3,  4,  5             },
+      { 6,  7,  8,  9, 10, 11         },
+      {12, 13, 14, 15                 },
+      {16, 17, 18, 19, 20, 21, 22, 23 },
+      {24, 25, 26, 27                 },
+
+      };
+
+      //  Do the calculation and show the result
+      System.out.println( "The sum is " + sumOdd( anArray ) );
+      System.exit( 0 );
+
+      }
+
+  //  sumodd()
+  //  ---------------------------------------------------------------
+  /**
+    *   Sums the values in the odd-numbered columns of a matrix.
+    *
+    */
+    static int sumOdd(int[][] x) {
+
+    int sum = 0;
+
+      for ( int row = 0; row < x.length; row++ ) {
+
+        for (int col = 1; col < x[row].length; col += 2 ) {
+
+          sum += x[ row ][ col ];
+
+        }
+
+      }
+
+
+      return sum;
+
+    }
+
+  }
+</PRE>
+<HR></BODY></HTML>

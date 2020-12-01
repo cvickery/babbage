@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Enumeration and Vectors</TITLE>
+<META NAME="Version" CONTENT="8.0.4308">
+<META NAME="Date" CONTENT="7/8/97">
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\HTML.DOT">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<B><FONT FACE="Arial" SIZE=4><P ALIGN="CENTER">Enumerations and Vectors</P>
+</FONT><I><FONT FACE="Arial"><P>Introduction</P>
+</B></I></FONT><P>In [ <A HREF="http://babbage.cs.qc.edu/courses/cs101/1998_02/Lecture_Notes_10">Lecture Notes 10</A> ] I showed you how to read a list of words from a file into a <CODE>Vector </CODE>and to use an <CODE>Enumeration</CODE> to list the words when finished. In essence, it looked something like this:</P>
+<PRE>     while ( (inBuf = r.readLine()) != null ) {
+       wordList.addElement( inBuf );
+       }
+      . . .
+     Enumeration e = wordList.elements();
+     while ( e.hasMoreElements() ) {
+       System.out.println( e.nextElement() );
+     }</PRE>
+<P>But I wasn't clear about how a <CODE>Vector</CODE> could return an <CODE>Enumeration</CODE> without implementing the <CODE>Enumeration</CODE> interface. Here is the source code for the <I>elements()</I> method in class <CODE>Vector</CODE>:</P>
+<PRE>
+     public final synchronized Enumeration elements() {
+       return new VectorEnumerator(this);
+       }</PRE>
+<P>And here is the code for the <CODE>VectorEnumerator</CODE> class, slightly simplified:</P>
+<PRE>
+     final
+     class VectorEnumerator implements Enumeration {
+
+     Vector  vector;
+     int     count;
+
+       VectorEnumerator(Vector v) {
+         vector  = v;
+         count   = 0;
+         }
+
+       public boolean hasMoreElements() {
+         return count &lt; vector.size();
+         }
+
+       public Object nextElement() {
+         if ( count &lt; vector.size() ) {
+           return vector.elementData[ count++ ];
+           }
+         throw new NoSuchElementException( "VectorEnumerator" );
+         }
+       }</PRE>
+<P>(This code is distributed with the JDK from Sun, but might not be installed on the computer you are using. It's in <CODE>...\jdk1.1.5\src\java\util\Vector.java</CODE> if it was installed when the JDK was set up.)</P>
+<P>The idea of this document is to make the <CODE>Enumeration</CODE> interface clearer by showing an example of a class that implements the <CODE>Enumeration</CODE> interface, namely the <CODE>VectorEnumerator</CODE> class.</P>
+<B><I><FONT FACE="Arial"><P>Discussion</P>
+</B></I></FONT><P>When you call the <I>elements()</I> method for a <CODE>Vector</CODE>, you get back a reference to a <CODE>VectorEnumerator</CODE>, with its local variable, <CODE>vector</CODE>, being a reference to your <CODE>Vector</CODE>, and its local variable <CODE>count</CODE> set to zero. When you call this Enumeration's <I>hasMoreElements()</I> method, it returns <CODE>true</CODE> if <CODE>count</CODE> is less than the number of elements in the vector, and <CODE>false</CODE> otherwise. When you call its <I>nextElement()</I> method, it returns the object at position <CODE>count</CODE> in the array of objects named <CODE>elementData</CODE>, which is the array that contains the elements of your <CODE>Vector</CODE> object. In addition, <I>nextElement()</I> increments <CODE>count</CODE> to get ready for the next call to <I>hasMoreElements()</I> or <I>nextElement()</I>. Finally, <I>nextElement()</I> also checks the current value of <CODE>count</CODE> before using it as an array subscript. If <CODE>count</CODE> is larger than the index of the last element in the array, the return statement doesn't get executed, and the method throws an <CODE>Exception</CODE> object to indicate the problem.</P>
+<B><I><FONT FACE="Arial"><P>Consider This</P>
+</B></I></FONT><P>Class <CODE>Direction</CODE> is not very well designed. Programmers using the class have to know that Directions are really integers between 0 and 7, and the arrays <CODE>deltaX</CODE> and <CODE>deltaY</CODE> are designed for use with code that needs to change row and column numbers in order to step through different directions, perhaps using code that looks like this:</P>
+<PRE>     for ( int d = 0; d &lt; 8; d++) {
+       newRow = curRow + Direction.deltaY[ d ];
+       newCol = curCol + Direction.deltaX[ d ];
+       . . . // See if the word starts at newRow/newCol.  If so:
+       return new Answer( newRow, newCol, new Direction( d ) );
+       }</PRE>
+<P>Think about how you might write a class that would let a programmer use an Enumeration to replace the for loop. If the class were named <CODE>DirectionEnumeration</CODE>, it might be used like this:</P>
+<PRE>     Direction d;
+     DirectionEnumeration de = new DirectionEnumeration();
+     while ( d.hasMoreElements() ) {
+       d = de.nextElement();
+       newRow = Direction.deltaY( curRow, d );
+       newCol = Direction.deltaX( curCol, d );
+       . . .// See if the word starts at newRow/newCol.  If so:
+       return new Answer( newRow, newCol, d );
+       }</PRE>
+<P>Which code is clearer? Which code is more efficient?</P>
+<P><HR></P></BODY>
+</HTML>

@@ -1,0 +1,407 @@
+<HTML><HEAD><TITLE>MP3_Library.java</TITLE></HEAD><BODY>
+<CENTER><H1>MP3_Library.java</H1></CENTER><HR><PRE>
+//  MP3_Library.java
+
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
+
+//  Class MP3_Library
+//  ------------------------------------------------------------------
+/**
+  *   An MP3 Library is a collection of MP3 files and information
+  *   about them. A library file consists of text lines, the first of
+  *   which must be the magic word, "#QCMP3LIB."  Other lines are the
+  *   complete pathnames of MP3 files.&lt;P>
+  *   This class provides static methods for verifying that a
+  *   File is a valid Queens College MP3 Library file and for creating
+  *   a new library file on disk.&lt;P>
+  *   MP3_Libary objects augment each file name with information
+  *   extracted from the first MPEG audio frame in the file, plus any
+  *   ID3 tag information found in the file.&lt;P>
+  *   This class can be used to construct TableModel objects for
+  *   JTables.
+  *
+  *     @author   C. Vickery
+  *     @version  Version 3e - December 1999
+  *
+  */
+  public class MP3_Library extends AbstractTableModel
+  {
+
+  /** OS-dependent end of line string                                */
+  private static final String NL = System.getProperty( 
+                                                    "line.separator" );
+  /** The magic word at the beginning of library files               */
+  private static final String magicWord = "#QCMP3LIB" + NL;
+
+  //  Instance Variables
+  /** The Library File */
+  private boolean   changed     = false;
+  private File      libraryFile = null;
+  private Vector    files       = new Vector(); //  List of MP3_Files
+
+  //  TableModel variables
+  /** The names of the column headings.                             */
+  private String[]  colNames    = {
+                                    "Artist",
+                                    "Title",
+                                    "MP3 File Name"
+                                  };
+  //  There's gotta be a better way ...
+  /** Index of the "Artist" column heading.                         */
+  private static final int  ARTIST_NAME = 0;
+  /** Index of the "Title" column heading.                          */
+  private static final int  SONG_TITLE  = 1;
+  /** Index of the "MP3 File Name" column heading.                  */
+  private static final int  FILE_NAME   = 2;
+
+
+  //  Static Methods
+  //  =================================================================
+
+  //  Static Method isLibraryFile()
+  //  -----------------------------------------------------------------
+  /**
+    *   Tests whether a file is a valid QC MP3 Library.
+    *
+    *     @param f The file to be tested.
+    *     @return true if the file is a valid QC MP3 Library.
+    */
+    public static boolean isLibraryFile( File f )
+    {
+      try
+      {
+        if ( f != null && f.isFile() && f.canRead() )
+        {
+          byte[] id = new byte[ magicWord.length() ];
+          FileInputStream fis = new FileInputStream( f );
+          fis.read( id, 0, magicWord.length() );
+          return magicWord.equals( new String( id ) );
+        }
+      }
+      catch (IOException e ) {}
+      return false;
+    }
+
+
+  //  Static Method initializeLibraryFile()
+  //  ----------------------------------------------------------------
+  /**
+    *   Initializes a file so it is a valid QC MP3 Library file.
+    *
+    *     @param f The file to be initialized.  If it does not exist it
+    *     will be created.  If it does exist, it will be overwritten.
+    *
+    */
+    public static void initializeLibraryFile( File f )
+                                                     throws IOException
+    {
+      FileWriter fw = new FileWriter( f );
+      fw.write( magicWord );
+      fw.close();
+    }
+
+
+  //  TableModel Methods
+  //  =================================================================
+
+  //  Method getColumnCount()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the number of columns to display.
+    *   Part of the TableModel interface.
+    *   @return The number of columns.
+    */
+    public int getColumnCount()
+    {
+      return colNames.length;
+    }
+
+  //  Method getRowCount()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the number of MP3 files in the library.
+    *   Part of the TableModel interface.
+    *   @return The number of rows.
+    */
+    public int getRowCount()
+    {
+      return files.size();
+    }
+  
+  //  Method getColumnName()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the String to be used as a column heading.
+    *   Part of the TableModel interface.
+    *
+    *   @param  col Which column heading to return.
+    *   @return The title of column number col (leftmost is number 0).
+    */
+    public String getColumnName( int col )
+    {
+      return colNames[ col ];
+    }
+
+  //  Method getValueAt()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the value of a particular cell to be displayed; the
+    *   type depends on which column is asked for.
+    *   Part of the TableModel interface.
+    *
+    *   @param  row Which MP3_File object.
+    *   @param  col Which piece of information about the MP_3 file.
+    *   @return The object stored at (row,col).
+    */
+    public Object getValueAt( int row, int col )
+    {
+      MP3_File    file  = (MP3_File) files.elementAt( row );
+      ID3V1_Info  id3v1 = file.getID3V1Info();
+      switch ( col )
+      {
+        case  FILE_NAME:
+                          return files.elementAt( row );
+        case  SONG_TITLE:
+                          if ( id3v1 != null )
+                            return id3v1.getTitle();
+                          else
+                            return "";
+        case  ARTIST_NAME:
+                          if ( id3v1 != null )
+                            return id3v1.getArtist();
+                          else
+                            return "";
+        default:
+                          return null;
+      }
+    }
+
+
+
+  //  Instance Methods
+  //  =================================================================
+
+  //  Constructor
+  //  -----------------------------------------------------------------
+  /**
+    *   Initializes an MP3_Library.  If the disk file does not exist,
+    *   it will be initialized.
+    *
+    *     @param  f The library file.
+    *     @throws InvalidLibraryFileException if f exists and is not a
+    *             valid QC  MP3 Library file or if f is null.
+    */
+    public MP3_Library( File f )    throws InvalidLibraryFileException
+    {
+
+    BufferedReader  br;
+    String          aFileName;
+
+      if ( f == null )
+      {
+        throw new InvalidLibraryFileException(
+                                              "null File reference" );
+      }
+
+      libraryFile = f;
+      try
+      {
+        if ( f.exists() )
+        {
+          if ( !isLibraryFile( f ) )
+          {
+            throw new InvalidLibraryFileException(
+                                       "Not readable or bad format" );
+          }
+          br = new BufferedReader( new FileReader( f ) );
+          br.readLine();  // skip the magic word
+          while ( null != ( aFileName = br.readLine() ) )
+          {
+            aFileName = aFileName.trim();
+            try
+            {
+              if (  ! aFileName.equals( "" ) &&  // Ignore blank lines
+                    ! aFileName.startsWith( "#" ) ) // Ignore comments
+              {
+                files.add( new MP3_File( aFileName ) );
+              }
+            }
+            catch ( Exception e )
+            {
+              JOptionPane.showMessageDialog(
+                null,
+                "Ignoring " + aFileName + " in library " +
+                  f.getName() + ": " + e.getMessage(),
+                 "Ignoring entry in library file",
+                 JOptionPane.WARNING_MESSAGE );
+            }
+          }
+        }
+        else
+        {
+          initializeLibraryFile( f );
+        }
+
+      }          
+      catch ( Exception e )
+      {
+        throw new InvalidLibraryFileException( "MP3_Library: " +
+                                                     e.getMessage() );
+      }
+
+    }
+
+
+  //  Method add()
+  //  ----------------------------------------------------------------
+  /**
+    *   Adds a File to the library, if it represents a valid MP3 file
+    *   and is not already in the library.
+    *
+    *     @param  f The file to be added.
+    *     @return false if the file is not a valid MP3 file.
+    */
+    public boolean add( File f ) throws Invalid_MPEG_FileException
+    {
+    MP3_File candidate = null;
+
+      candidate = new MP3_File( f );
+
+      if ( ! files.contains( candidate ) )
+      {
+        files.add( candidate );
+        fireTableRowsInserted( files.size() - 1, files.size() - 1 );
+        changed = true;
+        return true;
+      }
+
+      return false;
+
+    }
+
+
+  //  Method write()
+  //  ----------------------------------------------------------------
+  /**
+    *   Writes the names of all the files in the library to the
+    *   library file.
+    *
+    *     @throws IOException if writing fails.
+    */
+    public void write() throws IOException
+    {
+    FileWriter fw = new FileWriter( libraryFile );
+      fw.write( magicWord );
+      Iterator iter = iterator();
+      while ( iter.hasNext() )
+      {
+        MP3_File mp3 = (MP3_File) iter.next();
+        fw.write( mp3 + NL );
+      }
+      fw.close();
+      changed = false;
+    }
+
+
+  //  Method clear()
+  //  --------------------------------------------------------------
+  /**
+    *   Removes all files from the library.
+    *
+    */
+    public void clear()
+    {
+      if ( files.size() > 0 )
+      {
+        files.clear();
+        changed = true;
+      }
+    }
+
+
+  //  Method isChanged()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns true if the library file has changed since last being
+    *   written to disk.
+    *
+    *   @return true if the file has changed since last disk update.
+    */
+    public boolean isChanged()
+    {
+      return changed;
+    }
+
+
+  //  Method getFile()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns a reference to the library file.
+    *   @return Reference to a File object for the library file.
+    */
+    public File getFile()
+    {
+      return libraryFile;
+    }
+
+
+  //  Method getFileName()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the name of the library file.
+    *   @return The name of the library file.
+    */
+    public String getFileName()
+    {
+      return libraryFile.getName();
+    }
+
+
+  //  Method toString()
+  //  ----------------------------------------------------------------
+  /**
+    *   Generates a printable list of all the files in the library.
+    *
+    *   @return The printable String.
+    */
+    public String toString()
+    {
+    StringBuffer sb = new StringBuffer(
+                                 libraryFile.getAbsolutePath() + NL );
+    Iterator it = files.iterator();
+    
+     while ( it.hasNext() )
+     {
+        sb.append( "  " + it.next() + NL );
+     }
+     return new String( sb );
+    }
+
+
+  //  Method iterator()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns a reference to a class that can be used to iterate
+    *   over the MP3_File objects in the library.
+    *
+    *     @return  An object that implements the Iterator interface.
+    */
+    public Iterator iterator()
+    {
+      return new Iterator()
+      {
+        //  Anonymous class implements the Iterator interface
+        int index = 0;
+        public boolean  hasNext()     { return index &lt; files.size(); }
+        public Object   next()  { return files.elementAt( index++ ); }
+        public MP3_File nextMP3_File()   { return (MP3_File) next(); }
+        public void     remove() { if ( index > 0 )
+                                   files.removeElementAt( --index ); }
+      };
+    }
+  }
+
+</PRE><HR></BODY></HTML>

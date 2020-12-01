@@ -1,0 +1,62 @@
+<HTML><HEAD><TITLE>ColorCycle.java</TITLE></HEAD><BODY>
+<CENTER><H1>ColorCycle.java</H1></CENTER><HR><PRE>
+
+// ColorCycle.java
+
+import java.awt.*;
+import java.awt.event.*;
+
+//  Class ColorCycle
+//  -------------------------------------------------------------------
+/**
+  *   Displays a cycle of colors as the user makes successive
+  *   clicks in a Panel
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class ColorCycle extends Frame {
+
+  int i = 0;
+  Color[] colors={  Color.red, Color.green, Color.blue,
+                    Color.black, Color.white };
+
+  //  main()
+  //  -----------------------------------------------------------------
+  /**
+    *   Instantiates the Frame.
+    *
+    */
+    public static void main(String[] argv) {
+      new ColorCycle( "Click to Change Colors" ).init();
+    }
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+    public ColorCycle( String title ) {
+      super( title );
+    }
+  //  init()
+  //  -----------------------------------------------------------------
+  /**
+    *   Initializes the user interface.
+    *
+    */
+    public void init() {
+
+    final Panel p = new Panel();
+
+      add( p, "Center");
+      p.addMouseListener(new MouseAdapter() {
+        public void mouseClicked( MouseEvent me ) {
+          p.setBackground( colors[i++] );
+          i %= colors.length;
+          } } );
+    setSize( 300, 200 );
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    setLocation( screen.width/2 - 150, screen.height/2 - 100 );
+    show();
+  }
+}
+
+</PRE><HR></BODY></HTML>

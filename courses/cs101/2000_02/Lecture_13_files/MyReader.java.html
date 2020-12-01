@@ -1,0 +1,127 @@
+<HTML><HEAD><TITLE>MyReader.java</TITLE></HEAD><BODY>
+<CENTER><H1>MyReader.java</H1></CENTER><HR><PRE>
+//  MyReader.java
+
+import java.io.*;
+import java.util.*;
+
+//  Class MyReader
+//  -------------------------------------------------------
+/**
+  *   Illustrates implementing an interface, in this case
+  *   java.util.Iterator.  Can be used to read lines from a
+  *   text file.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring 2000
+  */
+  public class MyReader                 implements Iterator
+  {
+    private int             linesReturned = 0;
+    private BufferedReader  br;
+    private String          inBuf;
+
+  //  Constructor
+  //  -----------------------------------------------------
+  /**
+    *   Uses f to create a BufferedReader and reads the
+    *   first line from the file.
+    */
+    public MyReader( File f )            throws IOException
+    {
+      FileReader fr = new FileReader( f );
+      br = new BufferedReader( fr );
+      inBuf = br.readLine();
+    }
+
+  //  Accessor Methods
+  //  =====================================================
+
+  //  getLinesReturned()
+  //  -----------------------------------------------------
+  /**
+    *   Tells how many times next() has been called.
+    *
+    *   @return The count of how many lines have been
+    *           returned by next();
+    */
+    public int  getLinesReturned()
+    {
+      return linesReturned;
+    }
+
+  //  Implement Interface Iterator
+  //  =====================================================
+
+  //  Method hasNext()
+  //  -----------------------------------------------------
+  /**
+    *   Tells whether there are more lines to read in the
+    *   file.
+    *
+    *   @return true if there is at least one more line
+    *           available in the file.
+    */
+    public boolean hasNext()
+    {
+      if ( inBuf == null )
+      {
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+      //  Compact version of 8 previous lines:
+      //  return inBuf != null;
+    }
+
+  //  Method next()
+  //  -----------------------------------------------------
+  /**
+    *   Returns the next line from the file.
+    *
+    *   @return A String containing the next line from
+    *           the file, or null if there are no more
+    *           lines.
+    */
+    public Object next()
+    {
+      Object theLine = inBuf; //  The line to return.
+      try
+      {
+        inBuf = br.readLine();
+      }
+      catch ( IOException ioe )
+      {
+        inBuf = null;   // So hasNext() will return false
+      }
+      if ( inBuf != null )
+      {
+        //  Count only real lines.
+        linesReturned++;
+      }
+      return theLine;
+    }
+
+  //  Method remove()
+  //  -----------------------------------------------------
+  /**
+    *   Does nothing.  A subclass could override this
+    *   method to remove the last line read from the
+    *   file, but this class does not provide that
+    *   capability.
+    *
+    *   This method is provided only because it is required
+    *   by the Iterator interface.
+    *
+    *   @return Void.
+    */
+    public void remove()
+    {
+      //  Does nothing!
+    }
+
+  }
+
+</PRE><HR></BODY></HTML>

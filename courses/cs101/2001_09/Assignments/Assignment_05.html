@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org">
+<title>Assignment 5</title>
+<style type="text/css">
+body { font-family: sans-serif; media="screen"; }
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<center>
+<h1>Assignment 5</h1>
+</center>
+
+<h2>Introduction</h2>
+
+This is a continuation of Assignment 4, in which you developed
+classes ClassFile and ConstantPoolEntry. If you were not able to
+complete Assignment 4 successfully, you may use my code for that
+assignment to use as the basis for this assignment:
+
+<ul>
+  <li>ClassFile.java</li>
+
+  <li>ConstantPoolEntry.java</li>
+
+  <li>ClassFileException.java</li>
+
+  <li>ConstantPoolTags.java</li>
+
+  <li>AccessFlags.java</li>
+
+  <li>AttributeInfo.java</li>
+
+  <li>MethodInfo.java</li>
+
+  <li>FieldInfo.java</li>
+</ul>
+
+You can get these files in both "source" (.java files) and
+"compiled" (.class files) by downloading the two jar files listed
+below (modified 12/10/2001):
+
+<ul>
+  <li>[&nbsp;<a href=
+      "Assignment_05/Vickery_Sources_04.jar">Vickery_Sources_04.jar</a>&nbsp;]</li>
+
+  <li>[&nbsp;<a href=
+      "Assignment_05/Vickery_Classes_04.jar">Vickery_Classes_04.jar</a>&nbsp;]</li>
+</ul>
+
+(How to download these binary files depends on what version of what Web
+Browser you are using. Sometimes you have to right-click on the link,
+or hold shift while clicking -- post questions to the Discussion Board
+if you have trouble.)
+
+<p>My code includes skeleton versions of AttributeInfo, MethodInfo,
+and FieldInfo that would need to be fleshed out in order to build a
+complete class file explorer, but which we won't have time to
+complete this semester.</p>
+
+<h2>This Assignment</h2>
+
+Your assignment is to write two classes, named ClassFileExplorer and
+ClassFileWindow, which together will provide a Graphical User Interface
+for objects of class ClassFile.
+
+<h2>ClassFileExplorer</h2>
+
+This class is to provide a single main window for managing various
+subwindows, one for each ClassFile object being explored.  This main
+window and all the subwindows are to be subclasses of class JFrame,
+which means that they will all appear as top-level windows on the user's
+desktop.<p>
+
+<h3>Menus</h3>
+
+The ClassFileExplorer window is to have a menu bar with two menus: a
+File menu and a Help menu.  The File menu is to have two menu items: a
+New menu item, and an Exit menu item.  The Help menu is to have one menu
+item, an About menu item.<p>
+
+<ul>
+
+  <li>The user should be able to exit the application by clicking on
+  either the Close Window button (the one with an X in it on the right
+  side of the window's title bar) or by clicking on the File->Exit menu
+  item.</li>
+
+  <li>The File->New menu item should present the user with a
+  JFileChooser, which can be used to select a new class file to explore
+  in addition to whatever other class files are already being
+  explored.</li>
+
+  <li>The File->About menu item should present the user with a JOptionPane
+  with a message telling the name of the program (Class File Explorer) on
+  one line, and your name on another line.</li>
+
+</ul>
+
+<h3>The Constructor</h3>
+
+Provide one constructor for ClassFileExplorer, which receives a
+reference to an object of class Vector (java.util.Vector).  The
+constructor should create the menu structure described above, and
+create a scrollable list of JCheckBox objects, one for each of the 
+ClassFile objects found in the Vector parameter passed to the
+constructor.  Each checkbox should be created using the string returned
+by the class file's <i>toString()</i> method as an argument to the
+constructor.  Put all the checkboxes in a JPanel that the user can
+scroll through using a JScrollPane.  Create a ClassFileWindow for each
+ClassFile.  When the user selects the checkbox for a class, its
+ClassFileWindow should appear on the screen; when the user deselects the
+class, its window should disappear.<p>
+
+<h3>The <i>main()</i> Method</h3>
+
+For testing purposes, provide class ClassFileExplorer with a main method
+which creates a new ClassFile object for each file name supplied on
+the <i>java</i> command line.   Add each ClassFile object created
+successfully to a java.util.Vector object.  Then pass the Vector to the
+constructor for a new ClassFileExplorer object.  The main thread can
+then return from <i>main()</i>, and the AWT will take over execution as
+discussed in class.
+
+<h2>ClassFileWindow</h2>
+
+This class is to be a subclass of JFrame which provides the user with a
+way of exploring the contents of a single class file.  If you have
+time, you may make this window as elaborate as you wish.  For this
+assignment, all that is required is for you to provide the constructor
+described below.
+
+<h3>The Constructor</h3>
+
+The constructor receives a reference to a ClassFile object, and uses the
+string returned by the ClassFile's <i>toString()</i> method as its
+title.  For this assignment, create a scrollable JTextArea, and append
+to it information that looks like the following, but with the actual
+information obtained from the ClassFile and its Constant Pool Table:
+
+<pre>
+    Minor Version: 3
+    Major Version: 45
+    Access Flags: 0x20 (special)
+    This Class: 1
+    Superclass: 3
+    Constant Pool: (33 entries)
+     0: null
+     1: CONSTANT_Class: 2
+     2: CONSTANT_Utf8 (19): ClassFileExplorer$4
+     3: CONSTANT_Class: 4
+     4: CONSTANT_Utf8 (16): java/lang/Object
+     5: CONSTANT_Class: 6
+     6: CONSTANT_Utf8 (29): java/awt/event/ActionListener
+     7: CONSTANT_Utf8 (6): this$0
+     8: CONSTANT_Utf8 (19): LClassFileExplorer;
+     9: CONSTANT_Utf8 (9): Synthetic
+     10: CONSTANT_Utf8 (15): actionPerformed
+     11: CONSTANT_Utf8 (31): (Ljava/awt/event/ActionEvent;)V
+     etc.
+</pre>
+
+The constructor should call <i>pack()</i> for the window, but it should
+<u>not</u> call <i>show()</i>.  The main window checkboxes will be used
+to show and hide the individual ClassFileWindows.
+
+<hr>
+</body>
+</html>
+

@@ -1,0 +1,52 @@
+<HTML><HEAD><TITLE>ClickAndDie_3.java</TITLE></HEAD><BODY>
+<CENTER><H1>ClickAndDie_3.java</H1></CENTER><HR><PRE>
+
+//  ClickAndDie_3.java
+
+import java.awt.*;
+import java.awt.event.*;
+
+//  Class ClickAndDie_3
+//  -------------------------------------------------------------------
+/**
+  *   Puts up a button the user can click on to exit the application;
+  *   Closing the window works too.  Uses anonymous classes for the
+  *   event listeners.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class ClickAndDie_3 extends Frame {
+
+    //  Constructor
+    public ClickAndDie_3( String title ) {
+      super( title );
+    }
+
+    //  main()
+    public static void main( String[] argv ) {
+      new ClickAndDie_3( " Click to Exit " ).init();
+    }
+
+    //  init()
+    public void init() {
+
+    Button b = new Button( "Farewell!" );
+
+      add( b, BorderLayout.CENTER );
+      b.addActionListener( new ActionListener() {
+        public void actionPerformed( ActionEvent ae ) {
+          System.exit( 0 ); } } );
+
+      addWindowListener( new WindowAdapter() {
+        public void windowClosing( WindowEvent we ) {
+          System.exit( 0 ); } } );
+
+    pack();
+    show();
+    }
+
+  }
+
+
+</PRE><HR></BODY></HTML>

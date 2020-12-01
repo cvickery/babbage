@@ -1,0 +1,437 @@
+<HTML> <HEAD> <META HTTP-EQUIV="Content-Type" CONTENT="text/html;
+charset=windows-1252"> <META NAME="Generator" CONTENT="Microsoft Word
+97"> <TITLE>MP3 Tags and Headers</TITLE> </HEAD>
+
+<H1 align=center>MP3 Tags and Headers</H1>
+
+<BODY LINK="#0000ff">
+
+<H2>Reading the Contents of a File</H2>
+
+<P>In Java, there are two categories of classes used to read information
+from files. If a file contains all characters (a &quot;text file&quot;)
+you use one of Java’s classes that has &quot;Reader&quot; as part of its
+name. But if the file is a stream of bytes, not all of which are
+necessarily characters, you use a class that has &quot;Stream&quot; in
+its name. MP3 files contain streams of bytes. Some of the bytes might be
+characters, but since not all of them are, you have to use a Stream
+class rather than a Reader class. Since the information is coming from a
+file, you would use a <FONT FACE="Arial">FileInputStream</FONT> for
+reading. If you have a <FONT FACE="Arial">File</FONT> object, <I>f</I>,
+you can create a <FONT FACE="Arial">FileInputStream</FONT> using this
+line of code:</P><DIR> <DIR>
+
+<FONT FACE="Arial"><P>FileInputStream fis = new FileInputStream( f );</P></DIR>
+</DIR>
+
+</FONT><P>There are several methods named <I>read()</I> that you can use
+to read bytes from a <FONT FACE="Arial">FileINputStream</FONT>. The most
+general one is:</P><DIR> <DIR>
+
+<FONT FACE="Arial"><P>int read( byte[] buf, int offset, int length );</P></DIR>
+</DIR>
+
+</FONT><P>This method will read the next <I>length</I> bytes from the
+file. The first time it is called, it will read starting at the
+beginning of the file, and successive calls will each pick up where the
+previous one left off. The <I>int</I> returned by this method is the
+actual number of bytes read. If you have gotten close to the end of the
+file and the value of <I>length</I> specifies more bytes than actually
+remain in the file, only the remaining bytes will be read and the value
+returned will be less than <I>length</I>; but normally the value
+returned will be the same as the value you used for <I>length.</I> The
+byte array, <I>buf</I>, is where the method will put the bytes it reads
+from the file. Be sure the array you supply is big enough to hold
+<I>length</I>-many bytes. Finally, <I>offset</I> can be used to tell
+which position in <I>buf</I> is to receive the first of the bytes read
+from the file. For example, the following code will read the next two
+bytes of the file into array elements <FONT
+FACE="Arial">inBuf[&nbsp;0&nbsp;]</FONT> and <FONT
+FACE="Arial">inBuf[&nbsp;1&nbsp;]</FONT>:</P>
+
+<DIR> <DIR>
+<FONT FACE="Arial"><P>fis.read( inBuf, 0, 2 );</P></DIR>
+</DIR>
+
+</FONT><P>But you could do the same thing like this:</P><DIR>
+<DIR>
+
+<FONT FACE="Arial"><P>fis.read( inBuf, 0, 1 );</P>
+<P>fis.read( inBuf, 1, 1 );</P></DIR>
+</DIR>
+</FONT>
+
+<P>The technique that uses one statement is more efficient, but
+as you will see below, sometimes you don’t want to read the second byte
+unless the first byte has some particular value.</P> <P>You can skip
+over bytes in a file without reading them by using <FONT
+FACE="Arial">FileInputStream</FONT>’s <I>skip() </I>method. For example,
+if you wanted to start reading a file starting 128 bytes from the end
+(see the section on ID3V1 tags below), you could use this, provided you
+haven’t read any bytes from the file yet:</P><DIR> <DIR>
+
+<FONT FACE="Arial"><P>fis.skip( f.length() - 128 );</P>
+<P>&nbsp;</P></DIR>
+</DIR>
+</FONT>
+
+<H2>MP3 Audo Frame Headers</H2>
+
+<P>An MP3 file has an audio stream that is encoded according to the
+specifications defined in a set of documents published by the Moving
+Pictures Expert Group (MPEG). The audio stream is divided into a
+sequence of <I>frames</I>, each of which represents a few milliseconds
+(thousandths of a second) of music. Exactly how much music is contained
+in each frame depends on the values of several parameters used by the
+algorithm that encodes the frame. These parameter values and some
+additional information are encoded in a block of four bytes at the
+beginning of each frame called an MP3 header. Since a byte is 8 bits,
+each header is 32 bits long.</P> <P>The following table shows how these
+bits are encoded. It assumes that <FONT FACE="Arial">inBuf </FONT>is an
+array of four bytes, but that only <FONT FACE="Arial">inBuf[ 0 ]</FONT>
+has been read from an MP3 file when the process of extracting the
+information from a header begins. Bit numbers are written in the form
+<FONT FACE="Arial">inBuf[ i ] m:n</FONT>, where <FONT
+FACE="Arial">i</FONT> is the index into <FONT FACE="Arial">inBuf</FONT>,
+and <FONT FACE="Arial">m</FONT> and <FONT FACE="Arial">n</FONT> are bit
+positions within the byte in <FONT FACE="Arial">inBuf[ i ]</FONT>. Bits
+within a byte are numbered from right to left, starting at zero.</P>
+<P>Information in this table was extracted from [&nbsp;<A
+HREF="http://www.dv.co.yu/mpgscript/mpeghdr.htm">
+http://www.dv.co.yu/mpgscript/mpeghdr.htm</A>&nbsp;], which provides
+additional information about some of these fields. Note, however, that
+the information does not come from the MPEG standards documents, so it
+may not be completely accurate.</P>
+
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=590>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<B><P>Name of Field</B></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<B><P>Bit Numbers</B></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<B><P>Code to Extract</B></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<B><P>Meaning</B></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Frame Sync</P>
+</FONT>
+
+<P>A frame can, in principle, start at an arbitray byte offset into the
+audio stream. The beginning of a frame header is indicated by 11 ones,
+starting at the beginning of a byte.</TD>
+
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 0 ] 0:7</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>InBuf[ 0 ]</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial">
+
+<P>Since the first 11 bits of a header are all 1s,
+inBuf[</FONT>&nbsp;<FONT FACE="Arial">0</FONT>&nbsp;] must have a
+decimal value of 255, which is eight ones in binary.</TD>
+
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Frame Sync </FONT><I>continued</I></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 1 ] 5:7</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(InBuf[ 1 ] &gt;&gt; 5) &amp; 7</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+
+<P>If <FONT FACE="Arial">inBuf[ 0 ]</FONT> is 255, and if the first
+three bits of the next byte have the value 7 (three 1s in binary), the
+beginning of a valid MP3 header has been found.</TD>
+
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Audio Version (phase)</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 1 ] 3:4</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(inBuf[ 1 ] &gt;&gt;3) &amp; 3</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>The next two bits tell the MPEG version:</P>
+
+<UL>
+<LI>0 = MPEG-2.5 (a non-standard extension to MPEG-2)</LI>
+<LI>1 = reserved</LI>
+<LI>2 = MPEG-2</LI>
+<LI>3 = MPEG-1</UL>
+</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Layer</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 1 ] 1:2</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(inBuf[ 1 ] &gt;&gt; 1) &amp; 3</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>The next two bits tell the layer:</P>
+
+<UL>
+<LI>0 = reserved</LI>
+<LI>1 = Layer III</LI>
+<LI>2 = Layer II</LI>
+<LI>3 = Layer I</UL>
+</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Protection Bit</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 1 ] 0</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>InBuf[ 1 ] &amp; 1</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+
+<P>If this bit is 0, the header is followed by two bytes of error
+detection bits before the audio data starts.</TD>
+
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Bit Rate Index</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 2 ] 4:7</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(InBuf[ 2 ] &gt;&gt; 4) &amp; 15</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>The next four bits are a row index into a doubly subscripted arry of bit rates.</P>
+<P>See note below.</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Sampling Rate Index</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 2 ] 2:3</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(inBuf[ 2 ] &gt;&gt;) &amp; 3</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>For MPEG-1, the values are as follows:</P>
+
+<UL>
+<LI>0 = 44,100 Hz</LI>
+<LI>1 = 48,000 Hz</LI>
+<LI>2 = 32,000 Hz</LI>
+<LI>3 = reserved</UL>
+</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Padding Bit</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>InBuf[ 2 ] 1</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(inBuf[ 2 ] &gt;&gt; 1) &amp; 1</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+
+<P>If this bit is a 1 and the layer is III, the frame has an extra
+(unused) byte at the end. For layers I and II the padding amount, if
+present, is four bytes.</TD>
+
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Private Bit</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 2 ] 0</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>InBuf[ 2 ] &amp; 1</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>Different programs can interpret this bit different ways.</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Channel Mode</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 3 ] 6:7</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(inBuf[ 3 ] &gt;&gt; 6) &amp; 3</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>This two bit code tells whether the information is in stereo or not:</P>
+
+<UL>
+<LI>0 = Stereo</LI>
+<LI>1 = Joint Stereo</LI>
+<LI>2 = Dual Channel</LI>
+<LI>3 = Single Channel</UL>
+</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Mode Extension</P>
+</FONT><P>(Only if Joint Stereo)</TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 3 ] 4:5</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(inBuf[ 3 ] &gt;&gt; 4) &amp; 3</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>Used internally by the decoding algorithm.</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Copyright</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 3 ] 3</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(inBuf[ 3 ] &gt;&gt; 3) &amp; 1</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>If this bit is set, the audio material is copyrighted.</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Original</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 3 ] 2</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>(inBuf[ 3 ] &gt;&gt; 2) &amp; 1</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>If this bit is set, this file is the orginal media used to hold the audio information.</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<FONT FACE="Arial"><P>Emphasis</FONT></TD>
+<TD WIDTH="17%" VALIGN="TOP">
+<FONT FACE="Arial"><P>inBuf[ 3 ] 0:1</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="Arial"><P>InBuf[ 3 ] &amp; 3</FONT></TD>
+<TD WIDTH="29%" VALIGN="TOP">
+<P>Used internally by the decoding algorithm.</TD>
+</TR>
+</TABLE>
+
+<I></I>
+<P ALIGN="CENTER"><CENTER><TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=409>
+<TR><TD VALIGN="TOP">
+<I><P ALIGN="CENTER">Notes on the Bit Rate Table:</I></TD>
+</TR>
+<TR><TD VALIGN="TOP" HEIGHT=232>
+
+<P>The column index for the Bit Rate table is derived from the
+combination of the phase and layer as follows:</P><DIR>
+
+<DIR>
+
+<P>0&#9;Phase 1, Layer I</P>
+<P>1&#9;Phase 1, Later II</P>
+<P>2&#9;Phase 1, Layer III</P>
+<P>3&#9;Phase 2 or 2.5, Layer I</P>
+<P>4&#9;Phase 2 or 2.5, Layer II or III</DIR>
+</DIR>
+</TD>
+</TR>
+<TR><TD VALIGN="TOP">
+<P>The row index should never equal fifteen.</TD>
+</TR>
+<TR><TD VALIGN="TOP">
+
+<P>The Bit Rate Table is avalable as a public array of <I>int</I> named
+<FONT FACE="Arial">bitRateTable</FONT> in class MP3header.  To save
+typing, I am also supplying you with [&nbsp;<a
+HREF="bitRateTable.html">the source code for the table</A>&nbsp;].</TD>
+
+</TR>
+</TABLE>
+</CENTER></P>
+
+<H2>ID3V1 Tag Information</H2>
+
+<P>The format of the audio stream part of MP3 files is defined by the
+Moving Picture Experts Group, but the &quot;tag&quot; information
+described here is not part of an MPEF standard. Rather, it is an
+&quot;industry standard,&quot; which means that several companies that
+make MP3 encoders and decoders add information to MP3 files using the
+structure described here. An important feature of the design of the
+ID3V1 information is that it can be put in an MP3 file without confusing
+programs that know about MP3 but don’t know about ID3V1. Therefore,
+ID3V1 information is put at the <I>end</I> of an MP3 file, after all the
+audio data. It always starts exactly 128 bytes from the end of the file,
+and always starts with three bytes containing the string
+&quot;TAG.&quot; Java characters occupy two bytes of memory each, not
+just one, but Java knows how to convert a byte array into a String, with
+each byte being converted into a two-byte <I>char</I> in the String.</P>
+
+<P>Here is the format of an ID3 Tag. Numbers are index values into the
+array of 128 bytes.</P>
+
+<P ALIGN="CENTER"><CENTER><TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=216>
+<TR><TD WIDTH="31%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Bytes</B></TD>
+<TD WIDTH="69%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Meaning</B></TD>
+</TR>
+<TR><TD WIDTH="31%" VALIGN="TOP">
+<P>0:2</TD>
+<TD WIDTH="69%" VALIGN="TOP">
+<P>Must be &quot;TAG&quot;.<BR>
+If not, there is no ID3 tag in this file</TD>
+</TR>
+<TR><TD WIDTH="31%" VALIGN="TOP">
+<P>3:32</TD>
+<TD WIDTH="69%" VALIGN="TOP">
+<P>Song Title</TD>
+</TR>
+<TR><TD WIDTH="31%" VALIGN="TOP">
+<P>33:62</TD>
+<TD WIDTH="69%" VALIGN="TOP">
+<P>Performer’s Name</TD>
+</TR>
+<TR><TD WIDTH="31%" VALIGN="TOP">
+<P>63:92</TD>
+<TD WIDTH="69%" VALIGN="TOP">
+<P>Name of the Album</TD>
+</TR>
+<TR><TD WIDTH="31%" VALIGN="TOP">
+<P>93:96</TD>
+<TD WIDTH="69%" VALIGN="TOP">
+<P>Year</TD>
+</TR>
+<TR><TD WIDTH="31%" VALIGN="TOP">
+<P>97:126</TD>
+<TD WIDTH="69%" VALIGN="TOP">
+<P>Comment</TD>
+</TR>
+<TR><TD WIDTH="31%" VALIGN="TOP">
+<P>127</TD>
+<TD WIDTH="69%" VALIGN="TOP">
+<P>Genre</TD>
+</TR>
+</TABLE>
+</CENTER></P>
+
+<P>All of the bytes contain characters except the Genre, which should
+be a binary number betrween zero and 79. The value of this byte can be
+used into an index of strings that describe the type of music. For
+example, zero meand &quot;Blues,&quot; one means &quot;Classic
+Rock,&quot; etc. My class ID3V1info has a public String[] named
+<I>genreNames</I> that you can use to find what each code means,
+however I used the string, &quot;lazy ccv&quot; for a lot of them
+because I got tired of typing them all. This will be fixed in a future
+version of my class! (The names in this list are not well-chosen.
+Software that fails to given an explicit value to this byte will
+probably end up with a zero there and other software would interpret
+this as &quot;Blues&quot; rather than &quot;Unspecified&quot;. There
+are names in the list like &quot;Pranks&quot;, but genres like
+&quot;Bluegrass&quot; and &quot;Folk&quot; are missing.)  I have put
+the [&nbsp;<a HREF="genreNames.html">source code for
+<I>genreNames</I></A>&nbsp;] here so you don't have to type it all
+in.</P>
+
+<P>If the title, performer, album, or comment is less than 30 characters
+long, the extra bytes in the field are supposed to be set to binary
+zero, but some software puts in blank characters instead.</P>
+
+<P>There is an extension to ID3V1, called ID3V1.1, that uses the last byte
+of the comment field as a binary number telling what track number on the
+album the MP3 file was taken from. If this number is zero, it means the
+track number is unknown. (Strictly speaking, the second to last byte of
+the comment is supposed to be zero if the last byte is a track
+number.)</P>
+
+<H2>ID3V2 Tag Information</H2>
+
+<P>There is another type of information tag that might be added to an
+MP3 audio stream to provide even more information about the file than
+ID3V1 provides, called an ID3V2 tag.</P>
+
+<P>There is a web site, [&nbsp;<A
+HREF="http://www.id3.org/">http://www.id3.org</A>&nbsp;], where you can
+find more information about ID3 tags. MusicMatch lets you create and
+edit ID3 tags for MP3 files, the sample music that comes with MusicMatch
+seems to have the inforrmation at the end of the file rather than the
+beginning where ID3V2 tags are normally found.</P>
+
+<HR></BODY></HTML>

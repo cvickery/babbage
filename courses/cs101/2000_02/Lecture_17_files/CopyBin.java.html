@@ -1,0 +1,78 @@
+<HTML><HEAD><TITLE>CopyBin.java</TITLE></HEAD><BODY>
+<CENTER><H1>CopyBin.java</H1></CENTER><HR><PRE>
+//  CopyBin.java
+
+import java.io.*;
+import javax.swing.*;
+
+//  Class CopyBin
+//  ------------------------------------------------------------------
+/**
+  *   Copies one binary file to another one, 512 bytes at a time.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring, 2000
+  */
+  public class CopyBin
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Copies the file named in argv[0] to the file named in argv[1].
+    *   If the destination file exists, ask the user for permission to
+    *   overwrite it.
+    *
+    *     @param  argv[0] The name of the file to be copied.
+    *     @param  argv[1] The name of the destination file.
+    *     @return Void.
+    *     @throws IOException if any I/O error occurs.
+    */
+    public static void main( String[] argv ) throws IOException
+    {
+      if ( argv.length != 2 )
+      {
+        System.err.println( " Usage: java CopyBin &lt;from> &lt;to> " );
+        System.exit( 1 );
+      }
+
+      //  Make sure the file to be copied can be read and check
+      //  whether the destination file already exists.
+      File  from = new File( argv[0] );
+      File  to   = new File( argv[1] );
+
+      if ( ! from.canRead() )
+      {
+        System.err.println( "Unable to read " + argv[0] );
+        System.exit( 1 );
+      }
+
+      if ( to.exists() )
+      {
+        int returnCode = JOptionPane.showConfirmDialog( null,
+                          argv[1] + " exists.  OK to overwrite?",
+                          "Confirm Overwrite",
+                          JOptionPane.YES_NO_OPTION);
+        if ( returnCode != JOptionPane.YES_OPTION )
+        {
+          System.exit( 1 );
+        }
+      }
+
+      //  Do a binary copy of the bytes from the input file to the
+      //  output file.
+      FileInputStream fis = new FileInputStream( from );
+      FileOutputStream fos = new FileOutputStream( to );
+      byte[]  ioBuf = new byte[512];
+      int bytesRead = fis.read( ioBuf );
+      while ( bytesRead > 0 )
+      {
+        System.out.println( "Read " + bytesRead + " bytes." );
+        fos.write( ioBuf, 0, bytesRead );
+        bytesRead = fis.read( ioBuf );
+      }
+      fos.close();
+    }
+  }
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,228 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>Lecture 13</title>
+<meta name=Description content="22-Mar-00: java.util.Iterator">
+<link rel=next href=slide0006.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0005.htm');   
+  else
+    parent.location.href = "../Lecture_13.html";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=650 height=487 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=55 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=129 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=282 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=91 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=650 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=184 height=45 colspan=2></td>
+  <td width=282 height=45>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=282 height=45 align=center><font face="Times New Roman" size=6>java.util.Iterator</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=184 height=45 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=650 height=18 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=55 height=346></td>
+  <td width=502 height=346 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=17 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=16 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=16 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=59 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=9 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=14 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=16 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=22 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=60 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=68 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=14 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=257 height=29 colspan=15><font face="Times New Roman" size=5>Declares
+    three methods:</font><br>
+    </td>
+    <td width=221 height=29 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=503 height=4 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=168 height=25 colspan=10><font face="Times New Roman" size=4>boolean
+    hasNext()</font><br>
+    </td>
+    <td width=282 height=25 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=503 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=121 height=25 colspan=7><font face="Times New Roman" size=4>Object
+    next()</font><br>
+    </td>
+    <td width=329 height=25 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=503 height=4 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=130 height=25 colspan=8><font face="Times New Roman" size=4>void
+    remove()</font><br>
+    </td>
+    <td width=320 height=25 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=503 height=4 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=423 height=29 colspan=19><font face="Times New Roman" size=5>[ </font><a
+    href="http://babbage.cs.qc.edu/courses/cs101/Spring00/Lecture_13_files/MyReader.java.html"
+    target="_parent"><font face="Times New Roman" size=5>Class MyReader
+    implements Iterator</font></a><font face="Times New Roman" size=5> ]</font><br>
+    </td>
+    <td width=55 height=29></td>
+   </tr>
+   <tr>
+    <td width=503 height=4 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=206 height=25 colspan=12><font face="Times New Roman" size=4>[ </font><a
+    href="http://babbage.cs.qc.edu/courses/cs101/Spring00/Lecture_13_files/TestMyReader.java.html"
+    target="_parent"><font face="Times New Roman" size=4>TestMyReader.java</font></a><font
+    face="Times New Roman" size=4> ]</font><br>
+    </td>
+    <td width=244 height=25 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=503 height=4 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=317 height=29 colspan=16><font face="Times New Roman" size=5>Class
+    Vector has this method:</font><br>
+    </td>
+    <td width=161 height=29 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=503 height=4 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=154 height=25 colspan=9><font face="Times New Roman" size=4>Iterator
+    iterator()</font><br>
+    </td>
+    <td width=296 height=25 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=503 height=2 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=65 height=21 colspan=5></td>
+    <td width=17 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=155 height=21 colspan=8><font face="Times New Roman" size=3>What
+    does it return?</font><br>
+    </td>
+    <td width=266 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=503 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=98 height=19 colspan=7></td>
+    <td width=16 height=19><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=389 height=19 colspan=13><font face="Times New Roman" size=3>A
+    reference to an object that is an instance of a class that</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=114 height=17 colspan=8></td>
+    <td width=228 height=17 colspan=9><font face="Times New Roman" size=3>implements
+    the Iterator interface.</font><br>
+    </td>
+    <td width=161 height=17 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=503 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=65 height=21 colspan=5></td>
+    <td width=17 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=328 height=21 colspan=12><font face="Times New Roman" size=3>What
+    can you do with the object it returns?</font><br>
+    </td>
+    <td width=93 height=21 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=503 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=98 height=19 colspan=7></td>
+    <td width=16 height=19><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=310 height=19 colspan=11><font face="Times New Roman" size=3>Use
+    it to call <i>hasNext(), next(),</i> and<i> remove().</i></font><br>
+    </td>
+    <td width=79 height=19 colspan=2></td>
+   </tr>
+  </table>
+  </td>
+  <td width=93 height=346></td>
+ </tr>
+ <tr>
+  <td width=650 height=52 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

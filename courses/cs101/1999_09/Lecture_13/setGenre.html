@@ -1,0 +1,58 @@
+<HTML><HEAD><TITLE>setGenre.java</TITLE></HEAD><BODY>
+<CENTER><H1>setGenre.java</H1></CENTER><HR><PRE>
+    //  This is the setGenre( int ) method, extracted from
+    //  class ID3V1info.java for Lecture 13.
+    /**
+      *   Changes the genre using an index into genreNames.
+      *
+      *   @param  n     The index of the genre name to use.
+      *   @return void
+      *   @throws InvalidGenreNumberException
+      *                 if n is not between 0 and genreNames.length.
+      */
+      public void setGenre( int n ) throws InvalidGenreNumberException
+      {
+        if ( (n &lt; 0) || (n >= genreNames.length) )
+        {
+          throw new InvalidGenreNumberException(
+                                          new Integer( n ).toString() );
+        }
+        genreCode  = n;
+        genre = genreNames[ n ];
+        infoModified = true;
+      }
+
+    //  This is the definition of the genreNames array, also
+    //  extracted from class ID3V1info.java for Lecture 13.
+    /** The List of Genre Names. */
+    public static final String[] genreNames = {
+      "Blues",              "Classic Rock",     "Country",
+      "Dance",              "Disco",            "Funk",
+      "Grunge",             "Hip-Hop",          "Jazz",
+      "Metal",              "New Age",          "Oldies",
+      "Other",              "Pop",              "R&B",
+      "Rap",                "Reggae",           "Rock",
+      "Techno",             "Industrial",       "Alternative",
+      "Ska",                "Death Metal",      "Pranks",
+      "Soundtrack",         "Euro-Techno",      "Ambient",
+      "Trip-Hop",           "Vocal",            "Jazz+Funk",
+      "Fusion",             "Trance",           "Classical",
+      "Instrumental",       "Acid",             "House",
+      "Game",               "Sound Clip",       "Gospel",
+      "Noise",              "AlternRock",       "Bass",
+      "Soul",               "Punk",             "Space",
+      "Meditative",         "Instrumental Pop", "Instrumental Rock",
+      "Ethnic",             "Gothic",           "Darkwave",
+      "Techno-Industrial",  "Electronic",       "Pop-Folk",
+      "Eurodance",          "Dream",            "Southern Rock",
+      "Comedy",             "Cult",             "Gangsta",
+      "Top 40",             "Christian Rap",    "Pop/Funk",
+      "Jungle",             "Native American",  "Cabaret",
+      "New Wave",           "Psychadelic",      "Rave",
+      "Show Tune",          "Trailer",          "Lo-Fi",
+      "Tribal",             "Acid Punk",        "Acid Jazz",
+      "Polka",              "Retro",            "Musical",
+      "Rock & Roll",        "Hard Rock",
+    };
+      
+</PRE><HR></BODY></HTML>

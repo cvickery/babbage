@@ -1,0 +1,43 @@
+<HTML><HEAD><TITLE>BoxLayout_3_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>BoxLayout_3_ex.java</H1></CENTER><HR><PRE>
+//  BoxLayout_3_ex.java
+
+import java.awt.*;
+import javax.swing.*;
+
+public class BoxLayout_3_ex
+{
+  public static void main( String[] argv )
+  {
+    JFrame jf = new JFrame( "BoxLayout_3_ex" );
+    jf.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Container cp = jf.getContentPane();
+    Box b = new Box( BoxLayout.X_AXIS );
+    cp.add( b, BorderLayout.CENTER );
+
+    Box b1 = Box.createVerticalBox();
+    Box b2 = Box.createVerticalBox();
+
+    b.add( Box.createHorizontalGlue() );
+    b.add( b1 );
+    b.add( Box.createHorizontalGlue() );
+    b.add( b2 );
+
+    JButton sb = new JButton( "Second" );
+    b1.add( new JButton( "First" ) );
+    b1.add( sb );
+    b1.add( new JButton( "Third" ) );
+    b2.add( new JButton( "Fourth" ) );
+    b2.add( Box.createVerticalStrut( b2.getPreferredSize().height ) );
+System.out.println( b2.getSize().height );
+    b2.add( new JButton( "Fifth" ) );
+
+    jf.pack();
+System.out.println( b2.getSize().height );
+    jf.setLocation( 200, 150 );
+    jf.show();
+  }
+
+}
+
+</PRE><HR></BODY></HTML>

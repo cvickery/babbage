@@ -1,0 +1,109 @@
+<HTML><HEAD><TITLE>Checkers_UI.java</TITLE></HEAD><BODY><PRE>
+//  Checkers_UI.java
+
+import java.io.*;
+import java.util.*;
+
+//  Class Checkers_UI
+//  -----------------------------------------------------------------
+/**
+  *   Implements a Command Line user interface for the Checkers
+  *   project.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class Checkers_UI {
+
+  public static   String  nl = System.getProperty( "line.separator" );
+
+  private static  boolean autoshow = false;
+
+  //  Set up a dispatch table for command recognition
+  private static  Hashtable   dispatchTable = new Hashtable();
+  private static  CB_Processor   help  = new CB_help();
+  private static  CB_Processor   init  = new CB_init();
+  private static  CB_Processor   clear = new CB_clear();
+  private static  CB_Processor   move  = new CB_move();
+  private static  CB_Processor   show  = new CB_show();
+  private static  CB_Processor   auto  = new CB_autoshow();
+  private static  CB_Processor   moves = new CB_moves();
+  private static  CB_Processor   quit  = new CB_quit();
+
+  static {
+
+    // Real ones
+    dispatchTable.put( help.getName(),   help );
+    dispatchTable.put( init.getName(),   init );
+    dispatchTable.put( clear.getName(),  clear );
+    dispatchTable.put( move.getName(),   move );
+    dispatchTable.put( show.getName(),   show );
+    dispatchTable.put( auto.getName(),   auto );
+    dispatchTable.put( moves.getName(),  moves );
+    dispatchTable.put( quit.getName(),   quit );
+
+    // Aliases
+    dispatchTable.put( "print",  show );
+    dispatchTable.put( "exit",   quit );
+    dispatchTable.put( "stop",   quit );
+    dispatchTable.put( "q",      quit );
+
+    }
+
+  //  Getters and Setters
+  //  -----------------------------------------------------------------
+  static public Hashtable getDispatcher()     { return dispatchTable; }
+  static public void      setAutoshow( boolean v )    { autoshow = v; }
+  static public boolean   getAutoshow()            { return autoshow; }
+
+  //  main()
+  //  -----------------------------------------------------------------
+  /**
+    *   Reads command lines from the user and dispatches them to the
+    *   appropriate processor to be interpreted.
+    *
+    */
+    public static void main( String[] args ) throws IOException {
+
+    Checkerboard    cb  = new Checkerboard();
+    BufferedReader  br  = new BufferedReader(
+                            new InputStreamReader( System.in ) );
+    String          inBuf;
+    String          command = null;
+    StringTokenizer st;
+    CB_Processor    cbp;
+
+      System.out.print( "This is Vickery Beta 5" + nl + "Command: " );
+      System.out.flush();
+      while ( (inBuf = br.readLine()) != null ) {
+        st = new StringTokenizer( inBuf );
+        try {
+          if ( st.hasMoreTokens() ) {
+            command = st.nextToken();
+            if ( null !=
+                  ( cbp = (CB_Processor) dispatchTable.get(command) ) ) {
+              cbp.process( st, cb );
+              }
+            else {
+              throw new CBException( "I don't know how to \"" +
+                command + ".\"" );
+              }
+            }
+          }
+        catch (CBException e) {
+          System.err.println( "Error: " + e );
+          }
+        finally {
+          if ( autoshow ) {
+            System.out.println( cb );
+            }
+          System.out.print( "Command: " );
+          System.out.flush();
+          }
+        }
+      }
+    }
+
+
+
+</PRE></HR></HTML>

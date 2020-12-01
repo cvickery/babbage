@@ -1,0 +1,66 @@
+
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Context-Type" CONTEXT="text/html;charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft Internet Assistant for PowerPoint 97">
+ <TITLE>Use a Hashtable to Track Highlighting</TITLE> 
+</HEAD>
+
+<BODY     >
+
+ <H1>Use a Hashtable to Track Highlighting</H1> 
+ <P><UL>
+<LI><H2>In WF_Frame class
+</H2>
+</UL><UL>
+<H2>	final Boolean T = new Boolean( true );
+</H2>
+</UL><UL>
+<H2>	final Boolean F = new Boolean( false );
+</H2>
+</UL><UL>
+<H2>	Hashtable ht = new Hashtable();
+</H2>
+</UL><UL>
+<LI><H2>In WF_Frame constructor
+</H2>
+</UL><UL>
+<H2>	For each word, w, in the Puzzle:
+</H2>
+</UL><UL>
+<H2>		ht.put( w, F );
+</H2>
+</UL><UL>
+<LI><H2>In WF_Frame.itemStateChanged()
+</H2>
+</UL><UL>
+<H2>if ((e.getStateChange == ItemEvent.SELECTED) &&
+</H2>
+</UL><UL>
+<H2>    (     ht.get( w ) == F                 ) ) {
+</H2>
+</UL><UL>
+<H2>	pc.highlight( r1, c1, r2, c2);
+</H2>
+</UL><UL>
+<H2>	ht.put( w, T );
+</H2>
+</UL><UL>
+<H2>	}</H2>
+</UL></P>
+<P></P> 
+<P>
+<TABLE>
+  <TD HEIGHT=100 WIDTH=100> <A HREF="tsld006.htm">Previous slide</A> </TD>
+  <TD HEIGHT=100 WIDTH=100> <A HREF="tsld008.htm">Next slide</A> </TD>
+  <TD HEIGHT=100 WIDTH=150> <A HREF="tsld001.htm">Back to first slide</A> </TD>
+  <TD HEIGHT=100 WIDTH=150> <A HREF="sld007.htm">View graphic version</A> </TD>
+</TABLE>
+<BR>
+</P>
+
+
+
+</Body>
+</HTML>

@@ -1,0 +1,219 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>Lecture 11</title>
+<meta name=Description content="16-Mar-00: Names for JVM Memory Regions">
+<link rel=next href=slide0011.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0003.htm');   
+  else
+    parent.location.href = "../Lecture_11.html";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=650 height=487 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=55 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=49 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=444 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=67 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=650 height=23 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=104 height=92 colspan=2></td>
+  <td width=444 height=92>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=149 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=144 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=444 height=45 colspan=3 align=center><font face="Times New Roman"
+    size=6>Names for JVM Memory</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=444 height=3 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=149 height=45></td>
+    <td width=144 height=45 align=center><font face="Times New Roman" size=6>Regions</font><br>
+    </td>
+    <td width=151 height=45></td>
+   </tr>
+  </table>
+  </td>
+  <td width=102 height=92 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=650 height=14 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=55 height=308></td>
+  <td width=560 height=308 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=48 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=89 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=135 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=102 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=33 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=25 height=25><font face="Times New Roman" color=black size=4>•</font></td>
+    <td width=49 height=25 colspan=4><font face="Times New Roman" size=4>Heap</font><br>
+    </td>
+    <td width=486 height=25 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=560 height=5 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=33 height=21 colspan=2></td>
+    <td width=20 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=109 height=21 colspan=7><font face="Times New Roman" size=3>Holds
+    objects.</font><br>
+    </td>
+    <td width=398 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=560 height=5 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=33 height=21 colspan=2></td>
+    <td width=20 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=486 height=21 colspan=12><font face="Times New Roman" size=3>Instance
+    variables are inside objects, so instance variables are in</font><br>
+    </td>
+    <td width=21 height=21></td>
+   </tr>
+   <tr>
+    <td width=560 height=1 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=53 height=21 colspan=3></td>
+    <td width=69 height=21 colspan=3><font face="Times New Roman" size=3>the
+    heap.</font><br>
+    </td>
+    <td width=438 height=21 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=560 height=5 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=33 height=21 colspan=2></td>
+    <td width=20 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=507 height=21 colspan=13><font face="Times New Roman" size=3>Holds
+    class “objects.”<span style="mso-spacerun: yes">  </span>(There is more to
+    this than we will go into.)</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=560 height=6 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=25 height=25><font face="Times New Roman" color=black size=4>•</font></td>
+    <td width=122 height=25 colspan=8><font face="Times New Roman" size=4>Method
+    Area</font><br>
+    </td>
+    <td width=413 height=25 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=560 height=5 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=33 height=21 colspan=2></td>
+    <td width=20 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=468 height=21 colspan=11><font face="Times New Roman" size=3>Holds
+    the executable instructions (<i>bytecodes</i>) for all methods,</font><br>
+    </td>
+    <td width=39 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=53 height=21 colspan=3></td>
+    <td width=198 height=21 colspan=8><font face="Times New Roman" size=3>whether
+    static or instance.</font><br>
+    </td>
+    <td width=309 height=21 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=560 height=7 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=25 height=25><font face="Times New Roman" color=black size=4>•</font></td>
+    <td width=101 height=25 colspan=6><font face="Times New Roman" size=4>Stack
+    Area</font><br>
+    </td>
+    <td width=434 height=25 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=560 height=4 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=33 height=21 colspan=2></td>
+    <td width=20 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=435 height=21 colspan=10><font face="Times New Roman" size=3>Holds
+    formal parameters, local variables, and block-local</font><br>
+    </td>
+    <td width=72 height=21 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=560 height=1 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=53 height=21 colspan=3></td>
+    <td width=74 height=21 colspan=5><font face="Times New Roman" size=3>variables.</font><br>
+    </td>
+    <td width=433 height=21 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=560 height=5 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=33 height=21 colspan=2></td>
+    <td width=20 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=333 height=21 colspan=9><font face="Times New Roman" size=3>Each
+    thread of execution gets its own stack.</font><br>
+    </td>
+    <td width=174 height=21 colspan=4></td>
+   </tr>
+  </table>
+  </td>
+  <td width=35 height=308></td>
+ </tr>
+ <tr>
+  <td width=650 height=50 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

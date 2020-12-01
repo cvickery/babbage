@@ -1,0 +1,104 @@
+<HTML><HEAD><TITLE>ActionListener_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>ActionListener_ex.java</H1></CENTER><HR><PRE>
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.datatransfer.*;
+import javax.swing.*;
+
+//  Class ActionListener_ex
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates using a single ActionListener to process events from
+  *   many different components.
+  *
+  *   This code is adapted from a sample program in "The Java Class
+  *   Libraries, Second Edition, Volume 2" by Patrick Chan and Rosanna
+  *   Lee; Addison Wesley 1998, pages 42-43.  The name of the class
+  *   was changed from Main to ActionListener_ex, and the components
+  *   were changed to Swing components instead of awt components.  And
+  *   I added the window adapter for exiting the application.
+  *
+  *     @author   P. Chan
+  *     @author   J. Lee
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring, 2000
+  *
+  */
+  class ActionListener_ex extends JFrame implements ActionListener {
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+    ActionListener_ex() {
+        super("ActionListener Example");
+        setFont(new Font("Monospaced", Font.PLAIN, 12));
+    
+        // Create the 256 buttons.
+        JPanel p = new JPanel(new GridLayout(16, 0));
+        for (int i=0; i&lt;256; i++) {
+            JButton b = new JButton("" + (char)i);
+
+            // If control character, display hex value.
+            if (Character.isISOControl((char)i)) {
+                String s = "0" + Integer.toHexString(i).toUpperCase();
+
+                b.setText(s.substring(s.length()-2));
+            }
+
+            b.setName(""+(char)i);
+
+            // Listen for events.
+            b.addActionListener(this);
+
+            // Add to panel.
+            p.add(b);
+        }
+
+        // Layout and show components.
+        getContentPane().add(p, BorderLayout.CENTER);
+        pack();
+        show();
+    }
+
+  //  Method actionPerformed()
+  //  ----------------------------------------------------------------
+  /**
+    *   Responds to ActionEvents for all 256 buttons.  Pastes a String
+    *   showing the unicode representation of the character on the
+    *   button that was pressed to the clipboard.
+    *
+    *   @param  evt   The ActionEvent to be processed.
+    *   @return Void.
+    */
+    public void actionPerformed(ActionEvent evt) {
+        // Fetch the character.
+        char c = ((Component)evt.getSource()).getName().charAt(0);
+
+        // Format the unicode string for the character.
+        String result = "\\u00" + Integer.toHexString(c&0xff);
+
+        // Place the resulting String in system clipboard.
+        StringSelection contents = new StringSelection(result);
+        getToolkit().getSystemClipboard().setContents(contents, null);
+    }
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Instantiates the GUI.
+    *
+    *   @param  argv  Command line arguments.  Not used.
+    *   @return Void.
+    */
+    public static void main(String args[]) {
+      ActionListener_ex ale =  new ActionListener_ex();
+      ale.addWindowListener( new WindowAdapter()
+      {
+        public void windowClosing( WindowEvent we )
+        {
+          System.exit( 0 );
+        }
+      }
+      );
+    }
+}
+</PRE><HR></BODY></HTML>

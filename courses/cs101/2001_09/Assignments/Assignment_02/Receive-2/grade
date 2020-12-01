@@ -1,0 +1,121 @@
+#! /usr/local/bin/ksh
+
+
+# Grading loop starts here
+dirs=$1
+if [[ $dirs == "" ]]
+then
+  dirs="*.dir"
+fi
+
+for f in $dirs
+do
+  f=${f%.dir}
+  clear
+  grep $f ../Roster
+  [[ -e $f.grade ]] && print "Note: $f.grade already exists"
+  read in?"Do it? "
+  if [[ $in == "" || $in == y* ]]
+  then
+    if [[ ! -e $f.grade ]]
+    then
+      grep $f ../Roster > $f.grade
+      cat boilerplate >> $f.grade
+    fi
+
+    cd $f.dir
+
+    print >> ../$f.grade
+    print "Looking at the contents of your zip file:" >> ../$f.grade
+    print "=========================================" >> ../$f.grade
+    /bin/ls -l >> ../$f.grade
+    /bin/ls -x *.java |read cl gui junk
+    print >> ../$f.grade
+    print "Java files are $cl and $gui" >> ../$f.grade
+    if [[ $junk != "" ]]
+    then
+      print "Also found $junk in the project directory" >> ../$f.grade
+    fi
+
+    print >> ../$f.grade
+    print "Compiling your .java files:" >> ../$f.grade
+    print "===========================" >> ../$f.grade
+    rm -f *.class
+    jikes *.java >> ../$f.grade
+    if [[ $? != 0 ]]
+    then
+      rm -f *.class
+      jikes *.java >> ../$f.grade
+      print "Here is a shell for you."
+      ENV=~/.kshrc ksh
+    else
+      print "  OK" >> ../$f.grade
+    fi
+
+    print >> ../$f.grade
+    print "Checking code formatting and javadoc tags:" >> ../$f.grade
+    print "==========================================" >> ../$f.grade
+    chk_format *.java >> ../$f.grade
+    grep @author *.java >> ../$f.grade
+    grep @param  *.java >> ../$f.grade
+
+    print >> ../$f.grade
+    java ${cl/.java} this is "very nice"
+    java ${gui/.java}
+
+    cat <<!!! >>../$f.grade
+
+Testing the programs:
+=====================
+
+    OK
+
+
+Code and Comment Style:
+=======================
+
+  Was the code properly indented?
+
+    Yes.
+
+  Were the Javadoc comment blocks for the classes and methods
+  properly structured and formatted?
+
+    Yes.
+
+  Were the comments lined up properly with the code they described?
+
+    Yes.
+
+  Was there a margin between the comments and the comment leader?
+
+    Yes.
+    No. Always put at least one space between the * or // and the
+    beginning of the comment.
+
+  Were the commments grammatically correct?
+
+    Yes.
+
+  Other notes.
+
+    None.
+
+  Assignment grade: OK
+
+!!!
+
+    xterm -geometry 80x50+10+10 -e vim *.java ../$f.grade
+    read in?"ksh? "
+    [[ $in == y* ]] && ENV=~/.kshrc ksh
+    
+    in=n
+    while [[ $in == n* ]]
+    do
+      read in?"Finished? "
+      [[ $in == n* ]] && ENV=~/.kshrc ksh
+    done
+
+    cd ~/Courses/cs101/2001_09/Receive-2
+  fi
+done

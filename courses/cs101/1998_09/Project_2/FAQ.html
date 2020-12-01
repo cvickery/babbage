@@ -1,0 +1,165 @@
+<HTML><HEAD><TITLE>Frequently Asked Questions</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 2 Frequently Asked Questions</H1>
+</center>
+<dl>
+
+  <DT>
+
+    <B>Question:</B> <I> After I finished Square.java, it compiled OK,
+        but something is wrong when I enter a list command.  The message is:
+<pre>
+The following squares are occupied:
+[8][8]: rCommand: java.lang.NoSuchMethodError: Square: method getNext()LSquare; not found
+    at CB_List.process(Compiled Code)
+    at Checkers_UI.main(Compiled Code)
+</pre>
+     What's wrong with it?</I><p>
+
+  <DD>
+
+    <B>Answer:</B> The synopsis for class <CODE>Square</CODE> lists all
+    the public methods, which you must supply.  Apparently you
+    didn't provide:
+
+<pre>
+  public Square getNext()
+</pre>
+
+    The error message uses the string "<CODE>getNext()LSquare</CODE>"
+    which you interpret as follows: The method name is
+    <CODE>getNext</CODE>, the empty parentheses indicate that the
+    method receives no arguments, and the <CODE>LSquare</CODE>
+    indicates that the method returns a reference to an object of
+    c<B>L</B>ass <CODE>Square</CODE>.<p>
+
+  <DT>
+
+    <B>Question:</B> <I>Could you please tell me as much as you will
+    about Square.java.  Obviously I got it wrong on the exam.  You
+    threw it again in class and I didn't catch it then either.</I><p>
+
+  <DD>
+
+    <B>Answer:</B> First, the overview:  I wanted to give you some
+    practice working with linked lists, so I decided to do it for the
+    <CODE>list</CODE> and <CODE>moves</CODE> commands, by having
+    methods that return linked lists of all the occupied squares and
+    all the possible moves respectively.  The way Java works, these
+    lists have to be lists of objects, so I invented the classes Square
+    and Move to hold the items on these lists.<p>
+
+    The key thing about both these classes is that they hold all the
+    information about an occupied square or a possible move/jump, such
+    as what position(s) on the board is/are involved, what piece is
+    occupying the (starting) square, and for class Move a boolean that
+    tells whether the move involves jumping another piece or not.  In
+    addition, both classes provide a "next" field to hold a link to the
+    next item on a linked list.<p>
+
+    Both classes demonstrate encapsulation by making all fields
+    private, but with public methods that allow methods from other
+    classes to get or set the values of the private fields.<p>
+    
+    Perhaps the key method in both classes is the <I>toString()</I>
+    method, that returns a printable String representing the
+    information stored in the object about the square or move.  The
+    <CODE>list</CODE> and <CODE>moves</CODE> commands traverse the
+    lists returned by Checkerboard.<I>getBoardList()</I> and
+    Checkerboard.<I>getMoves()</I>, appending the Strings returned by
+    these methods to the Strings that are actually printed as the output
+    of the commands.<p>
+    
+    Of course, what I think you really are asking is how to write the
+    code for these two classes.  So here is the code for Square, with a
+    few details left out for you to fill in.  Once you have this, it
+    should be pretty clear how to do class Move, because they are so
+    similar.
+
+<pre>
+    public class Square implements Piece {
+
+    //  Declare private ints for row, column, and piece here.
+
+    //  Declare a private Square named next for use in linked lists
+    //  here.
+
+    //  Define two constructors here.  The first one receives values
+    //  for row, column, and piece, and the second one receives values
+    //  for these three plus the "next" Square.  The constructors both
+    //  have check that the row and column values are between 0 and 7
+    //  and that the value for piece is one of RED_PAWN, RED_KING,
+    //  BLACK_PAWN, or BLACK_KING.  If not, the constructor is to
+    //  throw a new CBException with an appropriate messessage.  (As
+    //  the synopsis shows, the constructors have to be declared with
+    //  "throws CBException" because of this.)
+
+    //  Because the two constructors have to do the same checks on the
+    //  row, column, and piece, I decided to write a separate method
+    //  that they both could call to do the actuall checking and
+    //  assignment of values to the private variables. I called this
+    //  method <I>initSquare()</I>.  You don't have to do that if you
+    //  don't want to.  You could write all that code twice instead if
+    //  you prefer.  Anyway, here is the code for one of my
+    //  constructors:
+    
+        public Square( int row, int column, int piece ) 
+          throws CBException {
+          initSquare( row, column, piece, null );
+          }
+
+    //  Define public methods to get (return) the values of the
+    //  private integer variables here.  Also provide a method to
+    //  return the value of <I>next</I> and one to set the value of
+    //  <I>next</I>.  The names of these methods are given in the
+    //  synopsis for the class.
+    
+    //  Define the <I>toString()</I> method for the class here.  It
+    //  could end with a line something like the following:
+
+          return "[" +  (row + 1) + "][" +
+                        (col + 1) + "]: " + pieceString;
+
+    //  Here, <I>pieceString</I> is a String variable, local to the
+    //  <I>toString()</I> method, to which you have assigned the
+    //  value "r" if <I>piece</I> is a <CODE>RED_PAWN</CODE>, "R" if
+    //  <I>piece</I> is a <CODE>RED_KING</CODE>, etc.
+
+    } // class Square
+
+</pre>
+
+  <DT><B>Question: </B><I>I am getting a run-time error.
+<pre>
+C:\Project Area\Project Checker#2>java Checkers_UI
+
+java.lang.NoSuchMethodError: Checkerboard: method &lt;init&gt;()V not found
+        at Checkers_UI.main(Compiled Code)
+</pre>
+Yet in my Checkerboard java file I have the following method for init --
+what could I be doing wrong?
+<pre>
+    public void init() { ...
+</pre>
+</I>  
+
+  <DD><B>Answer: </B> When the error message puts "init" in angle
+      brackets, it means the constructor for the class, not your
+      <I>init()</I> method.  So, <CODE>&lt;init&gt;()V</CODE> means
+      "<I>the constructor for the class that receives no arguments
+      </I>(that's the empty parentheses)<I> and returns void
+      </I>(that's the V even though constructors technically don't have
+      a return type)."  I would guess that you have written a
+      Checkerboard constructor that does take an argument (but I don't
+      know why you would) in which case the compiler does not
+      automatically generate a no-arg constructor for you.  So put in a
+      no-arg constructor, even if it doesn't do anything.
+
+</DL>
+<HR>
+<center>
+[&nbsp;<a href="index.html">Project 2 Description</a>&nbsp;]<BR>
+[&nbsp;<a href="changes.html">Changes to the Assignment</a>&nbsp;]
+</center>
+<HR></BODY></HTML>

@@ -1,0 +1,50 @@
+<html><head><title>HelloCL.java</title></head>
+<body><center><h1>HelloCL.java</h1></center><hr><pre>
+      /**   Provides a superclass with a no-arg constructor, a finalize
+       *    method, and a public static void main method.
+       *
+       *    @author   C. Vickery
+       */
+        public class HelloCL
+        {
+          public HelloCL()
+          {
+            System.out.println( "HelloCL: no-arg" );
+          }
+     
+          protected void finalize()
+          {
+            System.out.println( "HelloCL: finalize" );
+          }
+     
+          public static void main( String[] args )
+          {
+            new HelloBR( "Ask" );
+            Runtime.getRuntime().gc();  //  Garbage collect so finalizers run
+            System.exit( 0 );
+          }
+        }
+     
+      /**   A subclass of HelloCL, which provides a constructor that takes
+       *    a String argument and a finalize method.
+       *
+       *  @author  C. Vickery
+       */
+        class HelloBR extends HelloCL
+        {
+          HelloBR( String ask )
+          {
+            if ( ask.equals( "ask" ) )
+              System.out.println( "HelloBR: ask" );
+            else
+              System.out.println( "HelloBR: don't ask" );
+            return;
+          }
+          protected void finalize()
+          {
+            System.out.println( "HelloBR: finalize" );
+            super.finalize();   // finalizers should always do this.
+          }
+        }
+     
+</pre><hr></body></html>

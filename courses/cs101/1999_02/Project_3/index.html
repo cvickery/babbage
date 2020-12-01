@@ -1,0 +1,218 @@
+<HTML><HEAD><TITLE>Project 3</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 3</H1>
+</center>
+
+<H2>Deliverables and Due Date</H2>
+
+This project is due by midnight <B>May 25, 1999</B>, which is also the
+absolute cutoff date too.  Submit whatever you have completed by the
+due/cutoff date to receive any credit for this project.<p>
+
+Send me an email with an attached zip file containing all the Java
+source files for your project.  I will supply the class files for
+classes Drawing and _DrawingItem, which your project will use for
+managing the Display List for this project.
+
+<H2>Cheating Policy</H2>
+
+<B>Don't!</B><p>
+
+Anyone who either gives code to someone else or who uses someone else's
+code for any part  of any project in this course will automatically
+fail the course.  <I>Note that both the giver and the receiver will
+fail the course.</I> People caught cheating are also subject to
+disciplinary action by the college.<p>
+
+The purpose of the projects is for you to learn how to program by
+writing code.  There is no substitute for doing it yourself.  If you
+need help, ask me, or post a message to the course newsgroup as
+described on the [&nbsp;<a
+HREF="http://babbage.cs.qc.edu/courses/cs101/index.html#newsgroup">home
+web page for the course</A>&nbsp;].
+
+<H2>Project Description</H2>
+
+You are to write a Java <I>application</I> that can be used to draw
+simple shapes (lines, circles, and rectangles) using the mouse instead
+of command lines.  You may click the button below to run an example of
+this program, but because you will be running it from an applet, there
+are a couple of anomalies.  Because applets are not allowed to exit the
+JVM (which would mean shutting down your web browser's JVM), this copy
+of the program will not exit.  Because of a bug in Internet Explorer, if
+you leave this page and come back to it using that browser, your
+drawing's will not reappear.  Because neither Netscape nor Internet
+Explorer supports Java 2, the "Help/About" message box will not show
+up.<p>
+
+<center>
+<applet code=DrawingApplet.class width=150 height=35>Your web browser
+does not support Java applets.</applet></center><p>
+
+You can download a [&nbsp;<a HREF="Drawing_GUI.zip">zip file</A>&nbsp;]
+containing the example's class files and run the program as an
+application instead.  The class containing <I>main()</I> is named
+Drawing_GUI.class.<p>
+
+Your application does not have to look or behave exactly the same as
+mine, but because of the short amount of time remaining, the best
+strategy is undoubtedly to start with the [&nbsp;<a
+HREF="http://babbage.cs.qc.edu/courses/cs101/Spring99/Lectures/
+Lecture_25/Drawing_GUI.html">sample code I provided</A>&nbsp;], and to
+add to it to build your complete application.  The remainder of this
+document provides you with a sequence of development steps to follow.
+<p>
+
+Don't try to do everything at once, because if you do, you will
+undoubtedly have something that doesn't work when the deadline arrives,
+and you will not receive much (if any) credit for that.  Instead, do
+your development incrementally.  Do each step, test it to make sure it
+works, <I>save a copy of it</I>, and start working on the next step. 
+When the deadline arrives, send the last working copy that you saved. 
+It is more important to submit working and well-documented code than
+lots of code that doesn't work.<p>
+
+<H2>Development Steps</H2>
+
+<OL>
+
+  <B><LI>Add all the components to the user interface.</B>  [&nbsp;<a
+  HREF="http://babbage.cs.qc.edu/courses/cs101/Spring99/Lectures/Lecture_27">
+  Lecture 27</A>&nbsp;] presented the drawing components you will need
+  to complete the user interface.  If you start with the sample code,
+  you will need to add a List box, a Panel to hold the "Delete" and
+  "Clear" buttons, and those two buttons.  That lecture also covered how
+  you can use layout managers to get the user interface to look the way
+  you want it to.  Feel free to change the appearance any way that you
+  want to, but be sure to include components for (1) selecting the shape
+  to be drawn, (2) showing the display list, (3), deleting an item and
+  clearing all items, (4) drawing the lines, circles, and rectangles,
+  and (5) standard menu items.<p>
+  
+  Remember, that the JDK has two classes named <CODE>List</CODE>.  One
+  is in java.util, but the one you will use is
+  <CODE>java.awt.List</CODE>.  You have to use the fully-qualified class
+  name in your code:
+  <pre>
+    java.awt.List myListBox = new java.awt.List( 10, false );
+  </pre>
+  This will create a List box with room to display 10 items, and which
+  will not allow multiple items to be selected at a time.<p>
+
+  At this step, the user should be able to change the size of the Frame
+  and everything should still appear all right.  You should be able to
+  select menu items and drawing shapes, but nothing should happen when
+  you do so.  Making everything work comes later.  For now, just get
+  everything to look right.<p>
+
+  <B><LI>Add a simple mouse listener to the Canvas.</B>  Add a mouse
+  listener to the Canvas that simply prints the (x,y) coordinates each
+  time the mouse is clicked.  You have [&nbsp;<a
+  HREF="http://babbage.cs.qc.edu/courses/cs101/Spring99/Lectures/
+Lecture_21/MouseControl_1.html">sample code from Lecture
+  21</A>&nbsp;] that you can use as a model, although you might find it
+  easier to use an anonymous class for this listener.<p>
+  
+  Later on, you will add code to keep track of which mouse click starts
+  a drawing item, and which one finishes it.  For now, just print out
+  each coordinate pair as the clicks comes in.<p>
+
+  <B><LI>Extend the Drawing class to provide access to the display
+  list.</B>  I made a mistake in the design of class Drawing: I didn't
+  provide a method that would provide direct access to the elements in
+  the display list (the Vector named <CODE>itemList</CODE>).  The
+  Canvas used by class GDrawing was an inner class of GDrawing, which
+  in turn was a subclass of Drawing, so the Canvas class had access to
+  the protected <CODE>itemList</CODE> field of class Drawing.  For this
+  project, the Canvas has to be able to access the display list
+  (itemList), the coordinates detected by the mouse listener, and the
+  state of the radio buttons telling which shape to draw.  The easiest
+  way to accomplish all this, I think, is to extend class Drawing with
+  another class which includes methods for getting the value of
+  <CODE>selected</CODE> and a reference to <CODE>itemList</CODE>.  In
+  good "Java Beans" style you should name these methods
+  <I>getSelected()</I> and <I>getItemList()</I>.<p>
+
+  You need to be able to verify that your new class works properly, so
+  I suggest you should do the following:  Instantiate this new class (I
+  called it GUI_Drawing, but you could name it something else if you
+  like) and pass a reference to it to the constructor for the Canvas. 
+  This implies that you will also have to provide a constructor that
+  receives this parameter!  Have the constructor save the value of the
+  parameter in an instance field, and add code to the Canvas'
+  <I>paint()</I> method to <u>print</u> (a) the number of items in the
+  display list and (b) the index of the selected item.  Since you
+  haven't written any code to add items to the display list yet, these
+  numbers should always be 0 and -1, but seeing them print will verify
+  that you have things set up correctly.<p>
+
+  <I>Note:</I>  You could avoid the need to create a separate class as
+  the subclass of Drawing by making the class containing <I>main()</I>
+  extend Drawing instead of Frame.  There is really no need to subclass
+  Frame for this project, so this would be a better design.  But the
+  sample code I gave you subclassed Frame, and you might find it easier
+  to work from that model.  Whichever design you chose, you will need
+  to modify the subclass of Canvas as indicated in the previous
+  paragraph.<p>
+
+  <B><LI>Update the mouse listener so it updates the display list and
+  the List box on the screen.</B>  Your mouse listener will have to
+  keep track of whether a click is the first one for a shape or the
+  second one.  There are several ways you can do this.  Normally, I try
+  to avoid using "flags," but this is one case where it seems
+  appropriate: you can use a boolean instance field in the class that
+  holds your mouse listener that is initialized when the class is
+  instantiated, and which you change to its boolean opposite each time
+  a mouse click occurs.  If you called the variable
+  <CODE>isFirstClick</CODE>, you would include a line like,
+  "<CODE>isFirstClick = ! isFirstClick;</CODE>" to do this.  If a click
+  is the first click, just save the (x,y) coordinates until the next
+  click.<p>
+  
+  When the second click occurs, find out what type of shape the user
+  wants to draw (see Lecture 27 for how to determine which checkboxe is
+  selected), and pass the proper values to either drawLine(),
+  drawRectangle(), or drawCircle().  You have to calculate the width
+  and height if it is a Rectangle, and you have to calculate the
+  diameter if it is a circle.  (You can make the diameter equal to the
+  width or height of the rectangle that surrounds the circle if you
+  want to.)<p>
+
+  Remember that you have to deal with DrawingExceptions now.  When you
+  constructed the instance of your Drawing subclass you should have set
+  the width and height so large that the exceptions will never actually
+  occur (unless the coordinates are negative), but you still must put
+  the calls to <I>drawLine()</I>, etc. inside a try block, but the
+  corresponding catch block doesn't have to do anything -- it just has
+  to be there.<p>
+
+  At this point, your <I>paint()</I> method should display the correct
+  number of elements in the display list.  If nothing prints, it's
+  because <I>paint()</I> isn't being called.  You have to force it to
+  be called using the <I>repaint()</I> method when the second mouse
+  click occurs.<p>
+
+  <B><LI>Add elements to the List box.</B>  Every time the mouse
+  listener adds an item to the display list, have it add a string with
+  the name of the shape to the List box <I>add()</I> method.  The names
+  should show up in the List box on the screen.<p>
+  
+  <B><LI>Implement the <I>paint()</I> method for the Canvas.</B> 
+  Instead of printing out how many items are in the display list,
+  enumerate or iterate over the actual items, and draw the appropriate
+  shape for each one.  The methods to use are in the Graphics class:
+  <I>drawRectangle(x, y, width, height)</I>, <I>drawOval(x, y, width,
+  height)</I>, and <I>drawLine(x1, y1, x2, y2)</I>.  For the oval and
+  rectangle, the parameters both define a rectangle with its upper left
+  corner at the point (x,y).  If the rectangle is square, the oval will
+  be a circle, otherwise you'll get an oval.<p>
+  
+  <B><LI>Implement highlighting, deleting, and clearing.</B>  These
+  operations are optional for this project.  I'll give extra credit if
+  you do them, and figuring them out is left for you to do.  Note that
+  you will not get any credit for doing them if you haven't completed
+  the required parts of the project.<p>
+
+</OL>
+<HR></BODY></HTML>

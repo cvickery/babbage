@@ -1,0 +1,69 @@
+<HTML><HEAD><TITLE>SortedWordList</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>SortedWordList</H1>
+</center>
+<H2>Introduction</H2>
+
+The class SortedWordList was the subject of Exercises 3 and 4.  This
+page links you to my solutions for those two exercises.
+
+<H2>Exercise 3</H2>
+
+You should already have this code, but here it is again:
+
+<UL>
+  <LI>[&nbsp;<a HREF="CountWords.html">CountWords.java</A>&nbsp;]
+      <BR>This is the initial class for the project; it contains the
+      method <I>main()</I>, which is responsible for managing the files,
+      lines of text, words, and the single SortedWordList object used to
+      hold words and their frequencies.  This class can only be run if
+      classes SortedWordList and WordCounter are in the same directory.
+      
+  <LI>[&nbsp;<a HREF="WordCounter.html">WordCounter.java</A>&nbsp;]
+      <BR>This class defines a type of object that can hold a single
+      word and a count of how many times it has occurred.  Class
+      SortedWordList manages a list of references to objects of this
+      class.
+</UL>
+
+<H2>Exercise 4</H2>
+
+For Exercise 4, you were to implement class SortedWordList using an
+array.  Here is my solution:
+
+<UL>
+  <LI>[&nbsp;<a HREF="SortedWordList.html">SortedWordList.java</A>&nbsp;]
+</UL>
+
+Another way to implement class SortedWordList would be to use an object
+of class java.util.Vector instead of an array.  This solution is a
+little messy because Vectors hold objects of class java.lang.Object, and
+we want to use our Vector to hold objects of class WordCounter.  It's
+okay to do this, but there have to be several casts in the code (putting
+the class name WordCounter inside parentheses) to make the code compile
+without any error messages.  These casts will be covered when we deal
+with object-oriented programming (chapter 9).<p>
+
+But note that this solution eliminates the need to write the "helper
+method," <I>insertElementAt()</I> that was the heart of the array
+solution for the exercise.  That method (and method <I>size()</I>) are
+already part of class java.util.Vector.<p>
+
+I've named the file that contains the Vector solution
+SortedWordList_Vector.java, but you can use any name you want to for it
+because the class defined in it is not public.  If you compile the
+program, it will generate a file named SortedWordList.class that is
+functionally equivalent to the class file of the same name that you
+will get if your compile SortedWordList.java.
+
+<UL>
+
+  <LI>[&nbsp;<a
+  HREF="SortedWordList_Vector.html">SortedWordList_Vector.java</A>&nbsp;]
+
+</UL>
+<HR></BODY></HTML>

@@ -1,0 +1,64 @@
+<html><head><title>StaticInitialize.java</title></head>
+<body><center><h1>StaticInitialize.java</h1></center><hr><pre>
+      /**  Illustrate initialization that takes place when a class is loaded
+        *  into memory.  This code also illustrates the scope of static and
+        *  local variables.
+        *
+        *   @author C. Vickery
+        *
+        */
+        public class StaticInitialize
+        {
+          /*  The following line is commented out because Java does not allow
+           *  executable statements outside of methods ...
+           */
+          // System.out.println( "Message 1" );
+     
+        
+          static int x1;      // Initialized to zero when class is loaded
+          static int x2 = 2;  // Assignment after initialization to zero
+     
+          /*  The following block of code is a "pseudo-method" -- code that
+           *  is executed after the class is loaded and its variables have
+           *  been zeroed out.  You can put arbitrary statements in a static
+           *  {...} block, provided the only classes referenced have already
+           *  been loaded before this one.
+           */
+          static
+          {
+            System.out.println( "Message 2: " + x1 + " " + x2 );
+            x1 = 1;
+            System.out.println( "Message 3: " + x1 + " " + x2 );
+          }
+     
+          /** Executes after the class is loaded and static initialization is
+            * complete.
+            *
+            *   @param  args    Command line arguments.
+            */
+            public static void main( String[] args )
+            {
+              //  Print static variables
+              System.out.println( "Message 4: " + x1 + " " + x2 );
+              int x1;
+              
+              /*  The following line is commented out because x1 has been
+               *  declared but not initialized.  Unlike static (and
+               *  instance) variables, local variables are not automatically
+               *  initialized.  Java does not allow programs to use the
+               *  values of uninitialized variables.
+               */
+              // System.out.println( "Message 5: " + x1 );
+     
+              //  Print local x1 and static x2
+              x1 = 7;
+              System.out.println( "Message 6: " + x1 + " " + x2 );
+     
+              //  Print both static variables
+              System.out.println( "Message 7: " + 
+                                           StaticInitialize.x1 + " " + x2 );
+              System.exit( 0 );
+            }
+          }
+     
+</pre><hr></body></html>

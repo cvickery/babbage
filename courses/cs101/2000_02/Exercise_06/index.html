@@ -1,0 +1,187 @@
+<HTML><HEAD><TITLE>Exercise 6</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Exercise 6</H1>
+</center>
+
+<H2>Overview</H2>
+The purpose of this exercise is to give you some practice with String
+operations, and to practice algorithmic thinking.
+
+<H2>Description</H2>
+
+The exercise is to write a Java application that works something like
+the UNIX <I>grep</I> command.  Grep is used to search files for strings,
+and has a rich set of options and features on UNIX systems.  The Grep
+class you will write will work as follows:  The user will supply an
+optional command line parameter, "-i" to make the program <u>i</u>gnore
+upper/lower case differences when searching for strings.  The command
+line must always have a string to be searched for, and one or more names
+of files to be searched.  Here are some sample command lines to show
+what we mean:
+
+<pre>
+    java Grep hello file1
+    java Grep -i Hello file1 file2
+    java Grep -i "Hello, world!" file1
+</pre>
+
+The first line will print all the lines in a file named
+<CODE>file1</CODE> that contain the string, "hello."  The second line
+prints all the lines in files <CODE>file1</CODE> and <CODE>file2</CODE>
+that contain the string "hello" regardless of how the letters in it are
+capitalized.  The last line shows how to put a space inside the string
+to be searched for.<p>
+
+If Grep does not find any lines containing the specified search string,
+it simply exits without printing anything.
+
+<H2>Development</H2>
+
+This exercise is divided into two separate assignments.  The first,
+called Exercise&nbsp;6a, is to process command lines, printing messages
+that tell what files will be searched, and whether the searches will be
+case sensitive or not.  The second assignment, called Exercise&nbsp;6b,
+is to build on the first one by taking out the messages printed in the
+first assignment and putting in the code that actually searches for and
+prints lines for matching strings.
+
+<H3>Sample Output</H3>
+
+Assume these are the contents of two files:
+
+<pre>
+      file1                             file2
+      --------------------------        ------------------------------
+      Hello, this is file 1.            Hello, this is file 2.
+      I have lots of text in me.        I have the word hello in me.
+      Look: helloworld. hello.          Don't look: Hello, world!
+</pre>
+
+
+The three commands above would produce the following output for
+assignment 6a:
+
+<pre>
+
+    java Grep hello file1
+      Case sensitive search for "hello" in the following files:
+        file1
+
+    java Grep -i Hello file1 file2
+      Case-insensitive search for "Hello: in the following files:
+        file1
+        file2
+
+    java Grep -i "Hello, world!" file1
+      Case-insensitive search for "Hello, world!" in the following files:
+        file1
+
+</pre>
+
+
+The three commands above would produce the following output for
+assignment 6b:
+<pre>
+
+    java Grep hello file1
+      file1: Look: helloworld. hello.
+
+    java Grep -i Hello file1 file2
+      file1: Hello, this is file 1.
+      file1: Look: helloworld. hello.
+      file2: Hello, this is file 2.
+      file2: I have the word hello in me.
+      file2: Don't look: Hello, world!
+
+    java Grep -i "Hello, world!" file1
+
+</pre>
+
+Note that the third command line produces <I>no output</I> because the
+seach string is not contained in the specified file.<p>
+
+If the user types a file name for a file that does not exist or cannot
+be read, the 6b version of the program is to print an appropriate error
+message and continue on to the next file specified on the command line.
+For example:
+
+<pre>
+    java Grep -i Hello file1 file3 file2
+      file1: Hello, this is file 1.
+      file1: Look: helloworld. hello.
+    Unable to read file3.
+      file2: Hello, this is file 2.
+      file2: I have the word hello in me.
+      file2: Don't look: Hello, world!
+</pre>
+
+<h3>Exercise 6a</h3>
+
+First check if there are at least two command line arguments.  If not
+print an error message and exit.  Next check if the first command line
+argument is the string "-i".  If it is your program has to remember that
+it is going to do case-insensitive searches, and it must remember that
+there have to be at least two more command line arguments.  I suggest
+using a boolean variable to remember whether the searches will be case
+sensitive or not.  And I suggest that you use an int variable to keep
+track of the current command line argument you are procesing.  This
+variable could start at 0 and be set to 1 if the first argument was
+"-i".<p>
+
+The idea is for you to think about how to get the program to work
+properly, and then to test it carefully to be sure you actually got it
+right.  Here are some more sample outputs you might try at this stage:
+
+<pre>
+    java Grep -x there
+      Case-sensitive search for "-x" in the following files:
+        there
+
+    java Grep "-i hello file1 file2"
+      Error: There must be at least two arguments.
+      
+    java Grep -i hello
+      Error: No file name(s) given.
+</pre>
+
+In lecture, I suggested that you could have one generic error message
+for bad command line arguments, which shows the user the correct command
+line syntax.  The error message in this case could be:
+
+<pre>
+    Usage: java Grep [-i] &lt;search string&gt; &lt;file&gt;...
+</pre>
+
+This is a standard way to tell users that "-i" is optional (by putting
+it in square brackets), that the search string and file are names
+for things the user is to supply actual values for (by putting them in
+angle brackets), and that the file argument may be repeated any number
+of times (by following it with an ellipsis (...)).<p>
+
+<h3><a NAME="6b">Exercise 6b</a></h3>
+
+After you have submitted Exercise 6a, remove all the
+System.out.println() statements from your Grep.java file.  For each
+file name, create a BufferedReader, and loop through the lines in it. 
+For each line, extract a substring of the same length as the search
+string, starting at an offset of 0 into the line and continuing to the
+last position that could possibly start the search string.  Use
+<I>equals()</I> or <I>equalsIgnoreCase()</I> as appropriate to compare
+each substring to the search string.  If a match is found, print the
+file name and the line that contained it, and continue looping through
+the lines in the file.  Use a try/catch block to handle files that don't
+exist or can't be read.  That's it!<p>
+
+Be sure to document your code properly, and test it thoroughly before
+submitting it.<p>
+
+<HR>
+<center>
+<H2>[&nbsp;<a HREF="Grep.java.html">My Solution</A>&nbsp;]</H2>
+</center>
+
+<HR></BODY></HTML>

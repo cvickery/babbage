@@ -1,0 +1,67 @@
+<HTML><HEAD><TITLE>Franglish.java</TITLE></HEAD><BODY>
+<CENTER><H1>Franglish.java</H1></CENTER><HR><PRE>
+//  Franglish.java
+
+//  Note that compiling this source file generates three class files,
+//  two for the two interfaces, and one for the class.
+
+//  Interface English
+//  ------------------------------------------------------------------
+/**
+  *   Provides English translations for public static final Strings
+  *   named hello and good_bye.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - November 1999
+  */
+  interface English
+  {
+    String hello = "Hello!";
+    String good_bye = "Good-bye!";
+  }
+
+
+//  Interface French
+//  ------------------------------------------------------------------
+/**
+  *   Provides French translations for public static final Strings
+  *   named hello and good_bye.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - November 1999
+  */
+  interface French
+  {
+    String hello = "Bonjour!";
+    String good_bye = "Au revoir!";
+  }
+
+
+//  Class Franglish
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates use of contstants provided by interfaces.  Note that
+  *   this class does not &lt;I>implement</I> the interfaces, it just
+  *   uses their data members.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - November 1999
+  */
+  public class Franglish
+  {
+    //  The following line illustrates a way to find out what String
+    //  is used at the end of a line.  It will be different depending
+    //  on whether your program runs on a Macintosh, PC, or Unix.
+    //  This has nothing to do with interfaces.
+    private static String NL = System.getProperty( "line.separator" );
+
+    public static void main( String[] argv )
+    {
+      System.out.println( English.hello +
+                          NL +
+                          French.good_bye );
+    }
+  }
+
+
+</PRE><HR></BODY></HTML>

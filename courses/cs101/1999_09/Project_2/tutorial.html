@@ -1,0 +1,257 @@
+<HTML><HEAD><TITLE>Project 2 Tutorial</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 2 Tutorial</H1>
+</center>
+
+<H2>Introduction</H2>
+This is a guide to writing the code for Project 2.  You can also use it
+as a study guide to prepare for part of the second Exam.<p>
+
+The assignment is to write the LibraryManager class, which does the
+following:
+
+<OL>
+  <LI>Get the name of a library file from the user; create a File object
+  to represent the file in the program.
+  <LI>Create a MP3_Library object.
+  <LI>Add MP3 files to the MP3_Library.
+  <LI>Write the MP3_Library to disk.
+</OL>
+
+<H2>Start the Class Definition</H2>
+
+Import all necessary packages, start the class definition, and declare
+a variable named libraryFile that will hold a reference to an
+MP3_Library object representing a QC MP3 Library File on disk. <p>
+
+Initially, this variable is null because we don't know what disk file
+to use yet.  By the way, this variable could have been declared inside
+<I>main()</I> instead of outside any method because that is only method
+in the whole class so there is no need to share it between methods.  And
+it has to be static because it is accessed from inside <I>main()</I>,
+which is a static method.
+
+<pre>
+import java.awt.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+
+  public class LibraryManager
+  {
+  private static MP3_Library  library = null;
+</pre>
+
+<H2>Get the Name of a Library File</H2>
+
+First check whether the user supplied a string as a command line
+argument.  If yes, create a File object using that string in the
+constructor.  Be sure the file name is in proper form by creating
+another File object based on the canonical path of the file name
+entered by the user.<p>
+
+If the user named a file that does not exist, create it and initialize
+it as a QC MP3 Library using one of the static methods in class
+MP3_Library.
+
+<pre>
+      public static void main( String[] argv ) throws IOException
+      {
+      String        startDir    = ".";
+      File          libraryFile = null;
+      JFileChooser  jfc         = null;
+        if ( argv.length > 1 )
+        {
+          System.err.println(
+            "Usage: java LibraryManager <music library>" );
+            System.exit( 1 );
+        }
+
+        if ( argv.length == 1 )
+        {
+          libraryFile = new File( argv[0] );
+          libraryFile = new File( libraryFile.getCanonicalPath() );
+          if ( !libraryFile.exists() )
+          {
+            MP3_Library.initializeLibraryFile( libraryFile );
+          }
+        }
+</pre>
+
+At this point you might have a library file, or you might not.  Set up a
+while loop that will not stop until you have one, and it's valid.  If
+you already have one, the loop will execute zero times.  The only way to
+get out of the loop is if the user selects a legitimate library file, or
+exits the program.
+
+<pre>
+        while ( libraryFile == null ||
+                           !MP3_Library.isLibraryFile( libraryFile ) )
+        {
+</pre>
+
+If libraryFile is not a null reference, check if the file exists. 
+Create it if necessary.  Whether you just created it or not, make sure
+it is a valid QC MP3 Library.  Later on we will write new information to
+the file, and we don't want to destroy some other kind of file on the
+user's disk.<p>
+
+The reason for testing the file even if we just created it is that it
+makes the logic of the program simpler (less testing) and it takes very
+little time to possibly make one extra validitiy check on the contents
+of the file.
+
+<pre>
+          if ( libraryFile != null )
+          {
+            //  Create the file if necessary
+            if ( !libraryFile.exists() )
+            {
+              MP3_Library.initializeLibraryFile( libraryFile );
+            }
+            if ( !MP3_Library.isLibraryFile( libraryFile ) )
+            {
+              JOptionPane.showMessageDialog( null,
+                  libraryFile.getName() + " is not a library file",
+                   "Bad Selection",
+                   JOptionPane.WARNING_MESSAGE );
+              libraryFile = null;
+            }
+          }
+</pre>
+
+At this point libraryFile will be a null reference if we don't have a
+valid library file yet, or it will be a non-null reference if we do have
+a valid file.  If it's null, put up a JFileChooser, get the user's
+choice, and go back to the top of the while loop to check if this file
+is valid or not.
+
+<pre>
+          if (libraryFile == null )
+          {
+            //  Give instructions and chance to exit if no file has
+            //  been selected
+            if ( JOptionPane.CANCEL_OPTION ==
+                   JOptionPane.showConfirmDialog(
+                     null,
+                     "Select a Music Library, or choose Cancel to exit",
+                     "Need a Library",
+                     JOptionPane.OK_CANCEL_OPTION ) )
+            {
+              System.exit( 0 );
+            }
+
+            jfc = new JFileChooser( startDir );
+            jfc.showOpenDialog( null );
+            libraryFile = jfc.getSelectedFile();
+            if ( libraryFile == null )
+              System.exit( 0 );
+            startDir = libraryFile.getParent();
+          }
+        }
+</pre>
+
+Now we are out of the while loop, so libraryFile is a legitimate library
+file.  It might be newly-created, or it might be one that existed before
+and already has some mp3 file names in it.  But in either case, the
+first line of the file is the magic string, "#QCMP3LIB".<p>
+
+<H2>Create a MP3_Library Object</H2>
+
+First, print the name of the library file.  Doing so is part of the
+assignment.<p>
+
+<pre>
+        //  Valid Library file has been created or located
+        System.out.println( "The library file is " +
+                                      libraryFile.getAbsolutePath() );
+</pre>
+
+At this point, we know that libraryFile is a reference to a File object
+that represents a valid library file, but the MP3_Library constructor
+doesn't know that, and it will check that what we pass to it is
+legitimate.  If not, it will throw an exception, so we have to wrap the
+new operation in a try block.  If an exception really is thrown,
+something is radically wrong, and we print an error message, and
+exit.<p>
+
+Note that you would consult the documentation for the MP3_Library
+constructor to find out that it might throw an
+InvalidMP3LibraryFile, and under what circumstances it might do this.
+
+<pre>
+        try
+        {
+          library = new MP3_Library( libraryFile );
+        }
+        catch ( InvalidLibraryFile ilf )
+        {
+          System.err.println( "Unable to create MP3_Library: " +
+                                                   ilf.getMessage() );
+          System.exit( 1 );
+        }
+</pre>
+
+<H2>Add .mp3 Files to the Library</H2>
+
+Now the program searches the disk for valid .mp3 files.  The task is
+made easier than it sounds because (1) class FileIterator will let you
+use the methods in the Iterator interface to get a File object for every
+regular file on the disk starting in the directory you specify. (2)
+Class MP3_Library's <I>add()</I> method tests the File object you give
+it to see if it represents a real MP3 file or not, and only adds the
+files that pass the test to its Vector of MP3_File objects.  If you
+wanted to, you could test the boolean value returned by <I>add()</I> to
+see whether a particular file was added to the library or not, but it's
+not necessary in this program.<p>
+
+Note that we have to create a File object representing the directory we
+want to start the search in so we can pass it to the FileIterator's
+constructor.  It's the need to be able to get the proper pathname of
+this directory from the library file's pathname that made us be careful
+to create the File object for the library file so carefully earlier.<p>
+
+Note also that you have to cast the reference returned by <I>next()</I>
+into a File object because the signature for <I>next()</I> just says it
+returns an Object.  But FileIterator always returns references to
+Files, so this cast is safe to do.
+
+<pre>
+        //  Add all MP3s in this directory or below to the library
+        File dir = new File( libraryFile.getParent() );
+        System.out.println( "Adding MP3 files in directory " +
+                                              dir.getAbsolutePath() +
+                                              " to " +
+                                              libraryFile );
+        FileIterator fi = new FileIterator( dir );
+        while ( fi.hasNext() )
+        {
+          library.add( (File) fi.next() );
+        }
+</pre>
+
+<H2>Write the Library File to Disk</H2>
+
+Once again, this may sound complicated, but it's actually simple,
+because there is a <I>write()</I> method in class MP3_Library that will
+do all the work for us.
+
+<pre>
+        System.out.println( "Saving " + libraryFile.getName() );
+        library.write();
+        System.exit( 0 );
+      }
+
+  } // End of class LibraryManager!
+
+</pre>
+
+
+
+
+
+<HR></BODY></HTML>

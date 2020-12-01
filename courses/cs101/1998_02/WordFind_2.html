@@ -1,0 +1,345 @@
+<HTML><HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>WordFind Graphical User Interface</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<B><FONT FACE="Arial" SIZE=4><P ALIGN="CENTER">WordFind Graphical User
+Interface</P> </FONT>
+
+<I><FONT FACE="Arial"><P>Due Date: Midnight May 26, 1998. No
+Extensions.</P>
+
+<P>Introduction</P>
+
+</B></I></FONT><P>There is not enough time left in the term for you to
+complete this project, but you can receive partial credit provided you
+submit code that compiles and runs, even if it doesn't do much. That
+means you must develop your program incrementally. Do a little bit, and
+test to make sure it works. Add a little more, and test that, etc. This
+is a good development strategy in general, because the difficulty of
+debugging a program seems to grow in proportion to the square of the
+number of lines of code being debugged. The fewer lines you add at a
+time, the fewer lines you have to consider at a time.</P>
+
+<P>This document tells how to develop this project systematically by
+taking advantage that you can use my implementations of parts of the
+project while you are developing another part.  Unless you talk to me
+<I>beforehand</I> about doing your project differently (perhaps you have
+an idea for a more interesting user interface), you are to do the
+project following the development steps outlined here.</P>
+
+<B><I><FONT FACE="Arial"><P>Design Goals</P> </B></I></FONT>
+
+<P>The primary goals of this project are to provide a GUI for the
+WordFind project that can do the following things:</P> 
+
+<UL>
+
+<LI>Display a Puzzle matrix graphically. </LI>
+
+<LI>Display the word list associated with a puzzle graphically. </LI>
+
+<LI>Allow the user to select words from the word list, and see them
+highlighted in the puzzle matrix.</LI>
+
+</UL>
+
+<P>Secondary goals could include:</P>
+
+<UL>
+
+<LI>Allow the user to click on words in the puzzle matrix and see them
+highlighted in the word list.</LI>
+
+<LI>Be able to run the program as an Applet. </LI>
+
+<LI>Allow the user to type words not on the word list to see if they
+appear in the puzzle.</LI></UL>
+
+<B><I><FONT FACE="Arial"><P>Code I am Supplying</P></B></I></FONT>
+
+<P>I am supplying source code for the solution to the previous
+assignment, parts of which are needed for doing this project, as well
+as working versions of the classes that you are assigned to write for
+this project.  [ <A href="Sample_Code/WordFind_GUI.zip"> Click Here</A>
+] to download a zipped copy of these files.  <B>May 20:</B> [ <A
+href="Sample_Code/WordFind_GUI_adjusts.zip"> Click Here</A> ] to
+download an updated copy in which the P_Canvas adjusts its size based
+on the size of your screen.  If you have had trouble seeing complete
+puzzles on you screen, let me know if this works better or worse for
+you.</P>
+
+<UL>
+
+<LI><B>Puzzle.java</B> <I>Note:</I> This class creates the word list
+associated with the puzzle as well as the puzzle matrix itself, so it
+is a superset of what was required for Project 3. It also has a new
+method, <I>getPuzzle()</I> that returns a char[][] with the puzzle
+matrix in it, which will be needed for this project. </LI>
+
+<LI><B>Answer.java</B> The same as the file I distributed with Project
+3.</LI>
+
+<LI><B>Direction.java</B> <I>Note:</I> This class has a new method,
+<I>intValue()</I>, which will be needed for this project. </LI>
+
+<LI><B>WL.java</B> A WindowListener that makes windows disappear from
+the screen when the user closes them. My WF_Frame class uses this class
+so the user can make individual puzzles disappear from the screen.</LI>
+
+<LI><B>GUI.class</B> My version of the "GUI Generator" application
+class. </LI>
+
+<LI><B>WF_Frame.class</B> The container for the GUI components (the
+puzzle matrix and the word list).</LI>
+
+<LI><B>P_Canvas.class</B> The class that knows how to draw a matrix of
+characters in a grid and includes methods for highlighting and
+unhighlighting words, given the coordinates of their endpoints.</LI>
+
+<LI><B>UI.java</B> My User Interface class from Project 3.  Not needed
+for this project, but here for you to look at if you want to.
+
+</UL>
+
+<P>My program implements all the primary design goals, but none of the
+secondary ones.  <B>May 15 Addendum:</B>  The Zip file now includes HTML
+files for [ <A href="Sample_Code/WordFind_GUI/bingo.html">bingo</A> ]
+and [ <A href="Sample_Code/WordFind_GUI/puzzle_57.html">puzzle_57</A> ]
+that can be used for Applet implementations.  The Puzzle class now
+includes a constructor that takes an Applet reference as an argument,
+and I provided a new class, AGUI ("Applet GUI") that uses this
+constructor.  </P>
+
+<B><I><FONT FACE="Arial"><P>Development Steps</P></I>
+
+<OL>
+
+</FONT><LI>Write your own <CODE>GUI.java</CODE>.</LI> </B>
+
+<P>For each command line argument, create a Puzzle (if possible) and
+construct a new WF_Frame for displaying and interacting with the
+puzzle. The two arguments to the WF_Frame constructor are a String,
+which will be put in the title bar of the Frame's window, and a
+reference to the Puzzle object for that Frame. If there is an error
+creating a Puzzle, write a message to System.err, and go on to the next
+Puzzle file (if there are any more). Your program must not exit after
+creating all the Puzzles and their Frames, or the user will never get a
+chance to interact with them! My GUI puts up a window with a "Quit"
+button, but yours should write a prompt message to System.out telling
+the user to
+"Press&nbsp;&lt;Enter&gt;&nbsp;when&nbsp;you&nbsp;are&nbsp;ready&nbsp;to&nbsp;exit."
+Then read from System.in, and exit when the user types something.</P>
+
+<P>You can position a WF_Frame on the user's screen by calling
+<I>setLocation().</I> Pass the x and y screen coordinates to this
+method; you have to use a reference to the object to call it. This
+feature is not required.</P>
+
+<P>You can add a dialog box like (or better than) mine after you have
+met the primary goals for the project.</P>
+
+<P>Comment your code so that there is an "@author" tag somewhere in the
+comments. Put your name after the tag, but don't put anything else on
+the same line. There must be a block of comments before each class and
+method definition. See my source code for examples.</P>
+
+<I><P>Completing this step (without the dialog box) successfully will
+be worth at least 4 out of 10 points for this project.</P> </I>
+
+<B><LI>Write your own <CODE>WF_Frame.java</CODE>.</LI> </B>
+
+<P>The class WF_Frame is to be a subclass of Frame, and the constructor
+has to start with a call to the superclass' constructor with the title
+string as the argument. You need to add two components to the Frame,
+one is a Canvas that will display the puzzle matrix, and the other is a
+List that will display the word list for the puzzle. Do this in two
+sub-steps:</P>
+
+<P>First, create a new List object. The constructor
+takes two arguments, and <I>int</I> that tells the number of items to
+display in the list, and a <I>boolean</I> that tells whether multiple
+items in the List can be selected at the same time. For my code, I made
+the number of items to display the minimum of six or the number of
+items in the Puzzle's word list. Remember, the Puzzle is passed as an
+argument to the constructor, a Vector containing the word list can be
+obtained by calling Puzzle's <I>getWordList()</I> method, and the size
+of the list can be obtained using Vector's <I>size()</I> method. Once
+you have created the List, you need to populate it with the words from
+the word list, using an Enumeration as shown in class on May 12. Now,
+use <I>add()</I> to add the List to the WF_Frame, and call
+<I>pack(),</I> and <I>show()</I> before returning from the constructor.
+(There is no need for the <I>init()</I> method shown in class on May
+12.)</P> 
+
+<P>When you add a component to a container (<I>i.e.</I>, when
+you add your List to your WF_Frame), you need to tell the "layout
+manager" where to put the component. Applets use a FlowLayout layout
+manager by default, but other containers, such as Frames, use a
+BorderLayout layout manager by default. You can change layout managers,
+or even have containers with no layout manager, but for this project we
+will just use the default BorderLayout. When you call <I>add()</I>, the
+first argument is a reference to the component being added, and the
+second tells the layout manager where the component goes. For
+BorderLayout the second argument can be one of the constants defined in
+the BorderLayout class: <CODE>BorderLayout.NORTH</CODE>,
+<CODE>BorderLayout.SOUTH</CODE>, <CODE>BorderLayout.EAST</CODE>,
+<CODE>BorderLayout.WEST</CODE>, or <CODE>BorderLayout.CENTER</CODE>.
+Once you have added your components to a container, calling
+<I>pack()</I> (receives no arguments, returns nothing) tells the layout
+manager to figure out where all the components go and how big to make
+the container. Then, calling <I>show()</I> (receives no arguments,
+returns nothing) makes the container visible on the screen.</P>
+<I>
+
+<P>Completing this much of the project correctly is worthat least 6
+points out of 10 for the project.</P> </I>
+
+<P>Next, you need to draw the Puzzle matrix in the WF_Frame. You could
+define a <I>paint()</I> method for the WF_Frame class and do the
+drawing directly into the Frame, but then the layout manager would not
+know about it and it would get covered by the List component. Instead,
+you need to create another component, add it to the WF_Frame, and have
+that other component do the drawing using its own <I>paint()</I>
+method. (WF_Frame does not need a <I>paint() </I>method at all.) The
+traditional type of component to use for drawing things was called a
+"Canvas," but the current Java AWT recommends the use of its
+superclass, called "Component." The distinction makes no difference at
+this point; P_Canvas is the name of the class that provides this
+feature for this project. The P_Canvas constructor receives a
+<I>char[][]</I> and draws the characters in that matrix into boxes to
+be displayed in the Frame. You can get the matrix containing the
+character array for a Puzzle by calling its <I>getPuzzle()</I> method.
+This is a new method that I added to the Puzzle class for the purposes
+of this project.</P> 
+
+<P>When you add the P_Canvas to the WF_Frame, you need to tell the
+layout manager where it goes. For example, in my code, I used
+<CODE>BorderLayout.NORTH</CODE> for the P_Canvas and
+<CODE>BorderLayout.CENTER</CODE> for the List. You can experiment with
+different values and decide how you want your own to look, provided
+both components are visible when the WF_Frame is shown!</P> <I>
+
+<P>Completing this much of the project correctly is worth at least 8
+points out of 10 for the project.</P> </I>
+
+<B><LI>Respond to user interactions in the word list.</LI> </B>
+
+<P>Declare the WF_Frame class to implement the ItemListener interface,
+and add a method named <I>itemStateChanged()</I> to the class. This
+method receives and ItemEvent object and returns nothing. It will be
+called every time the user selects or deselects a word in the List
+component. To activate this feature, you need to call List's
+<I>addItemListener()</I> method with "this" as its argument after the
+constructor creates the List object.</P> 
+
+<P>To implement this part of the project, you need to know about two
+methods provided by class ItemEvent, <I>getItem()</I>, and
+<I>getStateChange().</I> Method <I>getItem()</I> returns the index of
+the word that was selected or unselected as an Integer object. You have
+to convert this object to an <I>int</I> (use <I>Integer.intValue()</I>)
+and use this index to access the Puzzle's word list Vector (using
+Vector's <I>elementAt()</I> method) to get the String containing the
+word the user clicked on. Then you can use Puzzle's <I>findWord()</I>
+method to determine the location of the word in the Puzzle, and
+highlight the letters of the word.</P> 
+
+<P>The <I>getStateChange()</I> method returns
+<CODE>ItemEvent.SELECTED</CODE> if the user selected the word, or
+<CODE>ItemEvent.DESELECTED</CODE> if the user deselected the word. You
+can decide whether to highlight the word or to unhighlight it in the
+P_Canvas depending on the value returned by this method.</P> 
+
+<P>The P_Canvas class provides two methods for highlighting and
+unhighlighting words it displays, named <I>highlight()</I> and
+<I>unhighlight().</I> Both take four <I>int</I>s, the starting row and
+column and the ending row and column, using (0, 0) to indicate the
+upper left corner of the puzzle.</P>
+
+<P>There is a messy implementation issue to deal with in order to get
+this step "right."  It is that you will get "extra" calls to
+<I>itemStateChanged()</I> if the user clicks rapidly or scrolls through
+the List using the arrow keys.  My <I>highlight()</I> and
+<I>unhighlight()</I> methods will not work correctly if they are called
+to highlight an already highlighted word or to unhighlight an
+unhighlighted word, so you need to filter out redundant state changes
+as described in class on May 19 [ <A HREF="Lecture_Notes_13"> Lecture
+Notes 13</A> ].
+
+<I><P>Completing this much of the project correctly is worth at least
+9.5 out of 10 points for the project.</P> </I>
+
+<B><LI>Write your own <CODE>P_Canvas.java</CODE>.</LI> </B>
+
+<P>The constructor must receive a <I>char[][]</I> and make the size of
+the component proportional to the size of this matrix. If your class
+extends class Canvas, use <I>setSize()</I> to give the width and
+height, in pixels, respectively. If your class extends Component
+instead, provide a method named <I>getPreferredSize()</I> that returns
+a Dimension object constructed from the width and height instead.</P>
+
+<p>To determine the size of the component correctly, you need to decide
+what Font you are going to use for the characters, which in turn can be
+used to create a FontMetrics object that tells you the height and width
+of the characters that are displayed in that font. As a first
+approximation, you can just use the default font for the system and
+draw grid boxes that are 25x25 pixels in size.  This is not going to
+work well on all computers, and the default Font has varying-width
+characters ('W' is very wide, and 'I' is very narrow) which will lead
+to letters not being centered in their grid boxes, but it is OK for
+getting started.</p>
+
+<p>In P_Canvas' <I>paint()</I> method, you can use Graphics'
+<I>drawLine()</I> and <I>drawChars()</I> methods to draw the grid and
+the letters, respectively. You can use <I>setColor()</I> to change the
+color of what you draw for highlighting.</P>
+
+<p>Implementing the highlighting routines involves solving some classic
+problems in basic computer graphics.  The first is to figure out what
+squares to highlight based on the cell positions of the letters at the
+two ends of the word.   This is the same problem as figuring out what
+pixels to light up in order to draw a line on the screen, but simplified
+because the "lines" in this case can have only four possible slopes.
+(There are 8 directions words can go in, but whether a word goes NE or
+SW, the letters are on a line with a slope of +1, etc.)</P>
+
+<p>The algorithm used for drawing lines is called the <I>Digital
+Differential Analyzer</I>, or DDA.  We can use a simplified version of
+the DDA (because of our limited number of slopes) as follows:  Compute Delta
+X (C2 minus C1).  If Delta X is not zero, set Delta Y to +1 if R2 is
+greater than R1, or to -1 if R2 is less than R1.  If delta X is negative,
+swap C1 with C2, set R1 to R2, and reverse the sign of Delta Y.  At this
+point, you can loop through columns C1 up to C2, with the row number
+starting at R1 and incrementing by DeltaY each time through the
+loop.  If, however, Delta X is zero, that means the word is vertical,
+and you have to do this: Make sure R1 is less than R2 (swap endpoints if
+necessary), then loop from R1 to R2 adding +1 or -1 to the column number
+as necessary.  The verbal description of this is more complicated than
+the actual code to implement it.</P>
+
+<P>The other graphics issue is that the highlighting routines need to
+deal with what happens when two words cross or overlap so that they
+share one or more letters.  If both words are highlighted, and then one is
+unhighlighted, the letters it shares with the other one should be left
+highlighted until the second word is unhighlighted.  To manage this, I
+used a matrix of <I>int</I>s telling how many times each letter is
+highlighted (its "highlight count").  The <I>highlight()</I> method
+adds one to each letter's position in this matrix, and the
+<I>unhighlight()</I> method subtracts one.  When P_Canvas'
+<I>paint()</I> method is called, it highlights letters whose highlight
+count is greater than zero and unhighlights letters with a highlight count
+equal to zero.</P>
+
+<I> <P>Completing this much of the project correctly makes you eligible
+for a "10" on the project.</P> </I>
+
+<B><LI>Add more features!</LI></B>
+
+</OL>
+
+<P><HR></P></BODY>
+</HTML>

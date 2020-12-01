@@ -1,0 +1,155 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>Lecture 11</title>
+<meta name=Description content="16-Mar-00: Stack Frame">
+<link rel=next href=slide0006.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0005.htm');   
+  else
+    parent.location.href = "../Lecture_11.html";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=650 height=487 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=55 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=160 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=220 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=180 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=650 height=63 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=215 height=45 colspan=2></td>
+  <td width=220 height=45>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=220 height=45 align=center><font face="Times New Roman" size=6>Stack
+    Frame</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=215 height=45 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=650 height=35 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=55 height=264></td>
+  <td width=560 height=264 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=165 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=72 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=102 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=38 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=31 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=33 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=48 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=25 height=33><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=437 height=33 colspan=8><font face="Times New Roman" size=5>A
+    section of a Thread’s stack that is</font><br>
+    </td>
+    <td width=98 height=33 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=25 height=31></td>
+    <td width=535 height=31 colspan=11><font face="Times New Roman" size=5>allocated
+    and initialized each time a method</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=25 height=32></td>
+    <td width=518 height=32 colspan=10><font face="Times New Roman" size=5>is
+    invoked (called).<span style="mso-spacerun: yes">  </span>The “top” stack
+    frame</font><br>
+    </td>
+    <td width=17 height=32></td>
+   </tr>
+   <tr>
+    <td width=25 height=31></td>
+    <td width=470 height=31 colspan=9><font face="Times New Roman" size=5>is
+    de-allocated when a method returns.</font><br>
+    </td>
+    <td width=65 height=31 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=560 height=5 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=25 height=33><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=266 height=33 colspan=5><font face="Times New Roman" size=5>Each
+    stack frame has:</font><br>
+    </td>
+    <td width=269 height=33 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=560 height=4 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=33 height=29 colspan=2></td>
+    <td width=20 height=29><font face="Times New Roman" color=black size=5>–</font></td>
+    <td width=378 height=29 colspan=5><font face="Times New Roman" size=5>Formal
+    Parameters (might be none)</font><br>
+    </td>
+    <td width=129 height=29 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=560 height=4 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=33 height=29 colspan=2></td>
+    <td width=20 height=29><font face="Times New Roman" color=black size=5>–</font></td>
+    <td width=340 height=29 colspan=4><font face="Times New Roman" size=5>Local
+    variables (might be none)</font><br>
+    </td>
+    <td width=167 height=29 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=560 height=5 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=33 height=29 colspan=2></td>
+    <td width=20 height=29><font face="Times New Roman" color=black size=5>–</font></td>
+    <td width=166 height=29 colspan=2><font face="Times New Roman" size=5>Return
+    address.</font><br>
+    </td>
+    <td width=341 height=29 colspan=7></td>
+   </tr>
+  </table>
+  </td>
+  <td width=35 height=264></td>
+ </tr>
+ <tr>
+  <td width=650 height=80 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

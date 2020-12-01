@@ -1,0 +1,269 @@
+<HTML><HEAD><TITLE>Project 1</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 1: <CODE>Checkers_UI</CODE></H1>
+</center>
+<H2>Due Date and Deliverables</H2>
+This project is due by <B>midnight October 6, 1998</B>.<p>
+
+Send me a zip file named &lt;<I>your_email_address</I>&gt;.zip, but
+substitute your own email address for
+"&lt;<I>your_email_address</I>&gt;" in the file name.  The zip file is
+to contain just a single Java file, properly documented, named
+<CODE>Checkers_UI.java</CODE>.  The contents of this file are described
+below.  Do not put anything else in the zip file.<p>
+
+The project will be graded on a 10 point scale.  You may hand the
+project in up to one week late, but there will be a penalty of 0.2
+points (2%) for each day it is late.<p>
+
+<B>The project will not be accepted for credit after the cutoff date of
+October 13, 1998.</B><p>
+
+<H2>Do Your Own Work</H2>
+
+<blockquote><b>For this and all assignments in this course, you must
+write and document your code yourself.  Furthermore, you must not make
+code related to the assignment available to others in the course.  If I
+discover that you have not followed either of these rules I will give
+you a failing grade in the course and possibly request the college to
+take disciplinary action.<p></b></blockquote>
+
+If I assign you a failing grade in the course as a result of this policy
+before the deadline date for dropping the course without evaluation, I will
+request the Dean of Students to forbid you from dropping the course.  In
+the past, the Dean has honored this sort of request.<p>
+
+Actually, there is no point in trying to submit code that is not your
+own because you will be tested on your ability to write code during
+exams, and the exams will count much more than the projects in your
+course grade.<p>
+
+If you cannot write the code on your own, hand in what you can do
+anyway; you will receive partial credit for your work.
+
+<H2>Questions and Changes</H2>
+
+There is a page with answers to [&nbsp;<a href="FAQ.html">Frequently
+Asked Questions</a>&nbsp;] (FAQs) about the project.  Please consult
+that page before sending me email about problems with the project.<p>
+
+Rather than update this page when I make changes to the assignment or to
+the code I am supplying to you, there is a separate web page for
+[&nbsp;<a href="changes.html">Project Changes</a>&nbsp;].  I will send
+email to everyone whenever there are changes.
+
+<H2>Project Description</H2>
+
+This is the first of three related projects.  In this one, you will
+write a command-line, non-graphical, user interface for a checkers
+playing program.  In the next project, you will write your own
+implementation of the Checkerboard class (and related classes) that I
+am supplying you for this project.  In the final project of the series,
+you will develop a graphical user interface to replace the command line
+interface you are writing for this project.<p>
+
+If you do not know how to play checkers, you should consult [ <a
+href="http://learn2.com/05/0501/0501.html">Learn2 Play Checkers</a>
+].<p>
+
+The program does not actually play checkers.  Rather, it provides a
+Checkerboard and game pieces that can be used by two people playing
+checkers or by someone who wants to study checkers problems.<p>
+
+For this project, your program is to process the following command lines
+entered by the user:
+
+<blockquote> <dl>
+
+    <dt><CODE>quit</CODE>
+    <dd>Exit the program.<p>
+
+    <dt><CODE>show</CODE>
+    <dd>Prints a representation of the chessboard showing what squares
+    are occupied by what pieces.<p>
+
+    <dt><CODE>init</CODE>
+    <dd>Puts all the pieces on the chessboard, positioned to start a new
+    game.<p>
+
+    <dt><CODE>clear</CODE>
+    <dd>Remove all pieces from the chessboard.<p>
+    
+    <dt><CODE>place <I>piece</I> &lt;rc&gt; [<I>piece</I> &lt;rc&gt; ...]
+    </CODE>
+
+    <dd>Places a piece on the board at the indicated row/column.  The
+    names of the pieces are <B>r</B> (red pawn), <B>R</B> (red king),
+    <B>b</B> (black pawn), and <B>B</B> (black king).  For
+    <CODE>&lt;rc&gt;</CODE>, the lower-left corner of the board is
+    entered as <CODE>11</CODE>, the lower right corner is
+    <CODE>18</CODE>, the upper-right corner is <CODE>88</CODE>, the
+    upper-left corner is <CODE>81</CODE>, and so forth.<p>
+
+    There can be any number of additional piece names and positions
+    after the first pair.  This is indicated by the information inside
+    the square brackets above.  The square brackets and the ellipses (
+    <CODE>...</CODE> ) are not part of what the user actually types.<p>
+
+    <dt><CODE>move  &lt;r<sub>1</sub>c<sub>1</sub>&gt;
+              &lt;r<sub>2</sub>c<sub>2</sub>&gt;</CODE>
+    <dd>Move a piece from
+    <CODE>&lt;r<sub>1</sub>c<sub>1</sub>&gt;</CODE> to
+    <CODE>&lt;r<sub>2</sub>c<sub>2</sub>&gt;</CODE>.<p>
+
+    <dt><CODE>moves</CODE>
+    <dd>Prints all the moves and jumps that each side can make legally.
+
+</dl> </blockquote>
+
+<H2>Development Steps</H2>
+
+Follow the steps listed here to develop this project.  Be sure each
+step works perfectly before starting work on the next step.  <I>If you
+don't do the project by following these steps exactly, your tongue will
+turn green and the bottoms of your feet will itch for the rest of your
+life.</I>  And you will get neither sympathy, a deadline extension, nor a
+decent grade from me.<p>
+
+<ol>
+    <li><B>Run My Code.</B>  I am supplying you with a complete, working
+    implementation of the entire project.  Download the two files listed
+    here, and run the program to see how the project works.<p>
+
+    Create a directory to do the project in, and then download [ <a
+    href="Vickery.zip">Vickery.zip</a> ].  You will probably have to
+    right-click on this link and select "Save Link As ..." if you are
+    using Netscape Navigator, or "Save Target As ..." if you are using
+    Internet Explorer.  Select your project directory for the
+    download.  You then need to use WinZip to unzip
+    <CODE>Vickery.zip</CODE> and extract the two files in it,
+    <CODE>Checkers_UI.class</CODE> and <CODE>Vickery.jar</CODE>.  If
+    you have installed the WinZip Internet Extensions, you can just
+    left-click on the Vickery.zip link, and WinZip will start up with
+    the zip file opened and ready for you to extract Checkers_UI.class
+    and Vickery.jar into your project directory.<p>
+
+    To start running my version of the program, get a DOS prompt window,
+    and type this command once:
+
+    <blockquote><CODE>set CLASSPATH=.;Vickery.jar</CODE></blockquote>      
+
+    That's an equal sign, a dot, and a semicolon, with no spaces, 
+    between the H and the V.  It's good to capitalize the command as
+    shown, but not necessary under Windows 95/98/NT.<p>
+
+    Now run the program using the following command:
+
+    <blockquote><CODE>java -nojit Checkers_UI</CODE></blockquote>
+
+    If you are running a version of the JDK earlier than 1.1.6, omit the
+    "<CODE>-nojit</CODE>" from this command line.  You should see a
+    prompt message that says "<CODE>Command> </CODE>," and you should
+    experiment with the various commands listed above to make sure you
+    understand how to use the program.  Try entering badly formed
+    commands to see what happens.  Report bugs to me!<p>
+    
+    <li><B>Implement the <CODE>quit</CODE> Command.</B>  Use your editor
+    to create Checkers_UI.java, and define the class Checkers_UI.  Write
+    a <I>main()</I> method that executes the following endless loop:
+    
+    <ul>
+      <li>Write a prompt message, leaving the cursor on the same line as the
+      message.<br>
+      <li>Read a command line String from the user.
+      <li>Create a StringTokenizer for the command line.
+      <li>If there are any tokens and if the first token is "quit," exit
+      the program.
+      <li>If there are any tokens but the first token is not "quit," write
+      an appropriate error message to stderr.
+      <li>Repeat prompting, reading, and processing until the user types
+      quit or signals end of file.
+    </ul><p>
+
+    <li><B>Implement the <CODE>show</CODE>, <CODE>init</CODE>, and
+    <CODE>clear</CODE> Commands.</B>  The file <CODE>Vickery.jar</CODE>
+    contains the class file for a class named
+    <CODE>Checkerboard</CODE>. (It also includes a number of auxiliary class
+    files that are used by <CODE>Checkerboard</CODE> and by my
+    Checkers_UI class, but they do not concern you ... yet.)<p>
+    Before you start the endless loop of prompting for commands and
+    processing them, instantiate class Checkerboard once.  For purposes
+    of discussion, let's assume you keep a refernce to this Checkerboard
+    in a variable named <B>cb</B>.  Now you can add the following logic
+    to your program's main loop:
+    <ul>
+      <li>If the command is "show," execute
+      <CODE>System.out.println( cb );</CODE>
+      <li>If the command is "init," execute <CODE>cb.init();</CODE>
+      <li>If the command is "clear," execute <CODE>cb.zero();</CODE>
+    </ul><p>
+
+    <li><B>Implement the <CODE>move</CODE> Command.</B><p>
+
+    If the command is "move," be sure there are exactly two more 
+    tokens on the command line, and then try to convert those two 
+    tokens to decimal numbers.  If you can do that, break each decimal 
+    number into two decimal digits.  Then use the function 
+    <I>validate()</I> provided by class Checkerboard to be sure each 
+    row/column pair is actually on a valid square on the checkerboard.  
+    The signature of this method looks like the 
+    following:<blockquote><CODE>public boolean validate( int row, int 
+    col )</CODE></blockquote>Like the other methods in class 
+    Checkerboard, <I>validate()</I> works with row and column numbers 
+    between zero and seven, so be sure to fix up the values given by 
+    the user before calling this method.  It returns <i>true</i> if 
+    the given row and column are the location of one of the black 
+    squares of the checkerboard and returns <i>false</i> otherwise.<p>
+
+    Once you have verified that the starting and ending squares are 
+    valid, use Checkerboard's <i>pickUp()</i> method to (duh) pick up 
+    the piece. The signature for <i>pickUp()</i> looks like the 
+    following:<blockquote><code>public int pickUp( int row, int col ) 
+    </code></blockquote>.  The value returned will be one of the 
+    following five constants:
+    
+    <ul>
+      <li>Checkerboard.NO_PIECE
+      <li>Checkerboard.RED_PAWN 
+      <li>Checkerboard.RED_KING
+      <li>Checkerboard.BLACK_PAWN 
+      <li>Checkerboard.BLACK_KING
+    </ul><p>
+
+    Use Checkerboard's <I>occupant()</I> method to find out what 
+    piece, if any, occupies the target square.  <I>occupant()</I> has 
+    the following signature:<blockquote><code>public int occupant( 
+    row, col )</code></blockquote> and returns the same values as 
+    <I>pickUp()</I>.  The only difference between the two methods is 
+    that <I>pickUp()</I> removes the piece from the square, but 
+    <I>occupant()</I> does not.<P>
+
+    If the target square is not occupied, use <I>addPiece()</I> to put     
+    the selected piece on the target square.  The signature for 
+    <I>addPiece()</I> is: <blockquote><code>public boolean addPiece( 
+    int piece, int row, int col ) </code></blockquote>  The first 
+    argument should be one of the constants, RED_PAWN, RED_KING, 
+    BLACK_PAWN, or BLACK_KING, which would have been returned by 
+    <i>pickUp</i> earlier.  <i>addPiece()</i> has the feature that it 
+    will allow you to add a RED_PAWN to a square already occupied by a 
+    RED_PAWN to create a RED_KING, and likewise for black.<p>
+
+    <li><B>Implement the <CODE>place</CODE> Command.</B><p>
+    Implementing this command is optional, and how to do it is left 
+    for you to work out.  However, if you do implement it, you must 
+    use the methods already described for class Checkerboard.<p>
+
+    <li><B>Implement the <CODE>moves</CODE> Command.</B><p> 
+    Implementing this command is optional, and how to do it is left 
+    for you to work out.  However, if you do implement it, you must 
+    use the method <I>getMoves()</I> provided by the Checkerboard
+    class. <I>getMoves()</I> has the following
+    signature:<blockquote><CODE>public String
+    getMoves()</CODE></blockquote>  The String returned will be a
+    printable representation of all the moves and jumps available to
+    both sides.  (I have not implemented <I>getMoves()</I>at this
+    time!)<p>
+
+</ol>
+<HR></BODY></HTML>

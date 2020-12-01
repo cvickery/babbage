@@ -1,0 +1,49 @@
+<HTML><HEAD><TITLE>ShowDialog_1.java</TITLE></HEAD><BODY>
+<CENTER><H1>ShowDialog_1.java</H1></CENTER><HR><PRE>
+//  ShowDialog_1.java
+
+import java.awt.*;
+import java.awt.event.*;
+
+public class ShowDialog_1 {
+
+  static Frame  f   = new Frame( "Dialog Example" );
+  static Dialog d   = new Dialog( f, "A Dialog Box", true );
+  static Button b   = new Button( "Click for Dialog" );
+  static Button ok  = new Button( "OK" );
+
+  public static void main( String[] argv ) {
+
+    b.addActionListener( new ActionListener() {
+      public void actionPerformed( ActionEvent ae ) {
+        d.setVisible( true );
+      } } );
+
+    ok.addActionListener( new ActionListener() {
+      public void actionPerformed( ActionEvent ae ) {
+        d.dispose();
+        d.setModal( ! d.isModal() );
+        System.out.println( "Dialog is " +
+                            (d.isModal() ? "" : "not ") +
+                            "modal." );
+      } } );
+
+    f.addWindowListener( new WindowAdapter() {
+      public void windowClosing( WindowEvent we ) {
+        System.exit( 0 );
+      } } );
+
+    d.add( ok );
+    d.pack();
+
+    f.add( b );
+    f.pack();
+    f.setVisible( true );
+
+    System.out.println( "Main is finished" );
+    return;
+
+  }
+
+}
+</PRE><HR></BODY></HTML>

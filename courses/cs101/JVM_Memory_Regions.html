@@ -1,0 +1,193 @@
+<html><head><title>JVM Memory Regions</title>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+</head>
+<BODY bgcolor=#FFFFFF>
+<center>
+<h1>JVM Memory Regions</h1>
+</center>
+
+<h2>Introduction</h2>
+
+The table below summarizes the parts of memory that are allocated and
+initialized when a class file is loaded into a Java Virtual Machine
+(JVM) and when a class is instantiated.<p>
+
+All the memory ("RAM") of a JVM consists of bytes. Each byte consists
+of 8 binary digits (bits). Each bit can have a value of 0 or 1.
+Different types of variables occupy a certain number of contiguous
+bytes in memory.  For example each variable of type <i>int</i> uses 4
+bytes, and each variable of type <i>char</i> is uses 2 bytes.  In
+addition to variables, the bytes of RAM can hold the machine language
+instructions that tell the processor what operations to perform.  The
+machine language instructions for the JVM are called "bytecodes."  Each
+executable statement is translated into bytecodes by the <i>javac</i>
+compiler.<p>
+
+Individual bytes in memory are identified by binary numbers called
+addresses.  Normally, Java programmers never see the binary numbers for
+memory addresses, but programmers deal with addresses indirectly: the
+values of reference variable are actually memory addresses.  Memory
+addresses are also called "pointers."  (The Java language uses the
+special value <i>null</i> to represent a memory address that never can
+be used to actually reference memory, namely zero.)<p>
+
+So, a JVM uses memory to hold both the instructions and the data that
+make up an executable program.  And it uses memory addresses to locate
+the instructions and the data as the program executes.  Although all
+bytes are just sets of ones and zeros and could potentially contain
+either instructions or data, the memory of a JVM is logically divided
+into different regions that hold different parts of the program in an
+organized fashion.  When a JVM first starts running, much of the memory
+is not assigned to any particular region, but as the program runs,
+pieces of this unassigned part of memory are assigned to particular
+parts of the various logical regions, a process called <i>allocating
+memory.</i><p>
+
+<h2>Overview of JVM Memory Regions</h2>
+
+<ul>
+
+    <li><b>Method Area</b>  This region is used to hold executable byte
+    codes.  It takes its name from the fact that all executable code in
+    a Java program is part of some <i>method.</i>  But it can hold
+    other information as well, as shown in the table.
+
+    <li><b>Heap</b>  This is the name for the region used for
+    allocating memory for new objects.  Reference variables (except
+    null) always contain addresses of memory within this region.
+
+    <li><b>Runtime Stack</b>  Each thread of execution is allocated its
+    own runtime stack, which is used for parameters, return addresses,
+    and local variables.  A thread's runtime stack grows and shrinks as
+    the thread enters methods and returns from them.
+    
+    <li><b>Program Counter</b>  This is a small piece of memory that
+    contains the address of the next bytecode to be executed by a
+    thread.  Programmers never deal with program counters directly, but
+    are used by the processor to execute statements in sequence, in
+    loops and other control structures, and for calling/returning
+    to/from methods.
+    
+    <li><b>Constant Pool</b>  This is a houskeeping region used by the
+    JVM to keep track of various parts of the class files that have been
+    loaded into memory.
+
+</ul>
+
+<h2>Lifetime and Scope</h2>
+
+The pieces of information that make up a program have two attibutes,
+called <i>lifetime</i> and <i>scope.</i>  Lifetime refers to the moment
+in time when the variable is allocated memory from one of the regions of
+the JVM until that memory is no longer allocated for that purpose any
+more.  Scope refers to the parts of a program that can refer to other
+parts of the program.  For example, statements in one method have no way
+to access the local variables declared in another method because those
+variables are not in scope when the first method is executing.
+
+<h2>The Table</h2>
+
+<b>Note:</b> This table does not incorporate information about access modifiers
+(public, private, and protected), which affect the Scope column.<p>
+
+<center><table border=1 cellpadding=5 width=95%>
+  <tr>
+    <th valign=top width=10%>Type of Information
+    <th valign=top>Region of Memory
+    <th valign=top width=20%>Lifetime
+    <th valign=top width=20%>Scope
+    <th valign=top>Notes
+ 
+  <tr>
+    <td valign=top>Static Variables
+
+    <td valign=top>Method Area
+
+    <td valign=top>From the moment the class is loaded to the moment
+    the program exits the JVM.
+
+    <td valign=top>Anywhere the class name is known.
+
+    <td valign=top>Access using the class name, a dot, and the variable
+    name except inside the class where the variable is defined, where
+    just the variable will suffice.  Can also be accessed through
+    reference variables pointing to objects of the class' type, but
+    this practice generally leads to obscure code.
+
+  <tr>
+
+    <td valign=top>Non-static ("instance") Variables
+
+    <td valign=top>Heap
+
+    <td valign=top>From the moment an object is created (using "new")
+    to the time there are no more references to the object.
+
+    <td valign=top>Anywhere there is a reference variable pointing to
+    the object.
+
+    <td valign=top>The memory for an object contains room for a copy of
+    each of the non-static variables for the class, plus some
+    housekeeping information.
+
+  <tr>
+
+    <td valign=top>Local Variables
+
+    <td valign=top>Runtime Stack
+
+    <td valign=top>From the moment a thread enters a method to the
+    moment it returns.
+
+    <td valign=top>Only statements within the method.
+
+    <td valign=top>Local variables for static and non-static methods
+    are handled identically.  Each time a method is called, stack
+    memory for a new copy of all the local variables is allocated;
+    there is no way to preserve local variables' values across method
+    calls.<p>
+    Two different threads can be executing in a method at the same
+    time, each with its own copy of the local variables because each
+    thread has its own runtime stack.
+
+  <tr>
+
+    <td valign=top>Static Methods
+    <br> (executable byte codes)
+
+    <td valign=top>Method Area
+
+    <td valign=top>From the moment the class is loaded into memory
+    until the program exits the JVM.
+
+    <td valign=top>Anywhere the class name is known.
+
+    <td valign=top>Access using the class name, a dot, and the method
+    name except inside the class where the method is defined, where
+    just the variable name may be used.  Can also be accessed through
+    reference variables pointing to objects of the class' type, but
+    this practice generally leads to obscure code.
+
+  <tr>
+
+    <td valign=top>Non-static ("instance") Methods
+    <br> (executable byte codes)
+
+    <td valign=top>Method Area
+
+    <td valign=top>From the moment the class is loaded into memory
+    until the program exits the JVM.
+
+    <td valign=top>Anywhere there is a reference variable pointing to
+    an object of the class.
+
+    <td valign=top>There is just one copy of each method, whether
+    static or not, no matter how many or how few times a class is
+    instantiated.  Instance methods are loaded into the method area
+    when the class file is loaded, even if the program never
+    instantiates the class.
+
+</table></center>
+
+<hr></body></html>

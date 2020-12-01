@@ -1,0 +1,31 @@
+<HTML><HEAD><TITLE>Exam_2.java</TITLE></HEAD><BODY>
+<CENTER><H1>Exam_2.java</H1></CENTER><HR><PRE>
+// Exam_2.java
+
+import java.util.*;
+
+public class Exam_2 {
+  protected static final String NL = System.getProperty( "line.separator" );
+  protected Vector vec;
+  public Exam_2() { vec = new Vector(); }
+  public void addString(String str) { vec.addElement( str ); }
+}
+
+class DoExam_2 extends Exam_2 {
+
+  public static void main(String[] argv) {
+    Exam_2 e2 = new DoExam_2();
+    for (int i=0; i&lt;argv.length; i++)
+      e2.addString(argv[i]);
+    System.out.print( e2 );
+  }
+
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    for (int i = 0; i &lt; vec.size(); i++)
+      sb.append( vec.elementAt(i) + NL );
+    return sb.toString();
+  }
+
+}
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,51 @@
+<HTML><HEAD><TITLE>LineCounter.java</TITLE></HEAD><BODY>
+<CENTER><H1>LineCounter.java</H1></CENTER><HR><PRE>
+//  LineCounter.java
+
+import java.io.*;
+
+//  Class LineCounter
+//  ------------------------------------------------------------------
+/**
+  *   Counts the lines in files.
+  *
+  *     @author  C. Vickery
+  *     CS-101, Spring 1999
+  */
+  public class LineCounter {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Counts the lines in all the files named on the command line.
+    *
+    *   @param  argv  Array of file names entered on command line.
+    *   @return void
+    */
+    public static void main( String[] argv ) {
+
+      if ( argv.length == 0 ) {
+        System.err.println( "Usage: java LineCounter file ..." );
+        System.exit( 1 );
+      }
+
+      for ( int i = 0; i < argv.length; i++ ) {
+
+        try {
+          BufferedReader br = new BufferedReader( new FileReader(
+                                                        argv[ i ] ) );
+
+          int n = 0;
+          while ( br.readLine() != null ) {
+            n++;
+          }
+          System.out.println( argv[i] + " has " + n + " lines" );
+        }
+        catch ( IOException ioe ) {
+          System.err.println( "Unable to read " + argv[ i ] );
+        }
+      }
+    }
+  }
+
+          </PRE><HR></BODY></HTML>

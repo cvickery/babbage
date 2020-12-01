@@ -1,0 +1,33 @@
+Here is our HelloCL class, updated to put it in a package named
+edu.queens.vickery.  If you compile it with "javac -d . HelloCL.java," a
+directory tree starting at "." (the current directory) will be created.
+The top of the tree will be a directory named edu, queens will be a
+subdirectory of edu, and vickery will be a subdirectory of queens.
+HelloCL.class will be in the vickery subdirectory.<p>
+
+To run the program from the current directory, the command line would
+be:
+<pre>
+      java edu.queens.vickery.HelloCL My Name
+</pre>
+
+<hr><pre>
+        <b>package edu.queens.vickery;</b>
+     
+        public class HelloCL
+        {
+          public static void main( String[] args )
+          {
+            System.out.print( "Hello" );
+            for (int i = 0; i &lt; args.length; i++)
+            {
+              System.out.print( " " + args[ i ] );
+            }
+            System.out.println( ", my name is Dr. Vickery" );
+            System.out.println( "There were " + args.length +
+            " arguments.");
+            System.exit( 0 );
+          }
+        }
+     
+</pre><hr></body></html>

@@ -1,0 +1,34 @@
+<HTML><HEAD><TITLE>Question_31.java</TITLE></HEAD><BODY>
+<CENTER><H1>Question_31.java</H1></CENTER><HR><PRE>
+//  Question_31.java
+
+//  The question asked only for you to write the copy() method.  The
+//  rest of the code in this file is so we can check that the method
+//  actually works.
+
+import java.io.*;
+
+public class Question_31
+{
+  public static void copy( File f1, File f2 ) throws IOException
+  {
+    byte[]  ioBuf = new byte[1024];
+    FileInputStream fis = new FileInputStream( f1 );
+    FileOutputStream fos = new FileOutputStream( f2 );
+    int numBytes = fis.read( ioBuf );
+    while ( numBytes > 0 )
+    {
+      fos.write( ioBuf, 0, numBytes );
+      numBytes = fis.read( ioBuf );
+    }
+    fos.close();
+  }
+
+  public static void main( String[] argv ) throws IOException
+  {
+    copy( new File(argv[0]), new File(argv[1]) );
+    System.exit( 0 );
+  }
+}
+
+</PRE><HR></BODY></HTML>

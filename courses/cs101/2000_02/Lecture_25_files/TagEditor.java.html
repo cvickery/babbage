@@ -1,0 +1,264 @@
+<HTML><HEAD><TITLE>TagEditor.java</TITLE></HEAD><BODY>
+<CENTER><H1>TagEditor.java</H1></CENTER><HR><PRE>
+//  TagEditor.java
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+
+//  Class TagEditor
+//  ------------------------------------------------------------------
+/**
+  *   Edits the tag information in MP3 audio files.
+  *
+  *     Development History
+  *       Version 1.1: Manages only Genre and File->Save
+  *
+  *   @author   C. Vickery
+  *   @version  1.1 - Spring, 2000
+  */
+  public class TagEditor
+  {
+    /** The main window that holds the GUI for the application.     */
+    JFrame            jf          = new JFrame( "TextEdit" );
+
+    /** MenuBar for the application.                                */
+    JMenuBar          jmb         = new JMenuBar();
+
+    /** Menu for File operations.                                   */
+    JMenu             fileMenu    = new JMenu( "File" );
+
+    /** MenuItem for File->Save.                                    */
+    JMenuItem         miFileSave  = new JMenuItem( "Save" );
+
+    JLabel            genreLabel      = new JLabel( "Genre" );
+    JComboBox         genreCombo      = null;
+
+    /** The file being edited.                                      */
+    MP3_File          thisFile;
+
+    /** Screen dimension, for positioning the window.               */
+    static Dimension  scrDim      = Toolkit.getDefaultToolkit()
+                                        .getScreenSize();
+
+    /** Number of files being edited, for positioning windows.      */
+    static int        numFiles    = 0;
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   @param  argv  List of files to edit.
+    *   @return Void.
+    */
+    public static void main(String[] argv)
+    {
+      //  If there are no file names on the command line, get one from
+      //  the user.
+      if ( argv.length == 0 )
+      {
+        JFileChooser jfc = new JFileChooser( "." );
+        int returnVal = jfc.showOpenDialog( null );
+        if ( returnVal != JFileChooser.APPROVE_OPTION )
+        {
+          //  User did not select a file.
+          System.exit( 0 );
+        }
+
+        argv = new String[1];
+        argv[0] = jfc.getSelectedFile().getName();
+      }
+
+      //  Create an application instance for each file.
+      for (int f = 0; f &lt; argv.length; f++ )
+      {
+        MP3_File file = new MP3_File( argv[f] );
+        new TagEditor( file );
+      }
+    }
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+  /**
+    *   Set up the user interface for editing a file.
+    *
+    *     @param  file  The file to be edited, which may or may not
+    *                   exist.  Prints an error message if the file
+    *                   cannot be written to.
+    */
+    public TagEditor( MP3_File file )
+    {
+      thisFile = file;
+
+      try
+      {
+        //  If the file does not exist, create it.
+        thisFile.createNewFile();
+
+        //  Be sure it can be read and written
+        if ( ! ( thisFile.canRead() && thisFile.canWrite() ) )
+        {
+          throw new IOException( "read/write permission failure" );
+        }
+
+      }
+      catch ( IOException ioe )
+      {
+        System.err.println( "Unable to edit " +
+                            thisFile.getName() +
+                            ": " +
+                            ioe.getMessage()
+                            );
+        return;
+      }
+
+      //  Add visible components to the user interface.
+      //  ============================================================
+
+      jf.setTitle( thisFile.getName() );
+
+      //  Menus
+      //  ------------------------------------------------------------
+      jf.setJMenuBar( jmb );
+
+      jmb.add( fileMenu );
+      fileMenu.add( miFileSave );
+      if ( ! thisFile.isModified() )
+        miFileSave.setEnabled( false );
+
+      //  Content Pane items.
+      //  ------------------------------------------------------------
+      Container cp = jf.getContentPane();
+      cp.setLayout( new GridLayout( 0, 1 ) );
+
+      genreCombo = new JComboBox( thisFile.id3v1.getGenreNames() );
+      genreCombo.setSelectedItem( thisFile.id3v1.getGenre() );
+      cp.add( genreLabel );
+      cp.add( genreCombo );
+
+      //  Display the window in its proper position on the screen.
+      jf.pack();
+      Dimension winDim = jf.getSize();
+      Point winPos = new Point( (scrDim.width - winDim.width) / 2,
+                                (scrDim.height - winDim.height) / 2 );
+      jf.setLocation( winPos.x + 10 * numFiles,
+                      winPos.y + 10 * numFiles);
+      numFiles++;
+      jf.show();
+
+
+      //  Define Listeners for user interface components.
+      //  ============================================================
+
+
+      //  Window Closing listener
+      //  ------------------------------------------------------------
+      jf.addWindowListener( new WindowAdapter()
+      {
+        public void windowClosing( WindowEvent we )
+        {
+          if ( thisFile.isModified() )
+          {
+            int result = JOptionPane.showConfirmDialog(
+                                          jf,
+                                          "Save Changes?",
+                                          "File Not Saved",
+                                          JOptionPane.YES_NO_OPTION );
+            switch ( result )
+            {
+              case JOptionPane.YES_OPTION:
+
+                saveFile();
+                break;
+
+              case JOptionPane.NO_OPTION:
+
+                break;
+
+              default:
+
+                System.err.println(
+                                 "Invalid Switch in TagEditor.java" );
+                System.exit( 1 );
+            }
+          }
+          doClose();
+        }
+      }
+      );
+
+      //  File->Save action listener
+      //  ------------------------------------------------------------
+      miFileSave.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          saveFile();
+        }
+      }
+      );
+
+
+      //  Genre ComboBox action listener
+      //  ------------------------------------------------------------
+      genreCombo.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          String genre = (String) genreCombo.getSelectedItem();
+          thisFile.id3v1.setGenre( genre );
+          miFileSave.setEnabled( true );
+        }
+      }
+      );
+
+    }
+
+
+  //  Utilities
+  //  ==============================================================
+
+  //  Method saveFile()
+  //  --------------------------------------------------------------
+  /**
+    *   Writes the file to disk, if possible.
+    *
+    */
+    private void saveFile()
+    {
+      try
+      {
+        thisFile.write();
+        thisFile.setModified( false );
+        miFileSave.setEnabled( false );
+      }
+      catch ( IOException ioe )
+      {
+        JOptionPane.showMessageDialog(  jf,
+                                        "Error Saving " +
+                                          thisFile.getName(),
+                                        "File Save Error",
+                                        JOptionPane.ERROR_MESSAGE
+                                      );
+      }
+    }
+
+
+  //  Method doClose()
+  //  --------------------------------------------------------------
+  /**
+    *   Disposes of this file's window, and exits application if
+    *   there are no more.
+    */
+    private void doClose()
+    {
+      jf.dispose();
+      if ( -- numFiles &lt; 1 )
+      {
+        System.exit( 0 );
+      }
+    }
+
+  }
+</PRE><HR></BODY></HTML>

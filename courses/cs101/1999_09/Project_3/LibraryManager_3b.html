@@ -1,0 +1,151 @@
+<HTML><HEAD><TITLE>LibraryManager.java</TITLE></HEAD><BODY>
+<CENTER><H1>LibraryManager.java</H1></CENTER><HR><PRE>
+// LibraryManager.java
+
+//  This is Project 3b -- Standard Menus
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+//  Class LibraryManager
+//  ------------------------------------------------------------------
+/**
+  *   Provides a Graphical User Interface for managing MP3 library
+  *   files.
+  *
+  *   @author   C. Vickery
+  *   @version  Version 3b - November, 1999
+  */
+  public class LibraryManager
+  {
+    static final String[] aboutMsg = {
+      "MP3 Library Manager",
+      "Version 3b",
+      " ",
+      "C. Vickery"
+    };
+
+    /** Counter for number of LibraryManager instances.             */
+    static int  instanceCount = 0;
+
+    /*  Instance variables for user interface components.           */
+    JFrame    gui = new JFrame( "MP3 Library Manager" );
+    JMenuBar  mb          = new JMenuBar();
+    JMenu     fileMenu    = new JMenu( "File" );
+    JMenu     helpMenu    = new JMenu( "Help" );
+    JMenu     fileNew     = new JMenu( "New" );
+    JMenuItem fNewFile    = new JMenuItem( "Library File" );
+    JMenuItem fNewMgr     = new JMenuItem( "Library Manager" );
+    JMenuItem fileOpen    = new JMenuItem( "Open Library" );
+    JMenuItem fileExit    = new JMenuItem( "Exit" );
+    JMenuItem helpAbout   = new JMenuItem( "About" );
+
+    //  Save instance number for determining initial screen position.
+    int       myInstance  = instanceCount;
+
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Displays a frame with a standard menu bar.
+      *
+      *   @param  argv Not used
+      */
+      public static void main( String argv[] )
+      {
+        new LibraryManager().init();
+      }
+
+    //  Constructor
+    //  --------------------------------------------------------------
+    /**
+      *   Counts number of instances.
+      */
+      public LibraryManager() {
+        instanceCount++;
+      }
+
+    //  Method init()
+    //  --------------------------------------------------------------
+    /**
+      *   Initializes the user interface.  This method's signature was
+      *   chosen so it could be part of an applet should the interest
+      *   in doing that occur.  But this program runs as an
+      *   application only.
+      */
+      public void init()
+      {
+        gui.setJMenuBar( mb );
+
+        //  Add menus and menu items to the menu bar and the menus.
+        fileNew.add( fNewFile );
+        fileNew.add( fNewMgr  );
+        fileMenu.add( fileNew   );
+        fileMenu.add( fileOpen  );
+        fileMenu.add( fileExit  );
+        fileMenu.insertSeparator( 2 );
+        mb.add( fileMenu );
+
+        helpMenu.add( helpAbout );
+        mb.add( helpMenu );
+//      mb.setHelpMenu( helpMenu );  (Not implemented in JDK 1.2.2)
+
+        //  Display the graphical user interface for the application.
+        gui.pack();
+        Dimension win = gui.getSize();
+        Dimension scr = Toolkit.getDefaultToolkit().getScreenSize();
+        gui.setLocation(
+          (scr.width  / 2 - win.width  / 2 + myInstance * 15)
+            % scr.width,
+          (scr.height / 2 - win.height / 2 + myInstance * 15)
+            % scr.height );
+        gui.setVisible( true );
+
+
+        //  Event handler for Window Closing events.
+        gui.addWindowListener( new WindowAdapter() {
+          public void windowClosing( WindowEvent we ) {
+            if ( --instanceCount == 0 )
+            {
+              System.exit( 0 );
+            }
+            else
+            {
+              gui.dispose();
+            }
+          } } );
+
+
+        //  Event handler for File->Exit menu item.
+        fileExit.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            if ( --instanceCount == 0 )
+            {
+              System.exit( 0 );
+            }
+            else
+            {
+              gui.dispose();
+            }
+          } } );
+
+
+        //  Event handler for Help->About menu item.
+        helpAbout.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            JOptionPane.showMessageDialog(
+              gui, aboutMsg,
+              "About MP3 Library Manager",
+              JOptionPane.PLAIN_MESSAGE );
+          } } );
+
+
+        //  Event handler for File->New->Library Manager menu item.
+        fNewMgr.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            new LibraryManager().init();
+          } } );
+      }
+  }
+   
+</PRE><HR></BODY></HTML>

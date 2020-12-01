@@ -1,0 +1,59 @@
+<HTML><HEAD><TITLE>Average.java</TITLE></HEAD><BODY>
+<CENTER><H1>Average.java</H1></CENTER><HR><PRE>
+//  Average.java
+
+import java.io.*;
+import java.util.*;
+
+//  Class Average
+//  ------------------------------------------------------------------
+/**
+  *    Computes the average of a sequence of numbers that the user
+  *    enters.
+  *
+  *    @author  C. Vickery
+  *    @version 1.0
+  */
+  public class Average {
+    
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *    Reads lines from the user, extracting numeric tokens, and
+    *    computes the average of the values entered.
+    *
+    *    @param  argv  Not used.
+    *    @return void
+    */
+    public static void main( String[] argv ) throws IOException {
+      
+      int             sum = 0, n = 0;
+      BufferedReader  br = new BufferedReader( new InputStreamReader(
+                                System.in ) );
+      String          inBuf;
+      StringTokenizer st;
+      
+        System.out.print( "Enter numbers: " );
+        while ( (inBuf = br.readLine()) != null ) {
+          st = new StringTokenizer( inBuf );
+          while ( st.hasMoreTokens() ) {
+            try {
+              sum += Integer.parseInt( st.nextToken() );
+              n++;
+            }
+            catch ( NumberFormatException e ) {
+              System.err.println( "Ignoring " + e.getMessage() );
+            }
+          }
+        System.out.print( "Enter numbers: " );
+        }
+        
+        if ( n == 0 ) {
+          System.out.println( "You didn't enter any numbers." );
+          System.exit( 0 );
+        }
+        System.out.println( "The average is " + (double) sum / n );
+        System.exit( 0 );
+    }
+  }
+</PRE><HR></BODY></HTML>

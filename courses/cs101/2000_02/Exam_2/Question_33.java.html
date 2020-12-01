@@ -1,0 +1,49 @@
+<HTML><HEAD><TITLE>Question_33.java</TITLE></HEAD><BODY>
+<CENTER><H1>Question_33.java</H1></CENTER><HR><PRE>
+//  Question_33.java
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class Question_33
+{
+  static JFrame     jf  = new JFrame( "Question 33" );
+  static JMenuBar   mb  = new JMenuBar();
+  static JMenu      fm  = new JMenu( "File" );
+  static JMenuItem  emi = new JMenuItem( "Exit" );
+  static Dimension  scr = Toolkit.getDefaultToolkit().getScreenSize();
+
+  public static void main( String[] argv )
+  {
+    jf.setJMenuBar( mb );
+    mb.add( fm );
+    fm.add( emi );
+    jf.pack();
+
+    Dimension win = jf.getSize();
+    jf.setLocation( scr.width  / 2 - win.width  / 2,
+                    scr.height / 2 - win.height / 2 );
+    jf.show();
+
+    jf.addWindowListener( new WindowAdapter()
+    {
+      public void windowClosing( WindowEvent we )
+      {
+        System.exit( 0 );
+      }
+    }
+    );
+
+    emi.addActionListener( new ActionListener()
+    {
+      public void actionPerformed( ActionEvent ae )
+      {
+        System.exit( 0 );
+      }
+    }
+    );
+  }
+}
+
+</PRE><HR></BODY></HTML>

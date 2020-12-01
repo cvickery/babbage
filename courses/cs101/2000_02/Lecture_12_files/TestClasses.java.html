@@ -1,0 +1,114 @@
+<HTML><HEAD><TITLE>TestClasses.java</TITLE></HEAD><BODY>
+<CENTER><H1>TestClasses.java</H1></CENTER><HR><PRE>
+//  TestClasses.java
+
+//  Class TestClasses
+//  ------------------------------------------------------------------
+/**
+  *     Creates objects of class SubClass and SuperClass, then
+  *     invokes methods in those classes.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring 2000
+  */
+  public class TestClasses
+  {
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Used to test what methods can be called in classes SubClass
+    *   and SuperClass.
+    *
+    *     @param argv Not used.
+    *     @return     Void.
+    */
+    public static void main( String[] argv )
+    {
+      SuperClass  superObject = new SuperClass();
+      SubClass    subObject   = new SubClass();
+      Object      rootObject;
+
+      String  s;
+
+      s = superObject.introduceYourself();
+      System.out.println( s );
+      s = subObject.introduceYourself();
+      System.out.println( s );
+      s = subObject.saySomethingNice();
+      System.out.println( s );
+      rootObject = superObject;
+
+    }
+
+  }
+
+//  Class SuperClass
+//  ------------------------------------------------------------------
+/**
+  *   This class is a direct subclass of class java.lang.Object.  It
+  *   defines one method, introduceYourself().
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring 2000
+  *
+  */
+  class SuperClass
+  {
+  //  Method introduceYourself()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns an introductory String.
+    *
+    *     @return An introductory String.
+    */
+    public String introduceYourself()
+    {
+      return "Hello, I am an object of class SuperClass.";
+    }
+  }
+
+
+//  Class SubClass
+//  ------------------------------------------------------------------
+/**
+  *   This class is a direct subclass of class SuperClass.  It
+  *   defines two methods, saySomethingNice(), and
+  *   introduceYourself().
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring 2000
+  *
+  */
+  class SubClass                                    extends SuperClass
+  {
+  //  Method introduceYourself()
+  //  ----------------------------------------------------------------
+  /**
+    *   Overrides the superclass method with the same name, but shows
+    *   how to invoke a superclass method from a subclass method.
+    *
+    *     @return An introductory String.
+    */
+    public String introduceYourself()
+    {
+      String s = super.introduceYourself();
+      return s + "\n  I am also an object of class SubClass.";
+    }
+
+  //  Method saySomethingNice()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns a pleasantry.
+    *
+    *     @return A nice String.
+    */
+    public String saySomethingNice()
+    {
+      return "  It's a lovely day, don't you think?";
+    }
+
+  }
+
+
+
+</PRE><HR></BODY></HTML>

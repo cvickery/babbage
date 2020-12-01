@@ -1,0 +1,87 @@
+<HTML><HEAD><TITLE>FrameControl_1.java</TITLE></HEAD><BODY>
+<CENTER><H1>FrameControl_1.java</H1></CENTER><HR><PRE>
+java // FrameControl_1.java
+
+import java.awt.*;
+import java.awt.event.*;
+
+//  Class FrameControl_1
+//  -------------------------------------------------------------------
+/**
+  *   Illustrates creating a Frame and using it to listen to its own
+  *   window events
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class  FrameControl_1
+                extends Frame
+                implements WindowListener {
+
+  //  Constructor
+  //  -----------------------------------------------------------------
+  /**
+    *   Passes the title string to the superclass' constructor.
+    *
+    *   @param  title - The string to display in the title bar
+    */
+    FrameControl_1( String title ) {
+      super( title);
+    }
+
+  //  Method main()
+  //  -----------------------------------------------------------------
+  /**
+    *   Instantiates this class and establishes it as the Window
+    *   Listener for this Frame.
+    *
+    *   @param  argv - Command line arguments.
+    *   @return Void
+    */
+    public static void main( String[] argv ) {
+
+      FrameControl_1 fc = new FrameControl_1( "Frame Control 1" );
+      fc.addWindowListener( fc );
+      fc.setSize( 200, 200 );
+      fc.show();
+    }
+
+  //  windowXXX()
+  //  -----------------------------------------------------------------
+  /**
+    *   Displays a message telling when each of the seven types of
+    *   Window events occurs.
+    *
+    */
+    public void windowActivated( WindowEvent we ) {
+      System.out.println( "activated" );
+    }
+
+    public void windowClosed( WindowEvent we ) {
+      System.out.println( "closed" );
+    }
+
+    public void windowClosing( WindowEvent we ) {
+      System.out.println( "closing" );
+      System.exit( 0 );
+    }
+
+    public void windowDeactivated( WindowEvent we ) {
+      System.out.println( "deactivated" );
+    }
+
+    public void windowIconified( WindowEvent we ) {
+      System.out.println( "iconified" );
+    }
+
+    public void windowDeiconified( WindowEvent we ) {
+      System.out.println( "deiconified" );
+    }
+
+    public void windowOpened( WindowEvent we ) {
+      System.out.println( "opened" );
+    }
+
+  }
+  
+</PRE><HR></BODY></HTML>

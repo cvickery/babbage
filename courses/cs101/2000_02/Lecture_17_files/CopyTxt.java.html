@@ -1,0 +1,80 @@
+<HTML><HEAD><TITLE>CopyTxt.java</TITLE></HEAD><BODY>
+<CENTER><H1>CopyTxt.java</H1></CENTER><HR><PRE>
+//  CopyTxt.java
+
+import java.io.*;
+import javax.swing.*;
+
+//  Class CopyTxt
+//  ------------------------------------------------------------------
+/**
+  *   Copies one text file to another one, a line at a time.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring, 2000
+  */
+  public class CopyTxt
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Copies the file named in argv[0] to the file named in argv[1].
+    *   If the destination file exists, ask the user for permission to
+    *   overwrite it.
+    *
+    *     @param  argv[0] The name of the file to be copied.
+    *     @param  argv[1] The name of the destination file.
+    *     @return Void.
+    *     @throws IOException if any I/O error occurs.
+    */
+    public static void main( String[] argv ) throws IOException
+    {
+      //  Check the number of command line arguments.
+      if ( argv.length != 2 )
+      {
+        System.err.println( " Usage: java CopyTxt &lt;from> &lt;to> " );
+        System.exit( 1 );
+      }
+
+      //  Make sure the file to be copied can be read and check
+      //  whether the destination file already exists.
+      File  from = new File( argv[0] );
+      File  to   = new File( argv[1] );
+
+      if ( ! from.canRead() )
+      {
+        System.err.println( "Unable to read " + argv[0] );
+        System.exit( 1 );
+      }
+
+      if ( to.exists() )
+      {
+        int returnCode = JOptionPane.showConfirmDialog( null,
+                          argv[1] + " exists.  OK to overwrite?",
+                          "Confirm Overwrite",
+                          JOptionPane.YES_NO_OPTION);
+        if ( returnCode != JOptionPane.YES_OPTION )
+        {
+          System.exit( 1 );
+        }
+      }
+
+      //  Copy the file, a line at a time.
+      FileReader fr = new FileReader( from );
+      FileWriter fw = new FileWriter( to );
+      BufferedReader br = new BufferedReader( fr );
+      BufferedWriter bw = new BufferedWriter( fw );
+
+      String ioBuf;
+      while ( null != (ioBuf = br.readLine( )) )
+      {
+        bw.write( ioBuf );
+        bw.newLine();
+      }
+      bw.close();
+      System.exit( 0 );
+    }
+  }
+
+</PRE><HR></BODY></HTML>

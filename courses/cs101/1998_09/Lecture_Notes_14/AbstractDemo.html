@@ -1,0 +1,38 @@
+<HTML><HEAD><TITLE>AbstractDemo.java</TITLE></HEAD><BODY><PRE>
+
+//  AbstractDemo.java
+
+abstract class Msg {
+
+  int a=5;                                  //  Instance Variable
+  static int y=3;                           //  Static (class) Variable
+  static String wow() { return "wow!"; }    //  Static method, defined
+  abstract String hello();                  //  Instance method, abstract
+  String good_bye() { return "good-bye"; }  //  Instance method, defined
+
+  }
+
+
+class AbstractDemo extends Msg {
+
+  //  Define superclass' abstract method(s).  Otherwise,
+  //  this class will be abstract.
+  String hello() { return "Aloha"; }
+
+  public static void main( String[] args ) {
+
+    // Call static method
+    System.out.println( Msg.wow() );
+
+    // Call instance methods
+    System.out.println( new AbstractDemo().hello() );
+    System.out.println( new AbstractDemo().good_bye() );
+
+    // Reference instance and class variables
+    System.out.println( new AbstractDemo().a + y );
+
+    }
+
+  }
+
+</PRE><HR></BODY></HTML>

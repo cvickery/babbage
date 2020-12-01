@@ -1,0 +1,133 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<H1 ALIGN="CENTER">Class Files and JVM Memory Structures</H1>
+<P>When a Java Virtual Machine (JVM) starts running, it has two "engines" that can do work as needed. One is the <I>execution engine</I>, which interprets the executable bytecodes that the Java compiler generates for method definitions and field initialization.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=635>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<P><I>Engine</I></TD>
+<TD WIDTH="74%" VALIGN="TOP">
+<P>In this case, machine language code that is executed directly by the CPU of your computer. Parts of the JVM that were originally written in C and have been compiled into <I>native</I> machine language.</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<I><P>Native</I></TD>
+<TD WIDTH="74%" VALIGN="TOP">
+<P>Anything having to do with the real CPU in your computer, as opposed to the virtual CPU that simulates by the JVM.</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<I><P>Bytecodes</I></TD>
+<TD WIDTH="74%" VALIGN="TOP">
+<P>The binary machine language of the JVM. So-named because each binary instruction occupies one or more bytes of memory.</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<I><P>Interpret</I></TD>
+<TD WIDTH="74%" VALIGN="TOP">
+<P>A real computer executes machine language instructions (native code). In a JVM the real program simulates the execution of bytecodes. To simulate the execution of one machine language by a program executing another machine language is called interpretation. </TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<I><P>Method definition</I></TD>
+<TD WIDTH="74%" VALIGN="TOP">
+<P>The code you put inside curly braces ( <FONT FACE="Courier New">{ ... }</FONT> ) after a method's signature is called the method's definition. A method definition is a combination of field declarations and executable statements. </TD>
+</TR>
+</TABLE>
+
+<P>The second JVM engine is the <I>class loader</I>. It's the job of the class loader to locate class files (ones with <FONT FACE="Courier New">.class</FONT> names) and to load the information found there into the JVM's memory. The Java compiler generates a separate class file for each class defined in Java source files (ones with <FONT FACE="Courier New">.java</FONT> names). Each class file contains the following <I>fields</I>, represented using internal binary codes, in the order indicated in the following table.</P>
+<P ALIGN="CENTER"><CENTER><TABLE BORDER CELLSPACING=2 CELLPADDING=7 WIDTH=638>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P><B>Field Name</B></TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<B><P>Contents</B></TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>Magic</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>A number that identifies this as a Java class file. Binary 1100 1010 1111 1110 1011 1010 1110, which is CAFEBABE in hexadecimal.</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>Version Number</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>Major and minor version numbers. The format of the class file may be revised from time to time; these numbers tell which version this file follows.</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>Constant Pool</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>A list of all the string literals, classes, methods, method signatures, and field names used in this program.</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>Access Flags</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>Bits that tell whether this file is for a class or an interface, and whether it is public, final, or abstract.</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>This Class</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>The fully qualified name of this class. The name is actually in the Constant Pool; and this field is an index (subscript) for the name's position in the Constant Pool.</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>Superclass</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>Index in the Constant Pool of the fully qualified name of this class' superclass.</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>Interfaces</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>A list of the names of the interfaces this class implements, if any. A list of indexes into the Constant Pool.</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>Fields</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>A list of field descriptions. Each description includes the index of the field's name in the Constant Pool, the type of the field, its access permissions, and whether it is a static, instance, or local variable.</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>Methods</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>The indices into the Constant Pool of the method name and signature for every method defined in the file, followed by the JVM bytecodes that are executed when the method is called.</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>Attributes</TD>
+<TD WIDTH="82%" VALIGN="TOP">
+<P>The name of the source file this class file was compiled from, along with the names of any inner classes defined for this class.</TD>
+</TR>
+</TABLE>
+</CENTER></P>
+
+<H2 ALIGN="CENTER">Names Used in Class Files</H2>
+<P>You will occasionally see some of the internal names used in class files, usually in error messages that show up when your program is running. Here is a brief guide to some of them.</P>
+<H3>Fully Qualified Names</H3>
+<P>A class name that tells the package hierarchy used to locate the class file. In Java, you use dots to separate package levels, such as <FONT FACE="Courier New">java.lang.String</FONT>, but in a class file, the name appears with slashes instead of dots, such as <FONT FACE="Courier New">java/lang/String</FONT>.</P>
+<H3>Type Names</H3>
+<P>The base type names are given using single letter abbreviations in class files: <FONT FACE="Courier New">B</FONT> (byte), <FONT FACE="Courier New">C</FONT> (char), <FONT FACE="Courier New">D</FONT> (double), <FONT FACE="Courier New">F</FONT> (float), <FONT FACE="Courier New">I</FONT> (int), <FONT FACE="Courier New">J</FONT> (long), <FONT FACE="Courier New">S</FONT> (short), and <FONT FACE="Courier New">Z</FONT> (boolean). A class name starts with the letter L followed by the fully qualified name of the class, followed by a semicolon. An array starts with as many open brackets ( <FONT FACE="Courier New">[</FONT> ) as there are dimensions in the array. So, for example the argument passed to <I>main()</I> is a singly-subscripted array of Strings, which would appear as <FONT FACE="Courier New">[Ljava/lang/String;</FONT> in the Constant Pool of a class file. A doubly dimensioned array of Boolean would be <FONT FACE="Courier New">[[Z</FONT>.</P>
+<P>Method <I>signatures</I> start with a pair of parentheses enclosing the types of all arguments (if any), followed by the return type of the method, using the type names given above, or <FONT FACE="Courier New">V</FONT> for void. For example the signature for <I>main()</I> would be <FONT FACE="Courier New">(Ljava/lang/String;)V</FONT>, and the signature for <I>toString()</I>, which receives no explicit parameters and returns a String would be <FONT FACE="Courier New">()Ljava/lang/String;</FONT>.</P>
+<P>The code that is executed when a class is first loaded into memory is called the class's <I>static initializer</I>, and is referred to in the class file as a method named <FONT FACE="Courier New">&lt;clinit&gt;</FONT>. (It will appear only if you have static variables that have initializations, like <FONT FACE="Courier New">static int x = 7</FONT>, or if you have a static initialization block of code. (A static initialization block is the word <FONT FACE="Courier New">static</FONT> followed by a set of executable statements inside braces.)</P>
+<P>A constructor appears in a class file as the method name <FONT FACE="Courier New">&lt;init&gt;</FONT>. As with <FONT FACE="Courier New">&lt;clinit&gt;</FONT>, the angle brackets are actually part of the method name, so you can't write a method with the same name as a constructor or static initializer because the Java language won't allow angle brackets be part of the method names you use.</P>
+<H2>Loading a Class File into Memory</H2>
+<P>It's the job of the class loader to load the information in class files into various parts of the memory of the JVM and to set up various pointers to link a new class file to other class files already loaded. [&nbsp;<A HREF="Figure_5.1.gif">Figure&nbsp;5.1</A>&nbsp;] shows the basic relationship between the contents of key parts of a class file and JVM memory.</P>
+<P>Consider the following class definition:</P>
+<PRE>
+   class WXYZ {
+     static int w = 0;
+            int x = 1;
+     void y() {
+       int z = 2;
+       x = 3 * w;
+       }
+    }</PRE>
+<P>Once this class definition has been compiled, the disk file <FONT FACE="Courier New">WXYZ.class</FONT> can be loaded into the JVM's memory in RAM.</P>
+
+<UL>
+<LI>The fields <FONT FACE="Courier New">w</FONT> and <FONT FACE="Courier New">x</FONT> are both defined in the Fields section of the class file. Because field <FONT FACE="Courier New">w</FONT> is static, it will be loaded into the JVM as the class file is loaded, and will be assigned a memory location inside the method area. Because there is an initial value assigned to this static variable, there will be a method named <FONT FACE="Courier New">&lt;clinit&gt;</FONT> in the Method section of the class file, and it will be loaded into the Method Area of JVM RAM. Because field <FONT FACE="Courier New">x</FONT> is not static, it will not be assigned any memory in the JVM until the class is instantiated. Each time the class is instantiated, there will be a spot for that instance's <FONT FACE="Courier New">x</FONT> field inside the object in the heap area. The code to assign the initial value to <FONT FACE="Courier New">x</FONT> will be put in the method named <FONT FACE="Courier New">&lt;init&gt;</FONT>, which will be executed as part of the <I>new</I> operation that instantiates the class. </LI>
+<LI>The field <FONT FACE="Courier New">z</FONT> will not be allocated any memory in the JVM until method <I>y()</I> is actually executed by some thread. Then it will be given a location inside the stack frame that is created each time a method is called. (The stack frame that is created when a method is called is also discarded when the method returns, so the variable <FONT FACE="Courier New">z</FONT> will exist only while a thread is actually executing inside method <I>y()</I>. </LI>
+<LI>The executable instructions inside method <I>y()</I> (the bytecodes for method <I>y()</I>) are loaded into the method area inside the class file when the class is loaded into the JVM. Each method's bytecodes exist in the memory of the JVM no matter how many times the class is instantiated.</LI></UL>
+
+<H2>Stacks, Stack Frames, Program Counters, and Threads</H2>
+<P>As Figure 5.1 indicates, the JVM may have a number of <I>program counters</I> and <I>stacks</I>, one for each <I>thread</I>. To understand what a thread is, consider the following description of what some program does: "It starts in <I>main()</I>, where it computes the average of ten numbers, then it calls <I>System.out.println()</I> to print the average, and finally it calls <I>System.exit()</I> to stop." Every place the word "it" appears in that description, it refers to a <I>thread of execution</I>, or just "thread." Java programs can have any number of threads, but all applications start with just one main thread, the one that starts in <I>main()</I>. Applets and graphics applications have other threads that are created by the Abstract Windowing Toolkit (awt) classes, and the JVM creates some other threads for both applets and applications to perform various internal housekeeping operations. But for now you should concentrate on that main thread that starts executing at <I>main()</I>.</P>
+<P>The execution engine uses something called a <I>program counter</I> to keep track of the addresses of the sequence of bytecodes it executes for a thread. Each thread has to have its own program counter because each thread goes through its own sequence of bytecodes to do its work. The program counter is just a word that holds the address in the JVM of the next bytecode to be executed.</P>
+<P>When a thread calls a method, a data structure called a <I>stack frame</I> is set up in memory to hold the values of the parameters passed to the method, the local variables of the method, the return value of the method, and the <I>return address</I> for the method call. To call the method, the execution engine has to set the thread's program counter to point to the first byte code in the method. In order to return from the method, the program counter has to be restored to the address of the next bytecode after the method call. The program counter is saved in the stack frame just before making the method call, and restored from the stack frame to the program counter when the method returns. In [&nbsp;<A HREF="Figure_5.2.gif">Figure&nbsp;5.2</A>&nbsp;] a thread starts executing at <I>main(). </I>When it calls <I>methodX()</I>, its program counter (PC) will be incremented so it points to the next instruction after the call, PC<SUB>a</SUB>, and this value will be saved in the stack frame for this method call. To complete the call, the PC will be changed to the value indicated by PC<SUB>b</SUB>, the address of the first instruction in <I>methodX()</I>. When the thread gets to the return statement in <I>methodX()</I>, indicated by PC<SUB>c</SUB>, the PC will be restored to the value PC<SUB>a</SUB> by getting that value out of the stack frame. The stack frame will also be used to hold the return value (37), which will be put into field Y by the bytecode at location PC<SUB>a</SUB>.</P>
+<P>If one method calls another method, another stack frame has to be created to hold the information about the second method call. If the second method calls a third method, still another stack frame will be created. All these stack frames are kept together in an area of JVM memory called the thread's <I>stack</I>. The area is called a stack because it operates like a <I>pushdown stack.</I> The standard example of a pushdown stack outside the world of computers is the spring-loaded device diners use to hold stacks of dishes. The first dish into the stack is the last one to come out of it. Likewise, when there are nested method calls, the first method called is the last one returned from, and its stack frame is said to be at the bottom of the thread's stack.</P>
+<P><HR></P></BODY>
+</HTML>

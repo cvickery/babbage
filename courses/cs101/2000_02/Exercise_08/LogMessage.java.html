@@ -1,0 +1,35 @@
+<HTML><HEAD><TITLE>LogMessage.java</TITLE></HEAD><BODY>
+<CENTER><H1>LogMessage.java</H1></CENTER><HR><PRE>
+//  LogMessage.java
+
+import java.util.*;
+
+//  Class LogMessage
+//  ------------------------------------------------------------------
+/**
+  *   Provides the timeStamp() method, which adds a time/date stamp
+  *   to a String, making it suitable for writing to a log file.
+  */
+  public class LogMessage
+  {
+    private static String NL = System.getProperty( "line.separator" );
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+  /**
+    *   This class cannot be instantiated.
+    */
+    private LogMessage( ) {}
+
+  //  Method timeStamp()
+  //  ----------------------------------------------------------------
+  /**
+    *
+    */
+    public static String timeStamp( String msg)
+    {
+      return new Date() + msg + NL;
+    }
+  }
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,481 @@
+<HTML>
+
+<HEAD>
+<TITLE>Java Development Tools for CS-101</TITLE>
+</HEAD>
+
+<BODY bgcolor="#FFFFFF">
+
+<CENTER>
+
+<H1>Java Development Tools for CS-101</H1>
+
+</CENTER>
+
+<UL>
+
+  <LI>[&nbsp;<A href="#jdk">Java Software Development Kit</A>&nbsp;]
+
+  <LI>[&nbsp;<A href="#editors">Text Editors</A>&nbsp;]
+
+  <LI>[&nbsp;<A href="#winzip">WinZip</A>&nbsp;]
+
+</UL>
+
+This page is a resource guide for tools you will need to use on a PC in
+order to do CS-101 projects.<P>
+
+The page includes links to the software tools for downloading.<P>
+
+<H1><A name="jdk">Java Software Development Kit</A></H1>
+
+[ <A href="http://www.javasoft.com/products/jdk/1.3/">Download from Sun</A>
+] Be sure you get both the Software and the Documentation.<BR>
+
+<H2>Setting Up the JDK</H2>
+
+The JDK will download as a file named <CODE>j2sdk1_3_0-win.exe</CODE>,
+which you should save in some folder on your disk. I use
+<CODE>C:\Download</CODE> for this sort of thing because it is
+compatible with <B>WinZip</B>'s &quot;Internet Extension&quot;
+software. (See the section on <A href="#winzip"><B>WinZip</B></A> later
+on this page for more information about this). Run this file (double
+click on it from Explorer, or type its name in the box that comes up if
+you click on Start-&gt;Run...), then follow the instructions that come
+up for picking where to install the software. The default is
+<CODE>C:\JDK1.3</CODE> but you can put it someplace else if you prefer.
+You will get a directory tree that looks like the following:
+
+<PRE>
+      JDK1.3
+        bin
+        demo
+        include
+        jre
+        lib
+</PRE>
+
+Now you need to install the documentation, which will download as a file
+named <CODE>j2sdk1_3_0-doc.zip</CODE>. (Again, you should save it in
+your <CODE>Download</CODE> directory.) You need to <I>unzip</I> this
+file and then <I>extract</I> the documentation files that are in it. To
+do this, you need a tool such as <B>WinZip</B>. If you don't have this
+program (or something equivalent) installed on your computer, you have
+to download and install <I>it</I> before installing the Java
+documentation. How to get that is described [ <A href="#winzip">later in
+this web page</A> ].<P>
+
+When you run WinZip on <CODE>j2sdk1_3_0-doc.zip</CODE> and click on the
+&quot;Extract&quot; button, you will be asked where to extract the
+files. The proper place is one directory (folder) <I>above</I> your
+JDK1.3 folder. So, if you installed the software in the standard place
+(<CODE>C:\JDK1.3</CODE>), you would tell WinZip to extract the
+documentation files to <CODE>C:\</CODE>. The result will be a new
+directory <I>under</I> <CODE>JDK1.3</CODE>, which will be named
+<CODE>docs</CODE>. So, your directory tree will now look like this:
+
+<PRE>
+      JDK1.3
+        bin
+        demo
+        docs
+        include
+        jre
+        lib
+</PRE>
+
+You have to get this directory tree set up right in order to be able to
+use the documentation. To check this out, use your web browser to open
+<CODE>JDK1.3\docs\index.html</CODE> (In <I>Netscape Navagator</I> use
+the menus File-&gt;Open Page/Choose File...; In <I>Internet
+Explorer</I>, use the menus File-&gt;Open/Browse...).&nbsp; Or you can
+just type <CODE>C:\jdk1.3\docs\index.html</CODE> as your web
+address.<P>
+
+Scroll down the page and click on the link to &quot;Java 2 Platform API
+Specification&quot; and save that page as a bookmark so you can get
+back to it easily. It may take some time for you to get comfortable
+with navigating through the API documentation, but it will be
+invaluable once you get it, and it's a lot cheaper than the big
+reference books from Addison-Wesley! (But it doesn't have all the great
+explanations and sample code found in the A-W books either.)<P>
+
+Use your browser's <I>Back</I> button to get to
+<CODE>JDK1.3\docs\index.html</CODE> again, and scroll down to the link
+to &quot;Tool Documentation&quot; under the <B>SDK Tool
+Documentation</B> heading. This link will get you to documentation on
+the <I>javac, java, appletviewer,</I> and <I>javadoc</I> commands,
+among others.<P>
+
+There is also a copy of the JDK documentation set up for browsing from
+the computer in my office. You can use [ <A
+href="#">this link</A>
+] to access it.
+
+<H2>Running the JDK Tools</H2>
+
+You can run the compiler (<I>javac</I>) either from the command line or
+from within some editors (see below). You will have to run your
+applications from the command line, and you can run applets from either
+the command line (using <I>appletviewer</I>) or from your web browser.
+To get a command line processor (&quot;DOS Prompt&quot;) running, you
+have to select the &quot;Command Prompt&quot; program from the Windows
+Start menu.<P>
+
+To run a JDK command, you should be able to type the name of the
+command at the command line. Try typing just &quot;javac&quot; at the
+<CODE>C:&gt;</CODE> prompt. If the command runs (and prints a message
+that starts &quot;<CODE>Usage: ...</CODE>&quot;) you're all set. But if
+you get a &quot;command not found message&quot; you need either to type
+the full pathname of the command (such as
+&quot;C:\JDK1.3\bin\javac&quot;) or add the pathname of the JDK's
+<I>bin</I> directory to your PATH environment variable. Your
+<CODE>PATH</CODE> environment variable should have been set up properly
+(normally by putting a command in your <CODE>autoexec.bat</CODE> file)
+when you installed the JDK. You could do this yourself, if necessary,
+by typing the following command:
+
+<PRE> set PATH=C:\JDK1.3\bin;%PATH% </PRE>
+
+This command prepends the pathname to your JDK bin directory to the
+current setting of your PATH environment variable. You could type this
+command by hand every time you start a new DOS prompt window, but life
+is a lot easier if you put this command at the end of your autoexec.bat
+file so it is automatically run each time you start your computer.<P>
+
+You may have heard about an environment variable named
+<CODE>CLASSPATH</CODE> that needs to be set properly in order to use
+the JDK commands, but in fact it does <I>not</I> need to be set, in
+general. If it is set, it should have a value that looks like
+&quot;<CODE>.;C:\JDK1.3\bin</CODE>&quot;. You can check this by typing
+&quot;set CLASSPATH&quot; at the command line. If CLASSPATH has a
+different value <I>and</I> you have trouble running the JDK commands,
+you can get rid of it by typing &quot;<I>set CLASSPATH=</I>&quot;.
+(Note that the first <I>set</I> command has no equal sign, and shows
+the value of the variable, whereas the second one has an equal sign at
+the end, and assigns an empty value to CLASSPATH, effectively
+&quot;unsetting&quot; it. The current version of the JDK does not
+require you to have a value for CLASSPATH.<P>
+
+You may already have an Integrate Development Environment (IDE) for
+Java installed on your computer (VisualAge, Cafe, JBuilder, Visual
+Studio, ...), in which case there may be a value set for
+<CODE>CLASSPATH</CODE>. As long as the command-line tools work
+correctly, there is no need to worry about
+<CODE>CLASSPATH</CODE>.
+
+<a NAME="editors"><H1>Text Editors</H1></A>
+
+<H2>As of January 2001, I suggest that you ignore the remainder of this
+section and use <I>vim</I> as your text editor.  It is already
+installed on Unix systems, including forbin.qc.edu, and you can get the
+version for Windows for free from [&nbsp;<a
+HREF="http://www.vim.org">www.vim.org</A>&nbsp;].</H2>
+
+There are three text editors that I recommend for you to use in place
+of <I>Notepad</I>, which comes free with Windows. Each of them has the
+two features I consider critical for a program editor, and one
+highly-desireable one:
+
+<OL>
+
+  <LI>You can set the editor up so that it will substitute spaces for
+    <CODE>&lt;tab&gt;</CODE> characters, and you can set the tab
+    settings to a &quot;reasonable&quot; value. (I use a tab width of 2
+    characters, but 3 and even 4 are also reasonable values. If you use
+    anything larger, using <CODE>&lt;tab&gt;</CODE> to indent your code
+    will make it go too far to the right, leading to wrapped lines that
+    are impossible to read.)
+
+    <BLOCKQUOTE>
+
+      It is very important to substitute spaces for
+      <CODE>&lt;tab&gt;</CODE> characters in your programs because
+      different software treats <CODE>&lt;tab&gt;</CODE> characters
+      differently. For example, if you have your tab width set to 2
+      when you edit your program, and somebody prints or views it with
+      software that assumes a default value of 8 (which is typical),
+      they will find your code impossibly difficult to read because
+      nothing will line up right.
+
+    </BLOCKQUOTE>
+
+  <LI>The editor does &quot;pair matching.&quot; This means that if you
+    put the cursor on a brace and press a certain key (typically,
+    <CODE>Control-B</CODE>), the editor will show you the matching
+    brace character in the file, either by highlighting the characters
+    in between the matching pair of braces or by jumping the cursor to
+    the matching brace. Pair matching also works for parentheses and
+    square brackets. Good indenting habits can reduce the need for this
+    feature, but we all need it once in a while, and not having it can
+    be a real bother.
+
+  <LI>The &quot;highly-desireable feature&quot; that all these editors
+    have is automatic indentation. This means (1) making each line
+    indent the same number of spaces as the one immediately above it
+    and (2) increasing/decreasing the indent amount when you end a line
+    with a left/right curly brace. This is a useful feature, but not as
+    critical as the other two because you can take care of this
+    manually.
+
+</OL>
+
+<H2><A name="pfe">Programmer's File Editor</A> (Free)</H2>
+
+<BLOCKQUOTE>
+  <I>Note: </I>PFE is no longer being developed or maintained by its
+  author, but the final version is still available, and it's free.
+</BLOCKQUOTE>
+
+[ <A href="http://www.lancs.ac.uk/people/cpaap/pfe/">Download from
+Lancaster University (United Kingdom).</A> ]<BR>
+[ <A href="#">Download
+from my server at Queens College</A> ]<P>
+
+The price is right for this one, and the set of available features is
+very good. However, it does not support <I>syntax highlighting</I>,
+which shows program keywords, variable names, comments, and constants in
+different colors. Syntax highlighting is nice, but what do you want for
+free? You can set this editor up to work very well for you.<P>
+
+Installation is not automatic. The program will download as a .zip
+file, which you will probably save in your <CODE>\Download</CODE>
+directory. Extract the contents to any directory you wish using WinZip.
+(See [ <A href="#winzip">WinZip</A> ] if you don't already have Winzip
+or something equivalent on your computer.) I used <CODE>C:\Program
+Files\PFE</CODE> as the directory to extract the files to, for example.
+(You have to create the directory before doing the extraction, but
+Winzip has a button to create it for you in the <I>Extract</I>
+dialog.)<P>
+
+You might want to drag the icon for the program to your desktop, add
+the program to your Start menu, and/or create a keyboard shortcut for
+the program to make it easy to get at. To do this, use Windows Explorer
+to drag the icon for the program to your Desktop and/or Start Menu
+folder, which will create a shortcut icon. If you right-click on the
+shortcut, you will get a menu with <I>Properties</I> listed at the
+bottom; click on that, select the <I>Shortcut</I> tab in the dialog box
+that comes up, and type in the letter you want to use to start the
+program in the &quot;Shortcut Key&quot; box.<P>
+
+<H3>Customizing Programmer's File Editor</H3>
+
+<OL>
+
+  <LI><B>Create a Project Directory</B><P>
+
+    You should make a directory for doing your projects in this course
+    (and you will probably want a subdirectory for each project). You
+    can use Windows Explorer to create your project directory by
+    selecting the parent directory (perhaps <CODE>C:\</CODE>) and using
+    File-&gt;New-&gt;Folder to create the new directory. It will be
+    highlighted so you can easily rename it (perhaps to &quot;<CODE>CS-101
+    Projects</CODE>&quot;).<P>
+
+    &nbsp;
+
+  <LI><B>Set up Defaults for Java Programs</B><P>
+
+    Use the Options-&gt;Default Modes menus to bring up the Default
+    Modes dialog box. Click on Edit Mode Groups, then click on New...,
+    and enter something meaningful, like <I>Java Source Code</I> in the
+    Mode Group Name box, and <CODE>*.java</CODE> in the Filename
+    Patterns box. Click OK twice to get back to the Default Modes
+    dialog. Click on Edit Modes... in the lower left corner of this
+    dialog. Select Mody type &quot;input&quot; and check the
+    &quot;Auto-indent new lines&quot; and &quot;Strip trailing
+    spaces...&quot; boxes. Select the &quot;Language Awareness&quot;
+    Mode type and choose &quot;C&quot;. Go down to the &quot;Text
+    Formatting&quot; Mode type, and click the &quot;Tab with space
+    characters&quot; radio button, and change the Tab stop box from 8
+    to 2 (or 3 or 4, as you prefer). Check the Enabled box in the Text
+    wrapping section, leaving the column number at 72 so that you will
+    know when you type lines that are too wide. (You might not like the
+    text wrapping option, in which case, leave the box unchecked; just
+    don't hand in any code with any lines wider than 72 characters for
+    this course.) Click OK to get out of the Edit Default Modes dialog
+    box, and click Close in the Default Modes dialog box. <I>Wait!</I>
+    Before you close the Default Modes dialog box, you might want to
+    edit the default modes for windows showing templates, windows
+    showing macros, and windows created by file new in the same ways as
+    for Java Source Files.<P>
+
+    Use the <I>Options-&gt;Preferences-&gt;Editing&nbsp;Files</I> menus
+    to select other options you might want to set. In particular, you
+    should turn on the Use Smart Tabbing checkbox here. With this option
+    on, if you select a block of text and press the <CODE>&lt;tab&gt;</CODE>
+    (or <CODE>Shift-&lt;tab&gt;</CODE>) key, the code will be indented
+    (or unindented) one tab stop.<P>
+
+  <LI><B>Other Features</B><P>
+
+    When you are editing your code, you can put the cursor to the left
+    of a brace, square bracket, or parentheses, and type
+    <CODE>&lt;Control-B&gt;</CODE>; the editor will move the cursor to
+    the matching symbol in the file, if there is one. Press
+    <CODE>&lt;Control-B&gt;</CODE> again to jump back to where you
+    started.<P>
+
+    You might want to look into the editor's template and macro
+    features. You can set up a templates containing boilerplate text,
+    like at the comments at the beginning of a class or method, with a
+    couple of clicks of the mouse, and you can use the macro feature to
+    capture a sequence of keystrokes to be played back at a later
+    point. Also, you can bind any editing command or macro to hot keys
+    using the <I>Options-&gt;Key&nbsp;Mapping...</I> menus.<P>
+
+    Finally, you will probably want to use the <I>Execute</I> menu to
+    compile your programs from within the editor. With a .java file in
+    an editing window, click on the <I>Execute</I> menu button and
+    select <I>DOS&nbsp;Command&nbsp;to&nbsp;Window...</I> (or press
+    <CODE>&lt;F11&gt;</CODE>) to bring up a dialog box. The command you
+    want to execute is &quot;<CODE>javac&nbsp;%f</CODE>&quot;, which
+    will compile the file you are editing. If that doesn't work, you
+    may need to give the full pathname to the java compiler,
+    &quot;<CODE>C:\JDK1.3\bin\javac&nbsp;%f</CODE>&quot; for example.
+    Once you have done this one time, the editor will remember the
+    command the next time you press <CODE>&lt;F11&gt;</CODE>.
+
+</OL>
+
+<H2><A name="ultraedit">UltraEdit</A> ($30)</H2>
+
+[ <A href="http://www.idmcomp.com">Download from IDM Computing.</A> ]<P>
+
+This is an excellent shareware programmer's editor. It may not have
+quite as many customization features as PFE (it has macros and
+templates, but they aren't quite as rich as PFE's), but it does do
+syntax highlighting (which a lot of people like), has some other
+features that PFE is missing, and needs very little work to get it set
+up &quot;right&quot;. Just unzip the file you download, and run
+Uedit32i.exe to install it. The one thing you want to make sure you do
+is to go to the Advanced menu, select Configuration, go to the Edit
+tab, and be sure you have selected the &quot;Use spaces in place of
+Tabs&quot; checkbox.<P>
+
+To compile Java programs from within UltraEdit, go to the Advanced menu
+and click on the "Tool Configuration ..." menu item.  For the command
+line, type <U>javac -deprecation &quot;%f&quot;</U>.  Leave the
+"Working Directory" field empty, type "Javac" for the Menu Item Name
+(or whatever you want to appear on the Advanced menu), turn on "Output
+to List Box" and "Capture Output."  Be sure to click on Insert before
+you click on OK, or your settings will get lost.  Now, when you are
+editing a Java source file you can compile it by clicking on
+Advanced->Javac or by typing Ctrl-Shift-0.  Any syntax errors will show
+up in a panel at the bottom of the editor window.  Click on an error
+message to take you to the correspoinding line in the source file.<p>
+
+Some of the other features I like about UltraEdit are its &quot;column
+mode&quot; which lets you insert, move, and delete columns of text the
+way you normally work with lines, and its &quot;hexadecimal mode&quot;
+which lets you look at and modify the binary codes for the characters
+(or anything else) in your file. It also handles plain text files a bit
+better than PFE, and it lets you look at the spaces and tabs (there
+better not be any of the latter!) in you file. It also lets you put a
+column indicator on the screen so you can see when you are getting
+close to your righthand margin. Finally, it comes with a utility (and
+instructions) that lets you replace Windows' abominable Notepad editor
+with UltraEdit in a clean way. All in all, it's a full-featured product
+for a very reasonable price. You can try it free for a month, then you
+have to send the author $30. After a year, you have to pay another $15
+if you want to download updated versions.<P>
+
+<H2>ED for Windows ($99)</H2>
+
+[ <A href="http://www.getsoft.com">Download from Soft As It Gets.</A> ]<P>
+
+You can evaluate this editor free for 45 days. It's got a lot of nifty
+features, but the cost puts it beyond what is reasonable to spend for
+this course, I think.<P>
+
+<H1>Utilities</H1>
+
+<A name="winzip"><H2>WinZip</H2></A>
+
+[ <A href="http://www.winzip.com">Download from WinZip.com.</A> ]<P>
+
+<H3>Installing WinZip</H3>
+
+The file you download will be an executable file that you should save on
+your hard drive. I suggest that you make a directory named <CODE>C:\Download</CODE>
+to hold files that you download. Run the program by double-clicking on
+it to install it. I recommend that you select &quot;classic&quot; and
+&quot;express installation&quot; when asked.<P>
+
+The &quot;WinZip Internet Extension&quot; is a separate program that you
+can download and run, which will automatically start up WinZip when you
+download a zip file from the Internet. The idea of creating a directory
+named <CODE>C:\Download</CODE>, by the way, comes from the default
+configuration this program likes to work with. You can just install it
+and forget about it; it will do its thing when appropriate.<P>
+
+<H3>Using WinZip</H3>
+
+A zip file is a container for a collection of other files. They are
+great for sending files by email because the orginal file names and
+relative directory structure are preserved and because the zip file is
+compressed so you transfer fewer bytes over the network compared to
+sending separate files. All projects and assignments in this course are
+to be submitted in zip files.<P>
+
+The WinZip utility can be used both to create zip files (also called <I>archives</I>)
+and to extract files from archives (also called <I>unzipping</I> the
+archives).<P>
+
+To create a zip file for submitting an assignment, follow these steps:
+
+<OL>
+
+  <LI>Start up WinZip, for example by double-clicking on its icon on the
+    desktop, or by using the Windows Start Menu.
+
+  <LI>Click on the &quot;New&quot; icon.
+
+  <LI>Navigate to a convenient directory where you want your zip file to
+    be created.
+
+  <LI>Type in the name of the zip file that you want to create. For
+    example, typing &quot;Project_1&quot; will create an empty archive
+    named <CODE>Project_1.zip</CODE> in the selected directory.
+
+  <LI>Use the Add button to add files to the archive.
+
+  <LI>When you have added <I>all</I> the files you are going to submit,
+    exit WinZip, attach the archive to an email message, and send the
+    message to me.
+
+</OL>
+
+You can add files to an archive after you close it, or remove or replace
+files if you need to. Just be sure that you submit <I>one</I> zip file
+containing <I>all</I> the files for each exercise or assignment that you
+submit.
+
+<H1>Integrated Development Environments</H1>
+
+There are several good Integrated Development Environments (IDEs) for
+Java, including IBM's VisualAge, Microsoft's Visual J++, Inprise'
+JBuilder, and Symantec Cafe. Each of them combines a program editor,
+the compiler, online help, and a debugger into a single development
+tool. (Note that the F11 key lets you run the compiler from within PFE,
+but PFE doesn't automatically match syntax error messages with the
+lines in your source file the way IDEs do.)<P>
+
+I do <I>not</I> recommend that you use an IDE for this course for two
+reasons. The first is that getting an IDE set up and mastering its use
+will take time and effort that will distract you from the content matter
+of the course. The second is that you are required to submit all code so
+that I can compile and test it using the JDK. If you develop the code
+using an IDE, you then have to extract the .java files from the IDE
+environment and test them using the JDK to make sure they still work.
+This extra work will, I think, more than offset any efficiency you get
+by using the IDE for development.<P>
+
+Having said that, I will say that I think the IBM IDE is particularly
+good, and they have made a copy of it available for students to use at
+no cost. If you are interested, see me about borrowing the CD.<P>
+
+<HR>
+Last modified June 15, 2000
+</BODY>
+</HTML>

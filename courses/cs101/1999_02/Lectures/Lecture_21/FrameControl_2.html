@@ -1,0 +1,75 @@
+<HTML><HEAD><TITLE>FrameControl_2.java</TITLE></HEAD><BODY>
+<CENTER><H1>FrameControl_2.java</H1></CENTER><HR><PRE>
+// FrameControl_2.java
+
+import java.awt.*;
+import java.awt.event.*;
+
+//  Class FrameControl_2
+//  -------------------------------------------------------------------
+/**
+  *   Uses a WindowAdapter to manage a Frame.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class  FrameControl_2 extends Frame {
+
+  //  Constructor
+  //  -----------------------------------------------------------------
+  /**
+    *   Passes the title string to the superclass constructor.
+    *
+    */
+    FrameControl_2( String title ) {
+      super( title );
+    }
+
+  //  main()
+  //  -----------------------------------------------------------------
+  /**
+    *   Instantiates this class, creating an object that is a subclass
+    *   of Frame, and creates a separate object to provide a
+    *   WindowAdapter for this Frame.
+    *
+    */
+    public static void main( String[] argv ) {
+
+    FrameControl_2 fc = new FrameControl_2( "Frame Control 2" );
+
+      fc.addWindowListener( new FrameControl() );
+      fc.setSize( 200, 200 );
+      fc.show();
+      // Demonstrate that this thread is not used any more.
+      Thread.currentThread().stop();
+      System.out.println( "If this prints, I'll give you $1M");
+
+    }
+
+  }
+
+
+//  Class FrameControl
+//  -------------------------------------------------------------------
+/**
+  *   Overrides the windowClosing method so that closing a Frame exits
+  *   the application.
+  *
+  *   @author C. Vickery
+  *
+  */
+  class FrameControl extends WindowAdapter {
+
+  //  windowClosing()
+  //  -----------------------------------------------------------------
+  /**
+    *   Exits the application.
+    *
+    */
+    public void windowClosing( WindowEvent we ) {
+      System.exit( 0 );
+    }
+
+  }
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,137 @@
+<HTML><HEAD><TITLE>Java Modifiers</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Java Modifiers</H1>
+</center>
+
+<H2>What is this?</H2>
+
+The following table shows which of the ten modifiers listed in the left
+column can be applied to each of the items in the other columns.  For
+example, it shows that you cannot have private classes or static local
+variables.  What it does not show is that public, private, and
+protected are mutually exclusive, and that final and volatile are also
+mutually exclusive.<p>
+
+The modifiers are keywords in the language that appear in the
+declaration of a class, method, or field:
+
+<UL>
+
+  <LI>Public items can be referenced by code in any class, private
+  items can be referenced only from with in the class in which they are
+  defined, and protected items can be referenced from only from within
+  the class or one of its subclasses.  If none of these three modifiers
+  is used where one is allowed, the item has <I>package</I> access,
+  which means that it can be referenced from any class in the same
+  package as the one in which it is defined.  (If no package is
+  declared, all the code in the same disk directory is part of the
+  "unnamed" package.)
+
+  <LI>Static items can be referenced using the name of the class in
+  which they are defined to access them.  They are not associated with
+  class instances, although they can be referenced using instance
+  variables.
+
+  <LI>Final items cannot be modified.  In the case of classes and
+  methods, it means they cannot be extended or overridden,
+  respectively.
+
+  <LI>Abstract classes cannot be instantiated; abstract methods are
+  declared but not defined, so they cannot be called.
+
+  <LI>Synchronized methods can be executed by only one thread at a
+  time.
+
+  <LI>Transient fields are ones that will not be saved when an object
+  is serialized.
+
+  <LI>Volatile fields are eliminated from certain compiler
+  optimizations regarding references to them.
+
+  <LI>Native methods are implemented using a language other than Java,
+  usually C or C++.<p>
+
+</UL>
+
+An instance field is a variable that is declared outside of any method.
+A local field is a variable that is declared inside a method, possibly
+inside a local block inside a method.<p>
+
+<H2>The Table</H2>
+
+<center><table border=1 cellpadding=5>
+  <TR>
+    <TH>Modifier
+    <TH>Class
+    <TH>Method
+    <TH>Instance Field
+    <TH>Local Field
+  <TR>
+    <TD>public
+    <TD>ok
+    <TD>ok
+    <TD>ok
+    <TD>--
+  <TR>
+    <TD>private
+    <TD>--
+    <TD>ok
+    <TD>ok
+    <TD>--
+  <TR>
+    <TD>protected
+    <TD>ok
+    <TD>ok
+    <TD>ok
+    <TD>--
+  <TR>
+    <TD>static
+    <TD>ok
+    <BR>(Inner classes only)
+    <TD>ok
+    <TD>--
+    <TD>--
+  <TR>
+    <TD>final
+    <TD>ok
+    <TD>ok
+    <TD>ok
+    <TD>ok
+  <TR>
+    <TD>abstract
+    <TD>ok
+    <TD>ok
+    <TD>--
+    <TD>--
+  <TR>
+    <TD>synchronized
+    <TD>--
+    <TD>ok
+    <TD>--
+    <TD>--
+  <TR>
+    <TD>transient
+    <TD>--
+    <TD>--
+    <TD>ok
+    <TD>--
+  <TR>
+    <TD>volatile
+    <TD>--
+    <TD>--
+    <TD>ok
+    <TD>--
+  <TR>
+    <TD>native
+    <TD>--
+    <TD>ok
+    <TD>--
+    <TD>--
+</table></center>
+<p>
+
+<HR></BODY></HTML>

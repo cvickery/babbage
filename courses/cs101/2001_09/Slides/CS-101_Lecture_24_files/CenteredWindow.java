@@ -1,0 +1,48 @@
+//  CenteredWindow.java
+
+import java.awt.*;
+import javax.swing.*;
+
+/** Shows how to center a window on the user's screen.
+  *
+  *   @author C. Vickery
+  */
+  public class CenteredWindow extends JFrame
+  {
+  /** Puts a label in the window so it will have something to show,
+    * centers the window and displays it.
+    */
+    public CenteredWindow()
+    {
+      super( "Centered Window Example" );
+      JLabel jl = new JLabel( "In the Middle of Your Screen!" );
+      getContentPane().add( jl );
+      pack();
+      centerIt( this );
+      show();
+    }
+
+  /** Centers a window on the user's screen.  Does not display the
+    * window; the caller does that.
+    *
+    *   @param  c The component to be centered.
+    */
+    public static void centerIt( Component c )
+    {
+
+      Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+      Dimension window = c.getSize();
+      c.setLocation( screen.width / 2  - window.width / 2,
+                   screen.height / 2 - window.height /2 );
+    }
+
+  /** Instantiates the class.
+    *
+    *   @param args Command line arguments.
+    */
+    public static void main( String[] args )
+    {
+      new CenteredWindow();
+    }
+  }
+

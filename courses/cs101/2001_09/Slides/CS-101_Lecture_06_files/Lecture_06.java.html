@@ -1,0 +1,48 @@
+<html><head><title>Lecture_06.java</title></head>
+<body><center><h1>Lecture_06.java</h1></center><hr><pre>
+      /**   Illustrates instance variable initialization.  Also shows how a
+        *   constructor can initialize instance variables, as well as use of
+        *   public/private access modifiers.
+        *
+        *   @author C. Vickery
+        */
+        public class Lecture_06
+        {
+          private int x1;
+          private int x2 = 2;
+     
+          //  Constructors
+          //  ---------------------------------------------------------------
+          /** Initializes private variable x1 from parameter x1 and
+            * increments x2 by two. 
+            *
+            *   @param  x1  Integer value to assign to instance variable x1.
+            */
+            public Lecture_06( int x1 ) {
+              //  Print instance variables as initialized before the
+              //  constructor was invoked.
+              System.out.println( "Message 1: " + this.x1 + " " + x2 );
+     
+              /*  Initialize private variables.
+               */
+              this.x1 = x1;
+              x2 += 2;
+              return;
+            }
+            
+          // Accessor Methods
+          // ---------------------------------------------------------------
+     
+          // Read-only access to x1
+          /** Get the value of instance variable x1.                      */
+            public int getX1()            { return x1; }
+     
+          // Read/write access to x2
+          /** Get the value of instance variable x2.                      */
+            public int getX2()            { return x2;  }
+          /** Set the value of instance variable x2.                      */
+            public void setX2( int val )  { x2 = val;   }
+     
+        }
+     
+</pre><hr></body></html>

@@ -1,0 +1,54 @@
+<HTML><HEAD><TITLE>TestMyReader.java</TITLE></HEAD><BODY>
+<CENTER><H1>TestMyReader.java</H1></CENTER><HR><PRE>
+//  TestMyReader.java
+
+import java.io.*;
+
+//  Class TestMyReader
+//  ------------------------------------------------------------------
+/**
+  *   Application used to test class MyReader, illustrating the use
+  *   of the java.util.Iterator interface, which MyReader implements.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring 2000
+  */
+  public class TestMyReader
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Creates a MyReader and exercises its Iterator interface
+    *   methods.
+    *
+    *   @param    argv[0] The name of a file.
+    *   @return   Void.
+    *   @throws   IOException if argv[0] is not a valid file name.
+    *   @throws   ArrayIndexOutOFBoundsException if the user doesn't
+    *             supply at least one command line argument.
+    */
+    public static void main( String[] argv ) throws IOException
+    {
+      //  Create a java.io.File object for the file named on the
+      //  command line.
+      File myFile = new File( argv[0] );
+
+      //  Create a MyReader object.
+      MyReader mr = new MyReader( myFile );
+
+      //  Iterate over the lines in the file, printing each one.
+      while ( mr.hasNext() )
+      {
+        System.out.println( mr.next() );
+      }
+
+      //  MyReader provides another method that is not part of the
+      //  Iterator interface: Call it here.
+      System.out.println( "There were " +
+        mr.getLinesReturned() +
+        " lines in " + argv[0] );
+    }
+  }
+
+</PRE><HR></BODY></HTML>

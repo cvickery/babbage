@@ -1,0 +1,148 @@
+<HTML><HEAD><TITLE>Project 1 Changes</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 1 Changes</H1>
+</center>
+
+This page chronicles the changes to [&nbsp;<a href="index.html">the web
+page for Project 1</a>&nbsp;].  The idea is to put new material here so
+you don't have to deal with the entire assignment page just to see what
+is different.  Significant change listed here will also be emailed to
+everyone in the class.<p>
+
+<H2>October 2</H2>
+
+I have updated [&nbsp;<a href="Vickery.zip">Vickery.zip</a>&nbsp;] to
+"Beta 4."  I added code to catch NumberFormatExceptions thrown when the
+user types a non-numeric value on the move command, and have fixed my
+move command so that it recognizes jumps as well as moves.<p>
+
+I added the following methods to class Checkerboard:
+
+<pre>
+    public static boolean isMove( int piece,
+                                  int r1, int c1,
+                                  int r2, int c2);
+    public static boolean isJump( int piece,
+                                  int r1, int c1,
+                                  int r2, int c2);
+</pre>
+
+These two methods assume that r1, c1, r2, and c2 are all between 0 and
+7, and that piece is RED_PAWN, RED_KING, BLACK_PAWN, or BLACK_KING. 
+They return "true" if the two squares have the correct relationship
+between each other to be a valid move or jump, respectively.  They do
+not check whether the starting and ending squares are occupied or not,
+and <I>isJump()</I> does not check whether the square being jumped is
+occupied by a piece of the opposite color or not.<p>
+
+In class last night, I said that your Project 1 is required only to work
+correctly for correct input.  I have to change that to, "Your Project 1
+is required to work correctly for any correct input.  In addition, it
+must be able to handle invalid command names and invalid arguments for
+the move command."  Sorry about that; I shouldn't try to figure out
+things like that while in front of the class.<p>
+
+This isn't a "FAQ," but it is a common enough problem that I'd like to
+mention it here:
+<blockquote>Your program must not create a new BufferedReader for each
+command that it reads.  If you do that, it will generally appear to work
+all right, but it will fail if the input lines do not come from the
+keyboard.  In particular, I will use a program to help me test your
+program, and my program will send commands to your program using a
+mechanism like I/O redirection ( &lt; ), which will not work if your
+program creates a new BufferedReader each time it reads a command line.
+</blockquote>
+In other words, instantiate your BufferedReader <I>outside</I> your while
+loop.
+
+<H2>September 27</H2>
+
+A student reported that my Checkers_UI does not always respond to
+commands until he pressed <CODE>&lt;Enter&gt;</CODE> several times.  I
+have not been able to reproduce the problem, but this behavior is
+symptomatic of an "output buffering" problem.  So, I added the
+following statement after each <CODE>System.out.print(...)</CODE>
+statement in my Checkers_UI.java:<pre>  System.out.flush();</pre>
+I uploaded the code to [&nbsp;<a
+href="Vickery.zip">Vickery.zip</a>&nbsp;].  The new code announces
+itself as "Vickery Beta 3."
+
+<H2>September 26</H2>
+
+The [&nbsp;<a href="Vickery.zip">Vickery.zip</a>&nbsp;] file has been
+updated.  Many of the changes are in my <CODE>Checkers_UI.class</CODE>,
+so they don't really affect the project, but there are some changes to
+the Checkerboard class too.<p>
+<ol>
+  <li> The method that checks if a row/column pair is on a black square
+  on the board is named <I>validate()</I>, not <I>verify()</I> as
+  originally stated in the project assignment.  The web page has been
+  changed to correct this.  There is no change to any code; this is just
+  a documentation fix.
+  <li> The original assignment was vague about what the <I>move</I>
+  command does.  I will divide this into what is <I>required</I> and
+  what is <I>optional.</I>
+  <dl>
+
+    <dt><I>Required:</I>
+    <dd>The program must make sure the user enters exactly two arguments
+    after the command name, it must make sure the two arguments are
+    valid decimal numbers, it must make sure the two numbers specify the
+    coordinates of a black square on the chessboard, it must make sure
+    there is a piece to pick up at the starting square, and it must make
+    sure the destination square is empty.  If any of these tests fails,
+    the board must not be changed.  If they all succeed, the program is
+    to update the board by removing the piece from the starting square
+    and depositing it on the destination square.
+
+    <dt><I>Optional:</I>
+
+    <dd>You can do any, all, or none of the following.  If you do any
+    of them, you can get extra credit to offset points lost elsewhere
+    in the project.  However, uou cannot get extra credit to give you
+    more than 100% (10 points) for the project.<p>
+
+    Make sure the move is legal according to the rules of checkers. 
+    (Black pawns must move one square at a time towards row 7, and red
+    pieces must move one row at a time towards row 0.) If a pawn makes
+    it to its king row, promote the piece to king by adding another
+    pawn to it, and allow it to move backwards.  Process jumps
+    correctly.  (A piece may move two rows provided there is a piece of
+    the opposite color on the intervening square; the jumped piece is
+    removed from the board.  (My program does not handle jumps yet.)<p>
+
+    To help you with the optional parts, I have added the following
+    methods to class Checkerboard:
+    <ul>
+
+      <li> <CODE>public&nbsp;static&nbsp;int&nbsp;kingRow(&nbsp;int&nbsp;);</CODE>
+      <BR>The argument is a piece, and the value returned is 7 if the
+      piece is black, and 0 otherwise.
+
+      <li> <CODE>public&nbsp;static&nbsp;boolean&nbsp;isBlack(&nbsp;int&nbsp;);</CODE> 
+      <BR>Returns true if the argument is a black pawn or a black king, and
+      false otherwise.
+
+      <li> <CODE>public&nbsp;static&nbsp;boolean&nbsp;isPawn(&nbsp;int&nbsp;);</CODE>
+      <BR>Returns true if the argument is a red pawn or a black pawn, and
+      false otherwise.
+
+    </ul>
+  </dl>
+
+  <li> My Checkerboard_UI now prints a message when it starts up telling
+  what version it is.  Right now, the message says, "This is Vickery
+  Beta 2."  The previous version of <CODE>Vickery.zip</CODE> either
+  printed no message (if you downloaded it right after I put it up), or
+  "This is Vickery Beta 1."
+
+  <li> My program does not handle <I>place</I> commands at all, and it
+  does not handle <I>moves</I> commands properly ... yet.
+
+</ol>
+<HR><center>
+[&nbsp;<a href="index.html">Project 1 Description</a>&nbsp;]<BR>
+[&nbsp;<a href="FAQ.html">FAQs for the Assignment</a>&nbsp;]
+</center>
+<HR></BODY></HTML>

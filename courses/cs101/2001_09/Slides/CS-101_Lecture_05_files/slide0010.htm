@@ -1,0 +1,197 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 5</title>
+<meta name=Description
+content="14-Sep-01: Getting from References to Objects to Classes">
+<link rel=next href=slide0011.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0010.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_05.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=349 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=42 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=10 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=63 height=68 colspan=2></td>
+  <td width=349 height=68>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=57 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=235 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=349 height=33 colspan=3 align=center><font face="Times New Roman"
+    size=5>Getting from References to</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=349 height=2 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=57 height=33></td>
+    <td width=235 height=33 align=center><font face="Times New Roman" size=5>Objects
+    to Classes</font><br>
+    </td>
+    <td width=57 height=33></td>
+   </tr>
+  </table>
+  </td>
+  <td width=63 height=68 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=3 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=238></td>
+  <td width=414 height=238 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=29 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=141 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=116 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=41 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=17 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=374 height=21 colspan=11><font face="Times New Roman" size=3>Every
+    object’s memory includes a pointer to the</font><br>
+    </td>
+    <td width=22 height=21 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=396 height=20 colspan=15><font face="Times New Roman" size=3>class
+    information in the method region of memory.</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=414 height=3 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=360 height=18 colspan=10><font face="Times New Roman" size=2>Instance
+    methods are located from an object reference</font><br>
+    </td>
+    <td width=15 height=18 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=171 height=17 colspan=3><font face="Times New Roman" size=2>by
+    following that pointer.</font><br>
+    </td>
+    <td width=204 height=17 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=414 height=3 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=355 height=21 colspan=9><font face="Times New Roman" size=3>Instance
+    methods are passed an extra, hidden,</font><br>
+    </td>
+    <td width=41 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=380 height=20 colspan=12><font face="Times New Roman" size=3>parameter
+    that is a copy of the reference variable</font><br>
+    </td>
+    <td width=16 height=20 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=394 height=20 colspan=14><font face="Times New Roman" size=3>used
+    to access the method.<span style="mso-spacerun: yes">  </span>Inside the
+    method, that</font><br>
+    </td>
+    <td width=2 height=20></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=372 height=20 colspan=10><font face="Times New Roman" size=3>pointer
+    can be accessed using the variable name</font><br>
+    </td>
+    <td width=24 height=20 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=51 height=20 colspan=5><font face="Times New Roman" size=3>“this”.</font><br>
+    </td>
+    <td width=345 height=20 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=414 height=3 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=328 height=18 colspan=5><font face="Times New Roman" size=2>The
+    compiler automatically accesses the instance</font><br>
+    </td>
+    <td width=47 height=18 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=373 height=17 colspan=11><font face="Times New Roman" size=2>variables
+    referenced in a non-static method by using the</font><br>
+    </td>
+    <td width=2 height=17></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=287 height=17 colspan=4><font face="Times New Roman" size=2><i>this</i>
+    pointer to locate the object in memory.</font><br>
+    </td>
+    <td width=88 height=17 colspan=8></td>
+   </tr>
+  </table>
+  </td>
+  <td width=21 height=238></td>
+ </tr>
+ <tr>
+  <td width=475 height=37 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

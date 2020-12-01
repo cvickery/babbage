@@ -1,0 +1,105 @@
+<HTML><HEAD><TITLE>Enumeration and Iteration</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Enumeration and Iteration</H1>
+</center>
+
+<H2><I>Note</I></H2>
+
+You should be familiar with the JDK documentation for class
+<CODE>java.util.Vector</CODE> and interface
+<CODE>java.util.Enumeration</CODE> before you read this document.
+
+<H2>Problem</H2>
+
+Assume you have an object of class <CODE>java.util.Vector</CODE> and
+you have added several objects to it using class Vector's
+<I>addElement()</I> method.  That is, perhaps you have executed some
+code that looks something like the following:<p>
+
+<pre>
+  Vector v = new Vector();
+  &lt;<I>other code</I>&gt;
+    v.addElement( ... );
+    ...
+</pre>
+
+Now assume that you would like to do something with each of the
+objects in the Vector.  You have two choices for getting each of the
+objects, <I>enumeration</I> and <I>iteration</I>.  How do they work, and
+which one is better?
+
+<H2>Enumeration</H2>
+
+Class Vector has a method named <I>elements()</I> that returns an
+Enumeration.  Stated more carefully, <I>elements()</I> returns a
+reference to an object that implements the
+<CODE>java.util.Enumeration</CODE> interface.  That means you can use
+the methods <I>hasMoreElements()</I> and <I>nextElement()</I> to
+"enumerate over" the objects in the Vector, as follows:<p>
+
+<pre>
+  Enumeration e = v.elements();
+  while ( e.hasMoreElements() ) {
+    Object o = e.nextElement();
+    // Do whatever it is you want to do with <I>o</I>.
+    }
+</pre>
+
+The first time through the loop, <I>o</I> will be a reference to the
+first object in the Vector, and successive times through the loop will
+give you references to the succeeding objects in the Vector.<p>
+
+<H2>Iteration</H2>
+
+You could achieve exactly the same thing by "iterating" over the objects
+in the Vector, as follows:<p>
+
+<pre>
+  for ( int i = 0; i &lt; v.size(); i++ ) {
+    Object o = v.elementAt( i );
+    // Do whatever it is you want to do with <I>o</I>.
+    }
+</pre>
+
+<H2>Comparison of the Two</H2>
+
+Most people find the iteration code easier to understand.  (There is
+less of it to deal with, for one thing.)  The iteration code is also
+somewhat more efficient because there is one less object being created
+(the object that implements the Enumeration interface).<p>
+
+So why bother with the enumeration technique at all?  There are
+basically two answers:<p>
+
+<OL>
+
+  <LI>Enumeration is a standard programming pattern that you should be
+  familiar with.  Other modern languages besides Java (such as C++)
+  incorporate enumeration either in the language itself or through
+  standard library facilities.<p>
+
+  <LI>You can't always use iteration.  Class Vector is a special case
+  because it supports both iteration and enumeration.  Iteration works
+  here because the elements in a Vector really are kept in an array,
+  which means that <I>elementAt()</I> can easily use indexing
+  (subscripting) to get to the objects in the Vector.  But other
+  classes that hold collections of objects do not keep them in an array
+  internally, making indexing impossible to do.  Hash Tables and Linked
+  Lists are the names of two other ways of storing collections of
+  objects without using a simple array, for example.  For these other
+  classes, you have no choice but to enumerate over their contents
+  instead of iterating.<p>
+
+</OL>
+
+So, become comfortable with using the Enumeration interface, and
+practice implementing it when you develop classes that hold collections
+of objects.  Enumeration is an idiom of the Java language, and being
+comfortable with this idiom will help your classes "talk" with other
+programmers' classes.<p>
+
+<HR></BODY></HTML>

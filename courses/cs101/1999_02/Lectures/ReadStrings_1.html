@@ -1,0 +1,42 @@
+<HTML><HEAD><TITLE>ReadStrings_1.java</TITLE></HEAD><BODY>
+<CENTER><H1>ReadStrings_1.java</H1></CENTER><HR><PRE>
+//  ReadStrings_1.java
+
+import java.io.*;
+
+//  Class ReadStrings
+//  ------------------------------------------------------------------
+/**
+  *     Reads Strings from stdin until there are no more to read.
+  *     Does nothing with them.
+  *
+  *     @author C. Vickery
+  *
+  */
+  public class ReadStrings_1 {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *     Reads Strings from stdin until there are no more to read.
+    *
+    *     @param  argv  The command line arguments.  Not used.
+    *     @return void
+    *     @throws IOException If an error occurs while reading.
+    *
+    */
+    public static void main( String[] argv ) throws IOException {
+
+    BufferedReader  br = new BufferedReader( new InputStreamReader(
+                        System.in ), 1 );
+    String          inBuf;
+
+      while ( (inBuf = br.readLine()) != null ) {
+        ; // Do nothing with the Strings
+      }
+      System.exit( 0 );
+    }
+  }
+
+    
+</PRE><HR></BODY></HTML>

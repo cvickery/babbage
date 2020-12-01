@@ -1,0 +1,384 @@
+<HTML><HEAD><TITLE>Project 2</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 2</H1>
+</center>
+
+<H2>Deliverables and Due Date</H2>
+
+This project is due by midnight <B>April 27, 1999</B>.  It will be
+graded on a ten-point scale, and you will lose 0.2 point for each day
+it is late.  The absolute cutoff for submitting the project is <B>May
+4, 1999</B>.<p>
+
+Send me an email with a zip file containing files named
+<B>Drawing.java</B>, <B>CDrawing.java</B>, and <B>Coordinates.java</B>,
+as described in this web page.  Do not send any other files.  Be sure
+to put your name and ID number in the body of the email message, and
+put "Project 2" in the Subject: line of the message.
+
+<B>Extra Credit</B>.  You can earn up to 20% extra credit for this
+project by providing implementations of classes <B>GDrawing</B>,
+<B>LineCoordinates</B>, and <B>CircleCoordinates</B>.  Simply include
+the corresponding .java files in your zip file when you submit the
+project.
+
+<H2>Cheating Policy</H2>
+
+<B>Don't!</B><p>
+
+Anyone who either gives code to someone else or who uses someone else's
+code for any part  of any project in this course will automatically
+fail the course.  <I>Note that both the giver and the receiver will
+fail the course.</I> People caught cheating are also subject to
+disciplinary action by the college.<p>
+
+The purpose of the projects is for you to learn how to program by
+writing code.  There is no substitute for doing it yourself.  If you
+need help, ask me, or post a message to the course newsgroup as
+described on the [&nbsp;<a
+HREF="http://babbage.cs.qc.edu/courses/cs101/index.html#newsgroup">home
+web page for the course</A>&nbsp;].
+
+<H2>Project Description</H2>
+
+I am again providing you with class files for all parts of the project,
+which you can download using [&nbsp;<a HREF="vickery.zip">this
+link</A>&nbsp;].<p>
+
+Documentation for the class files I am supplying is available [&nbsp;<a
+HREF="docs">here</A>&nbsp;].<p>
+
+Your assignment is to write the code for three class files which will
+serve as substitutes for three of the class files that I have provided.
+Each of your classes must do exactly the same things as my corresponding
+class files.  That is, each of your classes must implement the same
+methods using the same arguments and return types as the ones I have
+supplied.<p>
+
+Work on the project incrementally.  You will not be successful if you
+work on more than one of the three classes at a time.  Furthermore, I
+expect you to develop the classes in the following sequence:
+<OL>
+  <LI>Class CDrawing
+  <LI>Class Drawing
+  <LI>Class Coordinates
+</OL>
+Each of these classes is described in greater detail in the sections
+that follow.
+
+<H2>Required Classes</H2>
+
+  <H3>CDrawing</H3>
+
+  This is the class that handles "character drawings" which use of a
+  printable matrix of characters to show what a drawing looks like.<p>
+
+  This should be the easiest class to implement because much of the work
+  it needs to do is taken care of by other classes.  Class Drawing,
+  which class CDrawing extends, provides all the work for managing the
+  display list for a drawing, and keeps track of whether the drawing is
+  visible or not.  Meanwhile class Coordinates and its two subclasses,
+  LineCoordinates and CircleCoordinates, can be used to find out where
+  the dots or asterisks go in the drawing.<p>
+  
+  Follow this sequence of development steps for this class:
+  
+  <OL>
+
+    <LI>Write empty versions of the constructor and the
+    <I>toString()</I> method for this class.  (Consult the [&nbsp;<a
+    HREF="docs/CDrawing.html">documentation for this class</A>&nbsp;]
+    to see the signatures and descriptions of these.)  You do not need
+    to define the fields yet.  Your constructor should just pass the two
+    parameters it receives to the superclass' constructor using
+    <I>super()</I>.  At this point, your <I>toString()</I> method should
+    just return a pointer to a String with no characters in it.<p>
+
+    Test your class by compiling it and using it in place of the
+    CDrawing.class file that I supplied.  You should be able to run the
+    program, and all commands should work, except that when the user
+    issues the new command, no output should appear on the screen, even
+    though the user gives line, circle, and rectangle commands.  Show
+    and hide should cause no errors, and list should still show the
+    display list correctly.  Highlight should still update the display
+    list correctly too.<p>
+
+    <LI><A NAME="CDrawing_toString">Now implement the <I>toString()</I>
+    method</A>.  You can see what fields I used by looking at the class
+    documentation.  If you prefer, you could make these fields local
+    variables in toString() rather than instance fields.  Think about
+    which place makes more sense for them.<p>
+
+    Your <I>toString()</I> method will have to go through two phases. 
+    First, traverse the display list to see what items are currently in
+    the drawing and setting characters to dot or asterisk in your
+    character matrix based on what you find in the display list.  Then,
+    generate a printable string, including line separators, based on
+    the characters in the matrix.<p>
+
+    The display list is a Vector of _DrawingItem objects managed by
+    class Drawing, and named <I>itemList</I>.  Because itemList is a
+    protected field in class Drawing, you can access it directly (by
+    name) from CDrawing.  Class Vector has a method named
+    <I>elements()</I> which will give you a reference to an object
+    containing all the, duh, elements in the Vector.  This object will
+    be an instance of a class that implements the Enumeration
+    interface, so you can use <I>hasMoreElements()</I> and
+    <I>nextElement()</I> to go through all the _DrawingItems.  I
+    suggest that you start work on the first phase of <I>toString()</I>
+    by just printing the information about each item (its elementType
+    and the values of x1, y1, x2, and y2) to make sure you are handling
+    the enumeration correctly.<p>
+
+    To continue your work on the first phase of <I>toString()</I>,
+    <I>remove all invocations of System.out.println() from your
+    toString() method</I> and then implement the following algorithm:
+    <ul>
+      <LI>Put blanks in all the characters of a doubly-subscripted array
+      of <CODE>char</CODE>.  The number of rows and columns in this
+      array are the values of the height and width parameters passed to
+      the CDrawing constructor.
+
+      <LI>Enumerate or iterate over the elements in the display list. 
+      For each item:
+
+      <ul>
+
+        <LI>Set the drawing character to '.' (a dot).
+
+        <LI>See <I>Note 1</I> below.
+
+        <LI>Create an object of class LineCoordinates or
+        CircleCoordinates for this item.  In the case of rectangles, you
+        will have to create four objects of class LineCoordinates, one
+        for each side.  See <I>Note 2</I> below.
+
+        <LI>Enumerate over the all the Point objects in the Coordinate
+        object(s) you just created, and use each Point's x and y values
+        to tell which character in your doubly-subscripted array to
+        replace with the drawing character.  See <I>Note 3</I> below.
+
+      </ul>
+
+    </ul>
+    <p>
+    
+    For the second phase of <I>toString()</I> you need to turn the
+    doubly-subscripted array of char into one big printable String to be
+    returned by the method.  Create a StringBuffer object, and iterate
+    over all the rows and columns of your doubly-subscripted array of
+    char, appending each char to the StringBuffer.  Append the
+    appropriate line separator to the StringBuffer at the end of each
+    row of output.  You can pass the StringBuffer as an argument to the
+    constructor for the String object to be returned.<p>  
+
+    <I>Note 1.</I>  After you have both phases working and have
+    verified that all the drawing elements are being displayed
+    properly, insert code at the step indicated by the note to change
+    the drawing character to '*' (an asterisk) if the current item is
+    the selected item.  The index of the selected item is kept in the
+    <I>selected</I> field of class Drawing.<p>
+    
+    Alternatively, you can make sure that the selected item appears "in
+    front of" all the other items by drawing it again as a separate
+    operation <I>after</I> you have put dots in the matrix for all the
+    items.  This way, any cells where the selected item and another item
+    cross will be sure to show up as asterisks instead of dots.<p>
+
+    <I>Note 2.</I>  Refer to the [&nbsp;<a
+    HREF="docs/Coordinates.html">documentation for class
+    Coordinates</A>&nbsp;] for information about these "container
+    classes."  As an example, if you create a LineCoordinates object,
+    you give the coordinates of the two endpoints of a line to the
+    constructor, and the object you create will contain the coordinates
+    of all the points that would need to be filled in to draw a line
+    between those two endpoints.  Each pair of coordinates is stored as
+    an object of class <CODE>java.awt.Point</CODE>, which you should
+    look up in your JDK documentation.  (Points have <I>int</I> fields
+    named <I>x</I> and <I>y</I> whose meanings you probably can
+    guess.)<p>
+    
+    Class Coordinates (and by inheritance, classes LineCoordinates and
+    CircleCoordinates) provides methods <I>hasMorePoints()</I> and
+    <I>nextPoint()</I> that let you enumerate over the Points in a line
+    or circle in the usual way.  Because <I>nextPoint()</I> returns a
+    reference to a <CODE>Point</CODE> instead of a reference to an
+    <CODE>Object</CODE>, you don't have to cast the value returned.<p>
+
+    <I>Note 3.</I>  In the slides for [&nbsp;<a
+    HREF="../Lectures/Lecture_17">Lecture 17</A>&nbsp;] it says to use
+    private methods for putting the dots or asterisks in the array,
+    which is the way I did it in my code.  You don't have to write
+    these separate methods if you would rather just put the code
+    directly inside your <I>toString()</I> method.<p>
+
+    <LI>Add the code to generate a border around the drawing, as my code
+    does.  You won't lose too much credit if you omit this feature, so
+    skip it if you are short on time.<p>
+  </OL>
+
+  Test your program carefully to be sure it performs all operations
+  involving class CDrawing correctly: new, line, circle, rectangle,
+  hide, show, and erase.<p>
+
+  <H3>Drawing</H3>
+
+  The purpose of class Drawing is to manage the display list for a
+  drawing, along with associated variables to control a drawing's
+  visibility and to select an item for highlighting.<p>
+  
+  The strategy for developing this class is similar to the one used for
+  class CDrawing:  First provide a "skeleton" version of the class that
+  doesn't do anything, but which will work (doing nothing) with the
+  other classes in the project.  Again, here is a sequence of steps to
+  follow:<p>
+  
+  <OL>
+
+    <LI><B>Build the skeleton.</B>  Consult the [&nbsp;<a
+    HREF="docs/Drawing.html">documentation for class Drawing</A>&nbsp;]
+    to see what fields, constructors and methods you need to
+    implement.<p>
+    
+    <dir>
+
+      <B>Fields.</B>  Assign initial values to all the fields: zero for
+      the height and width, minus one for selected, true for visible,
+      an empty Vector for itemList, and the String returned by
+      System.getProperty( "line.separator" ) for NL.<p>
+
+      <B>Constructor.</B>  The constructor receives two <I>int</I>
+      values, assign the first one to <CODE>width</CODE>, and the
+      second one to <CODE>height</CODE>.<p>
+
+      <B>Methods.</B>  There are 12 methods to implement, but only two
+      of them return values, <I>toString()</I> and <I>listItems()</I>. 
+      Code each of these methods with nothing in the method body,
+      except <I>toString()</I> and <I>listItems()</I>, which should
+      return empty strings. (&nbsp;<CODE>""</CODE>&nbsp;).  (As it
+      turns out, method <I>toString()</I> is never called, and can
+      safely be omitted from the class.)<p>
+      
+    </dir>
+
+    With this implementation, you should be able to run the project,
+    and everything should appear to work -- except that the hide
+    command will have no effect, the list command will print an empty
+    message, and the drawing will always be empty.  But you should see
+    empty drawings with the correct dimensions.  (Graphics drawings
+    will suffer the same fate.)<p>
+
+    <LI><B>Implement <I>hide()</I> and <I>show()</I>.</B>  By
+    implementing these methods, the user will be able to make drawings
+    appear and disappear.  But the drawings will still be empty, of
+    course.<p>
+    
+    <LI><B>Implement <I>drawLine()</I>.</B>  This method must validate
+    the coordinates passed to it to be sure the two endpoints have x
+    values between zero and width minus 1 and y values between zero and
+    height minus 1.  If not, throw the appropriate exception.  The
+    exception that you throw must have an appropriate message.<p>
+    
+    This method must also create a new [&nbsp;<a
+    HREF="docs/_DrawingItem.html">_DrawingItem</A>&nbsp;] each time it
+    is called, and use <I>addElement()</I> (from class
+    java.util.Vector) to add the item to the display list.<p>
+
+    When you have this method working, you should be able to create
+    drawings with any number of lines in them.  But rectangles and
+    circles won't show up yet, and the list command will still print
+    nothing.<p>
+    
+    <LI><B>Implement <I>drawCircle()</I> and <I>drawRectangle()</I>.</B> 
+    The code for this step is very similar to the previous one.<p>
+    
+    Test to be sure that you can draw shapes in all four corners of a
+    drawing, but not outside it.<p>
+    
+    <LI><B>Implement <I>highlightItem()</I> and
+    <I>unhighlightItem()</I>.</B>  Be sure the select command now
+    works.<p>
+
+    <LI><B>Implement <I>listItems()</I>.</B>  The strategy here will be
+    similar to that used in <CODE>CDrawing.<I>toString()</I></CODE>. 
+    That is, you will need to create a StringBuffer, and append text to
+    it to build up the information to be displayed to the user.<p>
+
+    You should find that some of the [&nbsp;<a
+    HREF="../Lectures/Lecture_19/BuildString.html">sample code from
+    Lecture 19</A>&nbsp;] is useful to get you started on this task.<p>
+
+  </OL>
+  
+  <H3>Coordinates</H3>
+
+  Class Coordinates is very much analogous to class Drawing.  It
+  performs the housekeeping functions for its subclasses
+  (LineCoordinates and CircleCoordinates).  As you can see from the
+  [&nbsp;<a HREF="docs/Coordinates.html">documentation for this
+  class</A>&nbsp;], this class provides a protected member called
+  <CODE>_points</CODE>, which is a Vector, and another protected member
+  called <CODE>_enum</CODE>, which is an Enumeration.  This class
+  creates an empty Vector for <CODE>_points</CODE> each time it is
+  instantiated.  Each subclass' constructor is responsible for adding
+  an appropriate set of Point objects to this Vector and for creating an
+  enumeration of the Vector once all the Points have been added.  The
+  methods in class Coordinates provide "wrapper methods" for
+  <I>_enum.hasMoreElements()</I> and <I>_enum.nextElement()</I>.  These
+  wrapper methods (<I>hasMorePoints()</I> and <I>nextPoint()</I>) just
+  provide more meaningful names for the methods they are wrapped around.
+  In addition, <I>nextPoint()</I> takes care of getting an Object out of
+  the Vector and returning it as a Point so that other methods don't
+  have to do the cast.<p>
+  
+  Method <CODE>enumerate()</CODE> is not really used in this project. 
+  It is there in case another method wants to enumerate the points in a
+  drawing item again after the initial time through them.  Since we
+  create new LineCoordinate and CircleCoordinate objects for every
+  drawing item every time we draw the drawing on the screen, this method
+  never gets called.<p>
+
+<H2>Extra Credit Classes</H2>
+
+Since these classes are for extra credit, you may develop them in any
+order you please, but you will receive credit only for completely
+documented and working classes.
+
+  <H3>GDrawing</H3>
+
+    I used a Frame object, which holds a Canvas object, for graphics
+    drawings.  The actual drawing is done by overriding Canvas'
+    <I>paint()</I> method.
+
+  <H3>LineCoordinates</H3>
+
+    If the line is more horizontal than vertical, create a Point for
+    each value of x between x1 and x2, inclusive.  If it is more
+    vertical than horizontal, create a Point for each value of y between
+    y1 and y2.  Be sure to include the end points, and be sure to handle
+    the case when (x1,y1) is the same as (x2,y2).<p>
+
+  <H3>CircleCoordinates</H3>
+
+    The following code will generate a Point object for each coordinate
+    in the first octant of a circle.  Because of 8-way symmetry, seven
+    additional points can be generated for each one shown here to give
+    a complete circle.
+<pre>
+    int r = Math.abs( diameter / 2 );
+    int x = 0, y = r;
+    int p = 1 - y;
+      while ( x &lt;= y ) {
+        new Point( x1 + y, y1 + x )
+        x++;
+        if ( p &lt; 0 ) 
+          p += 2 * x + 1;
+        else {
+          y--;
+          p += 2 * (x - y) + 1;
+        }
+      }
+</pre>
+
+<HR></BODY></HTML>

@@ -1,0 +1,79 @@
+<HTML><HEAD><TITLE>Exception_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>Exception_ex.java</H1></CENTER><HR><PRE>
+//  Exception_ex.java
+
+//  Class Exception_ex
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates managing exception objects.
+  */
+  public class Exception_ex
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Calls aMethod() twice, and prints messages from any exception
+    *   thrown by it.  In lecture, we changed the type of exception
+    *   that was thrown, with different results.
+    *
+    *     @param  argv  Not used.
+    *     @return Void.
+    */
+    public static void main( String[] argv )
+    {
+      try
+      {
+        aMethod();
+        aMethod();
+      }
+      catch ( Exception e )
+      {
+        System.out.println( e );
+        System.out.println( e.toString() );
+        System.out.println( e.getMessage() );
+      }
+      System.out.println( "Exiting normally." );
+      System.exit( 0 );
+    }
+
+  //  Method aMethod()
+  //  ----------------------------------------------------------------
+  /**
+    *   Throws various types of exceptions (varied in lecture).
+    */
+    static void aMethod()
+    {
+      System.out.println( "aMethod here." );
+      throw new RuntimeException( "aMethod threw me!" );
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class MySpecialException extends Exception
+{
+  public MySpecialException( String msg )
+  {
+    super( msg );
+  }
+  public String getMessage()
+  {
+    return super.getMessage();
+  }
+}
+
+</PRE><HR></BODY></HTML>

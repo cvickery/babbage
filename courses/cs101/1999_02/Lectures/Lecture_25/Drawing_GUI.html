@@ -1,0 +1,89 @@
+<HTML><HEAD><TITLE>Drawing_GUI.java</TITLE></HEAD><BODY>
+<CENTER><H1>Drawing_GUI.java</H1></CENTER><HR><PRE>
+//  Drawing_GUI.java
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
+public class Drawing_GUI extends Frame {
+
+  static int  numDrawings = 0;
+
+  MenuBar     mb          = new MenuBar();
+  Menu        file        = new Menu( "File" );
+  Menu        help        = new Menu( "Help" );
+  MenuItem    newd        = new MenuItem( "New" );
+  MenuItem    quit        = new MenuItem( "Exit" );
+
+  Canvas      drawing     = new DCanvas();
+  Panel       controls    = new Panel( new GridLayout(0, 1) );
+
+  CheckboxGroup itemType    = new CheckboxGroup();
+  Checkbox      doLine      = new Checkbox( "Line", itemType, true );
+  Checkbox      doCircle    = new Checkbox( "Circle", itemType,
+                                             false );
+  Checkbox      doRectangle = new Checkbox( "Rectangle", itemType,
+                                             false );
+
+  public Drawing_GUI( String title ) {
+    super( title + ( (numDrawings++ > 0) ?
+                    ( " - " + (numDrawings-1) ) :
+                    "" ) );
+  }
+
+  public static void main( String[] argv ) {
+
+    Drawing_GUI gui = new Drawing_GUI( "Vickery Drawing" );
+    gui.init();
+  }
+
+  public void init() {
+
+    setMenuBar( mb );
+    mb.add( file );
+    mb.add( help );
+
+    file.add( newd );
+    file.add( quit );
+
+    add( drawing, BorderLayout.WEST );
+    add( controls, BorderLayout.EAST );
+
+    controls.add( doLine );
+    controls.add( doCircle );
+    controls.add( doRectangle );
+
+    drawing.setSize(200, 100);
+
+    setBackground( Color.blue );
+    controls.setBackground( Color.yellow );
+    drawing.setBackground( Color.red );
+
+    pack();
+    show();
+
+    addWindowListener( new WindowAdapter() {
+      public void windowClosing( WindowEvent we ) { System.exit( 0 ); }
+    } );
+
+    quit.addActionListener( new ActionListener() {
+      public void actionPerformed( ActionEvent ae ) { System.exit( 0 ); }
+    } );
+
+    newd.addActionListener( new ActionListener() {
+      public void actionPerformed( ActionEvent ae ) {
+        new Drawing_GUI( "Another Drawing" ).init();
+      } } );
+
+  }
+}
+
+  class DCanvas extends Canvas {
+  int nCalls = 0;
+    public void paint( Graphics g ) {
+      g.drawString( "Paint called " + ++nCalls + " times.", 10, 10 );
+    }
+  }
+
+</PRE><HR></BODY></HTML>

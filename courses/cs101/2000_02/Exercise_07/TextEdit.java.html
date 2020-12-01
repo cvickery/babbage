@@ -1,0 +1,194 @@
+<HTML><HEAD><TITLE>TextEdit.java</TITLE></HEAD><BODY>
+<CENTER><H1>TextEdit.java</H1></CENTER><HR><PRE>
+//  TextEdit.java
+
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+//  Class TextEdit
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates some basic elements of GUI design by implementing a
+  *   a simple text editor.
+  *
+  *   @see      &lt;a href=
+  "http://babbage.cs.qc.edu/courses/cs101/Spring00/Exercise_07">
+  Exercise 7&lt;/a>
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring, 2000
+  */
+  public class TextEdit
+  {
+
+    /** The main window that holds the GUI for the application.     */
+    static JFrame jf = new JFrame( "TextEdit" );
+
+    /** The text area that the user can edit.                       */
+    static JTextArea jt = new JTextArea();
+
+    /** A scroll pane to manage the display of the text area.       */
+    static JScrollPane sp = new JScrollPane( jt );
+
+    /** MenuBar for the application.                                */
+    static JMenuBar  jmb         = new JMenuBar();
+
+    /** Menu for File operations.                                   */
+    static JMenu     fileMenu    = new JMenu( "File" );
+
+    /** MenuItem for File->Save.                                    */
+    static JMenuItem miFileSave  = new JMenuItem( "Save" );
+
+    /** MenuItem for File->Exit.                                    */
+    static JMenuItem miFileExit  = new JMenuItem( "Exit" );
+
+    /** The file being edited.                                      */
+    static File theFile;
+
+    /** Screen dimension, for centering the window.                 */
+    static Dimension scrDim    = Toolkit.getDefaultToolkit()
+                                        .getScreenSize();
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Gets a file name from the user, and reads it into a text area,
+    *   creates a user interface with minimal set of menu items.
+    *
+    *   Warning!  This application always writes to the file being
+    *             edited.  Be careful what you edit with it!
+    *
+    *   @param  argv  Command line arguments, not used.
+    *   @return Void.
+    */
+    public static void main( String[] argv )
+    {
+      //  Get the name of the file to be edited from the command line.
+      if ( argv.length != 1 )
+      {
+        System.err.println( "You must supply the name of a file." );
+        System.exit( 1 );
+      }
+
+      theFile = new File( argv[0] );
+
+      //  Read the file into the Text Area.
+      try
+      {
+        FileReader fr = new FileReader( theFile );
+        jt.read( fr, null );  // Second arg is optional "description"
+      }
+      catch ( IOException ioe )
+      {
+        System.err.println( "Error reading: " + ioe );
+        System.exit( 1 );
+      }
+
+      //  Set up the menu bar, menu, and menu items.
+      jf.setJMenuBar( jmb );
+      jmb.add( fileMenu );
+      fileMenu.add( miFileSave );
+      fileMenu.addSeparator();
+      fileMenu.add( miFileExit );
+
+      //  Add the scroll pane containing the text area to the window.
+      Container cp = jf.getContentPane();
+      cp.add( sp );
+
+      //  OPTIONAL: Set font and number of rows/columns to display
+          jt.setFont( new Font( "Monospaced", Font.PLAIN, 12 ) );
+          jt.setRows( 24 );     //  Standard text window height
+          jt.setColumns( 80 );  //  Standard text window width
+
+      //  Display the application in the center of the user's screen.
+      jf.pack();
+      centerIt( jf );
+      jf.show();
+
+      //  WindowListener for window closing events.
+      //  ------------------------------------------------------------
+      jf.addWindowListener( new WindowAdapter()
+      {
+        //  The callback method for Window Closing events.
+        public void windowClosing( WindowEvent we )
+        {
+          //  Write the contents of the JTextArea to the file,
+          //  then exit.
+          saveTheFile();
+          System.exit( 0 );
+        }
+      }
+      );
+
+      //  ActionListener for File->Save
+      //  ------------------------------------------------------------
+      miFileSave.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          //  Write the contents of the JTextArea to the file,
+          //  then return.
+          saveTheFile();
+          return;
+        }
+      }
+      );
+
+      //  ActionListener for File->Exit
+      //  ------------------------------------------------------------
+      miFileExit.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          //  Write the contents of the JTextArea to the file,
+          //  then exit.
+          saveTheFile();
+          System.exit( 0 );
+        }
+      }
+      );
+
+    }
+
+  //  Method saveTheFile()
+  //  ----------------------------------------------------------------
+  /**
+    *   Writes the contents of the text area to the file.
+    *
+    */
+    private static void saveTheFile()
+    {
+      try
+      {
+        FileWriter  fw = new FileWriter( theFile );
+        jt.write( fw );
+      }
+      catch ( IOException ioe )
+      {
+        System.out.println( "Error writing: " + ioe );
+        System.exit( 1 );
+      }
+    }
+
+  //  Method centerIt()
+  //  ----------------------------------------------------------------
+  /**
+    *   Centers a Component on the user's screen.
+    *
+    *     @param  c   The component to be centered.
+    *     @return Void
+    */
+    private static void centerIt( Component c )
+    {
+      Dimension comDim = c.getSize();
+      int       x,y;
+
+      x = scrDim.width  / 2 - comDim.width  / 2;
+      y = scrDim.height / 2 - comDim.height / 2;
+      c.setLocation( x, y );
+    }
+
+  }
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,86 @@
+<HTML><HEAD><TITLE>LaI.java</TITLE></HEAD><BODY>
+<CENTER><H1>LaI.java</H1></CENTER><HR><PRE>
+// LaI.java
+
+//  Class LaI
+//  ------------------------------------------------------------------
+/**
+  *   Loads a class and initializes some variables.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class LaI {
+
+  static  int x = -1, y;
+          int z = -2;
+  static final String NL;
+
+  static {
+    y   = -3;
+    NL  = System.getProperty( "line.separator" );
+    System.out.println( "Static initializer." + NL +
+                        "x is " + x + NL +
+                        "y is " + y );
+
+  }
+  
+  //  Method main()
+  //  -----------------------------------------------------------------
+  /**
+    *   Illustrates loading a class, instantiating it, and initializing
+    *   fields.
+    *
+    *   @param  argv Command line arguments.  Not used.
+    *   @return void
+    *
+    */
+    public static void main( String[] argv ) {
+
+    System.out.println( "Main started." + NL +
+                        "x = " + x + NL +
+                        "y = " + y );
+
+    LaI[]   l = new LaI[ 10 ];
+
+      for ( int i = 0; i < 10; i++ ) {
+        l[i] = new LaI( i );
+      }
+      for ( int i = 9; i >= 0; i-- ) {
+        l[i].which();
+      }
+
+      System.exit( 0 );
+
+    }
+
+    //  Constructor LaI( int )
+    //  --------------------------------------------------------------
+    /**
+      *   Initializes instance variable z.
+      *
+      *   @param  value Value to assign to z.
+      *
+      */
+      public LaI( int value ) {
+        z = value;
+        System.out.println( "Constructing instance " + value );
+        x++;
+        }
+
+    //  Method which()
+    //  --------------------------------------------------------------
+    void which() {
+
+      int w = y;
+
+      System.out.println( "This is instance " + z + NL +
+                          "w is " + w + NL +
+                          "x is " + x + NL +
+                          "y is " + --y + NL +
+                          "z is " + z );
+    }
+
+  }
+
+</PRE><HR></BODY></HTML>

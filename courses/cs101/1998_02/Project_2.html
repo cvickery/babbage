@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Knight's Tour with Inheritance</TITLE>
+<META NAME="Version" CONTENT="8.0.4308">
+<META NAME="Date" CONTENT="7/8/97">
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\HTML.DOT">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<FONT SIZE=5><P ALIGN="CENTER">Knight's Tour with Inheritance</P>
+<P ALIGN="CENTER">Project 2</P>
+</FONT><FONT SIZE=4><P ALIGN="CENTER">CS-101, Spring 1998</P>
+</FONT><B><BLOCKQUOTE>NOTE: All programming projects submitted for grading in this course must be your own work. It's all right to talk to others about the project, but there must be no exchange of code by any means. Failure to follow this policy will result in a failing grade in the course and possible disciplinary action by the college. An automated analysis system is used to help enforce this policy for this course.</BLOCKQUOTE>
+<I><FONT FACE="Arial"><P>Introduction</P>
+</B></I></FONT><P>This project builds on the Knight's Tour program you developed in Project 1 to demonstrate code reuse by class inheritance, as discussed in Chapter 7 of the textbook. As in the first project, I am supplying class files that your program must be able to work with.</P>
+<B><I><FONT FACE="Arial"><P>Code I am supplying</P>
+
+<UL>
+</B></I></FONT><LI>[<A HREF="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/KnightsTour_3/TourUI.class">TourUI.class</A>] This is a user interface that allows the user to select either the Heuristic algorithm, developed in the first project, or the "Random" algorithm, which is the one described as the "Brute Force" algorithm in the textbook. For the Heuristic algorithm, the user is prompted to enter a starting square. For the Brute Force algorithm, the user is prompted to enter the number of tours to be run. Details about how closely your TourUI.class must mimic mine are given below. </LI>
+<LI>[<A HREF="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/KnightsTour_3/Tour.class">Tour.class</A>] This is the super class of the other two classes needed to complete the application. It contains methods and data that are reused by the two subclasses. </LI>
+<LI>[<A HREF="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/KnightsTour_3/HTour.class">HTour.class</A>] This subclass implements the Heuristic Tour algorithm. </LI>
+<LI>[<A HREF="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/KnightsTour_3/RTour.class">RTour.class</A>] This subclass implements the Random Tour algorithm. </LI>
+<LI>[<A HREF="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/KnightsTour_3/RowCol.class">RowCol.class</A>] This class defines squares on a chessboard. It is used with Tour's <I>getTour()</I> method, which is not a required part of this project. See the section on [<A HREF="#appletui">Providing an Applet Interface for this Project</A>] below.</LI></UL>
+
+<B><FONT FACE="Arial"><P>[ </B></FONT><A HREF="http://babbage.cs.qc.edu/docs/api/index.html"><B><I><FONT FACE="Arial">Javadoc Documentation for my Code</B></I></FONT></A><B><FONT FACE="Arial"> ]</P>
+</B></FONT><I><P>Note:</I> Links in this documentation to documentation for classes and methods in other packages do not work. This documentation is here to illustrate what you can get using <I>javadoc</I>; it's not really needed for the project.</P>
+<B><I><FONT FACE="Arial"><P>Developing the Project</P>
+<OL>
+
+</B></I></FONT><LI>Put the class files I am supplying in a directory and make sure they work as expected. Observe the output produced by the program, but don't panic! You won't be doing the timing analysis that my program does for the Random Tour algorithm.</LI>
+<LI>Write your own TourUI that allows the user to select the algorithm, the starting square for Heuristic tours, and the number of tours for Random tours. You may make your TourUI an applet if you prefer, but that implies making changes to the Tour, HTour, and RTour classes, and should be done only if this project isn't challenging enough for you as it stands! (The needed changes are discussed [<A HREF="#appletui">below</A>]).Replace my TourUI.class with your own, and be sure the program works as expected. Be sure your program checks for valid user input, accepting a corrected value in case of bad input, and that it runs until the user types 'q' to quit. For each Heuristic tour, your program must display the length. For Random tours, your program must display a count of the number of full tours completed. All other output, such as the frequency distribution and timing statistics produced by my code, is optional.</LI>
+<LI>Now implement the abstract class, Tour. It must include a protected <I>int</I> named "length" and a protected 8x8 array of <I>int</I>s named "solution," and public methods <I>getLength()</I> and <I>showTour().</I> Optionally, you may provide a public method named <I>toString()</I> as discussed in class. (The TourUI class file available as of March 12, 1998 does not work with a Tour.class file that does not implement <I>showTour()</I>; this will be changed so that it will work if you define showTour, toString, or both.</LI>
+<LI>Copy the Tour.java file you wrote for Project 1 to a file named HTour.java, and modify it so it works as a subclass of Tour. You may use the copy of Tour.java that I emailed to everyone for this step if you wish. In either case, be sure to change any comment lines to make sure they agree with the actual filename and code!</LI>
+<LI>Write RTour.java to implement the "brute force" algorithm described in the book. Each time the knight lands on a square, it picks one of the 8 moves randomly. If that move is not valid, step through the other 7 moves in sequence until you find one that is valid, or can't move any farther. <I>Help:</I> You need to import java.util.Random, and create an object of class Random. Then you can use the <I>nextInt()</I> method to get a random number, which might be negative. Make it positive if necessary, and the resulting value modulo 8 will be your move number.</LI></OL>
+
+<B><I><FONT FACE="Arial"><P><A NAME="appletui">Providing an Applet User Interface for This Project</A></P>
+</B></I></FONT><P>A graphical user interface for this project would be nice, and the input side of it can be constructed using techniques you already know. You could also display the tour results using the String returned by Tour's toString() method, but that would actually be difficult to do if the String contains embedded newlines. You shouldn't use <I>showTour()</I> to display the results graphically either; that was a bad design choice I made at the beginning. The user interface and the solution of the Knight's Tour problem should be kept separate.</P>
+<P>Rather, what the user interface would really find most useful is a sequential list of the squares visited, which can be implemented as an array of row/column pairs. We could use Deitel's <I>Point</I> class (pg. 383) for this, but I'm providing a simpler class, RowCol:</P>
+<P><HR></P><DIR>
+<DIR>
+
+<FONT FACE="Courier New" SIZE=2><P>public class RowCol {</P>
+<P>public final int row, col;</P>
+<P>&nbsp;&nbsp;public RowCol( int r, int c ) {</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;row = r;</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;col = c;</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;}</P>
+<P>&nbsp;&nbsp;public RowCol( RowCol rc ) {</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;row = rc.row;</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;col = rc.col;</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;}</P>
+<P>&nbsp;&nbsp;}</P></DIR>
+</DIR>
+
+</FONT><P><HR></P>
+<P>My Tour class implements a new method, <I>getTour()</I> that returns an array of <FONT FACE="Courier New">RowCols</FONT>, one element for each square visited in the tour. As you can see from this complete definition of the class, there are two constructors that allow you to initialize a RowCol object either with two ints or with an existing RowCol object. But there are no get or set methods; the row and column numbers are simply public variables.</P>
+<P><HR></P></BODY>
+</HTML>

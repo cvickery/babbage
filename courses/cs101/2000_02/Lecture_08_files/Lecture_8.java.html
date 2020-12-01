@@ -1,0 +1,162 @@
+<HTML><HEAD><TITLE>Lecture_8.java</TITLE></HEAD><BODY>
+<CENTER><H1>Lecture_8.java</H1></CENTER><HR><PRE>
+//  Lecture_8.java
+
+//  Class Lecture_8
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates static and instance fields and methods.
+  *
+  *   Note:   This program generates too much output to fit in a
+  *           single console window.  You can view the output one
+  *           screenful at a time using this command line:
+  <pre>
+        java Lecture_8 | more
+  </pre>
+  *           Alternatively, you can capture the output in a file so
+  *           you can look at it using a text editor by using this
+  *           command line:
+  <pre>
+        java Lecture_8 > Lecture_8.out
+  </pre>
+  *           You could use any filename you want instead of
+  *           "Lecture_8.out".
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - February, 2000
+  */
+  public class Lecture_8 {
+
+    //  Three static variables.
+    static int  stat_1, stat_2, stat_3;
+
+    //  Four instance variables.
+           int  inst_1, inst_2, inst_3, inst_4;
+
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Creates some objects of class Lecture_8, manipulates some
+    *   static and instance fields using static and instance methods,
+    *   and prints some results.
+    *
+    *     @param  argv  Not used in this application.
+    *     @return Void.
+    */
+    public static void main( String[] argv ) {
+
+      //  Four local variables, neither static nor instance variables.
+      Lecture_8 a, b, c, d;
+
+      //  Assign some values to the static variables.
+      stat_1 = 99;
+      stat_2 = 88;
+      stat_3 = 77;
+
+      //  Create three new objects, saving references to them in the
+      //  local variables.
+      a = new Lecture_8();
+      b = new Lecture_8();
+      c = b;
+      d = new Lecture_8();
+
+      //  If you print a reference variable you get the name of the
+      //  class, an '@' sign, and the address of the object in memory.
+      //  (The address is printed as a hexadecimal number.)
+      System.out.println( "a is: " + a );
+      System.out.println( "b is: " + b );
+      System.out.println( "c is: " + c );
+      System.out.println( "d is: " + d );
+
+      //  Invoke (call) a static method from this static method.
+      statMeth( 1000 );
+
+      //  Invoke an instance method using each of the reference
+      //  variables that were initialized above.
+      a.instMeth( 100 );
+      b.instMeth( 200 );
+      c.instMeth( 300 );
+      d.instMeth( 400 );
+
+      //  Invoke another instance method using each of the references.
+      a.showVars();
+      b.showVars();
+      c.showVars();
+      d.showVars();
+
+    }
+
+  //  Method statMeth()
+  //  ----------------------------------------------------------------
+  /**
+    *   Assigns different values to each of the static variables.
+    *
+    *     @param  x     The base value to be assigned to each static
+    *                   variable.
+    *     @return Void.
+    */
+    static void statMeth( int x ) {
+      stat_1 = x + 1;
+      stat_2 = x + 2;
+      stat_3 = x + 3;
+    }
+
+  //  Method instMeth()
+  //  ----------------------------------------------------------------
+  /**
+    *   Modifies one of the static variables and assigns new values to
+    *   each of the instance variables.
+    *
+    *   @param  x     The base value to be assigned to each instance
+    *                 variable.
+    *   @return Void.
+    */
+    void instMeth( int x ) {
+
+      //  Modify one of the static variables in this class.
+      stat_1++;
+
+      //  Assign new values to each of the instance variables for this
+      //  object.
+      inst_1 = x + 1;
+      this.inst_1 = x+1;  // Same as previous statement.
+      inst_2 = x + 2;
+      inst_3 = x + 3;
+      inst_4 = x + 4;
+    }
+
+  //  Method showVars()
+  //  ----------------------------------------------------------------
+  /**
+    *   Prints the value of the hidden parameter, this, and the values
+    *   of each of the static and instance variables.
+    *
+    *     @param  this  The hidden parameter that is passed to all
+    *                   instance methods.
+    *     @return Void.
+    */
+    void showVars() {
+
+      //  Print the value of the hidden parameter, this.
+      System.out.println( this );
+
+      //  Print the values of all the static variables.
+      System.out.println( "  stat_1: " + stat_1 );
+      System.out.println( "  stat_2: " + stat_2 );
+      System.out.println( "  stat_3: " + stat_3 );
+
+      //  Print the values of all the instance variables.
+      System.out.println( "  inst_1: " + inst_1 );
+      System.out.println( "  inst_1: " + this.inst_1 ); //  Same as
+                                                        //  previous
+                                                        //  statement.
+      System.out.println( "  inst_2: " + inst_2 );
+      System.out.println( "  inst_3: " + inst_3 );
+      System.out.println( "  inst_4: " + inst_4 );
+    }
+  }
+
+
+    
+</PRE><HR></BODY></HTML>

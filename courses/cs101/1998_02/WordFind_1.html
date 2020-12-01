@@ -1,0 +1,251 @@
+<HTML><HEAD><TITLE>Word Find Puzzle Project</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<H1 ALIGN="CENTER">Word Find Puzzle Project</H1>
+
+<H2>Introduction</H2>
+
+You are to write a set of Java classes that allow a user to work with
+"Word Find" puzzles. A Word Find puzzle (hereafter known as a "Puzzle"
+or as a "wfp") is a rectangular matrix of letters with words embedded
+in it. The words may start anywhere, and may run in any of the eight
+directions, North (up), Northeast (up and to the right), East (to the
+right, Southeast, etc. As the puzzle is conventionally played, the
+matrix is printed with each letter in a box, and a list of embedded
+words is printed nearby. The player's task is to circle each of the
+words in the matrix.<P>
+
+For this project, the user will be given a set of text files, each of
+which contains one puzzle and its word list. The user runs the program
+from the command line by typing, "java UI <I>&lt;file&gt;</I> ...",
+where <I>&lt;file&gt;</I> ... represents a list of the names of files
+containing puzzles, separated by spaces. The user will then see the
+first puzzle, and a prompt telling him/her to enter either a word to
+find in the puzzle, or one of the following commands:<P>
+
+<PRE>
+      q -- exit the program
+      n -- go to the next puzzle
+      l -- list the words in the puzzle
+      p -- print the puzzle again
+</PRE>
+
+If the user enters one of these commands, the program performs the
+appropriate action, and repeats the prompt.  If the user enters
+something other than one of these commands, it is interpreted as a word
+to find in the current puzzle, and the program either displays the row
+and column where the word starts along with the direction the word goes
+in, or the message, "Not found."<P>
+
+<H2>Deliverables and Due Date</H2>
+
+The project is due on <B>April 30, 1998</B>.  Send me email with four
+files attached: UI.java, Puzzle.java, Answer.java, and Direction.java. 
+These files are described later on in this document.  The files must be
+named as indicated, with the indicated spelling and capitalization, or
+they will not be accepted for credit.  You may put all four files into
+one zip file and attach that to your email message instead.  In fact, a
+zip file is a little easier for me to work with than four separate
+.java files.  Do not bother to send any .class files; I will compile
+your code when I grade it.<P>
+
+<H2>My Solution</H2>
+
+You can run my solution for the project by downloading the files from [
+<A HREF="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/WordFind_1">this
+directory</A> ]. You will find some sample puzzle files there too,
+including some that have errors in them for testing purposes. <P>
+
+<H2>Puzzle Files</H2>
+
+You, or your users, can make your own puzzle files. Use any text
+editor, and prepare the file as follows: On the first line, type the
+number of rows in the puzzle matrix. The next <I>n</I> lines (where
+<I>n</I> is the number you typed on the first line) contain the rows of
+the puzzle with no spaces between the letters. Each row must have
+exactly the same number of characters as the first one. Immediately
+after the puzzle lines comes the list of words in the puzzle, one per
+line. The puzzle lines and the words may be entered in either upper or
+lower case. Here is a sample puzzle file, with the puzzle lines using
+upper case letters just to make it clearer where the puzzle ends and
+the word list begins:<P>
+
+<PRE>
+        4
+        ABCD
+        EFOT
+        GGMA
+        XYLC
+        dog
+        cat
+</PRE>
+
+<H2>Classes You Are To Implement</H2>
+
+<OL>
+
+  <LI>Class <B><CODE>UI</B></CODE> provides the command line user
+  interface for this project. Method <B><I>main()</B></I> implements the
+  user interface. The next project will substitute a graphical user
+  interface for the program, using an Applet instead of the command
+  line.</LI>
+
+  <LI>Class <B><CODE>Puzzle</B></CODE> provides one constructor, which
+  takes a String as its only argument. The String is the name of a puzzle
+  file. For this project, the name of the puzzle file will be one of the
+  names typed on the java command line by the user. If the constructor is
+  not able to build a puzzle successfully, it throws an Exception that
+  includes an explanatory message. The UI class will print this message
+  and must not try to use the Puzzle if an Exception is thrown by the
+  constructor.<p>
+  
+  This class provides the following methods:<p>
+
+  <UL>
+
+    <LI><B><I>toString()</B></I> returns a String representing the
+    puzzle matrix. </LI>
+
+    <LI><B><I>getPuzzleName()</B></I> returns a String giving the name
+    of the puzzle, which will be the name of the file that the puzzle
+    came from. </LI>
+
+    <LI><B><I>getNumberOfWords()</B></I> returns an <CODE>int</CODE>
+    telling how many words were in the word list for the puzzle. </LI>
+
+    <LI><B><I>getWordList()</B></I> returns a Vector of Strings; each
+    String has one of the words in the word list for the puzzle. </LI>
+
+    <LI><B><I>findWord()</B></I> receives one String argument (the word
+    to find), and returns an Answer, or <CODE>null</CODE> if the word
+    can't be found in the puzzle. </LI>
+
+  </UL>
+
+
+  <LI>Class <B><CODE>Answer</B></CODE> holds a row number, a column
+  number, and a Direction. The constructor constructs the Answer from
+  three <CODE>int</CODE>s. (The "proper" implementation of this class
+  would use one of the constants provided by class Direction for the
+  third argument, but that would require you to implement the
+  Enumeration interface, which adds too much complexity to an
+  already-complex project!) The <B><I>toString()</B></I> method returns
+  a String indicating the row, column, and Direction.</LI>
+
+  <LI>Class <B><CODE>Direction</B></CODE> stores one of 8 compass
+  points as an <CODE>int</CODE>, with 0 representing North, 1 =
+  Northeast, 2 = East, etc. The class provides public static final
+  <CODE>int</CODE>s for the eight directions, with names N, NE, E, SE, S,
+  etc. It also provides a public static final array of eight Strings,
+  <B><CODE>stringName</B></CODE>, that has the String representation for
+  each direction. Finally, this class also provides two public static
+  final arrays of <CODE>int</CODE> named <B><CODE>deltaX</B></CODE> and
+  <B><CODE>deltaY</B></CODE> that are analogous to the
+  <CODE>horizontal</CODE> and <CODE>vertical</CODE> arrays from the
+  Knight's Tour project.<p>
+
+  This class provides one method, <B><I>toString()</B></I>, which returns
+  the <CODE>stringName</CODE> for the direction.<p>
+
+</OL>
+
+<H2>Development Strategy</H2>
+
+Start by downloading [ <A
+HREF="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/WordFind_1">my class
+files and sample puzzles.</A> ] Make sure you can run the program and
+understand what it is doing.<P>
+
+Next, write your own command line user interface
+(<CODE>UI.java)</CODE>. This class must use the command line arguments
+to determine the puzzle files to be constructed. Start by writing code
+that just prints each argument the user types on the command line, then
+add code that prompts the user to enter 'q' to exit or 'n' for the next
+file. If the user types 'n' the program should display the next file
+name, or should exit if there are no more file names. Once you have
+this working, you can add the code to try constructing a Puzzle for
+each file, and printing it. Just use valid puzzle files at first
+(<CODE>puzzle_57</CODE> and <CODE>bingo</CODE>), then make sure your
+code prints the message from any Exception that gets thrown by the
+constructor.  During this step, you will use my class files for Puzzle,
+Direction, and Answer.<P>
+
+Now you can start work on <CODE>Puzzle.java</CODE>.  Start by working
+on the Constructor.  You will have to provide "stub" versions of
+<I>getPuzzleName()</I>, <I>getNumberOfWords()</I>,
+<I>getWordList()</I>, and <I>findWord()</I> that do nothing but return
+some value of the appropriate type.  You do not have to write a stub
+for <I>toString()</I> because the class will inherit one.  Here are
+examples of the code you could use for the stubs:<P>
+
+<PRE>
+     String getPuzzleName()       { return "Not Implemented yet"; }
+     int    getNumberOfWords()    { return 0; }
+     Vector getWordList()         { return new Vector(); }
+     Answer findWord( String s )  { return null; }
+</PRE>
+
+You have to declare that your constructor might throw an Exception,
+because that will be the mechanism for communicating any failure to create
+a Puzzle back to the user interface class:<p>
+
+<CODE>public Puzzle( String filename ) throws Exception { …</CODE>.<p>
+
+There are six things that might cause your constructor to fail: (1) the
+file might not exist or might not be readable, (2) the file might not
+have a valid number in the first line, (3) there might not be a first
+line(!), (4) there might be a puzzle row that doesn't have the right number
+of characters in it, (5) there might not be enough lines in the
+puzzle.  (The sixth condition doesn't apply to this project: the word
+list at the end of the puzzle might contain words that can't be found in
+the project.)<p>
+
+Condition (1) will cause your attempt to access the file to
+fail with an IOException.  Condition (2) will cause your reference to
+Integer.parseInt() to fail with a NumberFormatException.  With all this
+in mind, here is the algorithm you want to implement in your
+constructor:<P>
+
+
+<PRE>
+   try {
+    create a new BufferedReader (IOException)
+    read first line of the file (IOException)
+    call Integer.parseInt() to get the number of rows (NumberFormatException)
+    read the second line of the file, which is the first row of the puzzle (IOException)
+    save the length of this line as the number of columns in the puzzle
+    convert the line from a string into an array of char using the getChar() method
+      provided by the String class, and put the array in thePuzzle[0]
+    for each additional row of the puzzle:
+     read a line from the file
+     if you get null instead of a String, the file did not contain enough lines, so throw
+       a new Exception("put your message here")
+     if the length of the string is not equal to the number of columns in the puzzle,
+       throw a new Exception("put your message here")
+     convert the string to an array of chars, and put it in thePuzzle[i]
+     }
+    catch ( IOException e ) { throw new Exception( "put your message here") }
+
+    catch ( NumberFormatException e ) { throw new Exception( "put your message here") }
+</PRE>
+
+You have to substitute a meaningful message for all those "put your
+message here" strings in the above algorithm.  The Exceptions that are
+thrown by the system already have useful messages in them, which you
+can retrieve using the <I>getMessage()</I> method of class
+<CODE>Exception</CODE>.  Thus, for example, my IOException handler
+looks like this:<p>
+
+<CODE>{ throw new Exception( "Unable to read puzzle file " + e.getMessage() ); }
+</CODE><p>
+
+In this case, <I>e.getMessage()</I> gives the name of the file that
+couldn't be read.<P>
+
+I have written another summary of the constructor algorithm, as well as
+the algorithm for the <I>findWord()</I> method, which you can see [
+<a href="WordFind_1a.html">at this page</a> ].<P>
+
+<HR></BODY></HTML>

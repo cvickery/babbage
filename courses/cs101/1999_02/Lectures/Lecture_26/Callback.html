@@ -1,0 +1,268 @@
+<HTML><HEAD><TITLE>Callback.java</TITLE></HEAD><BODY>
+<CENTER><H1>Callback.java</H1></CENTER><HR><PRE>
+//  Callback.java
+
+import java.util.*;
+
+//  Illustrates the interactions between an event generator and event
+//  listeners.  The event generator is a thread that generates
+//  "ClockTick" events periodically.  Registered listeners are notified
+//  when these events occur by invoking a callback method.
+
+//  This file includes defintions of three classes:
+//
+//    1. ClockTickEvent    An EventObject subclass.  A generator
+//                    creates an object of this class periodically,
+//                    and sends this object to all registered
+//                    listeners.
+//
+//    2. ClockTickListener  The interface that classes must implement
+//                    if they want to register callbacks with a
+//                    generator.
+//
+//    3. Generator    The class that generates ClockTick events.
+//
+//    4. Callback     A class that registers a callback with a
+//                    Generator.  Contains main() to get things going.
+//
+
+//  In this code there is just one Generator instance, which starts
+//  generating ClockTickEvents at one-second intervals as soon as the
+//  application starts running.  There is also just one Listener
+//  instance, which is created when main() starts running.  The
+//  classes, however, are designed so that there could be several
+//  generators, each with a different interval between events, and
+//  several listeners, each listening to any number of generators.
+
+//  Class ClockTickEvent
+//  ------------------------------------------------------------------
+/**
+  *   An event that indicates a clock tick occurred.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - May 9, 1999
+  */
+  class ClockTickEvent extends EventObject {
+
+    /** Tick number when the event was generated.  */
+    int tickCount;
+
+    //  Constructor
+    //  --------------------------------------------------------------
+    /**
+      *   @param  source  The object that generated the event.
+      *   @param  tick    The tick number when the event was
+      *                   generated.
+      */
+      public ClockTickEvent( Object source, int tick ) {
+        super( source );
+        tickCount = tick;
+      }
+
+    //  Method getTickCount()
+    //  --------------------------------------------------------------
+    /**
+      *   Provides read-only access to the tick count.
+      *
+      *   @return A copy of this event's tickCount.
+      */
+      public int getTickCount() {
+        return tickCount;
+      }
+
+  } //  Class ClockTick
+
+
+//  Interface ClockTickListener
+//  ------------------------------------------------------------------
+/**
+  *   Declares the tickOccurred() method that must be implemented by
+  *   any object to be registered to receive ClockTick events from a
+  *   generator.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 May 9, 1999
+  *
+  */
+  interface ClockTickListener {
+    public void tickOccurred( ClockTickEvent cte );
+  }
+
+
+//  Class Generator
+//  ------------------------------------------------------------------
+/**
+  *   When this class is loaded and initialized, it creates a thread
+  *   which will generate ClockTick events once a second.  The static
+  *   public field ticker can be used to add and remove ClockTickEvent
+  *   listeners.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 May 9, 1999
+  *
+  */
+  class Generator extends Thread {
+
+    public static Generator ticker = new Generator( 1000 );
+
+    private int             tickInterval;
+    private int             numTicks      = 0;
+
+    private Vector          listeners     = new Vector();
+
+
+    //  Constructor
+    //  --------------------------------------------------------------
+    public Generator( int msecPerTick ) {
+
+      tickInterval = msecPerTick;
+      start();
+
+    }
+
+    //  Method addClockTickListener()
+    //  --------------------------------------------------------------
+    /**
+      *   Registers a listener interested in ClockTickEvents.
+      *
+      *     @param  listener  Reference to a ClockTickListener object.
+      *     @return Void
+      *
+      */
+      public void addClockTickListener( ClockTickListener listener ) {
+
+        listeners.addElement( listener );
+
+      }
+
+
+    //  Method removeClockTickListener()
+    //  --------------------------------------------------------------
+    /**
+      *   Un-registers a listener interested in ClockTickEvents.
+      *
+      *     @param  listener  Reference to a ClockTickListener object.
+      *     @return Void
+      *
+      */
+      public void removeClockTickListener(
+                                        ClockTickListener listener ) {
+
+        listeners.removeElement( listener ); // JDK 1.2 method
+
+      }
+
+    //  Method run()
+    //  --------------------------------------------------------------
+    /**
+      *   Generates and dispatches ClockTickEvents at the interval
+      *   specified for this generator.
+      *
+      *     @return   Void.
+      */
+      public void run() {
+
+      int numListeners = 0;
+
+        for ( ;; ) {
+
+          try {
+
+            Thread.sleep( tickInterval );
+            numTicks++;
+
+          }
+          catch ( InterruptedException ie ) {}
+
+          //  If there are any registered listeners, create an event
+          //  and send it to each of them.
+          numListeners = listeners.size();
+//        System.out.println( "Generator: Sending ClockTickEvent to " +
+//                            numListeners + " listener" +
+//                            ((numListeners == 1) ? "." : "s." ) );
+          if ( numListeners == 0 ) continue;
+
+          ClockTickEvent cte = new ClockTickEvent( this, numTicks );
+          Enumeration e = listeners.elements();
+          ClockTickListener ctl;
+
+          while ( e.hasMoreElements() ) {
+            ctl = (ClockTickListener) e.nextElement();
+            ctl.tickOccurred( cte );
+          }
+
+        }
+      }
+
+
+    //  Method toString()
+    //  --------------------------------------------------------------
+    /**
+      *   Returns a string that tells what generator this is.
+      *
+      *     @return   I told you, a string that tells what generator
+      *               this is!
+      */
+      public String toString() {
+
+        return " " + tickInterval + "-msec Clock Generator";
+
+      }
+
+
+  }   // Class Generator
+
+
+//  Class Listener
+//  ------------------------------------------------------------------
+/**
+  *   Listens for ClockTickEvents, and does things with them.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 May 9, 1999
+  *
+  */
+  class Listener implements ClockTickListener {
+
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Instantiates this class and registers the resulting object as
+    *   a listener for the static 1000-msec generator.
+    *
+    *     @param  argv  Not used.
+    *     @return Void.
+    *
+    */
+    public static void main( String[] argv ) {
+
+      Listener l = new Listener();
+
+      Generator.ticker.addClockTickListener( l );
+
+
+    }
+
+
+  //  Method tickOccurred()
+  //  ----------------------------------------------------------------
+  /**
+    *   Callback method for ClockTickEvents.
+    *   Prints a message each time a tick occurs.  If there have been
+    *   ten, exit the program.
+    *
+    *     param cte The ClockTickEvent that caused this method to be
+    *               called.
+    *
+    */
+    public void tickOccurred( ClockTickEvent cte ) {
+
+      System.out.println( "tickOccurred: " + cte );
+
+      if ( cte.getTickCount() == 10 ) System.exit( 0 );
+
+    }
+
+  }   // Class Listener
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,111 @@
+<HTML><HEAD><TITLE>XYZ.java</TITLE></HEAD><BODY>
+<CENTER><H1>XYZ.java</H1></CENTER><HR><PRE>
+//  XYZ.java
+//  When compiled, this file will produce class
+//  files named X.class, Y.class, and Z.class.
+//  Only class Z can be run as a Java application.
+
+//  You can invoke a static method from
+//  a static method in the same class
+//  or from a static method in a differnt
+//  class.
+class X {
+
+  static void invoker()
+  {
+    //  Call a static method
+    //  from a static method
+    //  in the same class.
+    invoked(); 
+    X.invoked();  // Same thing
+
+    //  Call a static method
+    //  from a static method
+    //  in a different class.
+    Y.invoked(); 
+  }
+
+  static void invoked()
+  {
+  }
+
+}
+
+//  You can invoke a static method from
+//  a non-static method in the same class or
+//  from a non-static method in a different
+//  class.
+class Y {
+
+  void invoker()
+  {
+    //  Call a static method
+    //  from an instance method
+    //  in the same class.
+    invoked();
+    Y.invoked();  //  Same thing.
+
+    //  Call a static method
+    //  from an instance method
+    //  in a different class.
+    X.invoked();
+  }
+
+  static void invoked()
+  {
+  }
+
+}
+
+//  You can invoke a non-static method
+//  only if there is an instance (object)
+//  of its class.
+class Z {
+
+  void invoker()
+  {
+    //  Call an instance method
+    //  from an instance method
+    //  in a different class.
+    Y y = new Y();  //  Create an object
+    y.invoker();    //  Call the method
+
+    //  Call an instance method
+    //  from an instance method
+    //  in the same class
+    //  using a new object.
+    Z z = new Z();  //  Create an object
+    z.invoked();    //  Call the method
+
+    //  Call an instance method
+    //  from an instance method
+    //  in the same class
+    //  using the object that was used
+    //  to invoke this method.
+    invoked();      //  Call the method
+    this.invoked(); //  Same thing
+  }
+
+  void invoked()
+  {
+    System.out.println( this );
+  }
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Creates an object of class Z and uses it to call an instance
+    *   method defined in the class.
+    *
+    *   @param argv Command line arguments not used.
+    */
+  public static void main( String[] argv )
+  {
+    new Z().invoker();
+    //  Equivalently, we could have written:
+    //    Z zzz = new Z();
+    //    zzz.invoker();
+  }
+
+}
+</PRE><HR></BODY></HTML>

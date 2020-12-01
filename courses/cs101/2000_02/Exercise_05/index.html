@@ -1,0 +1,107 @@
+<HTML><HEAD><TITLE>Exercise 5</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Exercise 5</H1>
+</center>
+
+<H2>Overview</H2>
+This exercise is designed to give you some practice working with
+inheritance.
+
+<H2>Background</H2>
+Class <CODE>java.lang.Object</CODE> provides a method named
+<I>toString()</I>, which has the following signature:
+
+<pre>
+    public String toString()
+</pre>
+
+Thus, it follows that every class has a <I>toString()</I> method because
+every class is either a direct subclass of class Object or of one of its
+decendents.  The Java compiler knows about this special feature of class
+java.lang.Object and uses it whenever your code needs a String object,
+but you specify a reference to some other type of object.  When this
+happens, the compiler automatically converts the object reference into
+a call to the <I>toString()</I> method for that object.<p>
+
+For example, System.out.println() has a String as its formal parameter,
+so you have to supply a String as the actual parameter whenever you
+invoke this method.  Therefore, if <CODE>obj</CODE> is a reference
+variable of type java.lang.Object, the following three pieces of code
+are all equivalent:
+
+<OL>
+
+  <LI><pre>
+      String s = obj.toString();
+      System.out.println( s );
+      </pre>
+
+  <LI><pre>
+      System.out.println( obj.toString() );
+      </pre>
+
+  <LI><pre>
+      System.out.println( obj );
+      </pre>
+
+</OL>
+
+It's case #3 that we were talking about in the previous paragraph.
+
+<H2>Description</H2>
+
+Your exercise is to write two classes, named ParentClass and ChildClass,
+With ChildClass a subclass of ParentClass, and ParentClass a direct
+subclass of java.lang.Object.  Write a third class named Exercise_5
+that contains the main method for the application.  The main method is
+to create instances of ParentClass and ChildClass and print each object
+using a println() statement like #3 above.<p>
+
+You are to write three versions of classes ParentClass and ChildClass,
+and include answers to the following questions in the body of the email
+message you send to me:
+
+<OL>
+
+    <LI>Write a version in which <I>toString()</I> is defined in
+    neither ParentClass nor ChildClass.  Tell what the program printed,
+    and explain what method was being called to produce the String
+    printed by System.out.println() for each line of output.
+
+    <LI>Write another version in which <I>toString()</I> is defined only
+    in class ChildClass.  (Have it return the String, "I am an object
+    of class ChildClass.")  Tell what the program printed, and explain
+    what method was being called to produce the String printed by
+    System.out.println() for each line of output.
+    
+    <LI>Write another version in which <I>toString()</I> is defined in
+    both ChildClass and ParentClass.  (Have ParentClass.toString()
+    return the String, "I am an ojbect of class ParentClass.")  Tell
+    what the program printed, and explain what method was being called
+    to produce the String printed by System.out.println() for each line
+    of output.
+
+    <LI>Write another version in which the <I>toString()</I> method in
+    ChildClass() returns the concatenation of the value returned by
+    ParentClass.toString() and its own String, with the String
+    "\n&nbsp;&nbsp;" between the two.  Tell what the program printed.
+    
+    <LI>Now modify your main method so that it creates an object of
+    type Object; save the reference to the Object in a variable named
+    rootObject.  Have your program print rootObject, then assign your
+    ParentClass object to rootObject and print rootObject again. The
+    program is then to assign your ChildClass object to rootObject and
+    print that.  Tell what this version of the program printed, and
+    explain the output.
+
+</OL>
+
+To submit this exercise, email me a zip file containing <u><I>only the
+final version of your program</I></u> and include answers to all of the
+questions above in the body of your email message.
+
+<HR></BODY></HTML>

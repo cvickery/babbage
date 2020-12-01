@@ -1,0 +1,103 @@
+<HTML><HEAD><TITLE>Exercise 7</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Exercise 7</H1>
+</center>
+<H2>Overview</H2>
+
+The purpose of this exercise is to give you practice developing an
+application with a graphical user interface.
+
+<H2>Description</H2>
+
+In [&nbsp;<a HREF="Lecture_18.html">Lecture 18</A>&nbsp;] we developed
+a simple text editor, and in [&nbsp;<a HREF="Lecture_19.html">Lecture
+19</A>&nbsp;] we saw how to add menus to a GUI application.  In this
+exercise you are to build on the code presented in those two lectures to
+build a text editor that looks very much like "a real editor."<p>
+
+Your text editor is to have the following features:
+
+<ol>
+
+  <LI>The user names the file to be edited on the command line.  If
+  there is no file name on the command line, it's an error, and the
+  program is to exit after printing an error message.
+
+  <LI>When the application starts, the window is to appear in the middle
+  of the user's screen and is to contain the contents of the file being
+  edited.  (If the user names a file that doesn't exist, the window will
+  intially be empty.)
+
+  <LI>The "Close Window" button in the title bar must exit the
+  application the same way the File->Exit menu item does.  (See below.)
+
+  <LI>The window is to have a menu bar with a File menu.  The File menu
+  is to have menu items to Save the current file and to Exit the
+  application.
+
+  <UL>
+    <LI>The File->Save menu item writes the contents of the JTextArea to
+    the file being edited.
+    <LI>The File->Exit menu item writes the contents of the JTextArea to
+    the file being edited, and then exits the program.
+  </UL>
+
+</ol>
+
+<H2>Due Date</H2>
+
+This exercise is due by midnight, April 18.
+
+<H2>Optional Features</H2>
+
+There are lots of optional features you could build into your
+application.  Here are some ideas that would be particularly instructive
+to work on.  You could work on them in any order you like, but work on
+just one at a time to limit debugging problems.  You'll have to study
+the documentation for JTextArea to do most of these.
+
+<UL>
+
+  <LI>Add a File->Open menu open that lets the user edit a different
+  file.  Be sure to close the currently open file first.  Use
+  JFileChooser to let the user pick the file to be opened.
+  (<I>medium-hard</I>)
+  
+  <LI>Add a File->Save As menu item that lets the user change the name
+  of the file being edited.  (<I>easy once you have done File->Open</I>)
+
+  <LI>Keep track of whether the text has been modified or not, and
+  disable the File->Save menu item except when the document has changed
+  since it was last written to disk.  When the user exits the program,
+  check if the document has changed and ask whether to save the changes
+  or not, and write the document to disk only if the user replies
+  affirmatively. (<I>medium-hard</I>)
+
+  <LI>The font used to show the text on the screen uses proportional
+  spacing.  Change the program so the text is shown in a fixed-width
+  font.  (<I>medium</I>)
+
+  <LI>Add an Edit menu with cut, copy, and paste menu items.  Make these
+  menu items work the same way as the keyboard shortcuts, Control-X,
+  Control-C, and Control-V.  (<I>hard</I>)
+
+  <LI>Add a Help menu with an About menu item.  When the user clicks on
+  it, display a dialog box (JOptionPane) with a message giving the name
+  and version number of the program, and your name.  The dialog box has
+  an "OK" button for dismissing it.  (<I>easy</I>)
+  
+  <LI>Add a meaningful Tooltip to each menu item. (<I>easy</I>)
+  
+</UL>
+
+<HR>
+
+<center>
+<H2>[&nbsp;<a HREF="TextEdit.java.html">My Solution</A>&nbsp;]</H2>
+</center>
+	
+<HR></BODY></HTML>

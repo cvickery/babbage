@@ -1,0 +1,77 @@
+<HTML><HEAD><TITLE>AppletOrApplication.java</TITLE></HEAD><BODY>
+<CENTER><H1>AppletOrApplication.java</H1></CENTER>
+
+The program below may be compiled into a class file that runs as
+either an applet or as an application.
+<UL>
+    <LI>[&nbsp;<a href="aore.html.html">A web page that runs it as an
+    applet</a>&nbsp;]
+    <LI>[&nbsp;<a href="aore.html">Run it as an applet now</a>&nbsp;]
+</UL>
+
+<HR><PRE>
+
+//  AppletOrApplication.java
+
+import java.awt.*;
+import java.applet.*;
+import java.awt.event.*;
+
+//  Class AppletOrApplication
+//  -------------------------------------------------------------------
+/**
+  *   Code that runs as either an applet or as an application.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class AppletOrApplication extends Applet {
+
+    private static boolean isApplet = true;
+
+    public static void main( String[] argv ) {
+
+      isApplet = false;
+      new AppletOrApplication().init();
+
+    }
+
+    //  init()
+    //  --------------------------------------------------------------
+    /**
+      *   Creates a Frame with a Button in it.  If the user clicks the
+      *   Button and the program is an application, it exits.  But if
+      *   it is an applet, it changes the button to a label.
+      */
+      public void init() {
+
+            Label   l = new Label( " I love Java " );
+      final Frame   f = new Frame( "Applet or Application" );
+      final Button  b = new Button( " Click Me " );
+
+        add ( l );
+        setVisible( true );
+
+        f.add( this,  BorderLayout.NORTH );
+        f.add( b,     BorderLayout.SOUTH );
+        f.pack();
+        f.show();
+
+        b.addActionListener( new ActionListener() {
+          public void actionPerformed( ActionEvent ae ) {
+            if ( isApplet ) {
+              f.remove( b );
+              f.add(new Label( "I am an Applet!", Label.CENTER ),
+                                                BorderLayout.CENTER );
+              f.pack();
+              f.show();
+            }
+            else {
+              System.out.println( "I was an application!" );
+              System.exit( 0 );
+            }
+          } } );
+      }
+    }
+
+</PRE><HR></BODY></HTML>

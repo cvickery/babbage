@@ -1,0 +1,205 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 23</title>
+<meta name=Description content="30-Nov-01: Two Event Handling Strategies">
+<link rel=next href=slide0002.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0006.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_23.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=37 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=398 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=33 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=37 height=33></td>
+  <td width=403 height=33 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=403 height=33 align=center><font face="Times New Roman" size=5>Two
+    Event Handling Strategies</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=35 height=33></td>
+ </tr>
+ <tr>
+  <td width=475 height=19 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=261 colspan=2></td>
+  <td width=398 height=261>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=49 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=48 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=112 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=21 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=9 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=360 height=21 colspan=16><font face="Times New Roman" size=3>Textbook:<span
+    style="mso-spacerun: yes">  </span>Have one class that implements all</font><br>
+    </td>
+    <td width=21 height=21 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=304 height=20 colspan=12><font face="Times New Roman" size=3>Listener
+    interfaces for all Components.</font><br>
+    </td>
+    <td width=77 height=20 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=399 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=326 height=18 colspan=12><font face="Times New Roman" size=2>Each
+    callback method examines the Event object</font><br>
+    </td>
+    <td width=34 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=340 height=17 colspan=14><font face="Times New Roman" size=2>passed
+    to it to determine which component was the</font><br>
+    </td>
+    <td width=20 height=17 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=131 height=17 colspan=7><font face="Times New Roman" size=2>source
+    of the event.</font><br>
+    </td>
+    <td width=229 height=17 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=399 height=2 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=331 height=16 colspan=12><font face="Times New Roman" size=1>Can
+    lead to a big <i>switch</i> statement in each callback method.</font><br>
+    </td>
+    <td width=8 height=16 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=399 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=381 height=21 colspan=20><font face="Times New Roman" size=3>This
+    Course:<span style="mso-spacerun: yes">  </span>Create a separate Listener
+    class for</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=140 height=20 colspan=9><font face="Times New Roman" size=3>every
+    component.</font><br>
+    </td>
+    <td width=241 height=20 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=399 height=2 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=357 height=18 colspan=16><font face="Times New Roman" size=2>Each
+    callback method contains logic only for a single</font><br>
+    </td>
+    <td width=3 height=18></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=313 height=18 colspan=11><font face="Times New Roman" size=2>component,
+    making the code easier to manage.</font><br>
+    </td>
+    <td width=47 height=18 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=399 height=2 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=171 height=18 colspan=8><font face="Times New Roman" size=2>Need
+    lots of little classes.</font><br>
+    </td>
+    <td width=189 height=18 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=399 height=4 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=325 height=21 colspan=13><font face="Times New Roman" size=3>Above
+    two strategies can be mixed in one</font><br>
+    </td>
+    <td width=56 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=92 height=20 colspan=8><font face="Times New Roman" size=3>application.</font><br>
+    </td>
+    <td width=289 height=20 colspan=12></td>
+   </tr>
+  </table>
+  </td>
+  <td width=37 height=261 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=10 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

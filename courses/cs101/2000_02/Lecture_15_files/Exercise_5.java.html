@@ -1,0 +1,75 @@
+<HTML><HEAD><TITLE>Exercise_5.java</TITLE></HEAD><BODY>
+<CENTER><H1>Exercise_5.java</H1></CENTER><HR><PRE>
+//  Exercise_5.java
+
+//  Class Exercise_5
+//  ------------------------------------------------------------------
+/**
+  *     Illustrates polymorphism.
+  *
+  *     @author   C. Vickery
+  *     @version  1.5 - Spring 2000
+  */
+  public class Exercise_5
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Creates objects of classes Object, ParentClass, and
+    *   ChildClass, and exercises their (polymorphic) toString()
+    *   methods.
+    *
+    *   @param    argv  Not used.
+    *   @return   Void.
+    */
+    public static void main( String[] argv )
+    {
+      ParentClass parentObject  = new ParentClass();
+      ChildClass  childObject   = new ChildClass();
+      Object      rootObject    = new Object();
+
+      System.out.println( "1: " + parentObject );
+      System.out.println( "2: " + childObject  );
+      System.out.println( "3: " + rootObject   );
+
+      rootObject = parentObject;
+      System.out.println( "4: " + rootObject );
+      rootObject = childObject;
+      System.out.println( "5: " + rootObject );
+
+      System.exit( 0 );
+
+    }
+  }
+
+
+//  Class ParentClass
+//  ------------------------------------------------------------------
+/**
+  *   Overrides Object's toString() method.
+  */
+  class ParentClass
+  {
+    public String toString()
+    {
+      return "I am an object of class ParentClass";
+    }
+  }
+
+
+//  Class ChildClass
+//  ------------------------------------------------------------------
+/**
+  *   Overrides ParentClass' toString() method.
+  */
+  class ChildClass extends ParentClass
+  {
+    public String toString()
+    {
+      return  super.toString() +
+              ",\n   and I am an object of class ChildClass";
+    }
+  }
+
+</PRE><HR></BODY></HTML>

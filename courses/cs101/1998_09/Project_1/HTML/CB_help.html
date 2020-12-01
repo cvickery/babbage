@@ -1,0 +1,55 @@
+<HTML><HEAD><TITLE>CB_help.java</TITLE></HEAD><BODY><PRE>
+//  CB_help.java
+
+import java.util.*;
+
+//  class CB_help
+//  -----------------------------------------------------------------
+/**
+  *   Processes help commands by printing names of commands.
+  *
+  *   @author C. Vickery
+  *
+  */
+class CB_help extends CB_Processor {
+
+  //  Constructor
+  //  -----------
+
+  public CB_help() { setName( "help" ); }
+
+  //  process()
+  //  ---------
+  /**
+    *   Prints an Enumeration of the dispatcher's Hashtable keys.
+    */
+  public void process ( StringTokenizer st, Checkerboard cb ) {
+
+  int         count = 0;
+  Enumeration hte   = Checkers_UI.getDispatcher().keys();
+
+    System.out.println( "Commands are:" );
+    while ( hte.hasMoreElements() ) {
+
+      count++;
+      System.out.print( "\t" + hte.nextElement() );
+
+      if ( (count % 8) == 0 ) {
+
+        System.out.println();
+
+        }
+
+      }
+
+    if ( (count % 8) != 0 ) {
+
+      System.out.println();
+
+      }
+
+    }
+
+  }
+
+</PRE></HR></HTML>

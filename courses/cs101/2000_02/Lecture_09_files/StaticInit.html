@@ -1,0 +1,43 @@
+<HTML><HEAD><TITLE>StaticInit.java</TITLE></HEAD><BODY>
+<CENTER><H1>StaticInit.java</H1></CENTER><HR><PRE>
+//  StaticInit.java
+
+//  Class StaticInit
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates initialization that is done when a class is loaded
+  *   into memory.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - March, 2000
+  */
+  public class StaticInit
+  {
+
+    int w = 33; // Instance variable; not involved in static init.
+
+    //  A block of statement(s) that will be executed first.
+    static {
+      System.out.println( "Static Initialization.");
+      }
+
+    //  Assignments in declarations are done in the order in which
+    //  they appear.  z can use the value of y because y has already
+    //  been initialized, but y could not use the value of z.
+    static int x;
+    static int y=1;
+    static int z=y+1;
+
+    //  Another block of statements that will be executed after
+    //  everything above.
+    static {
+      System.out.println( "x is " + x );
+      System.out.println( "y is " + y );
+      System.out.println( "z is " + z );
+      }
+
+    //  Where's main() ???
+
+  }
+
+</PRE><HR></BODY></HTML>

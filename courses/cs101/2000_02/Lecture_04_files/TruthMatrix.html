@@ -1,0 +1,93 @@
+<HTML><HEAD><TITLE>TruthMatrix.java</TITLE></HEAD><BODY>
+<CENTER><H1>TruthMatrix.java</H1></CENTER><HR><PRE>
+//  TruthMatrix.java
+
+//  Class TruthMatrix
+//  ------------------------------------------------------------------
+/**
+  *     Illustrates operations on a doubly-subscripted array.  Uses
+  *     both rectangular amd "ragged" matrices of booleans.
+  *
+  *     @version  1.0
+  *     @author   C. Vickery
+  */
+  public class TruthMatrix
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Illustrates operations on doubly subscripted arrays.
+    *
+    *     @param argv   Not used.
+    *     @return       Nothing
+    */
+    public static void main( String[] argv )
+    {
+      //  Declare a two-dimensional array type
+      //  and create an instance of it.
+      boolean[][] truth = new boolean[3][4];
+
+      //  Initialize it.
+      truth[0][0] = true;
+      truth[0][1] = true;
+      truth[0][2] = true;
+      truth[0][3] = true;
+      truth[1][0] = false;
+      truth[1][1] = false;
+      truth[1][2] = false;
+      truth[1][3] = false;
+      truth[2][0] = true;
+      truth[2][1] = false;
+      truth[2][2] = true;
+      truth[2][3] = false;
+
+      //  Shorthand to do the same thing.
+      //  But show that the number of columns per row doesn't have to
+      //  be constant.
+      boolean[][] moreTruth = { { true,   true,   true,   true  },
+                                { false,  false,  false },
+                                { true,   false,  true,   false },
+                              };
+
+      //  Iterate over all the elements of truth; print each one.
+      System.out.println( "Truth:" );
+      for (int row = 0; row &lt; truth.length; row++ )
+      {
+        System.out.print( "Row " + row + ":\t" );
+        for (int col = 0; col &lt; truth[row].length; col++ )
+        {
+          System.out.print( "\t" + truth[row][col] );
+        }
+        System.out.println();
+      }
+
+      //  Iterate over all the elements of moreTruth; print each one.
+      System.out.println( "More Truth:" );
+      for (int row = 0; row &lt; moreTruth.length; row++ )
+      {
+        System.out.print( "Row " + row + ":\t" );
+        for (int col = 0; col &lt; moreTruth[row].length; col++ )
+        {
+          System.out.print( "\t" + moreTruth[row][col] );
+        }
+        System.out.println();
+      }
+
+      //  Change one of the rows of truth, and print the entire array
+      //  again.
+      truth[0] = new boolean[6];
+      System.out.println( "Modified Truth:" );
+      for (int row = 0; row &lt; truth.length; row++ )
+      {
+        System.out.print( "Row " + row + ":\t" );
+        for (int col = 0; col &lt; truth[row].length; col++ )
+        {
+          System.out.print( "\t" + truth[row][col] );
+        }
+        System.out.println();
+      }
+
+    }
+  }
+</PRE><HR></BODY></HTML>

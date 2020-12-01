@@ -1,0 +1,119 @@
+<HTML><HEAD><TITLE>Button_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>Button_ex.java</H1></CENTER><HR><PRE>
+//  Button_ex.java
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+//  Class Button_ex
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates the use of buttons and labels.  Also, the window is
+  *   centered on the user's screen.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring, 2000
+  */
+  public class Button_ex
+  {
+
+    static JFrame     jf = new JFrame( "Button Example" );
+    static Container  cp = jf.getContentPane();
+
+    static JButton    jbStart = new JButton( "Start" );
+    static JButton    jbStop  = new JButton( "Stop"  );
+    static JLabel     jlHello = new JLabel(  "Hello" );
+
+    static Dimension  scrDim =
+                  Toolkit.getDefaultToolkit().getScreenSize();
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Displays a window with two buttons and a label.  Clicking on a
+    *   button disables it, enables the other one, and makes the other
+    *   one the default button for the window so it can be operated by
+    *   pressing the Enter key.
+    *
+    *     @param  argv    Command line arguments.  If present, the
+    *                     first one is used as the title of the
+    *                     window, the second one is used as the label
+    *                     on the Start button, and the third one is
+    *                     used as the label on the Stop button.
+    *
+    *     @return Void.
+    */
+    public static void main( String[] argv )
+    {
+
+      //  Set the title and the labels on the buttons, if provided by
+      //  the user.
+      if ( argv.length > 0 )  jf.setTitle( argv[ 0 ] );
+      if ( argv.length > 1 )  jbStart.setText( argv[ 1 ] );
+      if ( argv.length > 2 )  jbStop.setText( argv[ 2 ] ) ;
+
+      //  Add the buttons and label to the content pane.
+      cp.add( jbStart );
+      cp.add( jlHello );
+      cp.add( jbStop  );
+
+      //  Change the content pane's layout manager so the components
+      //  will all be visible, instead of overlaying each other.
+      cp.setLayout( new FlowLayout() );
+
+      //  Layout the window and display it in the middle of the screen.
+      jf.pack();
+      Dimension winDim = jf.getSize();
+      Point upperLeft = new Point(
+                          scrDim.width  / 2 - winDim.width  / 2,
+                          scrDim.height / 2 - winDim.height / 2 );
+      jf.setLocation( upperLeft );
+      jf.show();
+
+      //  Make the Close Window control in the title bar work.
+      jf.addWindowListener( new WindowAdapter()
+      {
+        public void windowClosing( WindowEvent we )
+        {
+          System.exit( 0 );
+        }
+      }
+      );
+
+      //  Set up the initial state of the Start button, and define its
+      //  ActionListener.
+      jf.getRootPane().setDefaultButton( jbStart );
+      jbStop.setEnabled( false );
+      jbStart.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          System.out.println( ae ); //  Debugging information
+          jbStart.setEnabled( false );
+          jbStop.setEnabled(  true  );
+          jf.getRootPane().setDefaultButton( jbStop );
+        }
+      }
+      );
+
+      //  Set up the initial state of the Stop button, and define its
+      //  ActionListener.
+      jbStop.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          System.out.println( ae ); //  Debugging information
+          jbStart.setEnabled( true  );
+          jf.getRootPane().setDefaultButton( jbStart );
+          jbStop.setEnabled(  false );
+        }
+      }
+      );
+
+
+   }
+
+  }
+
+</PRE><HR></BODY></HTML>

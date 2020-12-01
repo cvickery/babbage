@@ -1,0 +1,27 @@
+<HTML><HEAD><TITLE>BorderLayout_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>BorderLayout_ex.java</H1></CENTER><HR><PRE>
+//  BorderLayout_ex.java
+
+import java.awt.*;
+import javax.swing.*;
+
+public class BorderLayout_ex
+{
+  public static void main( String[] argv )
+  {
+    JFrame jf = new JFrame( "BorderLayout_ex" );
+    jf.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Container cp = jf.getContentPane();
+    cp.add( new JButton( "North" ), BorderLayout.NORTH );
+    cp.add( new JButton( "South" ), BorderLayout.SOUTH );
+    cp.add( new JButton( "East" ), BorderLayout.EAST );
+    cp.add( new JButton( "West" ), BorderLayout.WEST );
+    cp.add( new JButton( "Center" ), BorderLayout.CENTER );
+    jf.pack();
+    jf.setLocation( 200, 150 );
+    jf.show();
+  }
+
+}
+
+</PRE><HR></BODY></HTML>

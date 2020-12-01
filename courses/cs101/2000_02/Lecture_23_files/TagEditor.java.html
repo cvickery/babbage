@@ -1,0 +1,367 @@
+<HTML><HEAD><TITLE>TagEditor.java</TITLE></HEAD><BODY>
+<CENTER><H1>TagEditor.java</H1></CENTER><HR><PRE>
+//  TagEditor.java
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+
+//  Class TagEditor
+//  ------------------------------------------------------------------
+/**
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring, 2000
+  */
+  public class TagEditor
+  {
+    /** The main window that holds the GUI for the application.     */
+    JFrame            jf          = new JFrame( "TextEdit" );
+
+    /** The text area that the user can edit.                       */
+    JTextArea         jt          = new JTextArea();
+
+    /** A scroll pane to manage the display of the text area.       */
+    JScrollPane       sp          = new JScrollPane( jt );
+
+    /** MenuBar for the application.                                */
+    JMenuBar          jmb         = new JMenuBar();
+
+    /** Menu for File operations.                                   */
+    JMenu             fileMenu    = new JMenu( "File" );
+
+    /** MenuItem for File->Save.                                    */
+    JMenuItem         miFileSave  = new JMenuItem( "Save" );
+
+    /** MenuItem for File->Reload.                                  */
+    JMenuItem         miFileReload  = new JMenuItem( "Reload" );
+
+    /** MenuItem for File->Close.                                   */
+    JMenuItem         miFileClose  = new JMenuItem( "Close" );
+
+    /** MenuItem for File->Quit.                                    */
+    JMenuItem         miFileQuit  = new JMenuItem( "Quit" );
+
+    /** MenuItem for File->Exit.                                    */
+    JMenuItem         miFileExit  = new JMenuItem( "Exit" );
+
+    /** Menu for Help operations.                                   */
+    JMenu             helpMenu    = new JMenu( "Help" );
+
+    /** MenuItem for Help->About.                                   */
+    JMenuItem         miHelpAbout  = new JMenuItem( "About" );
+
+    JLabel      trackTitleLabel = new JLabel( "Track Title" );
+    JTextField  trackTitleText = new JTextField( 10 );
+
+    JLabel      trackTimeLabel = new JLabel( "Track Time 00:00");
+
+    JLabel      trackNumberLabel = new JLabel( "Track Number" );
+    JTextField  trackNumberText = new JTextField( 5 );
+
+    JLabel      leadArtistLabel = new JLabel( "Lead Artist" );
+    JTextField  leadArtistText  = new JTextField( 10 );
+    JCheckBox   leadArtistChkBox = new JCheckBox();
+
+    /** The file being edited.                                      */
+    File              thisFile;
+
+    /** Screen dimension, for positioning the window.               */
+    static Dimension  scrDim      = Toolkit.getDefaultToolkit()
+                                        .getScreenSize();
+
+    /** Number of files being edited, for positioning windows.      */
+    static int        numFiles    = 0;
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   @param  argv  List of files to edit.
+    *   @return Void.
+    */
+    public static void main(String[] argv)
+    {
+      //  If there are no file names on the command line, get one from
+      //  the user.
+      if ( argv.length == 0 )
+      {
+        JFileChooser jfc = new JFileChooser( "." );
+        int returnVal = jfc.showOpenDialog( null );
+        if ( returnVal != JFileChooser.APPROVE_OPTION )
+        {
+          //  User did not select a file.
+          System.exit( 0 );
+        }
+
+        argv = new String[1];
+        argv[0] = jfc.getSelectedFile().getName();
+      }
+
+      //  Create an application instance for each file.
+      for (int f = 0; f &lt; argv.length; f++ )
+      {
+        File file = new File( argv[f] );
+        new TagEditor( file );
+      }
+    }
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+  /**
+    *   Set up the user interface for editing a file.
+    *
+    *     @param  file  The file to be edited, which may or may not
+    *                   exist.  Prints an error message if the file
+    *                   cannot be written to.
+    */
+    public TagEditor( File file )
+    {
+      thisFile = file;
+
+      try
+      {
+        //  If the file does not exist, create it.
+        thisFile.createNewFile();
+
+        //  Be sure it can be read and written
+        if ( ! ( thisFile.canRead() && thisFile.canWrite() ) )
+        {
+          throw new IOException( "read/write permission failure" );
+        }
+
+        // Read the file into the TextArea
+        jt.read( new FileReader( thisFile ), null );
+
+      }
+      catch ( IOException ioe )
+      {
+        System.err.println( "Unable to edit " +
+                            thisFile.getName() +
+                            ": " +
+                            ioe.getMessage()
+                            );
+        return;
+      }
+
+      //  Add a log message indicating that the file was opened.
+      jt.append( LogMessage.timeStamp( "File Opened" ) );
+
+
+      //  Add visible components to the user interface.
+      //  ============================================================
+
+      //  Menus
+      //  ------------------------------------------------------------
+      jf.setTitle( thisFile.getName() );
+      jf.setJMenuBar( jmb );
+
+      jmb.add( fileMenu );
+      fileMenu.add( miFileSave );
+      fileMenu.add( miFileReload );
+      fileMenu.add( miFileClose );
+      fileMenu.addSeparator();
+      fileMenu.add( miFileQuit );
+      fileMenu.add( miFileExit );
+
+      jmb.add( helpMenu );
+      helpMenu.add( miHelpAbout );
+
+      //  Content Pane items.
+      //  ------------------------------------------------------------
+      Container cp = jf.getContentPane();
+      cp.setLayout( new GridLayout( 2, 1 ) );
+
+      JPanel    jp = new JPanel();
+      cp.add( jp );
+      cp.add( sp );
+
+      //  First Line
+      jp.add( new JLabel( "Select check boxes to apply the fields to" +
+                          " tracks from the CD" ) );
+
+      // Second Line
+      trackTitleLabel.setLabelFor( trackTitleText );
+      trackTitleLabel.setDisplayedMnemonic( 'T' );
+
+      trackNumberLabel.setLabelFor( trackNumberText );
+      trackNumberLabel.setDisplayedMnemonic( 'N' );
+
+      leadArtistLabel.setLabelFor( leadArtistText );
+      leadArtistLabel.setDisplayedMnemonic( 'L' );
+
+      jp.add( trackTitleLabel   );
+      jp.add( trackTitleText    );
+      jp.add( trackTimeLabel    );
+      jp.add( trackNumberLabel  );
+      jp.add( trackNumberText   );
+      jp.add( leadArtistLabel   );
+      jp.add( leadArtistText    );
+      jp.add( leadArtistChkBox   );
+
+      //  Display the window in its proper position on the screen.
+      jf.pack();
+      Dimension winDim = jf.getSize();
+      Point winPos = new Point( (scrDim.width - winDim.width) / 2,
+                                (scrDim.height - winDim.height) / 2 );
+      jf.setLocation( winPos.x + 10 * numFiles,
+                      winPos.y + 10 * numFiles);
+      numFiles++;
+      jf.show();
+
+
+      //  Define Listeners for user interface components.
+      //  ============================================================
+
+      //  Window Closing Listener
+      //  ------------------------------------------------------------
+      jf.addWindowListener( new WindowAdapter()
+      {
+        public void windowClosing( WindowEvent we )
+        {
+          jt.append( LogMessage.timeStamp( "Window Closing" ) );
+          try
+          {
+            jt.write( new FileWriter( thisFile ));
+          }
+          catch ( IOException ioe )
+          {
+            System.err.println( ioe );
+            System.exit( 1 );
+          }
+          jf.dispose();
+          if ( --numFiles &lt; 1 )
+          {
+            System.exit( 0 );
+          }
+        }
+      }
+      );
+
+      //  File->Save action listener
+      //  ------------------------------------------------------------
+      miFileSave.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          jt.append( LogMessage.timeStamp( "File->Save Selected" ) );
+        }
+      }
+      );
+
+      //  File->Reload action listener
+      //  ------------------------------------------------------------
+      miFileReload.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          jt.append( LogMessage.timeStamp( "File->Reload Selected" ));
+        }
+      }
+      );
+
+      //  File->Close action listener
+      //  ------------------------------------------------------------
+      miFileClose.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          jt.append( LogMessage.timeStamp( "File->Close Selected" ) );
+        }
+      }
+      );
+
+      //  File->Quit action listener
+      //  ------------------------------------------------------------
+      miFileQuit.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          jt.append( LogMessage.timeStamp( "File->Quit Selected" ) );
+        }
+      }
+      );
+
+      //  File->Exit action listener
+      //  ------------------------------------------------------------
+      miFileExit.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          jt.append( LogMessage.timeStamp( "File->Exit Selected" ) );
+        }
+      }
+      );
+
+      //  Help->About action listener
+      //  ------------------------------------------------------------
+      miHelpAbout.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          jt.append( LogMessage.timeStamp( "Help->About Selected" ) );
+        }
+      }
+      );
+
+
+      //  Track Title Text action listener
+      //  ------------------------------------------------------------
+      trackTitleText.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          String title = trackTitleText.getText();
+          jt.append(  LogMessage.timeStamp( "Track Title: \"" +
+                      title +
+                      "\"" ) );
+        }
+      }
+      );
+
+      //  Track Number Text action listener
+      //  ------------------------------------------------------------
+      trackNumberText.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          String trackNumber = trackTitleText.getText();
+          jt.append(  LogMessage.timeStamp( "Track Number: \"" +
+                      trackNumber +
+                      "\"" ) );
+        }
+      }
+      );
+
+      //  Lead Artist Text action listener
+      //  ------------------------------------------------------------
+      leadArtistText.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          String leadArtist = leadArtistText.getText();
+          jt.append(  LogMessage.timeStamp( "Lead Artist: \"" +
+                      leadArtist +
+                      "\"" ) );
+        }
+      }
+      );
+
+      //  Lead Artist Checkbox item state change listener
+      //  ------------------------------------------------------------
+      leadArtistChkBox.addItemListener( new ItemListener()
+      {
+        public void itemStateChanged( ItemEvent ie )
+        {
+          jt.append(  LogMessage.timeStamp( "Lead Artist CB: \"" +
+                      ie.getStateChange() +
+                      "\"" ) );
+        }
+      }
+      );
+
+    }
+
+  }
+</PRE><HR></BODY></HTML>

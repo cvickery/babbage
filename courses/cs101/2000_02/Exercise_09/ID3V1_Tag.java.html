@@ -1,0 +1,297 @@
+<HTML><HEAD><TITLE>ID3V1_Tag.java</TITLE></HEAD><BODY>
+<CENTER><H1>ID3V1_Tag.java</H1></CENTER><HR><PRE>
+//  ID3V1_Tag.java
+
+import java.io.*;
+import java.util.*;
+
+//  Class ID3V1_Tag
+//  ------------------------------------------------------------------
+/**   Captures the information from the ID3V1 or ID3V1.1 tag of an MP3
+  *   file, if it is present.
+  *
+  *     @author   C. Vickery
+  *     @version  3.0 - Spring, 2000
+  */
+  public class ID3V1_Tag
+  {
+
+    /** The list of genre names, including Winamp extensions. */
+    private static final String[] genreNames =
+    {
+      // ID3V1 Genre Names
+      "Blues",              "Classic Rock",     "Country",
+      "Dance",              "Disco",            "Funk",
+      "Grunge",             "Hip-Hop",          "Jazz",
+      "Metal",              "New Age",          "Oldies",
+      "Other",              "Pop",              "R&B",
+      "Rap",                "Reggae",           "Rock",
+      "Techno",             "Industrial",       "Alternative",
+      "Ska",                "Death Metal",      "Pranks",
+      "Soundtrack",         "Euro-Techno",      "Ambient",
+      "Trip-Hop",           "Vocal",            "Jazz+Funk",
+      "Fusion",             "Trance",           "Classical",
+      "Instrumental",       "Acid",             "House",
+      "Game",               "Sound Clip",       "Gospel",
+      "Noise",              "AlternRock",       "Bass",
+      "Soul",               "Punk",             "Space",
+      "Meditative",         "Instrumental Pop", "Instrumental Rock",
+      "Ethnic",             "Gothic",           "Darkwave",
+      "Techno-Industrial",  "Electronic",       "Pop-Folk",
+      "Eurodance",          "Dream",            "Southern Rock",
+      "Comedy",             "Cult",             "Gangsta",
+      "Top 40",             "Christian Rap",    "Pop/Funk",
+      "Jungle",             "Native American",  "Cabaret",
+      "New Wave",           "Psychadelic",      "Rave",
+      "Show Tune",          "Trailer",          "Lo-Fi",
+      "Tribal",             "Acid Punk",        "Acid Jazz",
+      "Polka",              "Retro",            "Musical",
+      "Rock & Roll",        "Hard Rock",
+      //  Winamp Additions
+      "Folk",               "Folk-Rock",        "National Folk",        
+      "Swing",              "Fast Fusion",      "Bebop",        
+      "Latin",              "Revival",          "Celtic",        
+      "Bluegrass",          "Avantgarde",       "Gothic Rock",        
+      "Progressive Rock",   "Psychedelic Rock", "Symphonic Rock",        
+      "Slow Rock",          "Big Band",         "Chorus",        
+      "Easy Listening",     "Acoustic",         "Humour",        
+      "Speech",             "Chanson",          "Opera",        
+      "Chamber Music",      "Sonata",           "Symphony",        
+      "Booty Bass",         "Primus",           "Porn Groove",        
+      "Satire",             "Slow Jam",         "Club",        
+      "Tango",              "Samba",            "Folklore",        
+      "Ballad",             "Power Ballad",     "Rhythmic Soul",        
+      "Freestyle",          "Duet",             "Punk Rock",        
+      "Drum Solo",          "A Cappella",       "Euro-House",        
+      "Dance Hall",        
+    };
+
+    //  The ID3v1 Tag structure, with inital values.
+    private String    title         = "",
+                      artist        = "",
+                      album         = "",
+                      year          = "",
+                      comment       = "",
+                      track         = "",
+                      genre         = "";
+
+    private byte      trackNumber   = 0;
+    private byte      genreCode;
+
+    //  Buffer for holding a copy of the tag bytes in the file.
+    private byte[]    tagBuf        = new byte[128];
+    private boolean   isModified    = false;
+
+
+    //  Constructor
+    //  --------------------------------------------------------------
+    /**
+      *   Locate the ID3 information at the end of the file, if
+      *   present.  Extract the various fields for later access.
+      *
+      *   @param  file  The file from which to extract an ID3V1
+      *                 tag.
+      */
+      public ID3V1_Tag( File file )                 throws IOException
+      {
+
+        FileInputStream fis;
+        long            tagLocation   = file.length() - 128;
+
+        if ( tagLocation &lt; 0 )
+        {
+          //  No tag in file, so the default values are different
+          //  from what's on disk.
+          isModified = true;
+          return;
+        }
+
+        //  Skip to the tag position, and read 128 bytes.
+        fis = new FileInputStream( file );
+        fis.skip( tagLocation );
+        fis.read( tagBuf, 0, 128 );
+
+        //  Convert first three bytes to a String, and see if
+        //  the magic string, "TAG" is there.
+        String tag = new String( tagBuf, 0, 3 );
+        if ( tag.equalsIgnoreCase( "TAG" ) )
+        {
+          title   = new String( tagBuf, 3,  30 ).trim();
+          artist  = new String( tagBuf, 33, 30 ).trim();
+          album   = new String( tagBuf, 63, 30 ).trim();
+          year    = new String( tagBuf, 93, 4  ).trim();
+          comment = new String( tagBuf, 97, 30 ).trim();
+          if ( tagBuf[125] == (byte) '\0'  )
+          {
+            trackNumber = tagBuf[126];
+            track = String.valueOf( trackNumber );
+          }
+          genreCode = tagBuf[127];
+          if ( genreCode &lt; genreNames.length )
+            genre = genreNames[ genreCode ];
+          else
+            genre = "";
+        }
+        else
+        {
+          //  There was no id3v1 tag in the file.
+          isModified = true;
+        }
+
+      }
+
+
+    //  Getters
+    //  --------------------------------------------------------------
+    /**   Returns the list of valid genre names.                    */
+    public String[] getGenreNames() { return genreNames;  }
+
+    /**   Returns the title string.                                 */
+    public String getTitle()        { return title;       }
+
+    /**   Returns the artist string.                                */
+    public String getArtist()       { return artist;      }
+
+    /**   Returns the album string.                                 */
+    public String getAlbum()        { return album;       }
+
+    /**   Returns the year string.                                  */
+    public String getYear()         { return year;        }
+
+    /**   Returns the comment string.                               */
+    public String getComment()      { return comment;     }
+
+    /**   Returns the track number as a string (if known).          */
+    public String getTrack()        { return track;       }
+
+    /**   Returns the track number as a byte (if known).            */
+    public byte getTrackNumber()    { return trackNumber; }
+
+    /**   Returns the genre as a string.                            */
+    public String getGenre()        { return genre;       }
+
+    /**   Tells whether the ID3V1 tag in memory is different from
+          the tag (if present) in the disk file.                    */
+    public boolean isModified()     { return isModified;  }
+
+    /**   Gives the tag, ready for writing to disk.                 */
+    public byte[] getTag()
+    {
+      Arrays.fill( tagBuf, (byte) '\0' );  //  nul -> unused bytes
+
+      byte[]  fieldBytes;
+
+      tagBuf[0] = 'T';
+      tagBuf[1] = 'A';
+      tagBuf[2] = 'G';
+
+      fieldBytes = title.getBytes( );
+      System.arraycopy( fieldBytes, 0,
+                        tagBuf,   3,
+                        Math.min( fieldBytes.length, 30 ) );
+
+      fieldBytes = artist.getBytes( );
+      System.arraycopy( fieldBytes, 0,
+                        tagBuf,   33,
+                        Math.min( fieldBytes.length, 30 ) );
+
+      fieldBytes = album.getBytes( );
+      System.arraycopy( fieldBytes, 0,
+                        tagBuf,   63,
+                        Math.min( fieldBytes.length, 30 ) );
+
+      fieldBytes = year.getBytes( );
+      System.arraycopy( fieldBytes, 0,
+                        tagBuf,   93,
+                        Math.min( fieldBytes.length, 04 ) );
+
+      fieldBytes = comment.getBytes( );
+      System.arraycopy( fieldBytes, 0,
+                        tagBuf,   97,
+                        Math.min( fieldBytes.length, 30 ) );
+
+      tagBuf[127] = genreCode;
+      return tagBuf;
+    }
+      
+
+    //  Setters
+    //  --------------------------------------------------------------
+    /**   Change the title string.                                  */
+    public void setTitle( String t )    { title = t.trim();
+                                          isModified = true;
+                                        }
+    /**   Change the artist string.                                 */
+    public void setArtist( String a )   { artist = a.trim();
+                                          isModified = true;
+                                        }
+    /**   Change the album string.                                  */
+    public void setAlbum( String a )    { album = a.trim();
+                                          isModified = true;
+                                        }
+    /**   Change the year string.                                   */
+    public void setYear( String y )     { year = y.trim();
+                                          isModified = true;
+                                        }
+    /**   Change the comment string.                                */
+    public void setComment( String c )  { comment = c.trim();
+                                          isModified = true;
+                                        }
+    /**   Change the track number.                                  */
+    public void setTrack( String t )    { track = t.trim();
+                                          isModified = true;
+                                        }
+    /**   Change the track number.                                  */
+    public void setTrack( int t )       { track =
+                                          new Integer( t ).toString();
+                                          isModified = true;
+                                        }
+    /**   Override the modification state.                          */
+    public void setModified( boolean m )  { isModified = m; }
+
+    //  Method setGenre()
+    //  --------------------------------------------------------------
+    /**
+      *   Changes the genre using a String.
+      *
+      *   @param  g     The genre name to use
+      *   @return void
+      */
+      public void setGenre( String g )
+      {
+      boolean found = false;
+        for ( byte i = 0; i &lt; genreNames.length; i++ )
+        {
+          if ( genreNames[i].equalsIgnoreCase( g ) )
+          {
+            genreCode = i;
+            genre = genreNames[i];
+            found = isModified = true;
+            break;
+          }
+        }
+        if ( !found )
+        {
+          //  We could throw an exception here, but I decided
+          //  to consider it a bug if g is not a valid genre name.
+          System.err.println( "Invalid Genre Name: " + g );
+          System.exit( 1 );
+        }
+      }
+
+    //  Method write()
+    //  --------------------------------------------------------------
+    /**
+      *   Writes this tag to current position in fos.
+      *
+      *     @param  fos   The FileOutputStream to write the tag to.
+      *     @return Void.
+      */
+      public void write( FileOutputStream fos )     throws IOException
+      {
+        fos.write( getTag() );
+      }
+
+  }
+
+</PRE><HR></BODY></HTML>

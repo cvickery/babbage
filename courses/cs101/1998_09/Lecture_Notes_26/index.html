@@ -1,0 +1,115 @@
+<HTML><HEAD><TITLE>Lecture Notes 26</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Lecture Notes 26</H1>December 8, 1998
+</center>
+<H2>Color</H2>
+<UL>
+  <LI>Pixels and Phosphor Triads
+  <LI>Additive Primaries (mixing lights): Red, Green, Blue
+  <LI>Subtractive Primaries (mixing pigments): Cynan, Magenta, Yellow
+  <LI>java.awt.Color
+  <UL>
+
+    <LI>Predefined Color objects: red, green, blue, cyan, magenta,
+    yellow, black, darkGray, gray, lightGray, white, pink and orange.<BR>
+    Beware of different computers' capabilities for distinguishing among
+    different colors.
+
+    <LI>Constructors: Pass three integers (0 - 255) or floats ( 0 - 1.0
+    ) giving intensities of red, green, and blue comonents to create
+    your own Color.  Floats will be scaled to integer values between 0
+    and 255.
+
+    <LI>Methods: <I>brighter()</I> and <I>darker()</I> return new Color
+    objects based on an existing Color.
+
+    <LI>Related Methods: Use <I>setColor()</I> to set the drawing color
+    (foreground color), typically inside a <I>paint()</I> method for a
+    component. [&nbsp;<I>e.g.,</I> <CODE>gc.setColor( Color.red
+    );</CODE>&nbsp;]  Use <I>setBackground()</I> to fill the background of a
+    container, such as a Panel, with a color. [&nbsp;<I>e.g.,</I>
+    <CODE>myPanel.setBackground( Color.white );</CODE>&nbsp;]
+
+  </UL>
+</UL>
+
+<H2>Inner Classes</H2>
+
+You can define one class inside another one.  For example,
+
+<PRE>
+  class x { . . . class y { ... } }
+</PRE>
+
+This will generate a class file named <CODE>x$y.class</CODE>.  If a
+class is a "helper" class for just one public class, it may legitimately
+be coded as an inner class.  If it seems to make sense to put more than
+one class in a single .java file, classes other than the public one are
+reasonable candidates for being written as inner classes.
+
+<H2>Anonymous Classes</H2>
+
+Often you need to extend a class just to override one method with a
+line or two of code.  Java lets you define classes with no name for
+doing this sort of thing with a minimum of fuss.  To do it, you write a
+class definition without the keyword <I>class</I> or any of its
+modifiers right after a reference to a constructor for the class that
+you want to extend.
+
+<PRE>
+    WindowListener wl = new WindowListener() {
+      public void windowClosing( WindowEvent we ) {
+        System.exit( 0 );
+        } }
+</PRE>
+
+The outer pair of braces enclose the anonymous class' definition, which
+contains one method definition.  There will be a class file with the
+name of the enclosing class, a dollar sign, and the digit zero.  If you
+have multiple anonymous classes, they will have different numbers after
+the dollar sign in their names.
+
+<H2>Dialog</H2>
+
+Dialog is a Window that has a title bar with just one button on the
+right side, the one for closing it.  A Dialog has to belong to a Frame,
+called its <I>parent.</I>  If the parent is minimized (iconified),
+deiconified, or closed, the Dialog is too.  The construtor must be
+passed a reference to the parent, and may optionally be given a
+titlebar String and a boolean telling if it is modal.  A modal dialog
+is one that prevents the user from interacting with other parts of the
+GUI while it is visible.  You make a Dialog appear on the screen by
+calling its <I>show()</I> method, and you make it disappear (normally
+when the user clicks the close button in the titlebar or clicks a
+button inside the Dialog) by calling its <I>dispose()</I> method.  (It
+inherits these methods from class Window.)
+
+<H2>Menu</H2>
+
+A <CODE>Menu</CODE> holds <CODE>MenuItem</CODE>s.  When the user clicks
+on a Menu, a list of its MenuItems drops down, and the user can select
+one by clicking on it.  When a MenuItem is selected, its
+ActionListener's <I>actionPerformed()</I> method is called.  Menus can
+contain other Menus as well as MenuItems.  You add a Menu or MenuItem to
+a Menu using the <I>add()</I> method.<p>
+
+A Frame may optionally have a <CODE>MenuBar</CODE>, which appears as a
+horizontal strip under its title bar.  You use <I>add()</I> to add any
+number of Menus to a MenuBar, except that there can be no more than one
+"Help" menu.  You use <I>setHelpMenu()</I> to add the Help menu to a
+MenuBar.
+
+<H2><I>list()</I></H2>
+
+The classes <CODE>Component</CODE> and <CODE>Container</CODE> both
+provide a <I>list()</I> method that can be very useful for debugging. 
+It prints information about the Component, and if the Component is a
+Container, it prints information about all the objects contained in the
+container.
+
+<H2>[&nbsp;<a href="HelpDialog.html">Sample Code</a>&nbsp;]</H2>
+
+The sample code illustrates the use of a MenuItem to display a Dialog.
+
+<HR></BODY></HTML>

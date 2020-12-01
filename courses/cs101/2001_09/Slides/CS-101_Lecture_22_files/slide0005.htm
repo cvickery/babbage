@@ -1,0 +1,198 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 22</title>
+<meta name=Description content="28-Nov-01: To Build a GUI">
+<link rel=next href=slide0006.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0005.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_22.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=97 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=202 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=100 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=33 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=137 height=33 colspan=2></td>
+  <td width=202 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=202 height=33 align=center><font face="Times New Roman" size=5>To
+    Build a GUI</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=136 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=19 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=259></td>
+  <td width=399 height=259 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=22 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=88 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=22 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=56 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=59 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=17 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=230 height=21 colspan=9><font face="Times New Roman" size=3>Establish
+    the <i>layout(s)</i> to use.</font><br>
+    </td>
+    <td width=152 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=400 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=153 height=18 colspan=5><font face="Times New Roman" size=2>Border,
+    Flow, Grid, …</font><br>
+    </td>
+    <td width=208 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=400 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=354 height=21 colspan=14><font face="Times New Roman" size=3>Create
+    Container(s) and add Component(s) to</font><br>
+    </td>
+    <td width=28 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=44 height=20 colspan=5><font face="Times New Roman" size=3>them.</font><br>
+    </td>
+    <td width=338 height=20 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=400 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=356 height=18 colspan=12><font face="Times New Roman" size=2>Swing’s
+    JFrame has a “Content Pane” that acts as the</font><br>
+    </td>
+    <td width=5 height=18></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=238 height=17 colspan=8><font face="Times New Roman" size=2>container.<span
+    style="mso-spacerun: yes">  </span>BorderLayout is default.</font><br>
+    </td>
+    <td width=123 height=17 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=400 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=382 height=21 colspan=16><font face="Times New Roman" size=3>Establish
+    <i>listeners</i> to respond to <i>events</i> generated</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=18 height=19></td>
+    <td width=152 height=19 colspan=7><font face="Times New Roman" size=3>by
+    the components.</font><br>
+    </td>
+    <td width=230 height=19 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=400 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=318 height=21 colspan=12><font face="Times New Roman" size=3>Compute
+    the actual geometry of the GUI</font><br>
+    </td>
+    <td width=64 height=21 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=400 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=43 height=18 colspan=3><font face="Times New Roman" size=2><i>pack()</i></font><br>
+    </td>
+    <td width=318 height=18 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=400 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=236 height=21 colspan=10><font face="Times New Roman" size=3>Display
+    the GUI on the screen</font><br>
+    </td>
+    <td width=146 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=400 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=314 height=18 colspan=10><font face="Times New Roman" size=2><i>show()
+    </i>or <i>setVisible()</i> on the top-level window.</font><br>
+    </td>
+    <td width=47 height=18 colspan=3></td>
+   </tr>
+  </table>
+  </td>
+  <td width=36 height=259></td>
+ </tr>
+ <tr>
+  <td width=475 height=12 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

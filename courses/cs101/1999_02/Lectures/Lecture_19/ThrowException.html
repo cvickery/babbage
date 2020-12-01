@@ -1,0 +1,27 @@
+<HTML><HEAD><TITLE>ThrowException.java</TITLE></HEAD><BODY>
+<CENTER><H1>ThrowException.java</H1></CENTER><HR><PRE>
+//  ThrowException.java
+
+public class ThrowException {
+
+  public static void main( String[] argv ) {
+    try {
+      throwIt();
+      System.out.println("Not caught!");
+    }
+    catch (DrawingException de ) {
+      System.out.println("Caught: " + de);
+    }
+    System.exit(0);
+  }
+
+  public static void throwIt() throws DrawingException {
+    System.out.println("Get ready!");
+    if ( 3 != 5 ) {
+      throw new DrawingException("$" + 100);
+    }
+    System.out.println("I threw it.");
+  }
+}
+
+</PRE><HR></BODY></HTML>

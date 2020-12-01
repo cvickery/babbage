@@ -1,0 +1,183 @@
+<HTML><HEAD><TITLE>TagEditor.java</TITLE></HEAD><BODY>
+<CENTER><H1>TagEditor.java</H1></CENTER><HR><PRE>
+//  TagEditor.java
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+
+//  Class TagEditor
+//  ------------------------------------------------------------------
+/**
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring, 2000
+  */
+  public class TagEditor
+  {
+    /** The main window that holds the GUI for the application.     */
+    JFrame            jf          = new JFrame( "TextEdit" );
+
+    /** The text area that the user can edit.                       */
+    JTextArea         jt          = new JTextArea();
+
+    /** A scroll pane to manage the display of the text area.       */
+    JScrollPane       sp          = new JScrollPane( jt );
+
+    /** MenuBar for the application.                                */
+    JMenuBar          jmb         = new JMenuBar();
+
+    /** Menu for File operations.                                   */
+    JMenu             fileMenu    = new JMenu( "File" );
+
+    /** MenuItem for File->Save.                                    */
+    JMenuItem         miFileSave  = new JMenuItem( "Save" );
+
+    /** MenuItem for File->Exit.                                    */
+    JMenuItem         miFileExit  = new JMenuItem( "Exit" );
+
+    /** The file being edited.                                      */
+    File              thisFile;
+
+    /** Screen dimension, for positioning the window.               */
+    static Dimension  scrDim      = Toolkit.getDefaultToolkit()
+                                        .getScreenSize();
+
+    /** Number of files being edited, for positioning windows.      */
+    static int        numFiles    = 0;
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   @param  argv  List of files to edit.
+    *   @return Void.
+    */
+    public static void main(String[] argv)
+    {
+      //  If there are no file names on the command line, get one from
+      //  the user.
+      if ( argv.length == 0 )
+      {
+        JFileChooser jfc = new JFileChooser( "." );
+        int returnVal = jfc.showOpenDialog( null );
+        if ( returnVal != JFileChooser.APPROVE_OPTION )
+        {
+          //  User did not select a file.
+          System.exit( 0 );
+        }
+
+        argv = new String[1];
+        argv[0] = jfc.getSelectedFile().getName();
+      }
+
+      //  Create an application instance for each file.
+      for (int f = 0; f &lt; argv.length; f++ )
+      {
+        File file = new File( argv[f] );
+        new TagEditor( file );
+      }
+    }
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+  /**
+    *   Set up the user interface for editing a file.
+    *
+    *     @param  file  The file to be edited, which may or may not
+    *                   exist.  Prints an error message if the file
+    *                   cannot be written to.
+    */
+    public TagEditor( File file )
+    {
+      thisFile = file;
+
+      try
+      {
+        //  If the file does not exist, create it.
+        thisFile.createNewFile();
+
+        //  Be sure it can be read and written
+        if ( ! ( thisFile.canRead() && thisFile.canWrite() ) )
+        {
+          throw new IOException( "read/write permission failure" );
+        }
+
+        // Read the file into the TextArea
+        jt.read( new FileReader( thisFile ), null );
+
+      }
+      catch ( IOException ioe )
+      {
+        System.err.println( "Unable to edit " +
+                            thisFile.getName() +
+                            ": " +
+                            ioe.getMessage()
+                            );
+        return;
+      }
+
+      //  Add a log message indicating that the file was opened.
+      jt.append( LogMessage.timeStamp( "File Opened" ) );
+
+
+      //  Add visible components to the user interface.
+      //  ============================================================
+
+      //  Menus
+      //  ------------------------------------------------------------
+      jf.setTitle( thisFile.getName() );
+      jf.setJMenuBar( jmb );
+      jmb.add( fileMenu );
+
+
+      //  Content Pane items.
+      //  ------------------------------------------------------------
+      Container cp = jf.getContentPane();
+      cp.add( sp );
+
+      //  Display the window in its proper position on the screen.
+      jf.pack();
+      Dimension winDim = jf.getSize();
+      Point winPos = new Point( (scrDim.width - winDim.width) / 2,
+                                (scrDim.height - winDim.height) / 2 );
+      jf.setLocation( winPos.x + 10 * numFiles,
+                      winPos.y + 10 * numFiles);
+      numFiles++;
+      jf.show();
+
+
+      //  Define Listeners for user interface components.
+      //  ============================================================
+
+      //  Window Closing Listener
+
+      jf.addWindowListener( new WindowAdapter()
+      {
+        public void windowClosing( WindowEvent we )
+        {
+          jt.append( LogMessage.timeStamp( "Window Closing" ) );
+          try
+          {
+            jt.write( new FileWriter( thisFile ));
+          }
+          catch ( IOException ioe )
+          {
+            System.err.println( ioe );
+            System.exit( 1 );
+          }
+          jf.dispose();
+          if ( --numFiles &lt; 1 )
+          {
+            System.exit( 0 );
+          }
+        }
+      }
+      );
+
+
+    }
+
+  }
+</PRE><HR></BODY></HTML>

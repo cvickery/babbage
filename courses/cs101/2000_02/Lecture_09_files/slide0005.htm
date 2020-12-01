@@ -1,0 +1,193 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>Lecture 9</title>
+<meta name=Description
+content="3-Mar-00: Initializing an Object (what new does)">
+<link rel=next href=slide0006.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0005.htm');   
+  else
+    parent.location.href = "../Lecture_09.html";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=650 height=487 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=55 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=84 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=372 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=89 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=650 height=39 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=139 height=92 colspan=2></td>
+  <td width=372 height=92>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=43 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=287 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=372 height=45 colspan=3 align=center><font face="Times New Roman"
+    size=6>Initializing an Object</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=372 height=3 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=43 height=45></td>
+    <td width=287 height=45 align=center><font face="Times New Roman" size=6>(what
+    <i>new</i> does)</font><br>
+    </td>
+    <td width=42 height=45></td>
+   </tr>
+  </table>
+  </td>
+  <td width=139 height=92 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=650 height=15 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=55 height=277></td>
+  <td width=545 height=277 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=153 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=100 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=87 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=109 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=521 height=29 colspan=12><font face="Times New Roman" size=5>If
+    the class has not yet been loaded into memory,</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=546 height=1 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=25 height=29></td>
+    <td width=369 height=29 colspan=6><font face="Times New Roman" size=5>do
+    that before doing anything else.</font><br>
+    </td>
+    <td width=152 height=29 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=546 height=8 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=515 height=29 colspan=10><font face="Times New Roman" size=5>Loading
+    a class does the following, in sequence:</font><br>
+    </td>
+    <td width=6 height=29 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=546 height=6 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=489 height=25 colspan=9><font face="Times New Roman" size=4>Link
+    the class to other classes that are already loaded.</font><br>
+    </td>
+    <td width=4 height=25></td>
+   </tr>
+   <tr>
+    <td width=546 height=6 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=254 height=25 colspan=3><font face="Times New Roman" size=4>Zero
+    out all static variables.</font><br>
+    </td>
+    <td width=239 height=25 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=546 height=6 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=355 height=25 colspan=6><font face="Times New Roman" size=4>Execute
+    static initialization statements.</font><br>
+    </td>
+    <td width=138 height=25 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=546 height=6 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=464 height=25 colspan=7><font face="Times New Roman" size=4>Once
+    a class has been loaded, these steps are never</font><br>
+    </td>
+    <td width=29 height=25 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=546 height=1 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=53 height=25 colspan=3></td>
+    <td width=349 height=25 colspan=5><font face="Times New Roman" size=4>done
+    again during the life of the JVM.</font><br>
+    </td>
+    <td width=144 height=25 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=546 height=6 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=154 height=25 colspan=2><font face="Times New Roman" size=4>[ </font><a
+    href="http://babbage.cs.qc.edu/courses/cs101/Spring00/Lecture_09_files/StaticInit.html"
+    target="_parent"><font face="Times New Roman" size=4>StaticInit.java</font></a><font
+    face="Times New Roman" size=4> ]</font><br>
+    </td>
+    <td width=339 height=25 colspan=8></td>
+   </tr>
+  </table>
+  </td>
+  <td width=50 height=277></td>
+ </tr>
+ <tr>
+  <td width=650 height=64 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+#!/usr/local/bin/ksh
+
+# Send a non-customized message to each account in a mailing_list.
+
+# Mailing_list format:
+#  address ID# Name
+
+#  Usage:
+#
+#     send_email [-l <mailing_list>] [-m <message_file>] [-s <subject>]
+#
+#  Default for <mailing_list> is "roster"
+#  Default for <message_file> is "msg"
+#  Default for <subject> is "Msg From Dr. Vickery"
+#
+
+m_list="roster"
+msg="msg"
+subject="Msg From Dr. Vickery"
+today=$(date +"%A %B %e, %Y")
+
+while getopts l:m:s: optletter
+do
+  case $optletter in
+    l)  m_list="${OPTARG}"
+        ;;
+    m)  msg="${OPTARG}"
+        ;;
+    s)  subject="${OPTARG}"
+        ;;
+    *)  print -u2 "Usage: $0 [-l list] [-m msg] [-s subj]"
+        return 1
+        ;;
+  esac
+done
+
+shift OPTIND-1
+
+[[ -f $m_list && -r $m_list ]] || {
+  print -u2 -- "$0: $m_list: Unable to open for reading."
+  return 1
+  }
+
+[[ -f $msg && -r $msg ]] || {
+  print -u2 -- "$0: $msg: Unable to open for reading."
+  return 1
+  }
+ 
+exec 3< $m_list
+
+while read -r -u3 email_address student_id name
+do
+
+  if [[ $email_address == NOADDRESS ]]
+  then
+        print -u2 -- "No address available for ${name}."
+        continue
+  fi
+
+  if [[ $email_address != @(#)* ]]
+  then
+    print -u2 -- "Sending ${msg} to ${email_address}."
+    cat ${msg}                                           >| ./.msg
+    mailx -r  ajgartner@gc.cuny.edu -s "$subject" "${email_address}" < ./.msg
+    rm ./.msg
+  fi
+done
+

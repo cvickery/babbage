@@ -1,0 +1,251 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 8</title>
+<meta name=Description content="3-Oct-01: Invoking Methods">
+<link rel=next href=slide0005.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0006.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_08.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=80 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=236 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=68 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=33 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=120 height=33 colspan=2></td>
+  <td width=236 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=236 height=33 align=center><font face="Times New Roman" size=5>Invoking
+    Methods</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=119 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=19 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=261></td>
+  <td width=384 height=261 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=63 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=37 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=30 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=65 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=28 height=18 colspan=2><font face="Times New Roman" color=black
+    size=2>1.</font></td>
+    <td width=276 height=18 colspan=13><font face="Times New Roman" size=2>If
+    the invocation looks like <i>xxx.method();</i></font><br>
+    </td>
+    <td width=80 height=18 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=384 height=2 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=24 height=16></td>
+    <td width=24 height=16 colspan=3><font face="Times New Roman" color=black
+    size=1>–</font></td>
+    <td width=275 height=16 colspan=13><font face="Times New Roman" size=1>If <i>xxx</i>
+    is a class name, the method has to be static.</font><br>
+    </td>
+    <td width=61 height=16 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=384 height=2 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=24 height=16></td>
+    <td width=24 height=16 colspan=3><font face="Times New Roman" color=black
+    size=1>–</font></td>
+    <td width=336 height=16 colspan=18><font face="Times New Roman" size=1>If <i>xxx</i>
+    is an object reference, the method has to be non-static.</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=384 height=1 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=4></td>
+    <td width=20 height=14 colspan=2><font face="Times New Roman" color=black
+    size=1>•</font></td>
+    <td width=296 height=14 colspan=14><font face="Times New Roman" size=1>This
+    form can be used for static methods too, but it’s use is</font><br>
+    </td>
+    <td width=20 height=14 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=68 height=13 colspan=6></td>
+    <td width=64 height=13 colspan=2><font face="Times New Roman" size=1>discouraged.</font><br>
+    </td>
+    <td width=252 height=13 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=384 height=2 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=28 height=18 colspan=2><font face="Times New Roman" color=black
+    size=2>2.</font></td>
+    <td width=250 height=18 colspan=11><font face="Times New Roman" size=2>If
+    the invocation looks like <i>method();</i></font><br>
+    </td>
+    <td width=106 height=18 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=384 height=3 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=24 height=16></td>
+    <td width=24 height=16 colspan=3><font face="Times New Roman" color=black
+    size=1>–</font></td>
+    <td width=336 height=16 colspan=18><font face="Times New Roman" size=1>The
+    method must be defined in the same class as the method</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=4></td>
+    <td width=231 height=14 colspan=10><font face="Times New Roman" size=1>from
+    which the invocation is being made.</font><br>
+    </td>
+    <td width=105 height=14 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=384 height=1 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=4></td>
+    <td width=20 height=14 colspan=2><font face="Times New Roman" color=black
+    size=1>•</font></td>
+    <td width=275 height=14 colspan=12><font face="Times New Roman" size=1>If
+    the method is an instance method, this is the same as</font><br>
+    </td>
+    <td width=41 height=14 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=68 height=13 colspan=6></td>
+    <td width=71 height=13 colspan=3><font face="Times New Roman" size=1><i>this.method();</i></font><br>
+    </td>
+    <td width=245 height=13 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=384 height=2 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=4></td>
+    <td width=20 height=14 colspan=2><font face="Times New Roman" color=black
+    size=1>•</font></td>
+    <td width=254 height=14 colspan=10><font face="Times New Roman" size=1>If
+    the method is a static method, this is the same as</font><br>
+    </td>
+    <td width=62 height=14 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=68 height=12 colspan=6></td>
+    <td width=108 height=12 colspan=4><font face="Times New Roman" size=1><i>Classname.method();</i></font><br>
+    </td>
+    <td width=208 height=12 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=384 height=3 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=28 height=18 colspan=2><font face="Times New Roman" color=black
+    size=2>3.</font></td>
+    <td width=334 height=18 colspan=17><font face="Times New Roman" size=2>If
+    the invocation looks like <i>methodA().methodB();</i></font><br>
+    </td>
+    <td width=22 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=384 height=2 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=24 height=16></td>
+    <td width=24 height=16 colspan=3><font face="Times New Roman" color=black
+    size=1>–</font></td>
+    <td width=223 height=16 colspan=8><font face="Times New Roman" size=1><span
+    style="mso-spacerun: yes"> </span><i>methodA</i> is invoked using rule 2,
+    above</font><br>
+    </td>
+    <td width=113 height=16 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=384 height=2 colspan=22></td>
+   </tr>
+   <tr>
+    <td width=24 height=16></td>
+    <td width=24 height=16 colspan=3><font face="Times New Roman" color=black
+    size=1>–</font></td>
+    <td width=334 height=16 colspan=17><font face="Times New Roman" size=1><i>methodA</i>
+    must return an object reference to use for invoking</font><br>
+    </td>
+    <td width=2 height=16></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=4></td>
+    <td width=158 height=14 colspan=7><font face="Times New Roman" size=1><i>methodB,
+    </i>as in rule 1 above<i>.</i></font><br>
+    </td>
+    <td width=178 height=14 colspan=11></td>
+   </tr>
+  </table>
+  </td>
+  <td width=51 height=261></td>
+ </tr>
+ <tr>
+  <td width=475 height=10 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

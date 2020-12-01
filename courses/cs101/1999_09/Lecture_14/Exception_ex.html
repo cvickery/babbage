@@ -1,0 +1,50 @@
+<HTML><HEAD><TITLE>Exception_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>Exception_ex.java</H1></CENTER><HR><PRE>
+//  Exception_ex.java
+
+public class Exception_ex
+{
+  public static void main( String[] argv )
+  {
+    try
+    {
+      for ( int i=0; i &lt; 1000; i++ )
+      {
+        Limited l = new Limited();
+        System.out.println( "Iteration " + i + " successful" );
+      }
+    }
+    catch ( MyException me )
+    {
+      System.out.println( me );
+      System.out.println( me.getMessage() );
+      System.exit( 0 );
+    }
+    finally
+    {
+      System.out.println( "Finally!" );
+    }
+  }
+}
+
+class MyException extends Exception
+{
+  public MyException( String str )
+  {
+    super( str );
+  }
+}
+
+class Limited
+{
+  static int count = 0;
+  public Limited() throws MyException
+  {
+    if ( count++ > 3 )
+    {
+      throw new MyException( "Too many Limiteds!" );
+    }
+  }
+}
+
+</PRE><HR></BODY></HTML>

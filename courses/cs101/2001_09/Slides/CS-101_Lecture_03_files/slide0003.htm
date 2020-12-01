@@ -1,0 +1,211 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 3</title>
+<meta name=Description content="6-Sep-01: Classes, Methods, and Objects">
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0003.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_03.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=392 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=14 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=42 height=33 colspan=2></td>
+  <td width=392 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=392 height=33 align=center><font face="Times New Roman" size=5>Classes,
+    Methods, and Objects</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=41 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=207></td>
+  <td width=408 height=207 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=27 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=126 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=21 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=54 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=59 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=282 height=18 colspan=12><font face="Times New Roman" size=2>Programs
+    consist of <i>instructions</i> and <i>data.</i></font><br>
+    </td>
+    <td width=109 height=18 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=409 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=327 height=16 colspan=11><font face="Times New Roman" size=1>Classes
+    are Java’s way of grouping particular data with the</font><br>
+    </td>
+    <td width=43 height=16 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=39 height=14 colspan=4></td>
+    <td width=186 height=14 colspan=7><font face="Times New Roman" size=1>instructions
+    that operate on them.</font><br>
+    </td>
+    <td width=184 height=14 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=409 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=332 height=14 colspan=11><font face="Times New Roman" size=1>The
+    compiler generates a separate class file for every class in your</font><br>
+    </td>
+    <td width=17 height=14 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=60 height=12 colspan=7></td>
+    <td width=339 height=12 colspan=12><font face="Times New Roman" size=1>program.<span
+    style="mso-spacerun: yes">  </span>One .java file can define anywhere from
+    one to dozens of</font><br>
+    </td>
+    <td width=10 height=12></td>
+   </tr>
+   <tr>
+    <td width=60 height=13 colspan=7></td>
+    <td width=39 height=13 colspan=3><font face="Times New Roman" size=1>classes.</font><br>
+    </td>
+    <td width=310 height=13 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=409 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=320 height=16 colspan=10><font face="Times New Roman" size=1>All
+    the instructions in a program are enclosed in <i>methods.</i></font><br>
+    </td>
+    <td width=50 height=16 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=409 height=1 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=349 height=14 colspan=13><font face="Times New Roman" size=1>Even
+    constructors and initializers are actually compiled into methods.</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=409 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=342 height=16 colspan=12><font face="Times New Roman" size=1>All
+    the variables and constants in a program make up its data.</font><br>
+    </td>
+    <td width=28 height=16 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=409 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=325 height=14 colspan=10><font face="Times New Roman" size=1>May
+    be defined inside or outside of methods, but always inside a</font><br>
+    </td>
+    <td width=24 height=14 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=60 height=12 colspan=7></td>
+    <td width=28 height=12 colspan=2><font face="Times New Roman" size=1>class.</font><br>
+    </td>
+    <td width=321 height=12 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=409 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=299 height=14 colspan=7><font face="Times New Roman" size=1>If
+    outside any method, may be either <i>static</i> or <i>instance</i> data.</font><br>
+    </td>
+    <td width=50 height=14 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=409 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=228 height=18 colspan=11><font face="Times New Roman" size=2>Objects
+    are “instances” of classes.</font><br>
+    </td>
+    <td width=163 height=18 colspan=8></td>
+   </tr>
+  </table>
+  </td>
+  <td width=27 height=207></td>
+ </tr>
+ <tr>
+  <td width=475 height=44 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<HTML><HEAD><TITLE>A.java</TITLE></HEAD><BODY>
+<CENTER><H1>A.java</H1></CENTER><HR><PRE>
+// A.java
+
+//  Class A
+//  ------------------------------------------------------------------
+/**
+  *   Demonstrates that an application's initial class is loaded and
+  *   initialized before the JVM determines whether it contains method
+  *   main() or not.
+  *
+  *   Also illustrates how to translate a character into an integer
+  *   value between 0 and 25, which you would need to do for exercise
+  *   8.17 in Deitel and Deitel.
+  *
+  *   Also modified during class to illustrate that you can print
+  *   just about anything because every class has a toString() method
+  *   that it either provides itself, or inherits from one of its
+  *   superclasses.
+  *
+  *   @author C. Vickery
+  */
+  class A {
+
+  static  char ch ='e';
+  static  int  in = ch - 'a';
+  static {
+    System.out.println( "\'" + ch + "\' is the " + in + "th letter" );
+    System.out.println( System.out );        // You can print objects
+    System.out.println( System.out.toString() );  // Same as previous
+    System.exit( 0 );  // Exit the JVM before it discovers that main()
+                       // is missing.
+  }
+}</PRE><HR></BODY></HTML>

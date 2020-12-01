@@ -1,0 +1,66 @@
+<html><head><title>ReadBinary.java</title></head>
+<body><center><h1>ReadBinary.java</h1></center><hr><pre>
+      import java.io.*;
+      
+      /**   Illustrates use of classes FileInputStream and DataInputStream to
+       *    read from binary files.
+       *
+       *      @author C. Vickery
+       */
+        public class ReadBinary
+        {
+          /**   Reads and displays the first few bytes of each file named on
+           *    the command line.
+           *
+           *    @param  args        Filenames supplied by the user.
+           *    @throws IOException If there are errors opening or reading
+           *    files.
+           */
+            public static void main( String[] args ) throws IOException
+            {
+              //  Loop over command line arguments 
+              for( int i=0; i&lt;args.length; i++ )
+              {
+                //  Create both a File and Data Input Stream
+                FileInputStream fis = new FileInputStream( args[i] );
+                DataInputStream dis = new DataInputStream( fis );
+                
+                //  Use FileInputStream to read up to six (signed) bytes from
+                //  the file.
+                byte[] buffer = new byte[6];
+                int numRead = fis.read( buffer );
+                //  Print the bytes as unsigned values.
+                System.out.print( "The first " + numRead + " bytes of file " +
+                    args[i] + " are: " );
+                for (int j=0; j&lt;numRead; j++)
+                {
+                  //  By ANDing (the & operator) each byte with 0x000000ff,
+                  //  remove any sign extension bits.
+                  System.out.print( Integer.toHexString( 
+                       0x000000ff & buffer[j] ) + " " );
+                }
+                System.out.println();
+      
+                //  Read up to six more (unsigned) bytes from the file
+                //  using the DataInputStream.  Note the different way in
+                //  which end of file is detected compared to the
+                //  FileInputStream.
+                System.out.print( "The next six bytes are: " );
+                try
+                {
+                  for (int j=0; j&lt;6; j++)
+                  {
+                    int x = dis.readUnsignedByte();
+                    System.out.print( Integer.toHexString( x ) + " " );
+                  }
+                  System.out.println();
+                }
+                catch ( EOFException eof )
+                {
+                  System.out.println( "End of File" );
+                }
+              }
+              System.exit( 0 );
+            }
+        }
+</pre><hr></body></html>

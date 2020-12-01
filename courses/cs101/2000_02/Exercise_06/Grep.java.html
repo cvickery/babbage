@@ -1,0 +1,122 @@
+<HTML><HEAD><TITLE>Grep.java</TITLE></HEAD><BODY>
+<CENTER><H1>Grep.java</H1></CENTER><HR><PRE>
+//  Grep.java
+
+import java.io.*;
+import java.util.*;
+
+//  Class Grep
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates command line processing and String operations.
+  *   Searches files for lines that contain a String.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring, 2000
+  */
+  public class Grep
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Processes command line arguments, then searches files to find
+    *   and print lines that contain a search string.  Command line
+    *   syntax is:
+    &lt;pre>
+            java Grep [-i] &lt;search string> &lt;file> ...
+    &lt;/pre>
+    *   If the first argument is "-i" searching will ignore upper and
+    *   lower case differences between the search string and the lines
+    *   in the files, otherwise case matters.  The search string must
+    *   be given; enclose it in quotes if it includes spaces.  There
+    *   must be at least one file name given.
+    *
+    *   @param  argv  Command line argument strings.
+    *   @return Void
+    */
+    public static void main( String[] argv )
+    {
+      //  Initial value for whether search is case sensitive or not.
+      boolean caseSensitive = true;
+
+      //  There must be at least two command line arguments.
+      if ( argv.length &lt; 2 )
+      {
+        usage();
+      }
+
+      //  Check for the optional "-i" flag.
+      int argNum = 0;
+      if ( argv[argNum].equals( "-i" ) )
+      {
+        caseSensitive = false;
+        argNum++;
+      }
+
+      //  Capture the search string and its length.
+      final String  searchString  = argv[ argNum++ ];
+      final int     slen          = searchString.length();
+
+      //  There must be at least one more argument, a first file name.
+      if ( argv.length &lt;= argNum )
+      {
+        usage();
+      }
+
+      //  For each file ...
+      for ( int f = argNum; f &lt; argv.length; f++ )
+      {
+        try {
+          BufferedReader br = new BufferedReader(
+                                new FileReader( argv[f] ) );
+          String inBuf = null;
+
+          //  For each line ...
+          while ( null != ( inBuf = br.readLine() ) )
+          {
+
+            //  For each possible position in the line ...
+            for ( int s = 0; s &lt; inBuf.length() - slen; s++ )
+            {
+              String sub = inBuf.substring( s, s + slen );
+
+              //  Check if the search string is in the line.
+              if ( (caseSensitive && searchString.equals( sub ) ) ||
+                   (!caseSensitive &&
+                              searchString.equalsIgnoreCase( sub ) ) )
+              {
+
+                //  Search string found: Print the file name and line.
+                System.out.println( argv[f] + ": " + inBuf );
+                break;
+              }
+            }
+          }
+        }
+        //  Manage any I/O errors that occur.
+        catch ( IOException ioe )
+        {
+          System.err.println( argv[f] + ": " + ioe.getMessage() );
+        }
+      }
+    }
+
+  //  Method usage()
+  //  ----------------------------------------------------------------
+  /**
+    *   Prints an error message and exits.
+    *
+    *   @return Void
+    */
+    static void usage()
+    {
+      System.err.println( "Usage: java Grep [-i] &lt;searchString> " +
+                          "&lt;fileName>..." );
+      System.exit( 1 );
+    }
+
+  }
+
+    
+</PRE><HR></BODY></HTML>

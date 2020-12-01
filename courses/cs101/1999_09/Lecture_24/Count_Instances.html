@@ -1,0 +1,81 @@
+<HTML><HEAD><TITLE>Count_Instances.java</TITLE></HEAD><BODY>
+<CENTER><H1>Count_Instances.java</H1></CENTER><HR><PRE>
+//  Count_Instances
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+//  Class Count_Instances
+//  ------------------------------------------------------------------
+/**
+  *  This application illustrates creating multiple instances of a
+  *  JFrame, each of which can be closed independently.  When the
+  *  last one is closed, the application exits.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 December 1999
+  */
+  public class Count_Instances
+  {
+    /** Counter that tells how many instances there are.            */
+    static  int     howMany = 0;
+    /** All instances access this to find the screen size.          */
+    static  Dimension scr =
+                          Toolkit.getDefaultToolkit().getScreenSize();
+    /** Instance variable for accessing the JFrames.                */
+            JFrame  gui;
+
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Creates ten JFrames as an example.  The application exits
+      *   when all ten have been closed.
+      *
+      *   @param argv Not used.
+      */
+      public static void main( String[] argv )
+      {
+        for (int instance = 0; instance &lt; 10; instance++ )
+          new Count_Instances();
+      }
+
+    //  Constructor Count_Instances
+    //  --------------------------------------------------------------
+    /**
+      *   Increments the instance counter and displays a JFrame with
+      *   the current instance number in the title bar.  Adds a Window
+      *   Listener that disposes of JFrames when they are closed, and
+      *   exits the application when the last one is closed.
+      */
+      public Count_Instances()
+      {
+
+        //  Create a JFrame with the current instance number in the
+        //  title.
+        howMany++;
+        gui = new JFrame( "Instance " + howMany );
+
+        //  Add a listener for window closing events to the JFrame.
+        gui.addWindowListener( new WindowAdapter() {
+          public void windowClosing( WindowEvent we ) {
+            howMany--;            //  Check if last one.
+            if ( howMany == 0 ) {
+              System.exit( 0 );   //  Exit if last.
+            }
+            gui.dispose();        //  Dispose of JFrame if not last.
+          } } );
+
+        //  Display the JFrame at a screen location offset by its
+        //  instance number.
+        gui.pack();
+        Dimension win = gui.getSize();
+        gui.setLocation( scr.width/2 - win.width/2 + howMany * 10,
+                         scr.height/2 - win.height/2 + howMany * 10 );
+        gui.setVisible( true );
+
+      }
+
+  }
+
+</PRE><HR></BODY></HTML>

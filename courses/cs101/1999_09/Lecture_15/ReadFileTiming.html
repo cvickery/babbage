@@ -1,0 +1,137 @@
+<HTML><HEAD><TITLE>ReadFileTiming.java</TITLE></HEAD><BODY>
+<CENTER><H1>ReadFileTiming.java</H1></CENTER><HR><PRE>
+//  ReadFileTiming.java
+
+//  Compare the time it takes to read a file using a FileInputStream,
+//  a FileReader, and a BufferedReader.
+
+//  Some Experimental Results:
+//  For a 1.2MB binary file, the BufferedReader is 21% faster than
+//  a FileInputStream.  A BufferedReader is 5.7 times faster than
+//  a FileReader.  Comparing the Reader classes to the InputStream
+//  class isn't necessarily a good idea; Readers read characters and
+//  the InputStream reads bytes.
+
+import java.io.*;
+import javax.swing.*;
+
+//  Class ReadFileTiming
+//  ------------------------------------------------------------------
+/**
+  *     Illustrates reading from a file three different ways, and
+  *     measures how fast each one is.  The program should be run
+  *     several times using the same input file in order to see how
+  *     much variability there is in the measurements.  Take the
+  *     average.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 Fall 1999
+  */
+  public class ReadFileTiming {
+
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Lets the user select a file, then measures how long it takes
+      *   to read the file using a FileInputStream, a FileReader, and
+      *   a BufferedReader.
+      *
+      *   @param  argv[0] If present, gives the initial directory for
+      *                   the JFileChooser.
+      *   @throws IOException if there is any problem reading the
+      *                   file.
+      */
+      public static void main( String[] argv ) throws IOException {
+
+      FileInputStream fis;
+      FileReader      fr;
+      BufferedReader  br;
+
+      JFileChooser    filechooser;
+      String          startDir = ".";
+      File            f;
+      long            startTime, endTime;
+
+        //  Get starting directory, if present.
+        if ( argv.length == 1 )
+        {
+          startDir = argv[ 0 ];
+        }
+
+        //  Repeat until user selects the Cancel button of the
+        //  JFileChooser.
+        while ( true )
+        {
+          //  Be sure the file is readable
+          filechooser = new JFileChooser( startDir );
+          if ( filechooser.showOpenDialog( null ) ==
+                                       JFileChooser.APPROVE_OPTION )
+          {
+            f = filechooser.getSelectedFile();
+            if ( f.canRead() )
+            {
+              startDir = f.getParent();
+
+              //  Measure time to read using a BufferedReader
+              System.out.println( "Read using BufferedReader" );
+              startTime = System.currentTimeMillis();
+              br = new BufferedReader( new FileReader( f ) );
+              while ( -1 != br.read() )         //  Read one character
+                ;                // Do nothing with the character read
+              endTime = System.currentTimeMillis();
+              //  Print the result
+              System.out.println( "Read " + f.length() + " bytes in " +
+                                  (endTime - startTime) +
+                                  " milliseconds.  " +
+                                  ( (float)f.length() / ( endTime -
+                                  startTime ) * 1000.0 ) +
+                                  " bytes per second.");
+
+              //  Measure time to read using a FileReader
+              System.out.println( "Read using FileReader" );
+              startTime = System.currentTimeMillis();
+              fr = new FileReader( f );
+              while (-1 != fr.read() )          //  Read one character
+                ;               //  Do nothing with the character read
+              endTime = System.currentTimeMillis();
+              //  Print the result
+              System.out.println( "Read " + f.length() + " bytes in " +
+                                  (endTime - startTime) +
+                                  " milliseconds.  " +
+                                  ( (float)f.length() / ( endTime -
+                                  startTime ) * 1000.0 ) +
+                                  " bytes per second.");
+
+              //  Measure time to read using a FileInputStream
+              System.out.println( "Read using FileInputStream" );
+              startTime = System.currentTimeMillis();
+              fis = new FileInputStream( f );
+              while (-1 != fis.read() )         //  Read one character
+                ;                    //  Do nothing with the character
+              endTime = System.currentTimeMillis();
+              //  Print the result
+              System.out.println( "Read " + f.length() + " bytes in " +
+                                  (endTime - startTime) +
+                                  " milliseconds.  " +
+                                  ( (float)f.length() / ( endTime -
+                                  startTime ) * 1000.0 ) +
+                                  " bytes per second.");
+            }
+            else
+            {
+              JOptionPane.showMessageDialog( null,
+                                    "Cannot read: " + f.getAbsolutePath(),
+                                    "Unable to Read",
+                                    JOptionPane.ERROR_MESSAGE );
+
+            }
+          }
+          else
+          {
+            System.exit( 0 );
+          }
+        }
+      }
+  }
+
+</PRE><HR></BODY></HTML>

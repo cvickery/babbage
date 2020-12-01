@@ -1,0 +1,36 @@
+<HTML><HEAD><TITLE>TwoThreads.java</TITLE></HEAD><BODY>
+<CENTER><H1>TwoThreads.java</H1></CENTER><HR><PRE>
+//  TwoThreads.java
+
+public class TwoThreads
+{
+  public static void main( String[] argv ) throws InterruptedException
+  {
+    System.out.println( "This is Thread " + Thread.currentThread() );
+    Thread thr = new SecondThread();
+    thr.start();
+    for ( int i=0; i&lt;12; i++ )
+    {
+      System.out.println( "Main Thread: " + i );
+      Thread.sleep(100);
+    }
+  }
+}
+
+class SecondThread extends Thread
+{
+  public void run()
+  {
+    System.out.println( "This is Thread " + Thread.currentThread() );
+    for ( int i=0; i&lt;12; i++ )
+    {
+      try {
+        System.out.println( "Second Thread: " + i );
+        Thread.sleep(60);
+      }
+      catch ( InterruptedException ie ) {}
+    }
+  }
+}
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,29 @@
+<HTML><HEAD><TITLE>GridLayout_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>GridLayout_ex.java</H1></CENTER><HR><PRE>
+//  GridLayout_ex.java
+
+import java.awt.*;
+import javax.swing.*;
+
+public class GridLayout_ex
+{
+  public static void main( String[] argv )
+  {
+    JFrame jf = new JFrame( "GridLayout_ex" );
+    jf.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Container cp = jf.getContentPane();
+    cp.setLayout( new GridLayout( 3, 2 ) );
+    cp.add( new JButton( "1,1" ) );
+    cp.add( new JButton( "1,2" ) );
+    cp.add( new JButton( "2,1" ) );
+    cp.add( new JButton( "2,2" ) );
+    cp.add( new JButton( "3,1" ) );
+    cp.add( new JButton( "3,2" ) );
+    jf.pack();
+    jf.setLocation( 200, 150 );
+    jf.show();
+  }
+
+}
+
+</PRE><HR></BODY></HTML>

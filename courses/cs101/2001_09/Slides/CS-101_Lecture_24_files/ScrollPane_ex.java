@@ -1,0 +1,42 @@
+//  ScrollPane_ex.java
+
+import java.awt.*;
+import javax.swing.*;
+
+/** Illustrates use of class JScrollPane
+  *
+  *   @author C. Vickery
+  */
+  public class ScrollPane_ex extends JFrame
+  {
+    private Container   cp = getContentPane();
+    private JTextArea   jt;
+    private JScrollPane jsp;
+
+  /** Creates a TextArea with some text, puts it in a scrollpane, and
+    * adds the scrollpane to the window.
+    *
+    *   @param title  The string to display in the window's title bar.
+    */
+    public ScrollPane_ex( String title )
+    {
+      super( title );
+      jt = new JTextArea( "Now\nis\nthe\ntime\nto\nscroll!\n" );
+      jsp = new JScrollPane( jt );
+      cp.add( jsp );
+      pack();
+      jt.append( "A very long line of text that needs a "
+                + "horizontal scrollbar." );
+      show();
+    }
+
+  /** Instantiates the class; the constructor does all the work.
+    * 
+    *   @param args Command line arguments.
+    */
+    public static void main( String[] args )
+    {
+      new ScrollPane_ex( "JScrollPane Example" );
+    }
+  }
+

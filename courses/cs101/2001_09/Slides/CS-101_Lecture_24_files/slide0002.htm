@@ -1,0 +1,187 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 24</title>
+<meta name=Description content="14-Dec-01: Threads">
+<link rel=next href=slide0003.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0002.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_24.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=146 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=104 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=156 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=186 height=33 colspan=2></td>
+  <td width=104 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=104 height=33 align=center><font face="Times New Roman" size=5>Threads</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=185 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=225></td>
+  <td width=406 height=225 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=31 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=50 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=33 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=45 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=96 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=59 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=388 height=21 colspan=17><font face="Times New Roman" size=3>Class
+    WindowListener_ex (last lecture) illustrates</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=298 height=20 colspan=12><font face="Times New Roman" size=3>implementation
+    of a Listener interface</font><br>
+    </td>
+    <td width=90 height=20 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=406 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=175 height=21 colspan=11></td>
+    <td width=45 height=21 align=center><font face="Times New Roman" size=3>AND</font><br>
+    </td>
+    <td width=186 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=406 height=4 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=371 height=21 colspan=15><font face="Times New Roman" size=3>Shows
+    threading behavior in AWT applications</font><br>
+    </td>
+    <td width=17 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=406 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=289 height=18 colspan=10><font face="Times New Roman" size=2>Only
+    thread “main” when application starts</font><br>
+    </td>
+    <td width=78 height=18 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=406 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=367 height=18 colspan=14><font face="Times New Roman" size=2>Three
+    new threads after first Component is constructed</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=406 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=352 height=18 colspan=13><font face="Times New Roman" size=2>Thread
+    “main” goes away when it reaches the end of</font><br>
+    </td>
+    <td width=15 height=18></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=103 height=17 colspan=6><font face="Times New Roman" size=2>method
+    <i>main()</i>.</font><br>
+    </td>
+    <td width=264 height=17 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=406 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=348 height=18 colspan=11><font face="Times New Roman" size=2>The
+    callback methods are called by one of the AWT</font><br>
+    </td>
+    <td width=19 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=39 height=17 colspan=4></td>
+    <td width=53 height=17 colspan=5><font face="Times New Roman" size=2>threads.</font><br>
+    </td>
+    <td width=314 height=17 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=406 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=346 height=16 colspan=11><font face="Times New Roman" size=1>Other
+    AWT threads continue to monitor user input “gestures.”</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=29 height=225></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

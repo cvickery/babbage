@@ -1,0 +1,103 @@
+<HTML><HEAD><TITLE>ReadStrings_5.java</TITLE></HEAD><BODY>
+<CENTER><H1>ReadStrings_5.java</H1></CENTER><HR><PRE>
+//  ReadStrings_5.java
+
+import java.io.*;
+import java.util.*;
+
+//  Class ReadStrings
+//  ------------------------------------------------------------------
+/**
+  *     Reads Strings from a file named on the command line until
+  *     there are no more to read.  If no file is named on the
+  *     command line, read from stdin.
+  *
+  *     Determines what percentage of the tokens in each string
+  *     are "true."
+  *
+  *     @author C. Vickery
+  *
+  */
+  public class ReadStrings_5 {
+
+  //  Method howTrue()
+  //  ----------------------------------------------------------------
+  /**
+    *   Computes the percentage of a boolean array that is true.
+    *
+    *     @param  theArray  An array of boolean.
+    *     @return The percentage of the array that is true.
+    *
+    */
+    static double howTrue( boolean[] theArray ) {
+
+      return theArray.length;
+
+    }
+
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *     If there is a file named as argv[0], reads Strings from it.
+    *     If there is no file named as argv[0], read Strings from
+    *     stdin.  Prints how many tokens there are in each String.
+    *
+    *     @param  argv[0]  An optional file name.
+    *     @return void
+    *     @throws IOException If an error occurs while reading.
+    *
+    */
+    public static void main( String[] argv ) throws IOException {
+
+      if ( argv.length > 1 ) {
+        System.err.println( "Usage: java ReadStrings_5 [filename]" );
+        System.exit( 1 );
+      }
+    
+    BufferedReader  br = null;
+
+      if ( argv.length == 1 ) {
+        try {
+          br = new BufferedReader( new FileReader( argv[0] ) );
+        }
+        catch ( IOException e ) {
+          System.err.println( argv[0] + ": cannot open for reading" );
+          System.exit( 1 );
+        }
+      }
+      else {
+        br = new BufferedReader( new InputStreamReader(
+                                 System.in ), 1 );
+      }
+
+    boolean[]       ba;
+    int             i;
+    String          inBuf, token;
+    StringTokenizer st;
+
+      while ( (inBuf = br.readLine()) != null ) {
+
+        st  = new StringTokenizer( inBuf );
+        ba  = new boolean[ st.countTokens() ];
+        i   = 0;
+
+        while ( st.hasMoreTokens() ) {
+          token = st.nextToken();
+          if ( token.equals( "true" ) ) {
+            ba[ i ] = true;
+          }
+          else {
+            ba[ i ] = false;
+          }
+          i++;
+        }
+
+        System.out.println( howTrue( ba ) + "% true" );
+      }
+
+      System.exit( 0 );
+
+    }
+  }
+</PRE><HR></BODY></HTML>

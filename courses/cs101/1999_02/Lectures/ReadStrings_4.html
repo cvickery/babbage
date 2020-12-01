@@ -1,0 +1,77 @@
+<HTML><HEAD><TITLE>ReadStrings_4.java</TITLE></HEAD><BODY>
+<CENTER><H1>ReadStrings_4.java</H1></CENTER><HR><PRE>
+//  ReadStrings_4.java
+
+import java.io.*;
+import java.util.*;
+
+//  Class ReadStrings
+//  ------------------------------------------------------------------
+/**
+  *     Reads Strings from a file named on the command line until
+  *     there are no more to read.  If no file is named on the
+  *     command line, read from stdin.
+  *
+  *     Counts how many tokens there are in each String.
+  *
+  *     @author C. Vickery
+  *
+  */
+  public class ReadStrings_4 {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *     If there is a file named as argv[0], reads Strings from it.
+    *     If there is no file named as argv[0], read Strings from
+    *     stdin.  Prints how many tokens there are in each String.
+    *
+    *     @param  argv[0]  An optional file name.
+    *     @return void
+    *     @throws IOException If an error occurs while reading.
+    *
+    */
+    public static void main( String[] argv ) throws IOException {
+
+      if ( argv.length > 1 ) {
+        System.err.println( "Usage: java ReadStrings_4 [filename]" );
+        System.exit( 1 );
+      }
+    
+    BufferedReader  br = null;
+
+      if ( argv.length == 1 ) {
+        try {
+          br = new BufferedReader( new FileReader( argv[0] ) );
+        }
+        catch ( IOException e ) {
+          System.err.println( argv[0] + ": cannot open for reading" );
+          System.exit( 1 );
+        }
+      }
+      else {
+        br = new BufferedReader( new InputStreamReader(
+                                 System.in ), 1 );
+      }
+
+    int             howManyStrings = 0, howManyTokens = 0;
+    String          inBuf;
+    StringTokenizer st;
+
+      while ( (inBuf = br.readLine()) != null ) {
+
+        st = new StringTokenizer( inBuf );
+        System.out.println( st.countTokens() + " tokens" );
+        howManyStrings++;
+        howManyTokens += st.countTokens();
+      }
+
+      System.out.println( "There were " + howManyStrings +
+                          " Strings." );
+      System.out.println( "There were " + howManyTokens +
+                          " Tokens" );
+      System.exit( 0 );
+
+    }
+  }
+</PRE><HR></BODY></HTML>

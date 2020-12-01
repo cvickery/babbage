@@ -1,0 +1,142 @@
+<HTML><HEAD><TITLE>Frequently Asked Questions</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 1 Frequently Asked Questions</H1>
+</center>
+<dl>
+
+  <DT>
+
+    <B>Question:</B> <I>I have downloaded "</I>Vickery.zip<I>" into a
+    folder called <CODE>My&nbsp;Project&nbsp;1</CODE>, which is inside
+    another folder called <CODE>cs-101&nbsp;Projects</CODE>. I have
+    extracted </I>Checkers_UI.class<I> and </I>Vickery.jar<I> into
+    <CODE>My&nbsp;Project&nbsp;1</CODE> folder. I went to the DOS
+    prompt window and typed:
+    "<CODE>set&nbsp;CLASSPATH=.;Vickery.jar</CODE>", pressed Enter, and
+    the answer I got was "<CODE>C:\WINDOWS></CODE>" or I should say, I
+    got no answer.  Then right after "<CODE>C:\WINDOWS></CODE>" I typed
+    "<CODE>java Checkers_UI</CODE>" and the response was "<CODE>Can't
+    find class Checkers_UI</CODE>".<BR> Why?, why?, why? please help
+    me!.</I><p>
+
+  <DD>
+
+    <B>Answer:</B> OK, Vickery.jar and Checkers_UI.class are in
+    <CODE>C:\cs-101&nbsp;Projects\My&nbsp;Project&nbsp;1</CODE>, but
+    from your message, I see that your working directory was
+    <CODE>C:\Windows</CODE>. Since everything else you said looks right
+    (the <CODE>set</CODE> command doesn't print anything when you run
+    it), the problem must be that you were in the wrong directory when
+    you tried to run the program.<BR>You have to change to the directory
+    where you put the files.  In your case, use the following command:
+
+<pre>
+   cd&nbsp;\cs-101&nbsp;Projects\My&nbsp;Project&nbsp;1
+</pre>
+
+    Then run the program from there.  The dot in the set CLASSPATH
+    command refers to the "current directory," wherever that might be. 
+    So you have use the <CODE>cd</CODE> (<I>change directory</I>)
+    command to make the current directory be the one where
+    Checkers_UI.class is in order for java to be able to find it. 
+    Likewise, Vickery.jar also has to be in your current directory for
+    java to be able to find that, too.
+
+
+  <DT>
+
+  <B>Question:</B>  <I>I've been trying to implement the move command,
+  but when I compiled the following code the compiler gave me this
+  error:</I><pre>Checkers_UI.java:73: No method matching validate()
+  found in class Checkerboard.
+                    cb.validate();
+</pre><I>My code:</I><pre>
+     ...    else if ( token.equalsIgnoreCase( "move" ) ) {
+
+                             cb.validate();
+
+                       }    ...
+</pre><I>Is this code wrong? Could you please give me a hand?</I><p>
+
+  <DD>
+    <B>Answer:</B> You have to pass the row and column numbers (0-7) as
+  arguments. The message means that there is no method matching
+  "validate()" with empty parentheses.  But there <I>is</I> one that matches
+  "validate(int, int)".<p>
+
+  <DT><B>Question: </B><I>Hi, I am trying to work with your "move"
+command in Checkers_UI but it is not working. When I type "move" it
+prints "</I><CODE>usage: move&lt;from&gt;&lt;to&gt;</CODE><I>". So if I
+then type "</I><CODE>move<3 1><4 2></CODE><I>" or
+"</I><CODE>&lt;31&gt;&lt;42&gt;</CODE><I>" none of them works. Both of
+them gave me error messages. Please help
+me!!!!!!!!!!!!!!!!!!!!!!!!!!</I>
+
+  <DD><B>Answer: </B>Don't type any angle brackets, type a space to
+  separate <I>move</I> from the two numbers, and a space separating the
+  two numbers.  No spaces inside the two numbers.  Remember, this is
+  being parsed by a StringTokenizer, and should turn into three tokens. 
+  The angle brackets in the handout are a fairly standard way to show
+  "type something here that is described by the word inside the
+  brackets; don't type the brackets."  Sample command:
+<pre>  move 33 44</pre>
+
+  <DT><B>Question: </B>
+
+<I>I'm having trouble with my project. I feel like I'm on the right
+track but
+I can't see to figure out exactly when to refer to the checkerboard
+piece
+variables RED_PAWN, BLACK_PAWN, ETC.
+So far my code compiles and executes all other commands...
+BUT IT JUST WONT   " *^*&&^^%&% " MOVE!!!!<p>
+
+ps.
+I'm sorry, I shouldn't have said that.   I must learn to display better
+control.
+</I><p>
+
+  <DD>
+    <B>Answer: </B>As long as you don't say "#@$" it's OK.<p>
+
+I would approach it incrementally (green tongue, and all that).<p>
+
+First, get two row/column pairs and use <I>cb.validate()</I> (twice) to
+make sure they are on the board.  I just looked at my code and saw that
+I didn't make this method static (which I should have), so you have to
+use an instance variable to call it -- cb in the sentence above.<p>
+
+Now, use <I>cb.pickUp()</I> to pick up piece on the first square, and
+then call <I>cb.addPiece()</I> to place it on the second square.  None
+of this needs any references to RED_PAWN, etc.  However, if you do
+"move 33 44" it should work.  pickUp will return an <I>int</I> that
+will be equal to one of the RED_PAWN, etc. constants, but you don't
+really need to look at that value yet; just use it as the first
+argument when you call <I>addPiece()</I>.<p>
+
+Then you can start getting fancy.  If <I>pickUP()</I> returns
+Checkerboard.NO_PIECE (aka cb.NO_PIECE) the first square was empty, so
+print an error message. Next, if the value returned by
+<I>cb.occupant()</I> of the second square is *not*
+Checkerboard.NO_PIECE, that means the user tried to move to a non-empty
+square, which is also an error, so print an error message.<p>
+
+Once you have all that working, you can start to do the "interesting"
+stuff.  To check for valid moves, you have to look at the value
+returned by <I>pickUp()</I>.  If it is a RED_PAWN, the piece has to
+move down the board (the row number of the second square must be one
+less than the row number of the first square).  Vice-versa for
+BLACK_PAWN.  The second column number has to be first column number,
+plus or minus exactly one. If the second square's row  number is the
+piece's king row and the piece is a pawn, you can use <I>addPiece()</I>
+to add the piece to itself, thereby making it a king.<p>  Then you can do
+jumps :-)<p>
+
+</DL>
+<HR>
+<center>
+[&nbsp;<a href="index.html">Project 1 Description</a>&nbsp;]<BR>
+[&nbsp;<a href="changes.html">Changes to the Assignment</a>&nbsp;]
+</center>
+<HR></BODY></HTML>

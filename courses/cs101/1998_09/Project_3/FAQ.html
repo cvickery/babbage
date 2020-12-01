@@ -1,0 +1,38 @@
+<HTML><HEAD><TITLE>Frequently Asked Questions</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 3 Frequently Asked Questions</H1>
+</center>
+<dl>
+
+  <DT>
+
+    <B>Question:</B> <I>Why doesn't my board show the change when
+    I call </I>cb.init()<I> and </I>cb.zero()<I> in the
+    </I>actionPerformed()<I> methods for my buttons?</I><p>
+
+  <DD>
+
+    <B>Answer:</B> I gave some bad advice in class, suggesting that you
+    could just call the <I>validate()</I> method for the Panel that
+    holds all the squares.  That does work for my program, but I'm not
+    sure why!  Calls to a container's <I>validate()</I> method are
+    supposed to be ignored if the container or its contents haven't
+    changed size.  Instead, you should loop through all the black square
+    Panels, and call their <I>repaint()</I> method to get them to show
+    whatever piece they are supposed to have on them.  There are
+    optimizations you could do to reduce the number of method calls you
+    have to make, but this technique works and I don't think you will
+    see any effect of the extra overhead.  You will need to use this
+    technique when you start moving pieces, too.<p>
+
+  <DT>
+
+
+</DL>
+<HR>
+<center>
+[&nbsp;<a href="index.html">Project 3 Description</a>&nbsp;]<BR>
+[&nbsp;<a href="changes.html">Changes to the Assignment</a>&nbsp;]
+</center>
+<HR></BODY></HTML>

@@ -1,0 +1,108 @@
+import java.io.*;
+
+/**   Prints the contents of files in hexadecimal.
+  *
+  *   @author C. Vickery
+  */
+  public class HexDump
+  {
+    //  Class Variables
+    //  --------------------------------------------------------------
+    private static String hexTab = "0123456789ABCDEF";
+
+    //  main()
+    //  --------------------------------------------------------------
+    /**
+      *   Displays each file named on the command line in hexadecimal,
+      *   sixteen bytes per line.  Each line starts with the offset
+      *   into the file of the first byte on the line, then the
+      *   sixteen bytes (two hexadecimal digits each), and then the
+      *   character representations  of any ASCII codes found in those
+      *   bytes.
+      *
+      *   @param  args  File names supplied by the user.
+      */
+      public static void main( String[] args )
+      {
+        byte[] inBuf = new byte[ 16 ];
+
+        //  Loop over all filenames given on the command line.
+        for (int i = 0; i < args.length; i++ )
+        {
+          //  Display the name of the file
+          System.out.println( args[i] + ":" );
+
+          //  Read and print the contents of one file
+          try
+          {
+            int offset = 0;
+            FileInputStream fis = new FileInputStream( args[i] );
+            while ( true )
+            {
+              int numRead = fis.read( inBuf );
+
+              //  Format one line of output
+
+              //  * Offset
+              System.out.print( toHex( offset, 8 ) + ": " );
+
+              //  * Hexadecimal representation of bytes
+              for (int j=0; j<numRead; j++)
+              {
+                if ( ( j > 0 ) && ( 0 == j % 4 ) )
+                  System.out.print( " " );
+                System.out.print( toHex( inBuf[j], 2 ) );
+              }
+
+              //  * Blanks to fill short line at end of file
+              for (int j=numRead; j<inBuf.length; j++)
+              {
+                System.out.print( "  " );
+                if ( ( j > 0 ) && ( 0 == j % 4 ) )
+                  System.out.print( " " );
+              }
+
+              //  * Characters
+              StringBuffer sb = new StringBuffer( new String( inBuf, 0,
+                    numRead ) );
+              //    Replace non-printable chars with dots.
+              for (int j = 0; j < sb.length(); j++ )
+                if ( ( sb.charAt( j ) < ' ' ) ||
+                     ( sb.charAt( j ) > 0x7E ) )
+                  sb.setCharAt( j, '.' );
+              System.out.println( "  " + sb );
+              offset += numRead;
+
+              //  Check for end of file
+              if ( numRead < inBuf.length )
+                break;
+            }
+          }
+          catch (IOException ioe)
+          {
+            System.err.println( ioe );
+          }
+        }
+      }
+
+    //  toHex()
+    //  ------------------------------------------------------------
+    /**
+      *   Convert an unsigned integer into a String of hexadecimal
+      *   digits, with leading zeros.
+      *
+      *   @param  val     The (long) integer to be converted.
+      *   @param  numChar The exact number of hexadecimal characters
+      *   to generate.
+      */
+      private static String toHex( long val, int numChar )
+      {
+        char[] returnVal = new char[ numChar ];
+        for (int i = numChar - 1; i >= 0; i--)
+        {
+          returnVal[i] = hexTab.charAt( (int)(val & 0x0F) );
+          val >>= 4;
+        }
+        return new String( returnVal );
+      }
+    }

@@ -1,0 +1,221 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>Lecture 18</title>
+<meta name=Description content="12-Apr-00: Make the Close Button Work">
+<link rel=next href=slide0008.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0006.htm');   
+  else
+    parent.location.href = "../Lecture_18.html";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=650 height=487 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=55 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=515 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=650 height=63 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=68 height=45 colspan=2></td>
+  <td width=515 height=45>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=515 height=45 align=center><font face="Times New Roman" size=6>Make
+    the Close Button Work</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=67 height=45 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=650 height=25 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=55 height=328></td>
+  <td width=552 height=328 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=17 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=57 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=148 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=89 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=9 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=92 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=262 height=29 colspan=7><font face="Times New Roman" size=5>Need
+    a <i>Window Listener</i></font><br>
+    </td>
+    <td width=265 height=29 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=552 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=499 height=25 colspan=15><font face="Times New Roman" size=4>A
+    Window Listener is an instance (object) of any class</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=53 height=23 colspan=3></td>
+    <td width=475 height=23 colspan=13><font face="Times New Roman" size=4>that
+    implements the java.awt.event.WindowListener</font><br>
+    </td>
+    <td width=24 height=23 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=53 height=24 colspan=3></td>
+    <td width=86 height=24 colspan=4><font face="Times New Roman" size=4>interface.</font><br>
+    </td>
+    <td width=413 height=24 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=552 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=488 height=25 colspan=14><font face="Times New Roman" size=4>Methods
+    declared in java.awt.event.WindowListener:</font><br>
+    </td>
+    <td width=11 height=25></td>
+   </tr>
+   <tr>
+    <td width=552 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=65 height=21 colspan=5></td>
+    <td width=17 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=338 height=21 colspan=7><font face="Times New Roman" size=3>void
+    windowActivated( WindowEvent we );</font><br>
+    </td>
+    <td width=132 height=21 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=552 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=65 height=21 colspan=5></td>
+    <td width=17 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=317 height=21 colspan=4><font face="Times New Roman" size=3>void
+    windowClosed( WindowEvent we );</font><br>
+    </td>
+    <td width=153 height=21 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=552 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=65 height=21 colspan=5></td>
+    <td width=17 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=323 height=21 colspan=5><font face="Times New Roman" size=3>void
+    windowClosing( WindowEvent we );</font><br>
+    </td>
+    <td width=147 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=552 height=2 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=65 height=21 colspan=5></td>
+    <td width=17 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=354 height=21 colspan=9><font face="Times New Roman" size=3>void
+    windowDeactivated( WindowEvent we );</font><br>
+    </td>
+    <td width=116 height=21 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=552 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=65 height=21 colspan=5></td>
+    <td width=17 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=353 height=21 colspan=8><font face="Times New Roman" size=3>void
+    windowDeiconified( WindowEvent we );</font><br>
+    </td>
+    <td width=117 height=21 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=552 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=65 height=21 colspan=5></td>
+    <td width=17 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=332 height=21 colspan=6><font face="Times New Roman" size=3>void
+    windowIconified( WindowEvent we );</font><br>
+    </td>
+    <td width=138 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=552 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=65 height=21 colspan=5></td>
+    <td width=17 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=323 height=21 colspan=5><font face="Times New Roman" size=3>void
+    windowOpened( WindowEvent we );</font><br>
+    </td>
+    <td width=147 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=552 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=257 height=25 colspan=6><font face="Times New Roman" size=4>[ </font><a
+    href="http://babbage.cs.qc.edu/courses/cs101/Spring00/Lecture_18_files/WindowListener_ex.java.html"
+    target="_parent"><font face="Times New Roman" size=4>WindowListener_ex.java</font></a><font
+    face="Times New Roman" size=4> ]</font><br>
+    </td>
+    <td width=242 height=25 colspan=9></td>
+   </tr>
+  </table>
+  </td>
+  <td width=43 height=328></td>
+ </tr>
+ <tr>
+  <td width=650 height=26 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

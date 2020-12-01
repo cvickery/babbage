@@ -1,0 +1,75 @@
+<HTML><HEAD><TITLE>TestBeLittle.java</TITLE></HEAD><BODY><PRE>
+//  TestBeLittle.java
+
+//    This tests the beLittle() method from Exam 1, October 6, 1998
+//    The question asked only for the method, not for the class.
+
+//  Class TestBeLittle
+//  -------------------------------------------------------------------
+/**
+  *   Tests the beLittle() method.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class TestBeLittle {
+
+  //  main()
+  //  -----------------------------------------------------------------
+  /**
+    *   Creates a two-dimensional array of char and prints the
+    *   proportion that is lower case, determined by beLittle.
+    *
+    */
+    public static void main(String[] args) {
+
+    char[][] theArray = { { 'a', 'b', 'c', 'd' },
+                          { 'Z', 'Y', 'W', 'V' },
+                          { 'h', 'e', 'l', 'l', 'o' },
+                        };
+      System.out.println( "The array is " + 100 * beLittle(theArray) +
+                          "% lowercase.");
+      }
+
+
+  //  beLittle()
+  //  -----------------------------------------------------------------
+  /**
+    *   The method to be written for the exam.
+    *
+    */
+    
+    static double beLittle(char[][] x) {
+
+    double    numLittle = 0, total = 0;
+
+      for (int row = 0; row < x.length; row++) {
+
+        total += x[row].length;
+
+        for (int col = 0; col < x[row].length; col++) {
+
+          if (Character\.isLowerCase(x[row][col])) {
+
+            numLittle++;
+
+            }
+
+          }
+
+        }
+
+      if ( total > 0 ) {
+
+        return numLittle/total;
+
+        }
+
+      else {
+
+        return 0;
+
+        }
+      }
+    }
+</PRE></HR></HTML>

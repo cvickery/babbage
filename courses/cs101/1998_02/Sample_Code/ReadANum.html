@@ -1,0 +1,119 @@
+<HTML><HEAD><TITLE>Read a Number from the Console</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Read a Number from the Console</H1>
+</center>
+
+<H2>Introduction</H2>
+
+  This is an application that reads an unsigned integer from the command
+  line.  It's not very robust (for example "hello" and "-123" are both
+  happily read as the value zero), but it gets the job done without
+  having to wrap System.in in an InputStreamReader, which has to be
+  wrapped in a StreamTokenizer, which has to be processed using member
+  funcitons to get tokens and turn them into ints ...  Anyway, this code
+  works and is pretty easy to understand.<p>
+  
+  If you want to download a copy of this code, you have several
+  options, which depend on what browser and what compter system you are
+  using. One way is to tell your browser to save this page to disk, and
+  edit out the parts that aren't Java.  Another way is to [<A
+  href="ftp://babbage.cs.qc.edu/pub/vickery/CS-101/ReadANum.java">
+  click on this link</a> ], which will use the ftp protocol to get a
+  copy.  Depending on your system, this option will either load the
+  file into a browser window (and you can then save it to disk) or
+  transfer the file directly to your disk.  The problem is that text
+  files are stored with a linefeed character at the end of each line on
+  Unix computers (like babbage), but with carriage return and linefeed
+  characters at the end of each line on Microsoft operating systems,
+  and with only carriage returns on Macintosh systems. Some browsers
+  deal with this problem better than others, and some ftp programs do
+  better than some browsers.
+
+<H2>The Code</H2>
+
+<pre>
+     //  ReadANum.java
+     //
+     //    This application illustrates how to read a numeric string from
+     //    the command line and convert it to an int.
+     //
+     //    @author   C. Vickery
+     //    Spring 1998
+     //
+     
+     import java.io.*;
+     
+     //  class ReadANum
+     //  -------------------------------------------------------------------
+     /**
+      *    This is a "wrapper" class for a main() method that reads
+      *    characters from the command line, and converts them to an
+      *    int.
+      */
+     public class ReadANum {
+     
+       //  main()
+       //  -----------------------------------------------------------------
+       /**
+        *    There are better ways than this to do the conversion of intput
+        *    characters into a number in Java.  For example, one limitation
+        *    of this code is that it handles only positive integers, or
+        *    zero, and treats anything that doesn't start with a digit as
+        *    the value zero.
+        *
+        *    What follows is fairly detailed commentary about this method;
+        *    you would never write comments like these because you can
+        *    always assume the reader of your code already knows about
+        *    Java's built-in classes, like Character.
+        *
+        *      System.in.read() returns the integer value of the Unicode
+        *      representation of one character typed by the user.  This int
+        *      can be saved in a char by using a cast; casts tell the
+        *      compiler we know what we are doing (or at least think we do);
+        *      without the cast, the compiler thinks that assigning an int
+        *      to a char is a syntax error.
+        *
+        *      The built-in class Character has a method called isDigit()
+        *      which takes a char as an argument, and will tell if the char
+        *      is a valid decimal digit or not by returning a boolean
+        *      value.  So the while loop reads input characters until it
+        *      gets one that is not a valid decimal digit.
+        *
+        *      The int, "value," is initialzed to zero, and is scaled up by
+        *      factor of 10 for every decimal digit that is read, and
+        *      incremented by the numeric value of the character, which is
+        *      obtained using the digit() method of class Character.  This
+        *      method has to be told what radix to use, which is 10
+        *      (decimal) in our case.  Try printing value each time through
+        *      the loop to see how this works.
+        */
+     
+       public static void main ( String[] args ) throws IOException {
+     
+       char  character;
+       int   value = 0;
+     
+         // Prompt the user to enter a number
+         System.out.print("Enter a number: ");
+     
+         //  Read characters, building up the decimal value as we go.
+         while (Character.isDigit( character = (char) System.in.read() )) {
+     
+           value *= 10;
+           value += Character.digit( character, 10 );
+     
+           }
+     
+         //  Prove we really have a number by doing some arithmetic with it
+         System.out.println( "One less than that is " + (value - 1) );
+     
+         //  Terminate the program
+         System.exit( 0 );
+     
+         }
+     
+       }
+</PRE>
+
+<HR></BODY></HTML>

@@ -1,0 +1,124 @@
+<HTML><HEAD><TITLE>Lecture 9</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Lecture 9</H1>
+<H2>March 2, 1999</H2>
+</center>
+
+<ol compact>
+    <LI><B>Sample code</B> for [&nbsp;<a HREF="Class_A.html">class
+    A</A>&nbsp;]<p>
+    When an application's first class is loaded, the JVM executes any
+    class initialization code (initialization of static variables and
+    execution of statements in <CODE>static</CODE> blocks, and
+    <B>then</B> it looks to see if there is a main() method to execute. 
+    The sample code, as shown, prints some messages, and then exits
+    before the JVM tries to find main().  If the call to System.exit()
+    is taken out of the static initialization block, the messages will
+    still print, but the JVM will then print an error message saying
+    that it cannot find main().<p>
+    
+    Every class has a toString() method that can be used to get a
+    String that represents the object.  You don't have to write the
+    toString() method if you don't want to, because class Object
+    provides one, and all classes are subclasses of class Object (or
+    subclasses of classes that are subclasses of class Object, or
+    subclasses of classes that are subclasses of classes that are
+    subclasses of class Object, or ... ).  If you don't write a
+    toString() method for your class, your class inherits the toString()
+    method of its superclass.  Ultimately, every class either provides
+    its own toString() method or inherits one from its superclass.  The
+    toString() method provided by class Object returns a String that
+    starts with the name of the class, and at sign ( @ ), and a number
+    (hexadecimal) called the object's <I>hashcode</I>.  The hashcode
+    looks suspiciously like the kind of number you would find inside a
+    reference variable, but if so it's an undocumented feature of the
+    class library.<p>
+    
+    To illustrate that every object has a toString() method and to show
+    that it is used implicitly whenever you want to print things, I had
+    the sample program print the System.out object.  This is admittedly
+    a bizarre thing to do, but it illustrates that you can print
+    anything because everything has a toString() method, in this case
+    the one inherited from class Object.<p>
+    
+    <LI><B>Classes String and StringBuffer</B>.  (See the [&nbsp;<a
+    HREF="Lecture_08">Slides From Lecture 8</A>&nbsp;].)  String
+    objects cannot be modified once they are created, but StringBuffer
+    objects can.  There were blackboard diagrams showing the effects of
+    appending information to a StringBuffer object, creating a new
+    StringBuffer from a String, and copying a reference to an object
+    compared to creating a new object.<p>
+
+    Here are some comments from the source code for class
+    StringBuffer in the JDK:<p>
+
+<I><blockquote>
+String buffers are used by the compiler to implement the binary 
+string concatenation operator <code>+</code>. For example, the code:
+<p><blockquote><pre>
+    x = "a" + 4 + "c"
+</pre></blockquote><p>
+is compiled to the equivalent of: 
+<p><blockquote><pre>
+    x = new StringBuffer().append("a").append(4).append("c")
+                          .toString()
+</pre></blockquote>
+
+which creates a new string buffer (initially empty), appends the string
+representation of each operand to the string buffer in turn, and then
+converts the contents of the string buffer to a string. Overall, this
+avoids creating many temporary strings. <p>
+</blockquote></I>
+    
+    <LI><B>Class StringTokenizer</B>.  (See the [&nbsp;<a
+    HREF="Lecture_08">Slides From Lecture 8</A>&nbsp;].)  You already
+    saw how to use this class in the ReadString series of programs. 
+    Note that The StringTokenizer methods hasMoreTokens() and
+    hasMoreElements() do the same thing.  Likewise, the methods
+    nextToken() and nextElement() do the same thing.   This is because
+    the class StringTokenizer implements the Enumeration interface. 
+    Interfaces are covered in Chapter 7 of Deitel and Deitel.<p>
+
+    <LI><B>Class Vector</B>.  (See the [&nbsp;<a
+    HREF="Lecture_08">Slides From Lecture 8</A>&nbsp;].)  A Vector is
+    like a one-dimensional array in many ways, but you can add and
+    remove elements from a Vector whereas you can't change the number of
+    elements in an array.  It's sort of like the difference between a
+    String, whose length can't be changed once it has been created, and
+    a StringBuffer, which supports append, insert, and delete
+    operations.  The analogy is not perfect, because you can't change
+    the characters that make up a String (you can't change "hello" into
+    "aloha" even though they have the same number of characters), but you
+    can change the values of the elements of an array at any time.<p>
+    
+    <LI><B>Enumerations</B>.  The method elements() in class Vector
+    returns an Enumeration.  This means that it returns a object that
+    provides methods named hasMoreElements() and nextElement() that can
+    be used to go through all the elements in the Vector one at a time,
+    the way we used hasMoreTokens() and nextToken() to go through the
+    Strings in a StringTokenizer in the ReadStrings programs.  An
+    Enumeration is an example of an interface, which will be covered in
+    more detail later.<p>
+
+    <LI><B>Project 1 and Exam 1</B>.  The due date for Project 1 will be
+    postponed to something "reasonable,"  but the exam scheduled for
+    March 11 will be held as scheduled.  The project will be to write a
+    class named Draw_UI that will provide a command-line user interface
+    to a Drawing class that I will provide.  Details will follow when I
+    have the Drawing class ready!<p>
+
+</ol>
+
+<H2>Clarification</H2>
+
+A student asked in class whether StringBuffer's append() methods are
+superfluous because you can do the same thing with the insert() methods.
+I said that was true, and suggested that it might even be the case that
+append is implemented internally as a call to insert().  It was pointed
+out to me afterwards that my answer was misleading.  In fact, it is much
+more efficient to have separate append methods because the logic for
+adding characters to the end of an array is much simpler than the more
+general logic for inserting characters into an arbitrary position.
+
+<HR></BODY></HTML>

@@ -1,0 +1,184 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>Lecture 18</title>
+<meta name=Description content="12-Apr-00: Adapter Classes">
+<link rel=next href=slide0009.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0008.htm');   
+  else
+    parent.location.href = "../Lecture_18.html";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=650 height=487 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=55 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=129 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=284 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=153 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=650 height=63 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=184 height=45 colspan=2></td>
+  <td width=284 height=45>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=284 height=45 align=center><font face="Times New Roman" size=6>Adapter
+    Classes</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=182 height=45 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=650 height=38 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=55 height=260></td>
+  <td width=566 height=260 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=210 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=96 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=92 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=39 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=14 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=45 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=25 height=25><font face="Times New Roman" color=black size=4>•</font></td>
+    <td width=466 height=25 colspan=7><font face="Times New Roman" size=4>Standard
+    libraries use interfaces to define <i>listeners</i>.</font><br>
+    </td>
+    <td width=76 height=25 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=567 height=4 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=33 height=21 colspan=2></td>
+    <td width=20 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=452 height=21 colspan=6><font face="Times New Roman" size=3>But
+    many applications end up having to provide “nop” (do-</font><br>
+    </td>
+    <td width=62 height=21 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=567 height=1 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=53 height=21 colspan=3></td>
+    <td width=504 height=21 colspan=9><font face="Times New Roman" size=3>nothing)
+    implementations for most of the methods in the interface.</font><br>
+    </td>
+    <td width=10 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=567 height=6 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=25 height=25><font face="Times New Roman" color=black size=4>•</font></td>
+    <td width=535 height=25 colspan=12><font face="Times New Roman" size=4>Adapter
+    classes implement listener interfaces by providing</font><br>
+    </td>
+    <td width=7 height=25></td>
+   </tr>
+   <tr>
+    <td width=567 height=1 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=25 height=25></td>
+    <td width=483 height=25 colspan=9><font face="Times New Roman" size=4>nop
+    implementations for all methods in the interface.</font><br>
+    </td>
+    <td width=59 height=25 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=567 height=5 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=33 height=21 colspan=2></td>
+    <td width=20 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=500 height=21 colspan=8><font face="Times New Roman" size=3>Then
+    you subclass the adapter class and override the methods that</font><br>
+    </td>
+    <td width=14 height=21 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=567 height=1 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=53 height=21 colspan=3></td>
+    <td width=307 height=21 colspan=3><font face="Times New Roman" size=3>you
+    want to have actually do something.</font><br>
+    </td>
+    <td width=207 height=21 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=567 height=6 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=25 height=25><font face="Times New Roman" color=black size=4>•</font></td>
+    <td width=427 height=25 colspan=6><font face="Times New Roman" size=4><i>Note</i>:
+    There is only one method declared in the</font><br>
+    </td>
+    <td width=115 height=25 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=567 height=1 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=25 height=25></td>
+    <td width=542 height=25 colspan=13><font face="Times New Roman" size=4>ActionListener
+    interface, so it wouldn’t make sense to have</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=567 height=1 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=25 height=25></td>
+    <td width=239 height=25 colspan=4><font face="Times New Roman" size=4>an
+    “ActionAdapter” class.</font><br>
+    </td>
+    <td width=303 height=25 colspan=9></td>
+   </tr>
+  </table>
+  </td>
+  <td width=29 height=260></td>
+ </tr>
+ <tr>
+  <td width=650 height=81 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

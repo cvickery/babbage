@@ -1,0 +1,93 @@
+<HTML><HEAD><TITLE>HelpDialog.java</TITLE></HEAD><BODY><PRE>
+
+//  HelpDialog.java
+
+import java.awt.*;
+import java.awt.event.*;
+
+//  Class HelpDialog
+//  ==================================================================
+/**
+  *   Puts up a Frame with a MenuBar.  The Help menu
+  *   has an About item telling the name of the program
+  *   and the author.
+  *
+  */
+  public class HelpDialog extends Frame {
+
+  private Dialog  about_dialog;
+
+    //  main()
+    //  --------------------------------------------------------------
+    public static void main(String[] argv) {
+
+      HelpDialog gui = new HelpDialog();
+      gui.init();
+
+    }
+
+    //  init()
+    //  --------------------------------------------------------------
+    public void init() {
+
+      //  Set up the "about" dialog
+      about_dialog = new Dialog( this );
+      about_dialog.add(
+        new Label(  "This is a Nice Program",
+                    Label.CENTER ),
+        BorderLayout.NORTH );
+      about_dialog.add(
+        new Label(  "by Yours Truly",
+                    Label.CENTER ),
+        BorderLayout.CENTER  );
+
+      //  Set up the menu bar, menu, and menu item.
+      MenuBar   mb = new MenuBar();
+      Menu      hm = new Menu( "Help" );
+      MenuItem  about = new MenuItem( "About" );
+
+      about.addActionListener(
+        new AboutControl( about_dialog ) );
+
+      hm.add( about );
+      mb.setHelpMenu( hm );
+
+      //  Show the frame with its menu bar
+      setMenuBar( mb );
+      setSize( 200, 100 );
+      show();
+
+    }
+  }
+
+
+//  Class AboutControl
+//  ==================================================================
+class AboutControl implements ActionListener {
+
+  private Dialog _dialog;
+  private Button _dismiss = new Button( "Dismiss" );
+
+  //  Constructor
+  //  ----------------------------------------------------------------
+  public AboutControl( Dialog dialog ) {
+    _dialog = dialog;
+    _dialog.add( _dismiss, BorderLayout.SOUTH );
+    _dialog.pack();
+//    _dialog.list( System.out, 5 );
+
+    _dismiss.addActionListener( new ActionListener() {
+      public void actionPerformed( ActionEvent ae ) {
+        _dialog.dispose();
+      }});
+
+  }
+
+  //  actionPerformed()
+  //  ----------------------------------------------------------------
+  public void actionPerformed( ActionEvent ae ) {
+    _dialog.show();
+  }
+}
+
+</PRE><HR></BODY></HTML>

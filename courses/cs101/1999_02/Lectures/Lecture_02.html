@@ -1,0 +1,111 @@
+<HTML>
+<HEAD><TITLE>Lecture 2</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<H1 ALIGN="CENTER">Lecture 2</H1>
+<H2 ALIGN="CENTER">February 2, 1999</H2>
+<H2 ALIGN="CENTER">Working with the DOS Command Line</H2>
+<H2>Terminology</H2>
+
+<UL>
+<I><LI>Folder</I> and <I>Directory </I>generally mean the same thing</LI>
+<LI>There is a <I>Current Directory; </I>its pathname appears in the <U>prompt string</LI>
+
+<UL>
+</U><LI>If you don't give an explicit pathname, the current directory is where files will be saved.</LI>
+<LI>On some systems, the command prompt window starts with <FONT FACE="Courier New">C:\Windows</FONT> as the current directory.  This is always inappropriate, and you much change it before saving any files.  There is a free "Powertoy" called <I>doshere</I> available from Microsoft that lets you right-click on any folder and start a DOS prompt window with that directory as the initial current directory. ([&nbsp;<A HREF="http://www.microsoft.com/windows95/downloads/contents/wutoys/w95pwrtoysset/default.asp?site=95">click here</A>&nbsp;] to download it.)</LI></UL>
+
+<LI>A "DOS Prompt" is a window that runs a program called <I>command.com</I> (Windows 95 or 98) or <I>cmd.exe</I> (Windows NT or 2000).  This program:</LI></UL>
+
+<OL>
+<OL>
+
+<LI>Displays a prompt string telling you it is ready for you to type a <U>command line</LI>
+</U><LI>Reads the command line you type</LI>
+<LI>Executes the command line you typed either by interpreting it directly (a built-in command) or by loading an executable file for execution (an external command)</LI>
+<LI>The program that executes, whether it is a built-in command or an external command, may (or may not) read things you type and write things for you to read in the DOS Prompt window.  When the program completes, <I>command.com</I> (<I>cmd.exe</I>) displays another prompt for you to enter a command line.</LI></OL>
+</OL>
+
+<H2>Command Line Syntax</H2><DIR>
+<DIR>
+
+<FONT FACE="Courier New"><P>&lt;command name&gt; [ switches ] [parameters]</P></DIR>
+</DIR>
+
+
+<UL>
+
+<UL>
+</FONT><LI>The <I>&lt;command name&gt;</I> must be any one of the following:</LI></UL>
+</UL>
+
+
+<UL><DIR>
+<DIR>
+
+
+<UL>
+<LI>The name of a built-in command that <I>command.com</I> interprets itself.</LI>
+
+<UL>
+<I><LI>dir </I>(list file and directory names),<I> copy</I> (copy files from one directory to another)<I>, del</I> (delete files)<I>, md</I> (make a directory)<I>, rd</I> (remove a directory)<I>, cd</I> (change the current directory), <I>set</I> (list <U>environment variable</U> names and values).</LI></UL>
+
+<LI>The exact pathname of an executable file.  The file name must end in <FONT FACE="Courier New">.exe</FONT>, <FONT FACE="Courier New">.com</FONT>, or <FONT FACE="Courier New">.bat</FONT>, but the extension does not have to be typed.</LI>
+
+<UL>
+<FONT FACE="Courier New"><LI>C:\jdk\1.1.7\bin\java</LI>
+<LI>C:\windows\command\xcopy32</LI></UL>
+
+</FONT><LI>The name of an executable file that is in one of the directories listed in the <I>PATH</I> environment variable.</LI>
+
+<UL>
+<FONT FACE="Courier New"><LI>java</LI></UL>
+</UL>
+</DIR>
+</DIR>
+
+
+<UL>
+</FONT><LI>The square brackets ( <FONT FACE="Courier New">[ … ]</FONT> ) around <I>switches</I> means this part of the command line is optional.  If there are any switches, they begin with either a slash ( <FONT FACE="Courier New">/</FONT> ) or a dash ( <FONT FACE="Courier New">-</FONT> ), depending on the command.  Some commands allow switches to be given following, or intermixed with, parameters.</LI>
+
+<UL>
+<FONT FACE="Courier New"><LI>java -nojit …</LI>
+<LI>C:\windows\xcopy32 *.* /s A:</LI>
+
+<UL>
+</FONT><LI>(<FONT FACE="Courier New">/s</FONT> tells <I>xcopy32</I> to copy <U>s</U>ubdirectories)</LI></UL>
+</UL>
+
+<LI>The <I>parameters</I> are whatever the command needs to know in order to do its work.  Often, they are the names of files.</LI>
+
+<UL>
+<FONT FACE="Courier New"><LI>javac <U>MyClass.java</LI>
+</U><LI>C:\"Program Files\pfe\pfe32" <U>Exercise_1.java</LI>
+
+<UL>
+</U></FONT><LI>(Note the use of quotes because of the space in the pathname.)</LI></UL>
+</UL>
+</UL>
+</UL>
+
+<H2>Environment Variables</H2>
+<I><P>Environment</I> variables<I> </I>are name-value pairs that <I>command.com</I> and other programs use to manage housekeeping information.</P>
+
+<UL>
+<LI>For example, <I>command.com</I> uses the variable named <I>PATH</I> to tell it what directories to search when looking for an executable file.  The value of <I>PATH</I> is a semicolon ( <FONT FACE="Courier New">;</FONT> ) separated list of directories.</LI>
+<LI>For example, <I>javac</I> and <I>java</I> use the variable named <I>CLASSPATH</I> to tell them where to find class files.  The value of <I>CLASSPATH</I> is a semicolon-separated list of directories, <I>jar</I> files, and <I>zip</I> files that contain class files.</LI>
+<LI>To assign a value to an environment variable, type <FONT FACE="Courier New">set</FONT>, the name, an equal sign ( <FONT FACE="Courier New">=</FONT> ), and the value.  Don't put any spaces anywhere, even around the equal sign.  To set the names and values of all your environment variables, type <FONT FACE="Courier New">set</FONT>.  If a variable is already set and you just want to add something to its value, you can refer to the old value by putting the name inside percent ( <FONT FACE="Courier New">%</FONT> ) signs.</LI>
+
+<UL>
+<FONT FACE="Courier New"><LI>set PATH=C:\jdk1.1.7\bin;%PATH%</LI>
+</FONT><B><LI>Note:</B> <I>PATH</I> is special.  You can assign an initial value to it by typing "<FONT FACE="Courier New">PATH&nbsp;x;y;z"</FONT> (where x, y, and z are pathnames of directories) and you can see its current value by using <I>PATH </I> as if it were the name of a command.</LI>
+<LI>Commands to assign a value to your <I>PATH</I> are usually put inside <FONT FACE="Courier New">C:\autoexec.bat</FONT>.  This is a "batch file" that contains command lines that are automatically executed whenever Windows starts running.  (In NT this is done in the System/Environment panel of the Control Panel.)</LI>
+<B><LI>Note:</B> Java does not need to have <I>CLASSPATH</I> set in order to work properly.  But if it <I>is</I> set it must list <I>all</I> the places that class files might be found.</LI></UL>
+</UL>
+<HR>
+</BODY>
+</HTML>

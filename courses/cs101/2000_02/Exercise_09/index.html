@@ -1,0 +1,91 @@
+<HTML><HEAD><TITLE>Exercise 9</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Exercise 9</H1>
+</center>
+
+<H2>Overview</H2>
+
+This is a "pseudo-project."  You are not actually to submit it, but you
+should work on it to prepare for the final exam.<p>
+
+Ideally, you would do a complete MP3 tag editor for this project. 
+Realistically, you should be able to build the user interface for
+the tag editor and connect it to the user interface to the classes I am
+supplying.
+
+<H2>Source Code</H2>
+
+I am supplying the following source code for you to study and extend:
+
+<UL>
+  <LI>[&nbsp;<a HREF="TagEditor.java.html">TagEditor.java</A>&nbsp;]
+  <BR>This version has only the File->Save menu item, Genre label, and
+  the genre combobox.  You should add code to this to implement the
+  remainder of the user interface, using existing code as a model to
+  work from.
+  
+  <LI>[&nbsp;<a HREF="MP3_File.java.html">MP3_File.java</A>&nbsp;]
+  <BR>This class manages "real MP3 files", but it's still under
+  development.  It can be used to create files with ID3V1 tags and edit
+  them, but the audio stream part has not been tested, and the code for
+  the ID3V2 tags is "dummy code" at this point.  If you want debugged
+  versions of this other code so you can continue working on the project
+  over the summer, let me know and I'll send it to you after exams.
+  
+  <<LI>[&nbsp;<a HREF="ID3V1_Tag.java.html">ID3V1_Tag.java</A>&nbsp;]
+  <BR>This code can be used to read/modify/write the ID3V1 tag in a
+  file.
+
+  <<LI>[&nbsp;<a HREF="ID3V2_Tag.java.html">ID3V2_Tag.java</A>&nbsp;]
+  <BR>This is dummy code.  Yogesh Patel has done a nice job writing the
+  real version of this code, but I haven't had a chance to integrate it
+  with the project and test it yet.
+
+  <LI>[&nbsp;<a HREF="MP3_Audio.java.html">MP3_Audio.java</A>&nbsp;]
+  <BR>This class is used to manage the audio stream part of MP3 files;
+  it can be queried to find out how many minutes and seconds of music
+  there are in the file, for example.  This code works, but has not been
+  thoroughly integrated with the project.  That means that there may be
+  bugs reading/writing the audio stream, so DON'T USE THIS CODE WITH
+  REAL MP3 MUSIC FILES.  Well, you can try it, but be sure you keep the
+  original copy of the music safe somewhere else!  <B>You have been
+  warned!</B>
+</UL>
+
+<H2>Development Plan</H2>
+
+Building the user interface is a matter of adding in the menus and menu
+items we developed in class, adding all the labels, text fields, and
+combo boxes to the content pane, and systematically implementing the
+various action listeners and testing them.<p>
+
+We discussed how to do the layout for the user interface in lecture. 
+Remember, JPanel is a very useful component because you can do things
+like this with it:  BorderLayout allows only one component on, say, the
+East side of a container.  If you make that one component a JPanel, you
+can then give the JPanel its own layout manager and add multiple
+components to it.  For example, you could make a 1-column grid full of
+buttons going down the right side of your JFrame using this
+code:<p>
+<pre>
+    JFrame jf = new JFrame( "JPanel_ex" );
+    Container cp = jf.getContentPane();
+    JPanel jp = new JPanel( new GridLayout(0, 1) );
+    jp.add( new JButton("One") );
+    jp.add( new JButton("Two") );
+    jp.add( new JButton("Three") );
+    jp.add( new JButton("Four") );
+    cp.add(jp, BorderLayout.EAST);
+</pre>
+
+<B>Note:</B> There is lots of code here, and not enough time for you to
+master it all before the final exam.  Concentrate on building the user
+interface and implementing some of the callback methods.  You will
+<I>not</I> have to write code using JPanel on the exam, but you should
+know what it is because it was covered in lecture.<p>
+
+<HR></BODY></HTML>

@@ -1,0 +1,119 @@
+<HTML><HEAD><TITLE>SortTitles.java</TITLE></HEAD><BODY><PRE>
+//  SortTitles.java
+
+//    This is working code for the program designed in class on
+//    November 5, 1988.
+
+//    The requirements, simplified, were to write a Java application
+//    that reads lines of text from System.in (the standard input
+//    device, or "stdin," and to write them to System.out in sorted
+//    order.  The implementation has to use a linked list to keep the
+//    titles in sorted order as they are entered.
+
+import java.io.*;
+
+//  Class SortTitles
+//  -------------------------------------------------------------------
+/**
+  *   Reads Strings from stdin and adds them to a linked list in sorted
+  *   order, then prints them out.  This way of sorting items is also
+  *   called an "insertion sort."
+  *
+  *   @author C. Vickery
+  *
+  */
+  public class SortTitles {
+
+  //  main()
+  //  -----------------------------------------------------------------
+  /**
+    *   Implements the command-line user interface for this
+    *   application.  Reads lines of text from stdin, inserts them into
+    *   a linked list, and prints the list when end of input is
+    *   reached.
+    *
+    */
+    public static void main( String[] args ) throws IOException {
+
+    BufferedReader  br = new BufferedReader(
+                          new InputStreamReader( System.in ) );
+    String          inBuf;
+    Title           hoL = null, previous, current, traverser;
+
+      //  Read Strings from stdin until eof; insert each one into
+      //  the linked list as it is read.
+      while ( (inBuf = br.readLine()) != null ) {
+
+        current = new Title( inBuf );
+        if ( hoL == null ) {
+          //  Insertion into empty list is special.
+          hoL = current;
+        }
+        else {
+          //  Insert into proper position in non-empty list
+          if ( hoL.getTitle().compareTo( current.getTitle() ) > 0 ) {
+            //  Insertion at head of list is special
+            current.setNext( hoL );
+            hoL = current;
+          }
+          else {
+            //  Find insertion point
+            previous  = hoL;
+            traverser = hoL;
+            while ( traverser != null ) {
+
+              if ( traverser.getTitle().compareTo(
+                    current.getTitle() ) > 0 ) {
+                //  Found the insertion point
+                current.setNext( traverser );
+                break;
+              }
+              previous = traverser;
+              traverser = traverser.getNext();
+            }
+            //  Traversal completed -- current node goes after
+            //  previous either because it is in the middle or at the
+            //  end of the list
+            previous.setNext( current );
+          }
+        }
+      }
+      //  End of file on Standard.in -- print the list.
+      traverser = hoL;
+      while ( traverser != null ) {
+        System.out.println( traverser.getTitle() );
+        traverser = traverser.getNext();
+      }
+    }
+
+  }
+
+//  Class Title
+//  ------------------------------------------------------------------
+/**
+  *   A Title object holds a book title (actually, any String) and a
+  *   link for the next Title in a linked list.
+  *
+  *   This class is not declared public so it can be included in the
+  *   same file as the SortTitles public class.
+  *
+  *   @author C. Vickery
+  *
+  */
+  class Title {
+
+  //  fields
+  //  ----------------------------------------------------------------
+    private String title;
+    private Title   next;
+
+  //  constructor, getters, and setters
+  //  ----------------------------------------------------------------
+    public Title( String s )      { title = s; next = null; }
+    public String getTitle()      { return title; }
+    public Title getNext()        { return next; }
+    public void setNext( Title n ) { next = n; }
+
+  }
+
+</PRE><HR></BODY></HTML>

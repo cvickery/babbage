@@ -1,0 +1,51 @@
+<HTML><HEAD><TITLE>StringCompare.java</TITLE></HEAD><BODY>
+<CENTER><H1>StringCompare.java</H1></CENTER><HR><PRE>
+//  StringCompare.java
+
+//  Class StringCompare
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates the difference between comparing Strings using ==,
+  *   which compares reference variables, and equals(), which compares
+  *   the characters in the Strings.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring 2000
+  */
+  public class StringCompare
+  {
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Creates two references to a String literal and a new String
+    *   object constructed from the same literal.  Their hashCode()
+    *   values are all the same because they all have the same
+    *   characters in them.  Testing for equality using == is true
+    *   for the two references to the literal, because both references
+    *   point to the same memory location.  But testing for equality
+    *   using equals() always works because the two literals and the
+    *   new object all contain the same characters.
+    *
+    *     @param  argv  Not used.
+    *     @return Void.
+    */
+    public static void main( String[] argv )
+    {
+      String s1 = "hello";
+      String s2 = "hello";
+      String s3 = new String ( "hello" );
+      System.out.println( "Hashcode of s1 is " + s1.hashCode() );
+      System.out.println( "Hashcode of s2 is " + s2.hashCode() );
+      System.out.println( "Hashcode of s3 is " + s3.hashCode() );
+
+      System.out.println( " s1 == s2\t" + (s1 == s2) );
+      System.out.println( " s1.equals(s2)\t" + s1.equals(s2) );
+
+      System.out.println( " s2 == s3\t" + (s2 == s3) );
+      System.out.println( " s2.equals(s3)\t" + s2.equals(s3) );
+
+      System.exit( 0 );
+    }
+  }
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,63 @@
+
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft Internet Assistant for PowerPoint 97">
+ <TITLE>Pseudocode for JButton</TITLE> 
+</HEAD>
+
+<BODY     >
+
+ <H1>Pseudocode for JButton</H1> 
+ <P><UL>
+public class JButton {
+</UL><UL>
+  private Vector listeners = new Vector();
+</UL><UL>
+  public void addActionListener( ActionListener al ) {
+</UL><UL>
+    listeners.add( al );
+</UL><UL>
+  }
+</UL><UL>
+  public void dispatchEvent( … ) { //Called by awt when user clicks button
+</UL><UL>
+    ActionEvent ae = new ActionEvent( … );
+</UL><UL>
+    Iterator iter = listeners.iterator();
+</UL><UL>
+    while ( iter.hasNext() ) {
+</UL><UL>
+      ActionListener listener = (ActionListener) iter.next();
+</UL><UL>
+      listener.actionPerformed( ae );
+</UL><UL>
+      }
+</UL><UL>
+    }
+</UL><UL>
+  }
+</UL><UL>
+// -----------------------------------------------------------------------------------------------------
+</UL><UL>
+public interface ActionListener {
+</UL><UL>
+  public void actionPerformed( ActionEvent ae );
+</UL><UL>
+  }</UL></P>
+<P></P> 
+<P>
+<TABLE>
+  <TD HEIGHT=100 WIDTH=100> <A HREF="tsld006.htm">Previous slide</A> </TD>
+  <TD HEIGHT=100 WIDTH=100> <A HREF="tsld008.htm">Next slide</A> </TD>
+  <TD HEIGHT=100 WIDTH=150> <A HREF="tsld001.htm">Back to first slide</A> </TD>
+  <TD HEIGHT=100 WIDTH=150> <A HREF="sld007.htm">View graphic version</A> </TD>
+</TABLE>
+<BR>
+</P>
+
+
+
+</Body>
+</HTML>

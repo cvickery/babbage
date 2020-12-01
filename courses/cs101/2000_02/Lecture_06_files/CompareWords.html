@@ -1,0 +1,41 @@
+<HTML><HEAD><TITLE>CompareWords.java</TITLE></HEAD><BODY>
+<CENTER><H1>CompareWords.java</H1></CENTER><HR><PRE>
+//  CompareWords.java
+
+//  Class CompareWords
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates use of the String methods &lt;i>toLowerCase()&lt;/i> and
+  *   &lt;i>compareTo()&lt;/i> by printing the numeric result of comparing
+  *   each command line argument to "hello" after converting each
+  *   argument to lower case.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - February, 2000
+  */
+  public class CompareWords
+  {
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Constructs a lowercase copy of each command line argument
+      *   and prints the result of comparing it to "hello".
+      *
+      *   @param  argv  The array of command line argument strings.
+      *   @return Void.
+      */
+      public static void main( String[] argv )
+      {
+        final String helloStr = "hello";
+
+        for ( int i=0; i&lt;argv.length; i++ )
+        {
+          argv[i] = argv[i].toLowerCase();
+          System.out.println( "The result of comparing \"hello\" to " +
+                              "\"" + argv[i] + "\" is:\t" +
+                              helloStr.compareTo( argv[i] ) );
+        }
+      }
+  }
+
+</PRE><HR></BODY></HTML>

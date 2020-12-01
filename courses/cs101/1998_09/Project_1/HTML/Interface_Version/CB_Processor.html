@@ -1,0 +1,44 @@
+<HTML><HEAD><TITLE>CB_Processor.java</TITLE></HEAD><BODY><PRE>
+//  CB_Processor.java
+
+import java.util.*;
+    
+//  Abstract class CB_Processor
+//  ------------------------------------------------------------------
+/**
+  *   Provides default implementations of getName() and process(),
+  *   which all Dispatchable classes must implement.
+  *
+  *   @author C. Vickery
+  *
+  */
+  public abstract class CB_Processor implements CB_Dispatchable {
+
+  //  Instance Fields
+  //  ---------------
+  private String  name = "noname";
+
+    //  Getters and Setters
+    //  --------------------------------------------------------------
+    public    String getName()                   { return name; }
+    protected void   setName( String name ) { this.name = name; }
+
+
+    //  process()
+    //  --------------------------------------------------------------
+    /**
+      *   Processes a command.
+      *
+      */
+      public void process( StringTokenizer st, Checkerboard cb )
+        throws CBException {
+
+        //  Default method throws a CBException
+        throw new CBException(  "Command \"" + name +
+                              "\" is not implemented." );
+      
+      }
+
+    }
+
+</PRE></HR></HTML>

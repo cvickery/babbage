@@ -1,0 +1,116 @@
+<html><head><title>Constant Pool</title>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+</head>
+<BODY bgcolor=#FFFFFF>
+<center>
+<h1>Constant Pool</h1>
+</center>
+
+The Constant Pool of a Java class file consists of a sequence of
+<i>Contstant Pool Entries</i>, each of which begins with a one-byte tag,
+followed by two or more bytes of information.  The table below gives all
+possible tag values, the "standard" names for these tag values, and a
+summary of the information that follows the tags.  The abbreviation
+U2 represents an unsigned two-byte integer that is used as an index to
+locate another entry in the constant pool.<p>
+
+<table align=center cellpadding=5 border=1 width=80%>
+
+  <tr>
+    <th>Tag Value
+    <th>Tag Name
+    <th>Information
+
+  <tr>
+    <td align=center>1
+    <td>CONSTANT_Utf8
+    <td><i>U2:</i> The number of bytes in the Utf8-encoded byte array that
+    follows.
+    <br><i>byte[]:</i> An array of bytes containing a Utf8-encoded string.
+
+  <tr>
+    <td align=center>3
+    <td>CONSTANT_Integer
+    <td><i>int:</i> A four-byte signed integer value.
+
+  <tr>
+    <td align=center>4
+    <td>CONSTANT_Float
+    <td><i>float:</i> A four-byte floating-point value.
+
+  <tr>
+    <td align=center>5
+    <td>CONSTANT_Long
+    <td><i>long:</i> An eight-byte signed long value.
+
+  <tr>
+    <td align=center>6
+    <td>CONSTANT_Double
+    <td><i>double:</i> An eight-byte double-precision floating-point
+    value.
+
+  <tr>
+    <td align=center>7
+    <td>CONSTANT_Class
+    <td><i>U2:</i>  The <i>name_index</i> for a class.
+
+  <tr>
+    <td align=center>8
+    <td>CONSTANT_String
+    <td><i>U2:</i>  The <i>string_index</i> for a string.
+
+  <tr>
+    <td align=center>9
+    <td>CONSTANT_FieldRef
+    <td><i>U2:</i>  The <i>class_index</i> for a field.
+    <br><i>U2:</i>  The <i>name_and_type_index</i> for a field.
+
+  <tr>
+    <td align=center>10
+    <td>CONSTANT_MethodRef
+    <td><i>U2:</i>  The <i>class_index</i> for a method.
+    <br><i>U2:</i>  The <i>name_and_type_index</i> for a method.
+
+  <tr>
+    <td align=center>11
+    <td>CONSTANT_InterfaceMethodRef
+    <td><i>U2:</i>  The <i>class_index</i> for an interface method.
+    <br><i>U2:</i>  The <i>name_and_type_index</i> for an interface method.
+
+  <tr>
+    <td align=center>12
+    <td>CONSTANT_NameAndType
+    <td><i>U2:</i>  A <i>name_index</i>.
+    <br><i>U2:</i>  A <i>descriptor_index</i>.
+
+</table>
+
+<h2>Notes on Constant Pool Index Numbers</h2>
+
+<ul>
+
+  <li>There is a U2 at the beginning of the Constant Pool that tells
+    how many entries, <i>numEntries</i>, there are in the constant pool
+    array. The constant pool that is read from the file should be
+    stored in an array with subscript values from zero through
+    <i>numEntries</i> minus 1.
+
+  <li>Constant Pool entry number 0 is never used, so the first constant
+    pool entry read from the file must be stored in element number 1 of
+    the array in memory, and element zero should be left as a
+    <i>null</i> reference.
+
+  <li>Entries of type CONSTANT_long and CONSTANT_double are each given
+    two entries in the constant pool array.  If your constant pool in
+    memory is organized as an array of objects, you need only one object
+    for both entries, and the second one may be left <i>null</i>.  But
+    you must skip over the second entry before putting the next entry
+    from the file into the array.
+
+</ul>
+<hr>
+<center>
+[&nbsp;<a href="./Assignment_04.html">Back to Assignment 4</a>&nbsp;]
+</center>
+<hr></body></html>

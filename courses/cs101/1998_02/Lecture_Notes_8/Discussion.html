@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>a</TITLE>
+<META NAME="Version" CONTENT="8.0.4308">
+<META NAME="Date" CONTENT="7/8/97">
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\HTML.DOT">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<B><FONT FACE="Arial" SIZE=4><P ALIGN="CENTER">Discussion Points for Class "List"</P>
+<OL>
+
+</B></FONT><FONT FACE="Courier New"><LI>UI.java</FONT> illustrates a class that can be run as either an application or as an applet, but as it stands it can be used only as an application because it does not have a graphical user interface. The <FONT FACE="Courier New">isApplet</FONT> instance variable could be tested after pushing objects onto the stack to decide whether to write the results using System.out.println() or to add text fields to the applet, and call <I>repaint()</I> instead.</LI>
+<LI>Although the <FONT FACE="Courier New">List</FONT> class and its subclasses allow you to add objects of any class to a list, the code in <FONT FACE="Courier New">UI</FONT> to figure out what type of object is returned by <I>pop()</I> shows that this nice feature makes the lists very hard to use. Design subclasses of <FONT FACE="Courier New">Stack</FONT> called <FONT FACE="Courier New">StackOfInt</FONT> and <FONT FACE="Courier New">StackofString</FONT> that allow only objects of type <I>int</I> and <FONT FACE="Courier New">String</FONT> to pushed on them respectively. These subclasses would give up the generality of the Stack class illustrated here in return for ease of use.</LI>
+<LI>Writing error messages, "Full" and "Empty" to <FONT FACE="Courier New">System.err</FONT> from within class <FONT FACE="Courier New">List</FONT> is terrible. It makes the implementation of this "utility" class useable only for applications with a command-line interface, and gives no feedback to the program using the class that something has gone wrong. It's just not the "Java Way" of doing things. The proper way to handle these conditions (trying to add to a full list or to remove from an empty list) is to have the add/remove methods throw Exceptions, and to have the code that called the add or remove method either catch the exception or to throw it to the method that called <I>it</I>. Exception handling comes later in the course.</LI>
+<LI>But is it really necessary to throw an exception if someone tries to add to a full list? No indeed. Instead, the add methods could create a new and bigger array for <FONT FACE="Courier New">theList</FONT>, copy the contents of the old array into the new one, and just keep on going.</LI>
+<LI>It would be useful to add methods to the <FONT FACE="Courier New">List</FONT> class that let programs using the class find out the current capacity and number of elements in the list, not just whether it is full or empty.</LI>
+<LI>The instance variable, <FONT FACE="Courier New">capacity</FONT> should probably be replaced by using <FONT FACE="Courier New">theList.length</FONT> in order to make the code simpler to read.</LI>
+<LI>Once you have absorbed these points, you might want look at class <FONT FACE="Courier New">Vector</FONT> provided as part of the <FONT FACE="Courier New">java.util</FONT> package.</LI></OL>
+
+<P><HR></P></BODY>
+</HTML>

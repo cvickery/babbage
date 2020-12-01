@@ -1,0 +1,32 @@
+<HTML><HEAD><TITLE>Quiz 1 Sample Question Solutions</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Quiz 1 Sample Question Solutions</H1>
+</center>
+
+<H3>Sum the odd columns of a doubly-subscripted array:</H3>
+<PRE>
+  public static int sumOdd( int[][] x ) {
+  int sum = 0;
+    for ( int i = 0; i &lt; x.length; i++ )
+      for ( int j = 1; j &lt; x[ i ].length; j += 2 )
+        sum += x[ i ][ j ];
+    return sum;
+    }
+</PRE>
+(Whether the method actually needs to be <I>public</I> or <I>static</I>
+is a point we will be discussing in class.)<p>
+
+<H3>Return <CODE>true</CODE> if a doubly-subscripted array is a square
+matrix:</H3>
+<PRE>
+  boolean isSquare( int[][] a ) {
+    for ( int row = 0; row &lt; a.length; row++ ) {
+      if ( a[row].length != a.length ) {
+        return false;
+        }
+      return true;
+      }
+    }
+</PRE>
+<HR></BODY></HTML>

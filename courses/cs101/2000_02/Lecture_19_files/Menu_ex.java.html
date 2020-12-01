@@ -1,0 +1,98 @@
+<HTML><HEAD><TITLE>Menu_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>Menu_ex.java</H1></CENTER><HR><PRE>
+//  Menu_ex.java
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+//  Class Menu_ex
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates use of menu items, menus, and a menu bar.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring, 2000
+  */
+  public class Menu_ex
+  {
+
+    static JFrame     jf = new JFrame( "Menu Example" );
+    static Container  cp = jf.getContentPane();
+
+    static  JMenuBar  mb        = new JMenuBar();
+    static  JMenu     fileMenu  = new JMenu( "File" );
+    static  JMenu     fileNew   = new JMenu( "New"  );
+    static  JMenuItem newFile   = new JMenuItem( "File" );
+    static  JMenuItem newDir    = new JMenuItem( "Directory" );
+    static  JMenuItem fileOpen  = new JMenuItem( "Open" );
+    static  JMenuItem fileExit  = new JMenuItem( "Exit" );
+
+    static Dimension  scrDim =
+                  Toolkit.getDefaultToolkit().getScreenSize();
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Displays a window with a menu bar, which has a File menu,
+    *   has a New menu, which has File and Directory menu items, etc.
+    *   The File->Exit menu item exits the application.
+    *
+    *     @param  argv  Command line arguments.  Ignored.
+    *     @return Void.
+    */
+    public static void main( String[] argv )
+    {
+  
+      jf.setJMenuBar( mb );
+      mb.add( fileMenu );
+      fileMenu.add( fileNew );
+      fileMenu.add( fileOpen );
+      fileMenu.addSeparator();  // Horizontal line
+      fileMenu.add( fileExit );
+
+      fileNew.add( newFile );
+      fileNew.add( newDir  );
+  
+      //  Add tooltip text to a menu and a menu item.
+      fileMenu.setToolTipText( "Do file-related things." );
+      fileExit.setToolTipText( "Click Me to Exit!" );
+
+      //  Layout the application and display it in the middle of the
+      //  user's screen.
+      jf.pack();
+      Dimension winDim = jf.getSize();
+      Point upperLeft = new Point(
+                          scrDim.width  / 2 - winDim.width  / 2,
+                          scrDim.height / 2 - winDim.height / 2 );
+      jf.setLocation( upperLeft );
+      jf.show();
+
+
+      //  Make the Close Window control work.
+      //  ------------------------------------------------------------
+      jf.addWindowListener( new WindowAdapter()
+      {
+        public void windowClosing( WindowEvent we )
+        {
+          System.exit( 0 );
+        }
+      }
+      );
+
+      //  Make the File->Exit menu item work.
+      //  ------------------------------------------------------------
+      fileExit.addActionListener( new ActionListener()
+      {
+        public void actionPerformed( ActionEvent ae )
+        {
+          System.exit( 0 );
+        }
+      }
+      );
+
+   }
+
+  }
+
+</PRE><HR></BODY></HTML>

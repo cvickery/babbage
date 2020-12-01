@@ -1,0 +1,74 @@
+<HTML><HEAD><TITLE>Vector_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>Vector_ex.java</H1></CENTER><HR><PRE>
+//  Vector_ex.java
+
+import java.util.*;
+
+//  Class Vector_ex
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates use of a Vector by doing an insertion sort of the
+  *   command line arguments.
+  *
+  *     @author   C. Vickery
+  *     @version  2.0 - February, 2000
+  */
+  public class Vector_ex
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Inserts the command line arguments into a vector in alphabetic
+    *   order, then uses an Iterator to print them, one per line.
+    *
+    *   @param  argv  The list of command line arguments to be sorted
+    *                 and printed.
+    *   @return Void
+    */
+    public static void main( String[] argv ) {
+
+      //  Create a vector
+      Vector words = new Vector();
+
+      //  Add command line arguments to it using insertion sort.
+
+      //  Add the first string to the empty Vector.
+      if ( argv.length > 0 )
+      {
+        words.add( argv[0] );
+      }
+      //  Insert other arguments in their proper places.
+      for (int i=1; i&lt;argv.length; i++ )
+      {
+        boolean inserted = false;
+        for ( int j=0; j&lt;words.size(); j++ )
+        {
+          String str    = (String) words.get( j );
+          int    result = argv[i].compareTo( str );
+          if ( result &lt; 0 )
+          {
+            words.add( j, argv[i]);
+System.out.println( "Inserted " + argv[i] + " at " + j );
+            inserted = true;
+            break;
+          }
+        }
+        if ( ! inserted )
+        {
+          words.add( argv[i] ); // Will go at end
+System.out.println( "Appended " + argv[i] +
+                                        " at " + (words.size() - 1) );
+        }
+      }
+
+      //  Iterate over all the elements of the Vector and print each.
+      System.out.println();
+      Iterator iter = words.iterator();
+      while ( iter.hasNext() ) {
+        System.out.println( iter.next() );
+      }
+    }
+  }
+
+</PRE><HR></BODY></HTML>

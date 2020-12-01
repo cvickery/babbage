@@ -1,0 +1,141 @@
+<HTML><HEAD><TITLE>SortedWordList.java</TITLE></HEAD><BODY>
+<CENTER><H1>SortedWordList.java</H1></CENTER><HR><PRE>
+//  SortedWordList.java
+
+//  Class SortedWordList
+//  ------------------------------------------------------------------
+/**
+  *   Maintains a list of WordCounter objects in alphabetical order.
+  *   Uses an array to hold the WordCounter objects.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0
+  */
+  public class SortedWordList
+  {
+
+    /** The array used to hold the list of WordCounters.            */
+    WordCounter[] theList   = new WordCounter[ 10 ];
+
+    /** How many WordCounters are in the array now.                 */
+    int           numUsed   = 0;
+
+    /** How many items the array can hold (same as theArray.length) */
+    int           capacity  = 10;
+
+  //  Method addWord()
+  //  ----------------------------------------------------------------
+  /**
+    *   Adds a word to the list in it's proper alphabetic position.
+    *   If the word is already in the list, add one to its counter
+    *   instead of adding it to the list again.
+    *
+    *   @param  theWord The word to be added.
+    *   @return         True if the word was added, or false if it was
+    *                   just counted.
+    */
+    public boolean addWord( String theWord )
+    {
+
+      theWord = theWord.toLowerCase();
+
+      for (int i=0; i&lt;size(); i++ )
+      {
+        if ( theWord.equals( theList[i].word ) )
+        {
+          //  Found matching word already in list -- increment counter
+          theList[i].counter++;
+          return false;
+        }
+        if ( theWord.compareTo( theList[i].word ) &lt; 0 )
+        {
+          //  Found alphabetically higher word -- insert this one here
+          insertElementAt( new WordCounter( theWord ), i );
+          return true;
+        }
+      }
+      //  Word not found; append it.
+      insertElementAt( new WordCounter( theWord ), size() );
+      return true;
+    }
+
+  //  Method wordAt()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the word at a particular position in the array.
+    *
+    *     @param  i The index of the word to return.
+    */
+    public String wordAt( int i )
+    {
+      return theList[i].word;
+    }
+
+  //  Method counterAt()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the counter at a particular position in the array.
+    *
+    *     @param  i The index of the counter to return.
+    */
+    public int counterAt( int i )
+    {
+      return theList[i].counter;
+    }
+
+
+  //  Method size()
+  //  ----------------------------------------------------------------
+  /**
+    *   Returns the currently number of elemens used in the array.
+    *   This method does the same thing as class Vector's size()
+    *   method, so that's how its name got chosen.
+    *
+    */
+    public int size()
+    {
+      return numUsed;
+    }
+
+
+  //  Method insertElementAt()
+  //  ----------------------------------------------------------------
+  /**
+    *   Inserts an element into the array, growing the array if
+    *   necessary, and moving elements up if needed.  This method
+    *   does the same thing as class Vector's insertElementAt(), so
+    *   that's how it's name got chosen.
+    *
+    *   @param  wc    The WordCounter object to be inserted.
+    *   @param  pos   Index at which the element is to be inserted.
+    *   @return Void.
+    *
+    */
+    private void insertElementAt( WordCounter wc, int pos )
+    {
+      // Double capacity if necessary
+      if ( ++numUsed >= capacity )
+      {
+        WordCounter[] temp = new WordCounter[ capacity + capacity ];
+        for ( int i=0; i&lt; capacity; i++ )
+        {
+          temp[i] = theList[i];
+        }
+        capacity += capacity;
+        theList   = temp;
+        temp      = null;
+      }
+
+     // Make room, if necessary.
+     for ( int i=numUsed; i>=Math.max(pos, 1); i-- )
+     {
+      theList[i] = theList[i-1];
+     }
+     // Insert the element.
+     theList[pos] = wc;
+    }
+
+  }
+
+
+</PRE><HR></BODY></HTML>

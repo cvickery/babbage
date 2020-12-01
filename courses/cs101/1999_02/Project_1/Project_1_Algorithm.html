@@ -1,0 +1,156 @@
+<HTML><HEAD><TITLE>Project_1 Algorithm</TITLE></HEAD><BODY>
+<CENTER><H1>Project_1 Algorithm</H1></CENTER>
+
+This page gives a suggested structure for the code that you are to
+write for Project 1.  However, you are free to design your code
+differently if you prefer, provided: (1) your code runs as an
+application, (2) your code uses the class files I provided, and (3)
+your code implements each of the commands described in the assignment
+page, using the same syntax.  Run the complete program I provided to
+you to see examples of the messages the program prints.  Again, your
+messages don't have to look exactly like mine, but make them clear,
+informative, and grammatically correct!<p>
+
+<HR>
+
+<PRE>
+<H2>Main()</H2>
+
+  If there are no command line arguments
+    Create a BufferedReader for System.in
+    Invoke processCommands
+    Exit
+
+  For each command line argument
+    Create a BufferedReader for the file
+      Print an error message if unable to create b.r.
+      continue to next command line argument
+    Print a message telling the name of the file
+    Invoke processCommands
+
+  Exit
+
+
+<H2>processCommands()</H2>
+
+  Loop:
+    If interactive, print a prompt message
+    Read a line from b.r.
+      If end of input, return
+    If not interactive, print the line
+    Tokenize the line
+    If no tokens continue to next iteration of Loop.
+
+    If first token is "help"
+      print help string
+      continue to next iteration
+
+    If first token is "quit"
+      Exit
+
+    If first token is "new"
+      If there are not two more tokens
+        print an error message( usage for new )
+        continue to next iteration
+      Convert next token to width
+        if invalid
+          print an error message( width is not a number )
+          continue to next iteration
+      Convert next token to height
+        if invalid
+          print an error message( height is not a number )
+          continue to next iteration
+      If there is a current Drawing, hide it
+      Create a new Drawing of type CDrawing
+      Show the Drawing
+      Print it
+      continue to next iteration
+
+    If the first token is "win"
+      If there are not two more tokens
+        print an error message( usage for win )
+        continue to next iteration
+      Convert next token to width
+        if invalid
+          print an error message( width is not a number )
+          continue to next iteration
+      Convert next token to height
+        if invalid
+          print an error message( height is not a number )
+          continue to next iteration
+      If there is a current Drawing, hide it
+      Create a new Drawing of type GDrawing
+      Show the Drawing
+      (Print it)
+      continue to next iteration
+
+    If the first token is "line"
+      If there are not 4 more tokens
+        print an error message( usage for line )
+        continue to next iteration
+      Convert next token to x1
+      Convert next token to y1
+      Convert next token to x2
+      Convert next token to y2
+        If any of above fails
+          print an error message( getMessage() is not a number )
+          continue to next iteration
+      Pass the four arguments to drawLine
+        If there is an exception
+          print an error message( getMessage() is not in picture )
+          continue to the next iteration
+      Print the Drawing
+      continue to next iteration
+
+    (Similarly for rectangle and circle)
+
+    If the first token is show, hide, clear
+      [ Print usage msg if there are more tokens ]
+      Call the corresponding function
+      Print the Drawing
+      continue to next iteration
+
+    If the first token is "list"
+      [ Print usage msg if there are more tokens ]
+      Print the string returned by listItems()
+      continue to next iteration
+
+    If the first token is "select"
+      If there is not one more token
+        Print an error message( usage for select )
+        continue to the next iteration
+      Convert the token to an item number
+        If that fails
+          Print an error message( item number is not a number )
+          continue to next iteration
+      Invoke highlightItem with user's item # minus 1
+        If that fails
+          Print an error message( invalid item number )
+          continue to next iteration
+      Print the Drawing
+      continue to next iteratation
+
+    If the first token is "erase"
+      If there are no more tokens
+        Invoke deleteItem with no arguments
+          If that fails
+            Print an error message( nothing selected )
+            continue to next iteration
+        continue to next iteration
+      If there is one more token
+        Convert the token to an item number
+          If that fails
+            Print an error message( item number is not a number )
+            continue to next iteration
+        Invoke deleteItem with user's item # minus 1
+          If that fails
+            Print an error message( invalid item number )
+            continue to next iteration
+        continue to next iteration
+      If there is some other number of tokens
+        Print an error message ( usage for erase )
+        continue to next iteration
+
+    Print an error message( invalid command )
+    continue to next iteration
+</PRE><HR></BODY></HTML>

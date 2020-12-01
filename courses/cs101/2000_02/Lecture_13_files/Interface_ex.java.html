@@ -1,0 +1,54 @@
+<HTML><HEAD><TITLE>Interface_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>Interface_ex.java</H1></CENTER><HR><PRE>
+//  Interface_ex.java
+
+//  Class Interface_ex
+//  ---------------------------------------------------------
+/**
+  *   Illustrates a class that implements two interfaces.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring 2000
+  */
+  public class Interface_ex implements IfaceA, IfaceB
+  {
+    //  Implement interface IfaceA
+    public void   methodA()                     {             }
+    public int    methodB( double dbl )         { return 3;   }
+
+    //  Implement interface IfaceB
+    public double methodB( int ii, boolean bb ) { return 7.3; }
+  }
+
+//  Interface IfaceA
+//  ---------------------------------------------------------
+/**
+  *   Declares two methods that classes must define if they
+  *   implement this interface.
+  */
+  interface IfaceA
+  {
+    //  Declare the two methods.
+    public void methodA();
+    public int  methodB( double d);
+  }
+
+//  Interface IfaceB
+//  ---------------------------------------------------------
+/**
+  *   Declares two methods that classes must define if they
+  *   implement this interface.
+  */
+  interface IfaceB
+  {
+    //  Declare the two methods.
+    double methodB( int i, boolean b );
+
+    //  But this one is meaningless because all classes
+    //  define this method by inheritance, so there is no
+    //  point in making it part of the interface.
+    public String toString();
+
+  }
+
+</PRE><HR></BODY></HTML>

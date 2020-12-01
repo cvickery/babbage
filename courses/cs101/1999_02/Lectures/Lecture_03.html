@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+<TITLE>Lecture 3</TITLE>
+</HEAD>
+<BODY>
+
+<H1 ALIGN="CENTER">Lecture 3</H1>
+<H2 ALIGN="CENTER">February 4, 1999</H2>
+<H2 ALIGN="CENTER">Program Elements</H2>
+<P>Any computer program consists of <U>instructions</U> that tell the Central Processing Unit (CPU, also called a microprocessor) what operations to perform (add, compare, input, output, etc.) and <U>data</U> that the instructions operate on. In Java programs, the executable instructions are always inside <U>methods</U>, and the data are called <U>fields</U>. Methods and data are put together inside <U>classes</U>. Other languages, like C++, allow methods and fields to be defined outside of classes as well as inside them, while still other languages, like C, don't have classes at all, just fields and methods.</P>
+<P>The words <U>function</U> and <U>variable</U> are the terms used in C for what Java calls methods and fields, respectively. It's all right to use the C terminology.</P><DIR>
+<DIR>
+
+<P>Different microprocessors use different bit patterns to represent their instructions. For example, the instructions that an Intel processor (such as a Pentium) understands are different from the instructions that a Compaq (DEC) Alpha processor (as on <I>qcunix1</I> or <I>forbin</I>) recognizes. The Java Virtual Machine (JVM) uses still another machine language, called <U>Java bytecodes</U>. But there are programs that run on both Pentium processors and others that run on Alpha processors (and others that run on still other processors) that simulate the execution of the JVM's bytecodes. A Java class file can be loaded and executed on any computer that has a JVM, even though the machine language instructions (byte codes) in the class file are different from the <U>native machine language</U> of the computer running the JVM.</P></DIR>
+</DIR>
+
+<P>Each field has a data <U>type</U>, which may be either a <U>primitive data type<I> </I></U>or a <U>reference</U>.</P>
+<P>The primitive data types in Java are boolean, byte, char, short, int, long, float, and double.</P>
+<P>A reference is a field that holds the <U>address</U> of an object, array, or interface. References are also called <U>pointers</U>. An address is a number that the JVM uses to keep track of where something is in its memory.</P>
+<PRE>class xyz {
+
+  int      x = 123;          // A primitive data type
+  String   y = "Hello";      // A reference to an object (of class String)
+  void     z() { return; }   // A method definition
+
+}</PRE>
+
+<P><B>Figure 3.1: </B>[&nbsp;<A HREF="Figure_3.1.gif">JVM memory for
+class xyz</A>&nbsp;]</P>
+
+<P><HR></P>
+<H2>From the documentation for JDK 1.2</H2><DIR>
+<DIR>
+<DIR>
+
+<P>Disabling the JIT compiler can sometimes be useful in that it allows seeing source code line numbers when an unexpected exception is thrown.</P>
+<P>There are two ways the JIT compiler can be disabled: </P>
+<P>By setting the JAVA_COMPILER environment variable to NONE: </P><DIR>
+<DIR>
+
+<FONT FACE="Courier New"><P>set JAVA_COMPILER=NONE</P></DIR>
+</DIR>
+
+</FONT><P>By setting the system property java.compiler to NONE: </P><DIR>
+<DIR>
+
+<FONT FACE="Courier New"><P>java -Djava.compiler=NONE myapp</P></DIR>
+</DIR>
+
+</FONT><P>The JIT compiler was previously disabled by using the <FONT FACE="Courier New">-nojit</FONT> option: </P><DIR>
+<DIR>
+
+<FONT FACE="Courier New"><P>java -nojit myapp</FONT> (NOTE: This is no longer valid!)</P></DIR>
+</DIR>
+</DIR>
+</DIR>
+</DIR>
+
+<P>If you use JDK 1.1.1 through 1.1.4, there is no Just In Time (JIT) compiler to be concerned with. But if you run JDK 1.1.5 or later, the <I>java</I> command will translate your methods' bytecodes into native machine language just before executing them. This is a nice feature for speeding up big Java programs, but once the bytecodes have been converted to native machine language, error messages that happen when a program runs will say that the error occurred in "(compiled code)", which is not very useful information. If you turn off the JIT feature and get a run-time error, the JVM will tell you exactly what line number in your source code was being executed when the error was detected.</P>
+<P>As the above quote says, there are two ways to turn off the JIT. Use the <FONT FACE="Courier New">-nojit</FONT> switch if you are running JDK 1.1.5 through 1.1.7, or set the <I>JAVA_COMPILER</I> environment variable to the value <I>NONE</I> if you are using JDK 1.2 or later.</P>
+<P><HR></P>
+<H2>Class Instances</H2>
+
+<UL>
+<LI>A <U>class file</U> contains a <U>class definition</U>, which is the compiler's translation of your source code into a binary form that the JVM can understand. </LI>
+<LI>The JVM's class loader loads class files into the virtual machine's <U>method area</U> on demand. </LI>
+<LI>Classes may be instantiated (using the new operator) zero or more times after they have been loaded. </LI>
+<LI>Instances use memory in the JVM's <U>heap memory</U>. </LI></UL>
+
+<H2>Arrays</H2>
+
+<UL>
+<LI>Are Objects</LI>
+<LI>Contain an ordered set of <U>elements</LI>
+
+<UL>
+</U><LI>Elements may be primitives, but they must all be of the same type.</LI>
+<LI>Elements may be references, but they must all be of the same type.  (But the type may be "Object" so elements can effectively be of any type.)</LI>
+<LI>If you want to mix references and primitives in the same array, you have to use the special classes Integer, Character, Float, etc. to hold the primitives and declare the array to be of type Object.</LI></UL>
+
+<LI>Have a public member named <FONT FACE="Courier New">length</FONT> that tells how many elements there are in the array.</LI>
+<LI>The length of an array cannot be changed once it has been created.</LI></UL>
+
+<P><HR></P></BODY>
+</HTML>

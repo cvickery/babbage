@@ -1,0 +1,197 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-101 Lecture 11</title>
+<meta name=Description content="19-Oct-01: Introduction to Exception Management">
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0008.htm');   
+  else
+    parent.location.href = "../CS-101_Lecture_11.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=33 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=329 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=41 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=29 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=73 height=68 colspan=2></td>
+  <td width=329 height=68>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=81 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=168 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=329 height=33 colspan=3 align=center><font face="Times New Roman"
+    size=5>Introduction to Exception</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=329 height=1 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=81 height=33></td>
+    <td width=168 height=33 align=center><font face="Times New Roman" size=5>Management</font><br>
+    </td>
+    <td width=80 height=33></td>
+   </tr>
+  </table>
+  </td>
+  <td width=73 height=68 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=10 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=204></td>
+  <td width=403 height=204 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=38 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=72 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=39 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=56 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=63 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=32 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=10 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=49 height=21 colspan=8><font face="Times New Roman" size=3>Errors</font><br>
+    </td>
+    <td width=336 height=21 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=403 height=4 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=345 height=18 colspan=13><font face="Times New Roman" size=2>Events
+    outside the programmer’s control, and about</font><br>
+    </td>
+    <td width=19 height=18></td>
+   </tr>
+   <tr>
+    <td width=403 height=1 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=233 height=18 colspan=9><font face="Times New Roman" size=2>which
+    the program can do nothing.</font><br>
+    </td>
+    <td width=131 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=403 height=4 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=275 height=16 colspan=7><font face="Times New Roman" size=1>When
+    the JVM runs out of memory, for example.</font><br>
+    </td>
+    <td width=68 height=16 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=403 height=5 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=87 height=21 colspan=9><font face="Times New Roman" size=3>Exceptions</font><br>
+    </td>
+    <td width=298 height=21 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=403 height=5 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=328 height=18 colspan=11><font face="Times New Roman" size=2>Events
+    which might be outside the programmer’s</font><br>
+    </td>
+    <td width=36 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=403 height=1 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=338 height=18 colspan=12><font face="Times New Roman" size=2>control,
+    but which can be anticipated, and possibly</font><br>
+    </td>
+    <td width=26 height=18 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=403 height=1 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=177 height=18 colspan=8><font face="Times New Roman" size=2>dealt
+    with by the program.</font><br>
+    </td>
+    <td width=187 height=18 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=403 height=3 colspan=18></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=343 height=16 colspan=11><font face="Times New Roman" size=1>When
+    the user is supposed to enter a number, but types letters</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=60 height=16 colspan=7></td>
+    <td width=117 height=16 colspan=4><font face="Times New Roman" size=1>instead,
+    for example.</font><br>
+    </td>
+    <td width=226 height=16 colspan=7></td>
+   </tr>
+  </table>
+  </td>
+  <td width=32 height=204></td>
+ </tr>
+ <tr>
+  <td width=475 height=45 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

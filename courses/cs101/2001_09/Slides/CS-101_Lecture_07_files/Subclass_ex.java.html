@@ -1,0 +1,46 @@
+<html><head><title>Subclass_ex.java</title></head>
+<body><center><h1>Subclass_ex.java</h1></center>
+<hr>
+
+The first and second calls to println() print exactly the same thing,
+even though they use two different types of reference variables because
+both variables point to the same object and thus invoke the same
+<i>toString()</i> method.<p>
+
+The second and third calls to println() print different things,
+even though they use the same reference variable, because the variable
+points to different types of objects and thus refers to different
+<i>toString()</i> methods.
+
+<hr>
+<pre>
+    public class Subclass_ex extends java.lang.Object
+    {
+      private String theString;
+      public Subclass_ex( String str )
+      {
+        theString = str;
+      }
+      //  Override superclass' toString() method.
+      public String toString()
+      {
+        return theString;
+      }
+    }
+
+    class UseSubclass_ex
+    {
+      public static void main( String[] args )
+      {
+        Subclass_ex s1 = new Subclass_ex( "hello" );
+        Object      o1 = s1;
+
+        <b>System.out.println( s1.toString() );
+        System.out.println( o1.toString() );
+        </b>o1 = new Object();<b>
+        System.out.println( o1.toString() );</b>
+        System.exit( 0 );
+      }
+    }
+</pre>
+<hr></body></html>

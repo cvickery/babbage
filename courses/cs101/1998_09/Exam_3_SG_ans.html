@@ -1,0 +1,60 @@
+
+<HTML><HEAD><TITLE>Study Guide for Exam 3: December 22, 1998</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Study Guide for Exam 3</H1>
+<H2>December 22, 1998</H2>
+<H2>Answers</H2>
+</center>
+
+1 through 3.  The syllabus page has a link from Lecture 24 that shows how to
+set up mouse and window listeners.  To see how to hook an ActionListener
+to a Button, see the answer to question 3.<P>
+
+4.  A listener is an interface that specifies a set of methods that will
+be called when various events occur.  If you want your program to
+respond to any of these events, you could write a class that implements
+the listener's interface, but you have to provide implemenations of
+<I>all</I> of the methods in the interface.  An adapter is a class that
+provides do-nothing implementations of all the methods in an interface.
+If you are interested in just one type of event, you could extend the
+adapter class and override just that method (or those methods) that you
+are interested in.  For example, the WindowListener interface specifies
+seven different events.  If you are interested only in WindowClosing
+events, you could subclass the WindowAdapter class and implement just
+the windowClosing method and not bother with the other six methods.<P>
+
+5.  This code was given in class and is part of the third project, which
+you should be writing yourself.<P>
+
+6.  Follow the link from the Study Guide page.<P>
+
+7.  System.exit()<P>
+
+8.  You can get a component redrawn on the screen by calling its
+<I>repaint()</I> method, which requests the AWT to call the component's
+<I>update</I> method.  The default implementation of <I>update()</I>
+calls <I>clearRect()</I> to re-draw the component's background, and then
+calls the component's <I>paint()</I> method to re-draw its
+foreground.<P>
+
+9.  You can get a container's layout manager to recompute the geometry
+of all the components in the container and then to repaint them all by
+calling the container's <I>validate()</I> method.  In Project 3, this is
+one way of getting all the BlackSquares to re-paint themselves.<P>
+
+10.  Follow the link from the Study Guide page.<P>
+
+11.  A Frame or Dialog may have exactly one MenuBar.  A MenuBar may have
+any number of Menus, which are added to the MenuBar using the MenuBar's
+<I>add()</I> method.  A MenuBar can have exactly one Help Menu, which is
+added to the MenuBar using <I>setHelpMenu()</I> instead of <I>add()</I>.
+Manus can contain other Menus and/or MenuItems.  A MenuItem is a
+component that you can attach an ActionListener to; when the user clicks
+on a MenuItem, its <I>actionPerformed()</I> method will be called.<P>
+
+12.  An ActionListener.<P>
+
+13.  A MouseListener.<P>
+
+<HR></BODY></HTML>

@@ -1,0 +1,208 @@
+<HTML><HEAD><TITLE>Project 3</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 3: Checkerboard GUI</H1>
+</center>
+<H2>Due Date and Deliverables</H2>
+
+This project is due by <B>midnight December 22, 1998</B>.<p>
+<B>The project will not be accepted for credit after the cutoff date of
+December 22, 1998.</B><p>
+
+Send me a zip file containing the following files:
+<CODE><UL>
+    <LI>Checkers_GUI.java
+    <LI>Any additional Java source files needed by your project.
+</UL>
+</CODE>
+
+Do not send any other files.  In particular, I will take care of
+putting <CODE>Vickery_CB.jar</CODE> from Project 2 in the same
+directory as your Java files when I compile and run your project.  You
+are not to send any Jar or Class files in your zip file.  The zip file
+may have any valid file name you wish, so long as it has a
+<CODE>.zip</CODE> extension.  Be sure to put your own name in the email
+message you send when you submit the project.<p>
+
+When your submit your project, put a list of any required features you
+have not implemented or any optional features that you have implemented
+in the body of the message.  (There must be just one list; see the
+Project Description.) Put your name at the end of the message.<p>
+
+The project will be graded on a 10 point scale.<p>
+
+<H2>Do Your Own Work</H2>
+
+<blockquote><b>For this and all assignments in this course, you must
+write and document your code yourself.  Furthermore, you must not make
+code related to the assignment available to others in the course.  If I
+discover that you have not followed either of these rules I will give
+you a failing grade in the course and possibly request the college to
+take disciplinary action.<p></b></blockquote>
+
+If I assign you a failing grade in the course as a result of this policy
+before the deadline date for dropping the course without evaluation, I will
+request the Dean of Students to forbid you from dropping the course.  In
+the past, the Dean has honored this sort of request.<p>
+
+Actually, there is no point in trying to submit code that is not your
+own because you will be tested on your ability to write code during
+exams, and the exams will count much more than the projects in your
+course grade.<p>
+
+If you cannot write the code on your own, hand in what you can do
+anyway; you will receive partial credit for your work.
+
+<H2>Questions and Changes</H2>
+
+There is a page with answers to [&nbsp;<a href="FAQ.html">Frequently
+Asked Questions</a>&nbsp;] (FAQs) about the project.  Please consult
+that page before sending me email about problems with the project.<p>
+
+Rather than update this page when I make changes to the assignment or to
+the code I am supplying to you, there is a separate web page for
+[&nbsp;<a href="changes.html">Project Changes</a>&nbsp;].  I will send
+email to everyone whenever there are changes.
+
+<H2>Project Description</H2>
+
+This is the third of three related projects.  In the first one, you
+wrote a command-line, non-graphical, user interface for a checkers
+playing program.  In the second one  you will wrote your own
+implementation of the Checkerboard class (and related classes).  In
+this, the final project of the series, you will develop a graphical
+user interface to replace the command line interface.<p>
+
+As for the first two projects, I recommend very highly that you do the
+project in a sequence of development steps.  People who did not follow
+this advice for the first two projects and tried to do the whole thing at
+once have, in general, had to drop the course and seek professional help.<p>
+
+For this project, the "steps" are given as a list of requirements.  To
+get full credit for the project, your program has to meet all the
+requirements that say "must" in them.  The requirements that say
+"should" are suggestions.  If you want to do the "should" things
+differently you can still get full credit for the project provided your
+project implements something equivalent to them.  Requirements that are
+listed as "optional" are just that.  You can get <I>more than full
+credit</I> for this project by implementing optional parts, <I>provided
+you also implement all requirements and "shoulds."</I>  You will
+receive <U>no</U> extra credit if your don't do all the requirements
+and "shoulds."<p>
+
+<OL>
+
+
+  <H3><LI>Must Be Properly Documented</H3>
+  Must use "javadoc" style comments.  Must include a proper
+  <CODE>@author</CODE> tag for each java source file.  Each class and
+  method must begin with a comment block that includes a divider line
+  that crosses the page.  No line of code or comments may be wider than
+  72 columns.  <I>Exceptions:</I> Small methods, such as "getters" and
+  "setters" may be grouped together under one comment block.  Anonymous
+  classes need not be commented at all.
+  
+  <H3><LI>Must Run as an Application</H3>
+  
+  The user interface must be in a "GUI Window" that appears on the
+  user's desktop, and which may be closed by clicking on the "close"
+  button with an X in it in the upper right corner.<p>
+  
+  <B>Optional:</B>  The application may also run as an applet, which
+  creates the window on the desktop containing the same user interface
+  as the stand-alone application.  <I>Note:</I>  Applets may not call
+  <I>System.exit()</I>, so if you implement this option, you must
+  disable the File/Exit menu item (see below) for GUI Windows created
+  by an applet, and the close button must be handled appropriately as
+  well.
+
+  <H3><LI>Must Display a Checkerboard</H3>
+
+  The checkerboard must be properly colored, must always be square, and
+  must adjust its size to fit the size and shape of the window (Frame)
+  containing it.<p>
+
+  <B>Optional:</B>  The checkerboard may be positioned on the user's
+  desktop independently of the rest of the GUI.  (Put it in a Window
+  instead of in a Panel.)
+
+  <H3><LI>Must Include a MenuBar</H3>
+  
+  The menu bar must include File and a Help menus.  The File menu must
+  contain a menu item that exits the program when selected.  The Help
+  menu must include an "About" menu item that displays the name of the
+  program and your name when selected.<p>
+
+  <B>Optional:</B>  Provide keyboard shortcuts for the menu items.<p>
+
+  <B>Optional:</B>  Provide menu items for saving a game to a file, for
+  loading a saved game from a file, and/or for printing the board.<p>
+
+  <B>Optional:</B>  Provide a menu item that creates a new Checkerboard
+  GUI when selected.  Your program should impose no limit on how many
+  GUI windows the user may have open at a time.  There should be a menu
+  item for closing a GUI window in addition to one for exiting the
+  entire application.<p>
+  
+  <B>Optional:</B> If your program runs as an applet, it should provide
+  a button on the applet itself that creates a new GUI window.
+
+  <H3><LI>Provide <I>Init</I>, <I>Clear</I>, and <I>Exit</I>
+  Buttons.</H3>
+
+  Clicking a button performs the indicated action.  In the case of
+  <I>init</I> and <I>clear</I> the program must invoke the appropriate
+  method in class Checkerboard, and then use Checkerboard's
+  <I>listBoard()</I> method to find out what pieces to draw on the
+  board.
+
+  <H3><LI>The User Can Move Pieces</H3>
+
+  The user must be able to move pieces using the mouse.  The program
+  must not allow moves that are invalid.  Kings must be displayed
+  differently from pawns.<p>
+
+  <B>Optional:</B>  Show the piece being dragged as it moves from the
+  starting square to the ending square.  The alternative is to have the
+  use click on the starting square, then the ending square, and then to
+  make the move.<p>
+
+  <B>Optional:</B>  Provide a way for the user to enter moves from the
+  keyboard.  Use a TextField.  You might want to implement this option
+  before implementing the mouse version because it gives you a
+  relatively easy way to deal with the user's input.  You can get
+  partial credit for this requirement by implementing this option.<p>
+
+  <H3><LI>Optional: Indicate Possible Moves</H3>
+
+  When the user selects a square, indicate all possible moves from that
+  square graphically.  You could have the user select a square either
+  by clicking on it or by having the mouse hover over it.  You could
+  indicate possible moves by highlighting the destination squares or by
+  drawing arrows showing the moves.  You could use curved arrows to show
+  jumps.  You could have a button that shows all possible moves when
+  clicked.  You must use Checkerboard's <I>getMoves()</I> methods to
+  determine what moves are possible if you do this part of the project.
+
+  <H3><LI>Optional: Manage Games</LI></H3>
+  
+  Show the number of pieces remaining for each side.  Make "forced"
+  moves automatically.  (In checkers, a piece must jump if it is
+  possible, and there may be more than one jump per turn.)  Force the
+  two sides to alternate turns.  Show whose turn it is.  Keep track of
+  how many games each side has won.
+  
+  <H3><LI>Optional: Have Your Program Play Checkers</LI></H3>
+
+  Instead of having the user enter all the moves for both sides, have
+  the computer play one side of the game, making the best of all
+  possible moves each time it is its turn.  It's pretty obvious how to
+  do this, so I won't bother explaining it here.
+
+</OL>
+<HR>
+<center>
+[&nbsp;<a href="changes.html">Changes to this Assignment</a>&nbsp;]<BR>
+[&nbsp;<a href="FAQ.html">FAQs for the Assignment</a>&nbsp;]
+</center>
+<HR></BODY></HTML>

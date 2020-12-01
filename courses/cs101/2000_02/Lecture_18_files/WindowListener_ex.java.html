@@ -1,0 +1,95 @@
+<HTML><HEAD><TITLE>WindowListener_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>WindowListener_ex.java</H1></CENTER><HR><PRE>
+//  WindowListener_ex.java
+
+import javax.swing.*;
+import java.awt.event.*;
+
+//  Class WindowListener_ex
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates the "brute force" way of creating a WindowListener,
+  *   by implementing all the methods in the WindowListener interface.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0, Spring 2000
+  */
+  public class WindowListener_ex
+  {
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Displays a window.  Clicking on the "close" button in the
+    *   title bar exits the application
+    *
+    *   @param  argv  Command line arguments; not used.
+    *   @return Void.
+    */
+    public static void main( String[] argv )
+    {
+      JFrame jf = new JFrame( "WindowListener_ex" );
+      MyWindowListener mwl = new MyWindowListener();
+      jf.addWindowListener( mwl );
+
+      jf.pack();
+      jf.show();
+
+      return;
+    }
+
+  }
+
+//  Class MyWindowListener
+//  ------------------------------------------------------------------
+/**
+  *   Implements all the methods in the WindowListener interface.
+  *   Each one prints a message when it is invoked.
+  *   The windowClosing() method also exits the application.
+  *
+  *   The windowClosed() method never gets called, no matter what you
+  *   do.  What happens if you leave it out?
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring, 2000
+  */
+  class MyWindowListener implements WindowListener
+  {
+    public void windowActivated( WindowEvent we )
+    {
+      System.out.println( "Activated: " + we );
+    }
+
+    public void windowClosed( WindowEvent we )
+    {
+      System.out.println( "Closed: " + we );
+    }
+
+    public void windowClosing( WindowEvent we )
+    {
+      System.out.println( "Closing: " + we );
+      System.exit( 0 );
+    }
+
+    public void windowDeactivated( WindowEvent we )
+    {
+      System.out.println( "Deactivated: " + we );
+    }
+
+    public void windowDeiconified( WindowEvent we )
+    {
+      System.out.println( "Deiconified: " + we );
+    }
+
+    public void windowIconified( WindowEvent we )
+    {
+      System.out.println( "Iconified: " + we );
+    }
+
+    public void windowOpened( WindowEvent we )
+    {
+      System.out.println( "Opened: " + we );
+    }
+
+  }
+
+</PRE><HR></BODY></HTML>

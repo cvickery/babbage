@@ -1,0 +1,181 @@
+<HTML><HEAD><TITLE>Project 3b</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 3b</H1>
+</center>
+<H2>Deliverables and Due Date</H2>
+
+Send me email with an attached jar file containing LibraryManager.java
+by midnight, November 30.
+
+<H2>How to Create the Jar File</H2>
+
+From the directory containing your LibraryManager.java file, give this
+command:
+<pre>
+      jar cvf project3b.jar LibraryManager.java
+</pre>
+
+Then, just attach the file named project3b.jar to your email message,
+and send it to me.<p>
+
+There are three reasons for using a jar file to submit your project:
+<OL>
+  <LI>The jar command is free.  It comes with the JDK.  WinZip is
+  shareware, which means that you can use it for free for a while, but
+  after that you are supposed to pay a fee to use it.
+  <LI>By putting your file(s) inside a jar file, the capitalization and
+  spelling are preserved so that when I extract your files from the jar
+  file they will compile properly because their names are spelled and
+  capitalized properly.  Some mail programs "mangle" file names when you
+  attach them to your message.  If this happens to a jar file it's not a
+  problem because the jar command is indifferent to capitalization or
+  even what the name of a file is; it just extracts the contents while
+  preserving capitalizion for you.
+  <LI>Jar and zip files are compressed, which makes your email message
+  smaller.  Also, you can put several files inside a jar or zip file,
+  which will be an advantage when the project gets bigger and involves
+  multiple .java files.
+</OL>
+
+<H2>Working Code</H2>
+
+If you want, you can download a working version of this project so you
+can see what the result should look like.  (The working code includes
+some optional features that are not required, like centering the window
+on the screen.)<p>
+
+To get the working code <B>right</B>-click [&nbsp;<a
+HREF="Project_3b.jar">on
+this link</A>&nbsp;] and select "Save Target As..." (or "Save Link As...")
+from the menu that shows up.  Save the file using the name
+<u>Project_3b.jar</u>.<p>
+
+<B>November 30 Update:</B> There is a copy of the jar file with the
+name changed to [&nbsp;<a
+HREF="Project_3b.zip">Project_3b.zip</A>&nbsp;].  If you have trouble
+downloading and using Project_3b.jar, try downloading downloading
+Project_3b.zip instead.<p>
+
+To run the program, first give this command at
+the DOS prompt:
+
+<pre>
+    set CLASSPATH=Project_3b.jar
+</pre>
+
+Or, if you downloaded Project_3b.zip instead, use this command:
+
+<pre>
+    set CLASSPATH=Project_3b.zip
+</pre>
+
+
+Now, from the directory that has the downloaded jar file in it, give the
+command:
+
+<pre>
+    java LibraryManager
+</pre>
+
+Note that this will load LibraryManager.class from the jar file, but
+only if there is not a LibraryManager.class file in the current
+directory, so it's a good idea to download the .jar file into an empty
+directory.<p>
+
+In addition to giving you a chance to run my "perfect" version of the
+project, doing this little exercise will help you to understand jar
+files better.  If you want to see what is inside the jar file, you can
+use this command:
+
+<pre>
+    jar tvf Project_3b.jar
+</pre>
+
+Note that there is no need to extract the class files from the jar file
+to run the program.  If CLASSPATH is set to the name of a jar file, the
+java command will look inside the jar file automatically to find
+whatever class files it needs (in addition to finding standard class
+files in the usual way).<p>
+
+If you ever do want to get things out of a jar file, however, the
+command is "jar xvf &lt;jar file&gt; &lt;file name(s)&gt;".  For example,
+you could use this command to extract all the class files from
+Project_3b.jar (or Project_3b.zip) and skip the business of setting the
+CLASSPATH since the class files would now be in the current
+directory.<p>
+
+<B>Summary of Jar command options:</B>
+
+<UL>
+
+    <LI><CODE>jar cvf &lt;file name&gt; file...</CODE><BR>Use this
+    command to <u>c</u>reate a jar file.  The v is for "verbose" and
+    will cause more messages to print than if you leave it out.  The f
+    is for "file" and it means that the next argument is the name of
+    the jar file you want to create.  The "file..." part means that you
+    can list as many files as you want, and they will all be compressed
+    and put inside the jar file.  Wildcards are often convenient for
+    the last part of the command.
+
+    <LI><CODE>jar tvf &lt;file name&gt;</CODE><BR>Use this command to
+    <u>t</u>est the contents of a jar file.  It will print the names of
+    all the files that are inside the jar file.  The v and f are the
+    same as for the previous example.
+
+    <LI><CODE>jar xvf &lt;file name&gt; file...</CODE><BR>Use this
+    command to e<u>x</u>tract the list of files specified by the
+    "file..." part of the command.  If you omit "file...", all the
+    files in the jar file will be extracted. </UL>
+
+See the JDK documentation for the jar command for more details.  
+
+<H2>Project Description</H2>
+
+Write an application that has a standard menu bar, a File menu, and a
+Help menu.  The File menu should have a New menu, as well as Open and
+Exit menu items.  The File->New menu should have Library and Library
+Manager menu items. The Help menu should have an About menu item.<p>
+
+First get all the menus and menu items created and added to a JFrame.
+Even though none of the menu items does anything, make sure the
+application runs and that you can use the mouse to activate all the
+menus and click on all of the menu items.<p>
+
+Now add code so that the Close Window button actually exits the
+application.  Also, add code so the File->Exit menu item exits the
+application too.  Test to make sure they work.<p>
+
+Now add code so that the Help->About menu item activates a message
+dialog that tells the name of the program, your name, and the version. 
+Test to make sure it works.<p>
+
+Now add code so that the File->New->LibraryManager menu item creates a
+new instance of the graphical user interface.  You should be able to
+exit the application using any of the instances that the user creates. 
+Test to make sure it works.<p>
+
+Optional:  Add code so the File->Exit and Close Window buttons close
+only the current instance of the GUI.  Don't actually exit the program
+unless the user closes/exits the only remaining instance.  Here's how
+to do this:  Create a static int to count how many instances of the
+LibraryManager there are.  This counter should start at zero and be
+incremented every time the class is instantiated.  The natural place to
+increment the counter is in a constructor for the class, so you will
+have to add the constructor to the class.  Every time the user clicks
+on the close window button or the File->Exit menu item, subtract one
+from the instance counter. If the the result is zero, exit the
+application.  But if not, call the dispose() method for the JFrame
+object.<p>
+
+Remember to document your code using proper javadoc comments and tags.
+Also, be sure no lines are longer than 72 characters, and be sure there
+are no tab characters in your code.  (Set your editor to expand tabs to
+spaces.)<p>
+<center>
+[&nbsp;<a
+HREF="LibraryManager_3b.html">My Solution</A>&nbsp;]<BR>
+<HR></BODY></HTML>

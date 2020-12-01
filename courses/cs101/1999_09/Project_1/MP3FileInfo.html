@@ -1,0 +1,73 @@
+<HTML><HEAD><TITLE>MP3FileInfo.java</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>MP3FileInfo.java</H1>
+</center>
+<HR>
+<PRE>
+//  MP3FileInfo.java
+
+import java.io.*;
+import javax.swing.*;
+import javax.swing.filechooser.*;
+
+//  Class MP3FileInfo
+//  ------------------------------------------------------------------
+/**
+  *   Application that displays header and ID information for MP3
+  *   files.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - September 23, 1999
+  */
+  public class MP3FileInfo {
+
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *     Interacts with the user to select files and displays
+      *     information about their MPEG contents.
+      *
+      *     @param  argv[0] Optional starting directory or file
+      *     @return void
+      */
+      public static void main( String[] argv ) {
+
+      JFileChooser  filechooser;
+      String        startDir = ".";
+      File          f;
+      ID3V1info     id3v1;
+      MP3header     mp3header;
+
+        if ( argv.length == 1 )
+          startDir = argv[ 0 ];
+
+        while ( true ) {
+
+          filechooser = new JFileChooser( startDir );
+          if ( filechooser.showOpenDialog( null ) == 
+                                             JFileChooser.APPROVE_OPTION ) {
+            f = filechooser.getSelectedFile();
+            if ( f.canRead() ) {
+              startDir = f.getParent();
+              mp3header = new MP3header( f );
+              mp3header.showInfo();
+              id3v1 = new ID3V1info( f );
+              id3v1.showInfo();
+            }
+            else {
+              JOptionPane.showMessageDialog( null,
+                                    "Cannot read: " + f.getAbsolutePath(),
+                                    "Unable to Read",
+                                    JOptionPane.ERROR_MESSAGE );
+
+            }
+          }
+          else {
+            System.exit( 0 );
+          }
+        }
+      }
+  }
+</PRE>
+<HR></BODY></HTML>

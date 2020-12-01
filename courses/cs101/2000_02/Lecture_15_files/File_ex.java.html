@@ -1,0 +1,54 @@
+<HTML><HEAD><TITLE>File_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>File_ex.java</H1></CENTER><HR><PRE>
+//  File_ex.java
+
+import java.io.*;
+
+//  Class File_ex
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates the use of some methods available in class
+  *   java.io.File.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring 2000
+  */
+  public class File_ex
+  {
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Creates a File object for each command line argument, and
+    *   prints some information about it.
+    *
+    *   @param  argv  List of file names.
+    *   @return Void.
+    *   @throws IOException If any of the File operations fail.
+    */
+    public static void main( String[] argv )        throws IOException
+    {
+      for ( int i = 0; i &lt; argv.length; i++ )
+      {
+        File f = new File( argv[i] );
+        System.out.println( f + ":" );
+        System.out.println( " Absolute Path: " +
+                                                f.getAbsolutePath() );
+        System.out.println( " Canonical Path: " +
+                                               f.getCanonicalPath() );
+        System.out.println( " Exists?\t\t" + f.exists() );
+        System.out.println( " Readable?\t\t" + f.canRead() );
+        System.out.println( " Writeable?\t\t" + f.canWrite() );
+        System.out.println( " Hidden?\t\t" + f.isHidden() );
+        System.out.println( " Is a directory?\t" + f.isDirectory() );
+        System.out.println( " Is a file?\t\t" + f.isFile() );
+        System.out.println( " Size?\t\t\t" + f.length() ) ;
+
+        //  We also used createNewFile() and delete() in lecture.
+
+      }
+      System.exit( 0 );
+    }
+  }
+
+</PRE><HR></BODY></HTML>

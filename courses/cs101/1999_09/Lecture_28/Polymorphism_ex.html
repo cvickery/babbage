@@ -1,0 +1,100 @@
+<HTML><HEAD><TITLE>Polymorphism_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>Polymorphism_ex.java</H1></CENTER><HR><PRE>
+//  Polymorphism_ex.java
+
+/*  Polymorphism: Methods with the same signatures are
+ *  defined in different classes.  The type of object
+ *  used to call the method determines, at run time,
+ *  which method will be called.
+ *
+ *  In this file, there are objects of six different
+ *  classes, related as follows:
+ *
+ *  Object
+ *    |
+ *    -- W
+ *    -- X
+ *    |  |
+ *    |  --Y
+ *    |    |
+ *    |    -- Z
+ *    -- Polymorphism_ex
+ *
+ *  Each class has a method with the signature,
+ *    public String toString().
+ *  Class Object defines this method, so all classes
+ *  like Polymorphism_ex that do not override it
+ *  inherit the method from their parent class.  But
+ *  classes W, X, Y, and Z each override the method.
+ */
+
+//  classes W, X, Y, and Z
+//  ------------------------------------------------------------------
+class W extends java.lang.Object
+{
+  public String toString()
+  {
+    return "I am a W.";
+  }
+}
+class X extends java.lang.Object
+{
+  public String toString()
+  {
+    return "I am a X.";
+  }
+}
+class Y extends X
+{
+  public String toString()
+  {
+    return "I am a Y.";
+  }
+}
+class Z extends Y
+{
+  public String toString()
+  {
+    return "I am a Z.";
+  }
+}
+
+//  Class Polymorphism_ex
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates polymorphism.  Creates instances of six different
+  *   classes, putting references to each in an array of Object
+  *   references.  Then iterates through the array, calling each
+  *   element's toString() method.  Although there is only one
+  *   print statement, it prints six different messages because the
+  *   type of object determines which toString() method gets called.
+  */
+  public class Polymorphism_ex
+  {
+    static Object[] refs = {
+      new Object(),
+      new W(),
+      new X(),
+      new Y(),
+      new Z(),
+      new Polymorphism_ex(),
+    };
+
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Loops through the array of object references, calling each
+      *   one's toString() method implicitly in print statement.
+      */
+      public static void main( String[] argv )
+      {
+        Object obj;
+        for ( int i = 0; i &lt; refs.length; i++ )
+        {
+          obj = refs[ i ];
+          System.out.println( obj );
+        }
+      }
+  }
+
+</PRE><HR></BODY></HTML>

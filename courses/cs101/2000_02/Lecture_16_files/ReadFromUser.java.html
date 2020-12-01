@@ -1,0 +1,57 @@
+<HTML><HEAD><TITLE>ReadFromUser.java</TITLE></HEAD><BODY>
+<CENTER><H1>ReadFromUser.java</H1></CENTER><HR><PRE>
+//  ReadFromUser.java
+
+import java.io.*;
+
+//  Class ReadFromUser
+//  ------------------------------------------------------------------
+/**
+  *   Reads lines from the user, and writes them to a file.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring 2000
+  */
+  public class ReadFromUser
+  {
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Copies lines typed by the user to the file named on the
+    *   command line.  The file must not already exist.
+    *
+    *     @param  argv[0] Name of the file to write lines to.
+    *     @return Void.
+    *     @throws IOException if the file cannot be written.
+    */
+    public static void main( String[] argv )   throws IOException
+    {
+      //  Make sure the user typed a file name.
+      if ( argv.length != 1 )
+      {
+        System.err.println( "Need a file name!" );
+        System.exit( 1 );
+      }
+
+      //  Be sure the file doesn't exist, and prepare to write to it.
+      File f = new File( argv[ 0 ] );
+      if ( f.exists() )
+      {
+        System.err.println( "Error: " +
+                              f.getName() + " already exists." );
+        System.exit( 1 );
+      }
+      FileWriter fw = new FileWriter( f );
+      //  Read lines from the user, and write them to the file
+      InputStreamReader isr = new InputStreamReader( System.in );
+      BufferedReader    br  = new BufferedReader( isr );
+      String ioBuf = null;
+      while ( null != ( ioBuf = br.readLine() ) )
+      {
+        fw.write( ioBuf );
+      }
+      System.exit( 0 );
+    }
+  }
+
+</PRE><HR></BODY></HTML>

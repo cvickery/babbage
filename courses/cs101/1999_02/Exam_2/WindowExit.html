@@ -1,0 +1,20 @@
+<HTML><HEAD><TITLE>WindowExit.java</TITLE></HEAD><BODY>
+<CENTER><H1>WindowExit.java</H1></CENTER><HR><PRE>
+//  WindowExit.java
+
+import java.awt.*;
+import java.awt.event.*;
+
+public class WindowExit extends WindowAdapter {
+
+  public void windowClosing( WindowEvent we ) { System.exit( 0 ); }
+
+  public static void main( String[] argv ) {
+
+    Frame f = new Frame( "WindowExit" );
+    f.addWindowListener( new WindowExit() );
+    f.show();
+    }
+
+}
+</PRE><HR></BODY></HTML>

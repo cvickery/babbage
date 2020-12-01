@@ -1,0 +1,79 @@
+<HTML><HEAD><TITLE>TextEdit.java</TITLE></HEAD><BODY>
+<CENTER><H1>TextEdit.java</H1></CENTER><HR><PRE>
+//  TextEdit.java
+
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+//  Class TextEdit
+//  ------------------------------------------------------------------
+/**
+  *   Illustrates some basic elements of GUI design by implementing a
+  *   a simple text editor.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring, 2000
+  */
+  public class TextEdit
+  {
+
+    /** The main window that holds the GUI for the application.     */
+    static JFrame jf = new JFrame( "TextEdit" );
+
+    /** The text area that the user can edit.                       */
+    static JTextArea jt =
+                       new JTextArea( "This is the initial string." );
+
+    /** A scroll pane to manage the display of the text area.       */
+    static JScrollPane sp = new JScrollPane( jt );
+
+  //  Method main()
+  //  ----------------------------------------------------------------
+  /**
+    *   Creates a user interface consiting of a window (JFrame) and an
+    *   editable place to type text (JTextArea).  When the program
+    *   terminates, the text is written to a file named "output".
+    *
+    *   @param  argv  Command line arguments, not used.
+    *   @return Void.
+    */
+    public static void main( String[] argv )
+    {
+
+      //  Add the scroll pane containing the text area to the window,
+      //  and display the gui.
+      Container cp = jf.getContentPane();
+      cp.add( sp );
+      jf.pack();
+      jf.show();
+
+      //  Create a WindowListener object to handle window closing
+      //  events for the main window.
+      jf.addWindowListener( new WindowAdapter()
+      {
+        //  The callback method for Window Closing events.
+        public void windowClosing( WindowEvent we )
+        {
+          //  Write the contents of the JTextArea to a file, and exit.
+          try
+          {
+            FileWriter  fw = new FileWriter( "output" );
+            jt.write( fw );
+          }
+          catch ( IOException ioe )
+          {
+            System.out.println( "Error writing: " + ioe );
+            System.exit( 1 );
+          }
+          System.exit( 0 );
+        }
+      }
+      );
+
+
+    }
+  }
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,139 @@
+<HTML><HEAD><TITLE>Project 3e</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Project 3e</H1>
+</center>
+<H2>Deliverables and Due Date</H2>
+
+Send me email with an attached jar or zip file containing LibraryManager.java
+by midnight, December 14.
+
+<H2>Working Code</H2>
+
+I am supplying working code for this project in two zip files:
+<ul>
+    <LI>[&nbsp;<a HREF="Project_3e.zip">Project_3e.zip</A>&nbsp;]
+    <BR>Right-click (or shift-click) on this link to download the file
+    into a directory where you can test it.
+    <LI>[&nbsp;<a HREF="LibraryManager_3e.zip">LibraryManager_3e.zip</A>&nbsp;]
+    <BR>Right-click (or shift-click) on this link to download the file
+    into the same directory you used for Project_3e.zip
+</ul>
+To run the program, first give this command at the DOS prompt:
+
+<pre>
+    set CLASSPATH=Project_3e.zip;LibraryManager_3e.zip
+</pre>
+
+Now, from the directory that has the downloaded zip files in it, give the
+command:
+
+<pre>
+    java LibraryManager
+</pre>
+
+Note that this will load LibraryManager.class from the zip file, but
+only if there is not a LibraryManager.class file in the current
+directory, so it's a good idea to download the .zip file into an empty
+directory.<p>
+
+This version of the program should do everything including
+displaying the list of MP3 files in the center of the Library
+Manager window.  (Let me know if you have any trouble
+running it.)<P>
+
+You can view the current documentation for all my code either [&nbsp;<a
+HREF="Docs_3e">online</A>&nbsp;] or by downloading [&nbsp;<a
+HREF="Docs_3e.zip">Docs_3e.zip</A>&nbsp;].  If you download the zip
+file, you should use Winzip (or the command, <CODE>jar xvf
+Docs_3e.zip</CODE>) to unzip the files into their own directory, and
+then use your web browser to look at the file <CODE>index.html</CODE> in
+that directory.
+
+<H2>Project Description</H2>
+
+This project uses a javax.swing.JTable to display information about
+each MP3 file in an MP3 library.<P>
+
+Be sure you have Project 3d working before you work on this one.  You
+can look at my [&nbsp;<a
+href="LibraryManager_3d.html">LibraryManager.java for Project
+3d</a>&nbsp;] if you want help catching up.<P>
+
+With the course at its end, it's time to let you access my source code
+in all its glory: [&nbsp;<a
+HREF="LibraryManager_3e.html">LibraryManager.java</A>&nbsp;] and
+[&nbsp;<a HREF="MP3_Library_3e.html">MP3_Library.java</A>&nbsp;].  If
+you want to see source code for other classes, let me know by email.<p>
+
+Here are the points to understand about this version of the project:
+
+<UL>
+
+  <LI>Because only one component can be added to each of the five
+  positions defined by class BorderLayout, it was necessary to put the
+  two buttons at the bottom into a JPanel, and then to add that one
+  JPanel to the bottom of the JFrame's content pane.  This nesting of
+  containers inside containers in order to control the layout of an
+  application is the standard way of doing thing.  Note the flexibility
+  that comes, for example, by having a different layout manager for the
+  JPanel (Flow) from the JFrame (Border).
+  
+  <LI>The JTable component is very rich, but this code uses default
+  values for most everything.  But the columns don't have to be fixed
+  widths, you can add code to sort the table when you click on a column,
+  etc.
+  
+  <LI>There is a known bug in the current implementation of JTable that
+  makes it impossible to remove the column headers when changing the
+  content of the scroll pane back to a label after putting in the JTable
+  (when you close a library).  This is bug #4197023 in Sun's database,
+  and it will be fixed in the next release of the JDK.  In the meantime,
+  there the column headings stay there once they appear.
+  
+  <LI>Making the JTable work is really done in the class MP3_Library,
+  which has been made into a subclass of AbstractTableModel for this
+  step of the project.  There is an interface called TableModel that
+  establishes a large set of methods that must be implemented when
+  creating a model for the JTable view.  Class AbstractTableModel
+  provides default implementations for all but three of the methods in
+  this interface.  Thus, a class that extends AbstractTableModel can be
+  used as a model so long as it provided implementations of at least
+  these three missing methods from the interface.  The source code for
+  MP3_Library has all the methods having to do with the Table Model
+  grouped together so you can see what they are.
+
+  <LI>The source code I am supplying here has a couple of little
+  features not found in LibraryManager_3e.zip: The cursor changes to an
+  hourglass when you add a tree to the library, the JFrame is always
+  centered on the screen, even when the size and shape change when you
+  open and close libraries, and the JFrame is made invisible during
+  the resizing and recentering operations to avoid brief flashes as
+  these updates are performed.
+
+  <LI>A good way to start working with tables would be to figure out how
+  to modify MP3_Library.java so it displays additional columns of
+  information about each MP3 file, such as the bit rate and playing
+  duration.  In my code you will see a comment that says "There's gotta
+  be a better way..."  This refers to the fact that adding a column to
+  the table requires changing three parts of the code simultaneously:
+  add the string used for the column heading to colNames[], add a
+  private static final int for the new column's position in colNames[],
+  and add a section to the switch statement in <I>getValueAt()</I> to
+  return the proper value.  Having to make so many changes that have to
+  be synchronized with each other is indicative of a poor program design
+  because it would be easy to make a mistake.  But I haven't figured out
+  a better way to do this in Java yet ...
+
+</UL>
+
+<HR>
+Remember to document your code using proper javadoc comments and tags.
+Also, be sure no lines are longer than 72 characters, and be sure there
+are no tab characters in your code.  (Set your editor to expand tabs to
+spaces.)<p>
+
+<HR></BODY></HTML>

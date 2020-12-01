@@ -1,0 +1,182 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>Lecture 5</title>
+<meta name=Description content="23-Feb-00: Exercise 4 Concepts">
+<link rel=next href=slide0011.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0010.htm');   
+  else
+    parent.location.href = "../Lecture_06.html";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=black link=black vlink=black text=black topmargin=0
+leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=650 height=487 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=55 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=92 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=358 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=114 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=650 height=43 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=147 height=45 colspan=2></td>
+  <td width=358 height=45>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=358 height=45 align=center><font face="Times New Roman" size=6>Exercise
+    4 Concepts</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=145 height=45 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=650 height=28 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=55 height=368></td>
+  <td width=564 height=368 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=62 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=74 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=300 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=22 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=496 height=29 colspan=7><font face="Times New Roman" size=5>When
+    the SortedWordList is created, set up an</font><br>
+    </td>
+    <td width=44 height=29 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=25 height=28></td>
+    <td width=540 height=28 colspan=13><font face="Times New Roman" size=5>array
+    of WordCounter references with room for 10</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=25 height=27></td>
+    <td width=521 height=27 colspan=9><font face="Times New Roman" size=5>elements.<span
+    style="mso-spacerun: yes">  </span>Set the private fields <i>size</i> and <i>capacity</i></font><br>
+    </td>
+    <td width=19 height=27 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=25 height=27></td>
+    <td width=159 height=27 colspan=3><font face="Times New Roman" size=5>to
+    zero and 10.</font><br>
+    </td>
+    <td width=381 height=27 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=565 height=5 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=535 height=29 colspan=11><font face="Times New Roman" size=5>Each
+    time a word has to be added to the list, add 1</font><br>
+    </td>
+    <td width=5 height=29 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=25 height=27></td>
+    <td width=459 height=27 colspan=4><font face="Times New Roman" size=5>to <i>size</i>
+    until it exceeds <i>capacity</i>.<span style="mso-spacerun: yes"> 
+    </span>When this</font><br>
+    </td>
+    <td width=81 height=27 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=25 height=27></td>
+    <td width=466 height=27 colspan=5><font face="Times New Roman" size=5>happens,
+    create a new array with double the</font><br>
+    </td>
+    <td width=74 height=27 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=25 height=27></td>
+    <td width=524 height=27 colspan=10><font face="Times New Roman" size=5>capacity
+    of the old one, and copy the old one into</font><br>
+    </td>
+    <td width=16 height=27 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=25 height=28></td>
+    <td width=136 height=28 colspan=2><font face="Times New Roman" size=5>the
+    new one.</font><br>
+    </td>
+    <td width=404 height=28 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=565 height=4 colspan=14></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=538 height=29 colspan=12><font face="Times New Roman" size=5>When
+    you add a word into the middle of the array,</font><br>
+    </td>
+    <td width=2 height=29></td>
+   </tr>
+   <tr>
+    <td width=25 height=27></td>
+    <td width=518 height=27 colspan=8><font face="Times New Roman" size=5>you
+    have to move other elements out of the way.</font><br>
+    </td>
+    <td width=22 height=27 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=25 height=28></td>
+    <td width=485 height=28 colspan=6><font face="Times New Roman" size=5>Watch
+    out for inserting at the beginning of an</font><br>
+    </td>
+    <td width=55 height=28 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=25 height=27></td>
+    <td width=62 height=27><font face="Times New Roman" size=5>array.</font><br>
+    </td>
+    <td width=478 height=27 colspan=12></td>
+   </tr>
+  </table>
+  </td>
+  <td width=31 height=368></td>
+ </tr>
+ <tr>
+  <td width=650 height=3 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

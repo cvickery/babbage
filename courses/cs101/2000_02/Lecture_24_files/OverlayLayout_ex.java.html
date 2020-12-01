@@ -1,0 +1,30 @@
+<HTML><HEAD><TITLE>OverlayLayout_ex.java</TITLE></HEAD><BODY>
+<CENTER><H1>OverlayLayout_ex.java</H1></CENTER><HR><PRE>
+//  OverlayLayout_ex.java
+
+import java.awt.*;
+import javax.swing.*;
+
+public class OverlayLayout_ex
+{
+  public static void main( String[] argv )
+  {
+    JFrame jf = new JFrame( "OverlayLayout_ex" );
+    jf.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Container cp = jf.getContentPane();
+    cp.setLayout( new OverlayLayout( cp ) );
+    cp.add( new JButton( "First" ) );
+    cp.add( new JButton( "Second" ) );
+    cp.add( new JButton( "Third" ) );
+    cp.add( new JButton( "Fourth" ) );
+    cp.add( new JButton( "Fifth" ) );
+    cp.add( new JButton( "The Sixth One" ) );
+    new OverlayLayout( cp );
+    jf.pack();
+    jf.setLocation( 200, 150 );
+    jf.show();
+  }
+
+}
+
+</PRE><HR></BODY></HTML>
