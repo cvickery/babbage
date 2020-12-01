@@ -1,0 +1,62 @@
+
+Here are the solutions for homework Assignment 10.
+Dr. Vickery
+
+4.1 You would need to ask 24 yes/no questions to determine which
+    location is to be read or written, so you need 24 bits for the
+    addresses.
+
+4.2 The lowest address is 0, and the highest is 2^18 - 1.  This is not
+    a byte-addressable architecture, so all addresses are in units of
+    words.
+
+4.3 (a) #1 has 2^17 - 2^16 = 2^16 bytes and #2 has 2^19 - 2^17 bytes.
+    (2^19 - 2^17 is 3 * 2^17).
+
+    (b)
+        ! Subtract old_y from y
+          orncc %r4, %r0, %r4
+          addcc %r4, 1, %r4
+          addcc %r2, %r4, %r0
+
+        ! Skip flashing if no change
+          be    loop            
+
+4.4 
+          .begin
+          .org 2048
+    swap: ld    [x],      %r1
+          ld    [y],      %r2
+          st    %r1,      [y]
+          st    %r2,      [x]
+          jmpl  %r15 + 4, %r0
+    x:    25
+    y:    50
+          .end
+
+4.5 (a) The code adds 10 array elements stored at a and 10 elements
+    stored at b, and places the result in the array that starts at c.
+    Register 1 is being used as an index register (subscript for the
+    arrays), but has to be decremented by 4 each time through the loop
+    because of byte addressing.
+
+    (b) It's like a for loop, that looks roughly like this:
+
+          for ( i = k; i >= 0; i-- )
+            c[i] = a[i] + b[i];
+          return;
+        Here, i is serving the purpose of %r1, but the scaling by 4
+        bytes per word doesn't show in the high-level language.
+
+4.6 (a) 
+        Using - to separate fields for visibility   RTL
+        0 0 0 - 0 - 0 0 - 0 - 1 0 - 0 0 0 0 0 0 0   r2 <- r0
+        0 0 0 - 0 - 0 1 - 0 - 0 0 - 0 0 0 0 0 0 0   r0 <- r1
+        0 0 0 - 0 - 1 0 - 0 - 0 1 - 0 0 0 0 0 0 0   r1 <- r2
+
+    (b)
+        0 0 0 - 1 - 0 0 - 0 - 0 0 - 0 0 0 1 1 0 0   r0 <- M[12]
+        0 0 0 - 1 - 0 0 - 0 - 0 1 - 0 0 0 1 1 0 1   r1 <- M[13]
+        0 0 1 - 0 - 0 0 - 1 - 0 0 - 0 0 0 1 1 0 1   M[13] <- r0
+        0 0 1 - 0 - 0 1 - 1 - 0 0 - 0 0 0 1 1 0 0   M[12] <- r1
+

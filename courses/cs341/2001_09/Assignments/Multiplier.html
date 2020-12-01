@@ -1,0 +1,308 @@
+<html><head><title>Serial Multiplier</title>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+</head>
+<BODY bgcolor=#FFFFFF>
+<center>
+<h1>Serial Multiplier</h1>
+</center>
+
+<h2>Datapath</h2>
+
+  Recognizing that no more than one of <i>Initialize, Add,</i> and
+  <i>Shift</i> will ever be true at the same time, all the flip-flops
+  can be controlled by two bits, as follows:<p>
+
+<table width=80%>
+<tr>
+  <td width=20%>&nbsp;
+  <td>
+  <table cellpadding=5 border=1>
+    <tr>
+      <th>Shift&nbsp;&nbsp;Add&nbsp;&nbsp;Init
+      <th>x<sub>1</sub>&nbsp;&nbsp;x<sub>0</sub>
+
+    <tr>
+      <td align=center>0&nbsp;&nbsp;0&nbsp;&nbsp;0
+      <td align=center>0&nbsp;&nbsp;0
+
+    <tr>
+      <td align=center>0&nbsp;&nbsp;0&nbsp;&nbsp;1
+      <td align=center>0&nbsp;&nbsp;1
+
+    <tr>
+      <td align=center>0&nbsp;&nbsp;1&nbsp;&nbsp;0
+      <td align=center>1&nbsp;&nbsp;0
+
+    <tr>
+      <td align=center>1&nbsp;&nbsp;0&nbsp;&nbsp;0
+      <td align=center>1&nbsp;&nbsp;1
+
+  </table>
+</table>
+<p>
+
+  Then, each register is controlled by <i>x<sub>1</sub></i> and
+  <i>x<sub>0</sub></i> as follows:<p>
+  
+<table width=80%>
+<tr>
+  <td width=20%>&nbsp;
+  <td>
+  <table cellpadding=5 border=1>
+  <tr>
+    <th>x<sub>1</sub>&nbsp;&nbsp;x<sub>0</sub>
+    <th>Register m
+    <th>Register C
+    <th>Register a
+    <th>Register q
+
+  <tr>
+    <td align=center>0&nbsp;&nbsp;0
+    <td>No Change
+    <td>No Change
+    <td>No Change
+    <td>No Change
+
+  <tr>
+    <td align=center>0&nbsp;&nbsp;1
+    <td>Load from A
+    <td>Load with 0
+    <td>Load with 0s
+    <td>Load from B
+
+  <tr>
+    <td align=center>1&nbsp;&nbsp;0
+    <td>No Change
+    <td>Load from C<sub>4</sub>
+    <td>Load from full adders
+    <td>No Change
+
+  <tr>
+    <td align=center>1&nbsp;&nbsp;1
+    <td>No Change
+    <td>Load with 0
+    <td>Shift right
+    <td>Shift right
+
+  </table>
+</table>
+<p>
+
+Which leads to the following datapath design:<p>
+
+  <image src="./Multiplier_Datapath.png">
+<hr>
+<h2>Controller</h2>
+
+The state table for the controller would be:<p>
+
+<table width=80%>
+<tr>
+  <td width=20%>&nbsp;
+  <td>
+  <table cellpadding=5 border=1>
+    <tr>
+      <th colspan=3>Inputs
+      <th colspan=5>Outputs
+    <tr>
+      <th>Present State
+      <th>Start
+      <th>q<sub>0</sub>
+      <th>Next State
+      <th>Init
+      <th>Add
+      <th>Shift
+      <th>Wait
+
+    <tr>
+      <td align=center>0  <!-- Present State  -->
+      <td align=center>0  <!-- Start          -->
+      <td align=center>x  <!-- q0             -->
+      <td align=center>0  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>0  <!-- Shift          -->
+      <td align=center>1  <!-- Wait           -->
+
+    <tr>
+      <td align=center>0  <!-- Present State  -->
+      <td align=center>1  <!-- Start          -->
+      <td align=center>0  <!-- q0             -->
+      <td align=center>2  <!-- Next State     -->
+      <td align=center>1  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>0  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>0  <!-- Present State  -->
+      <td align=center>1  <!-- Start          -->
+      <td align=center>1  <!-- q0             -->
+      <td align=center>1  <!-- Next State     -->
+      <td align=center>1  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>0  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>1  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>x  <!-- q0             -->
+      <td align=center>2  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>1  <!-- Add            -->
+      <td align=center>0  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>2  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>0  <!-- q0             -->
+      <td align=center>4  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>1  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>2  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>1  <!-- q0             -->
+      <td align=center>3  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>1  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>3  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>x  <!-- q0             -->
+      <td align=center>4  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>1  <!-- Add            -->
+      <td align=center>0  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>4  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>0  <!-- q0             -->
+      <td align=center>6  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>1  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>4  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>1  <!-- q0             -->
+      <td align=center>5  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>1  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>5  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>x  <!-- q0             -->
+      <td align=center>6  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>1  <!-- Add            -->
+      <td align=center>0  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>6  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>0  <!-- q0             -->
+      <td align=center>8  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>1  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>6  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>1  <!-- q0             -->
+      <td align=center>7  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>1  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>7  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>x  <!-- q0             -->
+      <td align=center>8  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>1  <!-- Add            -->
+      <td align=center>0  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+    <tr>
+      <td align=center>8  <!-- Present State  -->
+      <td align=center>x  <!-- Start          -->
+      <td align=center>x  <!-- q0             -->
+      <td align=center>0  <!-- Next State     -->
+      <td align=center>0  <!-- Initialize     -->
+      <td align=center>0  <!-- Add            -->
+      <td align=center>1  <!-- Shift          -->
+      <td align=center>0  <!-- Wait           -->
+
+  </table>
+</table><p>
+
+Assuming we decode the Present State to generate the intermediate values
+<i>State<sub>0</sub> ... State<sub>8</sub></i> we can derive the
+following equations for the output variables, where <i>D<sub>i</sub></i>
+is the D input of the <i>i</i>th bit of the the 4-bit state register:
+
+<ul>
+
+  <li><i>Init = (&nbsp;State<sub>0</sub> &#8901; Start&nbsp;)</i>
+
+  <li><i>Add =  (&nbsp;State<sub>1</sub> + State<sub>3</sub> +
+                State<sub>5</sub> + State<sub>7</sub>&nbsp;)</i>
+
+  <li><i>Shift = (&nbsp;State<sub>2</sub> + State<sub>4</sub> +
+                State<sub>6</sub> + State<sub>8</sub>&nbsp;)</i>
+
+  <li><i>Wait = (&nbsp;State<sub>0</sub> &#8901; ~Start&nbsp;)</i>
+
+  <li><i>D<sub>0</sub> = (&nbsp; q<sub>0</sub> &#8901;
+  (&nbsp;State<sub>0</sub> + State<sub>2</sub> + State<sub>4</sub>+
+  State<sub>6</sub> &nbsp;)&nbsp;)</i>
+
+  <li><i>D<sub>1</sub> = (&nbsp;(&nbsp; Start &#8901; State<sub>0</sub>
+  &#8901; ~q<sub>0</sub> &nbsp;) + State<sub>1</sub> + (&nbsp;
+  State<sub>2</sub> &#8901; q<sub>0</sub> &nbsp;) +
+  (&nbsp;State<sub>4</sub> &#8901; ~q<sub>0</sub>&nbsp;) +
+  State<sub>5</sub> + (&nbsp;State<sub>6</sub> &#8901;
+  q<sub>0</sub>&nbsp;)&nbsp;)</i>
+
+  <li><i>D<sub>2</sub> = (&nbsp; (&nbsp;State<sub>2</sub> &#8901;
+  ~q<sub>0</sub>&nbsp;) + State<sub>3</sub> + State<sub>4</sub> +
+  State<sub>5</sub> + (&nbsp;State<sub>6</sub> &#8901;
+  q<sub>0</sub>&nbsp;)&nbsp;)</i>
+
+  <li><i>D<sub>3</sub> = (&nbsp; (&nbsp;State<sub>6</sub> &#8901;
+  ~q<sub>0</sub>&nbsp;) + State<sub>7</sub> &nbsp;)</i>
+
+</ul>
+
+Here is a logic diagram for the controller:<p>
+<table width=80%>
+<tr><td width=20%>
+<td>
+  <table align=center cellpadding=5>
+    <tr>
+    <td><image src="./Multiplier_Controller.png">
+  </table>
+</table>
+<hr></body></html>

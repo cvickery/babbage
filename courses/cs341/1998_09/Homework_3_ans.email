@@ -1,0 +1,193 @@
+Class --
+
+  Here are the solutions for Homework 3.
+  
+  Dr. Vickery
+
+
+3.1)  The program computes the sum of odd numbers up to the largest odd
+      number smaller than or equal to n.
+
+      Sample input ($a0) and output ($v0) values:
+
+         $a0     $v0
+           0       0
+           1       1
+           2       1
+           3       4
+           4       4
+           5       9
+           6       9
+
+      The answer is also equivalent to (n + 1) / 2 squared.
+
+
+3.2)  The code determines the most frequent value appearing in the
+      array, and returns its value in $v1.  The number of times it
+      appears is returned in $v0.
+
+
+3.3)  There is an inner loop that contains 1 + 2 + 2 + 1 + 1 + 2 = 9
+      clocks per iteration.  It is executed 5,000 times for every
+      iteration of the outer loop.  The outer loop requires 5 clocks
+      before the inner loop and another 8 after the inner loop, for a
+      total of 13 clocks.  It is executed 5,000 times.  So the total
+      number of clocks is:
+
+                       4  Before the outer loop
+                  65,000  Outer loop only (13 * 5,000)
+             225,000,000  Inner loop (9 * 5,000 * 5,000)
+                 -------
+             225,065,004  Total 
+
+      Note that the inner loop accounts for 99.97% of the execution
+      time.
+
+      At 500 MHz, execution time is 225,065,004 / 500,000,000 = 0.450
+      seconds, or 450 milliseconds.
+
+
+3.4)  Assume that register $t0 is used for the variable a, and that
+      register $t1 is used for the variable b:
+
+        addi $t0,$t1,100
+
+      If you assume that a and b are memory locations, your answer
+      depends on whether you assume their locations are in the address
+      range 0 to 32764 (the largest multiple of four that will fit in a
+      16-bit signed field), or not.  Other questions deal with that
+      issue, so we'll leave the answer as shown.
+
+
+3.5)  The number 4,000,000 decimal is 0x003D0900, so:
+
+        lui   $at, 0x003D
+        ori   $at, 0x0900   # 0x003D0900 is in $at now
+        lw    $t1, 44($at)  # load x[11]
+        add   $t1, $t0, $t1 # add c
+        sw    $t1, 40($at)  # store x[10]
+
+
+3.6)
+          addi  $v0, $zero,-1     # Initialize the counter
+    loop: lw    $v1, 0($a0)
+          addi  $v0, $v0, 1
+          sw    $v1,  0($a1)
+          addi  $a0, $a0, 4       # Advance to next *word*
+          addi  $a1, $a1, 4       # Advance to next *word*
+          bne   $v1, $zero, loop
+
+
+3.7)    Instruction          Fmt Op rs rt Imm/Addr  Hexadecimal
+  loop: lw    $v1,0($a0)      I  35  4  3     0       8C830000
+        addi  $v0,$v0,1       I   8  2  2     1       20420001
+        sw    $v1,0($a0)      I  43  5  3     0       AC830000
+        addi  $a0,$a0,1       I   8  4  4     1       20840001
+        addi  $a1,$a1,1       I   8  5  5     1       20A50001
+        bne   $v1,$zero,loop  I   5  3  0    -6       1460FFFA
+
+Note: if you run this code on the simulator, the last instruction uses
+-5 for the offest, and the instruction looks like 1460FFFB.
+
+
+(You should be able to do the translation to hexadecimal, but I do not
+expect you to be able to convert negative numbers to binary or
+hexadecimal, as in the last instruction, yet.)
+
+
+3.8)  Sorry, I shouldn't have assigned this one.  C is not a
+      prerequisite for this course.  But here's the code:
+
+      count = 1;
+      do {
+        temp = *source;
+        count++;
+        *destination = temp;
+        source++;
+        destination++;
+        } while ( temp != 0 );
+
+
+3.9)  Before optimization, 75 instructions would be executed.  This
+      would be 10 complete iterations of 7 instructions, plus the first
+      5 that would be executed the last time through.
+      
+      Rewriting:
+
+              add $t1, $s3, $s3   # Compute 2 * i
+              add $t1, $t1, $t1   # Compute 4 * i
+              add $t1, $t1, $s6   # $t1 = address of save[i]
+              lw  $t0, 0($t1)     # Load save[i]
+              bne $t0, $s5, Exit  # Exit if save[i] != k
+        Loop: add $s3, $s3, $s4   # i = i + j
+              add $t1, $s3, $s3   # $t1 = 2 * i
+              add $t1, $t1, $t1   # $t1 = 4 * i
+              add $t1, $t1, $s6   # $t1 = address of save[i]
+              lw  $t0, 0($t1)     # Load save[i]
+              beq $t0, $s5, Loop  # Iterate if save[i] == k
+        Exit:
+
+
+      Now the number of instructions is 5 (before the loop) + 60 (ten
+      times through the loop of six instructions) for a total of 65.
+      Speedup is 75/65, or 15%
+      
+      But a bigger saving can come if you compute 4 * j before the loop,
+      and doing an add of that value to i each time through the loop
+      instead of adding j to i and multiplying the sum by 4 each time:
+      
+              add $t2, $s4, $s4     # 2 * j
+              add $t2, $t2, $t2     # 4 * j
+              add $t1, $s3, $s3     # 2 * i
+              add $t1, $t1, $t1     # 4 * i
+              add $t1, $t1, $s6     # address of save[i]
+              lw  $t0, 0($t1)       # save[i]
+              bne $t0, $s5, Exit    # Exit if save[i] != k
+        Loop: add $t1, $t1, $t2     # address of save[i + n * j]
+              lw  $t0, 0($t1)       # save[i + n * j]
+              beq $t0, $s5, Loop    # Iterate if save[i] == k
+        Exit:
+        
+      Here, n is iteration number.  The total number of instructions is
+      now 7 outside the loop plus 10 iterations of the three inside the
+      loop, for a total of 37, and a speedup of 203% compared to the
+      original code.
+
+3.10) Pseudoinstruction     Corresponding real instruction(s)
+
+      move  $t5, $t3        add   $t5,  $t3,  $zero
+
+      clear $t5             add   $t5,  $zero, $zero (there are others)
+
+      li    $t5, small      addi  $t5,  $zero, small
+
+      li    $t5, big        lui   $t4,  upper_half(big)
+                            ori   $t5, $t5, lower_half(big)
+
+      lw    $t5, big($t3)   lui   $at, upper_half(big)
+                            ori   $at, $at, lower_half(big)
+                            add   $at, $at, $t3
+                            lw    $t5, 0($at)
+
+      addi  $t5, $t3, big   lui   $at, upper_half(big)
+                            ori   $at, $at, lower_half(big)
+                            add   $t5, $t3, $at
+
+      beq   $t5, small, L   addi  $at, $zero, small
+                            beq   $t5, $at, L
+
+      beq   $t5, big, L     lui   $at, upper_half(big)
+                            ori   $at, $at, lower_half(big)
+                            beq   $t5, $at, L
+
+      ble   $t5, $t3, L     slt   $at, $t3, $t5
+                            beq   $at, $zero, L
+
+      bgt   $t5, $t3, L     slt   $at, $t3, $t5
+                            bne   $at, $zero, L
+
+      bge   $t5, $t3, L     slt   $at, $t5, $t3
+                            beq   $at, $zero, L
+
+      Note: upper_half(big) means the leftmost 16 bits of big's binary
+      value, and lower_half(big) means the rightmost 16 bits.

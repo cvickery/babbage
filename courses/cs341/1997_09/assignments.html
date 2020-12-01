@@ -1,0 +1,229 @@
+<HTML><HEAD><TITLE>CS-341 Assignments, Fall 1997</TITLE></HEAD>
+<BODY bgcolor=ffffff>
+<H1 align=center>CS-341 Assignments, Fall 1997</H1>
+
+Solutions will be sent to class members after assignments have been
+graded.
+
+<OL>
+
+<LI><B>HW-5 Due October 28:</B>
+
+Exercises B.3, B.4, B.5, and B.10 from the <i>Second Edition</i> of the
+textbook.  These correspond to exercises B.10, B.11, and B.12 from the
+<i>First Edition</i>, plus the following problem:
+
+<pre>
+  Assume that X consists of three bits, X2 X1 X0.  Write four logic
+  functions that are true if and only if
+<ul><li> X contains only one 1
+<li> X contains an even number of 1s
+<li> X when interpreted as an unsigned binary number is less than 3
+<li> X when interpreted as a signed (two's complement) number is less than -1</ul>
+
+</pre>
+
+<LI><B>HW-4 Due October 24:</B>
+
+Draw the gates to implement a multiplexor with two control (selector) inputs,
+four data inputs, and one output.  The truth table is given by:
+
+<CENTER>
+<TABLE BORDER=2>
+<TR><TD WIDTH=36><CENTER>C</A><SUB>1</SUB></CENTER>
+</TD><TD WIDTH=38><CENTER>C<SUB>0</SUB></CENTER></TD><TD WIDTH=38><CENTER><A NAME="UQHTML0">Y</A></CENTER>
+</TD></TR>
+<TR><TD WIDTH=36><CENTER>0</CENTER></TD><TD WIDTH=38><CENTER>0</CENTER>
+</TD><TD WIDTH=38><CENTER>D<SUB>0</SUB></CENTER></TD></TR>
+<TR><TD WIDTH=36><CENTER>0</CENTER></TD><TD WIDTH=38><CENTER>1</CENTER>
+</TD><TD WIDTH=38><CENTER>D<SUB>1</SUB></CENTER></TD></TR>
+<TR><TD WIDTH=36><CENTER>1</CENTER></TD><TD WIDTH=38><CENTER>0</CENTER>
+</TD><TD WIDTH=38><CENTER>D<SUB>2</SUB></CENTER></TD></TR>
+<TR><TD WIDTH=36><CENTER>1</CENTER></TD><TD WIDTH=38><CENTER>1</CENTER>
+</TD><TD WIDTH=38><CENTER>D<SUB>3</SUB></CENTER></TD></TR>
+</TABLE>
+</CENTER>
+<p>
+
+<LI><B>HW-3 Due October 7:</B>
+
+Convert the decimal number +123.456 to IEEE-754 single and double
+precision representations.  Show all work, and answer in
+hexadecimal.<p>
+
+<B>Optional Exercise:</B>  Write a program that will accept a
+floating-point number from the user and which prints the binary
+representation of each field of the IEEE-754 encoding of the number,
+for both single-precision and double-precision representations.  There
+must be no limit on the numbers the user types in other than the limits
+imposed by the iEEE-754 format itself.<p>
+I will accept this as the equivalent of doing one extra homework exercise
+until Halloween midnight.<p>
+
+<pre>
+
+      Answers: 0x42F6E979 and 0x405EDD2F1A9FBE77.
+        
+      Solution: 123.456 is 7B.74BC6A7EF9DB22D... in hexadecimal. 
+      [Calculator trick: instead of multiplying by 2 to get each bit,
+      multiply by 16 to get each hexadecimal digit of the fraction.] 
+      Move the binary point 6 places to the left, and you get:
+
+      1.111011011101001011110001101010011111101111100111011011001000101101
+
+      The leftmost 1 will be dropped when forming the encoded value; it's
+      implicit.
+
+      The single-precision exponent is 127 + 6, or 133 = 10000101 as an
+      8-bit binary number, so the answer in binary is:
+      
+      0*100 0010 1*111 0110 1110 1001 0111 1001 (rightmost bit is
+      rounded)
+
+      I used '*' to separate the fields and blanks to separate the hex
+      digits.
+      
+      The double-precision exponent is 1023 + 6 or 1029 = 10000000101 as
+      an 11-bit binary number, and the answer in binary is:
+      
+      0*100 0000 0101*1110 1101 1101 0010 1111
+       0001 1010 1001 1111 1011 1110 0111 0111
+
+      Again, the rightmost binary digit has been rounded up.
+
+</pre>
+
+  <LI><B>HW-2 Due September 26</B>
+  <UL>
+    <LI>Exercise 3.33 (3.22 in the Second Edition).  Write the answer on
+        paper to hand in.<p>
+        
+        <i>Note:</i> The SPIM simulator (for Windows 3.x, Windows 95,
+        or Windows NT) is available for download <a
+        href="ftp://babbage.cs.qc.edu/pub/vickery/spimwin.exe">if you
+        click here</a>.  That is a copy on Dr. Vickery's computer.  You
+        can go to the site mentioned in the textbook if you prefer, but
+        it often seems to be too busy.  You can try it <a
+        href="ftp://ftp.cs.wisc.edu/pub/spim/"> if you click
+        here</a>.<p>
+
+        Using the simulator is not required for this course, but if you
+        do want to use it, follow these instructions:<p>
+
+        The file you downloaded is named spimwin.exe, and is a
+        self-extracting zip file.  Run it from Windows or using WinZip
+        (You can get WinZip for free <a href="http://www.winzip.com">
+        if you click here</a>.)  It will give you instructions for
+        setting it up to run on your computer.  There will be an icon
+        for the executable file (pcSpim.exe).  Before you run the
+        simulator, you should prepare an assembly language program
+        using any text editor you wish.  I suggest that you create a
+        directory for your programs, perhaps a subdirectory of the one
+        where you installed pcspim.  Use a <code>.s</code> extension
+        for the assembly language file.  Be sure the first statement of
+        your program has the label main: at the beginning.  Here is a
+        sample program you can use that loads a word of data into
+        register 3, and stops:
+
+<pre>
+      main:
+              lw $3,  alpha     # Load 123 into reg. 3
+              li $2,  10        # Setup to exit
+              syscall           # Exit
+              .data
+      alpha:  .word   123       # Data to load
+              .end
+</pre>
+        
+
+        Run the simulator, and use its "Window" menu to tile all the
+        display windows.  If your program uses the print routine
+        described in Appendix A, be sure to display the "console"
+        window too.  Load your <code>.s</code> file using the File
+        menu, and then single-step through your program using the F10
+        key.<p>
+        
+        The Text Segment window shows the program as you wrote it on
+        the right, the equivalent "pure" assembly language in the
+        middle, the machine language to the left of that, and the
+        memory addresses for the program all the way to the left.  The
+        assembly language you type may use standard mnemonics for
+        register names, and may use extended op code names; the pure
+        assembly language shows what these mnemonics and register names
+        are actually equivalent to.  For example, the <code>lw</code>
+        instruction above is translated into a <code>lui</code>
+        instruction followed by a <code>lw</code> instruction.<p>
+        
+        As you single step through the program, the Messages window will
+        show each line of the Text Segment <i>after</i> it has been
+        executed, and the Registers window will show you the contents of
+        the CPU's registers as the program progresses.<p>
+
+        Good luck with the simulator, it can be very instructive!
+
+  </UL>
+
+  <LI><B>HW-1 Due September 16</B>
+  <UL>
+    <LI>Exercises 2.10, 2.11, 2.12, 2.13
+    <LI>Convert 123.456 from decimal to binary.
+  </UL>
+
+<pre>
+  <i>Note</i>:  Because of problems getting the textbook, I am giving
+  the textbook exercises here:
+
+  2.10  We are interested in two implementations of a machine, one with
+  and one without special floating-point hardware.
+  
+  Consider a program, P, with the following mix of operations:
+  
+    floating-point multiply 10%
+    floating-point add      15%
+    floating-point divide    5%
+    Integer instructions    70%
+    
+  Machine MFP (Machine with Floating Point) has floating-point hardware
+  and can therefore implement the floating-point operations directly. 
+  It requires the following number of clock cycles for each instruction
+  class:
+
+    floating-point multiply  6
+    floating-point add       4
+    floating-point divide   20
+    Integer instructions     2
+    
+  Machine MNFP (Machine with N Floating Point) has no floating-point
+  hardware and so must emulate the floating-point operations using
+  integer instructions.  The integer instructions all take 2 clock
+  cycles.  The number of integer instructions needed to implement each
+  of the floating-point operations is as follows:
+  
+    floating-point multiply 30
+    floating-point add      20
+    floating-point divide   50
+    
+  Both machines have a clock rate of 100 MHz.  Find the native MIPS
+  ratings for both machines.
+    
+  2.11  If the machine MFP in Exercise 2.10 needs 300,000,000
+  instructions for this program, how many integer instructions does the
+  machine MNFP require for the same program?
+  
+  2.12  Assuming the instruction counts from Exercise 2.11, what is the
+  execution time (in seconds) for the program in Exercise 2.10 run on
+  MFP and MNFP?
+  
+  2.13  Assuming that each floating-point operation counts as 1, and
+  that MFP executes 300,000,000 instructions, find the MFLOPS rating for
+  both machines in Exercise 2.10
+
+</pre>
+
+</OL>
+
+<HR>
+Dr. Christopher Vickery<BR>
+Computer Science Department<BR>
+Queens College of CUNY<p>
+<HR></BODY></HTML>

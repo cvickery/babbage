@@ -1,0 +1,252 @@
+<HTML><HEAD><TITLE>CS-341 Homework Solutions, Spring 1997</TITLE></HEAD>
+<BODY bgcolor=ffffff>
+<H1 align=center>CS-341 Homework Solutions, Spring 1997</H1>
+
+<DL>
+  <DT>1.  <B>February 7</B><DD>Exercises 2.14, 2.15, 2.16, 2.17, 2.18, 2.19.<p>
+
+<pre>
+  2.14  Multiply the CPI for each instruction class by its relative
+        frequency (per cent divided by 100), and sum the results.
+        The answers are 2.80 for <i>Mbase</i> and 2.45 for <i>Mopt</i>.
+      
+  2.15  MIPS = instr / sec / 1,000,000
+             = (clk / sec) * (instr/clk)
+             = 50 / 2.80 = 17.86 for <i>Mbase</i>
+             = 60 / 2.45 = 24.49 for <i>Mopt</i>
+
+  2.16  Execution time = instr * cpi / cps Both machines execute the same
+        number of instructions, so you can use any value for <i>instr</i>,
+        such as 1.  Likewise, it doesn't effect the relative performances
+        if we divide the cps by a million, so:
+
+        Time for <i>Mbase</i> is 1 * 2.80 / 50 = 0.056 sec
+        Time for <i>Mopt</i>  is 1 * 2.45 / 60 = 0.041 sec
+      
+        The ratio is 1.37, so <i>Mopt</i> is 37% faster.
+
+  2.17  Multiply each of the CPI terms by its new frequency, and sum.  The
+        answer is 2.51.
+
+  2.18    2.51 / 50 = 0.05015
+        0.056 / 0.05015 is 1.117, so <i>Mcomp</i> is 11.7% faster.
+
+  2.19  CPI for <i>Mboth</i> is 2.1875 (See 2.17).  So execution time for
+        <i>Mboth</i> is 2.1875 / 0.0365.  Divide this into execution time
+        for <i>Mbase</i> to get 1.536, so <i>Mboth</i> is 53.6% faster
+        than <i>Mbase</i>.
+
+</pre>
+  <DT>2.  <B>February 11</B><DD>Exercises 3.19 and 3.20.  Extra: 3.21.<p>
+
+<pre>
+
+  3.19  for (i = 0; i <= 100; i++) a[i] = b[i] * c;
+
+        There are many correct solutions.  This one assumes the authors
+        really meant the loop to go for 101 iterations.  It also assumes
+        that the value of <i>i</i> does not have to be kept during the
+        loop, so we can just compute successive values of 0, 4, 8, etc.
+        for the index into the two arrays.
+      
+              add   $15, $0, $0         # Register 15 will be i * 4
+        loop: slti  $1, $15, 404        # 404 is 4 * 101
+              beq   $1, $0, exit
+              lw    $8, 2000($15)       # b[i]
+              add   $8, $8, $16         # + c
+              sw    $8, 1500($15)       # a[i] =
+              addi  $15, $15, 4         # i++
+              j     loop
+        exit:
+        
+        There are seven instructions in the loop, and one outside it, so a
+        total of 707 + 1 = 708 instructions will be executed.
+        
+        Two of the instructions make data references (lw and sw), and
+        each is executed 101 times, so there are 202 data references.
+
+  3.20  A)  The table says that 33% of the instructions make data
+        references in <i>gcc</i>, and we know that 100% of the
+        instructions are fetched into the cpu by accessing memory,
+        so 33 / 133 = 0.248 (24.8%) of all memory accesses are for data.
+
+        B)  All memory accesses to fetch instructions are reads, and 2/3
+        of the 33% of the data references are reads, so the percentage
+        of all memory access that are reads is 22 / 133 = 92%
+
+  3.21  A)  41 / 141 = 29.1%
+        B)  27.3 / 141 = 19.3%
+
+</pre>
+
+  <DT>3.  <b>February 21</B><DD>Translate the instruction "<code>beq
+  3,4,somewhere</code>" to hexadecimal.  Assume the instruction is at
+  decimal address 1020 and that the label "<code>somewhere</code>"
+  represents decimal address 996.<p>
+
+<pre>
+    Since the PC register will have been incremented by four when the
+    instruction is executed, the target address will be 996 - 1024 =
+    -28, which must be divided by four to convert the distance from
+    number of bytes to number of words between the target and the PC.
+
+        <b>Field   Width  Value  Binary</b>
+        Op code  6      4     000100
+        rs       5      3     00011
+        rt       5      4     00100
+        Address 16     -7     1111 1111 1111 1001
+        
+        Binary instruction, 4 bits per group:
+            0001 0000 0110 0100 1111 1111 1111 1001
+        Hex:   1    0    6    4    F    F    F    9
+
+</pre>
+
+  <DT>4.  <B>February 28</B><DD>Exercises B1, B2, B3, B4, B5, B6, B10, B11,
+  B12.<p>
+<pre>
+
+  B1.  First, note that there are 2^n entries, not 2n.  The proof is
+  that each input can take on two values, so the truth table has to
+  list all combinations, which is 2x2x2x ... x2.
+  B2.  Covered in class
+  B3.  This is a sixteen row truth table.  Each row must contain an even
+  number of 1s, which you do by making the output 0 or 1 as necessary.
+  The sixteen outputs, in order, are: 0110 1001 1001 0110, which is the
+  same as the exclusive or of four variables.
+  B4.  Use the sum of products implementation technique described in
+  class.  There should be 8 AND gates with a fan-in of 4 each, plus one
+  OR gate with a fan-in of 8.
+  B5.  Because of Figure B.6 in the book, this could look just like
+  your answer to B4 and still be "correct."  Better would be to make a
+  diagram like Figure B.7 with eight horizontal lines in the AND plane,
+  8 vertical lines connecting the AND plane and the OR plane, and one
+  horizontal line in the OR plane.
+  B6.  A   B   ~A  ~B   ~(AB)  ~A+~B  ~(A+B)  ~A~B
+       0   0    1   1     1      1       1      1
+       0   1    1   0     1      1       0      0
+       1   0    0   1     1      1       0      0
+       1   1    0   0     0      0       0      0
+                          ^-same-^       ^-same-^
+  B10.  The trick is that ~(A+A) is the same as ~A.  That is, you can
+  make an inverter out of a NOR gate.  Then you can use these inverters
+  made out of NOR gates and DeMorgan's Theorem to construct the AND and
+  OR gates.
+  B11.  ~(AA) is ~A too, so you can do the same thing as B10.
+  B12.  You can use the constants zero and one as data inputs to a
+  multiplexor.  If you put zero into the one input, one into the zero
+  input, and a data value into the S input, you will have an inverter.
+  If you put zero into the zero input, A into S, and B into the one
+  input, you will get AND.  A OR B is A into S, B into zero, and one
+  into one.
+</pre>
+
+  <DT>5.  <B>March 25</B><DD>Do Exercise 4.1.  Translate 1.23 into a
+  single-precision IEEE-794 floating-point number.<p>
+
+<pre>
+  4.1  Two's complement: -1,880,113,152
+       Unsigned integer:  2,414,854,144
+       Floating-point:    -1.873 * 2^(-96) = -2.364 * 10^(-29)
+       1.23:              0x3F9D70A4 (last bit is rounded up)
+</pre>
+
+  <DT>6.  <B>March 28</B><DD>Implement a ~S ~R latch using four NAND
+  gates.  Draw a "truth table" to describe its operation, and draw a
+  timing diagram to illustrate its behavior.<p>
+
+<pre>
+  We went over this one carefully in class on April 4.
+</pre>
+
+  <DT>7.  <B>April 11</B><DD>Complete the design of a 32M x 12 memory
+  system using 8M x 4 SRAM ICs that was begun in class on April 8.<p>
+
+<blockquote><code>
+
+    You should have a matrix of four rows and three columns of SRAM
+    ICs. There are 25 Address lines; 23 go to each of the SRAMs, the
+    other two go to a 2x4 decoder, whose outputs go to the CS inputs of
+    all the SRAMS in a row.  See the <A HREF= "../memory_system">Memory
+    System Design</A> web page for an example of how to label
+    everything.
+
+</code></blockquote>
+
+  <DT>8.  <B>May 2</B><DD>Complete the table showing the settings of
+  various control signals for different instructions that was begun in
+  class on April 29.<p>
+
+<center><table border>
+  <TR><TH>
+      <TH align=center>RegDst
+      <TH align=center>Mem2Reg
+      <TH align=center>RegWrite
+      <TH align=center>ALUSelB
+      <TH align=center><i>f</i>
+      <TH align=center>MemRead
+      <TH align=center>MemWrite
+  <TR><TD>lw
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>1
+      <TD align=center>1
+      <TD align=center>010
+      <TD align=center>1
+      <TD align=center>0
+  <TR><TD>sw
+      <TD align=center><code>X</code>
+      <TD align=center><code>X</code>
+      <TD align=center>0
+      <TD align=center>0
+      <TD align=center>010
+      <TD align=center>0
+      <TD align=center>1
+  <TR><TD>add
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>010
+      <TD align=center>0
+      <TD align=center>0
+  <TR><TD>sub
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>110
+      <TD align=center>0
+      <TD align=center>0
+  <TR><TD>and
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>000
+      <TD align=center>0
+      <TD align=center>0
+  <TR><TD>or
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>001
+      <TD align=center>0
+      <TD align=center>0
+  <TR><TD>slt
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>111
+      <TD align=center>0
+      <TD align=center>0
+
+</table></center>
+</DL>
+<HR>
+Dr. Christopher Vickery<BR>
+Computer Science Department<BR>
+Queens College of CUNY<p>
+<HR></BODY></HTML>

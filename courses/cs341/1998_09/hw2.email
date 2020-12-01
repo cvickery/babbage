@@ -1,0 +1,64 @@
+Class --
+
+  Here are the answers to Homework 2.
+  
+  Dr. Vickery
+
+
+2.10  M1 has 1 as its smallest CPI, so its MIPS is 500/1, or 500 MIPS
+      M2 has 2 as its smallest CPI, so its MIPS is 750/2, or 375 MIPS
+
+2.11  The average CPI for M1 is (1+2+3+4)/4 = 2.5, so its average
+      speed is 500/2.5 = 200 MIPS.
+      The average CPI for M2 is (2+2+4+4)/4 = 3.0, so its average
+      speed is 750/3.0 = 250 MIPS.
+      250 / 200 is 1.25, so M2 is 25% faster.
+
+2.12  You would need to make M1 go 1.25 times faster, which you could do
+      by making its clock 1.25 * 500, or 625 MHz.
+
+2.13  There is a typo in early printings of the book that said CPI on M2
+      for Class C is 8.  Later editions corrected this value, making it
+      3.  If it's 8, M1 is always faster, making the question hard to
+      understand!
+      
+      Since both machines execute the same instructions we can compare
+      performance by comparing average MIPS, which you can get by
+      dividing clock rate by average CPI.  The average CPI for M1 using
+      C1 is 4*.3 + 6*.5 + 8*.2, or 5.8.  You can figure out the other
+      values similarly.  400/5.8 is 69.0, which is the upper-left value
+      in the chart below.
+      
+      Average MIPS:
+                    C1    C2    C3 <- compiler
+      M1            69.0  62.5  74.0
+      M2 with typo  47.6  37.0  52.0
+      M2 w/o typo   62.5  69.0  71.4
+      
+      With typo:  69.0/47.6 = 1.45, so M1 is 45% faster using C1
+                  62.5/37.0 = 1.69, so M1 is 69% faster using C2
+      
+      W/o typo:   69.0/62.5 = 1.10, so M1 is 10% faster using C1
+                  69.0/62.5 = 1.10, so M2 is 10% faster using C2
+                  (If you carry the arithmetic out to more places,
+                  the result for C2 is 1.11.)
+                  
+      But the best performance (74 MIPS) comes with M1/C3, so buy M1.
+
+2.41  5/5 + 5 = 6 sec after improvement.  1/6 = 1.67 overall speedup.
+
+2.42  Speedup of 3.0 means execution time of 100/3 = 33.33 sec.  So
+      33.3 = x/5 + 100 - x, or 83.375 sec of the original 100 sec had to
+      be floating-point time.
+  
+2.43  The overall speedup is 1.0 (no speedup) if none of the time is
+      spent doing floating-point.  The overall speedup is 5.0 if all of
+      the time is spent doing floating-point.  For 25% floating-point,
+      the execution time after speedup is .25/5 + .75 = 0.8, for a
+      speedup of 1/0.8 = 1.25.  Other values are 1.67 and 2.86 for .5
+      and .75.  Plot the 5 data points using straight lines to connect
+      the points.
+
+2.44  .2/4 + .8 = .85 -> 1.18
+      .5/2 + .5 = .75 -> 1.33
+      .2/4 + .5/2 + .3 = .60 -> 1.67

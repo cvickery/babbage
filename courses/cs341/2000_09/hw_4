@@ -1,0 +1,48 @@
+
+Here are the solutions to the exercises for Homework 4.
+
+Dr. Vickery
+
+--
+
+  3.  With three variables, the truth table has 8 rows, so a function
+  can be described by an 8-bit number.  Thus 256 functions exist.  With
+  n variables, the truth table has k=2^n rows, and there are 2^k
+  functions.
+
+  4.  Here is the truth table:
+                 _       _
+      P  Q | PQ PQ (PQ)+PQ
+      -----|--------------
+      0  0 |  0  0     0
+      0  1 |  0  0     0
+      1  0 |  0  1     1
+      1  1 |  1  0     1
+
+
+  5.  Use one NAND gate to combine the two inputs, then connect the
+  output of that gate to both inputs of a second NAND, which will act
+  as an inverter, giving the complement of NAND, which is AND.
+
+  6.  By DeMorgan's Law:
+  
+      __       _
+       _   _   _   _
+      AB = A + B = A + B
+
+  7.  Inputs D1, D2, D4, and D7 are all connected to the plus side of
+  the power supply (logic 1), and the other inputs are all connected to
+  ground (logic 0).
+
+  8.  The idea is that you can use any three of the variables as control
+  intputs to the multiplexor, let's say variables A, B, and C.  Then
+  each of the 8 inputs of the multiplexor will represent two rows of the
+  truth table, one where D is zero and one where D is one.  These row
+  pairs will either have output values of 0 and 0 (put 0 into the
+  corresponding input of the multiplexor), 0 and 1 (put D into the
+  corresponding input), 1 and 0 (put ~D into the corresponding input)
+  or 1 and 1 (put 1 into the corresponding input.)  For the problem
+  given, and using A, B, and C as the controls, the inputs to the
+  multiplexor, starting with input number 0, would be: D, 1, 0, 1, ~D,
+  ~D, 0, and D.
+

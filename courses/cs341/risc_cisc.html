@@ -1,0 +1,162 @@
+<HTML> <HEAD> <title> y = x[i] </title> <body>
+
+<h2>Compare code for a RISC and a CISC processor</h2>
+
+<p>  This page shows the assembly language code for computing
+<code>y=x[i]</code> using integer variables on the MIPS CPU, a risc
+processor.  The equivalent code for the Intel architecture, a cisc
+design, is given for comparison.
+
+<p>  First, here is the MIPS assembly language program. </p>
+<pre> 
+#  Compute y = x[i]
+
+	.data
+
+x:	.word	10,9,8,7,6,5,4,3,2,1	# Array of 10 ints
+y:	.word	-1			# Initialized int
+i:	.word	3			# Initialized int
+
+	.text
+	.globl	main
+
+main:					# main()
+
+	la	$2, x			# &x
+	la	$3, i			# &i
+	lw	$3, 0($3)		# i
+	sll	$3, $3, 2		# i * 4
+	add	$3, $3, $2		# &x[i]
+	lw	$4, 0($3)		# x[i]
+	la	$5, y			# &y
+	sw	$4, 0($5)		# y = x[i]
+
+	li	$v0, 10
+	syscall				# exit()
+
+</pre>
+
+<p>Now, load the program into the <A HREF="ftp://ftp.cs.wisc.edu/pub/spim/spim.tar.Z">SPIM simulator</A> and look at the Text
+Segments part of the display.  The original assembly language is on the
+right, and the equivalent machine language statements are in the middle.  Note
+that <i>la</i> instructions are converted to <i>lui/ori</i> machine language
+pairs (unless the address ends in 0x0000).  Performing the calculation takes
+10 machine instructions, which is 40 bytes of code.  We can assume that
+each machine instruction except <i>lw/sw</i> takes one clock period to execute.
+Memory reference instructions take two clocks.  Thus the total number of
+clocks is 13.  There is a dump of the data segment just to show the locations
+assigned to the variables in the program.
+</p>
+
+<pre>
+
+	TEXT
+[0x00400020]	0x3c021001  lui $2, 4097     ; 14: la   $2, x		# &x
+[0x00400024]	0x3c011001  lui $1, 4097     ; 15: la   $3, i		# &i
+[0x00400028]	0x3423002c  ori $3, $1, 44 
+[0x0040002c]	0x8c630000  lw $3, 0($3)     ; 16: lw   $3, 0($3)	# i
+[0x00400030]	0x00031880  sll $3, $3, 2    ; 17: sll  $3, $3, 2	# i*4
+[0x00400034]	0x00621820  add $3, $3, $2   ; 18: add  $3, $3, $2	# &x[i]
+[0x00400038]	0x8c640000  lw $4, 0($3)     ; 19: lw   $4, 0($3)	# x[i]
+[0x0040003c]	0x3c011001  lui $1, 4097     ; 20: la   $5, y	# &y
+[0x00400040]	0x34250028  ori $5, $1, 40
+[0x00400044]	0xaca40000  sw $4, 0($5)     ; 21: sw   $4, 0($5)	# y=x[i]
+
+[0x00400048]	0x3402000a  ori $2, $0, 10   ; 23: li   $v0, 10
+[0x0040004c]	0x0000000c  syscall          ; 24: syscall		# exit()
+
+	DATA
+[0x10000000]...[0x1000fffc]	0x00000000
+[0x1000fffc]		        0x00000000
+[0x10010000]		        0x0000000a  0x00000009  0x00000008  0x00000007
+[0x10010010]		        0x00000006  0x00000005  0x00000004  0x00000003
+[0x10010020]		        0x00000002  0x00000001  0xffffffff  0x00000003
+[0x10010030]...[0x10020000]	0x00000000
+
+</pre><p>  Next, here is a compiler listing of a C program in which the computation is
+performed twice, once on global data, and once on local data.  The program
+was compiled using a 32-bit compiler for the Intel architecture.  After the
+source code listing, the compiler generated the equivalent assembly language
+for the program.</p>
+<pre>
+
+iRMX III iC-386 COMPILER V4.7, COMPILATION OF MODULE INDEX.C
+
+ line level  incl 
+
+    1             /***> index.c <**********************************************
+    2              *
+    3              *      Look at the code generated for y = x[i];
+    4              *
+    5              *      Christopher Vickery
+    6              *      CS-341, Fall 1995
+    7              *
+    8              */
+    9             
+   10             int     x[10], y, i;      /* Global variables in data seg  */
+   11             
+   12             int
+   13             main(int argc, char *argv[])
+   14             {
+   15     1         int   xx[10], yy, ii;  /* Local variables on stack */
+   16     1       
+   17     1         y = x[i];
+   18     1       
+   19     1         yy = xx[ii];
+   20     1       
+   21     1         return 0;
+   22     1       }
+
+iC-386  COMPILER 10/20/95 09:51:24  INDEX.C                             PAGE  2
+
+                   ASSEMBLY LISTING OF OBJECT CODE
+
+                                                   ; STATEMENT # 14
+                           main      PROC NEAR
+         00000000  55              PUSH    EBP
+         00000001  8BEC            MOV     EBP,ESP
+         00000003  81EC30000000    SUB     ESP,30H
+                           @1:
+                                                   ; STATEMENT # 17
+         00000009  8B052C000000    MOV     EAX,i
+         0000000F  8B048500000000  MOV     EAX,x[EAX*4]
+         00000016  890528000000    MOV     y,EAX
+                                                   ; STATEMENT # 19
+         0000001C  8B45D0          MOV     EAX,[EBP].ii
+         0000001F  8B4485D8        MOV     EAX,[EBP].xx[EAX*4]
+         00000023  8945D4          MOV     [EBP].yy,EAX
+                                                   ; STATEMENT # 21
+         00000026  31C0            XOR     EAX,EAX
+         00000028  C9              LEAVE
+         00000029  C20C00          RET     0CH
+                                                   ; STATEMENT # 22
+                           main      ENDP
+                                                   ; STATEMENT # 22
+
+</pre><p> Note that statement #17, which references global variables requires
+three instructions for a total of 19 bytes of code.  Statement #19 references
+local variables; although it requires the same number of instructions (3) as
+#17, it requires only 10 bytes of code.</p>
+<p>Not counting for instruction
+fetch time, the code listed here should take 12 clocks on an i386 processor,
+or 6 clocks on an i486 processor.  Clearly, the i486 designers recognized
+this type of operation as a common case, and designed the processor to make
+this common case fast; twice as fast as a '386 running at the same clock
+speed.</p>
+<p>It would be futile to try to analyze the relative performances of the
+MIPS and Intel codes.  There are many variables in terms of cache,
+memory speeds in the case of cache misses, clock speeds on both processors,
+and (in the case of MIPS) that some or all of the variables might reside in
+registers in the case of local variables at least, so it is not possible
+to make an analysis meaningfully (at least not in this Web page).
+Besides, this little snippet of code
+could never serve as a legitimate basis for comparing the performance of these
+processors on full programs.  The code presented here, however, is instructive
+in that it allows you to look at how the two types of architecture deal with
+this common programming construct.  Besides, writing the MIPS code would make
+a good exam question!</p>
+
+<HR>
+<Address>Christopher Vickery<BR>Queens College of CUNY</Address>
+</BODY>
+</HTML>

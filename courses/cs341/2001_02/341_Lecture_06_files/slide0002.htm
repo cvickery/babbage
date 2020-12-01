@@ -1,0 +1,200 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-341 Lecture 6</title>
+<meta name=Description content="28-Feb-01: Two’s Complement Encoding">
+<link rel=next href=slide0004.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0002.htm');   
+  else
+    parent.location.href = "../341_Lecture_06.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=386 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=21 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=45 height=33 colspan=2></td>
+  <td width=386 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=386 height=33 align=center><font face="Times New Roman" size=5>Two’s
+    Complement Encoding</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=44 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=23 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=266></td>
+  <td width=403 height=266 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=36 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=17 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=87 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=88 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=33 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=36 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=385 height=22 colspan=16 rowspan=2><font face="Times New Roman"
+    size=3>Using <i>n</i> bits to represent values, the range is –2<sup>n-1</sup></font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=18 height=1></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=75 height=20 colspan=6><font face="Times New Roman" size=3>to +2<sup>n-1</sup>-1</font><br>
+    </td>
+    <td width=310 height=20 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=403 height=2 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=338 height=21 colspan=13><font face="Times New Roman" size=3>Consider
+    the leftmost bit to have a negative</font><br>
+    </td>
+    <td width=47 height=21 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=58 height=20 colspan=5><font face="Times New Roman" size=3>weight.</font><br>
+    </td>
+    <td width=327 height=20 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=403 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=326 height=18 colspan=12><font face="Times New Roman" size=2>Useful
+    when changing word size: <i>sign extension.</i></font><br>
+    </td>
+    <td width=38 height=18></td>
+   </tr>
+   <tr>
+    <td width=403 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=268 height=18 colspan=8><font face="Times New Roman" size=2>Also
+    makes it easy to evaluate numbers.</font><br>
+    </td>
+    <td width=96 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=403 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=252 height=21 colspan=9><font face="Times New Roman" size=3>Negate
+    by subtracting from zero</font><br>
+    </td>
+    <td width=133 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=403 height=2 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=229 height=18 colspan=5><font face="Times New Roman" size=2>Equivalent
+    to “flip bits and add 1”</font><br>
+    </td>
+    <td width=135 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=403 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=342 height=21 colspan=14><font face="Times New Roman" size=3>Subtract
+    by negating subtrahend and adding</font><br>
+    </td>
+    <td width=43 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=403 height=3 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=285 height=21 colspan=10><font face="Times New Roman" size=3>Carry
+    is normal and usually ignored.</font><br>
+    </td>
+    <td width=100 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=403 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=325 height=21 colspan=12><font face="Times New Roman" size=3>Overflow
+    is when correct value cannot be</font><br>
+    </td>
+    <td width=60 height=21 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=18 height=19></td>
+    <td width=162 height=19 colspan=7><font face="Times New Roman" size=3>represented
+    in <i>n</i> bits.</font><br>
+    </td>
+    <td width=223 height=19 colspan=9></td>
+   </tr>
+  </table>
+  </td>
+  <td width=32 height=266></td>
+ </tr>
+ <tr>
+  <td width=475 height=13 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

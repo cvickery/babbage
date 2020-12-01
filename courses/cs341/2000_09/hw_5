@@ -1,0 +1,78 @@
+
+Here are the solutions to Homework 5.
+
+Dr. Vickery
+
+Chapter 3
+
+  14. Let Gi be AiBi.  That is, position i Generates a carry if both
+ operands are true.  Let Pi be Ai+Bi.  That is, position i Propagates a
+ carry if either operand is true.  All the Pi and Gi values can be
+ computed in parallel in one propagation delay.  With two more
+ propagation delays, all the carry values can be computed in parallel as
+ follows:
+ 
+      C1 = G0 * P0C0
+      C2 = G1 + P1G0 + P1P0C0
+      C3 = G2 + P2G1 + P2P1G0 + P2P1P0C0
+      C4 = G3 + P3G2 + P3P2G1 + P3P2P1G0 + P3P2P1P0C0
+      etc.
+
+  15. The timing of the circuit can be found by finding the longest
+  path from inputs to outputs.  For Boolean operations, this is from
+  either A or INVA, throught the XOR, then either the AND or OR, the
+  corresponding AND, and the output OR, for a total of 5 gates, or
+  50nsec.  For other operations, the decoder has two gate delays
+  (assuming we count the inverters), plus the two cascaded XOR gates,
+  the AND gate after them, and finally the output OR gate, for a total
+  of 6 gates, or 60 nsec.  So the worst case through the whole circuit
+  is 60 nsec.
+
+  NOTE FOR QUESTIONS 16 AND 17: In class I had the inputs to the MUX
+  in a different order from the way F0 and F1 are decoded in Figure
+  3-19.  Here is the correct interpretation of those two bits:
+  
+      F1 F0   Result selected
+       0  0     AND (same as in class)
+       0  1     ~B
+       1  0     OR
+       1  1     Full Adder output
+
+  From now on, we'll use the above values, not the ones I used in class.
+  Sorry for the confusion.
+
+  ALSO: Figure 4-2 on page 206 lists "some of the more interesting
+  combinations" for the six control bits.  Note that the author
+  reverses the order of F0 and F1 in that table compared to the
+  convention I use of always putting the less significant bit on the
+  right.
+
+  16. You subtract A from B by adding the two's complement of A to B. 
+  Do that by enabling and inverting A, enabling B, setting F0 and F1 to
+  11, and making INC (C0) true.
+
+    INVA  ENA ENB F1 F0 INC
+      1    1   1   1  1  1
+
+  17. One way is to negate ENB, forcing B to zero.  Then choose function
+  code 01 to select ~B as the ALU function.  The one's complement of 0 is
+  -1 in two's complement (all 1 bits).  As long as INC is negated, the
+  control lines for A do not matter.
+
+    INVA  ENA ENB F1 F0 INC
+      X    X   0   0  1  0
+
+  A second way is to disable and invert A, putting all 1s on the A
+  input.  Then negate ENB to force B to zero.  With A equal to -1 and B
+  equal to 0, you can either add or OR them together to get all 1s.
+
+    INVA  ENA ENB F1 F0 INC
+      1    0   0   1  0  0  (or)
+      1    0   0   1  1  0  (add)
+
+  18. 16*10 + 15*1 = 175 nsec.  (There is one less propagation delay
+  between stages than the total number of bits.)  This question is for a
+  serial adder rather than a parallel one; there is no delay between
+  stages in a parallel ALU because the conections between stages are
+  just wires, which we assume have no delays.
+

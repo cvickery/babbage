@@ -1,0 +1,146 @@
+<HTML><HEAD><TITLE>CS-341 Homework Solutions, Spring 1997</TITLE></HEAD>
+<BODY bgcolor=ffffff>
+<H1 align=center>CS-341 Homework Solutions, Spring 1997</H1>
+
+I have removed the answers to the textbook exercises.  It's not a good
+policy for me to publish them on the web, since instructors at other
+schools might not want them to be public.  In the future, I will email
+solutions to students in the course.<p>
+
+<DL>
+  <DT>1.  <B>February 7</B><DD>Exercises 2.14, 2.15, 2.16, 2.17, 2.18, 2.19.<p>
+
+  <DT>2.  <B>February 11</B><DD>Exercises 3.19 and 3.20.  Extra: 3.21.<p>
+
+  <DT>3.  <b>February 21</B><DD>Translate the instruction "<code>beq
+  3,4,somewhere</code>" to hexadecimal.  Assume the instruction is at
+  decimal address 1020 and that the label "<code>somewhere</code>"
+  represents decimal address 996.<p>
+
+<pre>
+    Since the PC register will have been incremented by four when the
+    instruction is executed, the target address will be 996 - 1024 =
+    -28, which must be divided by four to convert the distance from
+    number of bytes to number of words between the target and the PC.
+
+        <b>Field   Width  Value  Binary</b>
+        Op code  6      4     000100
+        rs       5      3     00011
+        rt       5      4     00100
+        Address 16     -7     1111 1111 1111 1001
+        
+        Binary instruction, 4 bits per group:
+            0001 0000 0110 0100 1111 1111 1111 1001
+        Hex:   1    0    6    4    F    F    F    9
+
+</pre>
+
+  <DT>4.  <B>February 28</B><DD>Exercises B1, B2, B3, B4, B5, B6, B10, B11,
+  B12.<p>
+
+  <DT>5.  <B>March 25</B><DD>Do Exercise 4.1.  Translate 1.23 into a
+  single-precision IEEE-794 floating-point number.<p>
+
+<pre>
+       1.23:              0x3F9D70A4 (last bit is rounded up)
+</pre>
+
+  <DT>6.  <B>March 28</B><DD>Implement a ~S ~R latch using four NAND
+  gates.  Draw a "truth table" to describe its operation, and draw a
+  timing diagram to illustrate its behavior.<p>
+
+<pre>
+  We went over this one carefully in class on April 4.
+</pre>
+
+  <DT>7.  <B>April 11</B><DD>Complete the design of a 32M x 12 memory
+  system using 8M x 4 SRAM ICs that was begun in class on April 8.<p>
+
+<blockquote><code>
+
+    You should have a matrix of four rows and three columns of SRAM
+    ICs. There are 25 Address lines; 23 go to each of the SRAMs, the
+    other two go to a 2x4 decoder, whose outputs go to the CS inputs of
+    all the SRAMS in a row.  See the <A HREF= "../memory_system">Memory
+    System Design</A> web page for an example of how to label
+    everything.
+
+</code></blockquote>
+
+  <DT>8.  <B>May 2</B><DD>Complete the table showing the settings of
+  various control signals for different instructions that was begun in
+  class on April 29.<p>
+
+<center><table border>
+  <TR><TH>
+      <TH align=center>RegDst
+      <TH align=center>Mem2Reg
+      <TH align=center>RegWrite
+      <TH align=center>ALUSelB
+      <TH align=center><i>f</i>
+      <TH align=center>MemRead
+      <TH align=center>MemWrite
+  <TR><TD>lw
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>1
+      <TD align=center>1
+      <TD align=center>010
+      <TD align=center>1
+      <TD align=center>0
+  <TR><TD>sw
+      <TD align=center><code>X</code>
+      <TD align=center><code>X</code>
+      <TD align=center>0
+      <TD align=center>0
+      <TD align=center>010
+      <TD align=center>0
+      <TD align=center>1
+  <TR><TD>add
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>010
+      <TD align=center>0
+      <TD align=center>0
+  <TR><TD>sub
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>110
+      <TD align=center>0
+      <TD align=center>0
+  <TR><TD>and
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>000
+      <TD align=center>0
+      <TD align=center>0
+  <TR><TD>or
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>001
+      <TD align=center>0
+      <TD align=center>0
+  <TR><TD>slt
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>1
+      <TD align=center>0
+      <TD align=center>111
+      <TD align=center>0
+      <TD align=center>0
+
+</table></center>
+</DL>
+<HR>
+Dr. Christopher Vickery<BR>
+Computer Science Department<BR>
+Queens College of CUNY<p>
+<HR></BODY></HTML>

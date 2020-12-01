@@ -1,0 +1,126 @@
+
+
+Here are the solutions to the exercises listed on the study
+guide web page.  Also, I have updated the study guide to
+give you more material.  If you see any problems in the
+study guide let me know.
+
+Dr. Vickery
+-----------
+
+Chapter 3
+
+  22. The design uses two AND gates for chip enable logic plus two AND
+  gates per word select line plus one AND gate per data bit.  For a
+  256x8 memory this comes to 2 + 512 + 2048 = 2562 AND gates.  The
+  circuit also uses one OR gate for each bit in the word, so eight of
+  them would be needed.
+
+  23. The pins can be multiplexed in time.  For example, with n/2 pins,
+  half the address bits are presented in one cycle, and the other half
+  on a succeeding cycle.  Many dynamic RAMs work this way.  Even more
+  extreme would be to feed the address serially into the chip one bit at
+  a time using a single pin.  Of course both these schemes require
+  storage elements on the chip to hold the entire address, and both
+  require extra time compared to schemes that transfer the entire
+  address to the chip in one step.
+
+  24. A 32-bit wide data bus means that 32 chips must be used in
+  parallel, each chip providing 1 bit.  Thus the smallest memory
+  consists of 32 chips, which is 32 megabits, or 4 Megabytes.
+
+  25. With a 40-nsec clock period, ~(MREQ) might be asserted as late as
+  28 nsec into T1 (Tm = 8 plus one half period in T1 = 20).  The data
+  are required 5 nsec before the high-to-low transition in T3, which
+  occurs 100 nsec (2.5 periods) after the start of the cycle.  Since
+  100 - 28 - 5= 67, in the worst case the memory would have to respond
+  within 67 nsec.
+
+  26. 62.5 - 16 - 5 =  41.5 nsec. So chips that really do respond in 40
+  nsec would work.
+
+  27.  In principle it could be negative, except for write operations;
+  you wouldn't want to initiate a write before the address lines were
+  properly setup to tell the memory which word to write!  But if there
+  are two control wires to determine whether to read or write (only ~RD
+  is shown, but there could be another one, ~WR), then the scenario
+  could be that ~MREQ is asserted, then the address lines are asserted
+  (this is the "negative time" for Tml) while neither ~WR nor ~RD is
+  asserted, and finally ~WR is asserted.  Since the memory chips' CS
+  would not be enabled until either ~RD or ~WR is asserted, the write
+  wouldn't start before the address was stable, which is what counts.
+
+  32. At 10 MHz, a cycle is 100 nsec.  For cycles take 400 nsec.  A word
+  in this case is defined as 16 bits (2 bytes), so the CPU needs 2 bytes
+  every 400 nsec, for a data rate of 5 Megabytes per second.
+
+  35. Compute a weighted average to get the answer: .2 * 5 + .6 * 10 +
+  (1.0 - (.2+.6)) * 50 = 1 + 6 + 10 = 17 nsec.  The factor, (1.0 -
+  (.2+.6)), comes from the fact that the weights have to add up to 1.0
+  and you were given the weights for L1 and L2.
+
+  37.  Each frame contains 921,600 bytes.  In one second, 30 such frames
+  are needed, or 27,648,000 bytes.  If the data travel over the bus
+  twice, the needed bandwidth is 55,296,000 bytes per second.  This
+  question raises the issue of what is the proper way to compute
+  bandwith.  For time, 1M is 10^6, but for memory, 1M is 2^20, so which
+  do you use when dealing with a ratio of memory over time?  Is the
+  answer 55.296 MB/sec or 52.734 MB/sec?  A nice instructor would accept
+  both answers.  The usual convention is to use 2^20 when talking about
+  "addressable units" like bytes, but to use 10^6 when talking about
+  bits.  So the best answer would be either 52.734 MB/sec or 442.368
+  Mb/sec.  I'll leave it up to you to decide whether I am nice enough to
+  accept 55.296 MB/sec, but I can tell you that I would not accept
+  421.875 Mb/sec.
+
+  40. The idea is that the CPU will use 100% of the cycles if there is
+  no DMA transfer, so the problem is to calculate what percentage of
+  the cycles are used by a DMA transfer.  With an 8-bit bus, the disk
+  transfers 8K bytes in 8K microseconds (the questions meant to say
+  8.192 milliseconds, not 8.092), which is one transfer per microsecond.
+  Since there are 1,000 nanoseconds in one microsecond and each bus
+  transfer takes 250 nsec, the disk uses 25% of the bus cycles, slowing
+  the CPU down by that percentage.  If the DMA transfer does 2 bytes per
+  cycle, it takes half as many cycles, and the CPU is slowed down by
+  12.5% instead.
+
+Chapter 4
+
+  2.  The data path takes 6 nsec.  With a 100-MHz clock,
+  there are 8 nsec from the falling edge to the rising edge,
+  so there is enough time to load the registers from the C
+  bus.  At 150 MHz, there are only 4.67 nsec from the
+  falling edge to the rising edge.  The signal to load the
+  registers comes before the values are are valid, so the
+  machine will not work at this speed.
+
+  3.  Only one register may be gated out onto the B bus at a
+  time, so a single 4-bit field is suffiecient to specify
+  which one.  The C bus may have many registers selected to
+  be loaded, so a full bit map is required.
+
+  4.  The Boolean function that is needed is F = (jamz and
+  z) or (jamn and n) or hibit, where hibit is the
+  hight-order bit of the Next address field.  This can be
+  implemented with two AND gates that feed into one OR gate.
+
+  9.  The text is correct.  If the condition is true, the Z bit is 1 and
+  control passes to L1.  The address of L1 is computed by ORing the Z
+  bit (which is a 1) into MPC.  This means that L1 must be in the top
+  half of the control store.  Consequently, L2 must be in the bottom
+  half.
+
+  10. It is not possible to subtract TOS from MDR because one of the
+  operands must be H (or +/- 1).  The only way to compute MDR - TOS is
+  to copy MDR to H first.
+
+  17. Two things have to be done: (1) Subtract 2 from SP so that it now
+  points at the third word from the old top of the stack in memory, and
+  (2) read the word of memory that is at the new top of the stack, and
+  save it in the TOS register in the CPU.  Here is a sequence of
+  microinstructions that would do both:
+  
+      poptwo_1: SP = SP - 1
+      poptwo_2: SP = SP - 1; rd
+      poptwo_3: <no operation because the rd has not completed yet>
+      poptwo_4: TOS = MDR; goto Main1

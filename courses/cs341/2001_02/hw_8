@@ -1,0 +1,34 @@
+
+Exercises from Chapter 3:
+
+  19. The NAND latch is wired the same way as the NOR latch, but the
+  "Storing state" is when both inputs are 1, and the set/reset
+  operations are performed by making the corresponding input go to zero
+  instead of to one.  The inputs are called ~R and ~S to
+  indicate that they are "asserted" when they are "false".
+
+  20. Use the same circuit, but replace the AND gate in the pulse
+  generator with a NOR gate.  The only time both inputs will be false
+  is just after the falling edge.
+
+  22. The design uses two AND gates for chip enable logic plus two AND
+  gates per word select line plus one AND gate per data bit.  For a
+  256x8 memory this comes to 2 + 512 + 2048 = 2562 AND gates.  The
+  circuit also uses one OR gate for each bit in the word, so eight of
+  them would be needed.
+
+  23. The pins can be multiplexed in time.  For example, with n/2 pins,
+  half the address bits are presented in one cycle, and the other half
+  on a succeeding cycle.  Many dynamic RAMs work this way.  Even more
+  extreme would be to feed the address serially into the chip one bit at
+  a time using a single pin.  Of course both these schemes require
+  storage elements on the chip to hold the entire address, and both
+  require extra time compared to schemes that transfer the entire
+  address to the chip in one step.
+
+You should be able to answer Question 24 too, even though it
+was not assigned:
+
+  24. A 32-bit wide data bus means that 32 chips must be used in
+  parallel, each chip providing 1 bit.  Thus the smallest memory
+  consists of 32 chips, which is 32 megabits, or 4 Megabytes.

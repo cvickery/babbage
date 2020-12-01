@@ -1,0 +1,150 @@
+<HTML><HEAD><TITLE>Exam 3 Study Guide</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Exam 3 Study Guide</H1>
+</center>
+
+<H2>Introduction</H2>
+
+The exam will cover material in sections 3.4 through 4.3 of the
+textbook.  <I>But the emphasis will very much be on the material
+covered in class rather than all the material in those sections of the
+book.</I><p>
+
+One way you should be prepare for the exam is to be sure you can answer
+all the homework questions that have been assigned, including the
+"virtual homework" (Exercises 1-5 from chapter 4) for which I emailed
+out solutions.  What follows are some more sample questions, with
+solutions.
+
+<H2>Sample Questions</H2>
+
+Assume you will be given copies of Figures 4-5 and 4-11 to use in
+answering these questions.
+
+<DL>
+
+  <DT>What will be the address of the microinstruction with the label
+  <I>iadd1</I>?
+
+  <DD>0x60.  The operation code of the iadd instruction is 0x60 (from
+  Figure 4-11), so that's the address of the first microinstruction in
+  the sequence of microinstructions that will interpret iadd
+  instructions.  The "1" at the end of "iadd1" tells you that this is
+  the first microinstruction that will be executed for iadd
+  instructions.<p>
+
+  <DT>What will be the address of the microinstruction with the label
+  <I>iadd2</I>?
+
+  <DD>We don't know.  Although it's logically the next microinstruction
+  after <I>iadd1</I> (the "2" at the end of "iadd2" tells you that), it
+  could be at any location in control memory.  The answer 0x61 would be
+  <I>wrong</I> because that is just one of many possible addresses
+  that might be used.<p>
+
+  <DT>Assume that <I>iadd2</I> is at control memory address 0x6E,
+  translate the microinstruction at 0x60 into binary.
+  <DD>001101110 000 00 11 0110 000001001 010 0100
+
+  <BR>This question assumes you know that 0x60 is the address of the
+  microinstruction at iadd1 (see above).  You would somehow have to be
+  given the code for that microinstruction:
+  "mar&nbsp;=&nbsp;sp&nbsp;=&nbsp;sp&nbsp;-&nbsp;1;&nbsp;rd".  The
+  question tests whether you know that this microinstruction contains
+  the address of iadd2 (0x6E) in its next_address field and can
+  translate that hexadecimal value into binary.  Then it tests your
+  ability to fill in the binary fields.  The first nine bits are 0x6E
+  as a 9-bit binary number (001101110); the next three bits are 000
+  because none of the jump options is being used; the next two bits are
+  00 because no shifting is specified; the next two bits are 11 because
+  you have to add to compute sp&nbsp;-&nbsp;1; the next four bits are
+  0110 to disable A, enable B, invert a, and not increment so that you
+  add sp to all 1's (negative 1 in two's complement); the next nine
+  bits are 000001001 so the result will be loaded into both sp and mar;
+  the next three bits are 010 to start the read ("rd") operation; and
+  the last four bits are 0100 to select sp for the B bus.<p>
+
+  <DT>Assume iload3 is at control memory address 0x28, translate this
+  microinstruction into binary:
+  "mar&nbsp;=&nbsp;h&nbsp;+&nbsp;cpp;rd;goto&nbsp;iload3
+  <DD>000101000 000 00 11 1100 000000001 010 0110
+  <BR>The next address field is 0x28 in binary (000101000); the jam
+  bits are not set (00); the alu computes a+b (11 1100), the mar is
+  the destination (000000001); there is a read operation (010); the cpp
+  register goes to the b bus (0110).<p>
+
+  <DT>Write a sequence of microinstructions that will interchange the
+  values of the top two words of the stack.  <I>Note:</I>  In class I
+  think I said that the stack grows downward in memory, but that's not
+  true in IJVM, where you add 1 to the stack pointer when you push
+  something onto the stack.
+
+  <DD><code>mar = sp - 1; rd</CODE> //  Read second word from stack
+  <BR><CODE>mar = sp</CODE> //  Make mar point to top of stack
+  <BR><CODE>h = mdr; wr</CODE> //  Write second word to top of stack in memory
+  <BR><CODE>mdr = tos</CODE> //  Prepare to write old top of stack value
+  <BR><CODE>mar = sp - 1; wr</CODE> // Write old top of stack to second word
+  <BR><CODE>tos = h</CODE> // Save new top of stack value in tos
+  register.
+
+  <BR>The tos register always has a copy of the top word of the stack
+  in memory, which is why the last instruction is needed.  Note that
+  the value of sp never changes in this sequence, even though two
+  different words of memory are accessed using sp as the starting
+  address.<p>
+
+  <DT>Draw a diagram that shows how bit <I>i</I> of the sp register
+  connects to the B and C busses.  Be sure to show where all control
+  signals involved come from and where else they go.
+  
+  <DD>The idea is for you to show that output number 4 of the 4 x 16
+  decoder in Figure 4-6 is used to enable a tristate buffer connecting
+  the output of SP<SUB>i</SUB> to wire <I>i</I> of the B Bus and that
+  this control wire also enables the other tristate buffers connecting
+  the other 31 bits of SP to their corresponding wires of the B Bus. 
+  In addition, you need to show that one of the nine wires in the C
+  field of the microinstruction register (MIR) is used to enable the
+  clock input to SP<SUB>i</SUB> by being ANDed with the clock; the
+  output of this AND gate also goes to the clock inputs of the other 31
+  flip-flops in SP.  (Alternatively, the control wire could go to 31
+  other AND gates, but this would be wasteful.  Another alternative,
+  mentioned briefly in class, would be to have a 2x1 multiplexor for each
+  bit of SP which causes the bit to be loaded either from the output of
+  the flip-flop or from the corresponding wire of the C bus.)
+  <BR>The only gates you would draw for this question would be the
+  tristate buffers and the AND gate(s) between the C bus and the SP
+  bit; the flip-flop and decoder should be drawn as boxes.<p>
+
+  <DT>What is the bandwidth of a 32-bit bus operating with a 100 MHz
+  clock?
+  <DD>3.2 Gbits per second.<p>
+  
+  <DT>Question 42 on page 202.
+  <DD>Instead of responding to addresses with bit patterns that look
+  like 11xxxxxxxxxxxxxx, the pio would respond only to addresses that
+  look like 111xxxxxxxxx.  This means that addresses that look like
+  110xxxxxxxxx will not be responded to by the pio, ram, or eprom.<p>
+
+  <DT>What is the purpose of a device controller, such as a pio or uart?
+
+  <DD>The status, control, and buffer registers in the device
+  controller provide a mechanism for presenting a standard memory-like
+  interface to the CPU bus, while providing device-specific signals to
+  the actual device unit to be attached to the computer.  The cpu can
+  write data in one bus cycle to the device controller and then do
+  other processing while the device controller manages the actual
+  transfer to the device. Important concepts are: (1) The addressing of
+  the registers on the device controller just like addressing memory
+  words (2) The memory-like speed of transfers between the cpu the
+  device controller compared to the relatively slow transfers of
+  information between the device controller and the i/o device, and (3)
+  The use of interrupts by device controllers to tell the cpu when it
+  has completed an i/o operation.
+
+</DL>
+
+<HR></BODY></HTML>

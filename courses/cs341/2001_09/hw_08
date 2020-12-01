@@ -1,0 +1,98 @@
+
+A student pointed out an error in the diagram for the counter in
+Assignment 7, and I've updated the web page for that.  The same student 
+pointed out that the answers to question 3.9 that I sent out don't make
+sense because it takes either one propagation delay to compute a sum (if
+you use xor gates) or three (if you use inverters, ANDs and ORs).  The
+problem there is that people sometimes don't count the delay for
+inverters because they apparently go away when you use bubbled inputs to
+AND gates.  The textbook authors did this in their calculations and I
+missed it when typing up the solutions.  Below is the corrected
+solution, assuming three delays for computing a sum.
+
+And I'm working on a web page for the design of the serial multiplier
+now.
+
+I apologize for the problems -- but please let me know if you come
+across any more.
+
+Dr. Vickery
+
+
+3.1
+      1 0 1 1 0     1 1 1 1 0      1 1 1 1 1
+    + 1 0 1 1 1   + 1 1 1 0 1    + 0 1 1 1 1
+    -----------   -----------    -----------
+      0 1 1 0 1     1 1 0 1 1      0 1 1 1 0
+      Overflow     No Overflow    No Overflow
+
+
+3.2
+
+    1 1 0 0 <-- borrows
+    0 1 0 1
+  - 0 1 1 0
+  ---------
+  1 1 1 1 1  (No overflow)
+  ^
+  |_____ borrow is discarded in two's complement representation.
+
+
+3.3
+
+     Two's Complement          One's Complement
+      1 0 1 1 . 1 0 1           1 0 1 1 . 1 0 1
+    + 0 1 1 1 . 0 1 1         + 0 1 1 1 . 0 1 1
+    -----------------         -----------------
+      0 0 1 1 . 0 0 0           0 1 0 0 . 0 0 0
+      (No overflow)             (No overflow)
+
+    Note that for one's complement, the end-around carry is added into
+    the one's position.
+
+
+3.4
+
+    M = 1 0 1 0
+
+    C      A         Q
+    0   0 0 0 0   0 1 0 1   Initial values
+    0   1 0 1 0   0 1 0 1   Add
+    0   0 1 0 1   0 0 1 0   Shift
+    0   0 0 1 0   1 0 0 1   Shift
+    0   1 1 0 0   1 0 0 1   Add
+    0   0 1 1 0   0 1 0 0   Shift
+    0   0 0 1 1   0 0 1 0   Shift (Final product in A, Q)
+
+
+3.5
+
+  M = 1 1 1
+
+  C     A       Q
+  0   0 0 0   0 1 1   Initial values
+  0   1 1 1   0 1 1   Add
+  0   0 1 1   1 0 1   Shift
+  0   0 1 0   1 0 1   Add
+  0   1 0 1   0 1 0   Shift
+  0   0 1 0   1 0 1   Shift
+  0   0 1 0   1.0 1   Fix decimal  (Final Product in A,Q)
+
+
+3.9
+
+  (a)  The carry out of each CLA is generated in 3 gate delays after the
+  inputs settle.  The longest path through a CLA is 6 gate delays (three
+  for the carries plus three for the sums).  The longest path through the
+  16-bit CLA/ripple adder is 15 (nine to generate c[12] plus 6 to
+  generate s[15]).
+
+  (b)  s[0] is generated in just 2 gate delays.
+
+  (c)  s[12] is generated in 12 gate delays.  It takes 3 gate delaus to
+  generate c[4], which is needed to generate c[8] three gate delays
+  later, which is needed to generate c[12] three gate delays after that,
+  for a total of 9 gate delays before c[12] can be used in the leftmost
+  CLA.  The s[12] output is generated three gate delays after that, for a
+  total of 12 gate delays.
+

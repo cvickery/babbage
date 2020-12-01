@@ -1,0 +1,170 @@
+<HTML><HEAD><TITLE>Audio Sampling Concepts</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Audio Sampling Concepts</H1>
+</center>
+<H2>Introduction</H2>
+
+<p>The purpose of this page is to give you some practice with the
+concepts and variables involved in storing physical-world stimuli as
+digital information.  These variables include <I>transducers</I>,
+<I>analog/digital and digital/analog conversion</I>,
+<I>quantization</I>, and <I>encoding</I>.</P>
+
+<DL>
+    <DT>Transducer
+
+    <DD>A device that converts energy from one form to another.  For
+    example, a microphone is a transducer that converts sound waves in
+    the air into voltages that are proportional to the sound pressure
+    level of the sound waves.  The voltage that comes from a microphone
+    is called an <I>analog signal</I> because its level continuously
+    varies as a direct analog to the intensity of the sound pressure
+    level strking the microphone.<p>
+
+    Similarly, a loudspeaker or earphone is a transducer that converts
+    analog voltages into sound waves.<p>
+
+    <DT>Analog to Digital (A/D) Converter
+
+    <DD>An electronic device that converts continuously varying
+    voltages on a wire (such as the output of a microphone) into binary
+    numbers.<p> <center><IMG src="AD_CONV.gif" alt="A/D
+    Converter"></center> (This diagram comes from <A
+    href="http://www.techweb.com/encyclopedia/">The Techweb
+    Encyclopedia</A>.)<p>
+
+    The exact format of the binary information that comes out of an a/d
+    converter differs from device to device.  But you can think as the
+    a/d converter as a black box with one wire that brings the analog
+    voltage into it and with <I>n</I> wires coming out of it, which
+    continuously carry voltages representing binary ones and zeros. 
+    The converter discriminates among 2<sup><I>n</I></sup> voltage
+    levels on the input wires, and always outputs the appropriate
+    <I>n</I>-bit number representing the present input voltage.<p>
+
+    <I>For Example:</I> Assume an A/D converter is designed to handle
+    analog voltages that vary between -1.0 and +1.0 volts and that
+    it has two wires for the binary outputs.  This means that it would
+    differentiate among four different input voltage levels as
+    follows:<p>
+
+    <CENTER><TABLE CELLPADDING=5 BORDER=1 WIDTH=200 >
+    <TH>Analog voltage in
+    <TH>Binary number out
+    <TR>
+      <TD ALIGN="right">-1.0 to -0.5
+      <TD ALIGN="center">0&nbsp;0
+    <TR>
+      <TD ALIGN="right">-0.5 to 0.0
+      <TD ALIGN="center">0&nbsp;1
+    <TR>
+      <TD ALIGN="right">0.0 to +0.5
+      <TD ALIGN="center">1&nbsp;0
+    <TR>
+      <TD ALIGN="right">+0.5 to +1.0
+      <TD ALIGN="center">1&nbsp;1
+    </TABLE></CENTER><p>
+
+    Although both the input and outputs of an A/D converter are
+    electrical voltages, the input voltage varies continuously in time,
+    whereas the voltages of the output wires always have just one of
+    two different values, one of which represents a binary zero and the
+    other of which represents a binary one.<p>
+
+    <DT>D/A Converter
+    <DD>A digital to analog converter, as its name implies, converts
+    binary numbers into analog voltages that are proportional to the
+    magnitude of the binary number at its input.  Note that a D/A
+    converter doesn't generate a continuously varying voltage; it
+    generates one of 2<sup><I>n</I></sup> voltages, depending on the
+    value of the <I>n</I>-bit binary number input to it.
+
+    <CENTER>
+    <IMG SRC="analog_digital.gif" ALT="A/D and D/A" WIDTH="80%">
+    </CENTER><p>
+    In this diagram, the waveform on the right is only a crude
+    approximation of the original analog signal, on the left.  This
+    page deals with the parameters that affect how well the waveform
+    coming out of the D/A converter approximates the one going into the
+    A/D converter.<p>
+
+    <DT>Quantization
+    
+    <DD>The term quanization refers to the use of discrete values to
+    represent continuous variables.  For digital quantization, the two
+    variables are the two axes of an analog sound wave. The X axis is
+    time, and the Y axis is voltage.  Both of these axes must be
+    divided into discrete values in order to store the analog signal in
+    digital form.<p>
+
+    The time axis is divided by a process called <I>sampling</I>: The
+    output of the A/D converter is recorded at periodic intervals.  The
+    time between samples is called the <I>sampling interval</I>, and
+    its reciprocal (the number of samples per second) is called the
+    <I>sampling frequency</I> or rate.  The higher the sampling rate,
+    the finer-grained the quantization, and the more accurately
+    temporal changes in the input signal can be recorded.<p>
+
+    The granularity of the voltage axis depends on the number of bits
+    that the A/D converter uses to encode voltages.  In the example
+    given above, the A/D converter had two output wires, giving
+    2<sup>2</sup>&nbsp;=&nbsp;4 voltage ranges for the quantization
+    granularity.  The more bits output by the A/D converter, the
+    smaller the quantization granularity, and the more accurately the
+    signal's intensity can be approximated.<p>
+
+    <DT>Encoding
+    
+    <DD>In the case we are considering, encoding refers to how binary
+    numbers are assigned to analog voltage ranges, a process performed
+    by the A/D converter.  Assume that the total possible range of input
+    voltages is divided into 2<sup><I>n</I></sup> equal-sized intervals,
+    and assume that the lowest interval maps to a value of zero, the
+    highest interval maps to the value 2<sup><I>n</I></sup>-1, and
+    that intermediate intervals map to corresponding intermediate
+    values.  The table above is an example of this type of encoding. 
+      
+</DL>
+
+<H2>Audio Sampling Laboratory</H2>
+
+It's only a "virtual laboratory," but you can run a program that
+simulates conversion of a sine wave from analog to digital and back
+while observing the effects of the sampling rate and bits per sample on
+the shape of the output waveform.  You'll need to have the current
+version of the Java Development Kit (JDK) or Java Runtime Environment
+(JRE) to run the program.  Current versions of Windows come with the
+necessary software already installed.  If you don't already have it,
+you can get it for free from [&nbsp;<a HREF="http://java.sun.com">Sun
+Microsystems</A>&nbsp;].  You will have to sign up for the Java Developer
+Connection before you can download their software, but that's free
+too.<p>
+
+Once you have Java installed, [&nbsp;<a HREF="AudioSampling.jar">click
+here</A>&nbsp;] to download a file named <B>AudioSampling.jar</B>, and
+save the file in some directory (folder) on your hard drive.  Then
+start a "Command Prompt" window and change to that directory using the
+<I>cd</I> command.  To run the program, give the command:<BR>
+<PRE>
+  java&nbsp;-cp&nbsp;AudioSampling.jar&nbsp;AudioSampling
+</PRE>
+
+You can specify initial values for the signal frequency, sampling rate,
+and bits per sample at the end of the command line.  For example, if
+you want to start with a sampling rate of 8 KHz, add "rate=8" at the
+end of the line.  The quotation marks are optional, but you need them
+if you put any spaces around the equal sign.  Use bitspersample to
+specify the number of bits per sample, and use frequency to specify the
+signal frequency.  You can abbreviate the keywords if you don't want to
+type them out.<p>
+
+When the program runs, you can adjust the sampling rate and the bits
+per sample using the slider controls at the bottom, using either the
+mouse or the arrow keys.  You can also re-size the window at any
+time.<p>
+
+<HR></BODY></HTML>

@@ -1,0 +1,179 @@
+<HTML><HEAD><TITLE>Audio Sampling Exercise</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Audio Sampling Exercise</H1>
+</center>
+<H2>Introduction</H2>
+
+<p>The purpose of this exercise is to give you some practice with the
+variables involved in storing physical-world stimuli as digital
+information.  These variables include <I>transducers</I>,
+<I>analog/digital and digital/analog conversion</I>, <I>quantization</I>, and
+<I>encoding</I>.</P>
+
+<DL>
+    <DT>Transducer
+
+    <DD>A device that converts energy from one form to another.  For
+    example, a microphone is a transducer that converts sound waves in
+    the air into voltages that are proportional to the sound pressure
+    level of the sound waves.  The voltage that comes from a microphone
+    is called an <I>analog signal</I> because its level continuously
+    varies as a direct analog to the intensity of the sound pressure
+    level strking the microphone.<p>
+
+    Similarly, a loudspeaker or earphone is a transducer that converts
+    analog voltages into sound waves.<p>
+
+    <DT>Analog to Digital (A/D) Converter
+
+    <DD>An electronic device that converts continuously varying
+    voltages on a wire (such as the output of a microphone) into binary
+    numbers.<p> <center><IMG src="AD_CONV.gif" alt="A/D
+    Converter"></center> (This diagram comes from <A
+    href="http://www.techweb.com/encyclopedia/">The
+    Techweb Encyclopedia</A>.)<p>
+
+    The exact format of the binary information that comes out of an a/d
+    converter differs from device to device.  For now, think as the a/d
+    converter as a black box with one wire that brings the analog
+    voltage into it and with <I>n</I> wires coming out of it, which
+    continuously carry voltages representing binary ones and zeros. 
+    The converter discriminates among 2<sup><I>n</I></sup> voltage
+    levels on the input wires, and always outputs the appropriate
+    <I>n</I>-bit number representing the present input voltage.<p>
+
+    <I>For Example:</I> Assume an A/D converter is designed to handle
+    analog voltages that vary between -1.0 and +1.0 volts and that
+    it has two wires for the binary outputs.  This means that it would
+    differentiate among four different input voltage levels as
+    follows:<p>
+
+    <CENTER><TABLE CELLPADDING=5 BORDER=1>
+    <TH>Analog voltage in
+    <TH>Binary number out
+    <TR>
+      <TD ALIGN="right">-1.0 to -0.5
+      <TD ALIGN="center">0&nbsp;0
+    <TR>
+      <TD ALIGN="right">-0.5 to 0.0
+      <TD ALIGN="center">0&nbsp;1
+    <TR>
+      <TD ALIGN="right">0.0 to +0.5
+      <TD ALIGN="center">1&nbsp;0
+    <TR>
+      <TD ALIGN="right">+0.5 to +1.0
+      <TD ALIGN="center">1&nbsp;1
+    </TABLE></CENTER><p>
+
+    Although both the input and outputs of an A/D converter are
+    electrical voltages, the input voltage varies continuously in time,
+    whereas the voltages of the output wires always have just one of
+    two different values, one of which represents a binary zero and the
+    other of which represents a binary one.<p>
+
+    <DT>D/A Converter
+    <DD>A digital to analog converter, as its name implies, converts
+    binary numbers into analog voltages that are proportional to the
+    magnitude of the binary number at its input.  Note that a D/A
+    converter doesn't generate a continuously varying voltage; it
+    generates one of 2<sup><I>n</I></sup> voltages, depending on the
+    value of the <I>n</I>-bit binary number input to it.
+
+    <CENTER>
+    <IMG SRC="analog_digital.gif" ALT="A/D and D/A">
+    </CENTER><p>
+    In this diagram, the waveform on the right is only a crude
+    approximation of the original analog signal, on the left.  This
+    exercise deals with the parameters that affect how well the waveform
+    coming out of the D/A converter approximates the one going into the
+    A/D converter.<p>
+
+    <DT>Quantization
+    
+    <DD>The term quanization refers to the use of discrete values to
+    represent continuous variables.  In this exercise, the two
+    variables are the two axes of an analog sound wave. The X axis is
+    time, and the Y axis is voltage.  Both of these axes must be
+    divided into discrete values in order to store the analog signal in
+    digital form.<p>
+
+    The time axis is divided by a process called <I>sampling</I>: The
+    output of the A/D converter is recorded at periodic intervals.  The
+    time between samples is called the sampling interval, and its
+    reciprocal (the number of samples per second) is called the
+    sampling frequency or rate.  The higher the sampling rate, the
+    finer-grained the quantization, and the more accurately temporal
+    changes in the input signal can be recorded.<p>
+
+    The granularity of the voltage axis depends on the number of bits
+    that the A/D converter uses to encode voltages.  In the example
+    given above, the A/D converter had two output wires, giving
+    2<sup>2</sup>&nbsp;=&nbsp;4 voltage ranges for the quantization
+    granularity.  The more bits output by the A/D converter, the
+    smaller the quantization granularity, and the more accurately the
+    signal's intensity can be approximated.<p>
+
+    <DT>Encoding
+    
+    <DD>In the case we are considering, encoding refers to how binary
+    numbers are assigned to analog voltage ranges, a process performed
+    by the A/D converter.  Assume that the total possible range of input
+    voltages is divided into 2<sup><I>n</I></sup> equal-sized intervals,
+    and assume that the lowest interval maps to a value of zero, the
+    highest interval maps to the value 2<sup><I>n</I></sup>-1, and
+    that intermediate intervals map to corresponding intermediate
+    values.  The table above is an example of this type of encoding. 
+      
+</DL>
+
+<H2>The Exercise</H2>
+
+Assume that the input signal is a 1 KHz sine wave with a peak-to-peak
+amplitude of 2.0 volts.  That is, the minimum voltage is -1.0
+volts and the maximum voltage is +1.0 volts.  Construct tables like the
+one given at the beginning of this page for the following combinations
+of sampling rate and bits per sample:<p>
+
+<CENTER><TABLE CELLPADDING=5 BORDER=1>
+<TR>
+    <TH>Sampling Rate
+    <TH>Bits per Sample
+
+<TR>
+    <TD ALIGN="right">4 KHz
+    <TD ALIGN="center">2
+
+<TR>
+    <TD ALIGN="right">4 KHz
+    <TD ALIGN="center">4
+
+<TR>
+    <TD ALIGN="right">4 KHz
+    <TD ALIGN="center">8
+
+<TR>
+    <TD ALIGN="right">8 KHz
+    <TD ALIGN="center">4
+
+<TR>
+    <TD ALIGN="right">16 KHz
+    <TD ALIGN="center">8
+
+</TABLE></CENTER><p>
+
+Construct the table for one complete cycle of the sine wave. You can
+write a program or a spreadsheet to generate the tables, if you
+like.<p>
+
+Draw a diagram showing the encoded waveform (like the right side of the
+diagram above) for each row of the table.  Be sure to label both the X
+and Y axes to show the scale for each graph.  You may generate these
+diagrams by hand on graph paper, using a spreadsheet, or by writing a
+Java program to draw the graphs.<p>
+
+
+<HR></BODY></HTML>

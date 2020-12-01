@@ -1,0 +1,110 @@
+Appendix A
+
+  1.  Here's how I would do it:
+
+          124
+        -----
+     16| 1984
+         1984
+         ----
+            0 (0x0)
+
+            7
+        -----
+     16|  124
+          112
+          ---
+           12 (0xC)
+
+            0
+        -----
+     16|    7
+            0
+            -
+            7 (0x7)
+
+     So the hex value is 7C0, which translates directly into
+     0111 1100 0000.
+
+
+     Likewise, 4000 is 1111 1010 0000
+           and 8192 is 0010 0000 0000 0000
+
+  2.  Decimal 617, Octal 1151, and Hex 269.
+
+  3.  A, B, C, D, E, and F are all valid hexadecimal digits, so
+  everything is valid except BAG.
+
+  4.  2 1100100
+      3   10201
+      4    1210
+      5     400
+      6     244
+      7     202
+      8     144
+      9     121
+
+  5.  The number of valid strings of length k with r
+  possibilities in each position is r^k.
+  
+  6.  With just your hands most people have 1o bits, so you
+  can count from zero to 1023.  With all ten toes the limit
+  becomes 2^20 - 1, which is 1,048,575.  The two's complent
+  range is -524,288 to +524,287.
+  
+  7.  00101101    11111111    00000000    11110111
+     +01101111   +11111111   -11111111   -11110111
+     ---------   ---------   ---------   ---------
+      10011100    11111110    00000001    00000000
+     (overflow)
+
+     The subtractions are done by negating the subtrahend
+     and adding:
+                              00000000    11110111
+                             +00000001   +00001001
+                             ---------   ---------
+                              00000001    00000000
+
+  8.  The results are 10011100, 11111111 00000000, and
+  11111111.  The first calculation gives an overflow.  The
+  subtraction is done by negating the subtrahend and adding
+  it to the minuend.
+  
+  9.  Let Sum be the 3-bit sum, N be the value of the sign
+  bit, Z be 1 if the sum bits are all zeros, and V be one if
+  the there was oVerflow.
+
+              Sum NZV
+    000 + 001 000 000
+    000 + 111 111 100
+    111 + 110 101 100
+    100 + 111 011 001
+    100 + 100 000 011
+
+  10. The numbers are 006, 997, 100, 985, 998, and 000.
+
+  11. It's like one's complement addition; you have to add
+  the carry from the left to the answer.
+
+      0001  (+1)    0001  (+1)    9997  (-2)    9241  (-758)
+     +9999  (-0)   +9998  (-1)   +9996  (-3)   +0802  (+802)
+     -----         -----         -----         -----
+    1)0000        0)9999        1)9993        1)0043
+        +1            +0            +1            +1
+      ----          ----          ----          ----
+      0001  (+1)    9999  (-0)    9994  (-5)    0044   (+44)
+
+
+  12. Like two's complement addition, just do the addition
+  and ignore the carry.
+
+
+  13.  * | 0   1   2
+       -------------
+       0 | 0   0   0
+       1 | 0   1   2
+       2 | 0   2  11
+       
+
+  14. 10101 (7 * 3 = 21)
+

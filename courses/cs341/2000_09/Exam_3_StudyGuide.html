@@ -1,0 +1,167 @@
+<HTML><HEAD><TITLE>Final Exam Study Guide</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Final Exam Study Guide</H1>
+</center>
+
+The exam will be based on material covered in class, and material in
+Sections 3.3, 3.4.1 through 3.4.4, 3.6, 3.7, 4.1, and 4.3 in the
+textbook.  The exam will not be cumulative in the sense that there will
+be no explicit questions on material covered in previous exams. But the
+nature of the course is such that some questions may very well depend
+on your remembering concepts covered earlier in the course.  For
+example, we covered cache earlier in the semester, and then covered it
+again in the last part of the course, so it would be natural to rely on
+the earlier material while testing the topics that were covered
+later.<p>
+
+Here are some exercises from Chapter 3 that would be good to look at:
+22, 23, 24, 25, 26, 27, 32, 35, 37, 40.<p>
+
+Chapter 4: 2, 3, 4, 9, 10, 17.<p>
+
+<H2>Exam Topics</H2>
+
+In addition to the solutions to the exercises listed above, which I
+have sent out by email, here is some more information to help you
+prepare for the exam:
+
+<UL>
+
+    <LI>You will be supplied with copies of Figures 3-37a (but not
+    3-37b), and 4-5 during the exam.<p>
+
+    <LI>You should be able to reproduce Figure 3-29 for any number of
+    words and any number of bits per word.<p>
+
+    <LI>You should be able to tell how CS, RD, OE, I<SUB>i</SUB>, and
+    O<SUB>i</SUB> would be used to perform reads, writes, and nops
+    (no-operation).<p>
+
+    <LI>You should be able to show how to assemble SRAM ICs (like the
+    one in Fig. 3-29) and a decoder to build a memory system, given the
+    number of words and the number of bits per word in both the ICs and
+    the memory system.<p>
+
+    <LI>You should be able to draw an implementation of a multiplexer
+    using a decoder and tristate buffers.  (The outputs of the decoder
+    are the control inputs of the buffers; the data inputs to the
+    multiplexer are the inputs to the buffers; the control inputs to the
+    multiplexer are the inputs to the decoder.)<p>
+
+    <LI>You should know the differences between SRAM and DRAM with
+    regard to speed and cost.<p>
+
+    <LI>You should be able to calculate the effective speed of a memory
+    system given the cache hit ratio (CHR), the access time for cache
+    (T<SUB>c</SUB>), and the access time for main memory
+    (T<SUB>m</SUB>).  (Effective Access Time = CHR * T<SUB>c</SUB> + (1
+    - CHR) *T<SUB>m</SUB>; Effective Speed = 1 / Effective Access
+    Time.)<p>
+
+    <LI>You should know the relationship among the unclocked data
+    memory, a memory controller, and a clocked memory bus.<p>
+    
+    <LI>You should be able to answer questions like the ones in the
+    exercises pertaining to Figure 3-37.<p>
+    
+    <LI>You should know how a device controller (DC) and a device unit
+    (DU) connect to the processor using an I/O bus.  You should know the
+    three types of registers in a DC, you should know the relative
+    speeds of transferring information between the CPU and a DC compared
+    to transferring informatin between a DC and a DU.<p>
+    
+    <LI>You should know the difference between polled and
+    interrupt-driven I/O, and you should know the role of the 8259A
+    Interrupt Controller in Intel-based systems.<p>
+    
+    <LI>You should know the principle of Direct Memory Access, and the
+    two ways in which it improves performance of a system.  You should
+    also be able to answer questions like Question 40 at the end of
+    chapter 3 pertaining to the impact of DMA transfers on CPU speed.<p>
+
+    <LI>You should know the approximate clock speeds of ISA, PCI,
+    frontside, and backside busses.  (A frontside bus, like PC66, PC100,
+    PC133, or DDR, is used as the memory/local bus; a backside bus runs
+    at the CPU clock speed and connects the CPU to cache, somewhat of a
+    simplification of Figure 3-50.)<p>
+
+    <LI>You should be able to compute the bandwidth of a bus given its
+    clock speed, the number of bits or bytes per transfer, and the
+    number of clock cycles per transfer.  (Bandwidth, in bits per
+    second, is the bits per transfer times the clock speed in MHz,
+    divided by the clock cycles per transfer.)  Be sure to be able to
+    convert to the proper units of measure.<p>
+
+    <LI>You should be able to reproduce Figure 4-2.<p>
+    
+    <LI>You should be able to describe the use of the MAR and MDR
+    registers in read/write operations of the IJVM.<p>
+    
+    <LI>You should be able to describe the use of the PC and MBR in
+    instruction fetch operations of the IJVM.<p>
+    
+    <LI>You should be able to show how the bits in the MIR connect to
+    the bits of the registers in the IJVM.<p>
+
+    <LI>You should be able to translate any of the microinstructions in
+    Figure 4-17 into binary.  In many cases you would have to be
+    provided with the address of the next microinstruction explicitly. 
+    (See sample question below.)<p>
+
+    <LI>You should be able to write a sequence of microinstructions to
+    perform a specific operation, like Exercise 17 at the end of chapter
+    4.<p>
+
+    <LI>You should be able to explain the role of control store in the
+    IJVM CPU.<P>
+
+    <LI>You should be able to explain the relationship between the MBR
+    and the addresses of microinstructions in the control store of the
+    IJVM CPU.<p>
+
+</UL>
+
+<H2>Sample Question</H2>
+
+The operation code of the <I>iadd</I> ISA instruction of the IJVM is
+0x60.  Assume the the control store addresses 0x005, 0x010, and 0x015
+are assigned to the labels Main1, iadd2, and iadd3.  Convert the
+following sequence of microinstructions to binary, showing the address
+of each instruction:
+
+<PRE>
+    iadd1: MAR = SP = SP - 1; rd
+    iadd2: H = TOS
+    iadd3: MDR = TOS = MDR + H; wr; goto Main1
+</PRE>
+
+<H3>Answer</H3>
+
+<center><table border=1 cellpadding=5>
+  <TR>
+    <TH>Address
+    <TH>Binary
+    <TH>Notes
+
+  <TR>
+    <TD>0x010
+    <TD>000010101&nbsp;000&nbsp;00&nbsp;010100&nbsp;100000000&nbsp;010&nbsp;0111
+    <TD>iadd2: Come here from iadd1.
+
+  <TR>
+    <TD>0x015
+    <TD>000000101&nbsp;000&nbsp;00&nbsp;111100&nbsp;001000010&nbsp;100&nbsp;0000
+    <TD>iadd3: Come here from iadd2.
+
+  <TR>
+    <TD>0x060
+    <TD>000010000&nbsp;000&nbsp;00&nbsp;110110&nbsp;000001001&nbsp;010&nbsp;0100
+    <TD>Corresponds to iadd1 because op code is 0x60
+
+</table></center>
+
+<HR></BODY></HTML>

@@ -1,0 +1,38 @@
+<HTML><HEAD><TITLE>Homework 3</TITLE></HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Homework 3</H1>
+</center>
+
+<H3><B>Remember</B>, homeworks are graded, so you must do your own
+work.  If you do not follow this policy, you will be given a failing
+grade in the course, and risk college disciplinary action.</H3>
+
+<B>Assignment:</B> Exercises 3.1 through 3.6<p>
+Write your answers out on paper, and hand it in on the due date.<p>
+<B>Recommended:</B> Fix Exercise 3.6 and run the code on the MIPS
+simulator.  You will need to add a label, main, to the beginning and
+to terminate the program with a <I>syscall</I>.  Here is a sample
+program that illustrates comments, directives for data, and using
+<I>syscall</I>.  For more details, see Appendix A of the book.
+
+<PRE>
+
+      #  Program to add two numbers
+
+            .data       # Begin Data Segment
+      num1: .word 123
+      num2: .word 321
+
+            .text       # Begin Code Segment
+      main:
+            lw  $t0, num1
+            lw  $t1, num2
+            add $s1, $t0, $t1
+
+            li  $v0, 10 # "Exit" code for syscall
+            syscall
+            .end
+
+</PRE>
+<HR></BODY></HTML>

@@ -1,0 +1,43 @@
+<html><head><title>Homework 5 Solutions</title></head>
+
+<body bgcolor = FFFFF>
+
+<H2 ALIGN=Center>Homework 5 Solutions</H2>
+
+The questions about implementing AND, OR, and NOT using NAND, NOR, and
+MPX are answered <a href="f_complete.html">[on this web page]</a>.<p>
+
+Here is the solution to the other problem:
+<PRE>
+  Function  Meaning
+      A     Exactly one 1
+      B     An even number of 1s (zero is even!)
+      C     Less than three, unsigned
+      D     Less than minus one, two's complement
+
+        X<sub>2</sub> X<sub>1</sub> X<sub>0</sub> | A B C D
+        =========|========
+        0  0  0  | 0 1 1 0
+        0  0  1  | 1 0 1 0
+        0  1  0  | 1 0 1 0
+        0  1  1  | 0 1 0 0
+        1  0  0  | 1 0 0 1
+        1  0  1  | 0 1 0 1
+        1  1  0  | 0 1 0 1
+        1  1  1  | 0 0 0 0
+
+        A = ~X<sub>2</sub>~X<sub>1</sub>X<sub>0</sub> + ~X<sub>2</sub>X<sub>1</sub>~X<sub>0</sub> + X<sub>2</sub>~X<sub>1</sub>~X<sub>0</sub>
+        B = ~X<sub>2</sub>~X<sub>1</sub>~X<sub>0</sub> + ~X<sub>2</sub>X<sub>1</sub>X<sub>0</sub> + X<sub>2</sub>~X<sub>1</sub>X<sub>0</sub> + X<sub>2</sub>X<sub>1</sub>~X<sub>0</sub>
+        C = ~X<sub>2</sub>~X<sub>1</sub>~X<sub>0</sub> + ~X<sub>2</sub>~X<sub>1</sub>X<sub>0</sub> + ~X<sub>2</sub>X<sub>1</sub>~X<sub>0</sub>
+          = ~X<sub>2</sub>~X<sub>1</sub> + ~X<sub>2</sub>~X<sub>0</sub>
+          = ~X<sub>2</sub>(~X<sub>1</sub> + ~X<sub>0</sub>)
+        D = X<sub>2</sub>~X<sub>1</sub>~X<sub>0</sub> + X<sub>2</sub>~X<sub>1</sub>X<sub>0</sub> + X<sub>2</sub>X<sub>1</sub>~X<sub>0</sub>
+          = X<sub>2</sub>~X<sub>1</sub> + X<sub>2</sub>~X<sub>0</sub>
+          = X<sub>2</sub>(~X<sub>1</sub> + ~X<sub>0</sub>)
+</PRE>
+<HR>
+<I>Christopher Vickery<BR>
+Computer Science Department<BR>
+Queens College of CUNY</I>
+<HR>
+</BODY></HTML>

@@ -1,0 +1,53 @@
+Here are the solutions to Exercises 4.1 throught 4.5.
+Dr. Vickery
+
+-----------------
+
+4.1 You would need to ask 24 yes/no questions to determine which
+    location is to be read or written, so you need 24 bits for the
+    addresses.
+
+4.2 The lowest address is 0, and the highest is 2^18 - 1.  This is not
+    a byte-addressable architecture, so all addresses are in units of
+    words.
+
+4.3 (a) #1 has 2^17 - 2^16 = 2^16 bytes and #2 has 2^19 - 2^17 bytes.
+    (2^19 - 2^17 is 3 * 2^17).
+
+    (b)
+        ! Subtract old_y from y
+          orncc %r4, %r0, %r4
+          addcc %r4, 1, %r4
+          addcc %r2, %r4, %r0
+
+        ! Skip flashing if no change
+          be    loop            
+
+4.4 
+          .begin
+          .org 2048
+    swap: ld    [x],      %r1
+          ld    [y],      %r2
+          st    %r1,      [y]
+          st    %r2,      [x]
+          jmpl  %r15 + 4, %r0
+    x:    25
+    y:    50
+          .end
+
+4.5 (a) The code does pair-wise addition of the  10 array elements 
+    stored at a with the 10 elements stored at b, and places the ten sums
+    in the array that starts at c.  Register 1 is being used as an index
+    register (subscript for the arrays), but has to be decremented by 4
+    each time through the loop because of byte addressing.
+
+    (b) It's like a for loop, that looks roughly like this:
+
+          for ( i = k-1; i >= 0; i-- )
+            c[i] = a[i] + b[i];
+          return;
+
+        Here, i is serving the purpose of %r1, but the scaling by 4
+        bytes per word doesn't show in the high-level language.
+
+

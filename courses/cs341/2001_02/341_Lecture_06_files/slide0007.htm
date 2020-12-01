@@ -1,0 +1,179 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-341 Lecture 6</title>
+<meta name=Description content="28-Feb-01: Two’s Complement Negation">
+<link rel=next href=slide0008.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0007.htm');   
+  else
+    parent.location.href = "../341_Lecture_06.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=380 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=48 height=33 colspan=2></td>
+  <td width=380 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=380 height=33 align=center><font face="Times New Roman" size=5>Two’s
+    Complement Negation</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=47 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=210></td>
+  <td width=412 height=210 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=126 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=47 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=35 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=43 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=16 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=31 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=29 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=346 height=21 colspan=12><font face="Times New Roman" size=3>When
+    using two’s complement encoding for</font><br>
+    </td>
+    <td width=48 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=394 height=20 colspan=14><font face="Times New Roman" size=3>numbers,
+    “taking the two’s complement” means to</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=18 height=20></td>
+    <td width=230 height=20 colspan=7><font face="Times New Roman" size=3>negate
+    the value of a number.</font><br>
+    </td>
+    <td width=164 height=20 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=412 height=3 colspan=15></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=315 height=21 colspan=11><font face="Times New Roman" size=3>Subtract
+    from zero, which is the same as</font><br>
+    </td>
+    <td width=79 height=21 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=375 height=21 colspan=13><font face="Times New Roman" size=3>subtracting
+    from 2<sup>n</sup>-1 and adding 1, which is the</font><br>
+    </td>
+    <td width=19 height=21></td>
+   </tr>
+   <tr>
+    <td width=18 height=19></td>
+    <td width=299 height=19 colspan=10><font face="Times New Roman" size=3>same
+    as flipping the bits and adding 1.</font><br>
+    </td>
+    <td width=95 height=19 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=412 height=3 colspan=15></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=232 height=18 colspan=5><font face="Times New Roman" size=2><u>Positive
+    numbers become negative</u></font><br>
+    </td>
+    <td width=141 height=18 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=412 height=3 colspan=15></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=235 height=18 colspan=6><font face="Times New Roman" size=2><u>Negative
+    numbers become positive</u></font><br>
+    </td>
+    <td width=138 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=412 height=2 colspan=15></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=127 height=18 colspan=2><font face="Times New Roman" size=2>Zero
+    becomes zero</font><br>
+    </td>
+    <td width=246 height=18 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=412 height=3 colspan=15></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=174 height=19 colspan=3 rowspan=2><font face="Times New Roman"
+    size=2>But -2<sup>n-1</sup> becomes … -2<sup>n-1</sup></font><br>
+    </td>
+    <td width=199 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=39 height=1 colspan=4></td>
+    <td width=199 height=1 colspan=8></td>
+   </tr>
+  </table>
+  </td>
+  <td width=23 height=210></td>
+ </tr>
+ <tr>
+  <td width=475 height=41 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

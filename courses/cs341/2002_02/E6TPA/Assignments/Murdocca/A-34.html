@@ -1,0 +1,144 @@
+<html><head><title>Exercise A-34</title>
+
+<style type="text/css" media="screen">
+  body { font-family : sans-serif }
+</style>
+
+<style type="text/css">
+  div.indent { margin-left: 2em     }
+  div.shaded { background:  #99cccc }
+ </style>
+
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>Exercise A-34</h1>
+</center>
+<h2>The Question</h2>
+
+Given the state transition diagram shown, (a) Create a state table. (b)
+Design a circuit for the state machine using D flip-flops, a single
+decode, and OR gates.  For the state assignment, use the bit pattern
+that corresponds to the position of each letter in the alphabet,
+starting from 0.  for example, A is at position 0, so the state
+assignment is 000; B is at position 1, so the state assignment is 001,
+and so on.
+
+<h2>The Authors' Solution</h2>
+
+The state assignments, as specified:<p>
+
+<div class="indent">
+<table cellpadding=5 border=1 bgcolor=#99cccc>
+  <tr>
+    <th rowspan=2> State<br>Name
+    <th colspan=3> Encoding
+  <tr>
+    <th>S<sub>2</sub>
+    <th>S<sub>1</sub>
+    <th>S<sub>0</sub>
+
+  <tr> <th>A <th>0 <th>0 <th>0 <tr> <th>B <th>0 <th>0 <th>1 <tr> <th>C
+  <th>0 <th>1 <th>0 <tr> <th>D <th>0 <th>1 <th>1 <tr> <th>E <th>1 <th>0
+  <th>0
+
+</table>
+</div><p>
+<hr>
+
+Let <i>s<sub>i</sub></i> represent the Q output of state flip-flop
+<i>s<sub>i</sub></i>, and let <i>D<sub>i</sub></i> represent the D
+input to state flip-flop <i>s<sub>i</sub></i>.Then the state table looks
+like this:<p>
+
+<div class="indent">
+
+  <table border=1 cellpadding=5 bgcolor=#99cccc	>
+  <tr>
+    <th rowspan=2>Present State
+    <th colspan=2>Next State / Output
+  <tr>
+
+    <th> X = 0
+    <th> X = 1
+  <tr>
+    <th>s<sub>2</sub>&nbsp;s<sub>1</sub>&nbsp;s<sub>0</sub>
+    <th>D<sub>2</sub>&nbsp;D<sub>1</sub>&nbsp;D<sub>0</sub>&nbsp;/&nbsp;Z
+    <th>D<sub>2</sub>&nbsp;D<sub>1</sub>&nbsp;D<sub>0</sub>&nbsp;/&nbsp;Z
+
+  <tr>
+    <td align=center>0&nbsp;&nbsp;0&nbsp;&nbsp;0
+    <td align=center>&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;1&nbsp;&nbsp;/&nbsp;&nbsp;0
+    <td align=center>&nbsp;0&nbsp;&nbsp;1&nbsp;&nbsp;0&nbsp;&nbsp;/&nbsp;&nbsp;0
+
+  <tr>
+    <td align=center>0&nbsp;&nbsp;0&nbsp;&nbsp;1
+    <td align=center>&nbsp;0&nbsp;&nbsp;1&nbsp;&nbsp;1&nbsp;&nbsp;/&nbsp;&nbsp;0
+    <td align=center>&nbsp;1&nbsp;&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;/&nbsp;&nbsp;0
+
+  <tr>
+    <td align=center>0&nbsp;&nbsp;1&nbsp;&nbsp;0
+    <td align=center>&nbsp;1&nbsp;&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;/&nbsp;&nbsp;0
+    <td align=center>&nbsp;0&nbsp;&nbsp;1&nbsp;&nbsp;1&nbsp;&nbsp;/&nbsp;&nbsp;0
+
+  <tr>
+    <td align=center>0&nbsp;&nbsp;1&nbsp;&nbsp;1
+    <td align=center>&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;/&nbsp;&nbsp;0
+    <td align=center>&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;/&nbsp;&nbsp;0
+
+  <tr>
+    <td align=center>1&nbsp;&nbsp;0&nbsp;&nbsp;0
+    <td align=center>&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;/&nbsp;&nbsp;1
+    <td align=center>&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;0&nbsp;&nbsp;/&nbsp;&nbsp;1
+
+  </table><p>
+</div>
+
+<hr>
+
+<div class="indent">
+<img src="./A-34.png">
+</div><p>
+
+In the above figure, the outputs of the decoder are listed next to the
+corresponding input combinations, with X as the least significant
+(rightmost) bit and <i>s<sub>2</sub></i> as the most significant
+bit.<p>
+
+
+<h2>Another Solution</h2>
+
+The authors' solution is a Mealy model: if the value of X changes
+during a state, the value of Z could potentially change during that
+state.  But in this example, the value of Z comes from two outputs of
+the multiplexer where the state bits are the same (State E) and only
+the value of X differs.  So we can use the Moore model, in which the
+output value is strictly determined by the values of the state bits,
+and get the same behavior.<p>
+
+Instead of using full a 4 &#215; 16 decoder (4 inverters plus 16
+4-input AND gates, for a gate input count of 36), we will minimize the
+functions for D<sub>2</sub>, D<sub>1</sub>, D<sub>0</sub>, and Z (an
+exercise left for the student):
+
+<div class="shaded">
+<ul>
+    <li>D<sub>2</sub> = X&#183;~S<sub>1</sub>&#183;S<sub>0</sub>
+    <li>D<sub>1</sub> = X&#183;S<sub>2</sub>&#183;S<sub>0</sub>
+    <li>D<sub>0</sub> = ~X&#183;~S<sub>2</sub>&#183;~S<sub>1</sub>&nbsp;+&nbsp;X&#183;S<sub>1</sub>&#183;~S<sub>0</sub>
+    <li>Z = S<sub>2</sub>
+</ul>
+</div>
+
+Implementing these functions requires a gate-input count of just 15:<p>
+
+<div class="indent">
+<img src=./A-34_circuit.png>
+</div>
+
+<hr></body></html>
+
+
+
+
+
+

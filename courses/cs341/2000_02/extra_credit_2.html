@@ -1,0 +1,83 @@
+<HTML><HEAD><TITLE>Alternate Extra Credit Assignment</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Alternate Extra Credit Assignment</H1>
+</center>
+
+<H2>Overview</H2>
+
+You may do any one of Exercises 43, 44, or 45 from the end of Chapter 3
+for extra credit.  You cannot get extra credit for doing more than one
+of these exercises, and you cannot get extra credit for doing both one of
+these exercises and the [&nbsp;<a HREF="extra_credit_1.html">overclocking
+paper</A>&nbsp;].
+
+<H2>Guidelines</H2>
+
+Your program may be written in Java, C, or C++.  (Consult me first if
+you want to use a different language.)<p>
+
+For <B>Exercise 43</B> you have to come up with an unambiguous grammar
+for the wiring list.  Each input may be either a single number between
+1 and <I>i</I>, or a pair of numbers specifying the row and column of
+the gate involved.  Likewise, each output may be either a single number
+between 1 and <I>j</I>, or a pair of numbers specifying the row and
+column of the gate involved.  Do whatever you wish to solve this
+problem.  Here's an idea: Java's StringTokenizer could be used to
+separate strings into tokens that are terminated by either whitespace
+or an equal sign.  Then your input file could look like this:
+
+<pre>
+    I=5 M=3 N=2 K=4
+    i=3 r=2 c=1
+    r=1 c=2 k=3
+    r=1 c=2 r=3 c=1
+</pre>
+
+The first line provides the parameters for the chip, and the next three
+lines define three wires.  The first wire goes from input number 3 to
+the NAND gate at row 2, column 1; the second wire goes from the NAND
+gate at row 1, column 2 to output number 3; the third wire goes from
+the NAND gate at row 1, column2 to the NAND gate at row 3, column 1. 
+Do not limit your program to working with single-digit numbers.<p>
+
+Test your program with some "interesting" wiring patterns.  Can you
+build a full adder?<p>
+
+For <B>Exercises 44 and 45</B>, use . for AND, + for OR, and ~ for
+NOT.<p>
+
+For Exercise 44, consider this approach: Examine the expression
+to determine how many different variables there are, and generate a
+vector containing each combination of 1s and 0s for one row of the truth
+table, and pass one row of the vector, plus the string representation of
+the function to a method that evaluates the expression for those values
+and returns the result.  This means parsing the expression for each row
+of the truth table, but that's easier than compiling the the
+expression into executable code.<p>
+
+For Exercise 45, the task is to convert the expression into sum of
+products form, which can be done using the technique for generating the
+truth table for the expression suggested above.  Use o's and x's to
+represent unblown and blown fuses, respectively.  Don't worry about that
+"line printer" reference, just have your program output a 24x50 matrix
+of characters representing the fuse matrix going into the AND gates and
+another matirx, 6x50, representing the fuse matrix going into the OR
+gates.
+
+<H2>Grading Criteria</H2>
+
+Code must be properly formatted, fully documented, and carefully tested.
+(You supply the test data, but I will use additional data for testing
+too).  It's OK for more than one person to work on one of these
+programs, but the extra credit earned will be split among the authors. 
+(Unless you tell me otherwise, I will split the extra credit points
+equally among all authors.)<p>
+
+This extra credit assignement, like the overclocking paper, can add up
+to ten additonal points for your course average.<p>
+
+<HR></BODY></HTML>

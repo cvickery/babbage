@@ -1,0 +1,66 @@
+
+  2.  The data path takes 6 nsec.  With a 100-MHz clock,
+  there are 8 nsec from the falling edge to the rising edge,
+  so there is enough time to load the registers from the C
+  bus.  At 150 MHz, there are only 4.67 nsec from the
+  falling edge to the rising edge.  The signal to load the
+  registers comes before the values are are valid, so the
+  machine will not work at this speed.
+
+  3.  Only one register may be gated out onto the B bus at a
+  time, so a single 4-bit field is suffiecient to specify
+  which one.  The C bus may have many registers selected to
+  be loaded, so a full bit map is required.
+
+  4.  The Boolean function that is needed is F = (jamz and
+  z) or (jamn and n) or hibit, where hibit is the
+  hight-order bit of the Next address field.  This can be
+  implemented with two AND gates that feed into one OR gate.
+
+  5.  No.  No matter what is in MBR, the next
+  microinstruction will come from 0x1FF.  The contents of
+  MBR are completely irrelevant.  There is no point in ORing
+  MBR with 0x1FF since the result will always be 0x1FF, no
+  matter what is in MBR (1 OR anything is 1).  In fact, Next
+  Address field is always either 0x00 or 0x100 when JMPC is
+  used.  The numerical value of the op code is the actual
+  address to jump to in the control store.
+
+  6.  All compilers will add:
+      
+        bipush 0
+        istore i
+        
+      at the label L2.  But an optimizing compiler will
+      notice that i is never used after the if statement, so
+      the fourth and fifth instructions (istore and iload)
+      are not needed.  So the code becomes:
+
+        iload     j
+        iload     k
+        iadd
+        bipush    3
+        if_icmpeq L1
+        iload     j
+        bipush    1
+        isub
+        istore    j
+        goto      L2
+    L1: bipush    0
+        istore    k
+    L2: bipush    0
+        istore    i
+        
+  7.  Here are two ways to do it:
+
+        iload   j         iload   j
+        iload   k         iload   k
+        iadd              bipush  4
+        bipush  4         iadd
+        iadd              iadd
+        istore  i         istore  i
+
+  8.  The statement is something like:
+
+        i = (j - k - 6) + (j - k - 6);
+        

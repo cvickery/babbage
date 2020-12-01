@@ -1,0 +1,64 @@
+
+When I sent you the message about the minimization web page,
+I forgot to include the URL!  It's
+
+  http://babbage.cs.qc.edu/courses/cs341/Minimize
+
+I've also included a link to it from the class schedule page
+under "Exam 2".
+
+As of Friday the 10th at 5:15 PM, I updated Minimize.zip, so
+you should pick up a fresh copy if you already have it.  The
+changes are (1) to make it work if you give it an expression
+with no variables in it, and (2) you now can enter a list of
+minterm numbers on the command line instead of typing out
+the whole expression as a string.  For example:
+
+  java -cp Minimize.zip Minimize 1 2 4 5 6 7
+
+is the same as
+
+  java -cp Minimize.zip Minimize "a+b^c"
+
+I've also changed some of the output messages, hopefully
+making it more clear.
+
+Again, please let me know what bugs you find when you run
+it.
+
+Watch your email.  I plan to put up a list of study topics
+for the exam sometime this weekend, and I'll send out an
+announcement when I do.
+
+The solutions to Homework 6 are below.
+Dr. Vickery
+
+
+  19. The NAND latch is wired the same way as the NOR latch, but the
+  "Storing state" is when both inputs are 1, and the set/reset
+  operations are performed by making the corresponding input go to zero
+  instead of to one.
+
+  20. Use the same circuit, but replace the AND gate in the pulse
+  generator with a NOR gate.  The only time both inputs will be false
+  is just after the falling edge.
+
+  22. The design uses two AND gates for chip enable logic plus two AND
+  gates per word select line plus one AND gate per data bit.  For a
+  256x8 memory this comes to 2 + 512 + 2048 = 2562 AND gates.  The
+  circuit also uses one OR gate for each bit in the word, so eight of
+  them would be needed.
+
+  23. The pins can be multiplexed in time.  For example, with n/2 pins,
+  half the address bits are presented in one cycle, and the other half
+  on a succeeding cycle.  Many dynamic RAMs work this way.  Even more
+  extreme would be to feed the address serially into the chip one bit at
+  a time using a single pin.  Of course both these schemes require
+  storage elements on the chip to hold the entire address, and both
+  require extra time compared to schemes that transfer the entire
+  address to the chip in one step.
+
+  24. A 32-bit wide data bus means that 32 chips must be used in
+  parallel, each chip providing 1 bit.  Thus the smallest memory
+  consists of 32 chips, which is 32 megabits, or 4 Megabytes.
+

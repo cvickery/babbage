@@ -1,0 +1,184 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-341 Lecture 6</title>
+<meta name=Description content="28-Feb-01: Floating-Point Encoding">
+<link rel=next href=slide0011.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0010.htm');   
+  else
+    parent.location.href = "../341_Lecture_06.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=316 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=80 height=33 colspan=2></td>
+  <td width=316 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=316 height=33 align=center><font face="Times New Roman" size=5>Floating-Point
+    Encoding</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=79 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=26 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=205></td>
+  <td width=396 height=205 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=63 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=84 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=44 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=26 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=35 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=56 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=23><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=278 height=23 colspan=13><font face="Times New Roman" size=3>Real
+    numbers: range from -</font><font face=Symbol size=3>¥</font><font
+    face="Times New Roman" size=3> to +</font><font face=Symbol size=3>¥</font><br>
+    </td>
+    <td width=100 height=23 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=396 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=357 height=18 colspan=13><font face="Times New Roman" size=2>Infinitely
+    many values between any two points on the</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=396 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=39 height=18 colspan=4></td>
+    <td width=85 height=18 colspan=5><font face="Times New Roman" size=2>number
+    line.</font><br>
+    </td>
+    <td width=272 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=396 height=6 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=369 height=21 colspan=15><font face="Times New Roman" size=3>Many
+    schemes, but virtually all computers now</font><br>
+    </td>
+    <td width=9 height=21></td>
+   </tr>
+   <tr>
+    <td width=396 height=1 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=190 height=21 colspan=9><font face="Times New Roman" size=3>use
+    IEEE-754 encoding.</font><br>
+    </td>
+    <td width=188 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=396 height=6 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=313 height=21 colspan=14><font face="Times New Roman" size=3>All
+    schemes based on scientific notation</font><br>
+    </td>
+    <td width=65 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=396 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=219 height=19 colspan=8 rowspan=2><font face="Times New Roman"
+    size=2>Signed fraction *base<sup>Signed exponent</sup></font><br>
+    </td>
+    <td width=138 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=39 height=1 colspan=4></td>
+    <td width=138 height=1 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=396 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=245 height=18 colspan=9><font face="Times New Roman" size=2>The
+    base doesn’t have to be encoded</font><br>
+    </td>
+    <td width=112 height=18 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=396 height=4 colspan=17></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=6></td>
+    <td width=12 height=16><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=192 height=16 colspan=4><font face="Times New Roman" size=1>It’s
+    always base two for IEEE-754</font><br>
+    </td>
+    <td width=144 height=16 colspan=6></td>
+   </tr>
+  </table>
+  </td>
+  <td width=39 height=205></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

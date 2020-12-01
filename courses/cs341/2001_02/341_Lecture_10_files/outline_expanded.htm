@@ -1,0 +1,431 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+
+<script>
+<!--
+if( window.name != "PPTOtl" )
+  parent.location.href = "../341_Lecture_10.htm";
+//-->
+</script>
+<meta name=Robots content=NoIndex>
+</head>
+
+<body bgcolor=black text=white link=white vlink=white alink=white>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0001.htm');">CS-341 Lecture 10</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>March 6, 2001</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0015.htm');">Exam Topics</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Textbook Chapter 1, Appendices A and B</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Chapter 2: Section 2.1, 2.2.4, pg 93,
+  96-98, section 2.4.6</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Homework questions</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Lecture material</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Units of measure</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Time to execute a program</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Information encoding</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Quantization (sampling)</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Compression</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Bandwidth</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0002.htm');">Administriva</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>Exam will be this Friday, the 9<sup>th</sup></font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>Material from today’s class will not be
+  on this Friday’s exam.</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0009.htm');">Memory Concepts</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Addresses, Data</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Addressable Data Units (bytes, words)</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Operations</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Read / Load</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Write / Store</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Access Time</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>The interval from the time a read
+  operation is initiated to the time when the data are available.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>For write operations, it’s the time the
+  processor has to wait after initiating one write until it can start the next
+  one.</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0010.htm');">Memory Hierarchy</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Parameters</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Speed (access time)</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Cost per bit</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Capacity</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>If it weren’t for the cost factor,
+  there would be no hierarchy:<span style="mso-spacerun: yes">  </span>All of a
+  computer’s storage capacity would use the fastest technology.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Levels</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Registers</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Cache</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Main Memory</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Disk </font><font face=Wingdings
+  size=2>ç</font><font face="Times New Roman" size=2> </font><font face=Arial
+  size=2>Non-volatile (magnetic or optical)</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0011.htm');">Registers</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>Implemented using flip-flops, which we
+  will cover in Chapter 3</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>Access times measured in nanoseconds,
+  or even tens of picoseconds.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>128 32-bit registers would be a lot.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>Volatile</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0012.htm');">Cache</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Section 2.2.5 of the textbook</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Concepts</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Operation is transparent to the CPU</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Cache lines are wider than memory
+  words.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Effective access time is c * h + m * (1
+  - h)</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Error in this formula on page 66 of the
+  text.</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0013.htm');">Main Memory</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Read and Write Operations</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Memory Bus Connects CPU and memory</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Address Wires</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Always pass information from the CPU to
+  memory</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>The address of the word to be read or
+  written</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Data Wires</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Read: Information from memory to CPU</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Write: Information from CPU to memory</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Control Wires</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Used by CPU to tell memory when to read
+  or write</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Used by memory to tell CPU when
+  operation completes</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0014.htm');">Disk Memory</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=4><font face=Arial size=2>Organization</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=3><font face=Arial size=2>Platters, heads, tracks/cylinders,
+  sectors</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=4><font face=Arial size=2>Access Time</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=3><font face=Arial size=2>Seek time</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=2><font face=Arial size=2>Time to move the read/write heads from
+  the current track to the addressed track</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=2><font face=Arial size=2>It takes few milliseconds to go from
+  one track to an adjacent one</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=3><font face=Arial size=2>Rotational Delay</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=2><font face=Arial size=2>Time for the required sector to rotate
+  into position</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=2><font face=Arial size=2>Average value is half of one full
+  rotation</font></td>
+ </tr>
+ <tr>
+  <td colspan=4></td>
+  <td colspan=1><font face=Arial size=2>7200 RPM </font><font face=Symbol
+  size=2>®</font><font face="Times New Roman" size=2><span style="mso-spacerun:
+  yes">  </span>~4 msec.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=3><font face=Arial size=2>Transfer Time</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=2><font face=Arial size=2>Time to transfer the sector(s) between
+  disk and memory</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=2><font face=Arial size=2>Depends on I/O bus speed as well as
+  rotational speed</font></td>
+ </tr>
+ <tr>
+  <td colspan=4></td>
+  <td colspan=1><font face=Arial size=2>Some disks cache tracks; then it’s just
+  bus speed</font></td>
+ </tr>
+</table>
+
+</p>
+
+</body>
+
+</html>

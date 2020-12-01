@@ -1,0 +1,228 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+
+<script>
+<!--
+if( window.name != "PPTOtl" )
+  parent.location.href = "../341_Lecture_24.htm";
+//-->
+</script>
+<meta name=Robots content=NoIndex>
+</head>
+
+<body bgcolor=black text=white link=white vlink=white alink=white>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0001.htm');">CS-341 Lecture 24</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>May 8, 2001</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0004.htm');">Administrivia</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Final Exam will be Monday the 21<sup>st</sup></font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>4:00 to 6:00 PM</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>SB Room B-145</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Need someone to administer course
+  evaluations today.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>When we finish memory design, skip to
+  Chapter 4; start reading at the beginning.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Last Homework: Exercises 2-8 at the end
+  of Chapter 4.</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0003.htm');">Tristate Gates</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Output is either a normal logic value,
+  or a special third state, in which the output is effectively disconnected
+  from the circuit.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>An extra input determines whether the
+  output is a logic value or is “tristated” (also called “floating”). 1 means
+  logic; 0 means float.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Makes it possible to connect output of
+  gates together without causing short circuits.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>No more than one tristate gate in a
+  group may generate a logic value at a time.</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Decoders are good for controlling this.</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0002.htm');">Memory Design</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Static vs Dynamic RAM</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Static RAM Design (Figure 3-29)</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>One flip-flop per bit</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Decode the address to select a word</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Use RD to read (false means write)</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>CS to select a chip</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>OE to enable outputs</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Tristate buffers</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Write Gate = CS · ~RD · Word Select</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Goes to all clocks in a word</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Read Gate = Data Value · Word Select</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Gets OR’d with other bits in the same
+  “slice.”</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Data Input and Data Output Lines</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0005.htm');">The IJVM Datapath</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Registers, ALU, and Shifter were
+  designed in Chapter 3.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>B and C busses, but no A bus (register
+  H instead)</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Memory Interface</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>MAR/MDR for reading and writing words</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>PC/MBR for reading bytes from the
+  instruction stream.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>SP/TOS for Stack Operations</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Microprogrammed Control</font></td>
+ </tr>
+</table>
+
+</p>
+
+</body>
+
+</html>

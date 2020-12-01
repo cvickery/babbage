@@ -1,0 +1,242 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-341 Lecture 5</title>
+<meta name=Description content="16-Feb-01: Integers">
+<link rel=next href=slide0006.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0005.htm');   
+  else
+    parent.location.href = "../341_Lecture_05.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=146 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=104 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=67 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=31 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=186 height=33 colspan=2></td>
+  <td width=104 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=104 height=33 align=center><font face="Times New Roman" size=5>Integers</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=185 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=5 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=254></td>
+  <td width=317 height=254 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=33 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=28 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=23 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=31 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=21 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=28 height=21 colspan=2><font face="Times New Roman" color=black
+    size=3>•</font></td>
+    <td width=197 height=21 colspan=12><font face="Times New Roman" size=3>Unsigned
+    – piece of cake</font><br>
+    </td>
+    <td width=92 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=317 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18></td>
+    <td width=24 height=18 colspan=3><font face="Times New Roman" color=black
+    size=2>–</font></td>
+    <td width=269 height=19 colspan=16 rowspan=2><font face="Times New Roman"
+    size=2>Values from 0 to 2<sup>n</sup>-1 for <i>n</i>-bit numbers.</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=48 height=1 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=317 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=28 height=21 colspan=2><font face="Times New Roman" color=black
+    size=3>•</font></td>
+    <td width=287 height=21 colspan=17><font face="Times New Roman" size=3>Four
+    Ways to Encode Signed Values</font><br>
+    </td>
+    <td width=2 height=21></td>
+   </tr>
+   <tr>
+    <td width=317 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18></td>
+    <td width=24 height=18 colspan=3><font face="Times New Roman" color=black
+    size=2>1.</font></td>
+    <td width=107 height=18 colspan=6><font face="Times New Roman" size=2>Sign-magnitude</font><br>
+    </td>
+    <td width=162 height=18 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=317 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=4></td>
+    <td width=20 height=16 colspan=2><font face="Times New Roman" color=black
+    size=1>•</font></td>
+    <td width=222 height=16 colspan=11><font face="Times New Roman" size=1>Easy
+    for people, rotten for logic circuits</font><br>
+    </td>
+    <td width=27 height=16 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=317 height=3 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18></td>
+    <td width=24 height=18 colspan=3><font face="Times New Roman" color=black
+    size=2>2.</font></td>
+    <td width=46 height=18 colspan=4><font face="Times New Roman" size=2>Biased</font><br>
+    </td>
+    <td width=223 height=18 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=317 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=4></td>
+    <td width=20 height=16 colspan=2><font face="Times New Roman" color=black
+    size=1>•</font></td>
+    <td width=153 height=16 colspan=7><font face="Times New Roman" size=1>Good
+    for comparing values</font><br>
+    </td>
+    <td width=96 height=16 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=317 height=1 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=4></td>
+    <td width=20 height=16 colspan=2><font face="Times New Roman" color=black
+    size=1>•</font></td>
+    <td width=188 height=16 colspan=9><font face="Times New Roman" size=1>Used
+    for floating-point exponents</font><br>
+    </td>
+    <td width=61 height=16 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=317 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18></td>
+    <td width=24 height=18 colspan=3><font face="Times New Roman" color=black
+    size=2>3.</font></td>
+    <td width=131 height=18 colspan=7><font face="Times New Roman" size=2>One’s
+    Complement</font><br>
+    </td>
+    <td width=138 height=18 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=317 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=4></td>
+    <td width=20 height=16 colspan=2><font face="Times New Roman" color=black
+    size=1>•</font></td>
+    <td width=59 height=16 colspan=3><font face="Times New Roman" size=1>Two
+    zeros</font><br>
+    </td>
+    <td width=190 height=16 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=317 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=4></td>
+    <td width=20 height=16 colspan=2><font face="Times New Roman" color=black
+    size=1>•</font></td>
+    <td width=243 height=16 colspan=12><font face="Times New Roman" size=1>Requires
+    end-around carry step for addition</font><br>
+    </td>
+    <td width=6 height=16 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=317 height=1 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=48 height=16 colspan=4></td>
+    <td width=20 height=16 colspan=2><font face="Times New Roman" color=black
+    size=1>•</font></td>
+    <td width=203 height=16 colspan=10><font face="Times New Roman" size=1>Stepping
+    stone to two’s complement</font><br>
+    </td>
+    <td width=46 height=16 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=317 height=2 colspan=20></td>
+   </tr>
+   <tr>
+    <td width=24 height=18></td>
+    <td width=24 height=18 colspan=3><font face="Times New Roman" color=black
+    size=2>4.</font></td>
+    <td width=154 height=18 colspan=8><font face="Times New Roman" size=2>Two’s
+    Complement …</font><br>
+    </td>
+    <td width=115 height=18 colspan=8></td>
+   </tr>
+  </table>
+  </td>
+  <td width=118 height=254></td>
+ </tr>
+ <tr>
+  <td width=475 height=33 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,250 @@
+<html><head><title>CS-341 Assignment 9</title>
+<link rel=stylesheet href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+media="screen">
+</head>
+<BODY bgcolor=#FFFFFF>
+<center>
+<h1>CS-341 Assignment 9</h1>
+
+
+<h2>Serial Multiplier Design</h2>
+</center>
+  Complete the design for the serial multiplier started in class on
+  November 6.  The following paragraphs describe the design which is
+  based on the multiplier shown in the text on pages 69-71.<p>
+  
+  There are two parts to the multiplier, the <i>datapath</i> and the
+  <i>controller</i>.  The datapath consists of the registers <i>m, q,
+  c,</i> and <i>a</i> plus the parallel adder.  The controller is a
+  finite state machine that generates the signals to cause the datapath
+  to perform the proper sequence of operations.<p>
+  
+  The multiplier There is one external input signal, called
+ <i>start</i>, and an external output signal called <i>wait</i>.  In
+ class I named <i>wait</i> with a bar over it to indicate that it is
+ "active low."  That is, when it is zero it indicates that the rest of
+ the datapath should wait for the multiplication to complete.  In this
+ web page I'm leaving the bar out (because no way to draw one in
+ html.)<p>
+
+  As in the normal ALU design, there are also 4-bit external data inputs
+  named A and B that, for multiplication, supply the multiplicand and
+  multiplier respectively.  The <i>a</i> and <i>q</i> registers serve
+  as external data outputs for the product.<p>
+
+  Internally, there are four control signals: <i>initialize</i>,
+  <i>add</i>, <i>shift</i>, and the value of <i>q<sub>0</sub></i>.  The
+  first three are used to control the datapath of the multiplier, and
+  the last one helps determine the state transitions of the
+  controller.<p>
+
+  <table align=center border=1 width=80%>
+
+  <tr>
+    <th>Control Signal
+    <th>Datapath/Controller Operation
+    
+  <tr>
+    <td align=center width=20%><i>initialize</i>
+    <td>Load register <i>m</i> from the A inputs, load register <i>q</i>
+    from the B inputs, and clear registers <i>c</i> (the single
+    flip-flop that captures the carry out of the adder) and <i>a</i>.
+    
+  <tr>
+    <td align=center width=20%><i>add</i>
+    <td>Register <i>a</i> gets the sum of itself and register <i>m</i>.
+    
+  <tr>
+    <td align=center width=20%><i>shift</i>
+    <td>Shift registers <i>c</i>, <i>a</i>, and <i>q</i> (treated as a
+    single 9-bit unit) to the right one place.  This can be either an
+    arithmetic or logical shift (or even a circular shift) because the
+    value of <i>c</i> will be overwritten by the result of adding in the
+    following state.
+    
+  <tr>
+    <td align=center width=20%><i>q<sub>0</sub></i>
+    <td>Used to control whether to add or shift in the next state.
+
+  </table>
+
+<h2>Datapath Design</h2>
+
+<ul>
+
+  <li>Design a four-bit parallel adder suitable for use in this
+  multiplier. Note that it does not have logic for subtraction or
+  anything else.  Show how it connects to the <i>a</i>, <i>c</i>, and
+  <i>m</i> registers.
+
+  <li>Design register <i>m</i> which is loaded from the A inputs when
+  <i>initialize</i> is 1, and is unaffected by clock pulses otherwise.
+
+  <li>Design register <i>a</i>, which is set to all zeros when
+  <i>initialize</i> is 1, shifts right one place (as part of
+  <i>c-a-q</i>) when <i>shift</i> is 1, which is loaded with the
+  outputs of the adder when <i>add</i> is 1,and which is unchanged
+  otherwise.
+
+  <li>Design register <i>q</i>, which is loaded from the B inputs when
+  <i>initialize</i> is 1, which shifts right one place (as part of
+  <i>c-a-q</i>) when <i>shift</i> is 1, and which is unchanged
+  otherwise.
+
+  <li>Design the one-bit register <i>c</i>, which is set to zero when
+  <i>initialize</i> is 1, which is set to 0 when </i>initialize is 1,
+  shifts into <i>a<sub>3</sub></i> when <i>shift</i> is one, is loaded from
+  the C<sub>4</sub> output of the adder when <i>add</i> is 1, and is
+  unchanged otherwise.
+
+</ul>
+
+  Here is a shortcut that can make design of the datapath easier. 
+  There are three variables that control the datapath,
+  <i>initialize</i>, <i>add</i>, and <i>shift</i>, suggesting that
+  there are eight combinations of inputs to consider.  But the three
+  control signals are mutually exclusive: no more than one will ever be
+  true at a time.  (You have to understand the operation of the
+  multiplier, as described in the text, to see this.)  So the design of
+  the datapath can be simplified by generating two intermediate control
+  signals, which I'll call <i>x<sub>1</sub></i> and
+  <i>x<sub>0</sub></i>, as follows:<p>
+
+  <table align=center border=1 cellpadding=5>
+  <tr>
+    <th>init&nbsp;&nbsp;add&nbsp;&nbsp;shift
+    <th>x<sub>1</sub>&nbsp;&nbsp;x<sub>0</sub>
+    
+  <tr>
+    <td align=center>0&nbsp;&nbsp;0&nbsp;&nbsp;0
+    <td align=center>0&nbsp;&nbsp;0
+    
+  <tr>
+    <td align=center>0&nbsp;&nbsp;0&nbsp;&nbsp;1
+    <td align=center>0&nbsp;&nbsp;1
+    
+  <tr>
+    <td align=center>0&nbsp;&nbsp;1&nbsp;&nbsp;0
+    <td align=center>1&nbsp;&nbsp;0
+    
+  <tr>
+    <td align=center>1&nbsp;&nbsp;0&nbsp;&nbsp;0
+    <td align=center>1&nbsp;&nbsp;1
+  </table><p>
+
+  You can use these two signals to control all the multiplexors for all
+  the flip-flops in all the registers.  You just have to connect the
+  correct source of data for each input of each multiplexor.<p>
+
+<h2>Controller Design</h2>
+
+  The purpose of the controller is to generate the values for the
+  control inputs to the datapath, <i>initialize, add,</i> and
+  <i>shift</i>, plus the external output, <i>wait.</i><p>
+
+  I suggest you start implementing the control section with a 4-bit
+  state register named <i>s</i>.  Connect the outputs of <i>s</i> to a
+  decoder with outputs named <i>state<sub>0</sub></i>,
+  <i>state<sub>1</sub></i>, ... <i>state<sub>15</sub></i>.  (The outputs
+  numbered 9-15 won't be connected to anything because you need only 9
+  states.)  The remainder of the control section design is to show how
+  to produce the D inputs for each of the bits of <i>s</i> (the "next
+  state"), as well as the internal inputs, <i>initialize</i>,
+  <i>shift</i>, and <i>add</i>.  (You don't have to do anything about
+  <i>q<sub>0</sub></i> because it is just the Q output of the rightmost
+  flip-flop of register <i>q</i>.)<p>
+
+  With all the forgoing material in mind, the behavior of the controller
+  can be described as follows:<p>
+
+  <table align=center border=1 width=80%>
+
+    <tr>
+      <th width=20%>State
+      <th>Description
+
+    <tr>
+      <td align=center>0
+      <td>The controller remains in this state, with <i>wait</i> equal
+      to 1 ("deasserted") for as long as <i>start</i> is 0.  When start
+      becomes 1, <i>wait</i> immediately goes to 0, <i>initialize</i>
+      goes to 1, and on the next clock pulse, the controller goes into
+      either state 1 or state 2, depending on the value of
+      <i>q<sub>0</sub></i>.
+
+    <tr>
+      <td align=center>1
+      <td>During this state, the <i>add</i> signal should be 1.  The
+      next clock pulse puts the controller into state 2.
+
+    <tr>
+      <td align=center>2
+      <td>During this state, the <i>shift</i> signal should be 1.  The
+      next clock pulse puts the controller into either state 3 or state
+      4, depending on the value of <i>q<sub>0</sub></i>.
+
+    <tr>
+      <td align=center>3
+      <td>During this state, the <i>add</i> signal should be 1.  The
+      next clock pulse puts the controller into state 4.
+
+    <tr>
+      <td align=center>4
+      <td>During this state, the <i>shift</i> signal should be 1.  The
+      next clock pulse puts the controller into either state 5 or state
+      6, depending on the value of <i>q<sub>0</sub></i>.
+
+    <tr>
+      <td align=center>5
+      <td>During this state, the <i>add</i> signal should be 1.  The
+      next clock pulse puts the controller into state 6.
+
+    <tr>
+      <td align=center>6
+      <td>During this state, the <i>shift</i> signal should be 1.  The
+      next clock pulse puts the controller into either state 7 or state
+      8, depending on the value of <i>q<sub>0</sub></i>.
+
+    <tr>
+      <td align=center>7
+      <td>During this state, the <i>add</i> signal should be 1.  The
+      next clock pulse puts the controller into state 8.
+
+    <tr>
+      <td align=center>8
+      <td>During this state, the <i>shift</i> signal should be 1.  The
+      next clock pulse puts the controller into state 0.
+
+  </table><p>
+
+Create a state table based on the above description, use it to
+derive the logic equations for <i>wait</i>, <i>initialize</i>,
+<i>shift</i>, <i>add</i>, and the D inputs for each bit of state
+register <i>s</i>.  Then complete your design by implementing these
+functions in your diagram for the entire multiplier.<p>
+
+Note that <i>add</i> and <i>shift</i> follow the Moore state machine
+model in that their values depend only on the state of the controller. 
+But <i>initialize</i> and <i>wait</i> follow the Mealy model in that
+their values depend both on the state of the controller and the values
+of external inputs.  What would have been the effect of implementing the
+controller as a pure Moore machine? (Answer: One more state would have
+been needed, an overhead of anywhere from 12.5 to 20% added to the time
+required to complete a multiply operation.)<p>
+
+You do not have to draw a state diagram because the controller described
+mixes Mealy and Moore behavior, making a state diagram difficult to
+draw in a consistent fashion for all states and arcs.  (Challenge:
+can you do it anyway?)<p>
+
+<h2>Due Date</h2>
+
+  This homework is to be done <b>on paper</b>, and must be brought to
+  class on Friday, November 9.<p>
+
+<hr>  
+  See the [&nbsp;<a href="../administrivia.html">Course Administration
+  Page</a>&nbsp;] for information on the homework policy for this
+  course.
+
+<hr></body></html>

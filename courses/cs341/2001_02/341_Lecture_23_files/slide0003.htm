@@ -1,0 +1,229 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-341 Lecture 23</title>
+<meta name=Description content="4-May-01: Memory Design">
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0003.htm');   
+  else
+    parent.location.href = "../341_Lecture_23.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=93 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=196 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=22 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=133 height=33 colspan=2></td>
+  <td width=209 height=33 colspan=2>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=209 height=33 align=center><font face="Times New Roman" size=5>Memory
+    Design</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=133 height=33></td>
+ </tr>
+ <tr>
+  <td width=475 height=28 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=244></td>
+  <td width=289 height=244 colspan=2>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=76 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=9 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=4 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=26 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=28 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=3 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=6 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=164 height=18 colspan=12><font face="Times New Roman" size=2>Static
+    <i>vs</i> Dynamic RAM</font><br>
+    </td>
+    <td width=108 height=18 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=290 height=4 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=18 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=225 height=18 colspan=17><font face="Times New Roman" size=2>Static
+    RAM Design (Figure 3-29)</font><br>
+    </td>
+    <td width=47 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=290 height=4 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=113 height=16 colspan=7><font face="Times New Roman" size=1>One
+    flip-flop per bit</font><br>
+    </td>
+    <td width=138 height=16 colspan=10></td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=199 height=16 colspan=13><font face="Times New Roman" size=1>Decode
+    the address to select a word</font><br>
+    </td>
+    <td width=52 height=16 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=196 height=16 colspan=12><font face="Times New Roman" size=1>Use
+    RD to read (false means write)</font><br>
+    </td>
+    <td width=55 height=16 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=104 height=16 colspan=6><font face="Times New Roman" size=1>CS to
+    select a chip</font><br>
+    </td>
+    <td width=147 height=16 colspan=11></td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=117 height=16 colspan=8><font face="Times New Roman" size=1>OE to
+    enable outputs</font><br>
+    </td>
+    <td width=134 height=16 colspan=9></td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=77 height=14 colspan=2><font face="Times New Roman" size=1>Tristate
+    buffers</font><br>
+    </td>
+    <td width=153 height=14 colspan=12></td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=210 height=16 colspan=15><font face="Times New Roman" size=1>Write
+    Gate = CS </font><font size=1>· ~RD · Word Select</font><br>
+    </td>
+    <td width=41 height=16 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=140 height=14 colspan=7><font face="Times New Roman" size=1>Goes
+    to all clocks in a word</font><br>
+    </td>
+    <td width=90 height=14 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=216 height=16 colspan=16><font face="Times New Roman" size=1>Read
+    Gate = Data Value · Word Select</font><br>
+    </td>
+    <td width=35 height=16></td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=48 height=14 colspan=6></td>
+    <td width=12 height=14><font face="Times New Roman" color=black size=1>•</font></td>
+    <td width=230 height=14 colspan=14><font face="Times New Roman" size=1>Gets
+    OR’d with other bits in the same “slice.”</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=290 height=3 colspan=21></td>
+   </tr>
+   <tr>
+    <td width=24 height=16 colspan=3></td>
+    <td width=15 height=16><font face="Times New Roman" color=black size=1>–</font></td>
+    <td width=189 height=16 colspan=11><font face="Times New Roman" size=1>Data
+    Input and Data Output Lines</font><br>
+    </td>
+    <td width=62 height=16 colspan=6></td>
+   </tr>
+  </table>
+  </td>
+  <td width=146 height=244 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=29 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

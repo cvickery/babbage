@@ -1,0 +1,438 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+
+<script>
+<!--
+if( window.name != "PPTOtl" )
+  parent.location.href = "../341_Lecture_06.htm";
+//-->
+</script>
+<meta name=Robots content=NoIndex>
+</head>
+
+<body bgcolor=black text=white link=white vlink=white alink=white>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0001.htm');">CS-341 Lecture 6</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>February 20, 2001</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=1><font face=Arial size=2>Dr. Vickery</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0003.htm');">Slide 2</a></b></font></p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0002.htm');">Two’s Complement Encoding</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Using n bits to represent values, the
+  range is –2<sup>n-1</sup> to +2<sup>n-1</sup>-1</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Consider the leftmost bit to have a
+  negative weight.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Useful when changing word size: sign
+  extension.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Also makes it easy to evaluate numbers.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Negate by subtracting from zero</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Equivalent to “flip bits and add 1”</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Subtract by negating subtrahend and
+  adding</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Carry is normal and usually ignored.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Overflow is when correct value cannot
+  be represented in n bits.</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0004.htm');">The Leftmost Bit Has a
+Negative Weight</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>1101 = -2<sup>3</sup> + 2<sup>2</sup> +
+  2<sup>0</sup></font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2><span style="mso-spacerun:
+  yes"> </span>= -8 + 4 + 1</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2><span style="mso-spacerun:
+  yes"> </span>= -3</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>11101 = -2<sup>4</sup> + 2<sup>3</sup>
+  + 2<sup>2</sup> + 2<sup>0</sup></font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2><span style="mso-spacerun:
+  yes"> </span>= -16 + 8 + 4 + 1</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2><span style="mso-spacerun:
+  yes"> </span>= -3</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Because -8 º -16 + 8</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0005.htm');">Sign Extension</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>1111 1111 1111 1111 1111 1111 1111 1001<sub>2</sub></font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Same as 1001<sub>2</sub> (-7)</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>BUT:</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>1011 1111 1111 1111 1111 1111 1111 1001<sub>2</sub></font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Equals -2<sup>31</sup> + 2<sup>29</sup>
+  + 2<sup>28</sup> + 2<sup>27</sup> + 2<sup>26</sup> + 2<sup>25</sup> + …</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0006.htm');">Negate by Subtracting from
+Zero</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>(0 - X) = -X</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>In n bits, zero is the same as 2<sup>n</sup></font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>For example, 2<sup>4</sup> is 10000<sub>2</sub></font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>For any n 2<sup>n</sup>-1 is n-many
+  ones.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>For example, 2<sup>4</sup>-1 is 15,
+  which is 1111<sub>2</sub></font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>If you subtract from 2<sup>n</sup>-1,
+  there will never be any borrows.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Only two cases: 1-0 is 1 and 1-1 is 0</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0007.htm');">Two’s Complement Negation</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>When using two’s complement encoding
+  for numbers, “taking the two’s complement” means to negate the value of a
+  number.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Subtract from zero, which is the same
+  as subtracting from 2<sup>n</sup>-1 and adding 1, which is the same as
+  flipping the bits and adding 1.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Positive numbers become negative</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Negative numbers become positive</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Zero becomes zero</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>But -2<sup>n-1</sup> becomes … -2<sup>n-1</sup></font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0008.htm');">Two’s Complement Subtraction</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Negate the minuend (second operand),
+  and add.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>X-Y = X+(-Y)</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>ALU design: just one circuit for
+  adding, plus a small amount of logic for negating the minuend instead of a
+  whole other circuit for subtracting.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Simpler to design and faster execution.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>A carry out of the leftmost position is
+  normal, and may be ignored.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>May be used for multiple-precision
+  arithmetic.</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0009.htm');">Two’s Complement Overflow</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>If the result of an addition is bigger
+  than +2<sup>n-1</sup>-1 or less than -2<sup>n-1</sup>, the correct answer
+  cannot be represented with n bits, and overflow has occurred.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=2><font face=Arial size=2>Carry into the leftmost position will
+  be unequal to the carry out of the leftmost position iff overflow occurs.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Adding a positive value to a negative
+  value cannot overflow.</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Add two positives: sign bit of 1
+  indicates overflow</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=1><font face=Arial size=2>Add two negatives: sign bit of 0
+  indicates overflow</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0010.htm');">Floating-Point Encoding</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Real numbers: range from -¥ to +¥</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Infinitely many values between any two
+  points on the number line.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Many schemes, but virtually all
+  computers now use IEEE-754 encoding.</font></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>All schemes based on scientific
+  notation</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Signed fraction *base<sup>Signed
+  exponent</sup></font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>The base doesn’t have to be encoded</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>It’s always base two for IEEE-754</font></td>
+ </tr>
+</table>
+
+</p>
+
+<p><font face=Arial size=2><b><a
+href="javascript:parent.GoToSld('slide0011.htm');">IEEE-754 Encoding</a></b></font>
+
+<table>
+ <tr>
+  <td width=5 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width=20 nowrap></td>
+  <td width="100%"></td>
+ </tr>
+ <tr>
+  <td colspan=1></td>
+  <td colspan=3><font face=Arial size=2>Two formats, using 32 and 64 bits</font></td>
+ </tr>
+ <tr>
+  <td colspan=2></td>
+  <td colspan=2><font face=Arial size=2>Correspond to Java’s float and double
+  data types.</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Sign of fraction: 1 bit</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Signed exponent: 8 bits (biased-127) or
+  11 bits (biased-1023) for 32 and 64-bit formats.</font></td>
+ </tr>
+ <tr>
+  <td colspan=3></td>
+  <td colspan=1><font face=Arial size=2>Value of fraction: 23 or 52 bits for 32
+  and 64-bit formats.</font></td>
+ </tr>
+</table>
+
+</p>
+
+</body>
+
+</html>

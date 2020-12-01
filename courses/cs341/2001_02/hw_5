@@ -1,0 +1,72 @@
+
+  9.  A pixel requires 6+6+6=18 bits (because log2 of 64 is 6), so a
+  single visual frame is 18*10^6 bits.  With 10 frames per second (the
+  reciprocal of 100 msec) , the gross data rate is 180 Mb (megabits)
+  per second.  However, the brain's processing rate is many orders of
+  magnitude slower than this.  As an experiment, try watching the
+  random noise on a color television when no station is broadcasting
+  and see if you can memorize the color bit pattern for a few minutes.
+
+  10. There are 4 nucleotides, so it takes 2 bits to determine which one
+  occurs at any one place.  There are 3 * 10^9 nucleotides in a DNA
+  molecule, so there are 2 * 3 * 10^9 bits of information, about 6
+  gigabits.  Divide that by 100,000 to get 60,000 bits per gene.
+
+  14. From 0 to 9 the codes are 0000000 1101001 0101010 1000011 1001100
+  0100101 1100110 0001111 1110000 0011001.  Using the algorithm given in
+  the book, the bits would be numbered:
+  
+      P1 P2 D3 P4 D2 D1 D0
+      C1 C2 C3 C4 C5 C6 C7
+  
+  P1, P2,  and P4 are parity bits, while D3 through D0 are data bits.
+  C1 through C7 are the corresponding codeword bit names.  P1 is the
+  exclusive or of D3, D2, and D0 because those codeword positions (3, 5,
+  and 7) all have a the bit with value 1 set in their binary
+  representations.  P2 is the exclusive or of D3, D1, and D0 because 3,
+  6, and 7 all have the bit with a value of 2 set in their binary
+  representations.  P4 is the exclusive or of D2, D1, and D0 because 5,
+  6, and 7 all have a 4 in their binary representations.
+
+  16. We'll assume that parity bits occupy positions 0, 1,
+  2, 4, and 8, etc.  This means that our codewords will have
+  lengths of 2^n instead of 2^n -1. (The book omits the
+  parity bit in position 0, which accounts for the
+  difference.)  This affects the results very little.
+
+          codeword   number of   per cent
+      N   length     data bits   wasted
+      --------------------------------------
+      3   8          5           3/8 = 37.5%
+      4   16         12                25.0%
+      5   32         27                15.6%
+      6   64         58                 9.4%
+      7   128        121                5.5%
+      8   256        248                3.1%
+      9   512        503                1.8%
+      10  1024       1014             > 1.0%
+
+  The point is that the overhead becomes insignificant for
+  large codewords, making Hamming Codes especially good for
+  situations where there are lots of data bits and only
+  single or double-bit errors are likely to occur.
+
+  26.  Each frame contains 345,600 pixels, or 1,036,800 bytes of
+  information.  At 30 frames per second, the rate per second is
+  31,104,000 bytes/sec.  In 133 minutes this amounts to
+  2.482*10^11 bytes.  The disk capacity is 3.5*2^30 which is about
+  3.758*10^9 bytes.  We are off by a factor of 66, so the compression
+  has to be 66X.
+
+  28.  The electron beams must visit 1024x768x75 pixel positions per
+  second. This is a total of 58,060,800 pixels.  The reciprocal of this
+  is 0.0000000172, which is 17.2 nsec per pixel.
+
+  31.  Each ASCII code requires 7 bits.  Add one bit for
+  parity, making 8, plus one start bit and one stop bit
+  because it is asynchronous transmission, and a total of 10
+  bits have to be transmitted per character.  The speed of
+  the modem is irrelevant; the point is that only 7 of each
+  ten bits transmitted actually contain data, so the answer
+  is 70%.
+

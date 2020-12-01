@@ -1,0 +1,180 @@
+
+
+Here are the solutions for Homework 3, which was due on
+October 6.
+
+Dr. Vickery
+
+==================================================================
+
+Chapter 2
+
+  18. A cylinder can be read in five rotations.  During the sixth
+  rotation, a seek is done to the next cylinder.  Because the
+  track-to-track seek time is less than the rotation time, the program
+  must wait until sector zero comes around again.  Therefore, it takes
+  six full rotations to read a cylinder and be in position to start
+  reading the next one.  Reading the first 7999 cylinders thus takes
+  4794 rotations.  Reading the last cylinder requires five rotations
+  because no final seek is needed.  The 4799 rotations at 20
+  msec/rotation take 95.98 seconds.
+
+  19. 7200 RPM = 120 revolutions per second.  4096 * 64 is 2^18
+  (262,144)bits per track.  2^18*120 (bits/revolution *
+  revolutions/sec) gives 31,457,280 bits per second, or 3.932 Megabytes
+  per second.
+
+  20. The CPU and the bus are perfectly matched if it weren't for the
+  contention from the disk the bus would supply a new instruction every
+  25 nsec when the CPU asks for it.  The disk is making transfers at a
+  10MHz rate (there are 4 bytes per word, so it needs only 10M words to
+  get 40MB).  So the disk is using the bus at one quarter the rate of
+  the CPU, thus slowing the CPU down buy 25%.
+
+  21. Logically it does not matter, but the performance is better if you
+  allocate from the outside in.  One rotation of the outermost track
+  takes as long aas one rotation of the innermost track because hard
+  disks rotate with constant angular velocity.  If the disk has the same
+  number of sectors in every track it makes no difference at all.  But
+  there are some disks that put more sectors in the outermost tracks
+  (because they are physically larger), so the transfer rate is higher
+  for them, and it is better on those disks to use the
+  higher-performance sectors first, especially if the disk never fills
+  up, thus leaving the lower performance tracks unused.
+
+  22. 2^24 sectors at the PC standard of 512 (2^9) bytes per sector
+  give 2^(24+9) = 2^33 bytes, or 8 GB.  Don't bother to buy a disk
+  bigger than that (8.6GB) if you have an old computer that uses LBA.
+
+  24. 175,200 bytes per second times 4,440 seconds (74 minutes) gives a
+  total of 777,888,000 bytes.
+
+  25. The mode does not matter, since the laser has to pulse for
+  preamble bits, data bits, ECC bits, and all the overhead bits as
+  well. The gross data rate at 1X is 75 sectors/sec, each sector
+  consisting of 98*588 = 57,624 bits.  Thus 4,321,800 bits/sec go past
+  the head at 1x.  At 4x, this is 17,287,200 bits/sec.  Thus each pulse
+  must last no more than 57.8 nsec minus the time between pulses, which
+  is not given.
+
+  26.  Each frame contains 345,600 pixels, or 1,036,800 bytes of
+  information.  At 30 frames per second, the rate per second is
+  31,104,000 bytes/sec.  In 133 minutes this amounts to
+  2.482*10^11 bytes.  The disk capacity is 3.5*2^30 which is about
+  3.758*10^9 bytes.  We are off by a factor of 66, so the compression
+  has to be 66X.
+
+
+Appendix A
+
+  1.  Here's how I would do it:
+
+          124
+        -----
+     16| 1984
+         1984
+         ----
+            0 (0x0)
+
+            7
+        -----
+     16|  124
+          112
+          ---
+           12 (0xC)
+
+            0
+        -----
+     16|    7
+            0
+            -
+            7 (0x7)
+
+     So the hex value is 7C0, which translates directly into
+     0111 1100 0000.
+
+
+     Likewise, 4000 is 1111 1010 0000
+           and 8192 is 0010 0000 0000 0000
+
+  2.  Decimal 617, Octal 1151, and Hex 269.
+
+  3.  A, B, C, D, E, and F are all valid hexadecimal digits, so
+  everything is valid except BAG.
+
+  4.  2 1100100
+      3   10201
+      4    1210
+      5     400
+      6     244
+      7     202
+      8     144
+      9     121
+
+  7.  00101101    11111111    00000000    11110111
+     +01101111   +11111111   -11111111   -11110111
+     ---------   ---------   ---------   ---------
+      10011100    11111110    00000001    00000000
+     (overflow)
+
+     The subtractions are done by negating the minuend
+     and adding:
+                              00000000    11110111
+                             +00000001   +00001001
+                             ---------   ---------
+                              00000001    00000000
+
+  9.  Let Sum be the 3-bit sum, N be the value of the sign
+  bit, Z be 1 if the sum bits are all zeros, and V be one if
+  the there was oVerflow.
+
+              Sum NZV
+    000 + 001 000 000
+    000 + 111 111 100
+    111 + 110 101 100
+    100 + 111 011 001
+    100 + 100 000 011
+
+  10. The numbers are 006, 997, 100, 985, 998, and 000.
+
+  11. It's like one's complement addition; you have to add
+  the carry from the left to the answer.
+
+      0001  (+1)    0001  (+1)    9997  (-2)    9241  (-758)
+     +9999  (-0)   +9998  (-1)   +9996  (-3)   +0802  (+802)
+     -----         -----         -----         -----
+    1)0000        0)9999        1)9993        1)0043
+        +1            +0            +1            +1
+      ----          ----          ----          ----
+      0001  (+1)    9999  (-0)    9994  (-5)    0044   (+44)
+
+  12. Like two's complement addition, just do the addition
+  and ignore the carry.
+
+Appendix B.
+
+  1.     9 is 1001.00000 -> 0x41100000
+      5/32 is 0.00101    -> 0x3E200000
+     -5/32               -> 0xBE200000
+     6.125 is 0110.0010  -> 0x40C40000
+
+  2.  42E48000 = 0 10000101 110 0100 1000 0000 0000 0000
+                 +      133 <1>.11001001
+                       -127
+                       ----
+                         +6
+      + 1.11001001 x 2^6 = 1110010.01 = 114.25
+
+      3F880000 -> 1.0625
+      00800000 -> 2^-126
+      C7F00000 -> -122,880
+
+  5.  3EE00000 -> 0 01111101 110 0000 0000 0000 0000 0000
+      3D800000 -> 0 01111011 000 0000 0000 0000 0000 0000
+
+        1.11 * 2^-2   ->  1.11 * 2^-2
+        1.00 * 2^-4   ->  0.01 * 2^-2  (Always multiply the
+        smaller value to avoid losing precision.)
+
+      Sum is 10.00 * 2^-2 = 1.0 * 2^-1 -> 3F000000
+

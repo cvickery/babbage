@@ -1,0 +1,34 @@
+
+Here are the solutions for Homework 7.
+Dr. Vickery
+
+
+  7.  Inputs D1, D2, D4, and D7 are all connected to the plus side of
+  the power supply (logic 1), and the other inputs are all connected to
+  ground (logic 0).
+
+  8.  The idea is that you can use any three of the variables as control
+  intputs to the multiplexor, let's say variables A, B, and C.  Then
+  each of the 8 inputs of the multiplexor will represent two rows of the
+  truth table, one where D is zero and one where D is one.  These row
+  pairs will either have output values of 0 and 0 (put 0 into the
+  corresponding input of the multiplexor), 0 and 1 (put D into the
+  corresponding input), 1 and 0 (put ~D into the corresponding input)
+  or 1 and 1 (put 1 into the corresponding input.)  For the problem
+  given, and using A, B, and C as the controls, the inputs to the
+  multiplexor, starting with input number 0, would be: D, 1, 0, 1, ~D,
+  ~D, 0, and D.
+
+  9.  Build a decoder with two control inputs, and connect the input
+  line as a third input to each of the four AND gates.
+
+  10. Use two OR gates.  The output of one is the low-order bit; it is
+  connected to inputs 1 and 3.  The output of the other one, the
+  high-order bit has its inputs connected to inputs 2 and 3.  Input 0 is
+  not used.
+
+  11. There will be four AND gates, with input fuses blown to generate
+      the four minterms, ~ABC, A~BC, AB~C, and ABC.  These four AND
+      gates will be connected (through four un-blown fuses) to one OR
+      gate, which will generate the output value.
+

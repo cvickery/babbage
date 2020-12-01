@@ -1,0 +1,75 @@
+<html><head><title>Exercise A-29</title>
+<link rel=stylesheet
+      href="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+      media="screen">
+</head><body bgcolor="#ffffc0">
+<center>
+<h1>Exercise A-29</h1>
+</center>
+
+<h2>The Problem</h2>
+Design a circuit that produces a 1 at the Z output when the input X
+changes from 0 to 1 or from 1 to 0, and that produces a zero at all
+other times. ... Show the state transition diagram, the state table,
+state assignment, and the final circuit using MUXes.
+
+<h2>Analysis</h2>
+
+We will use two state flip-flops, S<sub>1</sub> and S<sub>0</sub>. 
+S<sub>0></sub> will represent the most recently received value of X, and
+S<sub>1</sub> will represent the previous value.  The state table looks
+like this:<p>
+
+<center>
+<img src="./A-29-diagram.png">
+</center>
+
+Note that I have adopted the non-standard convention of labeling the
+arcs "X/Z", where Z is the output value in the state the arc comes
+<i>from</i> rather than the state the arc goes <i>to</i>.  This
+convention makes it easier to design the circuit as a <i>Moore
+Machine</i>, in which the output value depends only on the current
+state.<p>
+
+Using this convention, we can construct a state table looks like the
+following:
+
+<pre>
+        Present External |  Next    External
+         State   Inputs  |  State   Outputs
+        ------------------------------------
+         S<sub>1</sub>  S<sub>0</sub>    X      |  D<sub>1</sub> D<sub>0</sub>      Y
+        ------------------------------------
+         0   0     0     |  0   0      0
+         0   0     1     |  0   1      0
+         0   1     0     |  1   0      1
+         0   1     1     |  1   1      1
+         1   0     0     |  0   0      1
+         1   0     1     |  0   1      1
+         1   1     0     |  1   0      0
+         1   1     1     |  1   1      0
+</pre>
+
+The first two rows of this table would be interpreted as follows:  "If
+the present state is 00, the output is zero.  If the external input
+during state 00 is 0, the next state will be 00 again, but if the
+external input is 1, the next state will be 01."  The next two rows would
+be interpeted to say, "If the present state is 01, the external output
+is 1.  If the external input is 0, the next state will be 10, but if it
+is 1, the next state will be 11.<p>
+
+We could minimize the three functions on the right side of the state
+table using Karnaugh Maps, but D<sub>1</sub> can be seen to be equal to
+S<sub>0</sub> by inspection, saving a bit of work.  Likewise,
+D<sub>0</sub> can be seen by inspection to be the same as X.  Finally,
+we can also see by inspection that Z is true if and only if
+S<sub>1</sub> is different from S<sub>0</sub>, that is Z = S<sub>1</sub>
+<i>xor</i> S<sub>0</sub>.
+
+Thus, the following circuit implements the entire state machine:
+
+<center>
+<img src="./A-29-circuit.png">
+</center>
+
+<hr></body></html>

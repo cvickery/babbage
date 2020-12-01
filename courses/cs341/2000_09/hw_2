@@ -1,0 +1,103 @@
+
+Here are the solutions to the homework assignment that was
+due September 26.
+
+Dr. Vickery
+
+------------------------------------------------------------
+
+Chapter 2
+
+  1.  The datapath is 20 nsec long.  The reciprocal of 20
+  *10^-9 is 0.05 * 10^+9, which is 50 * 10^6.  (Always keep
+  the exponent a multiple of three.)  That's 50 million
+  instructions per second, or 50 MIPS.
+
+  2.  The program counter tells where in memory the next
+  instruction is to be fetched from.  If it isn't
+  incremented, the computer will fetch and execute the same
+  instruction forever.  The only exception would be a branch
+  or subroutine call instruction.
+
+  3.  You cannot say anything for sure.  If computer 1 has a
+  five-stage pipeline, it can issue up to 500 million
+  instructions per second.  If computer 2 is not pipelined,
+  it cannot do any better than 200 million instructions per
+  second.  Thus, without more information, you cannot say
+  which is faster.  And this is assuming that both machines
+  have the same instruction set, which is not explicit in
+  the question.  
+  
+  6.  A pipeline processor is better.  Array processors are useful only
+  if the problem contains inherent parallelism.
+
+  8.  The access time for registers is a few nanoseconds.
+  For optical disk it is a few hundred milliseconds.  The
+  ratio here is about 10^8:1.
+
+  9.  A pixel requires 6+6+6=18 bits (because log2 of 64 is
+  6), so a single visual frame is 18*10^6 bits.  With 10
+  frames per second (the reciprocal of 100 msec) , the gross
+  data rate is 180 Mb (megabits) per second.  However, the
+  brain's processing rate is many orders of magnitude slower
+  than this.  As an experiment, try watching the random
+  noise on a color television when no station is
+  broadcasting and see if you can memorize the color bit
+  pattern for a few minutes.
+
+  10. There are 4 nucleotides, so it takes 2 bits to
+  determine which one occurs at any one place.  There are 3
+  * 10^9 nucleotides in a DNA molecule, so there are 2 * 3 *
+  * 10^9 bits of information, about 6 gigabits.  Divide that
+  * by 100,000 to get 60,000 bits per gene.
+
+  11. Memory (a) is a normal 1-KB system.  Memory (b) is
+  somewhat old fashioned, since 12-bit words are no longer
+  used, but it is certainly reasonable.  Memory (c) is
+  impossible, since the address is too short to cover all
+  the locations.  The last three are unreasonable because
+  they waste address bits.
+
+  13. 268,435,456 is exactly 2^28.  Since addresses are
+  expressed as binary numbers, a 28-bit is exactly right for
+  addressing all the bytes of this memory.  An easy to
+  remember number like 250,000,000 is not an even power of
+  two, so any binary addressing scheme would have to use
+  enough bits to access the next power of two above that
+  (i.e., 268,435,456), so there would be addresses that
+  wouldn't hold any memory, which is not efficient.
+
+  14. From 0 to 9 the codes are 0000000 1101001 0101010
+  1000011 1001100 0100101 1100110 0001111 1110000 0011001.
+  Using the algorithm given in the book, the bits would be
+  numbered: 
+
+      P1 P2 D3 P4 D2 D1 D0
+      C1 C2 C3 C4 C5 C6 C7
+  
+  P1, P2,  and P4 are parity bits, while D3 through D0 are
+  data bits.  C1 through C7 are the corresponding codeword
+  bit names.  P1 is the exclusive or of D3, D2, and D0
+  because those codeword positions (3, 5, and 7) all have a
+  the bit with value 1 set in their binary representations.
+  P2 is the exclusive or of D3, D1, and D0 because 3, 6, and
+  7 all have the bit with a value of 2 set in their binary
+  representations.  P4 is the exclusive or of D2, D1, and D0
+  because 5, 6, and 7 all have a 4 in their binary
+  representations.
+
+  Adding one more code bit, C0, which is even parity across
+  the above code words allows double bit errors to be
+  detected.  The resulting code words would be 00000000,
+  01101001, 10101010, 11000011, 11001100, 10100101,
+  01100110, 00001111, 11110000, and 10011001.  
+  
+  28.  The electron beams must visit 1024x768x75 pixel
+  positions per second. This is a total of 58,060,800
+  pixels.  The reciprocal of this is 0.0000000172, which is
+  17.2 nsec per pixel.
+
+  34.  It says: I LOVE YOU.  Note that the period at the end
+  and the spaces between the words are all part of the
+  message.
+

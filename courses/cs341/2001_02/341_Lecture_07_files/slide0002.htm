@@ -1,0 +1,166 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-341 Lecture 7</title>
+<meta name=Description content="26-Feb-01: IEEE-754 Encoding">
+<link rel=next href=slide0003.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0002.htm');   
+  else
+    parent.location.href = "../341_Lecture_07.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=69 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=259 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=54 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=109 height=33 colspan=2></td>
+  <td width=259 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=259 height=33 align=center><font face="Times New Roman" size=5>IEEE-754
+    Encoding</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=107 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=28 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=179></td>
+  <td width=382 height=179 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=30 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=88 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=118 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=42 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=24><font face="Times New Roman" color=black size=4>•</font></td>
+    <td width=304 height=24 colspan=11><font face="Times New Roman" size=4>Two
+    formats, using 32 and 64 bits</font><br>
+    </td>
+    <td width=61 height=24 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=383 height=5 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=24 height=21 colspan=3></td>
+    <td width=15 height=21><font face="Times New Roman" color=black size=3>–</font></td>
+    <td width=332 height=21 colspan=10><font face="Times New Roman" size=3>Correspond
+    to Java’s float and double data</font><br>
+    </td>
+    <td width=12 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=383 height=2 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=39 height=21 colspan=4></td>
+    <td width=47 height=21 colspan=5><font face="Times New Roman" size=3>types.</font><br>
+    </td>
+    <td width=297 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=383 height=4 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=48 height=18 colspan=6></td>
+    <td width=12 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=144 height=18 colspan=4><font face="Times New Roman" size=2>Sign
+    of fraction: 1 bit</font><br>
+    </td>
+    <td width=179 height=18 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=383 height=5 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=48 height=18 colspan=6></td>
+    <td width=12 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=312 height=18 colspan=8><font face="Times New Roman" size=2>Signed
+    exponent: 8 bits (biased-127) or 11 bits</font><br>
+    </td>
+    <td width=11 height=18></td>
+   </tr>
+   <tr>
+    <td width=383 height=1 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=60 height=18 colspan=7></td>
+    <td width=269 height=18 colspan=6><font face="Times New Roman" size=2>(biased-1023)
+    for 32 and 64-bit formats.</font><br>
+    </td>
+    <td width=54 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=383 height=5 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=48 height=18 colspan=6></td>
+    <td width=12 height=18><font face="Times New Roman" color=black size=2>•</font></td>
+    <td width=323 height=18 colspan=9><font face="Times New Roman" size=2>Value
+    of fraction: 23 or 52 bits for 32 and 64-bit</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=383 height=1 colspan=16></td>
+   </tr>
+   <tr>
+    <td width=60 height=18 colspan=7></td>
+    <td width=56 height=18 colspan=3><font face="Times New Roman" size=2>formats.</font><br>
+    </td>
+    <td width=267 height=18 colspan=6></td>
+   </tr>
+  </table>
+  </td>
+  <td width=53 height=179></td>
+ </tr>
+ <tr>
+  <td width=475 height=70 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

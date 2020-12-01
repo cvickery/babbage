@@ -1,0 +1,164 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>CS-341 Lecture 25</title>
+<meta name=Description content="11-May-01: The IJVM Datapath">
+<link rel=next href=slide0004.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0002.htm');   
+  else
+    parent.location.href = "../341_Lecture_25.htm";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=70 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=256 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=81 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=46 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=110 height=33 colspan=2></td>
+  <td width=256 height=33>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=256 height=33 align=center><font face="Times New Roman" size=5>The
+    IJVM Datapath</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=109 height=33 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=475 height=28 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=40 height=192></td>
+  <td width=407 height=192 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=18 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=5 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=60 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=59 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=70 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=87 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=49 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=30 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=354 height=21 colspan=10><font face="Times New Roman" size=3>Registers,
+    ALU, and Shifter were designed in</font><br>
+    </td>
+    <td width=35 height=21 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=407 height=1 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=18 height=21></td>
+    <td width=82 height=21 colspan=5><font face="Times New Roman" size=3>Chapter
+    3.</font><br>
+    </td>
+    <td width=307 height=21 colspan=7></td>
+   </tr>
+   <tr>
+    <td width=407 height=5 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=384 height=21 colspan=11><font face="Times New Roman" size=3>B
+    and C busses, but no A bus (register H instead)</font><br>
+    </td>
+    <td width=5 height=21></td>
+   </tr>
+   <tr>
+    <td width=407 height=6 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=141 height=21 colspan=6><font face="Times New Roman" size=3>Memory
+    Interface</font><br>
+    </td>
+    <td width=248 height=21 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=407 height=5 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=284 height=18 colspan=6><font face="Times New Roman" size=2>MAR/MDR
+    for reading and writing words</font><br>
+    </td>
+    <td width=84 height=18 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=407 height=4 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=368 height=18 colspan=9><font face="Times New Roman" size=2>PC/MBR
+    for reading bytes from the instruction stream.</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=407 height=5 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=24 height=18 colspan=3></td>
+    <td width=15 height=18><font face="Times New Roman" color=black size=2>–</font></td>
+    <td width=197 height=18 colspan=5><font face="Times New Roman" size=2>SP/TOS
+    for Stack Operations</font><br>
+    </td>
+    <td width=171 height=18 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=407 height=6 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=18 height=21><font face="Times New Roman" color=black size=3>•</font></td>
+    <td width=211 height=21 colspan=7><font face="Times New Roman" size=3>Microprogrammed
+    Control</font><br>
+    </td>
+    <td width=178 height=21 colspan=5></td>
+   </tr>
+  </table>
+  </td>
+  <td width=28 height=192></td>
+ </tr>
+ <tr>
+  <td width=475 height=57 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>
