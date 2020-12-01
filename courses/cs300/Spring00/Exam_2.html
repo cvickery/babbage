@@ -1,0 +1,135 @@
+<HTML><HEAD><TITLE>Exam 2 Study Guide</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Exam 2 Study Guide</H1>
+</center>
+
+<H2>Apology</H2>
+
+This "Study Guide" is really too late to serve as a guide for studying. 
+It might better be called a "last minute checklist."  I apologize for
+not being able to get something to you sooner.
+
+<H2>Exercise 2</H2>
+
+My code for Exercise 2 is now available.  Links to the code are below.<p>
+
+While working on it, I noticed that the copy of JavaLexemes that I made
+available to you was leaving the ending quote on the character and
+String literals.  If you go to the web page for the exercise, the link
+to JavaLexemes.zip will give you an updated version that fixes this
+problem.<p>
+
+Also, I reworked JavaTokenizer and JavaToken compared to what I handed
+out in class.  The current versions use interfaces for handling
+the lists of keywords, operators, token types.  These interfaces are an
+implementation detail, not anything that you will be tested on.<p>
+
+<UL>
+
+  <LI>[&nbsp;<a
+  HREF="Exercise_2/TestTokenizer.java.html">TestTokenizer.java</A>&nbsp;]
+  <BR>This is the main class, virtually unchanged from what I gave out
+  in class.  Note that by printing jt.nextToken() it actually calls the
+  JavaToken class' <I>toString()</I> method.<p>
+
+  <LI>[&nbsp;<a
+  HREF="Exercise_2/JavaToken.java.html">JavaToken.java</A>&nbsp;]
+  <BR>Here you can see the completed toString() method, as well as my
+  implementation of the constructors that I finally decided on.  There
+  is a generic constructor, plus special ones for capturing the values
+  of character, fixed-point, and floating-point literals.  The Accessor
+  methods have not been tested; there are intended to be used by the
+  parser.
+  <BR>Note that all the manifest constants have been moved into
+  interfaces, which this class "implements."  That means that the
+  constants can be used by name without having to put a class name in
+  front of them.<p>
+
+  <LI>[&nbsp;<a
+  HREF="Exercise_2/JavaTokenizer.java.html">JavaTokenizer.java</A>&nbsp;]
+  <BR>Again, this class implements several interfaces just so it can use
+  the constants named in them.
+  <BR>This is a pretty complete tokenizer. (It won't handle things like
+  "i+++ j" correctly -- that would have to be written "i++ + j".)  It
+  takes care of the fact that JavaLexemes does not process periods at
+  all.  Once it has established that a lexeme is not a number
+  (floating-point numbers can have a period in them), it checks if there
+  are any periods in the lexeme, and if so, uses a StringTokenizer to
+  break the lexeme up into alternating identifiers and periods.<p>
+
+  The following files define the interfaces used to manage fields and
+  constants that need to be accessed from multiple classes.  Note that
+  fields declared in interfaces are automatically public, static, and
+  final.
+
+  <LI>[&nbsp;<a
+  HREF="Exercise_2/JavaKeywords.java.html">JavaKeywords.java</A>&nbsp;]
+  <LI>[&nbsp;<a
+  HREF="Exercise_2/JavaOperators.java.html">JavaOperators.java</A>&nbsp;]
+  <LI>[&nbsp;<a
+  HREF="Exercise_2/JavaTokenTypes.java.html">JavaTokenTypes.java</A>&nbsp;]
+  <LI>[&nbsp;<a
+  HREF="Exercise_2/JavaLexemeTypes.java.html">JavaLexemeTypes.java</A>&nbsp;]
+
+</UL>
+
+<H2>Exam Topics</H2>
+
+The exam will cover Exercise 2, lecture notes, and material from
+Chapters 4, 5, 6, 7, and sections 1-5 of Chapter 8 of the Sebesta text.
+
+Here is a checklist of things you should be able to do:
+
+<UL>
+
+  <LI>Identify the lexemes and tokens in Java programs.
+  
+  <LI>Work with iterators, as in Exercise 2.
+  
+  <LI>Override the toString() method as in Exercise 2.
+
+  <LI>Know how to convert a lexeme into a token as in Exercise 2.
+  
+  <LI>Be able to tell the scope and lifetimes of variables defined in
+  different parts of Java, C, and C++ programs.
+
+  <LI>Know what parts of memory are allocated for static variables,
+  local variables, and dynamically allocated variables.
+  
+  <LI>Explain named constants.
+  
+  <LI>Know what steps the new operator invokes when a class is
+  instantiated.
+  
+  <LI>Be able to work with primitive and pointer data types.
+  
+  <LI>Be able to calculate the address of any element in a
+  multidimensional array given the array's starting address, the element
+  size, and whether the array is stored in row major or column major
+  order.
+  
+  <LI>Know what associative arrays, records, and unions are.
+  
+  <LI>Be able to work with data conversions and casts.
+  
+  <LI>Know how to work with break and continue statements in Java,
+  C, and C++.
+  
+  <LI>Be able to describe the behavior of guarded commands.  Be able to
+  define nondeterministic execution in this context.
+  
+  <LI>Be able to define call by reference, call by value, and call by
+  name.  Be able to give examples of each and/or to identify them.
+
+  <LI>Be able to define in, out, and in-out parameters.  Be able to give
+  examples of each and/or to identify them.
+
+</UL>
+
+This checklist may be incomplete!
+
+<HR></BODY></HTML>

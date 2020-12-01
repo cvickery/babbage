@@ -1,0 +1,45 @@
+<HTML><HEAD><TITLE>TestTokenizer.java</TITLE></HEAD><BODY>
+<CENTER><H1>TestTokenizer.java</H1></CENTER><HR><PRE>
+//  TestTokenizer.java
+
+   import java.io.*;
+
+//  Class TestTokenizer
+//  ------------------------------------------------------------------
+/**
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring, 2000
+  */
+   public class TestTokenizer
+   {
+   //  Method main()
+   //  --------------------------------------------------------------
+   /**
+    *
+    */
+      public static void main( String[] argv )       throws IOException
+      {
+         if ( argv.length != 1 )
+         {
+            System.err.println( "Need a file name." );
+            System.exit( 1 );
+         }
+         if ( ! argv[0].endsWith( ".java" ) )
+         {
+            System.err.println( "Not a .java file." );
+            System.exit( 1 );
+         }
+         BufferedReader  br  = new BufferedReader (
+                           new FileReader( argv[0] ) );
+         JavaLexemes     jl  = new JavaLexemes( br );
+         JavaTokenizer   jt  = new JavaTokenizer( jl );
+      
+         while ( jt.hasNext() )
+         {
+            System.out.println( "  " + jt.next() );
+         }
+      }
+   }
+
+</PRE><HR></BODY></HTML>

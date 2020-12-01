@@ -1,0 +1,19 @@
+<HTML><HEAD><TITLE>ModifyList.lsp</TITLE></HEAD><BODY>
+<CENTER><H1>ModifyList.lsp</H1></CENTER><HR><PRE>
+; ModifyList.lsp
+
+; Demonstrates that modifying a list can
+; have unexpected consequences.
+
+(defvar x '(a b c))
+(defvar y (cdr x))
+;(setf (cadr x) '(b b) )
+
+; The last form changes the car of the cdr of x,
+; but if you look at y, you will see that it has
+; been changed too.
+
+; The last form could have been written:
+(rplaca (cdr x) '(b b) )
+
+</PRE><HR></BODY></HTML>

@@ -1,0 +1,123 @@
+<HTML><HEAD><TITLE>JavaToken.java</TITLE></HEAD><BODY>
+<CENTER><H1>JavaToken.java</H1></CENTER><HR><PRE>
+//  JavaToken.java
+
+//  Class JavaToken
+//  ------------------------------------------------------------------
+/**
+  *   Encapsulates information about a Java token.
+  *
+  *   @author   C. Vickery
+  *   @version  1.0 - Spring, 2000
+  */
+  public class JavaToken                     implements JavaTokenTypes
+  {
+   
+  //  Instance Information
+  //  ================================================================
+      private int     tokenType     = JTT_Undefined;
+      private int     hashCode      = "".hashCode();
+      private String  lexemeString  = null;
+
+      private char    charValue     = '\u0000';
+      private long    longValue     = 0;
+      private double  doubleValue   = 0.0;
+   
+  //  Constructors
+  //  ================================================================
+
+  //  Generic constructor
+  //  ----------------------------------------------------------------
+    public JavaToken( int type, String lexeme )
+    {
+      //  Generic token initialization.
+      tokenType     = type;
+      lexemeString  = lexeme;
+      hashCode      = lexeme.hashCode();
+    }
+
+  //  Constructors for char, long, and double literals.
+  //  ----------------------------------------------------------------
+    public JavaToken( int type, String lexeme, double d )
+    {
+      this( type, lexeme );
+      doubleValue = d;
+    }
+    public JavaToken( int type, String lexeme, long l )
+    {
+      this( type, lexeme );
+      longValue = l;
+    }
+    public JavaToken( int type, String lexeme, char c )
+    {
+      this( type, lexeme );
+      charValue = c;
+    }
+   
+    //  Accessor methods
+    //  ==============================================================
+      public int    getType()           { return tokenType;     }
+      public int    hashCode()          { return hashCode;      }
+      public String getLexemeString()   { return lexemeString;  }
+      public char   getCharacterValue() { return charValue;     }
+      public long   getLongValue()      { return longValue;     }
+      public double getDoubleValue()    { return doubleValue;   }
+   
+    //  Override methods
+    //  ==============================================================
+
+    //  Method toString()
+    //  --------------------------------------------------------------
+    /**
+      *   Overrides Object.toString() to provide a printable
+      *   representation of information about this Java token.
+      *
+      *   @param  Void.
+      *   @return Printable representation of information about this
+      *           token.
+      */
+      public String toString()
+      {
+        String  returnValue;
+        switch ( tokenType )
+        {
+          case JTT_Identifier:    returnValue = "Identifier:\t\t";
+                                  break;
+          case JTT_Keyword:       returnValue = "Keyword:\t\t";
+                                  break;
+          case JTT_String:        returnValue = "String literal:\t";
+                                  break;
+          case JTT_Character:     returnValue = "Character literal ("
+                                                 + charValue + "):\t";
+                                  break;
+          case JTT_FixedPoint:    returnValue = "Long literal (" +
+                                                 longValue + "):\t";
+                                  break;
+          case JTT_FloatingPoint: returnValue = "Double literal (" +
+                                                 doubleValue + "):\t";
+                                  break;
+          case JTT_True:          returnValue = "True literal:\t\t";
+                                  break;
+          case JTT_False:         returnValue = "False literal:\t\t";
+                                  break;
+          case JTT_Null:          returnValue = "Null literal:\t\t";
+                                  break;
+          case JTT_Separator:     returnValue = "Separator:\t\t";
+                                  break;
+          case JTT_Operator:      returnValue = "Operator:\t\t";
+                                  break;
+          default:                returnValue =
+                                            "Unknown token type:\t\t";
+                                  break;
+        }
+        returnValue += lexemeString;
+        if ( returnValue.length() > 56 )
+        {
+          returnValue = returnValue.substring( 0, 55 ) + " ...";
+        }
+        return returnValue;
+      }
+
+   }
+
+</PRE><HR></BODY></HTML>

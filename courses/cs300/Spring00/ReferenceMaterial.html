@@ -1,0 +1,98 @@
+<HTML><HEAD><TITLE>LISP Reference Material</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>LISP Reference Material</H1>
+</center>
+
+<PRE>
+<H2>List Operations</H2>
+
+CAR CDR CAAR CADR CDAR CDDR CAAAR CAADR CADAR CADDR CDAAR CDADR CDDAR CDDDR
+; Plus 16 more (all combinations of four A's and D's).
+
+CONS and .  ; Both create a cons cell.
+
+LIST        ; Creates as many cons cells as needed.
+            ; CDR of last one will be NIL.
+
+(NTHCDR n list)
+(ELT list index)
+(ELT string index)
+
+(LAST list)
+(LENGTH list)
+(LENGTH string)
+(REVERSE list)
+(REVERSE string)
+(APPEND list list ...)
+
+<H2>Predicates</H2>
+; Return NIL for false, T for true.
+
+LISTP
+NUMBERP
+ATOM
+(MEMBER element list)
+
+<H3>Get true/false value from user</H3>
+(y-or-n-p “string)     ; Anything starting with y or n is valid.
+(yes-or-no-p string)  ; Must answer "yes" or "no" exactly.
+
+<H2>Equality</H2>
+EQ EQL EQUAL EQUALP
+
+<H2>Arithmetic / Logic</H2>
+(= n ...), (+ n ...), etc.
+
+AND OR                ; Short-circuit evaluation.
+                      ; Can be used for testing.
+NOT
+
+<H2>Testing</H2>
+(IF test true-expression false-expression)
+
+(COND   (test consequent ...)   ; Returns result of last consequent
+        ...
+        (T    consequent ...))  ; Conventional last test.
+
+<H2>Loops</H2>
+(DOLIST (index list [result]) body)
+(DOTIMES(index count [result]) body)  ; index starts at zero.
+(DO (index [initial-value [repetitions]]…) (test result) body)
+
+<H2>Output</H2>
+
+(PRINT string)
+(PRINT symbol)
+(PRINT list)
+
+(FORMAT do-print? format-string value ...)
+
+; If do-print? is not NIL, print the result and return NIL.
+; Otherwise return the formatted string without printing it.
+
+  ~a  ; Print value of a symbol.
+  ~%  ; Print a newline.
+
+<H2>Variables and Scope</H2>
+
+(SETF symbol value)       ; Change the value of a symbol.
+
+(DEFVAR var value)        ; Global variable, can't be redefined.
+(DEFPARAMETER var value)  ; Global variable, can be redefined.
+(DEFCONSTANT var value)   ; Global variable, error to try to change.
+
+(DEFUN (parameter ...) body)  ; Function definition.
+
+(DECLARE (SPECIAL var ...))   ; Dynamic scope.
+
+(LET ((var value)...) body)   ; Local variables.
+                              ; Can be done just before the body 
+                              ; in either LET or DEFUN.
+
+
+</PRE>
+<HR></BODY></HTML>

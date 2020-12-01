@@ -1,0 +1,56 @@
+<HTML><HEAD><TITLE>JavaLexemeTypes.java</TITLE></HEAD><BODY>
+<CENTER><H1>JavaLexemeTypes.java</H1></CENTER><HR><PRE>
+//  JavaLexemeTypes.java
+
+//  Interface JavaLexemeTypes
+//  ------------------------------------------------------------------
+/**
+  *  Defines Manifest Constants for the integer codes returned by
+  *  JavaLexemes.nextLexeme().
+  */
+  public interface JavaLexemeTypes
+  {
+    /** Return code for character literals.               */
+    public static final int  LT_LITERALCHR   =  3;
+
+    /** Return code for String literals.                  */
+    public static final int  LT_LITERALSTR   =  2;
+
+    /** Return code for lexemes.                          */
+    public static final int  LT_LEXEME       =  1;
+
+    /** Return code for nothing.  Not used in this class. */
+    public static final int  LT_NOTHING      =  0;
+
+    /** Return code for end of file.                      */
+    public static final int  LT_EOF          = -1;
+
+    /** Return code for end of line.                      */
+    public static final int  LT_EOL          = -2;
+
+    /** Return code for // style comment lines.           */
+    public static final int  LT_SLASHSLASH   = -3;
+
+    /** Return code for /* style comment blocks           */
+    public static final int  LT_SLASHASTER   = -4;
+
+    /** Return code for /** sytle comment blocks.         */
+    public static final int  LT_SLASHDOC     = -5;
+
+    /** Return code for unterminated comments.            */
+    public static final int  LT_UNTERMCOMM   = -6;
+
+    /** Return code for unterminated String literals.     */
+    public static final int  LT_UNTERMSTR    = -7;
+
+    /** Return code for unterminated character literals.  */
+    public static final int  LT_UNTERMCHR    = -8;
+
+    /** Return code for invalid characters.               */
+    public static final int  LT_INVALIDCHR   = -9;
+
+    /** Return code for bugs in JavaLexeme.               */
+    public static final int  LT_ERROR        = -10;
+  }
+
+</PRE><HR></BODY></HTML>

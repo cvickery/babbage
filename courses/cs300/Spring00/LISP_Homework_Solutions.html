@@ -1,0 +1,1194 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./LISP_Homework_Solutions_files/filelist.xml">
+<link rel=Edit-Time-Data href="./LISP_Homework_Solutions_files/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>LISP Homework Solutions</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Christopher Vickery</o:Author>
+  <o:LastAuthor>Christopher Vickery</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>255</o:TotalTime>
+  <o:Created>2000-05-26T22:49:00Z</o:Created>
+  <o:LastSaved>2000-05-26T22:49:00Z</o:LastSaved>
+  <o:Pages>4</o:Pages>
+  <o:Words>550</o:Words>
+  <o:Characters>3135</o:Characters>
+  <o:Company>Queens College of CUNY</o:Company>
+  <o:Lines>26</o:Lines>
+  <o:Paragraphs>6</o:Paragraphs>
+  <o:CharactersWithSpaces>3850</o:CharactersWithSpaces>
+  <o:Version>9.3821</o:Version>
+ </o:DocumentProperties>
+ <o:OfficeDocumentSettings>
+  <o:TargetScreenSize>1024x768</o:TargetScreenSize>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:16.0pt;
+	font-family:Arial;
+	mso-font-kerning:16.0pt;
+	font-weight:bold;}
+h2
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:14.0pt;
+	font-family:Arial;
+	font-weight:bold;
+	font-style:italic;}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	mso-outline-level:1;
+	font-size:16.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-font-kerning:14.0pt;
+	font-weight:bold;}
+p
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+code
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:946741556;
+	mso-list-type:hybrid;
+	mso-list-template-ids:338982858 -439210954 -1669315696 972569838 100539462 786469108 1419005128 26770602 728285548 -725057022;}
+@list l0:level1
+	{mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050">
+  <o:colormenu v:ext="edit" strokecolor="none"/>
+ </o:shapedefaults></xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=EN-US style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<p class=MsoTitle>LISP Homework Solutions</p>
+
+<h2>Introduction</h2>
+
+<p style='margin:0in;margin-bottom:.0001pt'><span style='mso-bidi-font-size:
+10.0pt'>This web page provides answers to most of the questions asked in the
+LISP Homework assignment.<span style="mso-spacerun: yes">  </span>(Some of the
+box and pointer diagrams are missing.)<span style="mso-spacerun: yes"> 
+</span>I apologize for the messy page layout; this is what you get when you <span
+style="mso-spacerun: yes"> </span>save a complex Word document as a web page.<o:p></o:p></span></p>
+
+<ol start=1 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     page-break-after:avoid;mso-list:l0 level1 lfo1;tab-stops:list .5in'>What
+     is the difference between typing the following items at the interpreter's
+     top level? <br>
+     In each case, tell what will be displayed and how the interpreter
+     determined the information displayed. <span style='mso-bidi-font-size:
+     12.0pt'><o:p></o:p></span></li>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>A
+      </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>'A
+      </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>#\A
+      </li>
+ </ul>
+</ol>
+
+<p class=MsoNormal><b>Answers:</b><span style="mso-spacerun: yes">  </span><i>A
+is a symbol, and the interpreter will return its value binding unless it
+doesn’t have one, in which case the interpreter will signal an error.<span
+style="mso-spacerun: yes">  </span>'A is a quoted symbol, and the interpreter
+will return A, the symbol’s print name.<span style="mso-spacerun: yes"> 
+</span>#\A is the character A, and the interpreter will return that character.<o:p></o:p></i></p>
+
+<ol start=2 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     page-break-after:avoid;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Evaluate
+     the following expressions. <br>
+     Be sure to check your answers using clisp before handing your work in! </li>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(car
+      '(a b c) ) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(cdr
+      '(w x y z) ) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(car
+      '((red 1 ) (orange 2))) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(cdr
+      '((performances 3) (size-of-hall 250))) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(car
+      (cdr '(( silver gold) (oil vinegar)))) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(cdr
+      (car '((#\a #\b) (&quot;c&quot; &quot;d&quot;)))) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(cdr
+      (car (cdr '(((&quot;smith&quot; 35) (&quot;brown&quot; 26))
+      ((&quot;jones&quot; 45) (&quot;marsh&quot; 43)))))) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(car
+      (car (cdr '(cdr ((rent (+ (* 1/3 actual-rent) parking-space)) (food (+
+      groceries restaurants)) (heat (* 15 avg-temp-of-month))))))) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(+
+      (car '(1 2 3)) (cadr '(4 5 6))) </li>
+ </ul>
+</ol>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-1.0in'><b>Answers:</b><span
+style='mso-tab-count:1'>         </span><i>A, (X&nbsp;Y&nbsp;Z)<br>
+(RED&nbsp;1)<br>
+((SIZE-OF-HALL&nbsp;250))<br>
+(OIL&nbsp;VINEGAR)<br>
+(#\b)<br>
+((“marsh” 43))<br>
+(RENT (+ (* 1/3 ACTUAL-RENT) PARKING-SPACE))<br>
+6<o:p></o:p></i></p>
+
+<ol start=3 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     page-break-after:avoid;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Write
+     the sequence of CARs and CDRs that will pick the symbol CHAIR out of the
+     following lists: </li>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(table
+      lamp chair shelf)</li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>((table
+      lamp) (chair computer))</li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(computer
+      (shelf) ((chair)) (((sofa))))</li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;page-break-after:avoid;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>((((table)
+      file-cabinet) chair) telephone)</li>
+ </ul>
+</ol>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-1.0in;mso-pagination:
+widow-orphan lines-together'><b>Answers:<span style='mso-tab-count:1'>         </span></b><i>(car&nbsp;(cdr&nbsp;(cdr&nbsp;</i>'<i>(table&nbsp;lamp&nbsp;chair&nbsp;shelf))))<br>
+(car&nbsp;(car&nbsp;(cdr&nbsp;'((table&nbsp;lamp)&nbsp;(chair&nbsp;computer)))))<br>
+(car&nbsp;(car&nbsp;(car&nbsp;(cdr&nbsp;(cdr&nbsp;'(computer&nbsp;(shelf)&nbsp;((chair))&nbsp;(((sofa)))))))))<br>
+(car&nbsp;(cdr&nbsp;(car&nbsp;'((((table)&nbsp;file&#8209;cabinet)&nbsp;chair)&nbsp;telephone))))<o:p></o:p></i></p>
+
+<p style='margin-left:.5in'>You should read Chapter 15 of the Wilensky book
+before answering the next questions. Note that <code><span style='font-size:
+10.0pt;font-family:"Courier New"'>(cons&nbsp;'a&nbsp;'b)</span></code> is the
+same as <code><span style='font-size:10.0pt;font-family:"Courier New"'>'(a&nbsp;.&nbsp;b)</span></code>.
+For example, the dotted-pair representation of (a&nbsp;b&nbsp;s) is
+(a&nbsp;.&nbsp;(b&nbsp;.&nbsp;(s&nbsp;.&nbsp;nil))). The spaces are required
+around the dots when you type this, by the way. The difference between a dotted
+pair and a list is that the cdr of each cons cell in a list is a pointer to
+another cons cell, except the cdr of the last cons cell, which is NIL. But a
+dotted pair is a cons cell with a cdr that points to something other than
+another cons cell (or NIL). </p>
+
+<ol start=4 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list .5in'>First draw the following
+     lists as box and pointer diagrams; then write them as dotted pairs. In the
+     box and pointer diagrams, you can just write the Print Name of symbols
+     instead of showing the whole 4-part structure for each symbol. </li>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(apples bananas
+      strawberries) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(values (first-value
+      second-value)) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>((my-symbol
+      &quot;my-string&quot;) #\C) </li>
+ </ul>
+</ol>
+
+<p class=MsoNormal><!--[if gte vml 1]><v:group id="_x0000_s1219" style='position:absolute;
+ margin-left:0;margin-top:0;width:441pt;height:423pt;z-index:-4;
+ mso-position-horizontal:left' coordorigin="1701,5404" coordsize="8820,8460"
+ wrapcoords="-37 0 -37 21600 21637 21600 21637 0 -37 0">
+ <v:rect id="_x0000_s1026" style='position:absolute;left:1701;top:5404;width:8820;
+  height:8460' o:allowoverlap="f"/>
+ <v:group id="_x0000_s1029" style='position:absolute;left:1881;top:5584;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1027" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1028" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:group id="_x0000_s1031" style='position:absolute;left:3321;top:5584;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1032" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1033" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:group id="_x0000_s1034" style='position:absolute;left:4761;top:5584;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1035" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1036" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:line id="_x0000_s1037" style='position:absolute' from="2781,5763"
+  to="3321,5765">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1038" style='position:absolute' from="4221,5764"
+  to="4761,5764">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shapetype id="_x0000_t202" coordsize="21600,21600" o:spt="202"
+  path="m0,0l0,21600,21600,21600,21600,0xe">
+  <v:stroke joinstyle="miter"/>
+  <v:path gradientshapeok="t" o:connecttype="rect"/>
+ </v:shapetype><v:shape id="_x0000_s1040" type="#_x0000_t202" style='position:absolute;
+  left:6201;top:5584;width:1080;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>NIL</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1039" style='position:absolute' from="5661,5764"
+  to="6381,5764">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1041" type="#_x0000_t202" style='position:absolute;
+  left:1881;top:6664;width:1080;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>apples</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:shape id="_x0000_s1042" type="#_x0000_t202" style='position:absolute;
+  left:3321;top:6664;width:1260;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>bananas</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:shape id="_x0000_s1043" type="#_x0000_t202" style='position:absolute;
+  left:4761;top:6664;width:1620;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>strawberries</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1044" style='position:absolute' from="2061,5764"
+  to="2062,6664">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1045" style='position:absolute' from="3681,5764"
+  to="3681,6664">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1046" style='position:absolute' from="5121,5764"
+  to="5121,6664">
+  <v:stroke endarrow="block"/>
+ </v:line><v:group id="_x0000_s1052" style='position:absolute;left:1881;top:7204;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1053" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1054" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:line id="_x0000_s1055" style='position:absolute' from="2781,7383"
+  to="3321,7385">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1056" type="#_x0000_t202" style='position:absolute;
+  left:1881;top:8104;width:1080;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>values</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1057" style='position:absolute' from="2061,7384"
+  to="2062,8284">
+  <v:stroke endarrow="block"/>
+ </v:line><v:group id="_x0000_s1058" style='position:absolute;left:3501;top:8284;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1059" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1060" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:group id="_x0000_s1061" style='position:absolute;left:4941;top:8284;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1062" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1063" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:shape id="_x0000_s1064" type="#_x0000_t202" style='position:absolute;
+  left:6381;top:8284;width:1080;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>NIL</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1065" style='position:absolute' from="5841,8464"
+  to="6561,8464">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1066" type="#_x0000_t202" style='position:absolute;
+  left:3141;top:9364;width:1800;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>first-value</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:shape id="_x0000_s1067" type="#_x0000_t202" style='position:absolute;
+  left:5121;top:9364;width:2160;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>second-value</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1068" style='position:absolute' from="3861,8464"
+  to="3861,9364">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1069" style='position:absolute' from="5301,8464"
+  to="5301,9364">
+  <v:stroke endarrow="block"/>
+ </v:line><v:group id="_x0000_s1070" style='position:absolute;left:3321;top:7204;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1071" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1072" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:shape id="_x0000_s1073" type="#_x0000_t202" style='position:absolute;
+  left:4761;top:7204;width:1080;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>NIL</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1074" style='position:absolute' from="4221,7384"
+  to="4941,7384">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1075" style='position:absolute' from="3681,7384"
+  to="3681,8284">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1076" style='position:absolute' from="4401,8464"
+  to="4941,8464">
+  <v:stroke endarrow="block"/>
+ </v:line><v:group id="_x0000_s1077" style='position:absolute;left:1881;top:12064;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1078" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1079" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:group id="_x0000_s1080" style='position:absolute;left:3321;top:12064;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1081" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1082" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:shape id="_x0000_s1083" type="#_x0000_t202" style='position:absolute;
+  left:4761;top:12064;width:1080;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>NIL</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1084" style='position:absolute' from="4221,12244"
+  to="4941,12244">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1085" type="#_x0000_t202" style='position:absolute;
+  left:1881;top:13144;width:1620;height:540' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>My-symbol</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:shape id="_x0000_s1086" type="#_x0000_t202" style='position:absolute;
+  left:3501;top:13144;width:1440;height:540' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>“my string”</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1087" style='position:absolute' from="2241,12244"
+  to="2241,13144">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1088" style='position:absolute' from="3681,12244"
+  to="3681,13144">
+  <v:stroke endarrow="block"/>
+ </v:line><v:group id="_x0000_s1089" style='position:absolute;left:1881;top:10444;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1090" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1091" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:line id="_x0000_s1092" style='position:absolute' from="2781,10623"
+  to="3321,10625">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1093" style='position:absolute' from="2061,10624"
+  to="2061,11884">
+  <v:stroke endarrow="block"/>
+ </v:line><v:group id="_x0000_s1094" style='position:absolute;left:3321;top:10444;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1095" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1096" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:shape id="_x0000_s1097" type="#_x0000_t202" style='position:absolute;
+  left:4761;top:10444;width:1080;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>NIL</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1098" style='position:absolute' from="4221,10624"
+  to="4941,10624">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1099" style='position:absolute' from="3681,10624"
+  to="3681,11164">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1100" style='position:absolute' from="2781,12244"
+  to="3321,12246">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1101" type="#_x0000_t202" style='position:absolute;
+  left:2961;top:11164;width:1440;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>#\C</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><w:wrap type="square"/>
+ <w:anchorlock/>
+</v:group><![endif]--><![if !vml]><img width=589 height=565
+src="./LISP_Homework_Solutions_files/image001.gif" align=left v:shapes="_x0000_s1219 _x0000_s1026 _x0000_s1029 _x0000_s1027 _x0000_s1028 _x0000_s1031 _x0000_s1032 _x0000_s1033 _x0000_s1034 _x0000_s1035 _x0000_s1036 _x0000_s1037 _x0000_s1038 _x0000_s1040 _x0000_s1039 _x0000_s1041 _x0000_s1042 _x0000_s1043 _x0000_s1044 _x0000_s1045 _x0000_s1046 _x0000_s1052 _x0000_s1053 _x0000_s1054 _x0000_s1055 _x0000_s1056 _x0000_s1057 _x0000_s1058 _x0000_s1059 _x0000_s1060 _x0000_s1061 _x0000_s1062 _x0000_s1063 _x0000_s1064 _x0000_s1065 _x0000_s1066 _x0000_s1067 _x0000_s1068 _x0000_s1069 _x0000_s1070 _x0000_s1071 _x0000_s1072 _x0000_s1073 _x0000_s1074 _x0000_s1075 _x0000_s1076 _x0000_s1077 _x0000_s1078 _x0000_s1079 _x0000_s1080 _x0000_s1081 _x0000_s1082 _x0000_s1083 _x0000_s1084 _x0000_s1085 _x0000_s1086 _x0000_s1087 _x0000_s1088 _x0000_s1089 _x0000_s1090 _x0000_s1091 _x0000_s1092 _x0000_s1093 _x0000_s1094 _x0000_s1095 _x0000_s1096 _x0000_s1097 _x0000_s1098 _x0000_s1099 _x0000_s1100 _x0000_s1101"><![endif]><b>Answers:
+</b><i>(apples&nbsp;.&nbsp;(bananas&nbsp;.&nbsp;(strawberries&nbsp;.&nbsp;nil)))<br>
+(value&nbsp;.&nbsp;((first&#8209;value&nbsp;.&nbsp;(second&#8209;value&nbsp;.&nbsp;nil))&nbsp;.&nbsp;nil))<br>
+((my&#8209;symbol&nbsp;.&nbsp;(“my&#8209;string”&nbsp;.&nbsp;nil))&nbsp;(#\C&nbsp;.&nbsp;nil))<o:p></o:p></i></p>
+
+<ol start=5 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list .5in'>Draw box and pointer diagrams
+     for the following lists: </li>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(a (b c) d (e (f)) g) </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(canary (parrot dove)
+      pigeon (chicken (duck))) </li>
+ </ul>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list .5in'>Draw box and pointer diagrams
+     for the following lists, dotted pairs, and combinations: </li>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(patrick&nbsp;gregory&nbsp;james)
+      </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(brian&nbsp;.&nbsp;eric)
+      </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(marc&nbsp;.&nbsp;(steve&nbsp;.&nbsp;harold))
+      [Clisp prints this as (marc&nbsp;steve&nbsp;.&nbsp;harold) -- Why?]</li>
+ </ul>
+</ol>
+
+<p class=MsoNormal><!--[if gte vml 1]><v:group id="_x0000_s1204" style='position:absolute;
+ margin-left:0;margin-top:0;width:441pt;height:108pt;z-index:-3;
+ mso-position-horizontal:left' coordorigin="1710,5944" coordsize="8820,2160"
+ wrapcoords="-37 0 -37 21600 21637 21600 21637 0 -37 0" o:allowoverlap="f">
+ <v:rect id="_x0000_s1205" style='position:absolute;left:1710;top:5944;width:8820;
+  height:2160;mso-wrap-edited:f;mso-position-horizontal:center' wrapcoords="-37 0 -37 21600 21637 21600 21637 0 -37 0"/>
+ <v:group id="_x0000_s1206" style='position:absolute;left:3741;top:6304;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1207" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1208" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:group id="_x0000_s1209" style='position:absolute;left:5181;top:6304;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1210" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1211" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:shape id="_x0000_s1212" type="#_x0000_t202" style='position:absolute;
+  left:6621;top:6304;width:1560;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>HAROLD<o:p></o:p></p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1213" style='position:absolute' from="6081,6484"
+  to="6801,6484">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1214" type="#_x0000_t202" style='position:absolute;
+  left:3381;top:7384;width:1800;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>MARC<o:p></o:p></p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:shape id="_x0000_s1215" type="#_x0000_t202" style='position:absolute;
+  left:5121;top:7384;width:1380;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>STEVE<o:p></o:p></p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1216" style='position:absolute' from="4101,6484"
+  to="4101,7384">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1217" style='position:absolute' from="5541,6484"
+  to="5541,7384">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1218" style='position:absolute' from="4641,6484"
+  to="5181,6484">
+  <v:stroke endarrow="block"/>
+ </v:line><w:wrap type="square"/>
+ <w:anchorlock/>
+</v:group><![endif]--><![if !vml]><img width=589 height=145
+src="./LISP_Homework_Solutions_files/image002.gif" align=left v:shapes="_x0000_s1204 _x0000_s1205 _x0000_s1206 _x0000_s1207 _x0000_s1208 _x0000_s1209 _x0000_s1210 _x0000_s1211 _x0000_s1212 _x0000_s1213 _x0000_s1214 _x0000_s1215 _x0000_s1216 _x0000_s1217 _x0000_s1218"><![endif]>The
+(steve&nbsp;.&nbsp;harold) pair is a cons cell that does not look like a list,
+but the other cons cell looks like the first part of a list.</p>
+
+<ol start=6 type=1>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(ruth&nbsp;(myrna&nbsp;.&nbsp;florence))
+      </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>((marlene&nbsp;.&nbsp;elizabeth)&nbsp;.&nbsp;irene)
+      </li>
+ </ul>
+</ol>
+
+<p class=MsoNormal><!--[if gte vml 1]><v:group id="_x0000_s1235" style='position:absolute;
+ margin-left:0;margin-top:0;width:261pt;height:162pt;z-index:-2;
+ mso-position-horizontal:left' coordorigin="3861,5224" coordsize="5220,3240"
+ wrapcoords="-62 0 -62 21600 21662 21600 21662 0 -62 0" o:allowoverlap="f">
+ <v:rect id="_x0000_s1220" style='position:absolute;left:3861;top:5224;width:5220;
+  height:3240;mso-wrap-style:square;mso-wrap-edited:f;mso-wrap-distance-left:9pt;
+  mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+  mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+  mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+  mso-position-vertical-relative:text;v-text-anchor:top' wrapcoords="-37 0 -37 21600 21637 21600 21637 0 -37 0"
+  o:allowoverlap="f"/>
+ <v:group id="_x0000_s1223" style='position:absolute;left:5121;top:5404;
+  width:1260;height:540' coordorigin="2421,5224" coordsize="1260,540">
+  <v:rect id="_x0000_s1221" style='position:absolute;left:2421;top:5224;
+   width:1260;height:540;mso-wrap-style:square;mso-wrap-distance-left:9pt;
+   mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+   mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+   mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+   mso-position-vertical-relative:text;v-text-anchor:top'/>
+  <v:line id="_x0000_s1222" style='position:absolute;mso-wrap-style:square;
+   mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;
+   mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;
+   mso-position-horizontal:absolute;mso-position-horizontal-relative:text;
+   mso-position-vertical:absolute;mso-position-vertical-relative:text;
+   v-text-anchor:top' from="3050,5224" to="3051,5764" coordsize="21600,21600"/>
+ </v:group><v:group id="_x0000_s1224" style='position:absolute;left:5121;top:6664;
+  width:1260;height:540' coordorigin="2421,5224" coordsize="1260,540">
+  <v:rect id="_x0000_s1225" style='position:absolute;left:2421;top:5224;
+   width:1260;height:540;mso-wrap-style:square;mso-wrap-distance-left:9pt;
+   mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+   mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+   mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+   mso-position-vertical-relative:text;v-text-anchor:top'/>
+  <v:line id="_x0000_s1226" style='position:absolute;mso-wrap-style:square;
+   mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;
+   mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;
+   mso-position-horizontal:absolute;mso-position-horizontal-relative:text;
+   mso-position-vertical:absolute;mso-position-vertical-relative:text;
+   v-text-anchor:top' from="3050,5224" to="3051,5764" coordsize="21600,21600"/>
+ </v:group><v:line id="_x0000_s1227" style='position:absolute;mso-wrap-style:square;
+  mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+  mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+  mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+  mso-position-vertical-relative:text;v-text-anchor:top' from="5301,5764" to="5301,6484"
+  coordsize="21600,21600">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1228" style='position:absolute;mso-wrap-style:square;
+  mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+  mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+  mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+  mso-position-vertical-relative:text;v-text-anchor:top' from="5301,7024" to="5301,7744"
+  coordsize="21600,21600">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1230" style='position:absolute;mso-wrap-style:square;
+  mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+  mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+  mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+  mso-position-vertical-relative:text;v-text-anchor:top' from="6201,5764" to="6921,5764"
+  coordsize="21600,21600">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1231" style='position:absolute;mso-wrap-style:square;
+  mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+  mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+  mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+  mso-position-vertical-relative:text;v-text-anchor:top' from="6201,7024" to="6921,7024"
+  coordsize="21600,21600">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1232" type="#_x0000_t202" style='position:absolute;
+  left:6921;top:5404;width:1080;height:540;mso-wrap-style:square;
+  mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+  mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+  mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+  mso-position-vertical-relative:text;v-text-anchor:top' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal>IRENE</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:shape id="_x0000_s1233" type="#_x0000_t202" style='position:absolute;
+  left:6921;top:6664;width:1800;height:540;mso-wrap-style:square;
+  mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+  mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+  mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+  mso-position-vertical-relative:text;v-text-anchor:top' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal>ELIZABETH</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:shape id="_x0000_s1234" type="#_x0000_t202" style='position:absolute;
+  left:5121;top:7744;width:1800;height:540;mso-wrap-style:square;
+  mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;
+  mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;
+  mso-position-horizontal-relative:text;mso-position-vertical:absolute;
+  mso-position-vertical-relative:text;v-text-anchor:top' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal>MARLENE</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><w:wrap type="square"/>
+ <w:anchorlock/>
+</v:group><![endif]--><![if !vml]><img width=349 height=217
+src="./LISP_Homework_Solutions_files/image003.gif" align=left v:shapes="_x0000_s1235 _x0000_s1220 _x0000_s1223 _x0000_s1221 _x0000_s1222 _x0000_s1224 _x0000_s1225 _x0000_s1226 _x0000_s1227 _x0000_s1228 _x0000_s1230 _x0000_s1231 _x0000_s1232 _x0000_s1233 _x0000_s1234"><![endif]></p>
+
+<ol start=6 type=1>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>((peanut&nbsp;.&nbsp;butter)&nbsp;.&nbsp;(butter&nbsp;.&nbsp;(jelly&nbsp;.&nbsp;bread)))
+      [How does Clisp print this one?] </li>
+ </ul>
+</ol>
+
+<p class=MsoNormal><!--[if gte vml 1]><v:group id="_x0000_s1146" style='position:absolute;
+ margin-left:0;margin-top:0;width:441pt;height:152.4pt;z-index:-5;
+ mso-position-horizontal:left' coordorigin="1710,11176" coordsize="8820,3048"
+ wrapcoords="-37 0 -37 21600 21637 21600 21637 0 -37 0" o:allowoverlap="f">
+ <v:rect id="_x0000_s1147" style='position:absolute;left:1710;top:11176;
+  width:8820;height:3048;mso-wrap-edited:f;mso-position-horizontal:center'
+  wrapcoords="-37 0 -37 21600 21637 21600 21637 0 -37 0"/>
+ <v:group id="_x0000_s1148" style='position:absolute;left:3321;top:11356;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1149" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1150" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:group id="_x0000_s1151" style='position:absolute;left:4761;top:11356;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1152" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1153" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:shape id="_x0000_s1154" type="#_x0000_t202" style='position:absolute;
+  left:7821;top:11356;width:1560;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>BREAD</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1155" style='position:absolute' from="5661,11536"
+  to="6381,11536">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1156" type="#_x0000_t202" style='position:absolute;
+  left:2961;top:13684;width:1800;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>PEANUT</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:shape id="_x0000_s1157" type="#_x0000_t202" style='position:absolute;
+  left:4761;top:12076;width:1380;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>BUTTER</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1158" style='position:absolute' from="3681,11536"
+  to="3681,12436">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1159" style='position:absolute' from="5121,11536"
+  to="5121,12076">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1160" style='position:absolute' from="4221,11536"
+  to="4761,11536">
+  <v:stroke endarrow="block"/>
+ </v:line><v:group id="_x0000_s1161" style='position:absolute;left:3321;top:12616;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1162" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1163" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:line id="_x0000_s1164" style='position:absolute' from="3681,12796"
+  to="3681,13696">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1165" style='position:absolute' from="4221,12796"
+  to="4761,12796">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1166" type="#_x0000_t202" style='position:absolute;
+  left:4761;top:12616;width:1380;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>BUTTER</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:group id="_x0000_s1167" style='position:absolute;left:6381;top:11356;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360">
+  <v:rect id="_x0000_s1168" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1169" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:line id="_x0000_s1170" style='position:absolute' from="7281,11536"
+  to="8001,11536">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1171" style='position:absolute' from="6741,11536"
+  to="6741,12076">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1172" type="#_x0000_t202" style='position:absolute;
+  left:6561;top:12076;width:1380;height:360' stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>JELLY</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><w:wrap type="square"/>
+ <w:anchorlock/>
+</v:group><![endif]--><![if !vml]><img width=589 height=204
+src="./LISP_Homework_Solutions_files/image004.gif" align=left v:shapes="_x0000_s1146 _x0000_s1147 _x0000_s1148 _x0000_s1149 _x0000_s1150 _x0000_s1151 _x0000_s1152 _x0000_s1153 _x0000_s1154 _x0000_s1155 _x0000_s1156 _x0000_s1157 _x0000_s1158 _x0000_s1159 _x0000_s1160 _x0000_s1161 _x0000_s1162 _x0000_s1163 _x0000_s1164 _x0000_s1165 _x0000_s1166 _x0000_s1167 _x0000_s1168 _x0000_s1169 _x0000_s1170 _x0000_s1171 _x0000_s1172"><![endif]>((PEANUT
+. BUTTER) BUTTER JELLY . BREAD)<span style="mso-spacerun: yes">  </span>The
+third dot looks like a list with BUTTER as its CAR.<span style="mso-spacerun:
+yes">  </span>Note that this list has two pointers to the same symbol, BUTTER.</p>
+
+<ol start=6 type=1>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(((chocolate&nbsp;.&nbsp;cake)&nbsp;.&nbsp;cinnamon)&nbsp;.&nbsp;icing)
+      </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>((beth&nbsp;.&nbsp;&quot;555-5843&quot;)&nbsp;(patrick&nbsp;.&nbsp;&quot;555-1293&quot;))
+      </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>((beth&nbsp;&quot;555-5843&quot;)&nbsp;(patrick&nbsp;&quot;555-1293&quot;))
+      </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>((x&nbsp;.&nbsp;nil)&nbsp;.&nbsp;(y&nbsp;.&nbsp;(z&nbsp;.&nbsp;nil)))
+      </li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>((x)&nbsp;y&nbsp;z) </li>
+ </ul>
+</ol>
+
+<p class=MsoNormal><!--[if gte vml 1]><v:group id="_x0000_s1264" style='position:absolute;
+ margin-left:0;margin-top:0;width:441pt;height:152.4pt;z-index:-1;
+ mso-position-horizontal:left' coordorigin="1710,2292" coordsize="8820,3048"
+ wrapcoords="-37 0 -37 21600 21637 21600 21637 0 -37 0" o:allowoverlap="f">
+ <v:rect id="_x0000_s1238" style='position:absolute;left:1710;top:2292;width:8820;
+  height:3048;mso-wrap-edited:f;mso-position-horizontal:center' wrapcoords="-37 0 -37 21600 21637 21600 21637 0 -37 0"
+  o:regroupid="1"/>
+ <v:group id="_x0000_s1239" style='position:absolute;left:3732;top:2472;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360"
+  o:regroupid="1">
+  <v:rect id="_x0000_s1240" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1241" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:group id="_x0000_s1242" style='position:absolute;left:5172;top:2472;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360"
+  o:regroupid="1">
+  <v:rect id="_x0000_s1243" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1244" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:shape id="_x0000_s1245" type="#_x0000_t202" style='position:absolute;
+  left:8232;top:2472;width:1029;height:360' o:regroupid="1" stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>NIL</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1246" style='position:absolute' from="6072,2652"
+  to="6792,2652" o:regroupid="1">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1247" type="#_x0000_t202" style='position:absolute;
+  left:3681;top:4800;width:849;height:360;mso-position-horizontal:absolute;
+  mso-position-vertical:absolute' o:regroupid="1" stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>X</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:shape id="_x0000_s1248" type="#_x0000_t202" style='position:absolute;
+  left:5121;top:3192;width:849;height:360;mso-position-horizontal:absolute;
+  mso-position-vertical:absolute' o:regroupid="1" stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>Y</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:line id="_x0000_s1249" style='position:absolute' from="4092,2652"
+  to="4092,3552" o:regroupid="1">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1250" style='position:absolute' from="5532,2652"
+  to="5532,3192" o:regroupid="1">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1251" style='position:absolute' from="4632,2652"
+  to="5172,2652" o:regroupid="1">
+  <v:stroke endarrow="block"/>
+ </v:line><v:group id="_x0000_s1252" style='position:absolute;left:3732;top:3732;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360"
+  o:regroupid="1">
+  <v:rect id="_x0000_s1253" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1254" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:line id="_x0000_s1255" style='position:absolute' from="4092,3912"
+  to="4092,4812" o:regroupid="1">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1256" style='position:absolute' from="4632,3912"
+  to="5172,3912" o:regroupid="1">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1257" type="#_x0000_t202" style='position:absolute;
+  left:5181;top:3732;width:840;height:360;mso-position-horizontal:absolute;
+  mso-position-vertical:absolute' o:regroupid="1" stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>NIL</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><v:group id="_x0000_s1258" style='position:absolute;left:6792;top:2472;
+  width:1080;height:360' coordorigin="1881,5584" coordsize="1080,360"
+  o:regroupid="1">
+  <v:rect id="_x0000_s1259" style='position:absolute;left:1881;top:5584;
+   width:1080;height:360'/>
+  <v:line id="_x0000_s1260" style='position:absolute' from="2420,5584" to="2421,5944"/>
+ </v:group><v:line id="_x0000_s1261" style='position:absolute' from="7692,2652"
+  to="8412,2652" o:regroupid="1">
+  <v:stroke endarrow="block"/>
+ </v:line><v:line id="_x0000_s1262" style='position:absolute' from="7152,2652"
+  to="7152,3192" o:regroupid="1">
+  <v:stroke endarrow="block"/>
+ </v:line><v:shape id="_x0000_s1263" type="#_x0000_t202" style='position:absolute;
+  left:6792;top:3192;width:669;height:360;mso-position-horizontal:absolute;
+  mso-position-vertical:absolute' o:regroupid="1" stroked="f">
+  <v:textbox>
+   <![if !mso]>
+   <table cellpadding=0 cellspacing=0 width="100%">
+    <tr>
+     <td><![endif]>
+     <div>
+     <p class=MsoNormal align=center style='text-align:center'>Z</p>
+     </div>
+     <![if !mso]></td>
+    </tr>
+   </table>
+   <![endif]></v:textbox>
+ </v:shape><w:wrap type="square"/>
+ <w:anchorlock/>
+</v:group><![endif]--><![if !vml]><img width=589 height=204
+src="./LISP_Homework_Solutions_files/image005.gif" align=left v:shapes="_x0000_s1264 _x0000_s1238 _x0000_s1239 _x0000_s1240 _x0000_s1241 _x0000_s1242 _x0000_s1243 _x0000_s1244 _x0000_s1245 _x0000_s1246 _x0000_s1247 _x0000_s1248 _x0000_s1249 _x0000_s1250 _x0000_s1251 _x0000_s1252 _x0000_s1253 _x0000_s1254 _x0000_s1255 _x0000_s1256 _x0000_s1257 _x0000_s1258 _x0000_s1259 _x0000_s1260 _x0000_s1261 _x0000_s1262 _x0000_s1263"><![endif]>This
+diagram is the same for both of the two forms above.</p>
+
+<ol start=6 type=1>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l0 level2 lfo1;tab-stops:list 1.0in'>(nil&nbsp;.&nbsp;nil) </li>
+ </ul>
+</ol>
+
+<p style='margin:0in;margin-bottom:.0001pt'><span style='mso-bidi-font-size:
+10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

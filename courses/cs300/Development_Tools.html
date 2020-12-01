@@ -1,0 +1,86 @@
+<HTML><HEAD><TITLE>Development Tools for CS-300</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Development Tools for CS-300</H1>
+</center>
+
+<H2>Common Lisp</H2>
+
+For your LISP exercise, you need to use the Common LISP interpreter,
+clisp, available for free download via anonymous ftp from ftp2.cons.org
+in the directory /pub/lisp/clisp/.  It is available for a number of
+Unix platforms including Linux and Tru64 (which runs on forbin.qc.edu),
+as well as on PCs running Windows (any version).
+
+<H3>Forbin Version</H3>
+
+Clisp has already been installed on forbin; just type <I>clisp</I> at
+the Unix prompt when logged into your account to start it up.  When you
+enter the clisp command, it actually runs a small script that loads an
+initial set of standard functions into the interpreter's memory for
+you.  If you want to use any command line arguments, you need to
+customize this.  For example, I like to start it with the "-q" option,
+which eliminates a lot of extraneous text that normally fills up the
+screen when you start it.  To do so, I put an executable text file in
+my ~/bin dirctory on forbin, which says:<p>
+
+<pre>
+#!/usr/local/bin/ksh
+exec /usr/local/lib/lisp/lisp.run -q -M /usr/local/lib/lisp/lispinit.mem "$@"
+</pre>
+
+See me if you are interested in this and can't figure out how to do it
+from the above directions.
+
+<H3>Windows Version</H3> If you prefer to run clisp on your PC, you can
+do so, but you have to download and install it yourself.  You can
+download a copy of the July, 1999 version for Windows here:
+
+<UL>
+  <LI>[&nbsp;<a HREF="clisp-win32.zip">clisp-win32.zip</A>&nbsp;]
+</UL>
+
+Since this is a binary file, how to download this file depends on what
+browser you are using, and the version number of your browser.  Try
+right clicking on the link and selecting "save as" from the menu that
+pops up.  Or try clicking while holding the shift key.  You should end
+up with a file size of 1,355,246 bytes on your PC's hard drive.<p>
+
+To install clisp, you have to unzip the file you downloaded into some
+directory on your hard drive.  The following instructions assume you are
+using WinZip (which you have to download from www.winzip.com if you
+don't already have it) to do the unzipping.  Be sure when you click
+"Extract" that the checkbox to "use file folders" is clicked.  If you
+extract the files to C:\Program Files (the standard place) you will
+create a subdirectory named C:\Program Files\clisp-1999-07-22\, which
+will contain a few subdirectories (with documentation, etc.) and an
+executable file named clisp.exe in C:\Program Files\clisp-1999-07-22\.
+There will also be a "memory image file" named C:\Program
+Files\clisp-1999-07-22\lispinit.mem.  To run the program you have to
+start a DOS Command window and type the following command:
+
+<pre>
+C:\Program&nbsp;Files\clisp-1999-07-22\clisp&nbsp;-q&nbsp;-M&nbsp;C:\Program&nbsp;Files\clisp-1999-07-22\lispinit.mem
+</pre>
+
+It's conceivable that you might not like typing all this each time you
+want to run clisp.  You can set up a shortcut to do this for you, or you
+can use a batch file to accomplish the same thing.  For now, we'll
+assume you like typing very long command lines or know how to deal with
+the shortcut or batch file issue on your own.
+
+<H3>Both Versions</H3>
+
+If you run either version of clisp, you will see the eval-loop prompt,
+which on forbin is just a &gt; sign, but on Windows it will be a line
+number in square brackets followed by a &gt; sign.  Type in
+<CODE>(exit)</CODE> or <CODE>(quit)</CODE> to get back to the forbin or
+DOS command prompt.<p>
+
+From here you should be able to start working your way through the
+Wilensky book!
+
+<HR></BODY></HTML>

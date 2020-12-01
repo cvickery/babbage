@@ -1,0 +1,23 @@
+<HTML><HEAD><TITLE>Towers.lsp</TITLE></HEAD><BODY>
+<CENTER><H1>Towers.lsp</H1></CENTER><HR><PRE>
+; Towers.lsp
+
+; Towers of Hanoi in Lisp
+
+
+; Helper function to display the moves
+(defun  move-disk (from to)
+        (format t "Move from ~a to ~a.~%" from to)
+)
+
+; The main function
+(defun  towers (n from to spare)
+        (cond
+                ((= n 1 ) (move-disk from to))
+                (t        (towers (- n 1 ) from spare to)
+                          (move-disk from to)
+                          (towers (- n 1 ) spare to from ))))
+
+; Sample invocation
+(towers 3 'a 'b 'c )
+</PRE><HR></BODY></HTML>

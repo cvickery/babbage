@@ -1,0 +1,17 @@
+<HTML><HEAD><TITLE>TailCount.lsp</TITLE></HEAD><BODY>
+<CENTER><H1>TailCount.lsp</H1></CENTER><HR><PRE>
+; TailCount.lsp
+
+; Example of a function that uses tail recursion.
+;   The last form evaluated is a recursive call.
+;   The return value of the function is never used
+
+(defun tailcount ( x )
+  (cond ((= x 0) nil)
+        (t (print x) (tailcount (- x 1)))))
+
+; BUT, I get a stack overflow when I run this
+; with any value greater than 2927 for x,
+; which indicates that clisp doesn't do any
+; optimization for tail recursion.
+</PRE><HR></BODY></HTML>

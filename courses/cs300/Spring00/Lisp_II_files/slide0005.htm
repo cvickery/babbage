@@ -1,0 +1,176 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>Lisp Continued</title>
+<meta name=Description content="17-May-00: Scope Rules">
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0005.htm');   
+  else
+    parent.location.href = "../Lisp_II.html";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body bgcolor=white alink=gray link="#4d4d4d" vlink="#eaeaea" text=black
+topmargin=0 leftmargin=0 onload="Update()">
+
+<table border=0 valign=top width=650 height=487 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=55 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=161 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=218 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=163 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=650 height=63 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=216 height=45 colspan=2></td>
+  <td width=218 height=45>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=218 height=45 align=center><font face="Times New Roman" size=6>Scope
+    Rules</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=216 height=45 colspan=2></td>
+ </tr>
+ <tr>
+  <td width=650 height=35 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=55 height=270></td>
+  <td width=542 height=270 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=25 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=8 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=20 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=116 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=205 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=42 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=31 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=21 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=17 height=0 nowrap><img src=space.gif border=0></td>
+    <td width=39 height=0 nowrap><img src=space.gif border=0></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=392 height=29 colspan=6><font face="Times New Roman" size=5>Common
+    Lisp uses Lexical Scoping.</font><br>
+    </td>
+    <td width=125 height=29 colspan=6></td>
+   </tr>
+   <tr>
+    <td width=542 height=5 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=423 height=29 colspan=7><font face="Times New Roman" size=5>Use
+    LET to establish block-local scope.</font><br>
+    </td>
+    <td width=94 height=29 colspan=5></td>
+   </tr>
+   <tr>
+    <td width=542 height=3 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=416 height=26 colspan=6 rowspan=2><font face="Times New Roman"
+    size=4>( let ((var<sub>1</sub> value<sub>1</sub>) (var<sub>2</sub> value<sub>2</sub>)
+    … ) &lt;body&gt; )</font><br>
+    </td>
+    <td width=73 height=25 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=53 height=1 colspan=3></td>
+    <td width=73 height=1 colspan=4></td>
+   </tr>
+   <tr>
+    <td width=542 height=4 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=517 height=29 colspan=12><font face="Times New Roman" size=5>Dynamic
+    scoping: All variables accessible in the</font><br>
+    </td>
+   </tr>
+   <tr>
+    <td width=25 height=27></td>
+    <td width=502 height=27 colspan=11><font face="Times New Roman" size=5>caller’s
+    environment are available to the callee.</font><br>
+    </td>
+    <td width=15 height=27></td>
+   </tr>
+   <tr>
+    <td width=542 height=4 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=435 height=25 colspan=8><font face="Times New Roman" size=4>Defun
+    and Let let you declare <i>special</i> variables.</font><br>
+    </td>
+    <td width=54 height=25 colspan=2></td>
+   </tr>
+   <tr>
+    <td width=542 height=3 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=418 height=25 colspan=7><font face="Times New Roman" size=4>Other
+    Lisps used dynamic scoping by default.</font><br>
+    </td>
+    <td width=71 height=25 colspan=3></td>
+   </tr>
+   <tr>
+    <td width=542 height=4 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=25 height=29><font face="Times New Roman" color=black size=5>•</font></td>
+    <td width=145 height=29 colspan=4><font face="Times New Roman" size=5>Global
+    Scope</font><br>
+    </td>
+    <td width=372 height=29 colspan=8></td>
+   </tr>
+   <tr>
+    <td width=542 height=4 colspan=13></td>
+   </tr>
+   <tr>
+    <td width=33 height=25 colspan=2></td>
+    <td width=20 height=25><font face="Times New Roman" color=black size=4>–</font></td>
+    <td width=322 height=25 colspan=3><font face="Times New Roman" size=4>Defvar,
+    Defconstant, Defparameter</font><br>
+    </td>
+    <td width=167 height=25 colspan=7></td>
+   </tr>
+  </table>
+  </td>
+  <td width=53 height=270></td>
+ </tr>
+ <tr>
+  <td width=650 height=74 colspan=5></td>
+ </tr>
+</table>
+
+</body>
+
+</html>

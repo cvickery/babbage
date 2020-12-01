@@ -1,0 +1,238 @@
+<HTML><HEAD><TITLE>Exercise 1</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Exercise 1</H1>
+</center>
+<H2>Introduction</H2>
+
+This exercise is designed to give you some experience parsing text into
+lexemes using Java's StreamTokenizer class.  We have to be careful about
+terminology because StreamTokenizer is really a "lexemizer" rather than
+a "tokenizer" according to the text's use of those terms.  The idea is
+to identify and print each lexeme in a source file.<p>
+
+I have chosen to have your program analyze Java programs, but once you
+have completed this assignment, you should be able to use the
+StreamTokenizer class to analyze source code for any programmng
+language.
+
+<H2>Assignment</H2>
+
+Write a Java application which does the following for each file
+specified on the java command line:
+
+<UL>
+
+    <LI>If the file name does not end with ".java" print an error
+    message and ignore the file.
+
+    <LI>Use the file name to construct a BufferedReader, and use the
+    BufferedReader to construct a StreamTokenizer.  If either of these
+    operations fails, print an error message, and ignore the file.
+
+    <LI>Modify the StreamTokenizer so that it will recognize the lexemes
+    of the Java language.<p>
+    
+    The steps to do this include:
+    
+    <UL>
+        <LI>Make '/' an ordinary character, and make the StreamTokenizer
+        recognize both C and C++ style comments.
+        
+        <LI>Make '.' an ordinary character, and make the digits and
+        underscore characters word characters.
+        
+        <LI>Make end of line significant to the StreamTokenizer.  This
+        has more to do with formatting the output of your program than
+        with the syntax of the Java language, which does not attach any
+        significance to line boundaries except when recognizing string
+        literals.
+
+    </UL>
+
+    <LI>For each statement in the source file, print the Statement
+    number and the line number on which it occurs, followed by each
+    lexeme that makes up the statement.  We will use the heuristic of
+    saying that each semicolon ends a statement.  (How accurate is
+    this?)  For this assignment you are to separate the lexemes by
+    single spaces.  An optional extension to this project is to print
+    the token type for each lexeme; in this case, you should print each
+    lexeme on a separate line.
+
+</UL>
+
+<H2>Sample Output</H2>
+
+If your working directory contains a file named Sample.java and your
+application's main class is called PrintLexemes, the following could
+represent an interaction you could have with your program:
+
+<pre>
+<B>cs300></B><I> java PrintLexemes junk.java Sample.java tower.lsp</I>
+
+Unable to read junk.java
+
+File: Sample.java
+  Statement 1 (line 2)
+     import java . io . * ;
+  Statement 2 (line 4)
+     public class Sample
+     {
+     public static void main ( String [ ] argv )
+     {
+     int count , nextToken ;
+  Statement 3 (line 28)
+     for ( int i = 0.0 ;
+  Statement 4 (line 29)
+     i &lt; argv . length ;
+  Statement 5 (line 29)
+     i + + )
+     {
+     try
+     {
+     FileReader fr = new FileReader ( argv [ i ] ) ;
+  Statement 6 (line 34)
+     BufferedReader br = new BufferedReader ( fr ) ;
+  Statement 7 (line 35)
+     StreamTokenizer st = new StreamTokenizer ( br ) ;
+  Statement 8 (line 36)
+     count = 0.0 ;
+  Statement 9 (line 37)
+     nextToken = StreamTokenizer . TT_WORD ;
+  Statement 10 (line 38)
+     while ( StreamTokenizer . TT_EOF ! =
+     ( nextToken = st . nextToken ( ) ) )
+     {
+     count + + ;
+  Statement 11 (line 42)
+     }
+     System . out . println ( argv [ i ] + " has " + count +
+     " lexemes." ) ;
+  Statement 12 (line 45)
+     }
+     catch ( IOException ioe )
+     {
+     System . err . println ( ioe . getMessage ( ) ) ;
+  Statement 13 (line 49)
+     }
+     }
+     }
+     }
+
+tower.lsp is not a .java file.
+<B>cs300></B>
+</pre>
+
+Here is the program Sample.java that was used as input to the program
+to generate the output above.  It doesn't do what your program is
+supposed to do, but I used it for sample input because it should help
+you get started on your own Java application.
+
+<pre>
+//  Sample.java
+
+import java.io.*;
+
+//  Class Sample
+//  ------------------------------------------------------------------
+/**
+  *     Sample application to use for testing StreamTokenizer exercise
+  *     for CS-300.
+  *
+  *     @author   C. Vickery
+  *               999-99-9999
+  *     @version  1.0 - February, 2000
+  */
+  public class Sample
+  {
+    //  Method main()
+    //  --------------------------------------------------------------
+    /**
+      *   Uses the default settings for a StreamTokenizer to count the
+      *   number of lexemes in a file.
+      *
+      *   @param argv List of files to be processed.
+      *   @return     Void
+      */
+      public static void main( String[] argv )
+      {
+      int   count, nextToken;
+
+        for ( int i=0; i &lt; argv.length; i++ )
+        {
+          try
+          {
+            FileReader      fr = new FileReader( argv[i] );
+            BufferedReader  br = new BufferedReader( fr );
+            StreamTokenizer st = new StreamTokenizer( br );
+            count = 0;
+            nextToken = StreamTokenizer.TT_WORD; // Anything but EOF
+            while ( StreamTokenizer.TT_EOF !=
+                                      ( nextToken = st.nextToken() ) )
+            {
+              count++;
+            }
+            System.out.println( argv[i] + " has " + count +
+                                                        " lexemes." );
+          }
+          catch ( IOException ioe )
+          {
+            System.err.println( ioe.getMessage() );
+          }
+        }
+      }
+  }
+</pre>
+
+<H2>Developing and Submitting the Assignment</H2>
+
+You may work on this assignment either individually or in groups of up
+to three people.  You are free to draw on any resources you wish to do
+this assignment, including friends, relatives, and strangers.  Most
+importantly, feel free to ask me for help if you need it, either in
+class (if you think your questions are possibly of general interest) or
+by email (typically for debugging questions).  You will not actually
+receive any credit for doing the assignment, but you will be tested on
+the concepts involved in doing it on your first exam in the course.<p>
+
+Submit the assignment to me using the following procedure:
+
+<UL>
+
+    <LI>Create a zip file that contains your .java file (not your .class
+    file(s)).  You can do this using WinZip or the <I>jar</I> command
+    that comes with the JDK.  For example, you can type:
+
+    <pre>
+        jar cvf Exercise_1.zip PrintLexemes.java</pre>
+
+    This will create a zip file named <CODE>Exercise_1.zip</CODE> that
+    contains a file named <CODE>PrintLexemes.java</CODE>.<p>
+
+    <LI>Attach the zip file to an email message and send it to me
+    (vickery@forbin.qc.edu).
+
+</UL>
+
+If you work in a group, submit just one copy of the program to me, but
+be sure to put an @author tag for each memeber of the group in the
+comments at the beginning of the program.  (Put each @author tag on a
+separate line containing just an optional asterisk followed by the
+@author tag and your name.  Do <U>not</U> include your ID number or
+anything else on the same line as the @author tag.  Instead, put your
+ID number on the line <I>below</I> the @author tag, as shown in
+Sample.java.<p>
+
+If you really want to do this project in C or C++ instead of Java (some
+transfer students are more comfortable with those languages than with
+Java), you may do so provided you use only standard library functions
+(plus any you write yourself).  The program must run from either a Unix
+or DOS command line; it must not be dependent on any Integrated
+Development Environment or Windows for me to be able to compile and
+test it.  I will use GNU development tools to compile your C/C++ code;
+check with me if you don't know how to do that yourself on forbin.<p>
+
+<HR></BODY></HTML>

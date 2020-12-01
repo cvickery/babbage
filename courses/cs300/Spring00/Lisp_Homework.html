@@ -1,0 +1,120 @@
+<HTML><HEAD><TITLE>Lisp Assignment 1</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Lisp Assignment 1</H1>
+</center>
+
+<H2>Objective</H2>
+
+To become familiar with using the clisp interpreter interactively, and
+to become familiar with basic concepts of the LISP language.
+
+<H2>Deliverables</H2>
+
+Write out the answers to the following questions on paper and give them
+to me in class on May 9.  (<I>Note</I>: These questions are based on
+exercises in <I>A Programmer's Guide to Common LISP</I> by Deborah G.
+Tatar, Digital Press, 1987.  I recommend this book highly if you can
+find a copy of it.)
+
+<H2>Questions</H2>
+
+<OL>
+
+  <LI>What is the difference between typng the following items at the
+  interpreter's top level?
+  <BR>Tell what will be displayed and how the
+  information displayed was determined by the interpreter in each case.
+  <UL>
+    <LI>A
+    <LI>'A
+    <LI>#\A
+  </UL>
+
+  <LI>Evaluate the following expressions.
+  <BR>Be sure to check your answers using clisp before handing your work in!
+
+  <UL>
+    <LI>(car '(a b c) )
+    <LI>(cdr '(w x y z) )
+    <LI>(car '((red 1 ) (orange 2)))
+    <LI>(cdr '((performances 3) (size-of-hall 250)))
+    <LI>(car (cdr '(( silver gold) (oil vinegar))))
+    <LI>(cdr (car '((#\a #\b) ("c" "d"))))
+    <LI>(cdr (car (cdr '((("smith" 35) ("brown" 26))
+                         (("jones" 45) ("marsh" 43))))))
+    <LI>(car (car (cdr 
+            '(cdr ((rent (+ (* 1/3 actual-rent) parking-space))
+                   (food (+ groceries restaurants))
+                   (heat (* 15 avg-temp-of-month)))))))
+    <LI>(+ (car '(1 2 3)) (cadr '(4 5 6)))
+  </UL>
+  
+  <LI>Write the sequence of CARs and CDRs that will pick the symbol
+  CHAIR out of the following lists:
+  
+    <UL>
+      <LI>(table lamp chair shelf)
+      <LI>((table lamp) (chair computer))
+      <LI>(computer (shelf) ((chair)) (((sofa))))
+      <LI>((((table) file-cabinet) chair) telephone)
+    </UL><p>
+
+  You should read Chapter 15 of the Wilensky book before answering the
+  next questions.  Note that <CODE>(cons&nbsp;'a&nbsp;'b)</CODE> is the
+  same as <CODE>'(a&nbsp;.&nbsp;b)</CODE>.  For example, the
+  dotted-pair representation of (a&nbsp;b&nbsp;s) is
+  (a&nbsp;.&nbsp;(b&nbsp;.&nbsp;(s&nbsp;.&nbsp;nil))).  The spaces are
+  required around the dots when you type this, by the way.  The
+  difference between a dotted pair and a list is that the cdr of each
+  cons cell in a list is a pointer to another cons cell, except the cdr
+  of the last cons cell, which is NIL.  But a dotted pair is a cons
+  cell with a cdr that points to something other than another cons cell
+  (or NIL).<p>
+
+  <LI>First draw the following lists as box and pointer diagrams; then
+  write them as dotted pairs.  In the box and pointer diagrams, you can
+  just write the Print Name of symbols instead of showing the whole
+  4-part structure for each symbol.
+  
+    <UL>
+      <LI>(apples bananas strawberries)
+      <LI>(values (first-value second-value))
+      <LI>((my-symbol "my-string") #\C)
+    </UL>
+    
+  <LI>Draw box and pointer diagrams for the following lists:
+  
+    <UL>
+      <LI>(a (b c) d (e (f)) g)
+      <LI>(canary (parrot dove) pigeon (chicken (duck)))
+    </UL>
+
+  <LI>Draw box and pointer diagrams for the following lists, dotted
+  pairs, and combinations:
+  
+    <UL>
+      <LI>(patrick&nbsp;gregory&nbsp;james)
+      <LI>(brian&nbsp;.&nbsp;eric)
+      <LI>(marc&nbsp;.&nbsp;(steve&nbsp;.&nbsp;harold)) [Clisp prints this as
+          (marc&nbsp;steve&nbsp;.&nbsp;harold) -- Why?]
+      <LI>(ruth&nbsp;(myrna&nbsp;.&nbsp;florence))
+      <LI>((marlene&nbsp;.&nbsp;elizabeth)&nbsp;.&nbsp;irene)
+      <LI>((peanut&nbsp;.&nbsp;butter)&nbsp;.&nbsp;(butter&nbsp;.&nbsp;(jelly&nbsp;.&nbsp;bread))) [How does
+      Clisp print this one?]
+      <LI>(((chocolate&nbsp;.&nbsp;cake)&nbsp;.&nbsp;cinnamon)&nbsp;.&nbsp;icing)
+     
+<LI>((beth&nbsp;.&nbsp;"555-5843")&nbsp;(patrick&nbsp;.&nbsp;"555-1293"))
+      <LI>((beth&nbsp;"555-5843")&nbsp;(patrick&nbsp;"555-1293"))
+      <LI>((x&nbsp;.&nbsp;nil)&nbsp;.&nbsp;(y&nbsp;.&nbsp;(z&nbsp;.&nbsp;nil)))
+      <LI>((x)&nbsp;y&nbsp;z)
+      <LI>(nil&nbsp;.&nbsp;nil)
+
+    </UL>
+
+</OL>
+
+<HR></BODY></HTML>

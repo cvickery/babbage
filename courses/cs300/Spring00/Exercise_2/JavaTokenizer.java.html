@@ -1,0 +1,376 @@
+<HTML><HEAD><TITLE>JavaTokenizer.java</TITLE></HEAD><BODY>
+<CENTER><H1>JavaTokenizer.java</H1></CENTER><HR><PRE>
+//  JavaTokenizer.java
+
+   import java.io.*;
+   import java.util.*;
+
+//  Class JavaTokenizer
+//  ------------------------------------------------------------------
+/**
+  *     Converts a JavaLexemes object into a stream of JavaToken
+  *     objects, which may be retrieved via the Iterator Interface.
+  *     The task of this class is made more difficult by the fact that
+  *     the implementation of JavaLexemes being used does not deal
+  *     with embedded periods, which may be be the decimal point in
+  *     floating-point numbers, or separators in identifiers.
+  *
+  *     @author   C. Vickery
+  *     @version  1.0 - Spring 2000
+  */
+  public class JavaTokenizer              implements  Iterator,
+                                                      JavaLexemeTypes,
+                                                      JavaTokenTypes,
+                                                      JavaKeywords
+  {
+
+  //  Instance Variables
+  //  ================================================================
+      private JavaLexemes jl;
+      private String      thisLexemeSval      = null;
+      private int         thisLexemeHashCode  = 0;
+      private int         thisLexemeType      = LT_NOTHING;
+      private JavaToken   thisToken           = null;
+      private StringTokenizer compoundLexeme  =
+                                            new StringTokenizer( "" );
+  //  Constructor
+  //  ----------------------------------------------------------------
+    public JavaTokenizer( JavaLexemes input )       throws IOException
+    {
+      jl = input;
+      findNextLexeme();
+      constructNextToken();
+    }
+
+
+  //  Method constructNextToken()
+  //  ----------------------------------------------------------------
+  /**
+    *   Constructs the next token from the Lexeme stream.  May
+    *   more than one token from lexemes that have embedded periods.
+    *   Leaves the next Token in thisToken, or leaves thisToken equal
+    *   to null if there are no more tokens.
+    */
+    private void constructNextToken()               throws IOException
+    {
+      //  Check if processing a compound lexeme.
+      if ( compoundLexeme.hasMoreTokens() )
+      {
+        String s = compoundLexeme.nextToken();
+        if ( s.equals( "." ) )
+        {
+          thisToken = new JavaToken( JTT_Separator, s );
+        }
+        else
+        {
+          thisToken = new JavaToken( JTT_Identifier, s );
+        }
+        if ( ! compoundLexeme.hasMoreTokens() )
+        {
+          findNextLexeme();
+        }
+        return;
+      }
+
+      //  Convert a lexeme into a token.
+      switch ( thisLexemeType )
+      {
+
+        case LT_EOF:
+            thisToken = null;
+            return;
+
+        case  LT_LITERALSTR:
+            thisToken = new JavaToken( JTT_String, thisLexemeSval );
+            findNextLexeme();
+            break;
+
+        case  LT_LITERALCHR:
+            thisToken = new JavaToken(  JTT_Character,
+                                        thisLexemeSval,
+                                        lexemeToChar( thisLexemeSval )
+                                      );
+            findNextLexeme();
+            break;
+
+        case  LT_LEXEME:
+
+            //  Keyword?
+            if ( isKeyword( thisLexemeHashCode ) )
+            {
+              thisToken = new JavaToken( JTT_Keyword,
+                                         thisLexemeSval
+                                       );
+              findNextLexeme();
+              break;
+            }
+
+            //  Operator?
+            if ( isOperator( thisLexemeHashCode ) )
+            {
+              thisToken = new JavaToken( JTT_Operator,
+                                         thisLexemeSval
+                                       );
+              findNextLexeme();
+              break;
+            }
+
+            //  Separator character?
+            if ( isSeparator( thisLexemeSval ) )
+            {
+              thisToken = new JavaToken( JTT_Separator,
+                                         thisLexemeSval
+                                       );
+              findNextLexeme();
+              break;
+            }
+
+            //  True literal?
+            if ( thisLexemeSval.equals( "true" ) )
+            {
+              thisToken = new JavaToken( JTT_True,
+                                         thisLexemeSval
+                                       );
+              findNextLexeme();
+              break;
+            }
+
+            //  False literal?
+            if ( thisLexemeSval.equals( "false" ) )
+            {
+              thisToken = new JavaToken( JTT_False,
+                                         thisLexemeSval
+                                       );
+              findNextLexeme();
+              break;
+            }
+
+            //  Null literal?
+            if ( thisLexemeSval.equals( "null" ) )
+            {
+              thisToken = new JavaToken( JTT_Keyword,
+                                         thisLexemeSval
+                                       );
+              findNextLexeme();
+              break;
+            }
+
+            //  Integer literal?
+            try
+            {
+              long lVal = Long.parseLong( thisLexemeSval );
+              thisToken = new JavaToken(  JTT_FixedPoint,
+                                          thisLexemeSval,
+                                          lVal
+                                        );
+               findNextLexeme();
+               break;
+            }
+            catch ( NumberFormatException nfe ) { }
+
+            //  Double literal?
+            try
+            {
+              double dVal = Double.parseDouble( thisLexemeSval );
+              thisToken = new JavaToken(  JTT_FloatingPoint,
+                                          thisLexemeSval,
+                                          dVal
+                                        );
+              findNextLexeme();
+              break;
+            }
+            catch ( NumberFormatException nfe ) { }
+
+            // check for embedded dots
+            //  If there is a period in the string, it is really
+            //  multiple lexemes, which have to be handled specially.
+            if ( thisLexemeSval.indexOf( "." ) != -1 )
+            {
+              compoundLexeme =
+                     new StringTokenizer( thisLexemeSval, ".", true );
+              String s = compoundLexeme.nextToken();
+              if ( s.equals( "." ) )
+              {
+                thisToken = new JavaToken( JTT_Separator, s );
+              }
+              else
+              {
+                thisToken = new JavaToken( JTT_Identifier, s );
+              }
+
+            //  Do not "findNextLexeme()"
+            break;
+            }
+
+            //  Nothing else, so it's just an identifier.
+            thisToken = new JavaToken( JTT_Identifier,
+                                        thisLexemeSval
+                                      );
+            findNextLexeme();
+            break;
+
+        default:
+            System.err.println( "Bad Switch in constructNextToken!" );
+            break;
+
+      }
+      return;
+    }
+
+
+  //  Method findNextLexeme()
+  //  ----------------------------------------------------------------
+  /**
+    *   Skips over non-lexeme items returned by JavaLexemes (comments,
+    *   end of line markers, and errors), and saves the next actual
+    *   lexeme's String value and type in thisLexemeSval and
+    *   thisLexemeType, respectively.  Leaves thisLexemeType set to
+    *   LT_EOF at end of input.
+    */
+    private void findNextLexeme()                   throws IOException
+    {
+      thisLexemeType = jl.nextLexeme();
+      while ( thisLexemeType != LT_LEXEME &&
+              thisLexemeType != LT_LITERALSTR &&
+              thisLexemeType != LT_LITERALCHR
+            )
+      {
+        if ( thisLexemeType == LT_EOF )
+        {
+          return;
+        }
+        thisLexemeType    = jl.nextLexeme();
+      }
+      thisLexemeSval      = jl.theLexeme;
+      thisLexemeHashCode  = thisLexemeSval.hashCode();
+    }
+
+
+  //  Method  lexemeToChar()
+  //  ----------------------------------------------------------------
+  /**
+    *   Converts a character literal lexeme into a character value.
+    *   Handles Unicode, Octal, and decimal constants, as well as
+    *   simple char constants.
+    */
+    private char lexemeToChar( String lexeme )
+    {
+      char charValue  = '\u0000';
+      String s        = null;
+      //  Convert character literal into a char value.
+      if ( lexeme.charAt(0) == '\\' )
+      {
+        try
+        {
+          switch ( lexeme.charAt(1) )
+          {
+            //  Unicode character literal
+            case 'u':
+            {
+              s         = lexeme.substring( 2 );
+              charValue = (char) Integer.parseInt( s, 16 );
+              break;
+            }
+
+            //  Octal character literal
+            case '0':
+            {
+              s         = lexeme.substring( 2 );
+              charValue = (char) Integer.parseInt( s, 8 );
+              break;
+            }
+            default:
+            {
+              //  Decimal character literal
+              s         = lexeme.substring( 1 );
+              charValue = (char) Integer.parseInt( s );
+              break;
+            }
+          }
+        }
+        catch ( NumberFormatException nfe )
+        {
+          System.err.println( "Invalid Character Literal" );
+          charValue = '\u0000';
+        }
+      }
+      else
+      {
+        //  Simple character literal
+        charValue = lexeme.charAt( 0 );
+      }
+      return charValue;
+    }
+
+  //  Testers
+  //  ================================================================
+
+  //  Method isKeyword()
+  //  ----------------------------------------------------------------
+    private boolean isKeyword( int hash )
+    {
+      int[] t = JavaKeywords.keywordHashCodes;
+      for ( int i = 0; i &lt; t.length; i++ )
+      {
+        if ( t[i] == hash ) return true;
+      }
+      return false;
+    }
+
+    private boolean isOperator( int hash )
+    {
+      int[] t = JavaOperators.operatorHashCodes;
+      for ( int i = 0; i &lt; t.length; i++ )
+      {
+        if ( t[i] == hash ) return true;
+      }
+      return false;
+    }
+
+    private boolean isSeparator( String lexeme )
+    {
+      String seps = "(){}[];,.";
+      if ( lexeme.length() == 1 )
+      {
+        char candidate = lexeme.charAt( 0 );
+        for ( int i = 0; i &lt; seps.length(); i++ )
+        {
+          if ( candidate == seps.charAt( i ) ) return true;
+        }
+      }
+      return false;
+    }
+
+  //  Iterator Interface
+  // =================================================================
+
+  //  Method hasNext()
+  // -----------------------------------------------------------------
+    public boolean hasNext()
+    {
+       return thisToken != null;
+    }
+
+  //  Method next()
+  //  ----------------------------------------------------------------
+    public Object next()
+    {
+      JavaToken returnVal = thisToken;
+      try
+      {
+        constructNextToken();
+      }
+      catch (IOException ioe )
+      {
+        System.err.println( "Error Reading" );
+      }
+      return returnVal;
+    }
+
+  //  Method remove()
+  //  ----------------------------------------------------------------
+    public void remove()  { }
+
+  }
+
+</PRE><HR></BODY></HTML>

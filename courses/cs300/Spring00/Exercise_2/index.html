@@ -1,0 +1,183 @@
+<HTML><HEAD><TITLE>Exercise 2</TITLE>
+<LINK REL=stylesheet HREF="http://babbage.cs.qc.edu/css/sans-serif_body.css"
+MEDIA=screen>
+</HEAD>
+<BODY bgcolor=#FFFFFF>
+<center>
+<H1>Exercise 2</H1>
+</center>
+
+<H2>Objective</H2>
+To build a Token recognizer for Java programs.
+
+<H2>Overview</H2>
+
+In Exercise 1 you developed an application that displayed the lexemes in
+a Java program using Java.io.StreamTokenizer to separate the lexemes. 
+Unfortunately, there is no good way for StreamTokenizer to handle
+multiple-character operators.  So I am providing you with another class,
+JavaLexemes, which you are to use to implement a new class that parses
+Java compilation units into Tokens.  (JavaLexemes is described
+below.)<p>
+
+You are to write two public classes.  The class that contains
+<I>main()</I> will be called TestTokenizer. It will use the second
+class you are to write, called JavaTokenizer, to print the sequence of
+tokens that make up a Java program.
+
+<H2>JavaLexemes</H2>
+
+Class JavaLexemes has one constructor, which takes a BufferedReader as
+an argument.  Once the constructor has been called, the method
+<I>nextLexeme()</I> is used to extract lexemes from the input stream. 
+The return value of <I>nextLexeme()</I> is an <I>int</I>, which will have one
+of the following values, which are the names of public constants in
+class JavaLexemes:<p>
+
+<center><table border=1 cellpadding=5>
+
+  <TR>
+    <th>Value
+    <th>Meaning
+  <TR>
+    <td>LT_LEXEME
+    <td>The public String, <CODE>theLexeme</CODE> contains the next lexeme
+    in the input stream.
+  <TR>
+    <td>LT_EOF
+    <td>The input stream has been completely processed.
+  <TR>
+    <td>LT_EOL
+    <td>The end of an input line has been reached.
+  <TR>
+    <td>LT_SLASHSLASH
+    <td>A comment starting with // was found.  The comment itself is in
+    <CODE>theLexeme</CODE>.
+  <TR>
+    <td>LT_SLASHASTER
+    <td>A comment starting with /* was found.  The comment itself
+    (including any embedded newline characters) is in
+    <CODE>theLexeme</CODE>.
+  <TR>
+    <td>LT_SLASHDOC
+    <td>A comment starting with /** was found.  The comment itself
+    (including any embedded newline characters) is in
+    <CODE>theLexeme</CODE>.
+  <TR>
+    <td>LT_LITERALSTR
+    <td>The public String, <CODE>theLexeme</CODE> contains a literal String
+    value.
+  <TR>
+    <td>LT_LITERALCHR
+    <td>The public String, <CODE>theLexeme</CODE> contains a literal
+    character value.
+  <TR>
+    <td>LT_UNTERMCOMM
+    <td>A comment was not terminated properly.
+  <TR>
+    <td>LT_UNTERMSTR
+    <td>A String literal was not terminated properly.
+  <TR>
+    <td>LT_UNTERMCHR
+    <td>A character literal was not terminated properly.
+  <TR>
+    <td>LT_INVALIDCHR
+    <td>The file contains a character that is not part of the Java
+    language outside of a String literal or comment.
+  <TR>
+    <td>LT_ERROR
+    <td>There was an internal error in <I>nextLexeme()</I>.  (Indicates
+    a bug in my code!)
+  <TR>
+    <td>LT_NOTHING
+    <td>Defined, but not used.
+
+</table></center><p>
+
+Class JavaLexemes also provides a public <I>int</I> named <I>lineNum</I>
+that tells which tells the current line number in the source file.<p>
+
+You can download a zip file containing JavaLexemes.class and a few
+classes that it uses internally by clicking on the link below:
+
+<ul>
+  <LI>[&nbsp;<a HREF="JavaLexemes.zip">JavaLexemes.zip</A>&nbsp;]
+</ul>
+
+You can also download the source code for the Java program that I used
+during the development of JavaLexemes from this link:
+
+<UL>
+  <LI>[&nbsp;<a HREF="TestJavaLexemes.java">TestJavaLexemes.java</A>&nbsp;]
+</UL>
+
+The first thing you should do is to make sure you can run the code I am
+supplying.  Set up a project directory, extract the class files from
+JavaLexemes.zip into it, and copy TestJavaLexemes.java into it.  Compile
+TestJavaLexemes.java, and make sure the program works.  If you give the
+program the names of .java files on the command line, it will print each
+lexeme in each source file, with line numbers.  It can tell whether a
+lexeme is a /* comment, a /** comment, a // comment, a string literal, a
+character literal, or a "generic" lexeme and prints an inidcator of the
+type of lexeme just before each one ( &lt;/*&gt;, &lt;/**&gt;,
+&lt;//&gt;, &lt;"&gt;, &lt;'&gt;, or &lt;lex&gt; ).<p>
+
+<blockquote>
+
+  You don't actually have to extract the class files from the zip file. 
+  Instead, you could give this command:
+  <pre>
+      C:\&gt; set CLASSPATH=.;JavaLexemes.zip
+  </pre>
+  After this, <I>java</I> and <I>javac</I> will be able to find class
+  files that are located in either the current directory ( . ) or inside
+  JavaLexemes.zip.
+</blockquote>
+
+Once you have verified that you can use my class, JavaLexemes
+successfully, you can start working on the code for this exercise.  To
+get you started, I am supplying three source files:
+
+<UL>
+
+  <LI>[&nbsp;<a HREF="TestTokenizer.java">TestTokenizer.java</A>&nbsp;]
+  <BR>This is a "quick and dirty" program that creates a JavaTokenizer,
+  and prints each string returned by JavaTokenizer.<I>next()</I>.
+
+  <LI>[&nbsp;<a HREF="JavaTokenizer.java">JavaTokenizer.java</A>&nbsp;]
+  <BR>This is the outline for the class that converts lexemes into
+  tokens.
+
+  <BR>[&nbsp;<a HREF="JavaToken.java">JavaToken.java</A>&nbsp;]
+  <BR>This is the class that defines the data type for the value
+  returned by JavaTokenizer.<I>next()</I>.
+
+</UL>
+
+If you compile and run the code I am supplying, it should print all the
+lexemes in the source file you name on the command line.  Your job is to
+get it to print each token in the source file, including the type of
+token and its value (if it has one.)<p>
+
+Be sure to document your code in proper javadoc style.  I've started to
+do this for you, but have not done a complete job.  You can see the
+documentation for JavaLexemes, JavaTokenizer, and JavaToken by clicking
+on [&nbsp;<a HREF="Docs">this link</A>&nbsp;].
+
+<H2><a name="extra">Extra Credit</a></H2>
+
+I am offering extra credit for work that you do to implement the
+equivalent of the JavaLexemes class that I supplied to you.  Your code
+must be carefully tested and documented, but it does not have to be
+complete to receive partial credit.  Two people may work together for
+this project, but no more than that, and the extra credit will be split
+between the two people submitting the code.  Submit your code by
+emailing your JavaLexemes.java file, inside a zip file, to me no later
+than midnight, May 2 (our first class day after Spring Break).  Tell me
+how far you got in your email message so I'll know what to look for (and
+what not to try!).  A maximum of 10 points of extra credit are available
+for this work.  If two people work together, you can tell me how to
+split the points if they are not to be split equally between you.<p>
+
+
+<HR></BODY></HTML>
