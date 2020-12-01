@@ -1,0 +1,140 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Exam 2 Topics</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head>
+
+  <body>
+    <div id="header">
+      <h1>CS-343 Exam 2 Topics<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+    	<h2>Disclaimer</h2>
+      <div class="whitebox">
+      	Everything listed here is &ldquo;fair game&rdquo; for the exam, but I cannot guarantee that I haven&rsquo;t forgotten something
+        here that just <em>has</em> to be included on the exam. If in doubt, ask on the 
+        <a href="http://babbage.cs.qc.edu/Fora/Courses/viewforum.php?f=5">Course Discussion Board</a>.
+      </div>
+      <h2>Reading Assignments</h2>
+      <div class="whitebox">
+        <ul>
+          <li>Textbook Chapter 4, Sections 1, 2, 3, and 4</li>
+          <li>Textbook Appendix C, Sections 7, 8, 10, and 11</li>
+          <li>Textbook Appendix D, Section 2</li>
+          <li>Homework Assignments <a href="Assignment_04.xhtml">4,</a> <a href="Assignment_05.xhtml">5</a></li>
+          <li>Class Notes</li>
+        </ul>
+      </div>
+      <div class="whitebox">
+      	<ol>
+        	<li>
+          	Clocked R-S Latch design and timing
+          </li>
+          <li>
+          	D Latch design and timing
+          </li>
+          <li>
+          	Master-Slave D Flip-Flop with Enable design and timing (what we called &ldquo;edge-triggered&rdquo;)
+          </li>
+          <li>
+          	N-bit register design
+          </li>
+          <li>
+          	Memory ports
+          </li>
+          <li>
+          	General register file design
+          </li>
+          <li>
+          	MIPS register file design
+          </li>
+          <li>
+          	R, I, and J instruction formats
+          </li>
+          <li>
+          	Three uses for I-format instructions
+          </li>
+          <li>
+          	Verilog language (all features used on the Green Card)
+          </li>
+          <li>
+          	Single-cycle datapath
+            <ul>
+            	<li>
+              	Three ways to compute PC next address; how to select the one to use
+                <ul>
+                	<li>Computing proper value of immediate field for branch instructions</li>
+                </ul>
+              </li>
+              <li>
+              	ROM <em>vs</em> RAM
+              </li>
+              <li>
+              	Instruction Memory and Data Memory operations
+              </li>
+              <li>
+              	Op code decoding
+              </li>
+              <li>
+              	Reasons for RegDst, Jump, Branch, MemRead, MemWrite, MemtoReg, ALUSrc, and RegWrite control signals
+              </li>
+              <li>
+              	Implication of ALUOp for extending design to include immediate arithmetic/logic instructions
+              </li>
+              <li>
+              	Timing analysis of single-cycle design
+              </li>
+            </ul>
+          </li>
+          <li>&hellip;</li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../">CS-343 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,235 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 8 Solutions</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+		  .solution-block {
+				margin: 0.5em 0.5em 0.5em -2em;
+				padding:0.5em;
+			  white-space:pre-wrap;
+				font-family:"Lucida Console", Monaco, monospace;
+				background-color:#ccc; 
+				border:1px solid blue;
+			}
+      img {border:1px solid blue;}
+      .big-sig {font-size:1.2em; font-weight:bold;position:relative;top:0.1em;}
+    </style>
+  </head>
+  <body id='urn:uuid:F22BF324-21F7-44F2-AADC-9504949C3703'>
+    <h1>CS-343 Assignment 8<br/>
+    Solutions</h1>
+    <div id="content">
+      <h2>Answers</h2>
+      <div>
+        <ol>
+          <li>
+            What are the three parameters that vary along the various levels of the <em>memory hierarchy</em>.
+<div class="solution-block">Speed, Capacity, and Cost. The closer to the CPU a memory element is, the lower the access time (faster), the smaller the capacity, and the larger the cost per bit of memory.
+</div>
+          </li>
+          <li>
+            If rotational delay were the only factor affecting disk access time, how much faster would a 7200 RPM
+            disk be compared to a 5400 RPM disk?
+<div class="solution-block">7200 ÷ 5400 = 1.33 times faster.</div>
+          </li>
+          <li>
+            What is the rotational period of a 10,000 RPM disk, in milliseconds?
+<div class="solution-block">10,000 RPM = 166.67 revolutions per second. 1/166.67 = 0.006 seconds = 6 msec.
+</div>
+          </li>
+          <li>
+            Define the terms <em>track</em> and <em>sector</em> for magnetic disks.
+<div class="solution-block">A track is the circular path traced as the disk rotates under the read/write head at a given
+position of the head. A sector is the smallest amount of information that can be read or written on a track; on PC systems
+a sector is typically 512 bytes.</div>
+          </li>
+          <li>
+            Use the web to define <em>areal density</em> in the context of disk drives. Search for the highest areal density of
+            a currently available disk. What is it? Cite the sources for both of your answers to this question.
+<div class="solution-block">Computer storage density (Wikipedia). That is, the number of bits that can be stored in a unit-sized square of recording material.
+Seagate announced disks that store 625 gigabits (78.13GB) per square inch of disk surface earlier this month. (Source: <a href="http://www.engadget.com/2011/05/03/seagate-copies-samsungs-notes-re-breaks-areal-density-barrier/">Engadget</a>.)</div>
+          </li>
+          <li>
+            How amazing is the answer to the second part of the previous question?
+<div class="solution-block">It’s “way” amazing.</div>
+          </li>
+          <li>
+            Why doesn’t anyone build a computer with a a terabye of registers in the CPU and just skip the main meory and
+            disk levels of the memory hierarchy all together?
+<div class="solution-block">It would be prohibitively expensive.</div>
+          </li>
+          <li>
+            A computer has 16 GB of main memory and 1 MB of cache. Once the cache has filled, what is the probability of
+            a <em>cache hit</em> if the processor accesses main memory in a totally random fashion?
+<div class="solution-block">1M ÷ 16G = 2<span class="superscript">20 - 34</span> = 2<span class="superscript">-14</span>
+= 0.0000610...
+</div>
+          </li>
+          <li>
+            The previous question specified “once the cache has filled.” Would the probability of a hit be higher or lower
+            than your answer <em>before</em> the cache has filled?
+<div class="solution-block">Before the cache fills, there will be more cold start misses (Section 5.5 of the text), so there would be <em>more</em> misses: the probability of a hit would be <em>lower</em>.
+</div>
+          </li>
+          <li>
+            For a certain computer, main memory access time is 50 nsec, and cache access time is 750 psec. What is the 
+            <em>average</em> access time if <em>p(hit)</em> is 0.90?
+<div class="solution-block">0.9 × 750 + 0.1 × 50,000 = 5,675 psec = 5.675 nsec.
+</div>
+          </li>
+          <li>
+            If the average access time for the computer in the previous example was observed to be 900 psec, what must the
+            probability of a hit have been?
+<div class="solution-block">900 = p<span class="subscript">hit</span> × 750 + (1 - p<span class="subscript">hit</span>) × 50,000
+900 = 750 × p<span class="subscript">hit</span> + 50,000 - (50,000 × p<span class="subscript">hit</span>)
+-49,100 = -49,250 × p<span class="subscript">hit</span>
+-49,100 ÷ 49,250 = -p<span class="subscript">hit</span>
+p<span class="subscript">hit</span> = 0.99695...
+<strong>No calculators on the exam!</strong>
+</div>
+          </li>
+          <li>
+            The text differentiates between <em>spatial</em> and <em>temporal</em> locality (page 452). In class, I glossed over
+            the difference. In light of the last word of both definitions in the text, discuss why my approach makes sense. Then
+            explain what feature of cache designs applies to spatial locality but not necessarily to temporal locality, thus making
+            the distinction meaningful after all.
+<div class="solution-block">The last word of both definitions is “soon,” indicating that temporal locality is operating in both cases.
+But when there is a cache miss, an entire block of memory is brought into cache, not just the individual location referenced by the processor. Because of spatial locality, the extra information brought into cache is highly likely to be accessed, not “again,” but “soon.”
+</div>
+          </li>
+          <li>
+            Explain why programs tend to exhibit <em>locality</em> with respect to instruction accesses.
+<div class="solution-block">Loops cause relatively small sets of instruction words to be accessed repeatedly.
+</div>
+          </li>
+          <li>
+            Explain why programs tend to exhibit <em>locality</em> with respect to data accesses.
+<div class="solution-block">Properly designed code that operates on arrays tends to access all the elements of a row one after another, assuming the data are stored in row-major order.
+</div>
+          </li>
+          <li>
+            Explain the effect of locality on the probability of a <em>cache hit</em>.
+<div class="solution-block">Because the information that will be accessed again “soon” is already in the cache, the probability of a hit increases.
+</div>
+          </li>
+          <li>
+            A computer with byte-addressable memory uses 48-bit addresses.
+            <ol>
+              <li>How many bytes of memory could be attached to the computer?
+<div class="solution-block">2<span class="superscript">48</span>
+</div>
+              </li>
+              <li>How many 8-byte <em>words</em> would that be?
+<div class="solution-block">2<span class="superscript">45</span>
+</div>
+              </li>
+              <li>How many 128-byte <em>blocks</em> would that be?
+<div class="solution-block">2<span class="superscript">41</span>
+</div>
+              </li>
+              <li>How many address bits would select a byte within a word?
+<div class="solution-block"><em>log</em><span class="subscript">2</span>(8) = <em>3 bits</em>
+</div>
+              </li>
+              <li>How many address bits would select a byte within a block?
+<div class="solution-block"><em>log</em><span class="subscript">2</span>(128) = <em>7 bits</em>
+</div>
+              </li>
+              <li>How many address bits would select a word within a block?
+<div class="solution-block"><em>log</em><span class="subscript">2</span>(128 ÷ 8) = <em>4 bits</em>
+</div>
+              </li>
+            </ol>
+            Assume this computer has 2<span class="superscript">20</span> cache lines.
+            <ol>
+              <li>What is the capacity, in bytes, of this cache?
+<div class="solution-block">2<span class="superscript">20</span> × 2<span class="superscript">7</span> = 2<span class="superscript">27</span> bytes.
+(Remember, the size of cache lines is always the same size as main memory blocks, which was given in the previoius question.)
+</div>
+              </li>
+              <li>How many sets would there be using a direct mapped design?
+<div class="solution-block">One line per set, same as the number of lines: 2<span class="superscript">20</span>.
+</div>
+              </li>
+              <li>How many sets would there be using an 8-way set associative design?
+<div class="solution-block">2<span class="superscript">3</span> lines per set, so: 2<span class="superscript">20 - 3</span> = 2<span class="superscript">17</span> sets.
+</div>
+              </li>
+              <li>How many sets would there be using a fully associative design?
+<div class="solution-block">Just one set that includes all the lines.
+</div>
+              </li>
+              <li>How many address bits would the index field have for the direct mapped design?
+<div class="solution-block">20
+</div>
+              </li>
+              <li>How many address bits would the index field have for an 8-way set associative design?
+<div class="solution-block">17
+</div>
+              </li>
+              <li>How many address bits would the index field have for a fully associative design?
+<div class="solution-block">0
+</div>
+              </li>
+              <li>How large would the tag field be for the direct mapped design?
+<div class="solution-block">48 - (20 + 7) = 21
+</div>
+              </li>
+              <li>How large would the tag field be for an 8-way set associative design?
+<div class="solution-block">48 - (17 + 7) = 24
+</div>
+              </li>
+              <li>How large would the tag field be for a fully associative design?
+<div class="solution-block">48 - (0 + 7) = 41
+</div>
+              </li>
+            </ol>
+          </li>
+          <li>What is the purpose of the <em>v-bit</em> in a cache memory?
+<div class="solution-block">To indicate whether a cache line contains valid data from main memory or not. All the v-bits
+get set to 0 when a program starts running, resulting in many cold-start misses.
+</div>
+          </li>
+          <li>
+            Define <em>cold-start</em>, <em>capacity</em>, and <em>conflict</em> misses.
+<dl class="solution-block">
+  <dt>cold-start</dt><dd>When a requested block has not been loaded into cache yet.</dd>
+  <dt>capacity</dt><dd>When the cache is full and a line has to be overwritten with a block.</dd>
+  <dt>conflict</dt><dd>When there are empty lines, but not within the set to which a block is mapped.</dd>
+</dl>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

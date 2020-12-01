@@ -1,0 +1,136 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 1</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:3695F636-BE06-44F0-B41E-23BC6EA413A2'>
+  	<h1>CS-343 Assignment 1<br/>
+    Due February 10</h1>
+    <div id="content">
+      <h2>Reading Assignment</h2>
+      <ul>
+      	<li>
+           <a href="../Background_Material.pdf">Background_Material</a>. This is a PDF that covers various
+           topics related to measurement covered in the first two lectures of the course. The questions below
+           are based, in part, on that material.
+        </li>
+        <li>
+        	Sections 1-6 of Appendix C of the textbook. If your copy of the text did not include the CD in the
+          back, there is a PDF of the appendix available <a href="../COAD4e/Appendix-C.pdf">here</a>.
+        </li>
+        <li>
+          If you studied some assembly language other than MIPS in your prerequisite for this course (or if you 
+          did, but your MIPS skills are rusty) study Sections 1-10 of Chapter 2 of the textbook. You will need to
+          comfortable with this material when we finish Appendix C. That means you have a few weeks to go through
+          this material, but it’s important to start now.
+        </li>
+      </ul>
+      <h2>Assignment To Hand In</h2>
+      <div>
+        <p>
+          You can either write the answers to these questions on a piece of paper and bring them to class on
+          the due date, or you can type them in the body of an email and send them to me by midnight of the
+          due date.
+        </p>
+        <p>
+          Be sure to put your name on your assignment paper or in the body of your email so I know who submitted
+          it.
+        </p>
+        <p>
+        	If you submit the assignment by email, the subject line must be:
+          <pre style="color:red;">CS-343 Assignment 1</pre>
+          in order for it to get through my spam filters.
+        </p>
+        <p>
+          Go to the <a href=".">course schedule page</a> for the link to my contact information (email address).
+          While you are on the schedule page, follow the link to the course syllabus for information on course
+          policies with regard to homework assignment grading and late assignments.
+        </p>
+        <p>Hand in your written answers to the following questions:</p>
+        <ol>
+          <li>
+            What is the logarithm, base 2, of the following decimal numbers: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+            16, 32, 64, 128, 256, 512, 768, 1024, 2048.
+            <p>
+              Note: if you do not have a calculator that computes logarthms to the base 2, you can do the calculation
+              by taking the log to any base (<em>e</em> or 10, for example) and then dividing that by the log of 2
+              for the same base. For example log<span class="subscript">10</span>(10) is 1.0; 
+              log<span class="subscript">10</span>(2) is 0.3010; so log<span class="subscript">2</span>(10) is
+              1.0 ÷ 0.3010 = 3.322. Alternatively, you could go to <a href="http://wolframalpha.com">WolframAlpha</a>
+              and type in "log2(10)" to get the answer. (There are plenty of other places you could get the value,
+              but WolframAlpha is the best time suck. If you aren’t familiar with WA, try typing in "88mph" or your
+              birthday and see what it gives you.)
+            </p>
+          </li>
+          <li>
+          	Write the following decimal numbers in binary: 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 48.
+          </li>
+          <li>
+          	What do all the binary numbers in your previous answer have in common (besides the fact that they
+            are binary numbers!). Look at the pattern of zeros and ones.
+          </li>
+          <li>
+          	How about 12, 24, and 48: what binary pattern do they have in common?
+          </li>
+          <li>
+            Summarize the answers to the two previous questions as a statement about what happens when you multiply
+            binary numbers by 2 or by 4.
+          </li>
+          <li>
+            5K is 1010000000000 in binary. (5 followed by ten zeros.) Write the values 5M and 5G in binary.
+          </li>
+          <li>
+            What is binary 1100 0000000000 0000000000 in decimal? Use the proper suffix in your answer so that
+            your answer starts with a number between 0 and 1023.
+          </li>
+          <li>
+            How many picoseconds are there in 2.5 µsec?
+          </li>
+          <li>
+            How many nanoseconds in 250 psec?
+          </li>
+          <li>What power of 2 is 512?</li>
+          <li>Approximately how many milliseconds did it take you to answer the previous question?</li>
+          <li>What is the period, in picoseconds, of a 5 GHz clock?</li>
+          <li>What is the answer to the previous question in nanoseconds?</li>
+          <li>Why does it make sense to say that a 10 MHz clock is twice as fast as a 5 MHz clock,
+          but not to say that 100 degrees (farenheit) is twice as hot as 50 degrees?</li>
+          <li>How did Claude Shannon propose measuring information?</li>
+          <li>What is the frequency of a clock with a period of 50 msec?</li>
+          <li>What is the frequency of a clock with a period of 50 µsec?</li>
+          <li>What is the frequency of a clock with a period of 50 nsec?</li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </div>
+  </body>
+</html>

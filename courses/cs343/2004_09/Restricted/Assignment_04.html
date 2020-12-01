@@ -1,0 +1,117 @@
+<html><head><title>CS-343 Assignment 4 Solutions</title>
+<style type="text/css">
+  p { margin-left: 1em; margin-right: 2em; }
+  div.whitebox {background:white;border:solid; margin:1em; padding:1em;}
+</style>
+<style type="text/css" media="screen">
+  body { font-family: sans-serif }
+</style>
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>CS-343 Assignment 4 Solutions</h1>
+</center>
+
+
+<h2>5.1</h2>
+
+<div class="whitebox">
+
+      <p>Combinational logic only: a, b, c, h, i</p>
+      <p>Sequential logic only: f, g, j</p>
+      <p>Mixed sequential and combinational: d, e, k</p>
+
+</div>
+
+<h2>5.2</h2>
+
+<div class="whitebox">
+
+      <p>a. RegWrite = 0: All R-format instructions, in addition to lw ,
+      will not work because these instructions will not be able to write
+      their results to the register file.</p>
+
+      <p>b. ALUop1 = 0: All R-format instructions except subtract will
+      not work correctly because the ALU will perform subtract instead
+      of the required ALU operation.</p>
+
+      <p>c. ALUop0 = 0: beq instruction will not work because the ALU
+      will perform addition instead of subtraction (see Figure 5.12), so
+      the branch outcome may be wrong.</p>
+
+      <p>d. Branch (or PCSrc) = 0: beq will not execute correctly. The
+      branch instruction will always be not taken even when it should be
+      taken.</p>
+
+      <p>e. MemRead = 0: lw will not execute correctly because it will
+      not be able to read data from memory.</p>
+
+      <p>f. MemWrite = 0: sw will not work correctly because it will not
+      be able to write to the data memory.</p>
+
+</div>
+
+<h2>5.3</h2>
+
+<div class="whitebox">
+
+      <p>a. RegWrite = 1: sw and beq should not write results to the
+      register file.  sw ( beq) will overwrite a random register with
+      either the store address (branch target) or random data from the
+      memory data read port.</p>
+
+      <p>b. ALUop0 = 1: lw and sw will not work correctly because they
+      will perform subtraction instead of the addition necessary for
+      address calculation.</p>
+
+      <p>c. ALUop1 = 1: lw and sw will not work correctly.  lw and sw
+      will perform a random operation depending on the least significant
+      bits of the address field instead of addition operation necessary
+      for address calculation.</p>
+
+      <p>d. Branch = 1: Instructions other than branches (beq) will not
+      work correctly if the ALU Zero signal is raised. An R-format
+      instruction that produces zero output will branch to a random
+      address determined by its least significant 16 bits.</p>
+
+      <p>e. MemRead = 1: All instructions will work correctly. (Data
+      memory is always read, but memory data is never written to the
+      register file except in the case of lw .)</p>
+
+      <p>f. MemWrite = 1: Only sw will work correctly. The rest of
+      instructions will store their results in the data memory, while
+      they should not.</p>
+
+</div>
+
+
+<h2>5.13</h2>
+
+<div class="whitebox">
+
+      <p>From Figure 5.18, the MemtoReg control signal looks identical
+      to both signals, except for the don't care entries which have
+      different settings for the other signals. A don't care can be
+      replaced by any signal; hence both signals can substitute for the
+      MemtoReg signal.</p>
+
+      <p>Signals ALUSrc and MemRead differ in that sw sets ALSrc (for
+      address calculation) and resets MemRead (writes memory: can't have
+      a read and a write in the same cycle), so they can't replace each
+      other. If a read and a write operation can take place in the same
+      cycle, then ALUSrc can replace MemRead, and hence we can eliminate
+      the two signals MemtoReg and MemRead from the control system.</p>
+
+      <p>Insight: MemtoReg directs the memory output into the register
+      file; this happens only in loads. Because sw and beq don't produce
+      output, they don't write to the register file (Regwrite = 0), and
+      the setting of MemtoReg is hence a don't care. The important
+      setting for a signal that replaces the MemtoReg signal is that it
+      is set for lw (Mem->Reg), and reset for R-format (ALU->Reg), which
+      is the case for the ALUSrc (different sources for ALU identify lw
+      from R-format) and MemRead ( lw reads memory but not
+      R-format).</p>
+
+</div>
+
+
+<hr></body></html>

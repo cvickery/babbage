@@ -1,0 +1,98 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $content_type = "application/xhtml+xml";
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $content_type = "text/html";
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 1</title>
+    <meta http-equiv="Content-Type" content="<?php echo $content_type;?>; charset=UTF-8" />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:F102EDD5-4935-40B4-8872-C80E9FCE793B'>
+
+    <h1>CS-343 Assignment 1</h1>
+
+    <div id="content">
+      <h2>Reading Assignment</h2>
+      <div>
+        Read <a href="../Measurement.pdf">Measurement And Units Of Measure</a> (PDF) before
+        answering the questions below.
+      </div>
+
+      <h2>Questions</h2>
+        <ol>
+        	<li>
+          	A car dives the first mile of a two-mile course at 30 MPH. How fast must it go during the
+            second mile to average 60 MPH for the entire course? <em>Hint: </em> It takes two minutes
+            to go two miles at 60 MPH.
+          </li>
+          <li>
+          	A disk spins at 12,000 RPM. How many revolutions per second is that?
+          </li>
+          <li>
+          	How many seconds per revolution is your answer to the previous question? Write this answer as
+            a proper decimal number with no prefix and no exponent. For example, <em>3.456 seconds</em>.
+          </li>
+          <li>How many milliseconds is your answer to the previous question?</li>
+          <li>And how many microseconds is that?</li>
+          <li>
+          	Use the definition of a logarithm to explain why <em>log<span class="subscript">2</span>(n)</em>
+            is always an integer when <em>n</em> is an integral power of 2.
+          </li>
+          <li>
+          	<p>When computing a student’s GPA, you multiply a number representing each letter grade (12 for A or A+; 11
+            for A-; 10 for B+; etc.) times the number of credits for which the student received that letter grade.</p>
+            <p>Calculating a GPA is an example of computing a <em>weighted average.</em> What are the weights, the numbers
+            representing the letter grades, or the number of credits?</p>
+          </li>
+          <li>
+            What is the average CPI of a program that uses 2 clock cycles for 30% of the instructions, 3 clock cycles
+            for 20% of the instructions, and 4 clock cycles for all the others?
+          </li>
+          <li>
+          	I’m thinking of a letter of the alphabet. How many yes/no questions do you have to ask me to find out what letter
+            it is?
+          </li>
+          <li>
+          	What is the period of a 2 GHz clock signal?
+          </li>
+        </ol>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          Type your name and your answers into the body of an email message (<strong>no
+          attachments!</strong>), and send it to me: Christopher.Vickery<span class="at" title="Change to
+          @">at</span>qc.cuny.edu by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of all email you send me this semester must start, “CS-343.’ Your email message for this
+          assignment must be: “CS-343 Assignment 1.” 
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

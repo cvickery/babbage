@@ -1,0 +1,31 @@
+
+  IF/ID:   32 PC+4
+           32 Instruction
+           64 TOTAL
+
+  ID/EX:    2 WB (RegWrite, MemtoReg)
+            3 M
+            4 Ex
+           32 PC+4
+           32 Read data 1
+           32 Read data 2
+           32 Immediate operand
+            5 rs
+            5 rt
+            5 rd
+          152 TOTAL
+
+  EX/MEM:   2 WB
+            3 M
+           32 Branch Target Address
+            1 Zero
+           32 ALU Result
+           32 Read data 2
+            5 Writeback reg num
+          107 TOTAL
+
+  MEM/WB:   2 WB
+           32 Read Data
+           32 ALU Result
+            5 Writeback reg num
+           71 TOTAL

@@ -1,0 +1,162 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 3</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:7542E11E-8FC1-40D3-B974-BA701F2F0BAC'>
+
+    <h1>CS-343 Assignment 3</h1>
+
+    <div id="content">
+      <h2>Reading Assignments</h2>
+      <div>
+        <p>
+          We are still working in Sections 1-5 of Appendix C of the text. Section C.4 (Verilog) will
+          not be important until after we finish the rest of Appendix C, so you do not need to study
+          that section carefully now. But do read it over. The next assignment after this one will
+          be to implement the full MIPS ALU (but only four bits wide), so Section C.5, which covers
+          that design, is important.
+        </p>
+        <p>
+          Minimization is mentioned, but not covered. in the text. For that topic, read my web page
+          on <a href="../../Minimize/index.xhtml">Minimizing Boolean Functions</a>.
+        </p>
+        <p>
+          Remember, the first midterm exam is scheduled for March 2. It will cover all the material
+          listed above, and the material from Assignments 1-4.
+        </p>
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+          Create a directory named <span class="directory-name">Assignment_3</span> under your <span
+          class="directory-name">My Projects</span> directory in the TREE lab.  Copy your full adder
+          block diagram file and block symbol file from Assignment 2 into the Assignment 3 project
+          directory. (Some people used additional modules to implement their full adder in
+          Assignment 2; if you did, copy those to <span class="file-name">Assignment_3</span> too.)
+        </p>
+        <p>
+          Download a Verilog module I am supplying, <a href="../hex2sevenseg.v">hex2sevenseg.v</a>,
+          and save it in the project directory also.
+        </p>
+        <p>
+          Now use the Quartus New Project wizard to create a new project in your Assignment_3
+          directory.  Name the project &ldquo;four-bit_adder-subtracter&rdquo; (remember, there must
+          be no spaces in the project name).  Name the top-level design module <span
+          class="function-name">Assignment_3_Testbed</span> (again, no spaces).  When the wizard
+          asks you to add files to the project, select the “add all” option to add your full adder
+          and my Verilog module to the project.  The rest of the project settings will be the same
+          as for Assignment 2.
+        </p>
+        <p>
+          Create a block diagram file named <span
+          class="file-name">four-bit-adder-subtracter.bdf</span>.  Use four instances of your full
+          adder symbol to implement this module. Label the input pins <span
+          class="variable-name">A[3..0]</span>, <span class="variable-name">B[3..0]</span>, and
+          <span class="variable-name">sub</span>.  Label the output pins <span
+          class="variable-name">Sum[3..0]</span>, <span class="variable-name">Cout</span>, and <span
+          class="variable-name">Overflow</span>. When the <span class="variable-name">sub</span>
+          input is false, the circuit is to operate as a four-bit adder, but when <span
+          class="variable-name">sub</span> is false, the circuit is to negate the B bits (use XOR
+          gates for this) and add 1 by making Cin to the rightmost full adder true.
+        </p>
+
+        <p>
+          Save this block diagram as a symbol.
+        </p>
+        <p>
+          Create the testbed module for the assignment in a block diagram file named <span
+          class="file-name">Assignment_3_Testbed.bdf</span>. Set up input pins named <span
+          class="variable-name">Switch[8..0]</span>, and output pins named<span
+          class="variable-name">Red_LED[8..0]</span>, <span
+          class="variable-name">Hex_1[6..0]</span>, and <span
+          class="variable-name">Hex_0[6..0]</span>.
+        </p>
+        <p>
+          Convert <span class="file-name">hex2sevenseg.v</span> to a symbol, and insert two copies
+          of it into the testbed. Connect the outputs of one to the Hex_1 pins, and the outputs of
+          the other one to the Hex_0 pins.
+        </p>
+        <p>
+          Add one instance of your four-bit-adder-subtracter to the testbed.
+        </p>
+        <p>
+          Connect the 9 switches to the corresponding Red LEDs. Connect the four sum outputs of of
+          the adder-subtracter to the four inputs of the Hex_0 seven segment display decoder.
+          Connect <span class="variable-name">Cout</span> from the adder-subtracter to input #3 of
+          the  Hex_1 seven segment display decoder, connect the <span
+          class="variable-name">Overflow</span> output to input #2; connect ground to inputs 1 and
+          0.
+        </p>
+        <table class="truth-table">
+          <tr>
+            <th>Testbed Pin</th><th>four-bit-adder</th>
+          </tr>
+          <tr>
+            <td>Switch[8]</td><td>sub</td>
+          </tr>
+          <tr>
+            <td>Switch[7..4]</td><td>A[3..0]</td>
+          </tr>
+          <tr>
+            <td>Switch[3..0]</td><td>B[3..0]</td>
+          </tr>
+        </table>
+        <p>
+          Make the DE1 pin assignments for the testbed pins. The <a href="../Pins_DE1.xhtml">DE1 I/O
+          Pins</a> web pages calls the segments A-G, which correspond to pin numbers 0 through 7,
+          respectively. Test your four-bit adder-subtracter, and fix it if it doesn’t work. Be sure
+          the carry and overflow values are correct as well as the sums and differences for various
+          values of A and B.
+        </p>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you have built, tested, and debugged your assignment, be sure to log out of your
+          account so the project will be copied back to the server. Then send me an email at
+          vickery<span class="at" title="Change to @">at</span>babbage.cs.qc.cuny.edu by midnight of
+          the due date to tell me the assignment is ready.  I will copy the project from the server
+          to my computer for testing.
+        </p>
+        <p>
+          The only way to submit the assignment is to put it in the proper profile subdirectory of
+          your TREE lab account.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-343 Assignment 3.”
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href=".">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

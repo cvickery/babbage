@@ -1,0 +1,46 @@
+
+When you first run SPIM, you may see a dialog box saying something
+about not being able to load the exceptions.s file.  Select the option
+to browse to the file, and browse to
+    C:\Program Files\PCSpim\exceptions.s
+You only have to do this once.
+
+While you are at the settings, set the options as follows:
+
+These options must be ON:
+
+  Save window positions
+  General registers in hexadecimal
+  Mapped I/O
+  Allow pseudo instructions
+  Load exception file (as above)
+
+All other options must be OFF!
+
+PROCEDURES
+
+  Load driver.s If it asks whether to reset the simulator, say YES
+  Load addem.s  When it asks whether to reset the simulator, say NO
+
+  If you feel really brave, you can just run the program (F5).  The
+  starting address should be 0x00400000.
+
+  The little console window does not print any prompt messages, just
+  type numbers one per line.  Negative is ok.  There is no editing,
+  and bad chars, including backspace, rubout, etc., give an error
+  message and terminate the line.
+  Use Control-D at the beginning of a line to end the input.
+
+  Problems:  If the simulator goes into a loop displaying "Exception"
+  messages, you can stop it with Control-C. You'll have to reload the
+  program files.
+
+  Debugging:  You can single-step using F10, but I found that you
+  can't do console input when single stepping.  (Output works,
+  though.)  You can set breakpoints using Control-B.  You have to
+  figure out the actual memory address.  For example, you can look at
+  the branch target address for the jal addem instruction to get the
+  address of your subroutine.  The simulator menu has a Show symbol
+  table option that is probably easier for this.
+
+

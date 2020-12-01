@@ -1,0 +1,417 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 1</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+    <style type="text/css" media="all">
+      table#computers { width: 50%; }
+      th  { text-align: center; }
+      td  { padding-left: 2em; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 1</h1>
+    </div>
+
+    <div id="content">
+      <h2>Overview</h2>
+      <div class="whitebox">
+
+        <p>For this assignment, you are to use the Altera <em>Quartus II</em>
+        design software and an Altera UP2 development board to implement a
+        combinational logic circuit.  When the assignment is working, you will
+        be able to turn four switches on and off to produce a 4-bit binary
+        number and see the hexadecimal representation of the binary number on
+        a seven-segment display.</p>
+
+      </div>
+
+      <h2>Procedure</h2>
+      <div class="whitebox">
+      
+        <ol>
+        
+          <li>
+          
+            <h5>Log into your account and verify that it is working
+            correctly.</h5> <p class="runin">Log into any one of the
+            computers in A-205 or A-227 using your account name for this
+            course, which consists of the first letter of your first name,
+            your last name, and the digits "343" all as a single lower-case
+            string.  That is, if your name is "Always A. Good Student", your
+            account name is <em>astudent343</em>.  Use the password given to
+            you in class, and remember that you will be required to change
+            it to something secure the first time you log in.</p>
+
+            <p>The names of the computers are:</p>
+            
+            <table  summary="Lists of computer names in A-205 and A-227."
+                    id="computers">
+            
+              <tr><th>A-205</th><th>A-227</th></tr>
+              <tr><td>birch</td><td>apple</td></tr>
+              <tr><td>cherry</td><td>fir</td></tr>
+              <tr><td>chestnut</td><td>juniper</td></tr>
+              <tr><td>elm</td><td>mimosa</td></tr>
+              <tr><td>ginkgo</td><td>peach</td></tr>
+              <tr><td>hemlock</td><td>pine</td></tr>
+              <tr><td>hickory</td><td>plum</td></tr>
+              <tr><td>&nbsp;</td><td>spruce</td></tr>
+              <tr><td>&nbsp;</td><td>sycamore</td></tr>
+              <tr><td>&nbsp;</td><td>walnut</td></tr>
+            
+            </table>
+            
+            <p>Use <em>Windows Explorer</em> to verify that your &rsquo;My
+            Documents&rsquo; directory contains a directory named &rsquo;My
+            Projects.&rsquo;  Create a new directory named
+            &rsquo;Assignment_01&rsquo; in your My Projects directory. 
+            <strong>The new directory must be spelled and capitalized
+            exactly as shown, including the underscore character, in order
+            to receive credit for this assignment!</strong></p>
+            
+            <p>Log off the computer you used and log into another one. 
+            Verify that your Assignment_01 directory shows up on the
+            second computer, indicating that your settings were successfully
+            copied to the domain server (<em>maple</em>) when you logged off
+            the first computer and that they were then copied to the second
+            computer when you logged into it.  If you have any problems with
+            this step, contact Dr. Vickery for help before proceeding with
+            the assignment.</p>
+
+          </li>
+          
+          <li>
+            
+            <h5>Create a Quartus project for the assignment.</h5> <p
+            class="runin">Start the Quartus II application by clicking the
+            icon on the desktop.  If you see any messages referring to
+            software licenses, there is a problem.  You can try to fix it
+            selecting &rsquo;specify license file&rsquo; or by going to
+            Tools->License&nbsp;Setup and specifying @oak.cs.qc.edu as the
+            location of the license file.  If that doesn&rsquo;t work,
+            report the problem to Dr. Vickery and try another computer. 
+            <em>Do not</em> select the 30-day trial option, web license
+            update, or any of the other possible choices offered to you;
+            that would just mess things up.</p>
+
+            <p>From the File menu, run the New Project Wizard.  Select your
+            Assignment_01 directory when asked where the project goes, and
+            give the project the name <em>bin2hex</em>.  Spell it just like
+            that.</p>
+            
+            <p>You can skip the step that asks for design files to add to
+            the project.  I am supplying you with one, but you can add it
+            later.</p>
+            
+            <p>On the family and device settings step, select FLEX10K for
+            the family and EPF10K70RC240-4 for the actual part number.  This
+            corresponds to the actual FPGA device on the UP2 development
+            board you will be using.</p>
+            
+            <p>Skip the EDA tool settings step, and click Finish when the
+            wizard shows the summary of the project.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Create a logic circuit.</h5> <p class="runin">From the File
+            menu (or by clicking the new page toolbar button), create a new
+            Block Diagram/Schematic file.  Use the Symbol Tool (the button
+            that looks like an AND gate) to add four input pins and seven
+            output pins to the circuit.  Look under
+            Libraries->Primitives->pin when the Symbol panel opens up to
+            find the pin symbols.  Name the input pins IN_1, IN_2, IN_4, and
+            IN_8.  Actually, you can name them anything (meaningful) you
+            want to, but those are the names used in this assignment page. 
+            Likewise, name the output pins Segment_A, Segment_B, etc. or
+            something similar.  Use the &ldquo;Orthogonal Node Tool&rdquo;
+            (the one for drawing wires) for connecting the four inputs to
+            the first four outputs.  Connect the other three outputs to the
+            fourth input too.</p>
+
+            <p>You might find it helpful to turn on the Show Gridlines
+            option under the View menu.  If you make mistakes, select the
+            wire piece you don&rsquo;t want and delete it using the Del key.
+            You might want to zoom in (Control-Spacebar) to do accurate
+            work.  Once a wire is connected to a pin, you should be able to
+            move the pin and the wire will stay connected; that&rsquo;s a
+            way to make sure your connections are good.</p>
+            
+            <p><strong>Save your circuit and compile it.</strong>  At this
+            point, your circuit is probably named Block1.bdf. Save it
+            (Control-S, or File->Save, or click on the floppy disk toolbar
+            button), and when prompted for the name, say <em>bin2hex</em>. 
+            This name must exactly match the name specified as the project
+            name earlier.  Now do a first compilation of the diagram:
+            select Tools->Compiler&nbsp;Tool->Start or click the toolbar
+            button with the right-pointing triangle on it (next to the
+            grayed out Stop button, or just type Control-L.</p>
+            
+            <p>Four tools should run: Analysis&nbsp;&amp;&nbsp;Synthesis,
+            Fitter, Assembler, and Timing&nbsp;Analyzer.  There should be no
+            errors and no warnings.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Make the pin assignments.</h5> <p class="runin">You have to
+            tell Quartus which pin numbers on the FPGA correspond to the
+            input and output pins in your diagram.  Use the second item
+            (Pins) on the Assignments menu.  When the big panel opens up you
+            will see an empty table with the first two columns named
+            <em>To</em> and <em>Location</em>.  The first row should have
+            two green items named <em>&lt;&lt;new&gt;&gt;</em>.  If you
+            double click on the left one, you should get a drop down menu of
+            the pin names in your diagram.  Click on the first one to select
+            it, and go to the next column.  There, you can either select the
+            pin number from a drop-down list, or just type in the pin
+            number.</p>
+
+            <p>Here are all the pin connections on the UP2 that you will be
+            using in this course (not just this assignment):</p>
+
+            <table summary="UP2 Pin Numbers">
+              <tr><th>Connection</th><th>Pin Name</th></tr>
+              <tr><td>Switch 1</td><td>PIN_41</td></tr>
+              <tr><td>Switch 2</td><td>PIN_40</td></tr>
+              <tr><td>Switch 3</td><td>PIN_39</td></tr>
+              <tr><td>Switch 4</td><td>PIN_38</td></tr>
+              <tr><td>Switch 5</td><td>PIN_36</td></tr>
+              <tr><td>Switch 6</td><td>PIN_35</td></tr>
+              <tr><td>Switch 7</td><td>PIN_34</td></tr>
+              <tr><td>Switch 8</td><td>PIN_33</td></tr>
+              <tr><td>Left Digit, Segment A</td><td>PIN_6</td></tr>
+              <tr><td>Left Digit, Segment B</td><td>PIN_7</td></tr>
+              <tr><td>Left Digit, Segment C</td><td>PIN_8</td></tr>
+              <tr><td>Left Digit, Segment D</td><td>PIN_9</td></tr>
+              <tr><td>Left Digit, Segment E</td><td>PIN_11</td></tr>
+              <tr><td>Left Digit, Segment F</td><td>PIN_12</td></tr>
+              <tr><td>Left Digit, Segment G</td><td>PIN_13</td></tr>
+              <tr><td>Left Digit, Decimal Point</td><td>PIN_14</td></tr>
+              <tr><td>Right Digit, Segment A</td><td>PIN_17</td></tr>
+              <tr><td>Right Digit, Segment B</td><td>PIN_18</td></tr>
+              <tr><td>Right Digit, Segment C</td><td>PIN_19</td></tr>
+              <tr><td>Right Digit, Segment D</td><td>PIN_20</td></tr>
+              <tr><td>Right Digit, Segment E</td><td>PIN_21</td></tr>
+              <tr><td>Right Digit, Segment F</td><td>PIN_23</td></tr>
+              <tr><td>Right Digit, Segment G</td><td>PIN_24</td></tr>
+              <tr><td>Right Digit, Decimal Point</td><td>PIN_25</td></tr>
+              <tr><td>Button 1</td><td>PIN_28</td></tr>
+              <tr><td>Button 2</td><td>PIN_29</td></tr>
+            </table>
+          
+            <p>It will make most sense if you use Switch 5 as IN_8, Switch 6
+            as IN_4, etc, and I suggest using the right digit of the two
+            seven-segment displays.  After you have made the pin
+            assignments, you can save yourself a mouse click by  by typing
+            Control-S to save the settings without being asked to do so
+            later.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Recompile the design and configure the FPGA.</h5> <p
+            class="runin">You had to compile the design once so the
+            Assignment Editor could tell what pins you are using, and now
+            you have to compile it again to get the assignments into the
+            configuration file for the FPGA.  Just press Control-L again to
+            recompile.</p>
+
+            <p>Make sure the UP2 is connected to the parallel port of the PC
+            you are using through a &rsquo;Byte Blaster&rsquo; cable., and
+            connect the power cube to the DC_IN connector on the UP2; two
+            green LEDs should light up.  Go to the Programmer panel. 
+            It&rsquo;s the rightmost button on the top toolbar, or you can
+            get to it using the Tools menu.  If you don&rsquo;t see
+            &ldquo;Byte Blaster [LPT1]&rdquo; near the top of the panel that
+            comes up, click the Hardware Setup button in the top left part
+            of the panel and select it from the drop down menu.</p>
+
+            <p>In the Programmer panel, you should see a table with one row
+            with the name <em>bin2hex.sof</em> in the File column.  Click
+            the box in the Program/Configure column for that file, and click
+            the Start button on the left side of the panel.  After a few
+            seconds, all seven segments and the decimal point of the left
+            seven segment display should light up and, assuming all of
+            switches 5-8 are up (off), just the decimal point on the right
+            seven segment display should be on.  Operate the switches to
+            verify that closing switch 8 turns on Segment A, switch 7 turns
+            on segment B, etc.  Remember, IN_8 (switch 5) should control all
+            of segments D, E, F, and G at this point.</p>
+            
+            <p>It would be a good idea to exit Quartus and log off the
+            computer at this point as a way of saving your work so far.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Generate Hex Digits on the seven segment display.</h5>  <p
+            class="runin">So far this assignment has had precious little
+            &rsquo;logic&rsquo; in it&rsquo; &rsquo;logic design.&rsquo; 
+            True, a wires meet the definition of combinational logic.  If
+            you know the logic values put into them you know the logic
+            values coming out, but it&rsquo;s time to try something useful. 
+            But what we need, a network that converts four-bit binary
+            numbers into settings to turn the elements of a seven segment
+            display on and off gets a bit tedious to design and build.  So
+            I&rsquo;m providing the design to you, in the form of a program
+            written in a Hardware Description Language (<cite>HDL</cite>)
+            called <em>Verilog</em>.  I&rsquo;ve put the code in a <a
+            href="./hex2sevenseg_with_error.v">separate file</a> so you can
+            just download it into your project instead of doing a cut and
+            paste from this web page.  So start, using a computer in the
+            lab, by right clicking on that link and saving the file in your
+            Assignment_01 project directory.  (<em>Update:</em> with the
+            release of Assignment 2, the link is to a file named <span
+            class="fileName">hex2sevenseg_with_error.v</span>.  To work on
+            this assignment, you need to download this file to your
+            Assignment_01 directory and rename it to <span
+            class="fileName">hex2sevenseg.v</span>.)</p>
+
+            <p>Add the Verilog module to your project by using the
+            Project->Add/Remove Files in Project menu.  Then open the file
+            for editing using the File->Open menu (Control-O).  With the
+            file open, convert it to a Symbol file using the
+            File->Create/Update->Create&nbsp;Symbol&nbsp;Files for
+            Current&nbsp;File menu item.  There should be no errors or
+            warnings.</p>
+            
+            <p>Now go to your schematic diagram (bin2hex.bdf) and delete all
+            the wires.  Click on the Symbol tool (the AND gate) and you will
+            now see a new Library named <em>Project</em> which, when you
+            open it, will contain <em>hex2sevenseg</em>.  Insert a copy of
+            that symbol into your schematic, connect the input pins to
+            the input of the symbol, and connect the outputs of the symbol
+            to the output pins of your circuit.  Recompile and download the
+            new configuration to the UP2.  Verify that the right seven
+            segment display shows the hexadecimal representation of the
+            state of switches 5-8.</p>
+            
+            <p><strong>But it doesn&rsquo;t look right!</strong> 
+            Congratulations, you&rsquo;ve discovered that the Verilog
+            program I gave you is wrong!!  (If you already looked at the
+            code, you knew this was coming.)  Your task now is to construct
+            the truth table for the erroneous function (segment G) and,
+            using the other six functions as a model for how to write a
+            logic equation in Verilog, to fix the program, reconvert it to a
+            symbol, recompile your design (no need to remove and reinsert
+            the symbol, just recompile), and download your corrected design
+            to the UP2 board.  Verify that all sixteen combinations of input
+            settings for the switches produce the correct pattern of lights
+            in the seven segment display.</p>
+            
+            <p><strong>Optional:</strong> Connect the other four switches to
+            the other seven segment display through another hex2sevenseg
+            symbol.</p>
+            
+            <p><strong>Exploring Other Things: </strong> If you run the RTL
+            Viewer from the Tools menu, and click on the hex2sevenseg
+            symbol, you can see what logic network the Verilog program was
+            compiled into.  Use Control-Spacebar to zoom in.  If you run the
+            Technology Mapper from the Tools menu, you can see what kinds of
+            building blocks on the FPGA were used to implement different
+            parts of the design, and if you run Timing Closure Floorplan
+            from near the bottom of the Assignments menu, you can see how
+            your pins and logic elements were mapped on to the actual FPGA. 
+            Again, zoom in to see details.  Click the &ldquo;Show Node
+            Fan-In&rdquo; and &ldquo;Show Node Fan-Out&rdquo; buttons on the
+            left of the diagram to see how I/O pins are connected to logic
+            elements; click on colored squares in the middle (zoom in to see
+            them if necessary) to see where different parts of the design
+            were placed on the chip.</p>
+            
+            <p>Be sure to exit Quartus and log off the computer so you work
+            is saved back to <em>maple</em> when you are finished.</p>
+
+          </li>
+
+        </ol>
+      
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+      
+        <p>When you have completed the assignment, send me an email message
+        telling me the project is ready for grading.  I will get a copy of
+        it from maple and test it.</p>
+        
+        <p>If you worked on the assignment with someone else, be sure to
+        list the names of both contributers in the email message so you both
+        get full credit.  Be sure to tell me which account has the final
+        version of the project for me to look at.</p>
+        
+        <p>Remember, it is perfectly all right to help each other to do the
+        assignment.  Just don&rsquo;t exchange design files with each other;
+        nobody learns anything if you do that.</p>
+
+        <p><strong>Due Date</strong>  The assignment is due by midnight,
+        September 19.  Do not submit the assignment unless you have verified
+        that it works correctly using an actual UP2 in the lab.  Having said
+        that, you can get partial (half) credit for &ldquo;trying.&rdquo; 
+        Just say in your email that the assignment is incomplete, and I will
+        look at your project, but not try to run it.</p>
+
+      </div>
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="../">CS-343 Home</a>&nbsp;-&nbsp;
+        <a href="./">CS-343 Fall 2006</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

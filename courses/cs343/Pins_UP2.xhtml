@@ -1,0 +1,146 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>UP2 I/O Pins</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+    <style type="text/css" media="all">
+      .switch, .righthex, .clock {
+        background-color: #efe;
+        color: #000;
+        }
+      .lefthex, .button {
+        background-color: #fef;
+        color: #000;
+        }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>UP2 I/O Pins</h1>
+    </div>
+
+    <div id="content">
+      <h2>Clock, Buttons, Switches, and Seven Segment Displays</h2>
+
+      <div class="whitebox">
+
+        <p>The Flex EPF10K70RC240-4 FPGA on the right side of the UP2 logic
+        kit is connected to two seven segment displays, (&ldquo;Left
+        Digit&rdquo; and &ldquo;Right Digit&rdquo;), eight &ldquo;dip&rdquo;
+        switches (&ldquo;Switch 1&rdquo; through &ldquo;Switch 8&rdquo;)
+        located in a red switch block, and two push buttons (&ldquo;Flex
+        PB1&rdquo; and &ldquo;Flex PB2&rdquo;).</p>
+
+        <p>The dip switches produce logic &ldquo;1&rdquo; when pressed down,
+        the push buttons produce logic &ldquo;0&rdquo; when pressed, and the
+        segments of the seven segment displays light up when connected to
+        logic &ldquo;0&rdquo;.  The following table shows which FPGA pin
+        numbers are connected to these devices:</p>
+
+        <table summary="UP2 Pin Numbers">
+          <col width="50%" /><col width="50%" />
+          <tr><th>Connection</th><th>Pin Name</th></tr>
+
+          <tr class="clock"><td>25.175 MHz Clock</td><td>PIN_91</td></tr>
+
+          <tr class="button"><td>PB 1</td><td>PIN_28</td></tr>
+          <tr class="button"><td>PB 2</td><td>PIN_29</td></tr>
+
+          <tr class="switch"><td>Switch 1</td><td>PIN_41</td></tr>
+          <tr class="switch"><td>Switch 2</td><td>PIN_40</td></tr>
+          <tr class="switch"><td>Switch 3</td><td>PIN_39</td></tr>
+          <tr class="switch"><td>Switch 4</td><td>PIN_38</td></tr>
+          <tr class="switch"><td>Switch 5</td><td>PIN_36</td></tr>
+          <tr class="switch"><td>Switch 6</td><td>PIN_35</td></tr>
+          <tr class="switch"><td>Switch 7</td><td>PIN_34</td></tr>
+          <tr class="switch"><td>Switch 8</td><td>PIN_33</td></tr>
+
+          <tr class="lefthex">
+            <td>Left Digit, Segment A</td><td>PIN_6</td></tr>
+          <tr class="lefthex">
+            <td>Left Digit, Segment B</td><td>PIN_7</td></tr>
+          <tr class="lefthex">
+            <td>Left Digit, Segment C</td><td>PIN_8</td></tr>
+          <tr class="lefthex">
+            <td>Left Digit, Segment D</td><td>PIN_9</td></tr>
+          <tr class="lefthex">
+            <td>Left Digit, Segment E</td><td>PIN_11</td></tr>
+          <tr class="lefthex">
+            <td>Left Digit, Segment F</td><td>PIN_12</td></tr>
+          <tr class="lefthex">
+            <td>Left Digit, Segment G</td><td>PIN_13</td></tr>
+          <tr class="lefthex">
+            <td>Left Digit, Decimal Point</td><td>PIN_14</td></tr>
+
+          <tr class="righthex">
+            <td>Right Digit, Segment A</td><td>PIN_17</td></tr>
+          <tr class="righthex">
+            <td>Right Digit, Segment B</td><td>PIN_18</td></tr>
+          <tr class="righthex">
+            <td>Right Digit, Segment C</td><td>PIN_19</td></tr>
+          <tr class="righthex">
+            <td>Right Digit, Segment D</td><td>PIN_20</td></tr>
+          <tr class="righthex">
+            <td>Right Digit, Segment E</td><td>PIN_21</td></tr>
+          <tr class="righthex">
+            <td>Right Digit, Segment F</td><td>PIN_23</td></tr>
+          <tr class="righthex">
+            <td>Right Digit, Segment G</td><td>PIN_24</td></tr>
+          <tr class="righthex">
+            <td>Right Digit, Decimal Point</td><td>PIN_25</td></tr>
+
+        </table>
+
+      </div>
+    </div>
+
+    <div id="footer">
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

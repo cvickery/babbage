@@ -1,0 +1,271 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 4</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 4</h1>
+    </div>
+
+    <div id="content">
+      <h2>Two Digit Timer Project</h2>
+      <div class="whitebox">
+        <p>For this assignment you are to build a two digit timer with the
+        following features:</p>
+        <ul>
+          <li>Two seven segment displays show a two-digit number that
+          increments exactly once per second.</li>
+          <li>Pressing a pushbutton causes the number to increment ten times
+          per second instead of once per second.</li>
+          <li>A second pushbutton starts and stops the counter.</li>
+          <li>Eight switches set the maximum each digit will count to before
+          going back to 0. The left and right digits can independently be
+          set to any maximum value between 0 and hexadecimal F.  For example
+          the maximum value for the left digit might be set to 5 and the
+          right digit to 0, giving a two-digit timer with a one minute cycle
+          time.</li>
+          <li>If the seven segment displays have decimal points that can be
+          turned on and off, the left decimal point is to be on when the
+          timer is running and off when it is stopped, while the right
+          decimal point is to show the state of the 1 Hz (or 10 Hz) clock
+          signal.</li>
+        </ul>
+        
+        <h2>Resources and Procedures</h2>
+        <div class="whitebox">
+          <h3>Resources</h3>
+          
+          <p>I am providing a set of <a href="Verilog_Files">Verilog
+          files</a> that implement the entire project.  The idea is that you
+          can build a working version of the project using them, and then
+          substitute your own logic diagrams for the Verilog code as
+          described below.  This approach allows you to work on the project
+          incrementally, isolating errors to whatever changes you make at
+          each step.</p>
+
+
+          <h3>Procedures</h3>
+          <ul>
+            <li>
+
+              <h5>Build a working version of the project using the Verilog
+              files I provided.</h5> <p class="runin">Create a project named
+              <span class="directoryName">Assignment_04</span> in your <span
+              class="directoryName">My Projects</span> directory.  Call the
+              top level design Two_Digit_Timer. Configure the project for
+              the logic kit you will be using. (Consult the <a
+              href="../Pins.xhtml">web page for your kit</a> if necessary to
+              get the FPGA part number.) Copy all the the files from <a
+              href="Verilog_Files">Verilog Files</a> into your project
+              directory, and add them all to the project.  Compile the
+              project, set up the pin assignments, compile again, and you
+              should have a programming file that you can download to a kit
+              for testing.</p>
+
+              <p class="standoutBox">The new DE1 kits should be delivered
+              just about the same time as the assignment is due, so you will
+              undoubtedly end up doing the assignment using the UP2 kits. 
+              In this case, connect the output named <span
+              class="variableName">RightDigit_DP</span> to the decimal point
+              of the right seven segment display, Pin_25, and connect the
+              output named <span class="variableName">LeftDigit_DP</span> to
+              the decimal point of the other seven segment display, Pin
+              14.  If the DE1s do arrive in time for you to use one,
+              substitute any two LEDs for the two decimal points.</p>
+
+              <p>When you compile the design you will probably get warnings
+              about clock skew and/or timing constraints not being met.  In
+              the real world you would need to clean up your project to
+              eliminate these warnings.  But for this assignment you may
+              safely ignore them and download your design to the logic
+              kit.</p>
+              
+              <p>The <span class="variableName">Start_Stop</span> pushbutton
+              acts as a toggle: alternate presses should turn the <span
+              class="variableName">LeftDigit_DP</span> light to turn on and
+              off and for the counter to increment once a second when the
+              light is on.</p>
+
+              <p class="standoutBox">The pushbuttons on the logic kits are
+              typically &ldquo;noisy.&rdquo; Pressing the button is very
+              likely to cause <span class="variableName">Start_Stop</span>
+              to receive several pulses faster than you can see them.  If
+              this happens, you might need to press the button several times
+              to get it to &ldquo;stick&rdquo; in the on or off state. 
+              There are &ldquo;debouncing&rdquo; circuits that will
+              eliminate this problem, but we are not going to add those to
+              this project.</p>
+
+              <p>When the clock is running, you should be able to press the
+              other pushbutton and see the counter operate ten times faster
+              and for clock light to flicker for as long as you hold the
+              button.  There is no way to see that it is going exactly 10
+              times a second: you will have to trust my Verilog code!</p>
+
+              <p>Be sure you can set the limit for each digit using the dip
+              switches.  Watch out if you test using the value '59' because
+              the '9' will look the same even if you reverse the bits
+              left-to-right.  And make sure the '5' doesn&rsquo;t act like a
+              hexadecimal 'A' for the same reason.</p>
+
+            </li>
+            
+            <li>
+            
+              <h5>Replace the Verilog top-level design with your own
+              schematic.</h5> <p class="runin">This is a three step process.
+              First, open the Verilog programs for the seven segment
+              decoder, the four bit counter, and the clock module.  Convert
+              each one to a symbol file.  You can then close all three
+              Verilog files.  Now use the <span
+              class="menuItem">Project->Add/Remove Files in Project</span>
+              menu item to remove <span
+              class="fileName">Two_Digit_Timer.v</span> from the project. 
+              Nothing will appear to happen, but this piece of housekeeping
+              allows you to create a schematic having the same file name
+              (except for the extension) without fear of conflicts.  Now
+              create a new schematic, add all the input and output pins,
+              insert the symbols for the clock module, the four bit counter
+              module (twice) and the hex2sevenseg module (twice).  Save it
+              as <span class="fileName">Two_Digit_Timer.bdf</span>.  What
+              you have done is simply to keep the same top-level design
+              entity in terms of the name and functionality are concerned,
+              but you have changed the implementation from a Verilog program
+              to a schematic.</p>
+
+              <p>If you have used exactly the same pin names in your
+              schematic as I used in mine, you should be able to just
+              recompile and test to be sure your new version of the project
+              works.  If you changed any pin names, you will have to fix
+              them up after your first recompilation.  Your new schematic
+              should look something like this:</p>
+              
+              <div>
+                <img src="Two_Digit_Timer.png" alt="Top Level Schematic" />
+              </div>
+
+            </li>
+            
+            <li>
+            
+              <h5>Implement the clock module.</h5> <p class="runin">Remove
+              <span class="fileName">clock_module.v</span> from the project
+              and create a new schematic to replace it.  Implement the
+              schematic using the techniques shown in class.  To make sure
+              everything works right, you should convert your schematic to a
+              symbol, remove the existing symbol from the top level design,
+              and then reinsert the symbol for your design.  But before you
+              hook your symbol up to the top-level schematic, be sure the
+              pin names match the pin functions: it&rsquo;s possible that
+              your symbol will have a different ordering for the inputs
+              and/or outputs.</p>
+              
+              <p>Build and carefully test your project to make sure it still
+              works!</p>
+
+            </li>
+            
+            <li>
+            
+              <h5>Implement the four-bit counter module.</h5> <p
+              class="runin">Finally, remove the <span
+              class="fileName">Four_bit_counter.v</span> file from the
+              project and add your own schematic to replace it, following
+              the same procedure you followed for replacing the previous two
+              Verilog files.</p>
+              
+            </li>
+
+          </ul>
+
+        </div>
+
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+      
+        <p>When you have everything working, send me an email
+        message telling me the project is ready for grading.  I will get a
+        copy of it from <span class="computerName">maple</span> and test
+        it.</p>
+
+        <p class="standoutBox">The Subject line of your email must be <span
+        class="codeSnippet">CS-343 Assignment 4</span> and you must put your
+        name in the body of the email message.</p>
+
+        <p>If you worked on the assignment with someone else, be sure to
+        list the names of both contributers in the email message so you both
+        get full credit.  In this case, be sure to tell me which account has
+        the final version of the project for me to look at.</p>
+
+        <p>Remember, it is perfectly all right to help each other to do the
+        assignment.  That&rsquo;s the main reason I made the <a
+        href="http://babbage.cs.qc.edu/Fora/Courses/viewforum.php?f=3">course
+        discussion forum</a> available.  (Send me email if you don&rsquo;t
+        know the Username and Password for accessing the forum.)  Just
+        don&rsquo;t exchange actual design files with each other; nobody
+        learns anything if you do that.</p>
+
+        <p><strong>Due Date</strong>  The assignment is due by midnight,
+        March 1.  Do not submit the assignment unless you have verified that
+        it works correctly using a logic kit in the lab.  Having said that,
+        you can get partial (half) credit for &ldquo;trying.&rdquo;  Just
+        say in your email that the assignment is incomplete, and I will look
+        at your project, but I won&rsquo;t try to run it.</p>
+
+      </div>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

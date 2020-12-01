@@ -1,0 +1,181 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Extra Credit Assignment</title>
+
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css" />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Extra Credit Assignment</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>While this assignment is intended to help people who had
+        trouble on the midterm exam, it is open to all.  If you choose
+        to do it, it will count 15% of your course grade unless your
+        score on this assignment would lower your course average, in
+        which case I will disregard it.  Please do not waste your time
+        or mine by submitting something unless you think it is good
+        enough to raise your grade.</p>
+
+        <p>You have two options for extra credit projects: write a
+        paper on computer architecture, or write a program that
+        simulates some part of a computer system.  Neither assignment
+        is cast in stone: if you have an idea that is related to
+        either one, but not exactly the same as the description below,
+        consult with me to see if we can agree on whether you have an
+        acceptable alternative.</p>
+
+        <p class="standout_box"><strong>Note:</strong>  If you elect
+        to submit an extra credit assignment, it must be totally your
+        own work.  If you submit work that is not your own, you will
+        receive an automatic failure in the course.</p>
+
+      </div>
+
+      <h2>Term Paper</h2>
+      <div class="whitebox">
+
+        <p>Write a 5-10 page paper on processor microarchitectures.
+        Start by reading the Intel white paper, <cite><a
+        href="http://download.intel.com/technology/architecture/new_architecture_06.pdf">Inside
+        Intel Core Microarchitecture</a></cite>&nbsp;[2]  Using this
+        paper as a starting point, read papers, articles, and books
+        that help you understand what the current state of
+        microarchitecture design.  The Intel web site where the
+        article cited comes from has several other white papers and
+        web pages you can consult, as well as reprints of journal
+        articles and conference proceedings.  IBM and AMD are other
+        companies that publish white papers and articles that should
+        prove useful  You may also draw on material from our textbook,
+        and I suggest Shen and Liplasti&rsquo;s <cite>Modern Processor
+        Design</cite>&nbsp;[1] as book with excellent coverage of the
+        topic.  Finally, you might also want to look at web sites that
+        have tutorial articles on various aspects of processor design,
+        such as <a href="http://www.arstechnica.com">Ars Technica</a>
+        (look under Articles on <cite>CPU Theory and Praxis</cite>)
+        and <a href="http://www.tomshardware.com">Tom&rsquo;s
+        Hardware</a> (if you can get past the ads and into the
+        forums).</p>
+
+        <p>Make your paper instructive: provide defititions of terms,
+        and explain how things work.  Write your paper as if it was
+        going to be a reading assignment for students taking CS-343.
+        That is, your audience knows as much about computer
+        architecture as you did <em>before</em> you started working on
+        the paper.</p>
+
+        <p>Your paper will be graded both on style and content.  That
+        is, it must be well organized and well written.  You must
+        write the paper totally in your own words, but you must cite
+        the sources of all specific ideas in your paper.  You may
+        include brief quotations from your sources (generally less
+        than a sentence), and each such quotation must cite where it
+        came from.  Examples of Citations are the numbers in square
+        brackets in the previous paragraph of this web page.  Those
+        numbers are to refer to full citations like those listed
+        below:</p>
+
+  <div class="codeblock">
+    <strong>References</strong>
+
+    [1] Shen, J. P. and Lipasti, M. <cite>Modern Processor Design</cite>.  McGraw-Hill, 2005.
+    [2] Wechsler, O. <cite>Inside Intel Core Microarchitecture</cite>.  Intel Corporation, 2006.
+                     http://download.intel.com/technology/architecture/new_architecture_06.pdf
+
+  </div>
+      </div>
+
+      <h2>Simulation Project</h2>
+      <div class="whitebox">
+      
+        <p>First, a few ground rules about this assignment:</p>
+        <ol>
+          <li>You may either work alone or with one other person registered
+          for the course on this project.  All code must be written by you
+          alone or by you and your partner.</li>
+          <li>You may submit either Java or C/C++ source code.  In addition
+          to the source code itself, you may optionally submit an Eclipse or
+          Visual Studio workspace so that I can build the executable program
+          myself.  Alternatively (for C/C++) you may provide either a
+          Makefile or written instructions telling how to build the
+          application using the GNU toolchain.</li>
+          <li>The program must be platform-independent.  If you prepare a
+          GUI for your application, this means you will have to use Java. 
+          If your program runs from the command line, just be sure it
+          doesn&rsquo;t require any Windows-specific libraries or header
+          files.</li>
+        </ol>
+        
+        <h3>Description</h3>
+        
+        <p>Your program is to implement a cycle-level simulation of the
+        multi-cycle MIPS CPU developed in Chapter 5 of the text book.  The
+        structure of your program is to mimic the structure of the textbook
+        CPU, and the output of your program is to be a line of text for each
+        state the CPU enters.  For each state, list: the current clock
+        number, the name of the state, and the new values of all registers that
+        are changed by that state.  For State 0, show the new value of the
+        IR in both hexadecimal and as an assembly language statement.</p>
+        
+        <p>The main memory for the simulation is to be implemented as a text
+        file, which is the output of the SPIM simulator&rsquo;s &ldquo;Save
+        Log File&rdquo; (Ctrl-S) command.  That is, you will test your
+        simulator by writing a program that uses only the instructions
+        implemented in chapter 5 (lw, sw, beq, j, add, and, or, slt, add,
+        sub), loading the program into the SPIM simulator, and saving the
+        resulting log file.  When your program initializes, it is to extract
+        the contents of all the initialized words of memory from this log
+        file (they start with two hexadecimal constants inside square
+        brackets) and put them into an array.  When the simulator performs
+        MemRead and MemWrite operations, it accesses or updates this
+        array.</p>
+
+      </div>
+    </div>
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a><br/>
+      <em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+          ?>.</em>    </p>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,150 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    . date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>Cache Parameters</title>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="css/cache_parameters.css" />
+
+  </head>
+
+  <body id='urn:uuid:BC65BB74-FFC8-488B-9D49-26AA546179D8'>
+
+    <h1>Cache Parameters</h1>
+			<p>
+      	There are many parameters that can vary in the design of a cache memory system, but many of them can be
+        derived from other ones. For example, looking at the first two tables below, if you know the number of bytes per
+        word and the number of words per block, you can calculate the number of bits per word, the number of bytes per
+        block, and the number of bits per block.
+      </p>
+      <p class="aside"><strong>On symbols:</strong>
+      	I’ve always thought that obscure symbols were an evil ruse on the part of mathematicians to make simple concepts
+        difficult to understand. So I’ve tried to use mnemonic symbols as best I can here. Everything is uppercase except
+        b (for bits) and B (for bytes), a common convention. I used a lowercase <em>L</em> in <em>PBl</em> because
+        there were no more variants on the latin letter 'B' for distinguishing among <span class="underline">b</span>its, 
+        <span class="underline">b</span>ytes, and <span class="underline">bl</span>ocks, and I
+        didn’t want to go the evil mathematician route by introducing a letter from some other alphabet.
+      </p>
+      <p class="aside">
+      	Also, I used the term “primary memory” as the basis for the symbols that refer to what is commonly called
+        “main memory” to avoid confusion with the prefix letter <em>M</em> used for Mega.
+      </p>
+      <h2>Primary Memory Capacity</h2>
+			<div>
+        <table>
+        	<caption>Capacity can be measured in bits, bytes, words, or blocks.</caption>
+          <tr><td>Bits</td><td>Pb</td><td>total capacity, in bits</td></tr>
+          <tr><td>Bytes</td><td>PB</td><td>total capacity, in bytes</td></tr>
+          <tr><td>Words</td><td>PW</td><td>total capacity, in words</td></tr>
+          <tr><td>Blocks</td><td>PBl</td><td>total capacity, in bocks</td></tr>
+        </table>
+        <table>
+        	<caption>Capacity Ratios</caption>
+          <tr><td>Pb &divide; PB</td><td>bits per byte: always 8</td></tr>
+          <tr><td>PB &divide; PW</td><td>bytes per word</td></tr>
+          <tr><td>PW &divide; PBl</td><td>words per block</td></tr>
+        </table>
+      </div>
+        <p>Number of Primary Memory Address bits is <em>A</em>.</p>
+        <div>
+          <p>A = log<span class="subscript">2</span>(<em>PB</em>) for byte addressable memory</p>
+          <p>A = log<span class="subscript">2</span>(<em>PW</em>) for word addressable memory</p>
+        </div>
+	      <h2>Cache Capacity</h2>
+      	<div>
+        	<table>
+            <tr><td>Bits</td><td>Cb</td><td>cache capacity, in bits</td></tr>
+            <tr><td>Bytes</td><td>CB</td><td>cache capacity, in bytes</td></tr>
+            <tr><td>Words</td><td>CW</td><td>cache capacity, in words</td></tr>
+            <tr><td>Lines</td><td>CL</td><td>number of cache lines</td></tr>
+            <tr><td>Sets</td><td>CS</td><td>number of cache sets</td></tr>
+      		</table>
+          <table>
+          	<caption>Ratios</caption>
+            <tr><td>Cb &divide; CB</td><td>Same as Pb &divide; PB (8)</td></tr>
+            <tr><td>CB &divide; CW</td><td>Same as PB &divide; PW</td></tr>
+            <tr><td>CW &divide; CL</td><td>Same as PW &divide; PBl</td></tr>
+        		<tr><td>CL &divide; CS</td><td>Set Size (<em>n</em>)</td></tr>
+      		</table>
+          <table>
+          	<caption>Set Size = Lines per Set (<em>n</em>)</caption>
+            <tr><td><em>n</em> == 1</td><td>Direct Mapped</td></tr>
+            <tr><td><em>n</em> == CL</td><td>Fully Associative</td></tr>
+            <tr><td>1 &lt; <em>n</em> &lt; CL</td><td><em>n</em>-way Set Associative</td></tr>
+          </table>
+        </div>
+      
+      <h2>Bit fields in a Primary Memory address, from left-to-right</h2>
+				<div>    
+        	<pre>[ tag | index | block or line offset | byte offset ]</pre>
+    
+        	<p>Total number of bits is <em>A</em>, the number of Primary Memory Address bits.</p>
+        	<div><p>A == tag + index + block or line offset + byte offset</p></div>
+    
+          <ul>
+          	<li>Number of byte offset bits is zero for word-addressable memory.</li>
+          	<li>
+            	Number of byte offset bits is log<span class="subscript">2</span>(<em>bytes per word</em>) for
+              byte addressable memory.
+            </li>
+          	<li>Number of block or line offset bits is log<span class="subscript">2</span>(<em>words per line</em>)
+            </li>
+          	<li>
+            	Number of index bits is log<span class="subscript">2</span>(<em>CS</em>), 
+              where <em>CS</em> is the number of sets.
+              <ul>
+                <li>
+                	For Fully Associative, CS is 1. Since log<span class="subscript">2</span>(1) is 0,
+                  there are no index bits.
+                  </li>
+                <li>
+                	For Direct Mapped, CS is equal to CL, the number of lines, so the number of index bits is 
+                  log<span class="subscript">2</span>(CS) === log<span class="subscript">2</span>(CL).
+                </li>
+                <li>
+                	For <em>n</em>-way Associative CS = CL &divide; <em>n</em>: 
+                  log<span class="subscript">2</span>(CL &divide; <em>n</em>) index bits.
+                </li>              	
+              </ul>
+            </li>
+      			<li>
+            	Number of tag bits is A - (index + line offset + byte offset)
+            </li>
+          </ul>
+      <p>
+      	Cache parameters are always powers of two, so log<span class="subscript">2</span>(<em>whatever</em>) is always
+        an integer. No need to use ceil(log<span class="subscript">2</span>(<em>whatever</em>)).
+      </p>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?> &mdash;
+      <a href="../">Vickery Home</a> &mdash;
+      <a href=".">CSCI-343 Home Page</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

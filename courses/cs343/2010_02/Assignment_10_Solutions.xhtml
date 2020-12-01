@@ -1,0 +1,144 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-343 Assignment 10 Solutions</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../../css/assignments-print.css" />
+    <style type="text/css">
+      ol { list-style-position:inside; }
+      p {
+        background-color:#ccc;
+        color:green;
+        padding:0.5em;
+        border-radius:0.5em;
+        box-shadow:0.25em 0.25em 0.25em #600;
+        -webkit-box-shadow:0.25em 0.25em 0.25em #600;
+        -moz-box-shadow:0.25em 0.25em 0.25em #600;
+      }
+      br+strong { padding-left:1em; }
+    </style>
+  </head>
+
+  <body id='urn:uuid:FB0B93EF-B82B-4FFB-B492-79E5BF39B130'>
+     <div id="header">
+      <h1>CS-343 Assignment 10 Solutions</h1>
+    </div>
+    <div id="content">
+      <h2>Answers</h2>
+      <div>
+        <ul>
+          <li>Byte addressable</li>
+          <li>8 bytes per word</li>
+          <li>8 GB primary memory</li>
+          <li>2-way set associative cache</li>
+          <li>8 words per cache line</li>
+          <li>2 MB cache capacity</li>
+          <li>cache access time is 500 psec</li>
+          <li>miss penalty time is 5 nsec</li>
+        </ul>
+        <h3>Questions</h3>
+        <ol>
+          <li>Number of blocks of primary memory
+            <p>
+              total bytes &divide; bytes per block = total blocks
+              <br />
+              (2<span class="superscript">3</span> &times; 2<span class="superscript">30</span>) &divide;
+              (2<span class="superscript">3</span> &times; 2<span class="superscript">3</span>) =
+              2<span class="superscript">33</span> &divide; 2<span class="superscript">6</span> =
+              2<span class="superscript">27</span> blocks.
+            </p>
+          </li>
+          <li>Number of cache lines
+            <p>
+              cache capacity &divide; bytes per line = number of lines
+              <br />
+              (2<span class="superscript">1</span> &times; 2<span class="superscript">20</span>) &divide;
+              (2<span class="superscript">3</span> &times; 2<span class="superscript">3</span>) =
+              (2<span class="superscript">21</span> &divide; 2<span class="superscript">6</span>) =
+              2<span class="superscript">15</span> lines.
+            </p>
+          </li>
+          <li>Number of cache sets
+            <p>
+              Number of lines &divide; lines per set = number of sets
+              <br />
+              2<span class="superscript">15</span> &divide; 2<span class="superscript">1</span> =
+              2<span class="superscript">14</span> = 16,384 sets.
+            </p>
+          </li>
+          <li>Primary memory address size
+            <p>log<span class="subscript">2</span>(number of addressable bytes) = 33 bits</p>
+          </li>
+          <li>Size of byte offset field
+            <p>log<span class="subscript">2</span>(bytes per word) = 3 bits</p>
+          </li>
+          <li>Size of block offset field
+            <p>log<span class="subscript">2</span>(words per block|line) = 3 bits</p>
+          </li>
+          <li>
+            Size of index field
+            <p>log<span class="subscript">2</span>(number of sets = 14 bits</p>
+          </li>
+          <li>Size of tag field
+            <p>Address width - (index + block offset + byte offset) = 13 bits</p>
+          </li>
+          <li><em>p(hit)</em> if the CPU were to access memory totally randomly
+            <p>
+              Proportion of main memory that fits in cache = 2<span class="superscript">21</span>
+              2<span class="superscript">33</span> = 2<span class="superscript">2</span>&minus;12 =
+              0.0002441.
+            </p>
+          </li>
+          <li>Average access time if the CPU were to access memory totally randomly
+            <p>
+             <em>p(hit)</em> &times; 500 psec + <em>p(miss)</em> &times; (500 psec + 5 nsec) =
+             0.0002441 &times; 500 + .9997559 &times; 5500 = 5.4987794 nsec
+             <br />This is correct: the hit time has to be added to the miss penalty on a miss. Other semesters,
+             the “miss time” = was used, which would have been given as 5.5 nsec for this example. You will not
+             have to worry about which number to use on the final: both values will be given to avoid confusion.
+            </p>
+          </li>
+          <li>Average access time if <em>p(hit)</em> is 0.97
+            <p>
+              0.97 &times; 500 + 0.03 &times; 5,500 = 650 psec.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

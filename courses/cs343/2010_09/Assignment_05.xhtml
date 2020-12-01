@@ -1,0 +1,160 @@
+<?php
+  $html_attributes = "lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:" . $html_attributes;
+    $content_type = "application/xhtml+xml";
+    header("Content-type: application/xhtml+xml");
+    echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+  }
+  else
+  {
+    $content_type = "text/html";
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+    <title>CS-343 Assignment 5</title>
+    <meta http-equiv="Content-Type" content="<?php echo $content_type;?>; charset=UTF-8" />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:61F8889E-0C16-4730-9FA8-59A2A3E503ED'>
+
+    <h1>CS-343 Assignment 5</h1>
+    <section id="content">      
+      <h2>Resource Files</h2>
+      <p><a href="../hex2sevenseg.v">hex2sevenseg.v</a></p>
+      <h2>Reading Assignments</h2>
+      <p>The current reading assignment is Sections 7-12 of Appendix C.</p>
+      <h2>Project Description</h2>
+      <section>
+        <p>
+          The assignment is to construct a register file following the pattern for the MIPS register file
+          covered in Appendix C, section C.8, but scaled down to accommodate the limited number of manual input
+          and output devices on the DE-1 logic kits.
+        </p>
+        <p>
+          Specifically, your project is to implement a 4&#215;4 register file with two read ports and one write
+          port. Like the MIPS, Register #0 is special: writing to it will do nothing, and reading from it will always
+          produce 4 binary zeros. So there will be just 3 actual registers.
+        </p>
+        <p>
+          There is a block diagram of the register file in many of the figures in the textbook, including Figure
+          4.15 on page 320 and Figure C.8.7 on page C-55.
+        </p>
+      </section>
+      <ol>
+        <li>
+          <h5>Set up the project and testbed.</h5>
+          <p>
+            Create a directory name <span class="directory-name">Assignment 5</span> under the <span
+            class="directory-name">My Projects</span> directory of your roaming profile in the lab.  Copy the
+            hex2sevenseg.v file into that directory.
+          </p>
+          <p>
+            Create a new Quartus project, using “register_file_testbed” as the name of the top-level design entity.  Add
+            hex2sevenseg.v to the project. Create a new block diagram file (schematic) for the testbed and set up the
+            I/O pins for it:
+          </p>
+          <p>
+            You will need two two-bit numbers to select the two registers to be read, another two-bit number to select
+            the register to be written, and a four-bit number to specify the value to be written. Use the ten slide
+            switches for these inputs, in the following order from left to right: Read Register #1; Read Register #2;
+            Write Register #; Write Data. Connect all ten switches to their corresponding Red LEDs; connect Read
+            Register #1 and Read Register #2 to Hex_3; Read Data 1 to Hex_2; Read Data 2 to Hex_1; and Write Register #
+            to Hex_0. There aren’t enough seven-segment displays to show the Write Register Data, so we will have to
+            settle for just the Red LEDs[3:0] to see that.
+          </p>
+          <p>
+            What is new about this project is the need for a clock signal to trigger the write operation of the register
+            file. Simply set up an input pin named “clock” for this, and connect it to any one of the three clock inputs
+            available on the <a href="../Pins_DE1.xhtml">DE-1</a>. It doesn’t matter which clock signal you use because
+            they all operate way too quickly for you to see any difference during your manual testing of the project.
+          </p>
+          <p>
+            Finally, use Key_0 as the "write" control signal. Don’t forget to invert it so that pressing it generates a
+            logic 1 value.
+          </p>
+        </li>
+        <li>
+          <h5>Create a 4-bit register module.</h5>
+          <p>
+            Use 4 <em>dffe</em> (D flip-flop with enable) elements to build the register module. You will find the
+            symbol under “storage” in the Quartus symbol library. The inputs should be clock, enable, data_in[3:0]; the
+            outputs should be data_out[3:0].
+          </p>
+        </li>
+        <li>
+          <h5>Create a module for the register file.</h5>
+          <p>
+            There should be three two-bit inputs for the three register numbers (Read Register 1; Read Register 2; Write
+                Register), a four-bit input for the Write Data, two four-bit outputs for the two Read Register Data
+            values, a <em>RegWrite</em> input, and a <em>clock</em> input.
+          </p>
+          <p>
+            There are to be just three register modules inside this module because Register #0 does not actually exist.
+            Use a 2&#215;4 decoder with the Write Register # as inputs to enable the appropriate registers. (Output #0
+                of the decoder will not connect to anything because there is no Register #0.) Use two 4&#215;4
+            multiplexers for the read data outputs; connect inputs #0 to ground to implement Register 0.
+          </p>
+          <p>
+            Connect the clock input to the clock inputs of all three registers. Use the <em>RegWrite</em> input to
+            control whether the decoder outputs actually affect the <em>inputs</em> to the registers. 
+          </p>
+        </li>
+        <li>
+          <h5>Test the register file.</h5>
+          <p>
+            Create a symbol for the register file module, and insert an instance of it into the testbed. Connect
+            the I/O pins to the corresponding pins of the register file.
+          </p>
+          <p>
+            You should be able to select two registers for reading by using Switches[9..8] and Switches[7:6] to select
+            any pair. Be sure the value displayed in Hex_3 reflects the settings of those four switches. Until you write
+            something into a register, expect the values displayed in Hex_2 and Hex_1 to both be 0. Changing the
+            settings of Switches[5:4] (the write register #) should affect the number displayed in Hex_0; changing the
+            settings of Switches[3:0] (the write data value) should have no effect, except for the corresponding Red
+            LEDs.
+          </p>
+          <p>
+            Once you have verified that the inputs and outputs are set up correctly, it is time to write some data into
+            the registers. Use Switches[5:4] to select a register number other than zero, and use Switches[3:0] to set
+            up a non-zero data value. Press Key_0 to write the data into the selected register. The same data will be
+            written into the register several million times, depending on how long you hold Key_0 down. Once would be
+            enough, but you can’t press and release the button that fast! After you have written data into a register,
+            use Switches[9:8] and Switches[7:6] to verify that you can read the value out of both read ports: it should
+            show up in Hex_2 and Hex_1. Write different values into different registers, and verify that you can read
+            out any pair of values from any two registers. Be sure you can’t change the value of Register 0 (pressing
+            Key_0 when Switches[5:4] are set to 00<span class="subscript">2</span> should have no effect; setting
+            Switches[9:8] and/or Switches[7:6] should always produce 0 in Hex_2 and Hex_1 respectively.
+          </p>
+        </li>
+      </ol>
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you have built and tested your assignment let me know it is ready for grading by sending me an
+          email message (Christopher.Vickery<span class="at" title="Change to
+          @">at</span>qc.cuny.edu) by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of all email you send me this semester must start, “CS-343.’ Your email message for this
+          assignment must be: “CS-343 Assignment 5.” 
+        </p>
+      </div>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </footer>
+  </body>
+</html>

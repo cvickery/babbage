@@ -1,0 +1,217 @@
+Question:
+
+I'm not sure whether to work on the optional project or not. I've spent
+a lot of time thinking about it and hate to have done all that thinking
+for nothing. But I don't have time to do the project AND to study for
+the exam.
+
+Answer:
+
+Thinking is never a waste of time!
+
+At this point it's probably wiser to study for the exam (which will
+count at least 30% of your course grade, possibly as much as 45%) than
+to work on the optional project (which will count at most 30% of your
+course grade, and possibly as little as zero).
+
+On the other hand, if you are a good programmer, have a good idea of how
+to do the project, have already studied the other material that will be
+on the final, and think that your midterm grade was unexpectedly low,
+then you could very well benefit by completing the project.
+Unfortunately, that is a lot of "ifs" that you have to assign
+probabilities to in order to come up with an answer.
+
+-------------------------------------------------------------------------
+
+Question:
+
+I thought that the byte offset is the cache line (which is the block
+size) in bytes if it's a byte addressable memory or in words if it's a
+word addressable memory, but in the Cache Parameter paper it says that
+the byte offset is always 0 for word addressable or log2(bytes per
+word), which is always 4, since there are 4 bytes per word, if it's byte
+addressable memory. I don't know if I should follow the Cache Parameter
+paper or if I should follow the notes. The notes that you have is the
+same as the book. I might be wrong or not understanding it properly, but
+I think that the Cache Parameter paper is giving a different information
+from the book/class notes; it strongly confuses me.
+
+Also the cache offset is going to be log2(words per line), I mean
+that in my understanding it is going to be 2 bits less than the byte
+offset in byte addressable memory. For example, if  you are given a 32
+words per cache line (2^5 words = 2^7 bytes), then the byte offset is
+going to be 7, and the line offset is going to be 5 in a byte
+addressable memory; in a word addressable memory, the bytes offset is
+going to be 5 and the line offset is going to be also 5 (byte offset =
+line offset). But in the paper the byte offset in a word addressable
+memory is always zero?! 
+
+Answer:
+
+Word size is not always 4. In the IA-64 architecture, for example, it's
+8. Some processors have just one byte per "word." So the byte offset is
+the position of a byte within a word, and is log2(bytes per word). For
+IA-64, that's 3; for the MIPS, with 32-bit words, it's 2; for a
+one-byte-per-word architecture, it's 0. We glossed over this parameter
+in class in order to simplify things, except to point out that the byte
+address of a word is always a multiple of 4 ... on the MIPS, where there
+are 4 bytes per word.
+
+The size of a cache line or memory block can be given in either bytes or
+words. Multiply the number of words per line by the number of bytes per
+word to get the number of bytes per line. (Or divide bytes per line by
+bytes per word to get words per line.)
+
+The offset of a byte within a line will be log2(bytes-per-line) bits.
+The offset of a word within a line will be log2(words-per-line) bits for
+a word-addressable computer, but will be log2(bytes-per-line) for a
+byte-addressable computer. The examples in class, as I recall, were for
+a byte-addressable computer with one byte per word. So there was just a
+single offset within a line, and and the byte offset within a word was
+never an issue. 
+------------------------------------------------------------------------
+
+Question:
+
+I'm confused about the optional project. What are the inputs and what
+are the outputs?
+
+Answer:
+
+The size of main memory depends on the total number of bytes, the total
+number of words, the total number of blocks, the number of bytes per
+word, the number of bytes per block, the number of words per block, the
+number of bits in the byte offset part of an address, and the number of
+bits in the block offset part of a memory address. If you know three
+of those values, you can calculate the others. Once you have all the
+values, the user should be able to change any one, and all the other
+values affected by that change should be updated.
+
+If you then factor in the cache set size, you will be able to include
+the size of the tag and index fields in the main memory address in your
+calculations.
+
+The size of the cache depends on the total number of bytes, the total
+number of words, the total number of lines, the number of bytes per
+word, the number of bytes per line, the number of words per line, the
+number of lines per set, the number of bits in the byte offset part of
+an address, the number of bits in the block offset part of an address,
+and the number of bits in the index part of an address. Note that many
+of these values are the same as corresponding values for main memory
+(the number of bytes per word, for example.)
+----------------------------------------------------------------------
+
+
+1) What do you mean by a memory width and height? Width i assume is
+  number oof bits or bytes in memory, what's heght?
+    Width is the number of bits per word
+    Height is the total number of words (or bytes) 
+ 
+2) Can you explain temporal and spatial locality
+    Page 452 
+
+3) What does "Tell how the way in which an array is accessed affects the
+  cache hit ratio" mean. An array of what?
+    Depending on whether the array is stored in row major order or
+    column major order, accessing "successive" locations could result
+    either  in good locality (accessing successive elements within a row
+    before going to the next column in an array stored in row major
+    order for example) or poor locality (accessing a column major order
+    array by  rows, for example).  Arrays can hold any type of data.
+-----------------------------------------------------------------------
+
+1. In a memory system, the value of the DataIn (and DataOut) is the
+number of bits of the word size, right? So then the Assignment 4, 64KB
+memory system was a 1 Byte per word system and that's why it had 8 bits
+as the DataIn, correct? If we were examining the MIPS system the the
+address of the memory system would be 32 bits since it is a 4GB system
+and the DataIn would be 32 bits since the word size is 4 Bytes. Does
+that sound correct?
+  Exactly right
+ 
+2. I understand the idea behind tristate buffers but I'm not exactly
+sure where they are supposed to be in the memory system designs. Based
+on my understanding of the class notes, I believe there are tristate
+buffers inside each of the flip flops that composes the SRAM chip. So
+the output from the flip flop (Q) passes into the tristate buffer which
+is enabled by an AND of the chip select and the appropriate line from
+the decoder. So in a 4x2 SRAM Chip would there be 8 tristate buffers
+(one for each of the 8 flip flops)? In addition, are there also tristate
+buffers needed in the more zoomed out diagram of the memory system? So
+for example, in the 64KB memory system using 16Kx4 SRAM chips design in
+Assignment 4 would there also be tristate buffers after each of the 8
+SRAM chips? Are there any other places tristate buffers would be
+needed?
+
+  Both those two places in the memory system are correct. Tristate
+  buffers are needed any place outputs are connected together, and those
+  are the two places we looked at in a memory system that require them.
+  Actually, I spent some time showing how they would be used to
+  implement a bidirectional bus, such as might be used for the data
+  lines between memory and a CPU, but I don't think it was clear enough,
+  and I don't think it's in the textbook.
+ 
+3. In the class design of the 4x2 SRAM chip, the address, chip select
+DataIn and Write Enable inputs were demonstrated but not the Output
+Enable. The 2 bit address was decoded in a 2x4 decoder which was then
+ANDed with the chip select to enable each of the 2 flip flops on the
+respective line. The write enable was also sent into the clock of each
+of the 8 flip flops. I believe you said the output enable was not needed
+since the decoder would select the appropriate line and thus only one
+flip flop for each bit could possibly be enabled. So on the exam, even
+though the output enable goes into each of the SRAM chips in a memory
+system design, would we need to know how that control is implemented
+inside the SRAM chip?
+
+  The tristate buffers would be enabled by CS & OE; the clock inputs to
+  each row would be enabled by CS & WE
+ 
+4. For latches and flip flops, the significant difference between the
+two is that in a latch as long as the clock is asserted Q will keep
+changing to follow D but in a flip flop Q only changes to D on the
+(positive/negative) clock edge, correct?
+
+  Right
+ 
+5. In the MIPS datapath, do we need to know how the RegWrite, MemRead,
+MemWrite, or MemtoReg control signals are generated? I understand what
+they do and where they go in the diagram but I don't know what gates are
+used to create them. In class, you showed us how the RegDst, ALUSrc and
+PCDst control signals were generated so I understand those but not the
+other four. Do we need to know how those four are generated for the
+exam?
+
+  RegWrite = R-type | lw
+  I glossed over the fact that the datapath in the textbook does not
+  implement the arithmetic I-format instructions, so the above equation
+  is correct with respect to the book, but misses the logic that ORs in
+  all the other instructions in the real MIPS that also write to the
+  registers.
+
+  MemRead = MemToReg = lw
+  lw is the only instruction that reads from memory, so it's also the
+  only one that enables memory data to be written to the register file.
+  MemWrite = sw
+  sw is the only instruction that writes to memory.
+
+  (In the full MIPS, there are also lb/sb (load byte/store byte) etc,
+  but they are not included in the text.)
+
+  I mentioned all these control signals in class, but did not write them
+  on the board.
+  ------------------------------------------------------------------------
+
+Then when you say "Name and give the widths of a memory system, given
+the memory's width and height" what do you mean? If where given the
+width what do you want us to giv back? Also when you say name are you
+referring to SRAM/DRAM or Cahche/Main Memory? How are we supposed to
+tell that based upon the width?  For an MxN memory, M is the height, and
+N is the width. The number of address bits is log2(M). If N is given in
+bytes, you have to be able to convert that to bits.
+
+  You didn't understand what I wrote because it didn't make any sense!
+  It was supposed to say, "Name and give the widths for all the inputs
+  and outputs of a memory system..."
+
+  I've updated the web page.
+

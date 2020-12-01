@@ -1,0 +1,239 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+<title>CS-343 Assignment 7</title>
+
+  
+<link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css" />
+    <style type="text/css">
+      table { width: auto; }
+      th {
+        background-color:   #669;
+        color:              #fff;
+        }
+      th[scope="col"] {
+        padding:            0 0.5em 0 0.5em;
+        }
+      th[scope="row"] {
+        text-align:         right;
+        padding-right:      0.5em;
+        }
+      td {
+        padding-left:       1em;
+        }
+      .address {
+        background-color:   #996;
+        color:              #fff;
+        }
+      ol  {
+        counter-reset:      machine;
+        list-style-type:    none;
+        }
+      li:before {
+        font-weight:        bold;
+        content:            "M-"counter(machine)": ";
+        counter-increment:  machine;
+        }
+      form {
+        text-align:         center;
+        }
+    </style>
+</head>
+
+<body>
+
+  <h1>CS-343 Assignment 7</h1>
+  <div id="header"></div>
+  <div id="content">
+    <h2>Introduction</h2>
+    <div class="whitebox">
+
+      <p>This is an exercise in working with the parameters that describe
+      cache designs.  For each column of the following table, you are to
+      fill in the values for the machines listed below. The first
+      column is filled in for the parameters for the cache shown in Figure
+      7.9 of the text.</p>
+
+      <ol>
+
+        <li>Machine M-1 has 2<sup>24</sup> bytes of byte-addressable memory
+        with two bytes per word.  Each cache line is 32 bytes wide.  The
+        cache is 4-way set associative, and there are 64 cache sets.</li>
+
+        <li>Machine M-2 has a word addressable memory with 64G 48-bit words.
+        Each cache line holds 32 words of memory.  The cache is fully
+        associative, and there are 6,272 bits of cache memory, which
+        includes the valid bit for each line, all the tags, and all the
+        memory data bits.</li>
+        
+        <li>Machine M-3 is byte addressable with 64 bits per word.  There can
+        be up to 2<sup>40</sup> <em>words</em> of memory.  The cache is
+        organized as an 8-way set associative design with 64 words per cache
+        line, and a total of 2<sup>12</sup> cache lines.</li>
+
+      </ol>
+
+    </div>
+    <form action="#">
+      <p>
+        <strong>Name: </strong><input type="text" size="30" />
+        <strong>ID: </strong><input type="text" size="4" />
+      </p>
+      <h2>Cache Parameters</h2>
+      <table>
+        <tr>
+          <th scope="col">Parameter</th>
+          <th scope="col">Fig. 7.9</th>
+          <th scope="col">M-1</th>
+          <th scope="col">M-2</th>
+          <th scope="col">M-3</th>
+        </tr>
+        <tr>
+          <th scope="row">Number of Memory Words</th>
+          <td>2<sup>30</sup></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row">Number of Bytes per Word</th>
+          <td>2<sup>2</sup></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row">Number of Words per Cache Line</th>
+          <td>2<sup>4</sup></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row">Number of Cache Lines</th>
+          <td>2<sup>8</sup></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="address">Tag Size</th>
+          <td>18</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="address">Index Size</th>
+          <td>8</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="address">Number of Block Offset Bits</th>
+          <td>4</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="address">Number of Byte Offset Bits</th>
+          <td>2</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="address">Total Number of Address Bits</th>
+          <td>18+8+4+2=32</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row">Data Bits per Cache Line</th>
+          <td>512</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row">Total Bits per Cache Line</th>
+          <td>1+18+512=531</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row">Total Bits in Cache</th>
+          <td>2<sup>8</sup>*531=135,936</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row">Set Size</th>
+          <td>1</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row">Direct Mapped?</th>
+          <td>Yes</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+        <tr>
+          <th scope="row">Fully Associative?</th>
+          <td>No</td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+          <td><input type="text" size="4" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div id="footer">
+    <hr />
+    <p class="links">
+      <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>    </p>
+    <p><em>Last updated
+      <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>    </p>
+</div>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 6</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="css/assignment_06.css" />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head>
+
+  <body id='urn:uuid:781F1709-8A2E-43CA-ABB7-2337CD768E8D'>
+    <div id="header">
+      <h1>CS-343 Assignment 6</h1>
+    </div>
+    <div id="content">
+      <h2>Summary</h2>
+      <div>
+      	<p>
+        	The goal of this assignment is to become comfortable with the mechanisms and analysis of a
+          pipelined processor.
+        </p>
+        <p>
+        	Answer each of the questions below <em>in the body of</em> an email message.
+        </p>
+      </div>
+      <h2>Mechanisms</h2>
+      <div>
+      	<p>
+        	All questions are based on the pipelined MIPS processor design in the second part of
+          Chapter 4 of the textbook.
+        </p>
+      	<ol id="mechanism-list">
+        	<li>Give the names, in order, of the pipeline stages.</li>
+          <li>
+          	List the structural elements for each pipeline stage. (A structural element is a
+            significant logic block, such as an adder or memory, but not minor elements like
+            multiplexers.)
+          </li>
+          <li>
+          	List the names of all the pipeline registers and tell what information fields each
+            one contains.
+          </li>
+          <li>
+          	Tell what happens in each pipeline stage for each of the following classes of
+            instructions:
+            <ul>
+            	<li>R-Type</li>
+              <li>Branch</li>
+              <li>Jump</li>
+              <li>Store Word</li>
+              <li>Load Word</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <h2>Analyses</h2>
+      <div>
+      	<ol id="analysis-list">
+        	<li>
+          	If the non-pipelined processor had a 1 GHz clock and the pipeline were perfectly balanced,
+            what would be the speed of the pipelined processor&rsquo;s clock?
+          </li>
+          <li>
+          	What would be the <em>latency</em> to execute a single instruction using the pipelined design?
+            Give your answer as the number of clock cycles it would take.
+          </li>
+          <li>
+          	If there were no hazards, what would be the <em>throughput</em> of the pipelined processor?
+            Again, use clock cycles as the unit of time.
+          </li>
+          <li>
+          	Define the three types of pipeline hazards.
+          </li>
+          <li>
+          	Define <em>delayed branching</em> and tell which type of hazard it deals with.
+          </li>
+          <li>
+          	Define <em>register forwarding</em> and tell which type of hazard it deals with.
+          </li>
+
+        </ol>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+        	Send me email (vickery<span class="at" title="change to @">at</span>babbage.cs.qc.cuny.edu)
+          with &ldquo;CS-343
+          Assignment 6&rdquo; as the subject. Be sure to put your name in the body of your message.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

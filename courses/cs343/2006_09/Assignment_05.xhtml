@@ -1,0 +1,83 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+<title>CS-343 Assignment 5</title>
+
+  
+<link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css" />        
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>CS-343 Assignment 5 </h1>
+  </div>
+  <div id="content">
+    <h2>The Assignment</h2>
+		<div class="whitebox">
+			<ol>
+        <li>Complete the <a href="../Single_Cycle_Worksheet.pdf">Single
+            Cycle Worksheet distributed in class</a>. Download the PDF from
+            this link, fill it in, save the filled in copy, and send it to
+            me as an email attachment. Leave blank those rows that cannot be
+            implemented using the single cycle datapath in Figure 5.24.
+            <p>Put the answers to the following two questions in the body of
+            your email message:</p>
+				</li>
+        <li>For each row that you left blank in the worksheet, write a
+            sentence that tells why that instruction could not be
+            implemented using the datapath in Figure 5.24.</li>
+        <li>Two of the instructions that could not be implemented are <span
+            class="functionName">jal</span> and <span
+            class="functionName">lui</span>. Describe exactly how you would
+            change the datapath so that they could be implemented.  Tell the
+            names of any new control signals you needed to introduce into
+            the design, and how they would be set for these two
+            instructions.</li>
+        <li>Answer Exercise 5.12 from the textbook.  You do <em>not</em>
+            need to answer Exercise 5.11.</li>
+			</ol>
+		</div>
+
+  </div>
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>    </p>
+    <p><em>Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>    </p>
+</div>
+  </body>
+</html>

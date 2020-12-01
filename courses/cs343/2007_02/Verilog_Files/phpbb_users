@@ -1,0 +1,256 @@
+create database this_is_babbage;
+\q
+alter database this_is_babbage set client_encoding to UTF8;
+\?
+\c this_is_babbage 
+\?
+\d
+\set
+\c template0
+\c template1
+set
+;
+\set
+\set ENCODING = 'UTF8'
+\set
+\set ENCODING 'UTF8'
+\set
+drop database this_is_babbage 
+createdatabase this_is_babbage
+\c test
+\set ENCODING 'UTF8'
+drop database postgres
+drop database test
+;
+drop database this_is_babbage ;
+drop database test;
+drop database template1;
+\q
+\q
+create database vickery;
+\q
+\q
+\d
+select primary_email from person,committee where person.id = committee.chair;
+\q
+\d
+drop table application cascade;
+drop table committee cascade;
+drop table department cascade;
+drop table division cascade;
+drop table graduate_major cascade;
+drop table person cascade;
+drop table undergraduate_major cascade;
+\d
+\?
+\i 2006-06-09.sql 
+select primary_email from people.committees where committees.chair = people.id;
+\d
+select primary_email from people,committees where committees.chair = people.id;
+\q
+create database Courses;
+\q
+\c Courses
+\d
+\?
+\l
+\c courses
+\d
+\q
+\c vickery
+select * from people;
+\q
+\l
+\c vickery
+\dt
+select * from people where id=1;
+\q
+select primary_email,secondary_email from people
+;
+update people set secondary_email = 'cvickery@gmail.com' where id=1;
+\q
+select first_name from people;
+\q
+select password from people where id=1;
+\q
+select last_name from people;
+\q
+\q
+create database htpasswd;
+\htpasswd
+\c htpasswd
+\h grant
+create table authn;
+create table authn
+;
+create table authn (
+username char(32),
+password char(32),
+realm char(256) );
+insert into authn values (
+self-study, 547839631d10de7e28e9477155e719f1,
+'CS Department Self-Study' );
+insert into authn values (
+self-study, '547839631d10de7e28e9477155e719f1',
+'CS Department Self-Study' );
+insert into authn values (
+'self-study', '547839631d10de7e28e9477155e719f1',
+'CS Department Self-Study' );
+select * from authn;
+\h grant
+grant select on authn to apache;
+\d authn
+grant select on authn to apache;
+grant select on authn to nobody;
+create user apache;
+grant select on authn to apache;
+alter apache with password = 'apache2';
+alter user apache with password = 'apache2';
+alter user apache with password  'apache2';
+\q
+update authn set password = 'abc' where username = 'self-study;
+'
+;
+update authn set password = 'abc' where username = 'self-study';
+\q
+select password from authn;
+update authn set password = 'apache2';
+select password from authn;
+\q
+\l
+\c htpasswd
+\d
+\d authn
+\q
+set
+show
+;
+show;
+show all;
+set log_connections on;
+set log_connections=on;
+\q
+\q
+\q
+\q
+\c postgres 
+\d pg_user
+select usename,passwd from pg_user;
+alter user apache with password 'apache2';
+\q
+\c htpasswd 
+select password from authn where username='self-study';
+update authn set password = 'Legitimization' where username = 'self-study';
+select password from authn where username='self-study';
+select password from authn where username='self-study';
+\q
+\c htpasswd 
+\d
+\d authn
+select username,password,realm from authn;
+select password from authn where username='self-study';
+select username,password from authn;
+select username,password from authn;
+update authn set username='ss' where username='self-study';
+update authn set password='legit' where username='ss';
+select username,password from authn;
+select password from authn where username='ss';
+prepare try (varchar) as 'select password from authn where username = $1';
+prepare try (varchar) as select password from authn where username = $1;
+execute try ss
+;
+execute try(ss);
+execute try 'ss';
+execute try("ss");
+execute try('ss');
+\q
+\d
+create database Courses;
+/d courses
+;
+\d courses
+\c courses
+\d
+drop database courses
+;
+\l
+\c vickery
+drop database courses;
+\q
+fg
+\q
+\l
+\q
+\l
+\q
+create database senate;
+create user web_user;
+\q
+\l
+\d
+\l tables
+\d tables
+\d
+\c courses
+\d
+\c vickery
+\d
+\q
+\d
+\q
+create database Curriculum
+;
+\l
+\q
+select post_id from post_message;
+\d
+select post_id from phpbb_posts_text;
+select post_id,phpbb_bbcode_uid from phpbb_posts_text;
+select post_id,phpbb_uid from phpbb_posts_text;
+\d phpbb_posts_text
+select post_id,bbcode_uid from phpbb_posts_text;
+\l
+\d 
+\q
+\d tables;
+\d tables
+\d vickery
+\l
+\l tables
+\h
+\d tables
+\l tables
+help \d
+help
+\d
+\d
+\d
+\d undergraduate_majors
+\q
+\d
+\l
+\c courses
+\d
+\q
+\l
+\c courses
+\d
+INSERT INTO phpbb_users (user_id, username, user_regdate, user_password, user_email, user_icq, user_website, user_occ, user_from, user_interests, user_sig, user_sig_bbcode_uid, user_avatar, user_avatar_type, user_viewemail, user_aim, user_yim, user_msnm, user_attachsig, user_allowsmile, user_allowhtml, user_allowbbcode, user_allow_viewonline, user_notify, user_notify_pm, user_popup_pm, user_timezone, user_dateformat, user_lang, user_style, user_level, user_allow_pm, user_active, user_actkey) VALUES (11, 'testing', 1172259051, '5ebe2294ecd0e0f08eab7690d2a6ee69', 'declined@declined.com', '', '', '', '', '', '', '', '', 0, 0, '', '', '', 1, 1, 1, 1, 1, 0, 1, 1, -4, 'D M d, Y g:i a T', 'english', 7, 0, 1, 0, '5764e1')
+select username from phpbb_users;
+INSERT INTO phpbb_users (user_id, username, user_regdate, user_password, user_email, user_icq, user_website, user_occ, user_from, user_interests, user_sig, user_sig_bbcode_uid, user_avatar, user_avatar_type, user_viewemail, user_aim, user_yim, user_msnm, user_attachsig, user_allowsmile, user_allowhtml, user_allowbbcode, user_allow_viewonline, user_notify, user_notify_pm, user_popup_pm, user_timezone, user_dateformat, user_lang, user_style, user_level, user_allow_pm, user_active, user_actkey) VALUES (11, 'testing', 1172259051, '5ebe2294ecd0e0f08eab7690d2a6ee69', 'declined@declined.com', '', '', '', '', '', '', '', '', 0, 0, '', '', '', 1, 1, 1, 1, 1, 0, 1, 1, -4, 'D M d, Y g:i a T', 'english', 7, 0, 1, 0, '5764e1');
+\d phpbb_users;
+alter table phpbb_users alter column user_dateformat character varying(32)
+;
+\d phpbb_users;
+alter table phpbb_users alter column user_dateformat type
+character varying(32) not null
+sfdaff adf df adf df adf daf da fdasf ;
+\d phpbb_users;
+q
+\q
+\c courses
+character varying(32) not null
+adfds afadsf;
+alter table phpbb_users alter column user_dateformat type
+character varying(32);
+\s phpbb_users

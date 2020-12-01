@@ -1,0 +1,96 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-343 Assignment 10</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../../css/assignments-print.css" />
+    <style type="text/css">
+      pre { border: 1px solid green; padding:0.5em;}
+      h3 + ol { list-style-position:inside; }
+    </style>
+  </head>
+
+  <body id='urn:uuid:A13C84BE-8456-4515-B6C9-F2A73FAFE5F3'>
+     <div id="header">
+      <h1>CS-343 Assignment 10</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This assignment is based on sections 5.1, 5.2, 5.3, and 5.5 of the textbook and the 
+          <a href="../cache_parameters.xhtml">Cache Parameters</a> web page.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+          Answer the following questions for a memory system with the following set of parameter values:
+        </p>
+        <ul>
+        	<li>Byte addressable</li>
+          <li>8 bytes per word</li>
+          <li>8 GB primary memory</li>
+          <li>2-way set associative cache</li>
+          <li>8 words per cache line</li>
+          <li>2 MB cache capacity</li>
+          <li>cache access time is 500 psec</li>
+          <li>miss penalty time is 5 nsec</li>
+        </ul>
+        <h3>Questions</h3>
+        <ol>
+        	<li>Number of blocks of primary memory</li>
+          <li>Number of cache lines</li>
+          <li>Number of cache sets</li>
+          <li>Primary memory address size</li>
+          <li>Size of byte offset field</li>
+          <li>Size of block offset field</li>
+          <li>Size of index field</li>
+          <li>Size of tag field</li>
+          <li><em>p(hit)</em> if the CPU were to access memory totally randomly</li>
+          <li>Average access time if the CPU were to access memory totally randomly</li>
+          <li>Average access time if <em>p(hit)</em> is 0.97</li>
+        </ol>
+      </div>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+    	Submit the assignment either on paper in class or by email by midnight of the due date. If you submit it by email,
+      the Subject: line must be <span class="code-snippet">CS-343 Assignment 10</span>.
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

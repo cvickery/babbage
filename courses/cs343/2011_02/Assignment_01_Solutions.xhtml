@@ -1,0 +1,179 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 1 Solutions</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      pre {overflow:auto; color:green;}
+    </style>
+  </head>
+  <body id='urn:uuid:601C4A38-4905-422A-A4E4-88CED8C1FD66'>
+    <h1>CS-343 Assignment 1</h1>
+    <div id="content">
+      <h2>Solutions</h2>
+      <div>
+        <ol>
+          <li>
+            What is the logarithm, base 2, of the following decimal numbers: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+            16, 32, 64, 128, 256, 512, 768, 1024, 2048.
+<pre>0     -∞
+1     0
+2     1
+3     1.585
+4     2
+5     2.322
+6     2.585
+7     2.807
+8     3
+9     3.170
+10    3.322
+16    4
+32    5
+64    6
+128   7
+256   8
+512   9
+768   9.585
+1024  10
+2048  11
+</pre>
+          </li>
+          <li>
+            Write the following decimal numbers in binary: 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 48.
+          </li>
+<pre>4      1 00
+8     10 00
+12    11 00
+16   100 00
+20   101 00
+24   110 00
+28   111 00
+32  1000 00
+36  1001 00
+40  1010 00
+48  1100 00
+</pre>
+          <li>
+            What do all the binary numbers in your previous answer have in common (besides the fact
+            that they are binary numbers!). Look at the pattern of zeros and ones.
+          </li>
+<pre>They all end with two zeros on the right.
+</pre>
+          <li>
+            How about 12, 24, and 48: what binary pattern do they have in common?
+          </li>
+<pre>The all start with 11 followed by 2, 3, or 4 zeros.
+</pre>
+          <li>
+            Summarize the answers to the two previous questions as a statement about what happens
+            when you multiply binary numbers by 2 or by 4.
+          </li>
+<pre>If you multiply a binary number by 4 (which is 100 in binary),
+you append two zeros at the right of the original number, just
+like multiplying a decimal number by decimal 100.
+If you multiply a binary number by 2 (which is 10 in binary), you
+append one zero to the right end of the original number, just
+like multiplying a decimal number by decimal 10.
+</pre>
+          <li>
+            5K is 1010000000000 in binary. (5 followed by ten zeros.) Write the values 5M and 5G in binary.
+          </li>
+<pre>5M = 101 0000000000 0000000000
+5G = 101 0000000000 0000000000 0000000000
+</pre>
+          <li>
+            What is binary 1100 0000000000 0000000000 in decimal? Use the proper suffix in your
+            answer so that your answer starts with a number between 0 and 1023.
+          </li>
+<pre>12M
+</pre>
+          <li>
+            How many picoseconds are there in 2.5 µsec?
+          </li>
+<pre>2,500,000
+</pre>
+          <li>
+            How many nanoseconds in 250 psec?
+<pre>0.25
+</pre>
+          </li>
+          <li>What power of 2 is 512?</li>
+<pre>9
+</pre>
+          <li>
+            Approximately how many milliseconds did it take you to answer the previous question?
+          </li>
+<pre>About 100 msec. (Anything less, and you need more practice.
+Anything more, and you are in trouble for being faster than
+me!)
+</pre>
+          <li>What is the period, in picoseconds, of a 5 GHz clock?</li>
+<pre>200 psec
+</pre>
+          <li>What is the answer to the previous question in nanoseconds?</li>
+<pre>0.2 (one fifth of a nanosecond)
+</pre>
+          <li>Why does it make sense to say that a 10 MHz clock is twice as fast as a 5 MHz clock,
+          but not to say that 100 degrees (farenheit) is twice as hot as 50 degrees?</li>
+<pre>Speed is measured using ratio scales, which have both meaningful
+intervals and meaningful zero points, so ratios like "twice as"
+are meaningful. But the Farenheit scale is only an interval
+scale. The zero point is arbitrary, so it makes no sense to speak
+in terms of ratios. The Kelvin scale of temperature, however, has
+an absolute zero point, so one could use ratios to compare
+temperatures using that scale. (Question based on the
+supplemental material.)
+</pre>
+          <li>How did Claude Shannon propose measuring information?</li>
+<pre>The unit of information is the amount of uncertainty reduced by
+answering one yes/no question.  (His colleague, John Tukey coined
+the term "bit" for "binary digit," which is equivalent to Shannon's
+formal definition. The word bit previously had the less specific 
+definition of "a small amount.")
+</pre>
+          <li>What is the frequency of a clock with a period of 50 msec?</li>
+<pre>0.02 × 10<span class="superscript">3</span> Hz = 20 × 10<span class="superscript">0</span> Hz
+= 20 Hz
+</pre>
+          <li>What is the frequency of a clock with a period of 50 µsec?</li>
+<pre>0.02 × 10<span class="superscript">6</span> Hz = 20 × 10<span class="superscript">3</span> Hz
+= 20 KHz
+</pre>
+          <li>What is the frequency of a clock with a period of 50 nsec?</li>
+<pre>0.02 × 10<span class="superscript">9</span> Hz = 20 × 10<span class="superscript">6</span> Hz
+= 20 MHz
+</pre>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </div>
+  </body>
+</html>

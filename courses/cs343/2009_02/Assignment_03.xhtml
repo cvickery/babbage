@@ -1,0 +1,174 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 3</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-343 Assignment 3<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+      	This assignment is to implement the 5-bit version of the MIPS ALU developed in class.
+      </div>
+      <h2>The Assignment</h2>
+      <div class="whitebox">
+      	Here are the requirements for this assignment:
+        <ul>
+        	<li>
+          	The project directory must be <span class="directoryName">My&nbsp;Documents\My&nbsp;Projects\5-Bit_ALU</span> spelled, capitalized,
+            and punctuated exactly like that in your TREE Lab <span class="functionName">profile</span> directory. Make sure it is transferred
+            correctly from one computer to another before you submit the assignment. You may make a copy of the <span 
+            class="directoryName">5-bit_ALU</span> directory on your <span class="diretoryName">H:\</span> drive, but (a) you should back up
+            your work onto an external drive for security, and (b) I will expect to find your project in the proper place on the server and
+            will not get it from your <span class="functionName">home</span> directory except in very unusual circumstances. (This is being
+            written after a long day tracking down Assignment 2 projects that were in the wrong places; sorry for the rant.)
+          </li>
+          <li>
+          	There must be at least the following schematic diagrams in your project: a top-level testbed that uses a symbol for the ALU;
+            an ALU schematic that uses five copies of a symbol for an ALU bit slice; a schematic for the bit slice that uses a symbol for
+            your full adder from Assignment 2; copies of <span class="fileName">Full_Adder.bdf</span> and 
+            <span class="fileName">Full_Adder.bsf</span> that you should copy from your Assignment 2 <span class="directoryName">Full_Adder</span>
+            directory into <span class="directoryName">5-bit_ALU</span>. (It would be possible to reference the full adder files without
+            copying them, but I will delete your Assignment 2 files from my testing computer before getting your Assignment 3 files; so be sure
+            to make a copy of those two files in your directory for Assignment 3.) 
+            <p>
+            	If you decide you want an additional module, for the output mulitplexer for example, that is all right. But see below for an
+              easier way to get that than to build your own out of AND, OR, and NOT gates. (The only reason you would want to do that would be
+              to practice for the exam!)
+            </p>
+          </li>
+          <li>
+          	Use Switches 9-5 for the five A inputs; Switches 4-0 for the five B inputs, and Keys (blue push buttons) 3, 2, 1, and 0 for
+            <span class="functionName">A<span class="subscript">invert</span></span>,
+            <span class="functionName">B<span class="subscript">negate</span></span>,
+            <span class="functionName">f<span class="subscript">1</span></span>, and
+            <span class="functionName">f<span class="subscript">0</span></span> respectively.
+          </li>
+          <li>
+          	<p>
+            	Use Red LEDs 9-6 for Carry, Overflow, Negative, and Zero respectively. Use Red LEDs 4-0 for the 5-bit result.
+            </p>
+            	<h5>Optional (not for the faint of heart)</h5>
+            <p>
+            	An easier to read output scheme would be to use three of the seven-segment displays to show the condition code and result bits
+              as three hexadecimal numbers. Use HEX3 (the leftmost display) to show Carry, Overflow, Negative, and Zero, Use HEX1 to show
+              Result<span class="subscript">4</span>, and HEX0 to show Result<span class="subscript">3-0</span>. To do this, you will need
+              to download <a href="../hex2sevenseg.v">hex2sevenseg.v</a>, a Verilog program that converts four binary inputs into the 7 outputs
+              needed to display hexadecimal digits on a seven segment display. Save <span class="fileName">hex2sevenseg.v</span> in your
+              project directory, add it to the project, and convert it to a symbol file the same way you convert schematic files to symbols.
+              Then add three instances of this symbol to your testbed; connect the outputs to the appropriate DE1 pins, and connect the
+              twelve inputs to the appropriate outputs of the ALU module. You will need to use bus wiring (see below) to pull this one off.
+            </p>
+          </li>
+          <li>
+          	Remember, you will need to invert the Key inputs (do it in the testbed) in order make them work right: they produce a 0 when pressed
+            and a 1 when not pressed, just the opposite of what is required.
+          </li>
+          <li>
+          	So far you have used only &ldquo;primitives&rdquo; (gates and pins) from the Altera library to do your schematic, but Quartus also
+            provides several &ldquo;megafunctions&rdquo; to make your life easier. Two megafunctions of particular interest for this assignment
+            are the <span class="function_name">lpm_mux</span>, which can be configured as a 4&times;1 mux for the output multiplexer in the
+            ALU bit slice, and the <span class="function_name">lpm_inv</span>, which can generate all four inverters for the Key inputs in one
+            shot. They are both found in the <span class="directoryName">megafunctions&mdash;&gt;gates</span> directory of the Altera libraries
+            under the
+            Symbol Tool. Both of them launch a wizard that you have to go through to configure the device you want; the wizard then generates
+            the files needed to implement the function and its symbol and to add them to your project.
+            <p>
+            	The <span class="function_name">lpm_mux</span> wizard lets you specify the number of data inputs your want (4 is the answer),
+              and except for filling in that value, all you have to do is click the &ldquo;Next&rdquo; button until the wizard finishes and
+              lets you place your customized mux in your schematic.
+            </p>
+            <p>
+            	Using the <span class="function_name">lpm_inv</span> function raises an issue we haven&rsquo;t gone over, busses, so you might
+              find it easier to do the project without using this feature. For this project, you need to create a 4-wire bus that will connect
+              the four pushbutton pins to the
+              <span class="functionName">A<span class="subscript">invert</span></span>,
+            	<span class="functionName">B<span class="subscript">negate</span></span>,
+            	<span class="functionName">f<span class="subscript">1</span></span>, and
+            	<span class="functionName">f<span class="subscript">0</span></span> inputs to the ALU. This bus and the inverters would go in
+              the testbed part of the project. I have updated the <a href="../Using_Quartus.xhtml#bus-wiring">Using Quartus</a> web page with a new
+              section on bus wiring.
+            </p>
+          </li>
+        </ul>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+        <ul>
+          <li>
+            When you have finished testing your project and it works, send me an email to tell me that it is ready. I will copy the project from
+            your profile directory on Oak and check it out.
+          </li>
+          <li>
+          	If you had romaing profile problems and your project exists only in your home directory, tell me that in the body of your email
+            message.
+          </li>
+          <li class="standout-block">
+          	The subject line of your email must be <span class="codeSnippet">CS-343 Assignment 3</span>, spelled and capitalized just like that.
+          </li>
+          <li class="standout-block">
+          	Be sure to sign your email with your real name, especially if it is not totally obvious from the name of your email account, in order
+            to receive credit for the assignment.
+          </li>
+          <li>
+            Send your email to either Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu or
+            vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu &mdash; but not to both.
+          </li>
+          <li>
+            See <a href="../index.xhtml">the course syllabus</a> for grading and late homework policies.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../">CS-343 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,16 @@
+
+  There was a mistake in Assignment 6, which I've fixed.  The problem
+  was that I used 0x30000C as the starting address for the data,
+  forgetting that this is a 22 bit number in binary, leading one
+  student to submit a program that used a sethi instruction to load
+  the address, followed by a srl (shift right logical) to shift the
+  address to the right side of the register.  Very clever, but I
+  wanted you to practice splitting the address into two parts and
+  using sethi to load the leftmost 22 bits, followed by ori to fill in
+  the other ten bits.   So I'm changing the requirements to use the
+  address 0x40000C instead of 0x30000C, which will force you to do it
+  the way I intended!  I've updated the assignment web page.
+
+  Happy Halloween!
+  Dr. Vickery
+

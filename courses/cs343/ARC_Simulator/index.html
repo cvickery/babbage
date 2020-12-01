@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>The ARC Simulator</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right=1em; }
+    p.indent
+    { 
+      margin-left:  3em;
+      margin-right: 3em;
+      padding:      1em;
+      background:   white;
+      border:       solid;
+    }
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>The ARC Simulator</h1>
+</center>
+
+<h2>Introduction</h2>
+
+<p>The authors of the textbook have provided a Java program to simulate
+the ARC processor.  You can enter assembly language statements, and the
+simulator will translate them into machine language, and you can then
+simulate the execute of the machine language program, observing the
+changes in memory and registers as each instruction is executed.</p>
+
+<p>To use the simulator, you must have the Java runtime environment
+installed on your computer.  You need to be able to run the Java
+compiler by typing the <i>java</i> command at a DOS prompt before
+trying to use the simulator.</p>
+
+<h2>Downloading and Running the Simulator</h2>
+
+<p>Once you have Java working, you can click on <a
+href="./arc_tools.zip">this link</a> to download a zip file that
+you should save to your hard disk.  Unzip the file into a convenient
+directory, and you will get two subdirectories, one called ARCTools,
+and the other called Examples.  The ARCTools dirctory contains the
+simulator in a jar file, and several README text files that you will
+have to study to learn how to use the simulator.  The Examples
+directory contains sample assembly language programs you may try with
+the simulator.</p>
+
+<p><b>NOTE:</b> The version of the jar file has changed from 1.2.5 to
+1.2.8 as of February 2004.  Be sure you use the newer version.  The old
+version is also included in the zip file in case you want to work with
+it.  There are improvements in the newer version, but it does not handle
+all the op codes that the old one did.</p>
+
+<p>If you have Java 1.2 or later installed on your
+computer, you can just double-click on the jar file to run the
+simulator.  Or, from a command line you can enter:</p>
+
+<p class="indent"><i>java -jar ARCToolsv1.2.8.jar</i></p>
+
+<p>If you are running an earlier version of java, you will
+have to use the command given in the README-ARCSimulator.txt file to
+run it:</p>
+
+<p class="indent"><i>java&nbsp;-cp&nbsp;ARCToolsv1.2.8.jar&nbsp;ARCTools.ARCSim</i></p>
+
+<p>Also, I have edited the Example files so they are formatted a bit
+more nicely than the originals (I changed tabs to spaces so the code
+would line up properly), and I changed some of the code so it ends
+with a "halt" instruction instead of a "jmpl" that would work only if
+the code had been invoked as a subroutine.  But the examples remain
+undocumented.</p>
+
+<hr>
+</body>
+</html>

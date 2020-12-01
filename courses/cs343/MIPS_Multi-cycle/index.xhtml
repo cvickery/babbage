@@ -1,0 +1,212 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>MIPS Multi-Cycle Simulator Project</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>MIPS Multi-Cycle Simulator Project</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>If you decide to use Java to simulate the multi-cycle
+        datapath from Chapter 5 of <cite>Computer Organization and
+        Design, 3<sup>rd</sup> Edition</cite>, you are faced with the
+        problem of loading a machine language program into the
+        simulated computer&rsquo;s memory for testing.  Rather than
+        hand-assemble a program or write an assembler in addion to the
+        simulator, you can take advantage of the assembler built into
+        the SPIM simulator that comes with the book and using the
+        resources provided here.</p>
+        
+        <p>The first link <a href="#resources">below</a> is to a Jar
+        file that contains five classes: <span
+        class="variableName">Loader, Memory, MIPS_Multi,
+        Registers,</span> and <span class="variableName">Utils</span>.
+        As their names imply, <span class="variableName">Loader</span>
+        and <span class="variableName">Memory</span> provide a
+        mechanism for you to load a program into simulated memory.
+        The other classes provide enough additional features to make
+        the JAR file a complete executable program.  How to run that
+        program is described below, but if you want to, you can just
+        extract the source code files you need from the Jar file and
+        work from there.</p>
+
+      </div>
+
+      <h2>Procedure for using the Jar file as a program.</h2>
+      <div class="whitebox">
+      
+        <p>First, write a MIPS program using the instructions from
+        Chapter 5 that you are going to simulate (<span
+        class="variableName">lw</span>, <span
+        class="variableName">sw</span>, <span
+        class="variableName">R-type</span>, <span
+        class="variableName">j</span>, and <span
+        class="variableName">beq</span>).  If you want, you can use
+        other instructions and code your simulator to ignore them.  Or
+        you can simulate them!</p>
+        
+        <p>Load your program into the SPIM simulator in the usual way.
+        If you want to link multiple source files together, you may
+        load them together into SPIM.  Be sure your code includes a
+        <span class="variableName">main</span> routine and that it
+        actually runs on the SPIM simulator; that is, when your
+        program is loaded, the SPIM PC should contain the address of
+        the first executable instruction in your program.  If you want
+        to avoid the simulating startup code, you can single step SPIM
+        until the PC contains the address of your own first
+        instruction.</p>
+        
+        <p>Now save a Log File from the SPIM <span
+        class="menuItem">File</span> menu.  This will produce a text
+        file containing all the information you see in the various
+        panes of the simulator window.  Save this file in an
+        easy-to-find location, such as your Desktop.  Download the Jar
+        file to the same location, open a Command Prompt window, and
+        change to that directory.  If you are running Windows, the
+        Command Prompt program is at <span
+        class="menuItem">Start&rarr;Accessories</span>.  When you
+        start it, you will be in the directory above your Desktop, and
+        you can use a <span class="commandName">cd Desktop</span>
+        command to change to it.</p>
+        
+        <p>To run the program as it is, use the command:</p>
+
+        <p class="codeSnippet">java -jar MIPS_Multi.jar PCSpim.log</p>
+
+        <p>This command assumes you did not change the default name of
+        the SPIM log file.  The program will read the log file,
+        extract the information about register and memory contents,
+        save the values in the simulated registers and memory, and
+        then display a dump of all the information it found.  You
+        should compare the output of the program to the actual log
+        file to make sure they agree with each other.</p>
+        
+        <h5>Possible Problems: </h5> <p class="runin">You will need to
+        have a current version of Java installed; the program uses
+        features from Sun&rsquo;s Java version 1.5 and will not work
+        with earlier ones.  Also, the program should run on any
+        operating system with an up to date version of Java, but the
+        log file must come from PC-SPIM; you might be able to get
+        xspim running on OS-X or Linux to print a log file with the
+        same structure to a file, but I have not tried it.</p>
+
+      </div>
+
+      <h2 id="developing">Developing your own simulator</h2>
+      <div class="whitebox">
+
+        <p>As mentioned above, you can extract the source code for the
+        various classes from the Jar file and make them part of your
+        own project.  Alternatively, you can simply leave the Jar file
+        as is and write your own code that uses the Jar file&rsquo;s
+        code as follows:</p>
+
+        <p>Create a directory named <span
+        class="directoryName">MIPS_Multi</span>, declare all your
+        classes to be part of the <span
+        class="variableName">MIPS_Multi</span> package, specify <span
+        class="directoryName">MIPS_Multi</span> as the output
+        directory when you compile your code, and include <span
+        class="fileName">MIPS_Multi</span> in the classpath when you
+        compile your code.  For example, you could create a file
+        named <span class="fileName">Main.java</span> containing the
+        following program:</p>
+
+        <div class="codeblock">
+  package MIPS_Multi;
+  public class Main
+  {
+    public static void main(String[] args)
+    {
+      Registers.dump();
+    }
+  }
+        </div>
+
+        <p>If <span class="fileName">Main.java</span>, <span
+        class="fileName">MIPS_Multi.jar</span>, and the <span
+        class="directoryName">MIPS_Multi</span> directory are all in
+        your current working directory, the following commands will
+        build an executable program that simply prints the contents of
+        all the registers on the console.  (The registers will all
+        contain zeros because they have not been assigned any values
+        yet.)</p>
+
+        <div class="codeblock">
+  javac -cp '.;MIPS_Multi.jar' Main.java
+  java -cp '.;MIPS_Multi.jar' MIPS_Multi.Main
+        </div>
+
+        <p>If you use Eclipse, create a new project, import <span
+        class="fileName">MIPS_Multi.jar</span> into it, and select
+        your own Main class when you set up the Run
+        configuration.</p>
+
+        <p>Note the documentation link below.</p>
+
+      </div>
+
+      <h2 id="resources">Resources</h2>
+      <div class="whitebox">
+        <ul>
+          <li><a href="MIPS_Multi.jar">JAR File</a></li>
+          <li><a href="doc">Documentation</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

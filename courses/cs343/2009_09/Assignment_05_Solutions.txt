@@ -1,0 +1,138 @@
+CS-343 - Fall 2009  Assignment 5 - Vickery Solutions
+
+Jump Analysis
+------------------------------------------------------------------
+
+  1.    How long does it take to fetch the instruction?
+     10 PC Read
+    100 Instruction Read; Calculate PC+4
+    ---
+    110 psec
+ 
+  2.    How long does it take the Control Unit to decode the instruction?
+     50 Control Unit
+    ---
+    160 psec
+
+  3.    Which takes longer: calculating PC+4 or fetching the instruction?
+        PC+4 and fetching the instruction are exactly coterminous.
+
+  4.    When is the Jump Address valid?
+    110 psec after the clock pulse (see item #1)
+
+  5.    When would it be safe for the next clock pulse to occur?
+
+     10 psec after Control unit generates the Jump signal: the time for the
+        mux input to the PC to change state.
+
+    110
+     50
+   + 10
+    ---
+    170 psec after the clock edge.
+
+
+Branch Analysis
+------------------------------------------------------------------
+
+  1-2   Same as Jump Analysis
+    110 psec
+
+  3.    When is the BTA valid?
+    100 psec after instruction and PC+4 are available
+    ---
+    210 psec
+
+  4.    When is the A operand valid?
+    100 psec after the the instruction is available (register read)
+
+  5.    When is the B operand valid?
+    110 psec after the instruction is available (register read + mux);
+        control unit is overlapped with this.
+
+  6.    When is the ALU function code valid?
+    100 psec after the instruction is available (control unit + ALU control)
+
+  7.    When is the Z output of the ALU valid?
+    200 psec after #2 + max(#4, #5, #6)
+    ---
+    420 psec
+
+  8.    When would it be safe for the next clock pulse to occur
+     10 psec after the Z output is valid (plus the AND gate)
+    ---
+    430 psec
+
+R-Type Analysis
+------------------------------------------------------------------
+  1-2   Same as above
+    110 psec
+
+  3-6   When is the ALU Result valid?
+    420 psec (Same as Branch Analysis for Z, above.)
+
+  7.    When is the WR Reg input to the register file valid?
+     10 psec after the instruction was available. (not critical)
+    ---
+    120 psec
+
+  8.    When is the Write Data input to the register file valid
+     10 psec after the ALU Result became valid: MemToReg mux delay,
+        in parallel with the PC input mux delay.
+    ---
+    430 psec
+
+  9.    When would it be safe for the next clock pulse to occur?
+    100 psec after the WR Reg and WR Data inputs to the register
+        file are valid.
+    ---
+    530 psec
+
+
+Store Word Analysis
+------------------------------------------------------------------
+
+  1-2   Same as above
+    110 psec
+
+  3-6   In this case, the inputs to the ALU are valid 10 psec earlier
+        than for R-type and Branch instructions: i.e, 210 psec after
+        the clock edge. Because ALUSrc is 1 (after 160 psec), the B
+        input to the ALU comes from the SignExtImm value that was
+        available as soon as the instruction fetch completed (110 psec),
+        and arrival of the Read Data 2 value from the register file
+        at the 210 psec point will have no effect on the output of the
+        ALUSrc mux. So all the inputs to the ALU (A, B, and func) are
+        valid after 210 psec, and the result is valid at the 410 psec
+        point.
+    410 psec
+
+  7.    When is MemWrite control signal valid?
+    160 psec (not critical)
+
+  8.    When would it be safe for the next clock pulse to occur?
+    100 psec after the data memory address is valid.
+    ---
+    510 psec
+
+
+Load Word Analysis
+------------------------------------------------------------------
+
+  1-7   Same as for Store Word
+    410 psec
+
+  8.    When is the WR Reg input to the register file valid?
+    120 psec (Same as R-Type #7; not critical.)
+
+  9.    When is the Write Data input to the register file valid?
+    110 psec after the memory address is valid (mem read + MemToReg mux)
+
+  10.   When would it be safe for the next clock pulse to occur?
+    100 psec after the memory data is available at the register file
+    ---
+    620 psec
+
+  The longest clock period is 620 psec = 620 * 10^-12 sec
+  The maximum frequency is 0.0016129 * 10^12 Hz = 1.6129 * 10^9 Hz = 1.6129 GHz
+

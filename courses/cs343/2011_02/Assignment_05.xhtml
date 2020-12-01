@@ -1,0 +1,133 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 5</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      img {border:1px solid blue;}
+      .big-sig {font-size:1.2em; font-weight:bold;position:relative;top:0.1em;}
+    </style>
+  </head>
+  <body id='urn:uuid:29E4CFA8-19AF-49F4-9EA7-FB74B29307CB'>
+    <h1>CS-343 Assignment 5<br/>
+    Due March 31</h1>
+    <div id="content">
+      <h2>Reading Assignment, Reference Material, and Resources</h2>
+      <p>
+        The assignment is based on the MIPS Register File design developed in Section C-8 of the textbook.
+        The current reading assignment that covers this project is sections C-7 through C-11.
+        The second exam will cover material from all 5 of these sections of Appendix C.
+      </p>
+      <h2>Assignment To Hand In</h2>
+      <div>
+        <p>
+          This is an optional assignment: you are responsible for understanding the material in this assignment,
+          but you are not actually required to hand it in. Some people find that the time spent on the projects
+          is too great for the increase in understanding that comes from doing them. If you sincerely feel that
+          you can understand the material without doing the lab exercise, you don’t have to do it.
+        </p>
+        <p>
+          On the other hand, if you do submit the assignment, it will count as extra credit for the 10% of your
+          course grade that is based on homework assignments. Thus, doing it could add approximately 2-4 points
+          to your course average at the end of the term.
+        </p>
+        <p>
+          When you complete the project and have tested it carefully, submit it by sending email to me with
+          “CS-343 Assignment 5 submission” in the subject line, and your name in the message body. 
+        </p>
+        <ol>
+          <li>
+            <h5>Set up a Quartus project and Testbed for the assignment.</h5>
+            <p>
+              As covered in class on March 22, you will be implementing an 8 &#x00d7; 4 MIPS-like register
+              file. It will be MIPS-like because (a) there will be no real register #0, there will be two
+              read ports, and one write port.
+            </p>
+            <p>
+              Cretae a directory named Assignment_5 for the assignment. The top-level module should be
+              named Register-File_Testbed.
+            </p>
+            <p>
+              The testbed will use switches 9..7 for Read Register #1 (RR1), switches 6..4 for Read
+              Register #2 (RR2), and switches 3..1 for the Write Register number (WR). Switch 0 will
+              be used as the RegWrite signal for register file. Use the four blue pushbuttons, Key
+              3..0, for the Write Data (WD) input. Connect the red LEDs to the switches, and connect
+              Green LEDs 3..0 to the four Key inputs. (<em>Note:</em> the key inputs work backwards
+              from what you expect: pressed gives a 0 and un-pressed gives a 1. The Using
+              Quartus web page shows how to invert the inputs efficiently.
+            </p>
+            <p>
+              The testbed will also use the four seven-segment displays: Hex_3 and Hex_2 to display
+              WR and WD respectively; and Hex_1 and Hex_0 to display the contents of the two
+              registers being read from the two read ports. Hex_1 for R[RR1] (RD1), and Hex_0 to display
+              R[RR2] (RD2).
+            </p>
+            <p>
+              You will also need an input pin for the clock for this project: use the DE1 50MHz clock.
+              There will be some new warnings that will arise from this additional input, which you
+              can ignore for now.
+            </p>
+          </li>
+          <li>
+            <h5>Create a module for one register.</h5>
+            <p>
+              Use four D Flip-Flops with Enable (dffe) from the Quartus “storage” library for the register
+              module. Four inputs (DataIn[3..0] provide the input data to the flip-flops; four outputs (DataOut[3..0])
+              supply the outputs from them. The Clock and Enable inputs go to all four flip-flops.
+            </p>
+            <p>
+              Save the register file as a symbol.
+            </p>
+          </li>
+          <li>
+            <h5>Create the register file and save it as a symbol.</h5>
+            <p>
+              The inputs should be RR1[2..0], RR2[2..0], WR[2..0]; RegWrite; RD[3..0]; RD2[3..0]; and WD[3..0].
+            </p>
+            <p>
+              You will need a 3 &#x00d7; 8 multiplexer with an enable input to select the register to be written,
+            and two 8 &#x00d7; 4 multiplexers for selecting which register to output from each read port. </p>
+            <p>Save the register file as a symbol and insert the symbol into the testbed.</p>
+          </li>
+          <li>
+            <h5>Test carefully.</h5>
+            <p>
+              The main benefit of actually doing this project is to make sure you understand the operation of
+              the register file, which you can do by systematically testing your register file to be sure you
+              can write any set of values into any registers, and then read out the expected values afterwards.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

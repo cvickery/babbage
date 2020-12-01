@@ -1,0 +1,96 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 3</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+    <style type="text/css" media="all">
+    	table { margin: 1em auto; }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>CS-343 Assignment 3</h1>
+      <h2>Two-bit State Machine Design</h2>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>
+          Complete the design of the four-state Finite State Machine developed in class. The machine has two external
+          inputs: <span class="variableName">Up</span> (U) and <span class="variableName">Count</span> (C). For this assignment,
+          I will assume the four states are named State_0, State_1, State_2, and State_3, with the numeric part of the state
+          name corresponding to the binary number obtained by concatenating the values of the two state flip-flops, which will be
+          called S<span class="subscript">1</span> and S<span class="subscript">0</span>. When C is false, the
+          machine does not change states. But when C is true, each clock pulse causes the machine to go up one state (from State_0 
+          State_1, or from State_1 to State_2, etc.)  if U is true, or down one state (from State_0 to State_3, or from State_1 to
+          State_0, etc.). There are four outputs named LED_0, LED_1, LED_2, and LED_3, each of which is on when the machine is in the
+          corresponding state.
+        </p>
+
+      </div>
+
+      <h2>Project Description</h2>
+      <div class="whitebox">
+      	<p>
+        	Draw a state diagram (circles and arcs) for this finite state machine; use the Moore Machine design we did in class.
+        </p>
+        <p>
+        	Complete the sixteen-row state table for the machine, as developed in class.
+        </p>
+        <p>
+        	Minimize each of the six output functions for the state table, and draw a schematic diagram for the complete machine.
+        </p>
+     </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+        <p>
+        	Write your answers on paper, and bring them to class on the due date. You may use Quartus to draw your schematic, but this
+          is not required.
+       </p>
+        <p>
+        	Be sure to write your name and "CS-343 Assignment 3" at the top of each page of your assignment.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home</a>&nbsp;-&nbsp;<a
+           href="http://validator.w3.org/check?uri=referer"> XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer"> CSS</a>
+      </p>
+      <p><em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em></p>
+    </div>
+  </body>
+</html>

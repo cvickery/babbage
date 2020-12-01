@@ -1,0 +1,149 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 8</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      img {border:1px solid blue;}
+      .big-sig {font-size:1.2em; font-weight:bold;position:relative;top:0.1em;}
+    </style>
+  </head>
+  <body id='urn:uuid:3B0716D9-BA50-4317-89C8-77D011ED70EA'>
+    <h1>CS-343 Assignment 8<br/>
+    Due May 17th</h1>
+    <div id="content">
+      <h2>Reading Assignment, Reference Material, and Resources</h2>
+      <div>
+        <p>
+          This assignment covers material from Chapters 5 and 6 of the textbook. Specifically, sections 5.1, 5.2, 5.3, and 6.3
+        </p>
+        <p class="standout-block">
+          You must submit this assignment by 5:00 pm on the due date to receive credit for it.
+        </p>
+
+      </div>
+      <h2>Questions</h2>
+      <div>
+        <p>
+          Put the answers to the following questions in the <em>body</em> of an email message (no attachments
+          accepted). Use “<code>CS-343 Assignment 8 submission</code>” as the subject line. Be sure your name
+          is in the email so you can receive credit.
+        </p>
+        <ol>
+          <li>
+            What are the three parameters that vary along the various levels of the <em>memory hierarchy</em>.
+          </li>
+          <li>
+            If rotational delay were the only factor affecting disk access time, how much faster would a 7200 RPM
+            disk be compared to a 5400 RPM disk?
+          </li>
+          <li>
+            What is the rotational period of a 10,000 RPM disk, in milliseconds?
+          </li>
+          <li>
+            Define the terms <em>track</em> and <em>sector</em> for magnetic disks.
+          </li>
+          <li>
+            Use the web to define <em>areal density</em> in the context of disk drives. Search for the highest areal density of
+            a currently available disk. What is it? Cite the sources for both of your answers to this question.
+          </li>
+          <li>
+            How amazing is the answer to the second part of the previous question?
+          </li>
+          <li>
+            Why doesn’t anyone build a computer with a a terabye of registers in the CPU and just skip the main meory and
+            disk levels of the memory hierarchy all together?
+          </li>
+          <li>
+            A computer has 16 GB of main memory and 1 MB of cache. Once the cache has filled, what is the probability of
+            a <em>cache hit</em> if the processor accesses main memory in a totally random fashion?
+          </li>
+          <li>
+            The previous question specified “once the cache has filled.” Would the probability of a hit be higher or lower
+            than your answer <em>before</em> the cache has filled?
+          </li>
+          <li>
+            For a certain computer, main memory access time is 50 nsec, and cache access time is 750 psec. What is the 
+            <em>average</em> access time if <em>p(hit)</em> is 0.90?
+          </li>
+          <li>
+            If the average access time for the computer in the previous example was observed to be 900 psec, what must the
+            probability of a hit have been?
+          </li>
+          <li>
+            The text differentiates between <em>spatial</em> and <em>temporal</em> locality (page 452). In class, I glossed over
+            the difference. In light of the last word of both definitions in the text, discuss why my approach makes sense. Then
+            explain what feature of cache designs applies to spatial locality but not necessarily to temporal locality, thus making
+            the distinction meaningful after all.
+          </li>
+          <li>
+            Explain why programs tend to exhibit <em>locality</em> with respect to instruction accesses.
+          </li>
+          <li>
+            Explain why programs tend to exhibit <em>locality</em> with respect to data accesses.
+          </li>
+          <li>
+            Explain the effect of locality on the probability of a <em>cache hit</em>.
+          </li>
+          <li>
+            A computer with byte-addressable memory uses 48-bit addresses.
+            <ol>
+              <li>How many bytes of memory could be attached to the computer?</li>
+              <li>How many 8-byte <em>words</em> would that be?</li>
+              <li>How many 128-byte <em>blocks</em> would that be?</li>
+              <li>How many address bits would select a byte within a word?</li>
+              <li>How many address bits would select a byte within a block?</li>
+              <li>How many address bits would select a word within a block?</li>
+            </ol>
+            Assume this computer has 2<span class="superscript">20</span> cache lines.
+            <ol>
+              <li>What is the capacity, in bytes, of this cache?</li>
+              <li>How many sets would there be using a direct mapped design?</li>
+              <li>How many sets would there be using an 8-way set associative design?</li>
+              <li>How many sets would there be using a fully associative design?</li>
+              <li>How many address bits would the index field have for the direct mapped design?</li>
+              <li>How many address bits would the index field have for an 8-way set associative design?</li>
+              <li>How many address bits would the index field have for a fully associative design?</li>
+              <li>How large would the tag field be for the direct mapped design?</li>
+              <li>How large would the tag field be for an 8-way set associative design?</li>
+              <li>How large would the tag field be for a fully associative design?</li>
+            </ol>
+          </li>
+          <li>What is the purpose of the <em>v-bit</em> in a cache memory?</li>
+          <li>
+            Define <em>cold-start</em>, <em>capacity</em>, and <em>conflict</em> misses.
+          </li>
+        </ol>
+      </div>
+    </div>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

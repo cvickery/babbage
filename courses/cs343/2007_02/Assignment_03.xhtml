@@ -1,0 +1,468 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 3</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+    <style type="text/css" media="all">
+      table#computers { width: 50%; }
+      th  { text-align: center; }
+      td  { padding-left: 2em; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 3</h1>
+    </div>
+
+    <div id="content">
+
+      <h2>Procedure</h2>
+      <div class="whitebox">
+      
+        <ol>
+        
+          <li>
+          
+            <h5>Log into your account and verify that it is working
+            correctly.</h5> <p class="runin">Log into any one of the
+            computers in A-205 or A-227 using your account name for this
+            course, which consists of 
+            your last name and the digits "343" all as a single lower-case
+            string.  That is, if your name is "Avery Good Student", your
+            account name is <em>student343</em>.  Use the password given to
+            you in class, and remember that you will be required to change
+            it to something secure the first time you log in.</p>
+
+            <p>The names of the computers are:</p>
+            
+            <table  summary="Lists of computer names in A-205 and A-227."
+                    id="computers">
+            
+              <tr><th>A-205</th><th>A-227</th></tr>
+              <tr><td>birch</td><td>apple</td></tr>
+              <tr><td>cherry</td><td>fir</td></tr>
+              <tr><td>chestnut</td><td>juniper</td></tr>
+              <tr><td>elm</td><td>mimosa</td></tr>
+              <tr><td>ginkgo</td><td>peach</td></tr>
+              <tr><td>hemlock</td><td>pine</td></tr>
+              <tr><td>hickory</td><td>plum</td></tr>
+              <tr><td>&nbsp;</td><td>spruce</td></tr>
+              <tr><td>&nbsp;</td><td>sycamore</td></tr>
+              <tr><td>&nbsp;</td><td>walnut</td></tr>
+            
+            </table>
+            
+            <p>If you are on campus, you can access the computers in room
+            A-205 any time the department office is open; a secretary in the
+            office will open the room for you if necessary.  If you want to
+            work from off campus and have a broadband Internet connection,
+            you can access any of the computers by using the <span
+            class="programName">Remote Desktop Connection</span> tool
+            provided by Microsoft for both Windows and Macintosh computers. 
+            On Windows XP, it is located under <span
+            class="menuItem">Start-&gt;Applications-&gt;Communication</span>. 
+            On Macintosh OSX is is under <span
+            class="menuItem">Applications</span>.  Add <span
+            class="codeSnippet">.cs.qc.edu</span> to one of the computer
+            names listed above when prompted for the computer to connect
+            to.</p>
+
+            <p>If you log in from off campus, you should use one of the
+            computers in room A-227 so that people who are on campus can use
+            the machines in A-205.  (Only one person can be logged into a
+            computer at a time.)  The exception is Tues and Thurs between 5
+            and 6:30 when there is another class that uses the computers in
+            A-227.</p>
+
+            <p>Once logged in, use <em>Windows Explorer</em> to verify that
+            your &rsquo;My Documents&rsquo; directory contains a directory
+            named &rsquo;My Projects.&rsquo;  Create a new directory named
+            &rsquo;Assignment_03&rsquo; in your My Projects directory. 
+            <strong>The new directory must be spelled and capitalized
+            exactly as shown, including the underscore character, in order
+            to receive credit for this assignment!</strong></p>
+
+            <p>Log off the computer you used and log into another one. 
+            Verify that your Assignment_03 directory shows up on the second
+            computer, indicating that your settings were successfully copied
+            to the domain server (<span class="computerName">maple</span>)
+            when you logged off the first computer and that they were then
+            copied to the second computer when you logged into it.  If you
+            have any problems with this step, contact Dr. Vickery for help
+            before proceeding with the assignment.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Download and fix a seven-segment display decoder.</h5> <p
+            class="runin">I am providing you with a Verilog module that
+            converts a 4-bit binary number (one hexadecimal digit) into a
+            7-bit binary code for lighting up the seven lights of a seven
+            segment display.  The file is: <a
+            href="hex2sevenseg.v">hex2sevenseg.v</a>.  Save a copy in your
+            <span class="directoryName">My Projects</span> directory.</p>
+
+            <p>Examine <span class="fileName">hex2sevenseg.v</span> and
+            observe that the <span class="keyword">assign</span> statement
+            for segment G (the center one) is wrong.  Study the rest of the
+            module, and change the code for segment G so that it will light
+            up for input values 2, 3, 4, 5, 6, 8, 9, A, B, D, E, and F. 
+            (The digits B and D are represented as lower-case letters to
+            distinguish them from 0 and 8.) You will test your changes
+            below.</p>
+
+          </li>
+          
+          <li>
+            
+            <h5>Create a Quartus project for the assignment.</h5> <p
+            class="runin">Start the Quartus II application by clicking the
+            icon on the desktop.  For some reason, you might see a message
+            referring to software licenses.  This is normally a temporary
+            problem, which you can fix by selecting &ldquo;specify license
+            file&rdquo; from the pop-up message box or by going to <span
+            class="menuItem">Tools-&gt;License&nbsp;Setup</span>.  In either
+            case, specify <span class="codeSnippet">@oak.cs.qc.edu</span> as
+            the location of the license file.  When you tab away from that
+            text box, Quartus will check the license again, and you should
+            see that the license type has changed from &ldquo;No
+            License&rdquo; to &ldquo;Full License.&rdquo; If that
+            doesn&rsquo;t work, report the problem to Dr. Vickery and try
+            another computer.  <strong>Do not select the &ldquo;30-day trial
+            option,&rdquo; &ldquo;web license update,&rdquo; or any of the
+            other possible choices offered to you; they would just mess
+            things up.</strong></p>
+
+            <p>From the File menu, run the New Project Wizard.  Select your
+            Assignment_03 directory when asked where the project goes, and
+            give the project the name <em>calendar_next_state</em>.  Spell
+            it just like that.</p>
+
+            <p>The next panel will ask you for files that you want to add to
+            the project.  Navigate to the copy of <span
+            class="fileName">hex2sevenseg.v</span> that you downloaded (and
+            fixed!) and add it to the project.  The file won&rsquo;t be
+            moved or copied anywhere, but Quartus will &ldquo;know&rdquo;
+            that the file is part of the project.</p>
+
+            <p>On the family and device settings step, you will have to
+            select the correct FPGA chip depending on which type of logic
+            kit you are using.  The three types of logic kits we have and
+            their corresponding FPGA part numbers are shown in the table
+            below.  You will need to refer to the <span
+            class="variableName">Connection</span> type later on when you
+            are ready to download your design from the PC to a logic
+            kit.</p>
+
+            <table>
+              <tr>
+                <th>Kit Type</th><th>Chip Family</th><th>Part Number</th>
+                <th>Connection</th>
+              </tr>
+              <tr>
+                <td>UP2</td><td>FLEX10K</td><td>EPF10K70RC240-4</td>
+                <td>Byte Blaster</td>
+              </tr>
+              <tr>
+                <td>UP3</td><td>Cyclone</td><td>EP1C6Q240C8</td>
+                <td>Byte Blaster</td>
+              </tr>
+              <tr>
+                <td>DE1</td><td>Cyclone II</td><td>EP2C20F484C7</td>
+                <td>USB Blaster</td>
+              </tr>
+            </table>
+            
+            <p class="standoutBlock"><strong>Note:</strong> This assignment
+            uses a seven-segment display to show the next state outputs of
+            the truth table, so you will have to use either a UP2 or a DE1
+            kit: the UP3 does not have any seven segment displays.</p>
+
+            <p>Skip past the EDA tool settings panel, and click Finish when
+            the wizard shows the summary of the project.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Build the top-level design.</h5> <p class="runin">From the
+            File menu (or by clicking the new page toolbar button), create a
+            new Block Diagram/Schematic file.  Use the Symbol Tool (the
+            button that looks like an AND gate) to add three input pins and
+            seven output pins to the circuit.  Look under <span
+            class="menuItem">Libraries->Primitives->pin</span> when the
+            Symbol panel opens up to find the pin symbols.  Name the input
+            pins IN_0, IN_1, and IN_2.  Actually, you can name
+            them anything (meaningful) you want to, but those are the names
+            used in this assignment page.  Save this file as
+            <span class="fileName">calendar_next_state.bdf</span> in your
+            <span class="directoryName">Assignment_03</span> directory. 
+            Since this is the first file in the project, that name and
+            location will probably be the default.</p>
+
+            <p>Now you need to put a copy of the seven segment decoder into
+            your top-level design.  Proceed as follows:</p>
+            
+            <ol>
+
+              <li>Open <span class="fileName">hex2sevenseg.v</span> from
+              within Quartus.  If you haven&rsquo;t already fixed the logic
+              for segment G, now would be a good time to do that!.</li>
+
+              <li>Select <span class="menuItem">File->Create/Update->Create
+              Symbol Files for Current File</span>.  If there is an error in
+              the syntax of your logic for Segment G it will show up now and
+              you will have to fix it to proceed.</li>
+
+              <li>Go back to <span
+              class="fileName">calendar_next_state.bdf</span> and open up
+              the Symbol Tool again.  There should be a new top-level
+              directory called <span class="directoryName">Project</span>
+              there.  Open it, and you should see the symbol for <span
+              class="variableName">hex2sevenseg</span>.  Insert an instance
+              of this symbol into your design, connect the outputs of the
+              decoder to the seven output pins, and connect the top three
+              inputs to the three input pins.  Use the Symbol Tool to find
+              the <span class="variableName">Vcc</span> primitive (this
+              gives a constant voltage equivalent to a logic value of 1),
+              and connect it to the fourth input of the seven segment
+              decoder.</li>
+
+            </ol>
+
+            <p>You might find it helpful to turn on the Show Gridlines
+            option under the View menu.  If you make mistakes, select the
+            wire piece you don&rsquo;t want and delete it using the Del key.
+            You might want to zoom in (Control-Spacebar) to do accurate
+            work.  Once a wire is connected to a pin, you should be able to
+            move the pin and the wire will stay connected; that&rsquo;s a
+            way to make sure your connections are good.</p>
+            
+            <p><strong>Compile your top-level design.</strong>  Your top
+            level design is not complete yet (there is no logic for the next
+            state truth table yet), but it&rsquo;s time to do the first
+            compilation: select <span
+            class="menuItem">Tools->Compiler&nbsp;Tool->Start</span> or
+            click the toolbar button with the right-pointing triangle on it
+            (next to the grayed out Stop button), or just type Control-L.</p>
+
+            <p>Four tools should run: Analysis&nbsp;&amp;&nbsp;Synthesis,
+            Fitter, Assembler, and Timing&nbsp;Analyzer.  There should be no
+            errors but there will be some warnings that you can ignore for
+            now.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Make the pin assignments.</h5> <p class="runin">You have to
+            tell Quartus which pin numbers on the FPGA correspond to the
+            input and output pins in your diagram.  Use the <span
+            class="menuItem">Assignments->Pins</span> menu item to start
+            this process.  When the big panel opens up you should see a list
+            of your three input and seven output pins in the &ldquo;Node
+            Name&rdquo; column.  Double-click in the cells of the
+            &ldquo;Location&rdquo; column and type in the pin numbers to
+            make the assignments.</p>
+
+            <p>The following links will take you to tables that show the pin
+            numbers for the various switches, LEDs, and seven segment
+            displays on the different logic kits:</p>
+            
+            <ul>
+              <li><a href="../Pins_UP2.xhtml">UP2</a></li>
+              <li><a href="../Pins_UP3.xhtml">UP3</a></li>
+              <li><a href="../Pins_DE1.xhtml">DE1</a></li>
+            </ul>
+          
+            <p>For the UP2, it makes sense to use dip switches 1-3 for the
+            inputs; for the DE1, use three of the four push buttons, keys
+            0-2.  But remember that your inputs will be logically inverted
+            when you use the pushbuttons: use the Symbol Tool to get
+            inverters (&ldquo;not&rdquo; gates from the <span
+            class="variableName">logic</span> section) and put them  between
+            the input pins and the seven segment decoder.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Recompile the design and configure the FPGA.</h5> <p
+            class="runin">You had to compile the design once so the
+            Assignment Editor could tell what pins you are using, and now
+            you have to compile it again to get the assignments into the
+            configuration file for the FPGA.  Just press Control-L again to
+            recompile.  There should be no errors, and the only warnings
+            should have to do with failure to specify what to do with unused
+            pins and failure to specify capacitance values; both of these
+            warnings can be ignored.</p>
+
+            <p><strong>If you are using a UP2</strong>, be sure it is
+            connected to the parallel port of the PC you are using through a
+            &rsquo;Byte Blaster&rsquo; cable., and connect the power cube to
+            the DC_IN connector on the UP2; two green LEDs should light up. 
+            Go to the Programmer panel.  It&rsquo;s the rightmost button on
+            the top toolbar, or you can get to it using the Tools menu.  If
+            you don&rsquo;t see &ldquo;Byte Blaster [LPT1]&rdquo; near the
+            top of the panel that comes up, click the Hardware Setup button
+            in the top left part of the panel and select it from the drop
+            down menu.</p>
+
+            <p><strong>If you are using a DE1</strong>, just connect it to
+            one of the USB ports on the PC.  It should start flashing the
+            LEDs and seven segment displays when you connect it.  There is a
+            big red on/off button you might need to press to turn it on.  Go
+            to the Programmer panel.  It&rsquo;s the rightmost button on the
+            top toolbar, or you can get to it using the Tools menu.  If you
+            don&rsquo;t see &ldquo;USB Blaster&rdquo; near the top of the
+            panel that comes up, click the Hardware Setup button in the top
+            left part of the panel and select it from the drop down
+            menu.</p>
+
+            <p><strong>If your are using a UP3</strong>, you have made a
+            mistake.  There are no seven segment displays on the UP3!</p>
+
+            <p>In the Programmer panel, you should see a table with one row
+            with the name <span
+            class="fileName">calendar_next_state.sof</span> in the File
+            column.  Click the box in the Program/Configure column for that
+            file, and click the Start button on the left side of the panel. 
+            It should take a few seconds to program the UP2, less for the
+            DE1.</p>
+            
+            <h5>Test your design.</h5> <p class="runin">Operate the three
+            switches (UP2) or buttons (DE1) and verify that the seven
+            segment display shows the numbers 0-7 correctly for each of the
+            eight binary patterns 000<span class="subscript">2</span>
+            through 111<span class="subscript">2</span>.  If not, make the
+            necessary changes to fix the problems before proceeding.</p>
+
+            <p>It would be a good idea to exit Quartus and log off the
+            computer at this point as a way of saving your work so far on
+            the lab server computer, <span
+            class="computerName">maple</span>.  Alternatively, you might
+            save a copy of your Assignment_03 directory to a USB memory
+            stick or, if you are very retro, a floppy disk.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Implement the next state truth table.</h5>  <p
+            class="runin">Create another Block Diagram File. Add three input
+            pins named <span class="variableName">PS_0</span>, <span
+            class="variableName">PS_1</span>, and <span
+            class="variableName">PS_2</span> and three output pins named
+            <span class="variableName">NS_0</span>, <span
+            class="variableName">NS_1</span>, and <span
+            class="variableName">NS_2</span>.  Add the necessary inverters,
+            AND gates and OR gates to implement the minimized next state
+            truth table from <a href="Assignment_02.xhtml">Assignment
+            2</a>.  When you save the file, give it the name <span
+            class="fileName">next_state_logic.bdf and be sure the &ldquo;Add
+            to Project&rdquo;</span> box is checked on the Save panel.  Now
+            use <span class="menuItem">File->Create/Update->Create Symbol
+            Files for Current File</span> to make a symbol out of this
+            module, insert a copy into the top level design between the
+            input pins and the seven segment decoder, compile, download, and
+            test your design.</p>
+            
+            <p>Be sure to exit Quartus and log off the computer so you work
+            is saved back to <span class="computerName">maple</span> when
+            you are finished.</p>
+
+          </li>
+
+        </ol>
+      
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+      
+        <p>When you have completed testing the assignment, send me an email
+        message telling me the project is ready for grading.  I will get a
+        copy of it from <span class="computerName">maple</span> and test
+        it.</p>
+
+        <p class="standoutBox">The Subject line of your email must be <span
+        class="codeSnippet">CS-343 Assignment 3</span> and you must put your
+        name in the body of the email message.</p>
+
+        <p>If you worked on the assignment with someone else, be sure to
+        list the names of both contributers in the email message so you both
+        get full credit.  In this case, be sure to tell me which account has
+        the final version of the project for me to look at.</p>
+
+        <p>Remember, it is perfectly all right to help each other to do the
+        assignment.  That&rsquo;s the main reason I made the <a
+        href="http://babbage.cs.qc.edu/Fora/Courses/viewforum.php?f=3">course
+        discussion forum</a> available.  (Send me email if you don&rsquo;t
+        know the Username and Password for accessing the forum.)  Just
+        don&rsquo;t exchange actual design files with each other; nobody
+        learns anything if you do that.</p>
+
+        <p><strong>Due Date</strong>  The assignment is due by midnight,
+        February 15.  Do not submit the assignment unless you have verified
+        that it works correctly using a logic kit in the lab.  Having said
+        that, you can get partial (half) credit for &ldquo;trying.&rdquo; 
+        Just say in your email that the assignment is incomplete, and I will
+        look at your project, but I won&rsquo;t try to run it.</p>
+
+      </div>
+
+    <h2><a href="Assignment_03_Solution.xhtml">Solution</a></h2>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

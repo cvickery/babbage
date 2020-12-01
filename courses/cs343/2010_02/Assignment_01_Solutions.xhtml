@@ -1,0 +1,272 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $content_type = "application/xhtml+xml";
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $content_type = "text/html";
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 1</title>
+    <meta http-equiv="Content-Type" content="<?php echo $content_type;?>; charset=UTF-8" />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body>
+
+    <h1>CS-343 Assignment 1 Solutions</h1>
+
+    <div id="content">
+
+      <h2>Solutions</h2>
+      <div>
+        <ol class="answer-list">
+        	<li>
+          	Round 5,280 to the nearest power of ten.
+            <div class="ans">
+            	If the two choices were 0 and 10,000 the answer would be to round up to 10,000
+              (10<span class="superscript">4</span>). But the two bracketing powers of ten are
+              1,000 and 10,000 and 5,280 is closer to 1,000 than 10,000&mdash;so the answer should be
+              10<span class="superscript">3</span>. But &ldquo;round to the nearest power of ten&rdquo;
+              is not a commonly used operation, and I have re-written the part of the
+              <a href="../Measurement.pdf">Measurement document</a> 
+              that talks about this. Next time I won’t ask a question like this!
+            </div>
+          </li>
+          <li>
+            Round 9 to the nearest power of ten.<span class="ans">10 or 10<span class="superscript">1</span></span>
+          </li>
+          <li>
+            5,280 is<span class="ans">4 - 1 = 3</span>orders of magnitude larger than 9.
+            <div class="ans">Except, see revised answer to Question #1, above.</div>
+            
+          </li>
+          <li>
+            How many orders of magnitude larger than a picosecond is a microsecond?
+            <span class="ans">-6 - -12 = 6</span>
+          </li>
+          <li>
+            Convert 25 nanoseconds to picoseconds.
+            <span class="ans">25 nsec = 25,000 psec</span>
+          </li>
+          <li>
+            Convert 25 nanoseconds to microseconds.
+            <span class="ans">25 nsec = 0.025 &micro;sec</span>
+          </li>
+          <li>
+            Convert 25 milliseconds to nanoseconds.
+            <span class="ans">25 msec = 25,000,000 nsec</span>
+          </li>
+          <li>
+            What is the &ldquo;normal&rdquo; representation of 52,800 &micro;sec?
+            <span class="ans">5.280&times;10<span class="superscript">-2</span>sec Also: 52.8 msec</span>
+          </li>
+          <li>
+            On the average, how many yes/no questions would you have to ask someone if they were
+            thinking of a number between 1 and 32?
+            <span class="ans">log<span class="subscript">2</span>(32) = 5</span>
+          </li>
+          <li>
+            How many bits would you need to encode the digits 0 &hellip; 31?
+            <span class="ans">log<span class="subscript">2</span>(32) = 5</span>
+          </li>
+          <li>
+            Make up two different binary codes to represent the letters A, B, C, and D. Use the same, minimal, number
+            of bits per letter in both codes.<div class="ans">Two bits per code point; the binary values are
+            arbitrary. For example:</div>
+            <table class="truth-table ans">
+            	<tr>
+              	<th>Letter</th><th>Code #1</th><th>Code #2</th>
+              </tr>
+              <tr>
+              	<td>A</td><td>00<span class="subscript">2</span></td><td>11<span class="subscript">2</span></td>
+              </tr>
+              <tr>
+              	<td>B</td><td>01<span class="subscript">2</span></td><td>10<span class="subscript">2</span></td>
+              </tr>
+              <tr>
+              	<td>C</td><td>10<span class="subscript">2</span></td><td>00<span class="subscript">2</span></td>
+              </tr>
+              <tr>
+              	<td>D</td><td>11<span class="subscript">2</span></td><td>01<span class="subscript">2</span></td>
+              </tr>
+            </table>
+          </li>
+          <li>
+            Calculate the weighted average of the following values; show all work. Note that the sum of the Frequencies
+            is 100, which can simplify the calculations.
+            <table class='truth-table'>
+              <tr><th>Value</th><th>Frequency</th></tr>
+              <tr><td>70</td><td>10</td></tr>
+              <tr><td>80</td><td>10</td></tr>
+              <tr><td>90</td><td>80</td></tr>
+            </table>
+            <p class="ans">
+            	(700 + 800 + 7200) &divide; 100 = 87.0
+            </p>
+          </li>
+          <li>
+            At Queens College, grade point averages use the number of credits for each letter grade
+            as the weights and the following table to relate letter grades to values:
+            <table class='truth-table'>
+              <tr><th>Grade</th><th>Value</th></tr>
+              <tr><td>A+</td><td>4.0</td></tr>
+              <tr><td>A</td><td>4.0</td></tr>
+              <tr><td>A-</td><td>3.7</td></tr>
+              <tr><td>B+</td><td>3.3</td></tr>
+              <tr><td>B</td><td>3.0</td></tr>
+              <tr><td>B-</td><td>2.7</td></tr>
+              <tr><td>C+</td><td>2.3</td></tr>
+              <tr><td>C</td><td>2.0</td></tr>
+              <tr><td>C-</td><td>1.7</td></tr>
+              <tr><td>D+</td><td>1.3</td></tr>
+              <tr><td>D</td><td>1.0</td></tr>
+              <tr><td>F</td><td>0.0</td></tr>
+            </table>
+            What is the GPA of a student who has received A- in 2 courses, B+ in 3 courses, and B in
+            4 courses, if each course was 3 credits? Show all work.
+            <div class="ans">
+            	<p>
+              	Points = (2 &times; 3.7 &times; 3) + (3 &times; 3.3 &times; 3) + (4 &times; 3.0 &times; 3)
+                       = 87.9
+              </p>
+              <p>Credits = 9 &times; 3 = 27</p>
+              <p>
+              	GPA = Points &divide; Credits = 3.256
+              </p>
+              <p>
+              	(By the way, the above table is the published version, but I think it’s actually computed
+              	using weights of 12, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, and 0. Then divide by 3 times the number
+              	of credits. Computed that way, the GPA for this example would be 3.259.)
+              </p>
+            </div>
+          </li>
+          <li>
+            What would be the GPA of the student in the previous question if they failed a
+            1-credit course in addition to receiving the grades listed in the question?
+            <div class="ans">
+            	87.9 &divide; 28 = 3.139 (3.143 using the other set of weights.)
+            </div>
+          </li>
+          <li>
+            Show the terms needed to calculate how many bits would be needed to record 5 sec of
+            CD-quality music (stereo). That is, do not do the calculation, but show what numbers
+            would be multiplied together to get the answer.
+            <div class="ans">
+            	5 sec &times; 2 chan-per-sample &times; 44,000 samples-per-sec &times; 12 bits-per-sample
+            </div>
+          </li>
+          <li>
+          	List the values of the first eleven powers of two.
+            <p class="ans">
+            	1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 (starting with 2<span class="superscript">0</span>)
+            </p>
+          </li>
+          <li>
+            How many bits in 128 KB? Show all work.
+            <ul class="ans">
+            	<li>128 = 2<span class="superscript">7</span></li>
+              <li>K = 2<span class="superscript">10</span></li>
+              <li>B = 2<span class="superscript">3</span></li>
+              <li>Ans: 2<span class="superscript">20</span> bits</li>
+            </ul>
+          </li>
+          <li>
+            A disk spins at 15,000 RPM. How long does it take to make one revolution? Answer in
+            seconds, using the correct unit of measure to give a &ldquo;normal&rdquo; value with the
+            integer part between 1 and 999.
+            <ul class="ans">
+            	<li>15,000 &divide; 60 = 250 revolutions per sec</li>
+              <li>1 &divide; 250 = 0.004 sec per revolution</li>
+              <li>
+              	0.004 &times; 10<span class="superscript">0</span> = 4.0 &times; 
+                10<span class="superscript">-3</span> = 4.0 msec per revolution.
+              </li>
+            </ul>
+          </li>
+          <li>
+            How long would it take to transfer a 200 MB program from disk to main memory if the
+            initial latency is 6 msec and the bandwidth of the channel between the disk and main
+            memory is 500 Mbps? Show all work.
+            <ul class="ans">
+            	<li>200 MB = 200 &times; 2<span class="superscript">23</span> bits</li>
+              <li>500 Mbps = 500 &times; 2<span class="superscript">20</span> bits/sec</li>
+              <li>
+              	sec = bits &times; sec/bit = (200 &times; 2<span class="superscript">23</span>) &times;
+              	(1 / (500 &times; 2<span class="superscript">20</span>))
+              </li>
+              <li>
+              	sec = (200/500) &times; 2<span class="superscript">3</span> = 0.4 &times; 8 = 3.2 sec.
+              </li>
+              <li>
+              	3.2 sec + 6 msec = 3.206 sec total.
+              </li>
+            </ul>
+          </li>
+          <li>
+            How long would it take to execute one million instructions if the average number of
+            clock cycles per instruction is 2.5 and the clock speed is 2 GHz? Show all work.
+            <ul class="ans">
+            	<li>
+              	sec = instructions &times; clocks-per-instruction &times; seconds-per-clock
+              </li>
+              <li>
+              	2 GHz = 2 &times; 10<span class="superscript">9</span> = clocks-per-second
+              </li>
+              <li>
+              	seconds-per-clock = (1 &divide; 2) &times; 10<span class="superscript">-9</span>
+                = 0.5 &times; 10<span class="superscript">-9</span> sec (= 500 psec).
+              </li>
+              <li>
+              	sec = 1 &times; 10<span class="superscript">6</span> &times; 2.5 &times;
+                0.5 &times; 10<span class="superscript">-9</span> = 1.25 &times; 10<span class="superscript">-3</span> sec =
+                1.25 msec.
+              </li>
+            </ul>
+          </li>
+          <li>
+            &ldquo;Computer A is twice as fast as computer B.&rdquo; What does that mean in terms of
+            how long it takes the two computers to execute a program?
+            <p class="ans">
+            	Computer A would use half as much time to execute a given program as computer B would use.
+            </p>
+          </li>
+          <li>
+            Computer A takes 10 seconds to compute a program, and Computer B takes 5 seconds to compute
+            the same program. Which computer is faster, and by how much? Answer by filling in the blanks
+            in both of the following statements:
+            <ul>
+            	<li>
+              	Computer<span class="ans">B</span>is<span class="ans">2</span>times faster than computer
+                <span class="ans">A</span>.
+              </li>
+              <li>
+              	Computer<span class="ans">B</span>is<span class="ans">100%</span>faster than computer
+                <span class="ans">A</span>.
+              </li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href=".">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

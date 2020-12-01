@@ -1,0 +1,106 @@
+
+Vickery Solutions: CS-343 Assignment 6
+
+M-1:  Instruction Fetch (IF)
+      Instruction Decode (ID)
+      Execute (EX)
+      Memory (MEM)
+      Write Back (WB)
+
+M-2:  IF:   PC, Instruction Memory (IM), PC+4 Adder
+      ID:   Register File; Control Unit
+      EX:   Branch Target Aaddress (BTA) Adder; ALU Control; ALU
+      MEM:  Data Memory (DM)
+      WB:   None (Uses Register File)
+
+M-3:  IF/ID:    Instruction; PC+4
+
+      ID/EX:    PC+4; R[rs]; R[rt]; {16{immediate[15], immediate}}
+                Control signals for EX, MEM, and WB stages*
+                rt and rd fields of the instruction
+
+      EX/MEM:   BTA; Zero; ALU Result; R[rt]
+                Control signals for MEM and WB stages*
+                rt or rd field of the instruction
+
+      MEM/WB:   Read data from memory; ALU Result;
+                Control signals for WB stage*
+                rt or rd field of the instruction
+
+     *Control signals for stages:
+        EX:   ALUSrc; ALUOp (and instruction[5:0]); RegDst
+        MEM:  Branch; PCSrc; MemRead; MemWrite
+        WB:   MemtoReg; RegWrite
+
+M-4:  R-Type
+        IF:   Read instruction from IM; calculate PC+4
+        ID:   Read registers from register file; decode op code
+        EX:   Calculate func(R[rs], R[rt]), where func() is the
+              function derived from instruction[5:0]
+        MEM:  Nop (no operation)
+        WB:   Write ALU result to R[rd]
+
+      Branch
+        IF:   Read instruction from IM; calculate PC+4
+        ID:   Read registers from register file; decode op code
+        EX:   Calculate BTA; Calculate Zero bit
+        MEM:  Select address to load into the PC (wave hands slightly
+              because doing this here causes two instructions following
+              the branch to be executed unconditionally intead of just
+              the one that is implemented using the "delayed branch"
+              technique.)
+        WB:   Nop
+
+      Jump
+        IF:   Read instruction from IM; calculate PC+4
+        ID:   Read registers from register file; decode op code
+        EX:   Select address to load into PC ("delayed jump").
+        MEM:  Nop
+        WB:   Nop
+
+    Store Word
+        IF:   Read instruction from IM; calculate PC+4
+        ID:   Read registers from register file; decode op code
+        EX:   Calculate Effective Address (EA) using ALU
+        MEM:  Write R[rt] to DM[EA]
+        WB:   Nop
+
+    Load Word
+        IF:   Read instruction from IM; calculate PC+4
+        ID:   Read registers from register file; decode op code
+        EX:   Calculate EA using ALU
+        MEM:  Read from DM[EA]
+        WB:   Write DM[EA] to R[rt]
+
+A-1:    There are five stages so the clock would be 5×1 GHz = 5 GHz.
+        See page 333 of the textbook.
+
+A-2:    The latency would be five clock cycles for each instruction.
+
+A-3:    The throughput would be one instruction per clock cycle.
+        Note: most discussions talk about the reciprocal: clock
+              cycles per instruction (CPI)
+
+A-4:    Structural, when a structural element is needed by two different
+        instructions at the same time. The solution is to replicate the
+        structural element, for example by providing separate Adders for
+        calculating PC+4 and the BTA even though the ALU could perform
+        the same calculations.
+
+        Control, when the address of the next instruction is not known in
+        to fetch it immediately after the previous one. The MIPS processor
+        uses delayed branching to deal with this hazard.
+
+        Data, when an instruction needs the result produced by a previous
+        instruction but that value has not been written back to the
+        register file yet. The solution is to use register forwarding: get
+        the value from one of the pipeline registers instead of waiting for
+        it to percolate through to the register file.
+
+A-5:    Delayed branching deals with control hazards: the next instruction
+        after a conditional branch instruction (beq or bne) is executed
+        unconditionally.
+
+A-6:    Register forwarding deals with data hazards. Instead of waiting for
+        an operand to work its way through the pipeline stages to the
+        register file, the value is taken from a pipeline register.

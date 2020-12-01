@@ -1,0 +1,73 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+<title>CS-343 Assignment 4</title>
+
+  
+<link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css" />        
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>CS-343 Assignment 4 </h1>
+  </div>
+  <div id="content">
+    <h2>Introduction</h2>
+    <div class="whitebox">
+    	<p>This assignment is a small exercise in using the MIPS assembly language.
+  		Your task is to write a subroutine that computes the sum of a vector of
+    	  integers. I am providing a program which will read numbers from the keyboard,
+    	  construct the vector of integers in memory, and call your subroutine.
+    	  When your subroutine returns, my program will verify that your subroutine
+    	  computed the sum correctly.</p>
+    	<p>You will be using the SPIM simulator for the MIPS process for this assignment.
+    	  It&rsquo;s on the CD that came with your textbook, or you can download
+    	  a copy from <a href="http://www.cs.wisc.edu/~larus/spim.html">the SPIM
+    	  Website</a> at University of Wisconsin-Madison.</p>
+    	<p>Directions for completing the assignment and getting my code are at the
+    	  <a href="../SPIM_Assignment/">SPIM Assignment</a> page.  </p>
+  </div>
+
+  </div>
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>    </p>
+    <p><em>Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>    </p>
+</div>
+  </body>
+</html>

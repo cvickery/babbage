@@ -1,0 +1,84 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Logic Kit Pin Assignments</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Logic Kit Pin Assignments</h1>
+    </div>
+
+    <div id="content">
+      <div class="whitebox">
+  
+        <p>The following links take you to pin assignment tables for the
+        three Altera logic design kits available for use in this course. 
+        All kits have additional devices connected to their FPGAs; only
+        clocks, switches, buttons, LEDs, and seven segment displays are
+        listed.  Some of the clocks are intended for specific functions,
+        such as video output.  When in doubt about a clock, consult your
+        instructor or the manual for the the kit.</p>
+
+        <h2><a href="Pins_UP2.xhtml">UP2</a></h2>
+          <p>Eight DIP switches, Two pushbuttons, and two seven segment
+          displays.</p>
+        <h2><a href="Pins_UP3.xhtml">UP3</a></h2>
+          <p>Four DIP switches, Four pushbuttons, and four LEDs.</p>
+        <h2><a href="Pins_DE1.xhtml">DE1</a></h2>
+          <p>Ten slide switches, four pushbuttons, four seven segment
+          displays, ten red LEDs, and eight green LEDs.</p>
+      </div>
+        
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

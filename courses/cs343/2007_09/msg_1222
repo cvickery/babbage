@@ -1,0 +1,22 @@
+
+  For those of you working on the optional project, here is
+  a change in the requirements: Getting the clocking right
+  for the register file is "tricky" (see below). So I am now
+  saying you do not have to get your register file working
+  perfectly before moving on to try other modules. If it is
+  not working perfectly, you can simply substitute my
+  Verilog implementation back into the design when you start
+  working on other parts. But I will expect to find a Step_3
+  directory so that I can evaluate the work you did do on
+  that part of the project.
+
+  "Tricky" means that operating the CPU clock from Key0
+  produces very slow clock pulses that are not synchronized
+  with the 27 MHz FPGA clock. The trick is getting exactly
+  one brief clock pulse delivered to the alt3pram you used
+  in your register file each time RegWrite (which is
+  synchronized with the CPU clock) goes true. Sorry, but I
+  don't have a quick and reliable fix that I can distribute.
+
+  Good luck, and happy holidays!
+  Dr. Vickery

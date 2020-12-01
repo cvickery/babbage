@@ -1,0 +1,329 @@
+<?php
+  $this_dir = opendir('.');
+  $this_link = "";
+  $this_year = "";
+  $this_term = "";
+  while ($dir_entry = readdir($this_dir))
+  {
+    if (is_dir($dir_entry) && preg_match('/(\d{4})_(\d{2})/', $dir_entry, $year_term))
+    {
+      $this_year = $year_term[1];
+      $this_term = ($year_term[2] === '02') ? 'Spring' : 'Fall';
+      $this_link = $dir_entry;
+    }
+  }
+
+  header("Vary: Accept");
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+  stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+  stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+  )
+  {
+      header("Content-type: application/xhtml+xml");
+      header("Last-Modified: "
+      .gmdate('r', filemtime($_SERVER['SCRIPT_FILENAME'])));
+      print ("<?xml version=\"1.0\" encoding=\"utf-8\"
+  ?>
+  \n");
+  }
+  else
+  {
+  header("Content-type: text/html; charset=utf-8");
+  }
+?>  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Syllabus</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../css/style-print.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/syllabus.css" />
+  </head>
+  <body id='urn:uuid:D1464C54-F6ED-494F-9116-8A652BD2423A'>
+      <h1>CS-343 Syllabus</h1>
+      <?php
+        echo <<<EOT
+        <p id='current-semester-link'>
+          <a href='$this_link'>Link to the Schedule and Assignments for $this_term $this_year</a>
+        </p>
+EOT;
+       ?>
+      <div class="standout-block">
+        This syllabus gives the intended structure and requirements for CS-343, but the actual
+        topics and amount of time spent on each topic varies from semester to semester.  The course
+        schedule for this semester, including exam dates and assignments to be handed in, is on <a
+        href="<?php echo $this_link;?>">this semester’s schedule page</a>.
+      </div>
+      <h2>Course Objectives</h2>
+      <div>
+        <p>
+          “Computer Architecture” covers an extremely broad range of topics that relate to how
+          computers are designed and implemented&mdash;far more topics than could reasonably be
+          covered in a one-semester undergraduate course in a computer science department. The
+          computer science major at Queens College requires two courses (CS-240 and CS-343) that,
+          together, cover a basic set of architecture&ndash;related topics that are essential for
+          all computer science majors, and which provide a background for further studies in the
+          area for those who are interested.  But computer architecture is such a large and dynamic
+          field that many topics do not get the attention we would give them in a more&ndash;perfect
+          world.
+        </p>
+        <p>
+          The topics for this course (listed <a href="#topics">below</a>) build on programming,
+          assembly language, boolean algebra, and basic logic design skills that you developed in
+          CS-240 and other courses in the major.  Although you do not need to have worked with the
+          particular assembly language for the processor studied in CS-240 (MIPS), you must have an
+          understanding of assembly language programming for <em>some</em> processor before
+          undertaking this course.
+        </p>
+        <p>
+          Students who complete this course successfully will be able to:
+        </p>
+        <ul id="rubrics">
+          <li>
+            demonstrate competence with basic physical dimensions related to computer design and
+            performance: (speed, frequency, information, latency, throughput, and bandwidth);
+            perform calculations that span varying units of measure and mix various physical
+            dimensions.
+          </li>
+          <li>
+            design, implement, and test basic combinational and sequential logic circuits using FPGA
+            logic kits provided by the department.
+          </li>
+          <li>
+            identify the components of a CPU datapath; describe the internal structure of each
+            component; explain the function of each component; and explain how each component
+            relates to the datapath as a whole.
+          </li>
+          <li>
+            describe in detail how a certain subset of the MIPS instruction set architecture is
+            processed by a datapath; use the Verilog hardware description language to describe the
+            operation of each instruction in the subset of the MIPS ISA.
+          </li>
+          <li>
+            calculate the execution time of a program given various parameters of the datapath that
+            runs it; calculate the relative performances of two processor designs for a particular
+            program.
+          </li>
+          <li>
+            describe the implementation of pipelined datapaths; explain the advantages and added
+            costs of pipelines compared to other implementation techniques; describe the hazards
+            associated with pipelines; describe techniques for dealing with hazards.
+          </li>
+          <li>
+            explain the concept of memory hierarchies; relate cost, latency, and capacity to levels
+            in the hierarchy.
+          </li>
+          <li>
+            explain how cache memories work; identify the parameters that affect the performance of
+            cache memory systems; explain how cache memories affect software performance in both
+            conventional and multicore systems.
+          </li>
+          <li>
+            calculate the capacity, latency, and throughput of a disk drive given a set of
+            parameters describing various elements of the drive and the busses that connect it to
+            the rest of a computer system.
+          </li>
+        </ul>
+      </div>
+      <h2>Instructor</h2>
+      <div>
+        The instructor for the course is Dr. Christopher Vickery. See <a
+        href="../../contact_info.xhtml">Dr. Vickery’s Contact Information and Office Hours</a> for
+        that information.
+      </div>
+      <h2>Course Structure and Assessment</h2>
+      <div>
+        <p>
+          There are two 75 minute class meetings per week. Attendance will not be taken (except at
+          the beginning of the semester to verify your registration for the course), but students
+          who often miss class will probably fail the course. The reading assignments for the course
+          are listed below, and will be broken down further in the course schedule page for the
+          semester.
+        </p>
+        <h3>Assignments</h3>
+        <p>
+          There will be up to ten homework assignments, each of which will be given a grade from the
+          set {ok, good, not ok, late ok, inc, late not ok}. A grade of "ok" gives full credit for
+          the assignment (2 points); "good" gives extra credit for the assignment (3 points) and any
+          of the other grades gives half credit for the assignment (1 point), except "late not ok,"
+          which counts half a point. The assignments will count 10% of your course grade.
+        </p>
+        <p>
+          Some of the homework assignments involve using computer software to design logic circuits.
+          These logic circuits are then downloaded to logic design kits for implementation and
+          testing using FPGA (field programmable logic array) technology.  The department provides
+          computers, software, and logic kits for doing these assignments, but you can get a copy of
+          the software (Windows or Linux hosted) to run on your own computer if you prefer. There
+          are normally enough logic kits available to allow students who do not want to work
+          on-campus to borrow one for use off-campus. Although these assignments generally require
+          more time and effort than other assignments in the course, they are graded the same way
+          and count the same as the the other assignments for the course.
+        </p>
+        <p>
+          It is all right to collaborate on homework assignments, and there is a course discussion
+          board for exchanging questions and answers about the assignments with other students in
+          the course. The purpose of the assignments is to help you master the material in the
+          course, not to assess your mastery of the material. Having said that, each student must
+          submit his or her own solutions to the homework assignments, even if it is substantially
+          similar to others’.
+        </p>
+        <h3>Exams</h3>
+        <p>
+          There will be three exams: two midterms and a final, each of which will count 30% of your
+          course grade. There is an archive of past exams for the course to let you see my “exam
+          style,” but should not in any way be construed as study-guides for this semester’s exams.
+          Exam questions are a mix of short answer, multiple-choice, and diagram-drawing questions.
+          Difficult exams are normally curved to bring the class average up to something in the
+          75-80 range. (Note: when this happens, class rank on an exam is important.) However, exam
+          scores are never curved downward.
+        </p>
+        <p>
+          Exams are not cumulative except in the sense that you need to remember material from
+          earlier in the course in order to understand some of the questions on later exams.
+        </p>
+        <h3>Grades</h3>
+        <p class="standout-block">
+          Exam and assignment grades become permanent one week after they have been posted, even if
+          there has been a scoring error.  Be sure to check that your exam was scored correctly and
+          that the correct grade has been recorded (using the &ldquo;Check My Grades&rdquo; form on
+          the course schedule page) as soon as exams are returned.
+        </p>
+        <p>
+          The College has a standard policy for converting course averages into letter grades, which
+          I follow mechanically, with two exceptions: (a) I calculate course averages to one decimal
+          place and round up instead of working with integers. So, for example, the college policy
+          assigns a grade of B+ to a course average between 87 and 90; I interpret that to mean that
+          any score between 86.5 and 89.5 is a B+. (b) Because a grade of C- (or less) cannot be
+          counted towards the computer science major, I let my personal judgment (based primarily on
+          class attendance and participation) influence how to handle course grades that are just
+          below 71.5. But I do not automatically raise C&ndash; grades to C.
+        </p>
+      </div>
+      <h2>Textbook and Reading Material</h2>
+      <div>
+        <p>
+          The textbook for the course is <cite>Patterson, D. and Hennessy, J.; Computer
+          Organization and Design, Fourth Edition, Elsevier, 2009. ISBN 978-0-12-374493-7</cite>.
+        </p>
+        <p>
+          This edition of the textbook (not any of the earlier ones) is <em>required</em> for this
+          course.  Unless otherwise indicated, all reading assignment listed below come from it. At
+          the present time, I know of no way to obtain the book other than to purchase a new or used
+          copy; I have not found any source that will rent copies, for example.  (Let me know if you
+          find one.) Some of the material in the textbook, Appendix C in particular, is available
+          only on the CD that comes with the book, so be sure the copy you get has the CD. (See me
+          if this is a problem.)
+        </p>
+        <p>
+          <strong>Updated information: </strong>There are now a number of web sites that provide
+          textbook rentals for this text, with one-semester rentals running less than half the cost
+          of buying the book new. One site that acts as a clearinghouse for rentals is <a
+          href="http://bigwords.com">bigwords.com</a>. But I have had no direct experience with them.
+        </p>
+        <p>
+          I know that textbook costs are a burden, but I strongly recommend getting a copy of the book;
+          people who try to get by without it have a very difficult time with the course. Don’t jeopardize
+          the tuition you paid for the course by avoiding the cost of the book. And to be sure you get
+          full value out of your investment in it, be sure you read the assignments multiple times!
+        </p>
+      </div>
+      <h2 id="topics">Topics</h2>
+      <div>
+        <p>
+          Download <a href="CS-343_Course_Outline.pdf">CS-343 Course Outline</a> (PDF) for a full
+          outline of the topics to be covered in the course. The table below lists the class
+          meetings planned for the topics, and the associated reading material. You should plan on
+          going through the reading assignments more than once, and you should complete your first
+          pass <em>before</em> the material is covered in class.
+        </p>
+        <table id="reading-assignments">
+          <tr>
+            <th scope="col">Classes</th>
+            <th scope="col">Topic</th>
+            <th scope="col">Reading Assignment</th>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>Measurement</td>
+            <td><a href="Measurement.pdf">Measurement and Units of Measure</a> (PDF)</td>
+          </tr>
+          <tr>
+            <th scope="row">2&mdash;4</th>
+            <td>Combinational Logic</td>
+            <td>Sections C-1 through C-4; Section C-12</td>
+          </tr>
+          <tr>
+            <th scope="row">5&mdash;7</th>
+            <td>MIPS ALU Design</td>
+            <td>Sections C-5 through C-6</td>
+          </tr>
+          <tr>
+            <th scope="row">8&mdash;9</th>
+            <td>Clocks and Finite State Automata</td>
+            <td>Sections C-7, C-10, and C-11</td>
+          </tr>
+          <tr>
+            <th scope="row">10</th>
+            <th colspan="2">First Exam</th>
+          </tr>
+          <tr>
+            <th scope="row">11&mdash;14</th>
+            <td>Storage Elements and Register File Design</td>
+            <td>Section C-8</td>
+          </tr>
+          <tr>
+            <th scope="row">15&mdash;16</th>
+            <td>Instruction Set Architectures and the MIPS ISA</td>
+            <td>Chapter 2</td>
+          </tr>
+          <tr>
+            <th scope="row">17&mdash;19</th>
+            <td>Single-cycle MIPS Datapath Design</td>
+            <td>Sections 4.1 through 4.4</td>
+          </tr>
+          <tr>
+            <th scope="row">20</th>
+            <th colspan="2">Second Exam</th>
+          </tr>
+          <tr>
+            <th scope="row">21&mdash;22</th>
+            <td>Pipelined Designs</td>
+            <td>Sections 4.5 through 4.10</td>
+          </tr>
+          <tr>
+            <th scope="row">23&mdash;24</th>
+            <td>Multicore and Multiprocessor Architectures</td>
+            <td>Sections 7.1 through 7.7</td>
+          </tr>
+          <tr>
+            <th scope="row">25</th>
+            <td>Memory Hierarchies</td>
+            <td>Sections C-9 and 5.1</td>
+          </tr>
+          <tr>
+            <th scope="row">26&mdash;27</th>
+            <td>Cache Principles and Implementations</td>
+            <td>Sections 5.2 through 5.4</td>
+          </tr>
+          <tr>
+            <th scope="row">27&mdash;28</th>
+            <td>Storage and I/O</td>
+            <td>Sections 6.1 through 6.9</td>
+          </tr>
+          <tr>
+            <th scope="row">Finals</th>
+            <th colspan="2">Final Exam</th>
+          </tr>
+        </table>
+      </div>
+
+    <div id="footer">
+      <a  href="../../">Vickery&nbsp;Home</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last updated
+      <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,450 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>CS-343 Computer Organization</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+        tr.prev
+        {
+          color:                black;
+          background-color:     #ffccff;
+        }
+        tr.this
+        {
+          color:                black;
+          background-color:     #ccffcc;
+        }
+  </style>
+</head>
+
+<body>
+<center>
+<h1>CS-343 Computer Organization</h1>
+<h2>Spring 2003
+<br>Dr. Vickery</h2>
+</center>
+
+<h2><a href="./administrivia.html">Course Administration</a></h2>
+
+<p>Click on the link above for information about the textbook for the
+course, how grades will be computed, the policy on homework, etc.</p>
+
+<h2>Check Grades</h2>
+
+<p>Click one of the links below to see what grades I have recorded for
+you so far this term.  You need to send me a "code word" to access your
+grades.  See Homework Assignment 1 for details.</p>
+
+<ul>
+  <li><a href="./10MDA/check_grades.html">Morning section</a>
+  <li><a href="./1MA3/check_grades.html">Afternoon section</a>
+  <li><a href="./E6MBA/check_grades.html">Evening section</a>
+</ul>
+
+<p class="block">Grades become permanent two weeks after they are
+posted, so be sure to check your grades regularly to be sure there
+haven't been any mistakes.</p>
+
+
+<hr>
+
+<h2>Course Schedule</h2>
+
+<p>This is the second semester CS-343 is being offered.  Initially, the
+table below shows what material I covered in the course last semester,
+which you may use to get an idea of what we will be doing this term. 
+Sections with a green background are accurate, but sections with a red
+background are tentative or incomplete.  I will change the background
+colors as the semester progresses and the table is updated.</p>
+
+
+<table align="center" border="1" cellpadding="5" width="95%">
+
+  <tr class="this">
+    <th width="5%">Class<br>Number
+    <th width="15%">Date
+    <th width="45%">Topics
+    <th width="35%">Assignments
+
+  <tr class="this">
+    <td align=center>1
+    <td valign="top" >January 27
+    <td valign="top" >Course Introduction; Units of Measure.
+    <td valign="top" ><b>Memorize: 
+    <br>&nbsp;&nbsp;<a href="../Units_of_Measure.html">Units of
+    Measure</a>
+    <br>&nbsp;&nbsp;<a href="../Powers_of_Two.html">Powers of
+    Two</a></b>
+    <br><b>Review Appendix A through section A.10.</b> 
+
+
+  <tr class="this">
+    <td align=center>2
+    <td valign="top" >January 29
+    <td valign="top" >Encoding audio information in binary.
+    <ul>
+        <li>Sound Pressure Level as a function of time.
+        <li>Transducer (microphone) converts SPL to analog voltage.
+        <li>Analog to Digital Converter (ADC) converts analog voltage to
+        binary numbers.  Sampling rate determines maximum frequency
+        captured; bits per sample determines accuracy of SPL recording.
+        <li>Recreate sound by sending samples to a Digital to Analog
+        Converter (DAC) and transducer (speaker).
+        <li>Run the <a
+        href="../../Audio_Sampling/AudioSampling.jar">Audio Sampling
+        Laboratory</a> to help you visualize the effects of the
+        sampling rate and bits per sample.  Just download the file and
+        double-click it to run it.  (You must have Java installed.) 
+        Let me know if you you would like to extend the program to
+        generate the actual sounds!
+    </ul>
+    <br>Encoding visual information in binary: CRT images.
+    <ul>
+        <li>2D canvas of light colors and intensities.
+        <li>Phosphors: compounds that emit light in response to energy
+        from an electron beam.  Color (wavelength) and persistence
+        depend on the compound; brightness depends on the intensity of
+        the electron beam.
+
+        <li>Pixel: A triad of three phosphor dots that emit red, green,
+        and blue light (primary colors).  Three electron beams strike
+        the three dots simultaneously with independently controlled
+        intensities.  At normal viewing distances, the three dots blend
+        into a single point of light.
+
+        <li>Resolution: Number of columns and rows of pixels.  US
+        television is 350 scan lines with 460 pixels per line; lowest
+        standard computer monitor is 480 scan lines with 640 pixels per
+        line.
+
+        <li>Refresh cycle:  Electron beams scan all rows from top to
+        bottom, each row from left to right.  Television refresh rate is
+        30 frames per second interlaced (only half the lines are traced
+        on each refresh cycle); computer monitors use refresh rates in
+        the 60-80 Hz range using progressive scan (all lines are
+        refreshed on each cycle).
+        
+        <li>Frame buffer: The memory that holds the binary values for
+        each pixel.  For each pixel, three binary numbers are read from
+        the frame buffer and passed through DACs to control the
+        intensities of the three electron beams.
+
+    </ul>
+    <br>Review of Digital Logic Fundamentals: Propagation delay (the
+    time it takes a gate's output to change in response to changed
+    value(s) at its input(s)).  Fan-in (the number of inputs to a gate).
+    Fan-out (the maximum number of loads to which an output may be
+    connected while guaranteeing that the voltage on the output wire
+    will not fall into the noise margin range.  Truth tables, minterms,
+    and constructing a sum of products network from a truth table.
+
+    <td valign="top" ><b>Read Section A.11</b>
+    <br><b><a href="./Assignments/Assignment_01.html">Assignment
+    1</a> Due</b> 
+
+  <tr class="this">
+    <td align=center>3
+    <td valign="top" >February 3
+    <td valign="top" >Algebraic and Karnaugh Map minimization of combinational
+    networks.  Gate-input count as a measure of network complexity. 
+    Combinational building blocks: full-adder, parallel adder,
+    carry-lookahead logic.
+    <td valign="top" ><b>Read Appendix B, pages 501-508 (minimization)</b>
+    <br><b>Review pages 469-470 (ripple-carry adder)</b>
+    <br><b>Review Section 3.5.1, pages 76-78 (carry-lookahead logic)</b>
+
+  <tr class="this">
+    <td align=center>4
+    <td valign="top" >February 5
+    <td valign="top" >Carry Lookahead Logic continued; decoders and
+    multiplexors.
+    <br>Sequential <i>vs</i> Combinational Logic
+    <td valign="top" ><b>Read Sections A.12 and A.13</b>
+    <br><b><a href="./Assignments/Assignment_02.html">Assignment 2</a> Due</b>
+    <br><a href="./Solutions/Solutions_02.html">Assignment 2 Solutions</a>
+
+  <tr class="this">
+    <td align=center>5
+    <td valign="top" >February 10
+    <td valign="top" >Unclocked and clocked Latches.  
+    <br>Finite State Machine Models.
+    <td valign="top" ><b>Read Sections A.14 and A.15</b>
+    <br>Download and experiment with the <a
+    href="./Earle_Latch.ckt">Earle Latch</a>.
+
+  <tr class="this">
+    <td align=center>&nbsp;
+    <td valign="top" >February 12
+    <td colspan="2"><b>No Class</b> (Lincoln's Birthday)
+
+  <tr class="this">
+    <td align=center>&nbsp;
+    <td valign="top" >February 17
+    <td colspan="2"><b>No Class</b> (President's Day)
+
+  <tr class="this">
+    <td align=center>6
+    <td valign="top" >February 19
+    <td valign="top" >Level-sensitive and edge-sensitive circuits.
+    <td valign="top" ><b>Read / Review pages 99 through 120</b>
+    <br><b><a href="./Assignments/Assignment_03.html">Assignment 3</a> Due</b>
+    <br><a href="./Solutions/Solutions_03.html">Assignment 3 Solutions</a>
+
+  <tr class="this">
+    <td align=center>7
+    <td valign="top" >February 24
+    <td valign="top" >Flip-flop design: D, S-R, J-K, and T flip-flops.
+    <br>Characteristic and Excitation Tables.
+    <br>State diagram, State encoding (full-encoded or "one-hot").
+    <br>Mapping state names to state flip-flop values.
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td align=center>8
+    <td valign="top" >February 26
+    <td valign="top" >State Table: External Inputs; Present State; Next
+    State; State Flip-flop Inputs; External Outputs.  Use excitation
+    table to determine flip-flop inputs.
+    <br>Counter design using T flip-flops.
+    <br>Timer design using counter and controller.  Designing the
+    controller as a FSM.
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td align=center>9
+    <td valign="top" >March 3
+    <td valign="top" >FSM controllers and sequence detectors.
+    <td valign="top" ><b>Read Chapter 6</b>
+    <br><b><a href="./Assignments/Assignment_04.html">Assignment 4</a> Due</b>
+    <br><b><a href="./Solutions/Help_04.html">Assignment 4 Help</a></b>    
+    <br><b><a href="./Solutions/Solutions_04.html">Assignment 4
+    Solutions</a></b>    
+
+  <tr class="this">
+    <td align=center>10
+    <td valign="top" >March 5
+    <td align="center" colspan="2"><b>*** First Exam ***</b>
+
+  <tr class="this">
+    <td align=center>11
+    <td valign="top" >March 10
+    <td valign="top" >Central Processing Units: The fetch-execute
+     cycle. Instruction Set Architectures: RISC/CISC. The ARC ISA:
+     Registers; memory addressing.
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td align=center>12
+    <td valign="top" >March 12
+    <td valign="top">ARC ISA: Instruction encoding.  ARC assembly
+    language.  High Level Language translation to assembly language. 
+    Call and arithmetic instruction encoding, including immediate
+    operands.
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td align=center>13
+    <td valign="top" >March 17
+    <td valign="top" >Memory operations: load and store.  Effective
+    address (EA) calculations.  Branch instructions; target address
+    (TA) calculations using PC-relative addressing.  Begin review of
+    two's complement encoding.
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td align=center>14
+    <td valign="top" >March 19
+    <td valign="top" >Two's Complement review: Negative weight of sign
+    bit; sign extension; conecting Simm13 field to the B bus.  Design
+    of one bit of an ALU that can do <i>add</i>, <i>subtract</i>,
+    <i>bitwise and</i>, and <i>bitwise or</i> operations; using a
+    multiplexor to select the result after performing all operations. 
+    Subtraction by complementing minuend and adding. Condition code
+    logic, including overflow detection by comparing C<sub>in</sub> and
+    C<sub>out</sub> of the sign bit.  Lookup Table (LUT) implementation
+    of an ALU bit slice.
+    <td valign="top" ><b><a
+    href="./Assignments/Assignment_05.html">Assignment 5</a> Due</b>
+    <br><a href="./Solutions/sum_array.lst.html">Solution</a>
+
+  <tr class="this">
+    <td align=center>15
+    <td valign="top" >March 24
+    <td valign="top" >Datapath and Controller interactions: control
+    signals and feedback.  ARC CPU interface to memory: A Bus always
+    supplies the address bits; B Bus supplies data when writing; C Bus
+    receives data when reading.  C Bus receives ALU Result or Memory
+    Data, depending on the setting of the "Read" control signal. 
+    Register File design: Connections between the C Bus and flip-flop
+    R<sub>ij</sub> (register <i>i</i> bit <i>j</i>).
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td valign="top" >&nbsp;
+    <td valign="top" >March 26
+    <td align="center" colspan="2"><b>*** Last Day to Drop ***</b>
+
+  <tr class="this">
+    <td align=center>16
+    <td valign="top" >March 26
+    <td valign="top" >ARC Register File Design: A, B, and C Bus
+    Decoders.  Tristate gates.  Implementing a distributed multiplexor
+    using a decoder and tristate buffers.  Two sources of inputs to the
+    bus decoders: the RD, RS<sub>1</sub>, and RS<sub>2</sub> fields of
+    the IR or internal Control Unit Logic.
+    <td valign="top" ><b><a
+    href="./Assignments/Assignment_06.html">Assignment 6</a> Due</b>
+    <br><a href="./Solutions/Solutions_06.html">Solution</a>
+
+  <tr class="this">
+    <td align=center>17
+    <td valign="top" >March 31
+    <td valign="top" >Hardwired Control Unit Design: Decoding states and
+    Instruction Register fields; FSM for fetching and executing
+    <i>ld</i> and <i>st</i> instructions.
+    <td valign="top" ><a href="./ARC_CU_FSM.pdf">Class Notes</a>
+
+  <tr class="this">
+    <td align=center>18
+    <td valign="top" >April 2
+    <td valign="top" >Review ARC Register File design and control: C
+    Bus Mux, C Mux, C Decoder, A Mux, A Decoder, B Mux, B Decoder,
+    flip-flops, AND gates, tristate buffers.  ALU function codes. 
+    Barrel shifter implementation using multiplexors.  Leftmost 27 bits
+    of microinstructions generate the 24 control signals to the
+    datapath and memory, analogous to the outputs listed below the
+    horizontal line inside a state circle of a Moore state diagram or
+    the "External Outputs" columns of a state table.  Rightmost 14 bits
+    of microinstructions select the next microinstruction to process,
+    analogous to the logic associated with the arcs going from circle
+    to circle in a state diagram, or the "Next State" columns of a
+    state table.
+    <td valign="top" ><b><a
+    href="./Assignments/Assignment_07.html">Assignment 7</a> Due</b>
+    <br><a href="./Solutions/Solutions_07.html">Solutions</a>
+
+  <tr class="this">
+    <td align=center>19
+    <td valign="top" >April 7
+    <td valign="top" >ARC Control Word Sequences for ISA Fetch-execute
+    cycle.
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td align=center>20
+    <td valign="top" >April 9
+    <td align="center" colspan="2"><b>*** Exam 2 ***</b>
+
+  <tr class="this">
+    <td align=center>21
+    <td valign="top" >April 14
+    <td valign="top" >Memory Hierachy (Registers, L1 cache, L2 cache,
+    main memory, disk.) Frontside and Backside Busses.
+    <td valign="top" ><b>Read Chapter 7 through page 268</b>
+
+  <tr class="this">
+    <td align=center>22
+    <td valign="top" >April 15<br><b>Tuesday</b>
+    <td valign="top" >Constructing an MxN memory system from m<i>x</i>n
+    RAM ICs.  IC, RAM, ROM, volatile.
+    <td valign="top" >&nbsp;
+
+<a name="now"></a>
+
+  <tr class="this">
+    <td align=center>&nbsp;
+    <td valign="top" >April 16-24
+    <td colspan="2"><b>Spring Break</b>
+
+  <tr class="this">
+    <td align=center>23
+    <td valign="top" >April 28
+    <td valign="top" >ROM.  Programmable Logic Devices: Programmable
+    Logic Arrays (PLAs) have fuse matrices between inputs/inverters and
+    AND gates and between AND gates and OR gates.  Programmable Array
+    Logics (PALs) are commonly used and have a fuse matrix only between
+    the inputs/inverters and the AND gates.  Programmable Read Only
+    Memories (PROMs) are made from a decoder and a fuse matrix between
+    the AND gates and the OR gates.  EPROMS, EEPROMS, and Flash.
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td align=center>24
+    <td valign="top" >April 30
+    <td valign="top" >FPGAs; Software tools for FPGA development (demo).
+    Cache: L2 read operation.
+    <td valign="top" ><b><a
+    href="./Assignments/Assignment_08.html">Assignment 8</a> Due</b>
+    <br><b><a href="./Solutions/Solutions_08.html">Solutions</a></b>
+
+  <tr class="this">
+    <td align=center>25
+    <td valign="top" >May 5
+    <td valign="top" >Cache Design
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td align=center>26
+    <td valign="top" >May 7
+    <td valign="top" >Direct, Associative, and Set-Associative caches.
+    <br>Backside, Frontside, and System Busses.  Device Controllers.
+    <td valign="top" ><b>Read Chapter 8 through page 313.</b>
+    <br><b><a href="./Assignments/Assignment_09.html">Assignment 9</a> Due</b>
+    <br><a href="./Solutions/Solutions_09.html">Solutions</a>
+
+  <tr class="this">
+    <td align=center>27
+    <td valign="top" >May 12
+    <td valign="top" >Bus Bandwidth (3 factors).  Bus hierarchy and bus
+    bridges.  Memory Mapped I/O compared to Separate I/O address space. 
+    Device Controller functions.
+    <td valign="top" >&nbsp;
+
+  <tr class="this">
+    <td align=center>28
+    <td valign="top" >May 14
+    <td valign="top" >Polled and Interrupt Driven I/O with a UART
+    device controller.
+    <td valign="top" ><b><a
+    href="./Assignments/Extra_Credit.html">Optional Extra Credit
+    Assignment</a> Due</b>
+    <br><a href="./UART.html">UART Handout</a>
+
+  <tr class="this">
+    <td align=center>&nbsp;
+    <td valign="top" >May 16-22
+    <td align=center colspan="2"><b>*** Final Exam ***</b>
+
+</table>
+
+<hr>
+<p>
+ <a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border:0;width:88px;height:31px"
+       src="../vcss.bmp" 
+       alt="Valid CSS!">
+ </a>
+ <a href="http://validator.w3.org/check/referer">
+   <img height=31 alt="Valid HTML 4.0!" src="../vh40.png"
+        width=88 
+        border=0></a>
+</p>
+<hr></body></html>

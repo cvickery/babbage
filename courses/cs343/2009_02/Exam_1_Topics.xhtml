@@ -1,0 +1,126 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Exam 1 Topics</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-343 Exam 1 Topics<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+    	<h2>Disclaimer</h2>
+      <div class="whitebox">
+      	Everything listed here is &ldquo;fair game&rdquo; for the exam, but I cannot guarantee that I haven&rsquo;t forgotten something
+        here that just <em>has</em> to be included on the exam. If in doubt, ask on the 
+        <a href="http://babbage.cs.qc.edu/Fora/Courses/viewforum.php?f=5">Course Discussion Board</a>.
+      </div>
+      <h2>Reading Assignments</h2>
+      <div class="whitebox">
+      	<ul>
+        	<li><a href="../Background_Material.pdf">Background_Material.pdf</a></li>
+          <li>Textbook Chapter 1</li>
+          <li>Textbook Chapter 3, Sections 1 and 2</li>
+          <li>Textbook Appendix C, Sections 1, 2, 3, and 5</li>
+          <li>Web Pages for Assignments <a href="Assignment_01.xhtml">1</a>, <a href="Assignment_02.xhtml">2</a>, (and 
+          <a href="Assignment_03.xhtml">3</a> once it has been written!)</li>
+          <li><a href="../Using_Quartus.xhtml">Using Quartus</a> web page</li>
+          <li>Class Notes</li>
+        </ul>
+      </div>
+      <h2>Topics (but note the Disclaimer above!)</h2>
+      <div class="whitebox">
+      	<ol>
+        	<li>
+          	Physical measurement of time and frequency, including use of proper units of measure and conversions of a value from
+            one unit to another (picoseconds to milliseconds, etc.) Period and frequency of a signal; calculations related to them.
+            <p class="standout-block">No calculators or other electronic devices may be used during the exam!</p>
+          </li>
+          <li>
+          	Information measurement; powers of two; hexadecimal.
+          </li>
+          <li>
+          	Throughput and response time.
+          </li>
+          <li>
+          	Performance calculation: the three terms that determine Seconds per Program. Comparing performances; benchmarks.
+          </li>
+          <li>
+          	Amdahl&rsquo;s Law
+          </li>
+          <li>
+          	Logic equations, truth tables, and logic circuits. Algebraic and Karnaugh Map minimization.
+          </li>
+          <li>
+          	Propagation Delays in a logic circuit.
+          </li>
+          <li>
+          	Two&rsquo;s complement numbers: representation of positive and negative numbers; the negation operation; range of values
+            using <span class="variableName">n</span> bits; definitions of carry and overflow for addition; sign extension operation.
+          </li>
+          <li>
+          	Design and implementation of a full adder.
+          </li>
+          <li>
+          	Design and implementation of one slice of the MIPS ALU. Note that Appendix C, Section 5 has some very minor differences from
+            the design developed in class and used for Assignment 3; those differences will not be significant on the exam.
+          </li>
+          <li>
+          	Multiplexer design and operation, including devices with widths greater than 1.
+          </li>
+          <li>
+          	ALU design, including logic for Carry, Overflow, Negative, and Zero condition codes; SLT operation.
+          </li>
+        </ol>
+        I will send email to the mailing list for the course and post a message to the course discussion board if I make changes to this list
+        of topics.
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../">CS-343 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

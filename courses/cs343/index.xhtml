@@ -1,0 +1,91 @@
+<?php
+header("Vary: Accept");
+if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+)
+{
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+    .gmdate('r', filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print ("<?xml version=\"1.0\" encoding=\"utf-8\" 
+?>
+\n");
+}
+else
+{
+header("Content-type: text/html; charset=utf-8");
+} 
+?>  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Computer Architecture: Course Home Page</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../css/style-print.css" />
+    <style type="text/css" media="screen">
+    	body>div {
+        background-color:white;
+        margin:1em;
+        border:1px solid green;
+        padding:0.5em;
+      }
+      h1 {text-align:center; margin-top:0.1em;}
+      #semester-list {
+        list-style-type:none;
+      }
+      #semester-list li {
+        display:block;
+        float:left;
+        width:15%;
+      }
+      #semester-list a {
+        display:block;
+      }
+      ul+p {
+        clear:left;
+        text-align:center;
+        padding-top:2em;
+        font-variant:small-caps;
+      }
+    </style>
+  </head>
+  <body id='urn:uuid:13C056C8-689D-4675-9692-BD2200993278'>
+    <div>
+      <h1>CS-343&mdash;Computer Architecture</h1>
+      <p>
+        Welcome to the “Home Page” for Dr. Vickery’s past and present sections of CS-343, Computer Architecture.
+        The current course syllabus is <a href="syllabus.xhtml">CS-343 Syllabus</a>. There is an <a
+        href="Exams">Archive of Past Exams</a> for the course, but access to that archive is restricted to students
+        currently enrolled in the course. The links below will take you to an archive of the course schedules and
+        assignments for the various semesters that I have taught the course. I update parts of this web site
+        continually, so there are broken links that will never get fixed in the older regions of the archive.
+      </p>
+      <?php
+        $this_dir = opendir('.');
+        $this_link = "";
+        $this_year = "";
+        $this_term = "";
+        echo "  <ul id='semester-list'>\n";
+        while ($dir_entry = readdir($this_dir))
+        {
+          if (is_dir($dir_entry) && preg_match('/(\d{4})_(\d{2})/', $dir_entry, $year_term))
+          {
+            $this_year = $year_term[1];
+            $this_term = ($year_term[2] === '02') ? 'Spring' : 'Fall';
+            $this_link = $dir_entry;
+            echo "    <li><a href='$dir_entry'>$this_term $this_year</a></li>\n";
+          }
+        }
+        echo "  </ul>\n";
+        echo "<p><a href='$this_link'>This Semester’s Schedule and Assignments</a></p>\n";
+       ?>
+      </div>
+    <div id="footer">
+      <a href="../../">Vickery&nbsp;Home</a> &mdash; <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      &mdash; <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash; Last updated
+      <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>

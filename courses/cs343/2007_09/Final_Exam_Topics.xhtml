@@ -1,0 +1,164 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Final Exam Review Guide</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+    <style type="text/css" media="all">
+    	#theList {
+      	background-color:#ccc;
+        color:#396;
+        text-align:center;
+        padding:0.5em;
+        border:1px solid green;
+        }
+      #theList:before {
+      	content:"~ ~ ~ ";
+        }
+      #theList:after {
+      	content:" ~ ~ ~";
+        }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>CS-343 Final Exam Review Guide</h1>
+    </div>
+    <div id="content" class="whitebox">
+    	<h2>What This Is</h2>
+      <p>
+      	The exam will cover material from Chapters 2, 4, 5, 6, and Appendix B of the textbook, plus material based
+        on assignments using the Altera DE1 logic kits. But not everything from all chapters will be covered, so the
+        list below gives you topics that are sure to be on the exam. I apologize if I left anything out (anything we
+        covered in class is &ldquo;fair game&rdquo; for the exam), but the list should give you a good idea of what to
+        concentrate on as you review for the exam. If a topic from the book was not covered in class and is not mentioned
+        below, you do not need to worry about it.
+      </p>
+      <h2 id="theList">The List</h2>
+      <ul>
+      	<li>MIPS ALU design and implementation</li>
+        <li>
+        	MIPS Register File design and implementation
+          <ul>
+          	<li>Number of ports</li>
+            <li>Widths of register number inputs and register data inputs/outputs</li>
+            <li>Implementation of Register 0</li>
+            <li>Operation of the DE1 Testbed for the register file project</li>
+          </ul>
+        </li>
+      	<li>
+        	MIPS Machine Language: The fields in each of the three instruction formats, and the three uses for I-Format
+        	instructions.
+        </li>
+        <li>MIPS memory structure; byte and word addresses.</li>
+        <li>
+        	Calculating Branch and Jump target addresses.
+        </li>
+        <li>
+        	Calculating <span class="functionName">lw</span> and <span class="functionName">sw</span>
+        	<span class="techTerm">effective addresses</span>.
+        </li>
+        <li>The <span class="functionName">lui</span> instruction.</li>
+        <li>
+        	Single-cycle CPU design
+          <ul>
+          	<li>PC Address calculation</li>
+            <li>Jump Address calculation</li>
+            <li>Control of Register File inputs</li>
+            <li>Generating immediate operands</li>
+            <li>Control of ALU input sources</li>
+            <li>Effective Address calculation</li>
+            <li>Writing the correct result, if any, to the Register File</li>
+          </ul>
+        </li>
+        <li>
+        	Performance of the single-cycle design
+          <ul>
+          	<li>Calculating the execution time of a program</li>
+            <li>CPI for the single-cycle design</li>
+            <li>Clock period for the single-cycle design: analyzing propagation delays for instruction types</li>
+            <li>Comparing the performance of two designs by comparing execution times</li>
+            <li>
+            	Comparing fixed-period single-cycle design to hypothetical variable-period design
+              <ul>
+              	<li>Why the variable-period design is hypothetical</li>
+                <li>Using average CPI, weighted by instruction-type frequencies, for the variable-period design</li>
+                <li>Calculating performance ratios: &ldquo;times faster&rdquo; and &ldquo;percent faster&rdquo;</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+        	Implementing the single-cycle design
+          <ul>
+          	<li>Using the DE1 testbed for the single-cycle design</li>
+            <li>Features tested by various instructions and instruction sequences in the sample program</li>
+          </ul>
+        </li>
+        <li>
+        	Multi-cycle CPU design
+          <ul>
+          	<li>Rationale for the multi-cycle design</li>
+            <li>Registers added to the multi-cycle design compared to the single-cycle design; why they are needed</li>
+            <li>
+            	Combinational logic units removed from the multi-cycle design compared to the single-cycle design;
+            	why they are not needed.
+            </li>
+            <li>Figures 5.37 and 5.38</li>
+            <li>Computing CPI and clock period for multi-cycle design</li>
+            <li>Comparing performance of single-cycle and multi-cycle designs: why multi-cycle design is not better</li>
+          </ul>
+        </li>
+        <li>
+        	Pipelined processor design
+          <ul>
+          	<li>Terminology: stages, pipeline registers, latency, throughput, balance, bubbles/stalls</li>
+            <li>Ideal speedup in a perfectly balanced pipeline with no stalls</li>
+            <li>Contents of the pipeline registers for each stage</li>
+            <li>Number of stages and number of pipeline registers for the MIPS design in the book</li>
+            <li>Hazards: data and control dependencies</li>
+            <li>Register forwarding</li>
+            <li>Delayed load and delayed branch</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home</a>&nbsp;-&nbsp;<a
+           href="http://validator.w3.org/check?uri=referer"> XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer"> CSS</a>
+      </p>
+      <p><em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em></p>
+    </div>
+  </body>
+</html>

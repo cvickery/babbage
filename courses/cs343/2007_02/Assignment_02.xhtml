@@ -1,0 +1,160 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 2</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    
+    <style type="text/css" media="screen">
+      .inputs { background-color: #cfc; color: black; }
+      .outputs { background-color: #ccf; color: black; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 2</h1>
+    </div>
+
+    <div id="content">
+
+      <h2>Reading</h2>
+      <div class="whitebox">
+        <ul>
+          <li><a href="../../Minimize">Minimization Tutorial</a></li>
+        </ul>
+      </div>
+
+      <h2>Assignment</h2>
+      <div class="whitebox">
+        <p>In class we developed a truth table for the next state function
+        of our day-of-week state machine:</p>
+        <table style="width:30%">
+        <colgroup class="inputs" span="3" width="5%"/>
+        <colgroup class="outputs" span="3" width="5%" />
+          <tr>
+            <th scope="col" colspan="3">Present State</th>
+            <th scope="col" colspan="3">Next State</th>
+          </tr>
+          <tr>
+            <th scope="col">S<sub>2</sub></th>
+            <th scope="col">S<sub>1</sub></th>
+            <th scope="col">S<sub>0</sub></th>
+            <th scope="col">S<sub>2</sub></th>
+            <th scope="col">S<sub>1</sub></th>
+            <th scope="col">S<sub>0</sub></th>
+          </tr>
+          <tr>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td>
+          </tr>
+          <tr>
+            <td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td>
+          </tr>
+          <tr>
+            <td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td>
+          </tr>
+          <tr>
+            <td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td>
+          </tr>
+          <tr>
+            <td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td>
+          </tr>
+          <tr>
+            <td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td>
+          </tr>
+          <tr>
+            <td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td>
+          </tr>
+          <tr>
+            <td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td>
+          </tr>
+        </table>
+
+        <p>Study the <cite>Minimization Tutorial</cite> above, and then
+        answer the following questions:</p>
+
+        <ol>
+          <li>Draw a logic network that implements the entire truth table
+          using the unminimized sum of products implementation.</li>
+          <li>Tell the gate input count for the unmimimized network.</li>
+          <li>Determine the mimimized equations for the three functions
+          using algebraic minimization.  Show all work.</li>
+          <li>Minimize the functions again using Karnaugh Maps.  Be sure the
+          results are the same as for algebraic mimization.  Show all
+          work.</li>
+          <li>Draw the logic network that implements the minimized
+          functions.</li>
+          <li>Tell the gate input count for the minimized network.</li>
+          <li>Is there any speed difference between the two
+          implementations?  If yes, how much?</li>
+        </ol>
+        <ul>
+          <li><strong>Optional: </strong>Change the output values for the
+          last row of the truth table to &ldquo;don&rsquo;t care&rdquo;
+          values (X) and do the Karnaugh Map again.<br />What difference did
+          it make?</li>
+        </ul>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+
+        <p><strong>Write your name</strong> and your answers to the
+        questions on a piece of paper and bring it to class on the due
+        date.  If you did the assignment with someone else, put
+        both names on a single copy of the answers (rather than submitting
+        the answers twice).</p>
+
+      </div>      
+
+      <h2><a href="Assignment_02_Answers.png">Solution</a></h2>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

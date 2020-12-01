@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>ControlUnit.java</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         solid;
+      }
+  </style>
+</head>
+<center><h1>ControlUnit.java</h1></center>
+<hr>
+<pre>
+//  ControlUnit.java
+
+import java.io.*;
+
+//  Class ControlUnit
+//  -------------------------------------------------------------------
+/**
+  *   Application that reads instructions from a text file and displays
+  *   the control word for each one.
+  */
+  public class ControlUnit
+  {
+
+  //  generateControlWord()
+  //  -----------------------------------------------------------------
+  /**
+    *   Decodes a 32-bit instruction and returns the control word for
+    *   it.
+    */
+    public static ControlWord generateControlWord(long instruction)
+    {
+      //  Decode the instruction
+      int opcode  =   (int)((instruction &amp; 0x0FC000000) &gt;&gt; 26);
+      int rs      =   (int)((instruction &amp; 0x003E00000) &gt;&gt; 21);
+      int rt      =   (int)((instruction &amp; 0x0001F0000) &gt;&gt; 16);
+      int rd      =   (int)((instruction &amp; 0x00000F800) &gt;&gt; 11);
+      int shamt   =   (int)((instruction &amp; 0x0000007C0) &gt;&gt;  6);
+      int func    =   (int)(instruction &amp; 0x00000003F);
+      int immediate = (int)(instruction &amp; 0x0000FFFF);
+      int address   = (int)(instruction &amp; 0x03FFFFFF);
+      
+      //  Get the control word and return it.
+      return new ControlWord(opcode, rs, rt, rd, shamt, func, immediate,
+          address);
+    }
+
+  //  main()
+  //  -----------------------------------------------------------------
+  /**
+    *   For each file named on the command line, read instructions from
+    *   the file, and print the control word for executing each one.
+    *   Lines in the file are structured with the hexadecimal
+    *   representation of the instruction, whitespace, and the assembly
+    *   language represenation of the same instruction, suitable for
+    *   printing.
+    */
+    public static void main(String[] args) throws IOException,
+                                            NumberFormatException
+    {
+      //  Loop over the file names specified as command line arguments.
+      for (int arg = 0; arg &lt; args.length; arg++ )
+      {
+        //  Set up to read text lines from a file
+        BufferedReader br = new BufferedReader(
+          new FileReader( args[arg] ) );
+        System.out.println("\nFile: " + args[arg] );
+        String  lineBuf;
+        
+        //  Read and process all lines in the file
+        while ( (lineBuf = br.readLine()) != null )
+        {
+          //  Extract the hex representation of the instruction
+          lineBuf.trim();
+          System.out.println(lineBuf);
+          int firstSpace = lineBuf.indexOf(" ");
+          lineBuf = lineBuf.substring(0, firstSpace);
+          Long LongVal = Long.decode(lineBuf);
+          long instruction = LongVal.longValue();
+          
+          //  Get the control word for the instruction and print it.
+          ControlWord cw = ControlUnit.generateControlWord(instruction);
+          System.out.println( "  " + cw );
+        }
+      }
+      System.exit(0);
+    }
+  }
+</pre><hr></body></html>

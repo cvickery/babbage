@@ -1,0 +1,299 @@
+<html><head><title>Assignment 5 Solutions</title>
+<style type="text/css">
+  p { margin-left: 1em; margin-right: 2em; }
+  div.whitebox {background:white;border:solid; margin:1em; padding:1em;}
+  pre {border:solid; border-width:1px; padding:0.5em;}
+  table {border:solid; border-width:1px; border-collapse:collapse;
+  margin-left:2em;}
+  td,th {border:solid; border-width:1px; padding: 0.5em;}
+</style>
+<style type="text/css" media="screen">
+  body { font-family: sans-serif }
+</style>
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>Assignment 5 Solutions</h1>
+</center>
+<h2>addem.s</h2>
+<div class="whitebox"
+  <p>Here's addem.s, a MIPS assembly language program to add up five
+  numbers:</p>
+  <pre>
+# addem.s
+
+#   Add five numbers
+#   C. Vickery
+#   CS-343
+
+#   Entry point
+        .globl  main
+
+#   Five data values to sum
+        .data
+alpha:  .word   5, -5, 10, -10, -123
+
+#   main()
+#   ------------------------------------------
+        .text
+main:   li      $t0, 0          # i   = 0
+        li      $a0, 0          # sum = 0
+        li      $t1, 0x14       # lim = 20
+
+loop:   lw      $a1, alpha($t0) # x = alpha[i]
+        add     $a0, $a0, $a1   # sum += x
+        addi    $t0, $t0, 4     # i++
+        blt     $t0, $t1, loop  # i < lim
+
+        li      $v0, 1          # print_int()
+        syscall
+        li      $v0, 10         # exit()
+        syscall
+
+        .end
+  </pre>
+</div>
+
+<h2>Answers to Questions</h2>
+<div class="whitebox">
+
+  <p>To begin, here is what the SPIM assembler generated for addem.s:</p>
+  <pre>
+[0x00400024]	0x34080000  ori $8, $0, 0                   ; 14: li      $t0, 0          # i   = 0
+[0x00400028]	0x34040000  ori $4, $0, 0                   ; 15: li      $a0, 0          # sum = 0
+[0x0040002c]	0x34090014  ori $9, $0, 20                  ; 16: li      $t1, 0x14       # lim = 20
+[0x00400030]	0x3c011001  lui $1, 4097                    ; 18: lw      $a1, alpha($t0) # x = alpha[i]
+[0x00400034]	0x00280821  addu $1, $1, $8
+[0x00400038]	0x8c250000  lw $5, 0($1)
+[0x0040003c]	0x00852020  add $4, $4, $5                  ; 19: add     $a0, $a0, $a1   # sum += x
+[0x00400040]	0x21080004  addi $8, $8, 4                  ; 20: addi    $t0, $t0, 4     # i++
+[0x00400044]	0x0109082a  slt $1, $8, $9                  ; 21: blt     $t0, $t1, loop  # i < lim
+[0x00400048]	0x1420fffa  bne $1, $0, -24 [loop-0x00400048]
+[0x0040004c]	0x34020001  ori $2, $0, 1                   ; 23: li      $v0, 1          # print_int()
+[0x00400050]	0x0000000c  syscall                         ; 24: syscall
+[0x00400054]	0x3402000a  ori $2, $0, 10                  ; 25: li      $v0, 10         # exit()
+[0x00400058]	0x0000000c  syscall                         ; 26: syscall
+  </pre>
+
+  <p><b>Question 1.</b>  The <i>lw</i> instruction specifies
+  <code>alpha($t0)</code> as the effective address, but
+  <code>alpha</code> was assigned to memory address 0x10010000, which
+  does not fit in the 16-bit Address field of a <i>lw</i> instruction. 
+  So the assembler generated three instructions to compute the effective
+  address in register $1 (also known as $at, the "assembler temporary"
+  register).  The <i>lui</i> instruction has the leftmost 16 bits of the
+  address 0x10010000 as its immediate operand (the rightmost 16 bits of
+  the <i>lui</i> instruction); this 16-bit value gets loaded into the
+  leftmost 16 bits of $at, and the rightmost 16 bits of $at are set to
+  zero.  Since the address that alpha represents ends with 0x0000, the
+  complete address of alpha has been loaded into $at by the <i>lui</i>
+  instruction.  If the rightmost 16 bits of the address alpha represents
+  were not all zeros, the assembler would have generated an <i>ori</i>
+  instruction to put the correct value into $at bits 0:15.</p>
+
+  <p>The second instruction is an <i>addu</i> (add unsigned) to add the
+  contents of $8 (which is $t0, the register I used as the index into
+  the alpha array) to $at.  The assember generated an unsigned add
+  because that's what <i>lw</i> instructions do: the value in the
+  Address field of the instruction (bits 0:15 of the instruction) are a
+  signed value, but the contents of <i>rs</i> ($t0 in this case) are
+  unsigned.  What's signed and what's unsigned is backwards from what
+  you might intuit from an expression like "<code>alpha($t0)</code>"
+  where you would think the array address (alpha) would be unsigned and
+  the subscript (register $t0) would be signed.  But it makes sense when
+  you think of the "Address" field of the instruction actually being a
+  (signed) offset rather than the base address of the array.</p>
+
+  <p>Finally, the assembler generated a conventional <i>lw</i>
+  instruction using the complete effective address in $at for the
+  <i>rs</i> register and zero for the offset.</p>
+
+  <p><b>Question 2.</b>   The <i>li</i> instructions were turned into
+  <i>ori</i> instructions with $zero (register $0, the pseudo-register
+  that can't be changed and which always provides the value 0x00000000)
+  as the <i>rt</i> register.  The assembler could have generated
+  <i>addi</i> instructions, also with $zero for the <i>rt</i> register,
+  with the same effect.</p>
+
+  <p><b>Question 3.</b>  The <i>blt</i> instruction generated a
+  <i>slt</i> instruction followed by a <i>bne</i>.  That is, the
+  assembler used an <i>slt</i> instruction to compare the two registers,
+  leaving the value 0 (false) or 1 (true) in register $at to indicate
+  the result of the comparison.  Then the <i>bne</i> conditionally
+  branched back to the top of the loop if the comparison was true.</p>
+  
+  <p>The SPIM assembler and simulator calculated the branch target
+  address by subtracting the address of the target instruction
+  (0x00400030) from the address of the <i>bne</i> instruction
+  (0x0040048), a difference of negative 18 in hexadecimal or -24 in
+  decimal.  But the difference between the addresses of two instructions
+  will always end with two binary zeros, so the architecture specifies
+  that the target address  field of the branch instructions drops those
+  two bits and leaves the difference in word addresses rather than the
+  difference in byte addresses in the instruction.  Thus, the
+  hexadecimal code for the instruction is 0x1420fffa, rightmost sixteen
+  bits are 0xFFFA, and the decimal value of this is -6, which is -24
+  divided by 4.</p>
+
+  <p>As discussed in class, there is a discrepancy between how the SPIM
+  software handles branches and how they are done in Chapter 5.  Since
+  the address of an instruction is provided by the PC register, the
+  hardware calculates the branch target address by adding the address
+  field of the instruction (sign extended and shifted left two places)
+  to the PC.  The datapath in Chapter 5 of the book calculates the
+  branch target address using the value of the PC after it has been
+  incremented by 4 and thus points to the instruction <i>after</i> the
+  branch instruction, but the simulator and assembler use the address of
+  the branch instruction itself.  In class I used the terms "PC+4" and
+  "PC" to talk about this difference.</p>
+
+  <p><b>Question 4.</b>  38 clock cycles.  Each instruction takes
+  exactly one clock cycle to execute.  There are three <i>li</i>
+  instructions before the loop, and seven instructions inside the loop
+  (three for the <i>lw</i>, an <i>add</i>, an <i>addi</i>, and two for
+  the <i>blt</i>.  The instructions inside the loop get executed 5 times
+  each.</p>
+  
+  <p><b>Question 5.</b>  Assuming the ALU control logic is extended so
+  that an ALUOp input value of 11<sub>2</sub> causes the ALU function
+  code to be based on the opcode field of the instruction instead of the
+  func field, as discussed in class, the following will work:</p>
+  
+  <table>
+    <tr style="background:#0000ff; color:#ffffff;">
+      <th>Input or output
+      <th>Signal name
+      <th>addi
+      <th>andi
+      <th>ori
+      <th>slti
+
+    <tr style="background:#ffffc0">
+      <td rowspan="6" valign="top">Inputs
+      <td>Op5
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+
+    <tr style="background:#ffffc0">
+      <td>Op4
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+
+    <tr style="background:#ffffc0">
+      <td>Op3
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+
+    <tr style="background:#ffffc0">
+      <td>Op2
+      <td align="center">0
+      <td align="center">1
+      <td align="center">1
+      <td align="center">0
+
+    <tr style="background:#ffffc0">
+      <td>Op1
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+      <td align="center">1
+
+    <tr style="background:#ffffc0">
+      <td>Op0
+      <td align="center">0
+      <td align="center">0
+      <td align="center">1
+      <td align="center">0
+
+    <tr style="background:#c0ffc0">
+      <td rowspan="9" valign="top">Outputs
+      <td>RegDst
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+
+    <tr style="background:#c0ffc0">
+      <td>ALUSrc
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+
+    <tr style="background:#c0ffc0">
+      <td>MemtoReg
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+
+    <tr style="background:#c0ffc0">
+      <td>RegWrite
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+
+    <tr style="background:#c0ffc0">
+      <td>MemRead
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+
+    <tr style="background:#c0ffc0">
+      <td>MemWrite
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+
+    <tr style="background:#c0ffc0">
+      <td>Branch
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+      <td align="center">0
+
+    <tr style="background:#c0ffc0">
+      <td>ALUOp1
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+
+    <tr style="background:#c0ffc0">
+      <td>ALUOp0
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+      <td align="center">1
+
+  </table>
+
+  <p><b>Question 6.</b></p>
+  <pre>
+  Function generate_controlword receives instruction, returns control word
+    Decode instruction, giving opcode
+    case opcode in
+      R-format: return RegDst | RegWrite | ALUOp1
+      lw:       return ALUSrc | MemtoReg | RegWrite | MemRead
+      sw:       return ALUSrc | MemWrite
+      beq:      return Branch | ALUop0
+  </pre>
+
+  <p><b>Question 7.</b>  There are two listings: <a
+  href="./ControlWord.java.html">ControlWord.java</a>, which includes
+  the function to generate the control workds, and <a
+  href="./ControlUnit.java.html">ControlUnit.java</a>, which provides a
+  wrapper for reading the file containing the instructions passing them
+  to the control word generator, and showing the results.</p>
+
+</div>
+<hr></body></html>
+

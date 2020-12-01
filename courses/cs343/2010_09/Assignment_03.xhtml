@@ -1,0 +1,254 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $content_type = "application/xhtml+xml";
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $content_type = "text/html";
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 3</title>
+    <meta http-equiv="Content-Type" content="<?php echo $content_type;?>; charset=UTF-8" />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      figure { display:block; text-align:center;}
+      figure img { margin:0.5em; border:1px solid #8c2b2b; }
+      td { text-align:center; }
+    </style>
+  </head>
+  <body id='urn:uuid:D1E21A47-E69F-49A1-B74B-74390D895271'>
+
+    <h1>CS-343 Assignment 3</h1>
+    <div id="content">
+    	<h2 style="color:#f66; background-color:#ffc;padding:0.5em;border-radius:0.5em;">Breaking News</h2>
+      <div>
+      	<p>
+          A student pointed out that the values of <em>Ainv</em> and <em>Bneg</em> have to be set for the
+          inputs to the carry-lookahead unit. That means they are generated in the ALU module, not in the
+          slices. Therefore, the slice module gets the values that we have been calling A' and B' and do
+          not need to receive the two function bits, f[3..2].
+        </p>
+        <p>
+          Because I didn’t realize the error until now (the weekend before the assignment is due), I will accept
+          the “wrong” solution for full credit. But any related exam questions will be based only on the correct
+          implementation.
+        </p>
+        <p>
+          My apologies for the error. The remainder of this page has not changed since October 10.
+        </p>
+      </div>
+      <h2>Resource Files</h2>
+      <table>
+        <tr>
+          <td><a href="../hex2sevenseg.v">hex2sevenseg.v</a></td>
+          <td>
+            Seven segment display interface using
+            arrays (busses) for inputs and outputs.
+          </td>
+        </tr>
+        <tr>
+          <td><a href="../hex2sevenseg_pins.v">hex2sevenseg_pins.v</a></td>
+          <td>
+            Seven segment display interface using separate pins for inputs and outputs.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="resource_files/carry-lookahead-unit.bdf">carry-lookahead-unit.bdf</a>
+          </td>
+          <td>
+            My carry-lookahead unit from Assignment 2.
+          </td>
+        </tr>
+      </table>
+      <h2>Reading Assignments</h2>
+      <div>
+        This assignment is based on the MIPS ALU design covered in Appendix C, Section 5 of the textbook.
+        However, our ALU is different from the one in the textbook because it uses the carry-lookahead 
+        unit we built for Assignment 2 rather than full adders in the bit slices.
+      </div>
+
+      <h2>Project Description</h2>
+      <ol>
+        <li>
+          <h5>Set up the project directory, copy files into it, and create a Quartus project.</h5>
+          <p>
+            Create a directory named <span class="directory-name">Assignment_3</span> under your 
+            <span class="directory-name">My Projects</span> directory. Copy the block diagram file  for
+            your carry-lookahead unit from Assignment 2 into this directory. It will have a file name
+            ending in <code>.bdf</code>, probably <span class="file-name">carry-lookahead-unit.bdf</span>.
+            If you cannot produce your own correctly-working version of this module yourself, you may use
+            mine; there is a link to it in the Resource Files section above.
+          </p>
+          <p>
+            Download <strong>one</strong> of the hex2sevenseg Verilog files listed in the Resource Files section to the 
+            same directory. Use <span class="file-name">hex2sevenseg.v</span> if you are comforatable using
+            busses. If you want all the pins broken out separately, you can try using the 
+            <span class="file-name">hex2sevenseg_pins.v</span> version. (<em>Disclaimer</em>: I was able to compile
+            and generate a symbol for this file, but I didn’t actually test it in a circuit.)
+          </p>
+          <p>
+            You should now have exactly two files in your Assignment_3 directory, one Verilog file and one
+            block diagram file. Use the Quartus New Project wizard to create a new project in this directory.
+            When it prompts you to add files to the project, add the two files that are in the project directory.
+            The top-level design unit should be called <code>ALU_testbed</code>.
+          </p>
+          <p>
+            Finally, open each file and create symbols for them (<span class="menu-item">File->Create Symbol</span>).
+          </p>
+        </li>
+        <li>
+          <h5>Create schematics for the Testbed, the ALU, and the bit-slice.</h5>
+          <p>
+            You can create these modules in any sequence you like, but it might make most sense to start with the 
+            testbed, because Quartus will keep supplying the name of the top-level module (ALU_testbed) as the default
+            file name until you actually create a diagram with that name. For the testbed:
+          </p>
+          <ul>
+            <li>
+              Connect all ten Switch inputs to the corresponding ten Red LEDS, even though we will use
+              only eight of the ten switches.
+            </li>
+            <li>
+              Connect the four Key inputs (the blue pushbuttons) to four NOT gates; connect the NOT gates to
+              the rightmost four Green LEDs.
+              <p>
+                Insert two copies of the hex2sevenseg symbol into the testbed. Connect Switches 9..6 to one,
+                and Switches 5..2 to the other. Connect the outputs of the first one to the leftmost seven
+                segment display on the DE-1 (Hex3), and the outputs of the other one to Hex2.
+              </p>
+              <p>
+                You should test you project at this point: save the testbed, build the project, and download it
+                to a logic kit: the slide switches should control the Red LEDs and the pushbuttons should control
+                the right 4 Green LEDs. You should be able to set a binary number in the leftmost four switches
+                (the A operand)
+                and see the corresponding hex digit in the leftmost of the four seven segment displays; the next
+                four slide switches (the B operand) should control the hex digit displayed in the second seven 
+                segment display. The
+                other two seven segment displays are not hooked up yet, and should display 88 (all segments on).
+              </p>
+            </li>
+            <li>
+              The ALU is to have three four-bit inputs: A, B, and <em>f</em>. It is also to have two four-bit
+              outputs: the condition code and the result. You can create the symbol for this module as soon as
+              you have put in the pins, even if they aren’t connected to anything yet.
+            </li>
+            <li>
+              The ALU slice module is to have seven inputs: the 4-bit function code (<em>f</em>) and one bit each
+              for A, B, and Cin (carry-in).  There are to be two output pins, one for the result, and one for the
+              Sum as shown in class on October 7.
+              <p>
+                Again, once you have set up the pins, you can create the symbol for the module even though you
+                haven’t implement the internal structure yet.
+              </p>
+            </li>
+            <li>
+              <h5>Complete the testbed</h5>
+              <p>
+                Once you have a symbol for the ALU, you can insert it into the testbed, and add two seven-segment
+                displyays: Hex_1 for the condition code bits, and Hex_0 for the result. Below is an image of what
+                your testbed might look like:
+              </p>
+              <figure>
+                <img src="images/alu_testbed.png" alt="screenshot of testbed" />
+              </figure>
+              <p>
+                Note that the A inputs going to the seven segment display are separate from the same wires going
+                to the ALU. In class I mentioned problems making the connections for the A and B inputs. I had been
+                working with the following version of the testbed, and found I had to label all of the segments of
+                the Switches redundantly to get the wires to pass through all the way from left to right. The above
+                design eliminated that problem.
+              </p>
+              <figure>
+                <img src="images/alu_testbed_bad.png" alt="screenshot of awkward testbed design" /> 
+              </figure>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h5>Complete the ALU and ALU_slice diagrams.</h5>
+          <p>
+            The ALU will consist of one instance of the carry-lookahead unit, four instances of the ALU_slice,
+            and the logic to generate the four condition code bits. Three of the four result outputs will come
+            directly from the ALU_slice outputs for positions 3 through 1. But Result[0] must be set to the
+            Sum output from Slice 3 when the values of <code>f[1..0]</code> are 11<span class="subscript">2</span>.
+            Basically, you can use a two-input MUX to handle this bit. But, again, I had a problem using the
+            Quartus megafunction wizard to generate the MUX when using the most recent version of Quartus (not the
+            version running in the lab.) So I had to build the MUX out of gates, which is something you need to be
+            able to do for the exam anyway. Here is a segment of my implementation to show you how I did it:
+          </p>
+          <figure>
+            <img src="images/alu_mux.png" alt="Part of the alu showing the logic for Result[0]" />
+          </figure>
+          <p>
+            Remember, when you implement the ALU_slice module, the adder circuit shown in the textbook gets
+            replaced with a 3-input XOR gate to implement A ⊕ B ⊕ C<span class="subscript">in</span>. There is
+            no three-input XOR gate available in Quartus (there is a symbol for one, but it’s not in with the
+            primitive gates we are using), so you will have to construct from the logical equivalent from two
+            two-input gates:
+          </p>
+          <figure>
+            <img style="border:none;" 
+                 src="images/xor3.png" alt="Three-input XOR gate constructed from two two-input XOR gates" />
+          </figure>
+          <p>
+            The output of the three-input XOR goes to both input #2 of the 4 &#x00d7; 1 MUX that generates the Result
+            output pin for the slice, but also to a separate Sum output pin that is needed for implementing the
+            SLT function.
+          </p>
+        </li>
+        <li>
+        	<h5>Test your design!</h5>
+          <p>
+          	There is a lot to be learned from the exercise of assembling your ALU project, but the real learning
+            experience comes from testing it and making sure you understand exactly why each combination of intputs
+            generates the corresponding results on the seven segment displays. The following table shows some
+            examples you can use to verify your circuit and test your understanding. (Everything is in hexadecimal.)
+          </p>
+          <table>
+          	<tr><th>A</th><th>B</th><th><em>f</em></th><th>CVNZ</th><th>Result</th></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>F</td><td>6</td><td>0</td><td>2</td></tr>
+            <tr><td>F</td><td>0</td><td>7</td><td>8</td><td>1</td></tr>
+          </table>
+          <p>
+          	Can you explain each of those rows in the table? Does your project generate the same values? What
+            would be other “interesting” values to try?
+          </p>
+        </li>
+      </ol>
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you have built and tested your assignment let me know it is ready for grading by sending me an
+          email message (Christopher.Vickery<span class="at" title="Change to
+          @">at</span>qc.cuny.edu) by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of all email you send me this semester must start, “CS-343.’ Your email message for this
+          assignment must be: “CS-343 Assignment 3.” 
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 6</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+    <style type="text/css" media="all">
+      table { margin: 1em auto; width: 30%;}
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>CS-343 Assignment 6</h1>
+      <h2>Performance Calculation</h2>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>
+        	For this assignment, you are to calculate the performance of a processor using various parameter values.
+        </p>
+      </div>
+
+      <h2>Assignment Description</h2>
+      <div class="whitebox">
+      	<p>Substitute the following values for the propagation times of the various elements of the MIPS datapath in
+        place of the ones given on page 315 of the textbook:</p>
+        <ul>
+        	<li>Memory units:	250 ps</li>
+          <li>ALU and adders: 75 ps</li>
+          <li>Register file (read or write): 45ps</li>
+        </ul>
+        <p>Use the following instruction mix in place of the values used on page 315: 30% loads, 7% stores, 43% ALU
+        instructions, 17% branches, and 3% jumps.</p>
+        <ol>
+        	<li>Compute the minimum-allowed and average clock cycle periods for the single-cycle and adjustable
+          clock designs.</li>
+          <li>Compare the performance ratio of the two designs with the values computed in the textbook. State which
+          design is faster and by how much for the fixed and variable period clocks.</li>
+          <li>Would the new paremeters given here increase or decrease the clock speed attainable in the multicycle
+          design to be developed in the second part of Chapter 5? And how much faster would the clock be using the
+          values from the book compared to the ones given here? Remember, in the multi-cycle design, the clock period
+          has to be long enough to accommodate the slowest part of the datapath: the memory units.</li>
+        </ol>
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+        <p>
+					Write your answers as <strong>plain text</strong> in the <strong>body</strong> of an email message.
+        </p>
+        <p class="standout_block">
+        	No word processing, HTML, or PDF documents; no attachments.
+        </p>
+        <p>
+          Send your email to me by midnight of the due date. My email address is: <span class="emailAddress
+          codeBlock">vickery at babbage.cs.qc.edu</span>.
+        </p>
+        <p class="standout_block">
+          <strong>You must use exactly this Subject line for your email to be sure I actually receive it:</strong> <span
+          class="codeBlock">CS-343 Assignment 6</span>.<br />Include the "CS-343" part in the subject line of
+          <em>all</em> messages you send to me this semester.
+        </p>
+        <p>
+          If you do not receive an &ldquo;OK, I&rsquo;ll check it out!&rdquo; reply from me within a day or two of
+          submitting the assignment, it means I did not receive it. But I will be sending that acknowledgement manually,
+          so don&rsquo;t resubmit the assignment until I have had a chance to reply to the first one.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home</a>&nbsp;-&nbsp;<a
+           href="http://validator.w3.org/check?uri=referer"> XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer"> CSS</a>
+      </p>
+      <p><em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em></p>
+    </div>
+  </body>
+</html>

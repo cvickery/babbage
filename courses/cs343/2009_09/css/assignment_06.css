@@ -1,0 +1,24 @@
+@charset "UTF-8";
+/* CSS Document */
+
+ol {
+  counter-reset: counter-value;
+}
+
+#analysis-list, #mechanism-list {
+  list-style-type:none;
+  list-style-position:inside;
+}
+#mechanism-list>li:before{
+  counter-increment:counter-value;
+  content: "M-" counter(counter-value) ": ";
+}
+#analysis-list>li:before{
+  counter-increment:counter-value;
+  content: "A-" counter(counter-value) ": ";
+}
+
+#analysis-list>li, #mechanism-list>li {
+	text-indent:-2.2em;
+  padding-left:2.2em;
+}

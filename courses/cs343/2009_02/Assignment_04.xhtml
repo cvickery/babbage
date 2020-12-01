@@ -1,0 +1,102 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 4</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-343 Assignment 4<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+      	This assignment is a little respite from the logic kits: just answer a few questions! Note that the answers are to be written on paper, not done using
+        Quartus.
+      </div>
+      <h2>The Assignment</h2>
+      <div class="whitebox">
+        <h3>
+        	Draw diagrams for the following circuit components: 
+        </h3>
+        <ul>
+        	<li>All the gates in a 4&times;2 multiplexer (two OR gates, 8 AND gates, and 2 inverters); label all inputs and outputs meaningfully</li>
+          <li>All the gates in a 3&times;8 decoder with Enable; label all inputs and outputs meaningfully</li>
+          <li>All the gates in a clocked R-S latch; label all inputs and outputs meaningfully</li>
+          <li>All the gates in a positive edge-triggered D flip-flop with Enable</li>
+          <li>Using a symbol for the flip-flops, a 3-bit register; label all inputs and outputs meaningfully</li>
+          <li>A complete 4&times;3 register file with <em>one</em> read port and <em>one</em> write port; label all inputs and outputs meaningfully;
+          	include a <span class="functionName">RegWrite</span> control input
+          </li>
+        </ul>
+        
+       <h3>Complete the following timing diagram.</h3>
+       <p>
+          Draw arrows showing what edge of the clock causes the transitions in the value of Q. Note that
+          Q is assumed to be initially off. Draw vertical guidelines to make your diagram clear and accurate.
+        </p>
+        <p>
+          <img src="images/Assignment_04-Figure_1.png" alt="A timing diagram" />
+        </p>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+        <ul>
+          <li>
+          	This is a hand-in-on-paper assigment. Bring your written answers to class on the due date.
+          </li>
+          <li>
+            See <a href="../index.xhtml">the course syllabus</a> for grading and late homework policies.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../">CS-343 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

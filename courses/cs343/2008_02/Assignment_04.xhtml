@@ -1,0 +1,148 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-343 Assignment 4</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignments.css"
+    />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 4</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This assignment is to build a modulo 4 up/down counter.
+        </p>
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <h3>Set Up The Project</h3>
+        <p>
+          Create a directory under <span class="directoryName">My Projects</span> named <span
+          class="directoryName">Assignment_04</span> for this project. Unzip another copy of the <a
+          href="./Assignment_03_files.zip">support files for Assignment 3</a> into this new directory.  Change the name
+          of <span class="fileName">DE1_Testbed.bdf</span> to <span class="fileName">Modulo-4_Testbed.bdf</span>, and
+          create a new Quartus project in this directory using this schematic file as the top-level design. Create a
+          schematic for the device, named Modulo_4_counter. The inputs to this schematic are <span
+          class="codeSnippet">clock</span>, <span class="codeSnippet">up</span>, and <span
+          class="codeSnippet">dn</span>; the only required output is <span class="codeSnippet">Z</span>, but for
+          debugging, you should add two more output pins named <span class="codeSnippet">S1</span> and <span
+          class="codeSnippet">S0</span>. All of these I/O pins are just one bit each. Without implementing the
+          schematic, create a symbol for it. Then edit the testbed to replace the Device Under Test symbol with this
+          symbol for Modulo_4_counter. Edit the schematic for the testbed as follows:
+        </p>
+        <ul>
+          <li>
+            Eliminate all the seven segment displays. (If you added the hex2sevenseg.v file from Assignment 3, you can
+            delete it from this project, but it will do no harm if you do not remove it.)
+          </li>
+          <li>
+            Remove the Clock input pin. Connect Key[3] to the clock pin, Key[1] to the <span
+            class="codeSnippet">dn</span> input, and Key[0] to the <span class="codeSnippet">up</span> pin of the
+            counter module. Connect the <span class="codeSnippet">Z</span> output of the counter to Red Led 0. Connect
+            the <span class="codeSnippet">S1</span> and <span class="codeSnippet">S0</span> outputs to Red Leds 9 and 8.
+            Keep the four Key inputs connected to Green Leds 0-3 to help make sure they are operating as you expect.
+          </li>
+        </ul>
+
+        <h3>Create The Project</h3>
+        <p>
+          Implementing the Modulo-4 counter is a matter of connecting two D flip-flops to the clock input, and
+          implementing the state table (truth table for the combinational logic) developed in class on March 6. Testing
+          is a matter of making sure the flip-flops make the correct state transitions each time you generate a clock
+          pulse by pressing Key[3] while holding the various combinations of Key[1] and Key[0].
+        </p>
+        <div class="standout_block">
+          <p>
+            If you would like to get credit for an extra homework assignment, you may create another project in a
+            directory named Assignment_04a. In it, implement a modulo-32 up/down counter using the technique outlined in
+            class on March 11. The design would consist of five T flip-flops, each of which has a 4&times;1 multiplexer
+            controlled by the <span class="codeSnippet">up</span> and <span class="codeSnippet">dn</span> inputs. Use
+            two seven segment displays to show the current state.
+					</p>
+          <p>
+            <strong>The extra-credit assignment is due by midnight March 18, and will not be accepted after that. Send me a
+            separate email to submit the extra-credit assignment.</strong>
+          </p>
+        </div>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          When you have built and tested your circuit, be sure to log out of your account so your project will be saved
+          on the server. Then send an email message to me saying your project is ready; I will get a copy from your
+          account on the server and check it out. Send your email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-343&nbsp;Assignment&nbsp;4</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p class="important">Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.<br />
+      <a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-343 Home Page</a><br /><a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>
+    </div>
+  </body>
+</html>

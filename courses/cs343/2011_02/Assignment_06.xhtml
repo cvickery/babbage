@@ -1,0 +1,195 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 6</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      img {border:1px solid blue;}
+      .big-sig {font-size:1.2em; font-weight:bold;position:relative;top:0.1em;}
+    </style>
+  </head>
+  <body id='urn:uuid:E43263D3-8BC4-4388-87B0-6AAE8FBE173A'>
+    <h1>CS-343 Assignment 6<br/>
+    Due April 7</h1>
+    <div id="content">
+      <h2>Reading Assignment, Reference Material, and Resources</h2>
+      <div>
+        <p>
+          This assignment provides you with practice questions for the second midterm exam. There is no point in
+          completing it after the exam, so late submissions will not be accepted. However, the deadline is midnight
+          of the due date, so there will be a few hours in which you send the email with your answers after the exam.
+        </p>
+        <p>
+          The exam will cover material from sections C-7 through C-11, plus the material on the MIPS instruction set
+          architecture (ISA) covered in class through March 31.
+        </p>
+      </div>
+      <h2>Questions</h2>
+      <div>
+        <p>
+          Put the answers to the following questions in the <em>body</em> of an email message (no attachments
+          accepted). Use “<code>CS-343 Assignment 6 submission</code>” as the subject line. Be sure your name
+          is in the email so you can receive credit.
+        </p>
+        <ol>
+          <li>
+            What is a <em>register file</em>?
+          </li>
+          <li>
+            How many wires are associated with each “port” of an <em>m</em>&#x00d7;<em>n</em> register file or
+            memory? (Give formula.)
+          </li>
+          <li>
+            How many read ports and how many write ports does a MIPS register file have?
+          </li>
+          <li>
+            How large are <em>m</em> and <em>n</em> for the full MIPS register file?
+          </li>
+          <li>
+            How large are <em>m</em> and <em>n</em> for the register file in Assignment 5?
+          </li>
+          <li>
+            How many wires are associated with each port of the full MIPS register file?
+          </li>
+          <li>
+            What is special about Register 0 of the MIPS register file?
+          </li>
+          <li>
+            What is the name of a logic circuit that has <em>n</em> inputs and 2<span class="superscript">n</span>
+            outputs, exactly one of which is true at a time?
+          </li>
+          <li>
+            Write a sentence that describes the behavior of the same circuit as the previous question, but one that
+            has an <em>enable</em> input in addition to the <em>n</em> inputs.
+          </li>
+          <li>
+            How many inverters, AND gates, and OR gates would the decoder from Assignment 5 have; name the number of
+            inputs to each gate other than the inverters. (On an exam you would draw this as a diagram, but this is
+            an email assignment.)
+          </li>
+          <li>
+            What are decoders used for in a register file or memory?
+          </li>
+          <li>
+            What are the names and bit widths of all of the inputs and outputs of a register in the full MIPS register file?
+          </li>
+          <li>
+            To what do the decoder outputs go in a MIPS register file?
+          </li>
+          <li>
+            Where does the clock input to the register file go?
+          </li>
+          <li>
+            Where do the data input wires to the register file go?
+          </li>
+          <li>
+            Where does the RegWrite control signal to the register file go?
+          </li>
+          <li>
+            Why are there two multiplexers in a MIPS register file?
+          </li>
+          <li>
+            Where do the <em>select</em> inputs to the multiplexers come from?
+          </li>
+          <li>
+            How many <em>select</em> inputs does each multiplexer have in an <em>m</em>&#x00d7;<em>n</em> register file?
+          </li>
+          <li>
+            How many data inputs are there to each multiplexer, and where do they come from?
+          </li>
+          <li>
+            How many outputs from each multiplexer?
+          </li>
+          <li>
+            How many read and/or write operations does the MIPS register file perform during one clock cycle?
+          </li>
+          <li>
+            Describe what happens during one <em>minor cycle</em> of the datapath. Your answer is to include a definition of
+            the term, “minor cycle,” and it should tell what happens during the clock period and what happens at the rising
+            edge of the clock.
+          </li>
+          <li>
+            What are <em>m</em> and <em>n</em> for MIPS main memory?
+          </li>
+          <li>
+            How many read and/or write operations can the MIPS main memory perform during one clock cycle?
+          </li>
+          <li>
+            Give the names and number of bits for the inputs and outputs of the MIPS memory. Note: although the memory
+            is byte-addressable, it reads and writes 4 bytes of data at a time.
+          </li>
+          <li>
+            What inputs and outputs are used for a memory <em>read</em> operation?
+          </li>
+          <li>
+            What inputs and outputs are used for a memory <em>write</em> operation?
+          </li>
+          <li>
+            Name or give the op code mnemonic for the MIPS instruction that performs memory read operations. Describe its
+            behavior in Verilog. This includes the expression for computing the address. 
+          </li>
+          <li>
+            Name or give the op code mnemonic for the MIPS instruction that performs memory write operations. Describe its
+            behavior in Verilog. This includes the expression for computing the address.
+          </li>
+          <li>
+            Use Verilog to describe the operation of the MIPS <em>add</em> instruction.
+          </li>
+          <li>
+            Use Verilog to describe the operation of the MIPS <em>beq</em> instruction. This includes the expression for
+            computing the branch target address.
+          </li>
+          <li>
+            What are the three uses for MIPS <em>I Format</em> instructions?
+          </li>
+          <li>
+            Use Verilog to describe the execution of the MIPS <em>j</em> (Jump) instruction.
+          </li>
+          <li>
+            What is the binary value of the rightmost two bits of the PC register? Why?
+          </li>
+          <li>
+            Use Verilog to describe the <em>instruction fetch</em> part of the fetch-execute cycle on the MIPS.
+          </li>
+          <li>
+            What one field do all MIPS instruction formats have? How many bits is it, and where is it located in the
+            instruction (give bit position numbers)?
+          </li>
+          <li>
+            What are the three possible values that will be loaded into the PC at the beginning of each instruction
+            cycle?
+          </li>
+        </ol>
+      </div>
+    </div>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

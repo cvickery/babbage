@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Method doArithmetic()</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         none;
+      }
+      pre.added
+      {
+        background:     #ccccff;
+        border:         solid;
+      }
+  </style>
+</head>
+<center><h1>ARC_Simulator.<i>doArithmetic()</i></h1></center>
+  <p style="margin: 1em;">Additions are highlighted.</p>
+<hr>
+<pre>
+
+  //  doArithmetic()
+  //  ----------------------------------------------------------------
+  /**
+   *    Process arithmetic instructions.
+   *
+   *    @throws UnimplementedOpcodeException if the op3 field is not
+   *            recognized.
+   */
+    static void doArithmetic()     throws UnimplementedOpcodeException
+    {
+      switch ( IR.op3 )
+      {
+        case 000: //  add - Extended opcode
+          lognl( "  add" );
+          Registers.setValue( IR.rd, ALU.do_op( 
+                       Registers.getValue( IR.rs1 ), (IR.i_bit == 1) ?
+                    IR.simm13 : Registers.getValue( IR.rs2 ), ADD ) );
+          break;
+</pre>
+<pre class="added">
+
+        case 004: //  sub - Extended opcode
+          lognl( "  sub" );
+          //  Get second operand
+          if ( IR.i_bit == 1 )
+          {
+            Registers.setValue( t0, IR.simm13 );
+          }
+          else
+          {
+            Registers.setValue( t0, Registers.getValue( IR.rs2) );
+          }
+          //  Negate second operand and add
+          Registers.setValue( t0, ALU.do_op( Registers.getValue( t0 ),
+                                     Registers.getValue( r0 ), NOR ));
+          Registers.setValue( t0, ALU.do_op( Registers.getValue( t0 ),
+                                     Registers.getValue( r0 ), INC ));
+          Registers.setValue( IR.rd,
+                              ALU.do_op( Registers.getValue( IR.rs1 ),
+                                     Registers.getValue( t0 ), ADD ));
+          break;
+</pre>
+<pre>
+
+        case 020: //  addcc
+          lognl( "  addcc" );
+          Registers.setValue( IR.rd, ALU.do_op( 
+                       Registers.getValue( IR.rs1 ), (IR.i_bit == 1) ?
+                  IR.simm13 : Registers.getValue( IR.rs2 ), ADDCC ) );
+          break;
+
+        case 021: //  andcc
+          lognl( "  andcc" );
+          Registers.setValue( IR.rd, ALU.do_op( 
+                       Registers.getValue( IR.rs1 ), (IR.i_bit == 1) ?
+                  IR.simm13 : Registers.getValue( IR.rs2 ), ANDCC ) );
+          break;
+
+        case 022: //  orcc
+          lognl( "  orcc" );
+          Registers.setValue( IR.rd, ALU.do_op( 
+                       Registers.getValue( IR.rs1 ), (IR.i_bit == 1) ?
+                   IR.simm13 : Registers.getValue( IR.rs2 ), ORCC ) );
+          break;
+</pre>
+<pre class="added">
+
+        case 024: //  subcc - Extended opcode
+          lognl( "  subcc" );
+          //  Get second operand
+          if ( IR.i_bit == 1 )
+          {
+            Registers.setValue( t0, IR.simm13 );
+          }
+          else
+          {
+            Registers.setValue( t0, Registers.getValue( IR.rs2) );
+          }
+          //  Negate second operand and add
+          Registers.setValue( t0, ALU.do_op( Registers.getValue( t0 ),
+                                     Registers.getValue( r0 ), NOR ));
+          Registers.setValue( t0, ALU.do_op( Registers.getValue( t0 ),
+                                     Registers.getValue( r0 ), INC ));
+          Registers.setValue( IR.rd,
+                              ALU.do_op( Registers.getValue( IR.rs1 ),
+                                   Registers.getValue( t0 ), ADDCC ));
+          break;
+</pre>
+<pre>
+        case 026: //  orncc
+          lognl( "  orncc" );
+          Registers.setValue( IR.rd, ALU.do_op( 
+                       Registers.getValue( IR.rs1 ), (IR.i_bit == 1) ?
+                  IR.simm13 : Registers.getValue( IR.rs2 ), NORCC ) );
+          break;
+
+        case 046: //  srl
+          lognl( "  srl" );
+          Registers.setValue( IR.rd, ALU.do_op( 
+                       Registers.getValue( IR.rs1 ), (IR.i_bit == 1) ?
+                    IR.simm13 : Registers.getValue( IR.rs2 ), SRL ) );
+          break;
+
+        case 070: //  jmpl
+          lognl( "  jmpl" );
+          Registers.setValue( IR.rd, Registers.getValue( pc ) );
+          Registers.setValue( IR.pc, 
+            ALU.do_op( Registers.getValue( IR.rs1 ), (IR.i_bit == 1) ?
+                    IR.simm13 : Registers.getValue( IR.rs2 ), ADD ) );
+          return;  // Don't update PC
+
+        default:
+          throw new UnimplementedOpcodeException( 
+           "  Unimplemented Arithmetic op3: " + oxydize( IR.op3, 3) );
+      }
+      //  All arithmetic instructions except jmpl update the pc.
+      Registers.setValue( pc, 
+             ALU.do_op( Registers.getValue(pc), 0, INCPC ));
+    }
+
+
+  //  doMemory()
+  //  ----------------------------------------------------------------
+  /**
+   *    Process ld/st instructions.
+   * 
+   *    @throws UnimplementedOpcodeException if the op3 field is not
+   *            recognized.
+   */
+    static void doMemory()         throws UnimplementedOpcodeException
+    {
+      switch ( IR.op3 )
+      {
+        case 000:
+          lognl( "  ld" );
+          Registers.setValue( t0,
+                              ALU.do_op( Registers.getValue( IR.rs1 ),
+           (IR.i_bit == 1) ? IR.simm13 : Registers.getValue( IR.rs2 ),
+                                                               ADD ));
+          Registers.setValue( IR.rd,
+                        Memory.readWord( Registers.getValue( t0 ) ) );
+          break;
+
+        case 004:
+          lognl( "  st" );
+          Registers.setValue( t0,
+                              ALU.do_op( Registers.getValue( IR.rs1 ),
+           (IR.i_bit == 1) ? IR.simm13 : Registers.getValue( IR.rs2 ),
+                                                               ADD ));
+          Memory.writeWord( Registers.getValue( t0 ), 
+                            Registers.getValue( IR.rd ));
+          break;
+
+        default:
+          throw new UnimplementedOpcodeException( 
+                "  Unimplemented Memory op3: " + oxydize(IR.op3, 3) );
+      }
+
+      //  Both memory operations update the pc.
+      Registers.setValue( pc, 
+             ALU.do_op( Registers.getValue(pc), 0, INCPC ));
+    }
+  }
+</pre><hr></body></html>

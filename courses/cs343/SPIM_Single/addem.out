@@ -1,0 +1,30 @@
+
+File: addem.ccv
+0x34080000  ori $8, $0, 0
+     ori: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=1 AOp1=1 AOp0=0 
+0x34040000  ori $4, $0, 0
+     ori: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=1 AOp1=1 AOp0=0 
+0x34090014  ori $9, $0, 20
+     ori: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=1 AOp1=1 AOp0=0 
+0x3c011001  lui $1, 4097
+     lui: Jmp=? RgDs=? ASrc=? M2Rg=? RgWr=? MRd=? MWr=? Br=? AOp1=? AOp0=? 
+0x00280821  addu $1, $1, $8
+  r_type: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=0 AOp1=1 AOp0=0 
+0x8c250000  lw $5, 0($1)
+      lw: Jmp=0 RgDs=0 ASrc=0 M2Rg=0 RgWr=1 MRd=1 MWr=1 Br=1 AOp1=0 AOp0=0 
+0x00852020  add $4, $4, $5
+  r_type: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=0 AOp1=1 AOp0=0 
+0x21080004  addi $8, $8, 4
+    addi: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=1 AOp1=1 AOp0=0 
+0x0109082a  slt $1, $8, $9
+  r_type: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=0 AOp1=1 AOp0=0 
+0x1420fffa  bne $1, $0, -24
+     bne: Jmp=? RgDs=? ASrc=? M2Rg=? RgWr=? MRd=? MWr=? Br=? AOp1=? AOp0=? 
+0x34020001  ori $2, $0, 1
+     ori: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=1 AOp1=1 AOp0=0 
+0x0000000c  syscall
+  r_type: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=0 AOp1=1 AOp0=0 
+0x3402000a  ori $2, $0, 10
+     ori: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=1 AOp1=1 AOp0=0 
+0x0000000c  syscall
+  r_type: Jmp=0 RgDs=1 ASrc=0 M2Rg=0 RgWr=0 MRd=1 MWr=0 Br=0 AOp1=1 AOp0=0 

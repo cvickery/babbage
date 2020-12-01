@@ -1,0 +1,366 @@
+<html><head><title>CS-343 Assignment 6</title>
+<style type="text/css">
+      p { margin-left: 1em; margin-right: 4em; }
+      p.block
+      {
+        margin-left:  3em;
+        margin-right: 6em;
+      }
+      ol.ABC { list-style-type: upper-latin; }
+      ol.iiiiii { list-style-type: lower-roman; }
+      li { margin-right: 10em; }
+      div.ans
+      {
+        background:   white;
+        border:       solid;
+        padding:      1em;
+        margin-left:  2em;
+        margin-right: 4em;
+      }
+</style>
+<style type="text/css" media="screen">
+   body { font-family: sans-serif }
+</style>
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>CS-343 Assignment 6</h1>
+</center>
+
+<h2>Due Date and Submission</h2>
+
+  <p>This assignment is due by <b>midnight, May 23</b>.  Submit it
+  by sending email to me at the address,
+  <i>vickery@babbage.cs.qc.edu</i>.  Be sure to put "CS-343 Assignment
+  6" in the subject of your email and to put your name/ID in the
+  message body.</p>
+
+<h2>The Assignment</h2>
+
+  <p>The assignment is to write out the answers to Exercises <b>8.1,
+  8.2, 8.5, 8.6, 8.7, 8.8, </b>and<b> 8.10</b> on pages 342 - 344 of
+  the textbook.  In addition, answer the questions below.  Submit your
+  answers in the body of your email message, not as an attachment, and
+  <u>not</u> as a Word or PDF document.</p>
+
+  <p>Remember, you are encouraged to use the Discussion Board on the
+  course's Blackboard page (<a
+  href="http://blackboard.qc.edu">blackboard.qc.edu</a>) when you are
+  working on this and all other assignments in this course.</p>
+
+<div class="ans">
+
+  <p><b>8.1 </b> The bottleneck is the ISA Bus, with its bandwidth of
+  16.7 MB/sec. That's 1/16.7 seconds per megabyte, so transferring 100MB
+  will take 100/16.7 seconds.  (5.988 sec.)</p>
+
+  <p><b>8.2</b> Using the Intel architecture as our model, it's
+  actually not critical for interrupts to be disabled during execution
+  of an ISR, although the behavior of the CPU does guarantee that they
+  are.</p><p class="block">(The CPU turns off the <i>ie</i> bit before
+  it starts executing the ISR, and it doesn't get turned back on until
+  the flags register is reloaded as part of executing the return from
+  interrupt (<i>iret</i>) instruction.)</p><p>If the ISR were to enable
+  interrupts during its execution and an interrupt were actually to
+  occur, no harm would be done provided each ISR leaves unchanged the
+  stack where return addresses, flag register copies, and saved
+  registers are kept.  This stack mechanism allows nested ISRs to
+  execute safely.  A problem could occur if the PIC matched the receipt
+  of EOI an code from a nested ISR with the completion of the first
+  interrupt request it had signalled instead of the most recent one. 
+  But in fact, the PIC won't make a second interrupt request until any
+  previous one has completed, so there's no problem with the PIC
+  either.</p><p class="block">If you're thinking this too esoteric to
+  put on an exam, you're probably right.</p>
+
+  <p><b>8.5 (a)</b> The circumference of the inner track is 2&pi;r and
+  r is 1.0cm, so it can hold 20,000&pi; bits. This is the number of
+  bits on <i>each</i> track since the inner track is the shortest and
+  the bit density is the same all over the disk.  There are 10 tracks
+  per cm and 4cm (5-1) of disk surface with tracks.  With one
+  additional track at the beginning (or end, depending on how you look
+  at it), that's a total of 41 tracks.  Therefore, the total capacity
+  of one surface of the disk is 820,000&pi; = 2,576,105 bits, the two
+  surfaces together is 5,152,210 bits.</p>
+
+  <p><b>(b)</b> 3600rpm is 60 revolutions per second, the data transfer
+  rate is 2,576,105 * 60 = 154,566,300 bits per second.</p>
+
+  <p><b>8.6</b> The longest track-to-track time would be 15*127 = 1,905
+  msec (1.905 sec.).  The maximum rotational delay would be 1/60
+  (0.0167) sec.  Then it would take an additional 1/32 of a rotation for
+  the sector to pass under the heads, for a total of 1,905 + 16.67 +
+  0.52 = 1,922.19 msec.</p>
+
+  <p><b>8.7</b> (a)The time to read a track is equal to the time for
+  one revolution: 16.67msec. (b)There are 300x2<sup>20</sup>/815 =
+  385,978 bytes per cylinder.  It takes 19x16.67 = 316.67msec to read
+  one cylinder from the disk to its buffer.  It then takes 385,978/300K
+  = 1.256 seconds to write a cylinder to the CPU.  So, to read and
+  transfer the first cylinder takes 316.67 + 1,256 = 1,572.67msec. 
+  7.5m/s is 7,500mm/s, so it takes 0.25/7,500 = 0.33msec to move from
+  one track to another.  Therefore the total time is 815*1572.67 +
+  814*0.33 = 1,281,726.05msec (1,281 seconds), or about 21 minutes.</p>
+
+  <p><b>Notes:</b> (1) Using powers of 2 for K and M in this question
+  is okay so long as it is made clear that that is what the authors
+  mean.  But disk capacities in the real world are measured using
+  powers of 10 (K = 1,000 rather than 1,024).  (2) The numbers are a
+  bit misleading in the sense that a 300KB/s bandwidth bus between the
+  disk controller and the CPU is very slow.  The bandwidth of the PCI
+  bus in Fig. 8-7 is 133MB/s, which would give 385,978/133M =
+  0.002767sec for the time to write each cylinder to the CPU, reducing
+  the answer to 815*2.77 + 814*0.33 = 2,526msec, or 2.5 sec instead of
+  21 minutes.  (3)  The answer ignores the fact that there will be an
+  average of half a sector's rotational delay from the time the heads
+  arrive at a cylinder and the time at which a complete sector can
+  start to be read.</p>
+
+
+  <p><b>8.8</b> The sequence of events is to read a sector, wait for it
+  to come around again, write it to the other surface, and immediately
+  read the next sector.  It should be possible to read the first sector
+  of the second track immediately after writing the last sector of the
+  first track.  So the problem reduces to computing the time it takes
+  for 2*10*1,000 = 20,000 revolutions.  20,000/3,000 is 6.67 minutes.</p>
+
+  <p><b>8.10</b> The display controller has to write 60*1,024*1,024
+  pixels per second, which is .000,000,015,894 seconds per pixel, which
+  is about 16nsec.</p>
+
+</div>
+
+<h2>Additional Questions</h2>
+
+  <p>In addition to the questions from the textbook listed above, answer
+  the following questions:</p>
+  
+  <ol>
+
+    <li>What is the clock speed of the USB busses in Figure 8-7? (Hint:
+    USB stands for Universal Serial Bus.  That is, there is one data
+    bit transferred per clock pulse.)</li>
+
+<div class="ans">
+
+    <p>Since 1.5B is 12b, the busses are transferring 12Mb/s.  Since
+    there is one bit per transfer, the clock must run at 12MHz.</p>
+
+</div>
+
+    <li>The USB 2.0 specification provides three bandwidth capacities,
+    called "high speed," "full speed," and "limited capacity low
+    speed." Match these bandwidths to the following transfer rates:
+    1.5Mb/s, 12Mb/s, and 480Mb/s.  How sincerely would you congratulate
+    your friend who just bought a computer with a "full speed USB 2.0"
+    port? (Hint:  The folks who developed the USB specification have
+    been criticized for using the term "full speed" to mean less than
+    the fastest speed.)  And how would you answer the previous question
+    given the information provided in this question?  That is, what is
+    the difference between 1.5MB/s and 1.5Mb/s?</li>
+
+<div class="ans">
+
+    <p>"Full speed" is marketing talk for 12Mb/s, not 480Mb/s.  If you
+    could find a knowledgeable salesperson, you should ask the actual
+    bandwidth of the bus you are buying, not its marketing name.  And
+    the difference between MB/s and Mb/s is a factor of 8, the number of
+    bits in a byte.</p>
+
+</div>
+
+    <li>A high-quality digital camera stores pictures in "raw" mode,
+    meaning there is no compression of the data.  Each pixel has 256
+    intensities for red, green, and blue, and a picture is taken at a
+    resolution of 1600x1200 pixels.</li>
+      <ol class="ABC">
+        <li>How big is an image, in bits?</li> 
+        <li>How big is an image, in bytes?</li>
+        <li>How long will it take to transfer an image from the camera
+        to a computer using each of the three USB 2.0 bandwidths?</li>
+      </ol>
+
+<div class="ans">
+
+    <p class="block">(Since writing this question I got my new camera,
+    and the instruction manual says its RAW mode is "compressed."  I
+    think it's a lossless compression, meaning the original data can be
+    reconstructed exactly, rather than a lossy compression like JPEG,
+    which allows only an approximation of the original image to be
+    reconstructed.  We'll stick with the question as asked.)</p>
+
+    <p>You need 8 bits to encode 256 different intensities, so it's
+    8+8+8 = 24 bits per pixel, and 1,600*1,200*24 = 46,080,000 bits =
+    5,760,000 bytes.  At 1.5Mb/s that's 29.3 sec.  At 12Mb/s it's 3.66
+    sec.  And at 480MB/s it's 0.092 sec.</p>
+
+</div>
+
+    <li>Here is a quotation from <a
+    href="http://www.intel.com/technology/agp/3_0toverview.htm">an
+    Intel web page</a>: "The AGP3.0 Specification increased the strobe
+    rate from 266MT/s with AGP2.0 to 533MT/s with AGP3.0. This now
+    doubles the peak AGP bandwidth to 2.1 GB/s.</li>
+    <ol class="ABC">
+      <li>Given what you know about bandwidth, what must "strobe rate"
+      mean, and what does the "T" in "MT/s" stand for?</li>
+      <li>What is the data width of the AGP bus?</li>
+      <li>Figure 8-7 shows an "AGP 2X" graphics interface.  Examine the
+      diagram carefully and relate it to the quote above.  Does the
+      figure in the book show an AGP2.0 system?  How do you know?</li>
+    </ol>
+
+<div class="ans">
+
+    <p>The strobe rate is the clock rate, and T/s is transfers per
+    second.  The bandwidth definition says bits per second equals bits
+    per transfer times transfers per second.  So 2.1GB/s = <i>x</i> *
+    533M/s and <i>x</i> is 2.1G/500M.  Using decimal G and M rather than
+    binary, that gives 4.2 bytes per transfer, which has to be reduced
+    to the integer value, 4 (i.e., 32 bits).</p>
+
+</div>
+
+    <li>A computer has a PCI bus that operates at 66MHz and a width of
+    32 bits.</li>
+    
+    <ol class="ABC">
+
+      <li>What is the bandwidth of this bus?</li>
+      <li>Two IDE disk drives are connected to this PCI bus.  They
+      rotate at 10k rpm.  Each track consists of 1024 sectors, and each
+      sector is 512 bytes.</li>
+      <ol class="iiiiii">
+        <li>How much bandwidth is required to transfer a track of data
+        from one disk to memory?</li>
+        <li>Can this PCI bus support both drives transferring tracks to
+        memory at full speed at the same time?</li>
+      </ol>
+    </ol>
+
+<div class="ans">
+
+    <p>32*66M is 2,112,000,000, or 2.1Gb/s.  A track contains 524,288
+    bytes.  It takes 1/10,000 of a minute, or 6msec to read a track
+    from the disk.  If it were written to memory as fast as it is read
+    from the disk, it would mean writing at the rate of 512K/0.006 =
+    87,381,333 bytes per sec, which is 699,050,667 = 699Gb/s.  So this
+    PCI bus cannot be used to transfer even one track to memory in real
+    time.  Hence the need for a buffer on the disk controller to hold a
+    track while it is being transferred to memory.</p>
+
+</div>
+
+    <li>Using the disk drives and the PCI bus from the previous
+    question, tell how much bandwidth and how many interrupts would be
+    involved in transferring one sector of data to memory using a DMA
+    controller, and without using a DMA controller.</li>
+
+<div class="ans">
+
+    <p>As explained in class, I was looking for you to give a 2:1
+    bandwidth ratio here for without:with DMA, but the actual number
+    varies depending on how many instructions have to be fetched during
+    the DMA transfer, which depends on the cache available on the CPU
+    and whether the transfer loop fits entirely in that cache or not. 
+    And there will be just one interrupt for transferring an entire
+    sector using DMA transfer compared to at least 128 interrupts
+    without DMA, assuming the bus supports transferring 4 bytes at a
+    time.</p>
+
+</div>
+
+    <li>Tell whether each of the following is implemented in hardware or
+    in software:</li>
+    
+      <ul>
+        <li>Device Driver</li>
+        <li>Device Controller</li>
+        <li>Operating System</li>
+        <li>Runtime Library</li>
+        <li>Interrupt Service Routine</li>
+        <li>Programmable Interrupt Controller</li>
+        <li>IRQ</li>
+      </ul>
+
+<div class="ans">
+
+    <p>The device controller, the programmable interrupt controller, and
+    the IRQ input to the CPU are all hardware.  The others are all
+    software.</p>
+
+</div>
+
+    <li>The following items list a possible sequence of events.  For
+    each item, tell whether it is "okay" where it is in the list or
+    not. If it is okay, tell whether there are any other events that
+    <i>must</i> occur before it happens.</li>
+
+      <ul>
+
+        <li>Kernel writes control information to the PIC, telling it
+        what interrupt level to associate with each DC and how to assign
+        priorities.</li>
+
+        <li>Kernel sets up interrupt vector in memory, associating
+        interrupt levels with interrupt service routines.</li>
+
+        <li>Kernel sets the interrupt enable bit in the flags
+        register.</li>
+        
+        <li>Device driver writes control information to the device
+        controller telling it to request an interrupt when data is ready
+        for reading.</li>
+        
+        <li>Application program calls the runtime library to read some
+        data into a buffer.</li>
+        
+        <li>Device controller requests an interrupt because data is
+        available for reading.</li>
+        
+        <li>PIC asserts IRQ.</li>
+        
+        <li>CPU is between instructions.</li>
+        
+        <li>The ie bit of the flags register is true.</li>
+        
+        <li>CPU reads interrupt level number from the PIC.</li>
+        
+        <li>CPU pushes flags and program counter onto stack.</li>
+        
+        <li>CPU loads program counter with address of ISR and starts
+        executing the ISR.</li>
+        
+        <li>The ISR reads data from the DC.</li>
+        
+        <li>The ISR writes EOI to the PIC.</li>
+        
+        <li>The runtime library copies data from the kernel to its own
+        buffer.</li>
+        
+        <li>The runtime library copies data from its own buffer to the
+        application's buffer.</li>
+
+      </ul>
+
+<div class="ans">
+
+  <p>The order given is "okay."  Programming the PIC and setting up the
+  interrupt vector can be done in either order, but should be completed
+  before interrupts are enabled.  The application program can ask to
+  read data any time after the device driver has been installed, which
+  means any time after the PIC and interrupt vector have been
+  initialized.  Once the device controller has written the necessary
+  control information to the device controller, data may start to
+  arrive, and will be read into a kernel buffer as it arrives.  The
+  runtime library is linked to an application program, so it can start
+  filling its buffer any time after the program has been loaded into
+  memory and has opened a connection to the device.  Meantime, interrupt
+  processing can take place anytime the device controller asserts its
+  interrupt request line to the PIC.</p>
+
+</div>
+
+  </ol>
+  
+  
+<hr></body></html>

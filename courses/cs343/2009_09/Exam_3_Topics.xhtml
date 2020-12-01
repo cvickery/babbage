@@ -1,0 +1,105 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Final Exam Topics</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head>
+
+  <body id='urn:uuid:DC71EE5B-C661-40C0-B638-2EE1FF8305BE'>
+    <div id="header">
+      <h1>CS-343 Final Exam Topics</h1>
+    </div>
+    <div id="content">
+      <h2>Readings and Assignments</h2>
+      <div>
+        <p>
+          The exam will cover material from Chapters 2, 4, and 5 of the
+          textbook. Assigments 5, 6, and 8 can serve as the study guides
+          for the material from Chapters 4 and 5. So this page simply
+          reminds you that we also covered material on the MIPS
+          Instruction Set Architecture (ISA) from Chapter 2.  This
+          material is actually implicit background material for
+          Assignment 5, but here it is explicitly stated:
+        </p>
+        <h3>The MIPS Instruction Set Architecture</h3>
+        <ul>
+          <li>Memory organization</li>
+          <li>Register File organization</li>
+          <li>Instruction Formats: R, I, and J instruction fields and their roles</li>
+          <li>Instruction algorithms. The "Green Card" will <strong>not</strong> be available.</li>
+          <li>Verilog expression for Effective Address calculation</li>
+          <li>Verilog expression for Branch Target Address calculation</li>
+          <li>Verilog expression for Jump Address calculation</li>
+        </ul>
+        <h3>Exam Structure</h3>
+        <p>
+        	Expect the usual mix of multiple-choice, fill-ins, and diagrams. Expect some diagrams to
+          be provided, but possibly only Figure 4.24 from the textbook (augmented with timing values
+          as in Assignment 5). Other Figures I like from Chapter 4 include 4.51 and 4.60. Assignment 8
+          mentions Figures 5.9 and 5.17. I like to use Photoshop to add or remove parts of Figures.
+        </p>
+        <p>
+        	No electronic devices will be allowed, but you should expect to have to do calculations
+          involving addition, subtraction, multiplication, division, powers of 2, and base-2 logarithms.
+          If your
+          calculations require more than a few decimal places, either you or I have made a mistake.
+        </p>
+        <p class="standout-block">
+        	If a question provides enough information for you to calculate a numerical answer, then the
+          numerical answer, with correct units, is required.
+        </p>
+        <p>
+        	For example, if the question is, &ldquo;What is the period of a 1GHz clock?&rdquo; the correct answer
+          is &ldquo;1 nanosecond,&rdquo; not &ldquo;the time between pulses&rdquo; or some other true but
+          non-quantitative statement.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

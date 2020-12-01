@@ -1,0 +1,56 @@
+
+  As you know, my state machine example got "out of hand," and that
+  part of the syllabus really hasn't been handled properly yet.  I've
+  finished implementing my version of the Timer for Assignment 3,
+  and will be posting it to the web shortly, but it's much too
+  complicated for me to expect everyone to master it in time for
+  Monday's exam.
+
+  So, Maonday's exam will include knowledge of what state tables and
+  state diagrams are, but you won't be expected to design anything
+  nearly as complicated as the Timer assignment on the exam.
+
+  Sample exam questions:
+
+    1.  Draw a state diagram for a New York City traffic light
+    controller for a normal 4-way intersection.  East-West traffic
+    sees green, yellow, and red lights in that sequence.  North-south
+    traffic also sees green, yellow, and red lights in that sequence.
+    But North-south traffic sees red when east-west sees either green
+    or yellow, and sees green only when east-west sees red, and
+    similarly for what east-west sees.
+
+    2.  What would be an appropriate clock speed for this controller?
+
+  Answers:
+
+    1.  A correct answer would be 4.  We could use state names like
+    GR, YR, RG, and RY, meaning that in the first state North-South
+    sees Green while East-West sees Red, etc.
+
+    2.  Traffic lights change state about every 30 sec (30") so a
+    clock with a 30" second period would be suitable.
+
+    But if you ever observed a real light, you would know that there
+    are two more states in which both East-West and North-South see
+    red lights for a second or so, so there are two more states in a
+    real light, for a total of six: GR, YR, RR1, RG, RY, and RR2.  RR1
+    and RR2 are two different states, but they have the same outputs.
+    The problem with this answer is that a 30" clock period doesn't
+    work any more because the two RRx states last only 1" while the
+    other four last 30".  (And actually, the YR and RY states are
+    shorter than the GR and RG states.)  Which leads once again, like
+    the timer exercise, to a much more complicated answer than we
+    really want to deal with.  Sigh.
+
+  I estimate that state machine design will count only about 10% of
+  this exam.  We've covered plenty of other material so far this
+  semester ... and you'll get to practice state machines more after
+  the exam.
+
+  Good luck on the exam, and don't forget that the Blackboard
+  Discussion Board is available if you want to post questions and help
+  each other study for the exam.
+
+  Dr. Vickery
+

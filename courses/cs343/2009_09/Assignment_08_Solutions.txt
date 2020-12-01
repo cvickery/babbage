@@ -1,0 +1,150 @@
+CS-343 Assignment 8 - Vickery Solutions
+
+1.  Cost per bit: increases for levels closer to the processor.
+    Access time:  decreases for levels closer to the processor.
+    Capacity:     decreases for levels closer to the processor.
+
+    Instead of "access time", you could use "speed," which increases for
+    levels closer to the processor.
+
+2.  Cost. (There was a typo on the assignment sheet: the first word of
+    the question was supposed to be "Which," not "Expand.")
+
+3.  True.
+
+4.  If you use write-back, the processor can update the information in
+    cache without updating the information in main memory. This is a
+    major issue in multi-core computing where different cores have
+    separate caches.
+
+5.  There are two kinds of locality: temporal and spatial. Temporal
+    refers to the fact that a progam is likely to re-visit regions of
+    memory frequently within a short time period, for example by
+    repeatedly executing the instructions in a loop. Spatial refers to
+    the fact that a program that accesses one location in memory is also
+    likely to access nearby locations with a higher chance than other,
+    more distant locations. Examples include instruction execution,
+    which most commonly reads the next instruction from the next address
+    after the current one.  Also, structured data accesses, such as
+    summing the elements of a vector, which are stored in successive
+    memory locations.
+
+    The way locality relates to cache performance is that it raises the
+    hit ratio from what one would expect by chance.  If every- thing
+    were random, and cache contained 0.1% of main memory, the hit ratio
+    would be only 0.001. But because of both kinds of locality, a miss
+    is typically followed by many more hits because neighboring memory
+    locations are brought into cache as the same time as the one needed
+    to satisfy the miss.
+
+M-1.  Instead of just one cache between main memory and the processor,
+      there are two or three caches. The level nearest the processor is
+      called L1, and is typically on the same chip as the processor. In
+      multicore systems, L2 might be shared among processors, or each
+      processor might have a separate L2. L1 is typically a split cache,
+      with separate caches for instructions and data. L1 and L2 (and L3
+      if present) adhere to the hierarchy of Question 1 above.
+
+M-2.  Cost. If cost were no object, everything would be L1.
+
+M-3.  Hit rate: the proportion of memory accesses that are satisfied
+      using data already in cache.
+      Hit time: the number of (processor) clock cycles needed to read a
+      value from cache.
+      Miss penalty: the number of additional clock cycles needed to get
+      a value from main memory into cache when there is a miss.
+
+M-4.  A cache line holds exactly one block of main memory.
+
+M-5.  There is a V bit in cache for each cache line. The V bit indicates
+      whether the cache line is valid or not. It's zero (not valid) if
+      the data in the cache line is not actually a block of main memory.
+      (For example, when there is a context switch, the processor stops
+      executing one program and starts executing another one. When this
+      happens, the cache is "flushed" to clear the first program's
+      information out of the cache so the second program accesses only
+      its own memory blocks. This is done be setting all the V bits of
+      the cache to 0, not by somehow actually removing information from
+      the cache data lines.)
+
+M-6.  The tag field contains the information needed to tell which block
+      main memory actually occupies the cache line's data field.
+
+M-7.  The data field of a cache line is the copy of a block of
+      information from main memory. You could have gotten picky in
+      question M-4 and said that a cache line is bigger than a main
+      memory block because the cache line has the V and tag bits in
+      addtion to the main memory block. The answer to M-4 given above
+      is correct, while side stepping this pickiness.
+
+M-8.  The number of cache lines per set.
+
+M-9.  Direct mapped.
+
+M-10. Fully associative.
+
+M-11. With more options where to place a memory block, it should be
+      possible to reduce the miss rate due to a block replacing a
+      block that is about to be referenced again.
+
+M-12. The cost and possibly additional propagation delays due to the
+      need to compare multiple tags simultaneously.
+
+M-13. With larger lines, more adjacent parts of memory are available at
+      once, which the principle of locality says is a Good Thing.
+
+M-14. For a given amount of cache memory (determined by the cost the
+      computer maker is willing to spend on cache), larger block sizes
+      means there will be fewer cache lines. The less locality there is,
+      the bigger a problem this will be.
+
+M-15. Write through: When the processor writes to memory, the
+      information is written to cache and immediately to main memory as
+      well. This assures cache consistency, but at the expense of
+      possibly extra memory write cycles.
+      Write back: When the processor writes to memory, the information
+      is written to cache, but the cache block is not actually written
+      back to main memory until the block is subsequently invalidated
+      (replaced or flushed).
+      Note that both techniques, as described, imply first reading the
+      block into cache, if is not already there, on a write.
+
+M-16. Yes I do. Do you?
+
+A-1.  m bits wide
+A-2.  The tag field is whatever is left over after you take out the
+      index field (see A-3), the word offset, and the byte offset.
+      Byte offset:  w
+      Word offset:  b
+      Index:        n-a
+      Tag:          m - (n-a + b + w)
+      [I should have specified the block size as 2^w words and word size
+      as 2^b bytes per word so the Byte offest would be b and the Word
+      offset would be w. Read the exam questions carefully!]
+
+A-3.  2^n/2^a = 2^(n-a). Thus the index field is n-a bits
+
+A-4.  There are four values to compute, where p(x) means "the
+      probablility of x," a number between 0.0 and 1.0. For the two cache
+      levels, p(miss) = 1.0 - p(hit). MM means main memory.
+        p(L1 hit) * (L1 access time) 
+        p(L1 miss) * (L1 miss penalty + L2:MM access time)
+        p(L2 hit) * (L2 access time)
+        p(L2 miss) * (MM access time)
+
+      Average L2:MM access time is the sum of the bottom two expressions:
+        0.85 * 10 + 0.15 * 100
+        = 8.5 + 15
+        = 23.5 + 5
+				= 28.5 clock cycles
+
+      And the overall average access time is the sum of the top two
+      expressions:
+        0.90 * 1 + 0.1 * 28.5
+        = 0.90 + 2.85
+        = 3.75 clock cycles
+
+Bonus:  What is the average access time if the clock speed is 2.5 GHz?
+        Answer: 1/(2.5 * 10^9) = 0.4 * 10^-9 = 400 psec
+                400 * 3.75 = 1500 psec = 1.5 nsec
+

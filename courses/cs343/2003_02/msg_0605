@@ -1,0 +1,128 @@
+
+Here is an announcement about the new Logic Design Lab I will be
+teaching this fall.  The lab was funded by a grant from the National
+Science Foundation, and should be a lot of fun to work in.  Please
+pass this message on to anyone you think might be interested in
+registering for it.
+
+Dr. Vickery
+
+----------------------------------------------------------------------
+
+                     New CSCI Course - Fall 2003
+                           Logic Design Lab
+
+CSCI 381.3    E6MBC (Reg. Code 3113)
+CSCI 780      E6MBC (Reg. Code 3114)
+Structure:    2 hr. lecture; 2 hr. lab; 3 credits
+Meets:        Mon./Wed. 6:00 - 8:00 PM
+Prerequisite: CSCI 341 or CSCI 343
+Instructor:   Dr. Vickery
+
+Description
+
+  Students will learn to use state-of-the-art software tools to
+  design, simulate, and implement digital systems.  After doing
+  exercises to become familiar with the laboratory environment,
+  teams of 1-3 students will each select a term project to
+  complete.  Some examples of projects that might be undertaken
+  include, but are not limited to, hardware implementations of:
+
+    *	A video game
+    *	A CPU
+    *	An image processor or generator
+    *	An MP3 or Ogg Vorbis music player
+    *	A mobile robot
+
+  While the main goal of the course is to have fun playing with
+  new toys (see below), students will also gain a good
+  understanding of how modern digital devices (cell phones,
+  portable music players, PDAs, etc.) are designed and built.  In
+  addition, students will have a chance to become familiar with
+  the emerging importance of software skills in the development
+  of hardware systems.
+
+Software Tools and Languages
+
+  Logic designs will be implemented using a mixture of Hardware
+  Description Languages (HDLs) and a Hardware Implementation
+  Language (HIL).  Students will be introduces to
+  industry-standard HDLs, Verilog and VHDL, and will become
+  proficient in the Handel-C HIL.  Programming experience in C,
+  C++, and/or Java at the undergraduate level is the only
+  software background assumed.  Three development platforms will
+  be available, Quartus II from Altera, ISE Foundation from
+  Xilinx, and DK1 from Celoxica.  Altera and Xilinx are the
+  dominant manufacturers of Field Programmable Gate Arrays
+  (FPGAs).  They provide free versions of their development
+  platforms on the web, but the tools listed above have more
+  features than the free versions.  Celoxica is in the software
+  development business rather than the hardware business, and
+  their Handel-C language can be used to develop designs that can
+  be targeted to use FPGAs from a number of companies, including
+  Altera and Xilinx.
+  
+  All three of these development platforms allow you to enter
+  circuit designs and to simulate the design before implementing
+  it in an actual FPGA for final testing.  The big difference
+  between using HDLs or an HIL is that when you compile your
+  code, the output is a logic network instead of a machine
+  language program.  And with logic networks you deal explicitly
+  with parallelism that does not exist in software.
+
+  For example:
+
+    par
+    {
+	    a = b;
+	    c = a;
+    }
+
+  In Handel-C the two assignment statements are executed in
+  parallel (because they are inside a "par"allel block).  That
+  is, they cause the values on the left-hand sides to change at
+  the same time.  If the values of a, b, and c before the block
+  were 1, 2, and 3 respectively, then the new value of c after
+  the block would be 1 (the old value of a), not 2 (the new value
+  of a).
+
+Laboratory Facilities
+
+  The laboratory consists of two parts: development systems (PCs
+  running the development software) and target devices (circuit
+  boards with and FPGA and various other circuits pre-mounted on
+  them).  The development systems are high-end PCs with 3 GHz
+  processors, 1.25 GB of RAM, and 22" monitors.  Half of these
+  development systems will be available outside the laboratory so
+  students can work on their projects any time they wish.  The
+  development software is available to be installed on PCs
+  located off campus too, but you need Internet access to the
+  department to actually run the software because of the way it
+  is licensed.
+
+  There are two target devices available in the lab, a lower-end
+  "UP2" development kit from Altera and a higher-end "RC200" kit
+  from Celoxica.  Both kits are designed for instructional
+  purposes, but are similar to prototyping boards used in
+  industry during the development of new products.  Both kits
+  include a connector for downloading the bits to program an FPGA
+  through a cable connected to a development system, and both
+  provide lights and switches on the board for testing simple
+  circuits.  Also, both kits provide additional connectors that
+  can be connected to a mouse and a monitor.  Beyond this, the
+  RC200 provides keyboard input, RAM, video input, audio output,
+  a wireless (Bluetooth) module, and Ethernet I/O.  The FPGA on
+  the RC200 has the equivalent of a million gates on it, compared
+  to about 70 thousand gates on the Altera board.  An entire
+  pre-designed CPU (Xilinx' "MicroBlaze processor core") can be
+  implemented on the RC200 with plenty of gates left over for
+  student projects that integrate software running on the
+  processor core with hardware interfaces to outside devices.
+  Finally, the RC200 kits are also configured with touchscreens
+  and video cameras for graphical and image processing projects.
+
+  Thus, the laboratory setups available can support a diverse
+  range of projects as complex as anyone might want to tackle.
+  At the same time, they can accommodate very simple projects
+  that simply ignore the irrelevant parts.
+

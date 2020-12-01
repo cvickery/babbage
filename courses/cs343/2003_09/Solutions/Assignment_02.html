@@ -1,0 +1,354 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>CS-343 Assignment 2</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; background: #ccffcc;
+    padding: 1em; }
+    div.ans
+    {
+      font-weight:      bolder;
+      background:       #ccffcc;
+      padding:          1em;
+    }
+
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>CS-343 Assignment 2</h1>
+</center>
+
+<h2>DUE September 15</h2>
+<hr>
+
+<p>Send the answers to the following questions to me by email by
+midnight on the Due Date.  The Subject line of your mail must say,
+"CSCI-343  Assignment 2" and your mail must start with your name and ID
+number.</p>
+
+<p class="indent">Do <i>not</i> send me a Word document.  Just send me
+a plain email message with your answers in it.  (If you do prepare your
+answers using a word processor, copy your answers from the document
+and paste them into your email message.)</p>
+
+<p>My email address, <i>vickery@qc.edu</i> is working again now.</p>
+
+<hr>
+<ol>
+  <li><p>Compute the GPA for a student who has the following grades:</p>
+    <table>
+    <tr>
+      <th>Grade
+      <th>Credits
+    <tr>
+      <td>A+
+      <td>6
+    <tr>
+      <td>A
+      <td>33
+    <tr>
+      <td>A-
+      <td>20
+    <tr>
+      <td>B+
+      <td>19
+    <tr>
+      <td>B
+      <td>24
+    <tr>
+      <td>B-
+      <td>12
+    <tr>
+      <td>C
+      <td>6
+    </table>
+
+<div class="ans">
+  <p>1226 / (3 * 120) = 3.406</p>
+</div>
+
+
+  <li><p>The GPA is calculated to three decimal places.  Why not two or
+  four places instead?</p>
+
+<div class="ans">
+
+  <p>Three places are needed to discriminate between minimally different
+  sets of grades, but four places adds no meaningful information
+  compared to three.</p>
+
+  <p>Consider the differences among three students:  one had A's for
+  all 120 credits taken (12 * 120 = 1440 quality points), and another
+  student had  A's for 119 credits and an A- for the other credit (12 *
+  119 + 11 * 1 = 1439 quality points), and the third had 118 credits of
+  A and 2 credits of A- (1438 quality points.  The three GPAs are
+  4.00000, 3.99722, and 3.99444 respectively.  Two decimal places would
+  not distinguish between the second and third students (or between the
+  first and second if you rounded); three decimal places does
+  distinguish among all three, and four decimal places adds no real
+  information about the differences among the students' performances.</p>
+
+</div>
+
+
+  <li><p>A program exectutes 1,500,000 instructions when it is run.  Of
+  these instructions, 20% require 500 picoseconds to execute, 30%
+  require 800 picoseconds to execute, and the remainder require 1.2
+  nanoseconds to execute.</p>
+
+  <p>A) What is the average execution time per instruction in
+  nanoseconds?</p>
+
+<div class="ans">
+
+  <p> Converting all times to nanoseconds, the weighted average is (0.2
+  * 0.500) + (0.3 * 0.800) + (0.5 * 1.2) = 0.940 nsec. You could get
+  the same answer by converting everything to picoseconds and dividing
+  the result by 1,000.</p>
+
+</div>
+
+  <p>B) What is the average execution time per instruction in
+  picoseconds?</p>
+
+<div class="ans">
+
+  <p>940 psec</p>
+
+</div>
+
+  <p>C) What is the average execution time per instruction in seconds? 
+  (Write this out as a decimal number with no exponent.)</p>
+
+<div class="ans">
+
+  <p>0.000,000,000,940 sec.</p>
+
+</div>
+
+  <p>D) What is the total execution time for the program? <br>Scale
+  your answer so the value part is between 1 and 999, and use the
+  proper unit of measure in your answer.</p>
+
+<div class="ans">
+
+  <p>1,<u>5</u>00,000 * 0.000,000,000,940 = 0.001,<u>410</u> sec.,
+  which scales to 1.<u>410</u> msec.</p>
+
+</div>
+
+  <li><p>What is the period of a 750 MHz clock signal?<br>Scale your
+  answer so the value part is between 1 and 999, and use the proper
+  unit of measure for your answer.</p>
+
+<div class="ans">
+
+  <p>1/(750E+06) = 0.001,333E-06 = 1.333E-09 = 1.333 nsec.</p>
+
+</div>
+
+  <li><p>What is the frequency of a clock signal with a period of 250
+  picoseconds?
+  <br>Scale your answer so the value part is between 1 and 999, and use
+  the proper unit of measure for your answer.</p>
+
+<div class="ans">
+  <p>1/(250E-12) = 0.004E+12 = 4.0E+09 = 4.0 GHz</p>
+</div>
+
+  <li><p>To make a CD recording, the sound level is sampled at a rate
+  of 44 KHz with a resolution of 1 part in 4096.  There are two audio
+  channels.</p>
+
+  <p>A) How many bits per sample must be recorded?</p>
+
+<div class="ans">
+
+  <p>log<sub>2</sub>4096 = 12 bits per audio channel, for a total of 24
+  bits per sample for the two channels combined.</p>
+
+</div>
+
+  <p>B) How many bytes must be stored to record one minute of music?</p>
+
+<div class="ans">
+
+  <p>(Bits per Sample * Samples per Second * Seconds per Minute) / Bits
+  per Byte = (24 * <u>44,000</u> * 60) / 8 = <u>7,920,000</u>, or
+  <u>7.553</u> MB per minute.  (When converting from bytes to megabytes
+  be sure to divide by 1024*1024, not by 1,000,000.)</p>
+
+</div>
+
+  <li><p>Each pixel on a computer monitor can display any of 256
+  different intensities of red, 256 intensities of green, and and 256
+  intensities of blue.  This monitor has a resolution of 1600x1200
+  pixels, and a refresh rate of 80 Hz.</p>
+
+  <p>A) How many bits have to be stored for each pixel?</p>
+
+<div class="ans">
+  <p>24: log<sub>2</sub>256 = 8 for each of the red, green, and blue
+  primaries.</p>
+</div>
+
+  <p>B) How big must the display buffer be to hold one complete image
+  for the monitor screen?  Express your answer in bytes, kilobytes, and
+  megabytes.</p>
+
+<div class="ans">
+
+  <p>1600 * 1200 * 3 (<i>24 bits is three bytes</i>) = 5,760,000 bytes.
+  <br>5,7600,000 / 1,024 = 5,625.0 KB
+  <br>5,625 / 1,024 = 5.493 MB</p>
+
+</div>
+
+  <p>C) How much time do the electron beams spend at each pixel
+  position on each refresh cycle?  Give your answer in nanoseconds. 
+  Ignore the time the beams spend moving from scan line to scan line
+  and from the bottom of the screen to the top.</p>
+
+<div class="ans">
+
+  <p>1600 * 1200 (pixels) * 80 refresh cycles per second = 153,600,000
+  pixels per second.  The reciprocal is 6.510E-09, or 6.51 nsec per
+  pixel.</p>
+
+</div>
+
+  <li><p>A certain computer can have up to 2 GB (gigabytes) of memory. 
+  How many bits must be used for a memory address for this amount of
+  memory?  Assume this is a byte-addressable memory.</p>
+
+<div class="ans">
+
+  <p>2 GB is 2<sup>1</sup> * 2<sup>30</sup> = 2<sup>31</sup> bytes.  So
+  it would take 31 yes/no questions to determine which byte to read or
+  write.  Since a memory address is a number that specifies which byte
+  to read or write, addresses must be 31 bits.</p>
+
+</div>
+
+  <li><p>If you have not already done so, download and install the
+  CircuitMaker software on your PC.  Click on <a
+  href="../../Circuit_Maker">this link</a> to get to a web page that
+  gives you a link for downloading the program and instructions for
+  using it.<p>
+  
+  <p>Assemble and simulate the circuit below using CircuitMaker.  You
+  can find all the devices in this circuit (Hex Keypad, Hex Display,
+  Digital Switches, and 2-input OR gates) on the Hotkeys menu.</p>
+
+  <p class="indent">Use the Discussion Board for the course if you have
+  any problems using CircuitMaker for this assignment.</p>
+
+  <p class="indent">You will receive up to three extra credit points
+  for the course if you ask and/or answer questions on the Discussion
+  Board.  The more you use the board and the better the quality of your
+  questions and answers, the more points you can earn.</p>
+
+  <p class="indent">But just giving the answers to homework questions
+  will <i>subtract</i> from your extra credit points!</p>
+
+  <p align="center"><img src="./Hex_IO.png" alt="Circuit Diagram"></p>
+
+  <p>Attach your .ckt file to your mail message when you submit this
+  assignment, and answers the following questions in your message
+  body:</p>
+
+  <ul>
+    <li>What happens each time you click on the Keypad device (KPD1)?
+
+<div class="ans">
+
+  <p>The number displayed increases by one.  When it gets to 0xF
+  (Hexadecimal F), it then wraps around to zero.  The Hex display always
+  shows the same value as the keypad.</p>
+
+</div>
+
+    <li>What happens if you type a digit on the keyboard when KPD1 is selected?
+
+<div class="ans">
+
+  <p>The It takes on whatever value you type.  The Hex display changes
+  too.</p>
+
+</div>
+
+    <li>What happens to the circuit if you click switch V1 so it is on
+    instead of off and you change the value of KPD1?
+
+<div class="ans">
+
+  <p>Switch V1 is connected through an OR gate to the "1" input of the
+  Hex display, so the Hex display always shows odd-numbered values.</p>
+
+</div>
+
+    <li>Set KPD1 to '0' and change the settings of all four switches in
+    various combinations.  What happens?
+
+<div class="ans">
+
+    <p>The switches can be used in various combinations to cause any
+    value to show in the hex display.</p>
+
+</div>
+
+    <li>Set KPD1 to '8' and change the values of the switches.  What
+    happens?
+
+<div class="ans">
+
+    <p>The display always shows a value between 0x8 and 0xF.</p>
+
+</div>
+
+    <li>Write a succinct paragraph that describes this circuit and its
+    behavior.
+
+<div class="ans">
+
+  <p>Either the hex keypad or the switches can be used to set the values
+  of the four inputs to the hex display.  The hex display shows the
+  hexadecimal representation of the four-bit binary number connectied to
+  its inputs.</p>
+
+</div>
+
+    <li>What would happen if you changed the OR gates to AND gates?
+
+<div class="ans">
+
+    <p>In order for an input to the hex display to be a one, both the
+    corresponding switch and the the corresponding output from the hex
+    keypad would have to be 1.</p>
+
+</div>
+
+  </ul>
+  
+</ol>
+
+
+<hr>
+</body>
+</html>

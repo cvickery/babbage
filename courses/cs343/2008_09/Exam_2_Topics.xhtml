@@ -1,0 +1,115 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-343 Exam 2 Topics</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Exam 2 Topics</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          The second exam will test material covered since the first exam. This test will not re-test you on material from the first test, but it
+          will often assume that you remember that material.
+        </p>
+        <p>
+          Since the last exam, we have covered at least parts of the following sections from Appendix B of the textbook: B.7, B.8, B.10, B.11, and
+          B.12. Much of the exam will be based on what was covered in class and on the two logic design assignments (MIPS ALU and Up/Down Counter).
+        </p>
+      </div>
+      
+      <h2>Topics</h2>
+      <div>
+        <ul>
+          <li>Quartus implementation of the MIPS ALU</li>
+          <li>Quartus implementation of the Up/Down Counter</li>
+          <li>Finite State Machine (FSM) model</li>
+          <li>Mealy and Moore outputs</li>
+          <li>State Diagrams (circles and arcs)</li>
+          <li>State Table construction and implementation</li>
+          <li>Difference between combinational and sequential circuits</li>
+          <li>Level-sensitive flip-flop (latch) gates and operation</li>
+          <li>Edge-triggered flip-flop gates and operation</li>
+          <li>Why level-sensitive circuits are not appropriate for FSM implementations</li>
+          <li>Use of Clock, ENA, PRN, and CLRN inputs of Quartus <span class="functionName">dffe</span> elements</li>
+          <li>PRN and CLRN as asynchronous inputs</li>
+          <li>
+            You do not need to know how to draw the gates for a <span class="functionName">dffe</span> with PRN and CLRN, but
+            you do need to know how to draw the gates for an edge-triggered D flip-flop with ENA.
+          </li>
+          <li>Register structure and implementation</li>
+          <li>Register file structure and implementation</li>
+          <li>Datapath structure: connections between ALU and Register File</li>
+          <li>Definition of &ldquo;memory port&rdquo;</li>
+          <li>Definition of &ldquo;clock skew&rdquo; and how ENA inputs to flip-flops eliminates it</li>
+          <li>Memory operations (read and write) as they apply to a register file</li>
+          <li>
+            Number of input and output wires of the MIPS register file, the MIPS ALU, and the MIPS datapath, and where these numbers come from
+            or go to
+          </li>
+          <li>Implementing <span class="functionName">RegWrite</span> in the MIPS register file</li>
+          <li>How Register 0 is special and how to implement it in the MIPS register file</li>
+          <li>How to build a 32 &times; 32 multiplexer (or any other <span class="functionName">&times; n</span> mux)</li>
+          <li>How to use a decoder to control the ENA inputs of the MIPS registers</li>
+          <li>How data wires for ALU result connect to the data inputs of the registers in the MIPS register file</li>
+          <li>This list might be incomplete.</li>
+        </ul>
+      </div>      
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs343">CSCI-343 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

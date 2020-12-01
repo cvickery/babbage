@@ -1,0 +1,181 @@
+<html><head><title>CS-343 Assignment 6</title>
+<style type="text/css">
+      p { margin-left: 1em; margin-right: 4em; }
+      p.block
+      {
+        margin-left:  3em;
+        margin-right: 6em;
+        border:       solid;
+        padding:      1em;
+      }
+      ol.ABC { list-style-type: upper-latin; }
+      ol.iiiiii { list-style-type: lower-roman; }
+      li { margin-right: 10em; }
+</style>
+<style type="text/css" media="screen">
+   body { font-family: sans-serif }
+</style>
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>CS-343 Assignment 6</h1>
+</center>
+
+<h2>Due Date and Submission</h2>
+
+  <p>This assignment is due by <b>midnight, May 23</b>.  Submit it
+  by sending email to me at the address,
+  <i>vickery@babbage.cs.qc.edu</i>.  Be sure to put "CS-343 Assignment
+  6" in the subject of your email and to put your name/ID in the
+  message body.</p>
+
+<h2>The Assignment</h2>
+
+  <p>The assignment is to write out the answers to Exercises <b>8.1,
+  8.2, 8.5, 8.6, 8.7, 8.8, </b>and<b> 8.10</b> on pages 342 - 344 of
+  the textbook.  In addition, answer the questions below.  Submit your
+  answers in the body of your email message, not as an attachment, and
+  <u>not</u> as a Word or PDF document.</p>
+
+  <p>Remember, you are encouraged to use the Discussion Board on the
+  course's Blackboard page (<a
+  href="http://blackboard.qc.edu">blackboard.qc.edu</a>) when you are
+  working on this and all other assignments in this course.</p>
+
+<h2>Additional Questions</h2>
+
+  <p>In addition to the questions from the textbook listed above, answer
+  the following questions:</p>
+  
+  <ol>
+
+    <li>What is the clock speed of the USB busses in Figure 8-7? (Hint:
+    USB stands for Universal Serial Bus.  That is, there is one data
+    bit transferred per clock pulse.)</li>
+
+    <li>The USB 2.0 specification provides three bandwidth capacities,
+    called "high speed," "full speed," and "limited capacity low
+    speed." Match these bandwidths to the following transfer rates:
+    1.5Mb/s, 12Mb/s, and 480Mb/s.  How sincerely would you congratulate
+    your friend who just bought a computer with a "full speed USB 2.0"
+    port? (Hint:  The folks who developed the USB specification have
+    been criticized for using the term "full speed" to mean less than
+    the fastest speed.)  And how would you answer the previous question
+    given the information provided in this question?  That is, what is
+    the difference between 1.5MB/s and 1.5Mb/s?</li>
+
+    <li>A high-quality digital camera stores pictures in "raw" mode,
+    meaning there is no compression of the data.  Each pixel has 256
+    intensities for red, green, and blue, and a picture is taken at a
+    resolution of 1600x1200 pixels.</li>
+      <ol class="ABC">
+        <li>How big is an image, in bits?</li> 
+        <li>How big is an image, in bytes?</li>
+        <li>How long will it take to transfer an image from the camera
+        to a computer using each of the three USB 2.0 bandwidths?</li>
+      </ol>
+
+    <li>Here is a quotation from <a
+    href="http://www.intel.com/technology/agp/3_0toverview.htm">an
+    Intel web page</a>: "The AGP3.0 Specification increased the strobe
+    rate from 266MT/s with AGP2.0 to 533MT/s with AGP3.0. This now
+    doubles the peak AGP bandwidth to 2.1 GB/s.</li>
+    <ol class="ABC">
+      <li>Given what you know about bandwidth, what must "strobe rate"
+      mean, and what does the "T" in "MT/s" stand for?</li>
+      <li>What is the data width of the AGP bus?</li>
+      <li>Figure 8-7 shows an "AGP 2X" graphics interface.  Examine the
+      diagram carefully and relate it to the quote above.  Does the
+      figure in the book show an AGP2.0 system?  How do you know?</li>
+    </ol>
+
+    <li>A computer has a PCI bus that operates at 66MHz and a width of
+    32 bits.</li>
+    
+    <ol class="ABC">
+
+      <li>What is the bandwidth of this bus?</li>
+      <li>Two IDE disk drives are connected to this PCI bus.  They
+      rotate at 10k rpm.  Each track consists of 1024 sectors, and each
+      sector is 512 bytes.</li>
+      <ol class="iiiiii">
+        <li>How much bandwidth is required to transfer a track of data
+        from one disk to memory?</li>
+        <li>Can this PCI bus support both drives transferring tracks to
+        memory at full speed at the same time?</li>
+      </ol>
+    </ol>
+
+    <li>Using the disk drives and the PCI bus from the previous
+    question, tell how much bandwidth and how many interrupts would be
+    involved in transferring one sector of data to memory using a DMA
+    controller, and without using a DMA controller.</li>
+
+    <li>Tell whether each of the following is implemented in hardware or
+    in software:</li>
+    
+      <ul>
+        <li>Device Driver</li>
+        <li>Device Controller</li>
+        <li>Operating System</li>
+        <li>Runtime Library</li>
+        <li>Interrupt Service Routine</li>
+        <li>Programmable Interrupt Controller</li>
+        <li>IRQ</li>
+      </ul>
+
+    <li>The following items list a possible sequence of events.  For
+    each item, tell whether it is "okay" where it is in the list or
+    not. If it is okay, tell whether there are any other events that
+    <i>must</i> occur before it happens.</li>
+
+      <ul>
+
+        <li>Kernel writes control information to the PIC, telling it
+        what interrupt level to associate with each DC and how to assign
+        priorities.</li>
+
+        <li>Kernel sets up interrupt vector in memory, associating
+        interrupt levels with interrupt service routines.</li>
+
+        <li>Kernel sets the interrupt enable bit in the flags
+        register.</li>
+        
+        <li>Device driver writes control information to the device
+        controller telling it to request an interrupt when data is ready
+        for reading.</li>
+        
+        <li>Application program calls the runtime library to read some
+        data into a buffer.</li>
+        
+        <li>Device controller requests an interrupt because data is
+        available for reading.</li>
+        
+        <li>PIC asserts IRQ.</li>
+        
+        <li>CPU is betwen instructions.</li>
+        
+        <li>The ie bit of the flags register is true.</li>
+        
+        <li>CPU reads interrupt level number from the PIC.</li>
+        
+        <li>CPU pushes flags and program counter onto stack.</li>
+        
+        <li>CPU loads program counter with address of ISR and starts
+        executing the ISR.</li>
+        
+        <li>The ISR reads data from the DC.</li>
+        
+        <li>The ISR writes EOI to the PIC.</li>
+        
+        <li>The runtime library copies data from the kernel to its own
+        buffer.</li>
+        
+        <li>The runtime library copies data from its own buffer to the
+        application's buffer.</li>
+
+      </ul>
+
+  </ol>
+  
+  
+<hr></body></html>

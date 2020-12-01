@@ -1,0 +1,190 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 5</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+    <style type="text/css" media="all">
+      table { margin: 1em auto; width: 30%;}
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>CS-343 Assignment 5</h1>
+      <h2>MIPS Register File Construction</h2>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>
+          This assignment is to use Quartus and a DE1 kit to implement a complete MIPS register file.
+        </p>
+      </div>
+
+      <h2>Project Description</h2>
+      <div class="whitebox">
+        <p>
+          Create a project directory named <span class="directoryName">Assignment_05</span> under your <span
+          class="directoryName">My Projects</span> directory in the lab.
+        </p>
+          
+        <p>
+          I am providing a set of files for you to use to start the project: the link is <a
+          href="MIPS_Register_File.zip">MIPS_Register_File.zip</a>. Unzip it into your project directory, then use the
+          Quartus New Project Wizard to create a new project with <span class="directoryName">Assignment_05</span> as
+          the project directory, <span class="variableName">MIPS_Register_File</span> as the project name, and <span
+          class="variableName">DE1_Testbed</span> as the name of the top-level design entity.
+        </p>
+
+        <p>
+          Add all the files in the project directory to your Quartus project (Assignments-&gt;Settings-&gt;Files) except
+          for those files that have names ending in <span class="fileName">_bb.v</span>; they need to be present, but
+          should not appear in the list of files that make up the design. (They are byproducts of the Megawizards used
+          to generate a multiplexer and set of inverters used in the adapter.) However, there are some <span
+          class="fileName">.tdf </span> files that will not be added to the project if you just click the &ldquo;Add
+          All&rdquo; button. You will need to add them to the project explicitly if you want to avoid a couple of the warning
+          messages when you build the project.
+        </p>
+
+        <p>
+          I have provided the DE1 testbed, and the testbed-to-register-file adapter described in class. There is a
+          symbol for the register file itself, but no implementation of it: that part is your assignment! Your first
+          step is to build a schematic with the correct file name and all the I/O pins listed in the existing symbol.
+          For now, you can leave the input pins unconnected, and connect all the output pins to ground. Make sure you
+          can build the project with lots of warnings, but no errors. The following warnings are all right:
+        </p>
+        
+        <p class="codeBlock">
+Warning: Can't analyze file -- file Assignment_05/alt3pram0.tdf is missing
+Warning: Using design file Assignment_05/db/mux_eoc.tdf, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+Warning: Pin "RegWrite" not connected
+Warning: Pin "Clock" not connected
+Warning: Pin "ReadReg1" not connected
+Warning: Pin "ReadReg2" not connected
+Warning: Pin "WriteData" not connected
+Warning: Pin "WriteReg" not connected
+Warning: Using design file Assignment_05/db/decode_n6f.tdf, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+Warning: Output pins are stuck at VCC or GND
+Warning: Design contains 1 input pin(s) that do not drive logic
+        </p>
+
+        <p>
+          Once you have done the initial compilation, you can set up the pin assignments using the Assignment Editor.
+          (Do not use the Pin Planner: it is very awkward to use.) The <a href="../Pins_DE1.xhtml">DE1 I/O Pins web page</a>
+          has been updated so the pins are listed in the same order they will appear in the Pin Planner.
+        </p>
+        
+        <p>
+          You can get rid of some other Quartus warnings by going to <span class="menuItem">Assignments-&gt;Settings-&gt;Classic
+          Timing Analyzer Settings</span>: set the default <span class="variableName">fmax</span> to 50&nbsp;MHz; go to Individual Clocks,
+          and make sure the node named <span class="variableName">Clock</span> is also set to 50&nbsp;MHz. If you do not do this, the
+          only effect will be some warnings generated by the timing analyzer, which you could ignore anyway.
+        </p>
+        
+        <p>
+          You may implement the register file using individual flip-flops and the necessary decoder and multiplexers if
+          you wish. But you may also use the <span class="variableName">alt3pram</span> (Altera 3-port RAM) megawizard
+          if you like. That device needs a clock input, which is why the testbed I am providing includes that input. Use
+          the <span class="variableName">RegWrite</span> control signal for the 3-port RAM&rsquo;s write enable (<span
+          class="variableName">wren</span>) input.  Do not use ouput registers for the 3-port RAM, but you cannot avoid
+          using registered inputs. The wizard will ask you if you want to initialize the register file or not. I have
+          provided an initialization file in the project named <span class="fileName">reginit.mif </span> that you can
+          use. You can edit it to use different values if you like: opening it in Quartus will let you do that using a
+          spreadsheet-style program that displays the 32 registers in four rows of eight registers each, using hexadecimal
+          register numbers and hexadecimal register contents. If you use it, you can test
+          the read operations even before you are sure the write operation works. Note that I have initialized register 0
+          to a non-zero value: be sure that reading from it produces zeros anyway!
+        </p>
+        <p>
+        	Your symbol for the Altera 3-port RAM should look like this: (<em>Note there are no flip-flops for the outputs.</em>)
+        </p>
+        
+        <p><img src="images/alt3pram.png" alt="Altera 3-port RAM symbol" /></p>
+        
+        <p>
+          As covered in class, the testbed uses the left 5 slide switches for Read Register 1 and the right
+          five for Read Register 2. The right two key switches select what is displayed on the hex displays:
+          </p>
+          <table>
+            <tr><th>Key[1..0]</th><th>Display</th></tr>
+            <tr><th>00</th><td>Read Data 1 [15..0]</td></tr>
+            <tr><th>01</th><td>Read Data 1 [31..16]</td></tr>
+            <tr><th>10</th><td>Read Data 2 [15..0]</td></tr>
+            <tr><th>11</th><td>Read Data 2 [31..16]</td></tr>
+          </table>
+        <p>
+          For writing, use Switch[9..8] to select which byte of a register you are setting up and Switch[7..0] to supply
+          the data for that byte. Use Key[2] to load the data into the byte. When all four bytes are set the way you
+          want them, use Switch[4..0] to supply the Write Register number, and use Key[3] to load the 32-bit value into the
+          register.
+        </p>
+        <p class="standout_block">
+          Remember, the Altera 3-port RAM does not treat Register 0 any differently from the others, but the MIPS register
+          file always gives the value <span class="codeSnippet">0x00000000</span> when reading from this register.
+        </p>
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+        <p>
+          Test your circuit carefully, and when it is ready, send me an email message telling me it is ready for
+          me to review.  I will get a copy of your project from your account on the lab server(<span
+          class="computerName">maple</span>), so there is no need to tell me which computer you were working on. Just
+          tell me that the project is ready for me to look at.
+        </p>
+        <p>
+          Send your email to me by midnight of the due date. My email address is: <span class="emailAddress
+          codeBlock">vickery at babbage.cs.qc.edu</span>.
+        </p>
+        <p class="standout_block">
+          <strong>You must use exactly this Subject line for your email to be sure I actually receive it:</strong> <span
+          class="codeBlock">CS-343 Assignment 5</span>. (Include the "CS-343" part in the subject line of <em>all</em>
+          messages you send to me this semester.)
+        </p>
+        <p>
+          If you do not receive an &ldquo;OK, I&rsquo;ll check it out!&rdquo; reply from me within a day or two of
+          submitting the assignment, it means I did not receive it. But I will be sending that acknowledgement manually,
+          so don&rsquo;t resubmit the assignment until I have had a chance to reply to the first one.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home</a>&nbsp;-&nbsp;<a
+           href="http://validator.w3.org/check?uri=referer"> XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer"> CSS</a>
+      </p>
+      <p><em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em></p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>CS-343 Assignment 8</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; background: #ccffcc;
+    padding: 1em; }
+    pre
+    {
+      margin-left:  2em;
+      margin-right: 2em;
+      background:   #ffffff;
+      border:       solid;
+    }
+    div.ans
+    {
+      font-weight:      bolder;
+      background:       #ccffcc;
+      padding:          1em;
+    }
+
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>CS-343 Assignment 8</h1>
+</center>
+
+<h2>Due November 26</h2>
+<hr>
+
+  <p>Your assignment is to add two new instructions, <i>sub</i> and
+  <i>subcc</i>, to the ARC Simulator developed in class.  It will be
+  sufficient for you to write the code for this homework on a piece of
+  paper and bring it to class on the due date, but you will receive
+  extra credit if you submit a working Java modification of file
+  <i>ARC_Simulator.java</i> (see below) as an email attachment
+  instead.  If you prefer to reimplement the entire simulation in C++
+  instead of modifying the Java version, that's okay too.</p>
+
+<h2>Code Available</h2>
+
+  <p>The following files are available for you to download to work with
+  for this assignment:</p>
+  
+  <ul>
+    <li><a href="../arc_simulator.jar">arc_simulator.jar</a>
+    <li><a href="../html/ARC_Simulator.java.html">ARC_Simulator.java</a>
+    <li><a href="../html/sample.asm.html">sample.asm</a>
+    <li><a href="../html/sample.bin.html">sample.bin</a>
+    <li><a href="../html/sample.lst.html">sample.lst</a>
+  </ul>
+  
+  <p>Documentation for our ARC simulator is available below:</p>
+
+  <ul>
+    <li><a href="../arc_simulator_docs/">ARC Simulator Documentation</a>
+  </ul>
+
+  <p>If you are not able to run the simulator, here is a complete copy
+  of the output generated when it was run using sample.bin as the
+  input file:</p>
+
+  <ul>
+
+    <li><a href="../html/sample.out.html">Output from <code>java 
+                                   ARC_Simulator sample.bin</code></a>
+  </ul>
+
+<h2>Assignment Description</h2>
+
+  <p>Your assignment is to modify ARC_Simulator.java so that it executes
+  two new ARC machine instructions, <i>sub</i> and <i>subcc</i>.  These
+  instructions are recognized by the textbook's assembler and simulator,
+  but are not described in the textbook itself.  And they are not
+  currently recognized by our simulator.</p>
+  
+  <p>The procedure to follow is as follows:  First, download the .jar
+  file and be sure you can run it using the command, "java -jar
+  arc_simulator.jar".  You may need to install the Java Runtime
+  Environment (Java VM) from Sun Microsystems if you don't already have
+  Java installed on your computer.  If you are going to try to change
+  the simulator, you should install the Java Software Development Kit
+  (J2SE SDK) instead of just the Java VM.  Both are available from <a
+  href="http://java.sun.com">Sun's Java Website</a> -- look under
+  "Popular Downloads."</p>
+  
+  <p>Once you are able to run the simulator, give it a program to
+  simulate, for example <i>sample.bin</i> listed above.  See the
+  simulator documentation for class ARC_Simulator for instructions on
+  how to simulate a program.  Study the output of the simulator to make
+  sure you understand it and can relate each line of output to the
+  program being simulated.</p>
+  
+  <p class="indent">The simulator generates quite a bit of output, so
+  you might want to capture it in a file, which you can examine with a
+  text editor.  You can do that by putting "&gt; simulator.out" at the
+  end of the <i>java</i> command line.  (Of course, you can use any
+  file name you wish instead of <i>simulator.out</i>.)
+
+  <p>Now modify <i>sample.asm</i> so that it includes both a <i>sub</i>
+  and a <i>subcc</i> instruction.  Modify the <i>addcc</i> instruction
+  just before the branch to do a subtraction instead of addition of a
+  negative one.  You can put any <i>sub</i> instruction just before the
+  <i>halt</i> instruction.  When you run the simulation now, the last
+  part of the output should look like this:</p>
+
+<pre>
+             PC: 000324  IR: 80200000  Unimplemented Arithmetic op3: 004
+    Register  32 changes to  00000328
+    Memory at 000328 returns 91D02000
+    Register  37 changes to  91D02000
+             PC: 000328  IR: 91D02000  halt
+
+Execution summary for file sample.bin:
+  Instructions executed:  10
+  Invalid op codes:       2
+  Nops:                   0
+  Clock cycles:           29
+</pre>
+
+  <p>There should be another "Unimplemented" message earlier in the
+  output, for the <i>subcc</i> instruction.  Note that the value (004)
+  is displayed in octal, which makes sense given that the op3 field is
+  six bits wide and thus fits nicely in two octal digits.</p>
+
+  <p>Now you're ready to start working on the assignment!  Study the
+  documentation for the various classes to see what methods are
+  available in each one, and then study the code given to you for
+  <i>ARC_Simulator.java</i>.  From the "Unimplemented" messages printed
+  by the current version of the simulator you can deduce what the op3
+  values for <i>subcc</i> and <i>sub</i> are, and your job is to find
+  where to put the code that will handle these two new instructions.</p>
+
+  <p class="indent">Note 1:  In C, C++, and Java numeric constants that
+  start with a zero (0) are octal numbers.  So, for example, the op3
+  value for <i>orcc</i> instructions is <code>010 010</code> in binary,
+  but appears as <code>022</code> in the code, which is the octal
+  equivalent.</p>
+  
+  <p class="indent">Note 2:  Be sure you use the simulated ALU to do
+  the subtraction!  You have to figure out how to do it using the ALU
+  function codes available.</p>
+
+  <p>If you are actually going to test that your code works, the
+  easiest way to proceed as follows:  extract all the class file from
+  the jar file, using the command, "jar -xvf arc_simulator.jar".  Now
+  edit ARC_Simulator.java and compile it, which will overwrite the
+  orginal copy of ARC_Simulator.class.  Test your program with the
+  command "java ARC_Simulator sample.bin" and verify that the new
+  subtract instructions operate correctly.</p>
+
+<hr>
+</body>
+</html>

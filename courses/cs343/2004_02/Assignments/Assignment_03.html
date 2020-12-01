@@ -1,0 +1,107 @@
+<html><head><title>CS-343 Assignment 3</title>
+<style type="text/css">
+      p { margin-left: 1em; margin-right: 4em; }
+      p.block
+      {
+        margin-left:  3em;
+        margin-right: 6em;
+        border:       solid;
+        padding:      1em;
+      }
+      li { margin-right: 10em; }
+</style>
+<style type="text/css" media="screen">
+   body { font-family: sans-serif }
+</style>
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>CS-343 Assignment 3</h1>
+</center>
+
+<h2>Due Date and Submission</h2>
+
+  <p>This assignment is due by <b>midnight, March 1</b>.  Submit it
+  by sending email to me at the address,
+  <i>vickery@babbage.cs.qc.edu</i>.  Be sure to put "CS-343 Assignment
+  3" in the subject of your email and to put your name/ID in the
+  message body.</p>
+
+  <p>For this assignment, you are going to submit two CircuitMaker
+  circuits.  These .ckt files are actually text files that describe the
+  circuit you designed and simulated.  You can safely send them as
+  attachments, or even insert them directly into the body of your email
+  message.</p>
+
+<h2>The Assignment</h2>
+
+  <ol>
+
+    <li>Design and simulate a 4-bit parallel adder/subtracter like the
+    one we did in class.  Include the logic for generating all four
+    condition code bits (C, V, N, and Z).  Use Hex Keys for the A and B
+    input values, and a Hex Display to show the sum/difference.  Use a
+    data switch to set the add/subtract control input, and use four
+    logic indicators for the condition code outputs.  Verify that your
+    circuit correctly adds and subtracts two's complement numbers and
+    generates the correct condition code values.
+
+    <li>Design and simulate a four-bit timer.  There are two buttons on
+    the timer, once called "Set" and the other one called
+    "Start-Stop (S-S)."  The timer also has a mechanism for supplying a
+    four-bit value that will determine how long the timer runs, a
+    seven-segment display to show the current value in the timer, and a
+    "Finished" light to indicate when the timer has finished running.
+    
+    <p>The timer operates as follows:  The user enters the time
+    interval using a hex key.  When the user clicks the Set button, the
+    value of the hex key is loaded into a four-bit register.  When the
+    user then clicks the Start-Stop (S-S) button, the register counts
+    backwards until it gets to zero.  If the user clicks the S-S button
+    while the counter is running, it pauses until the S-S button is
+    clicked again.  When the counter gets to zero, the Finished light
+    turns on until the Set button is clicked again.</p>
+
+    <p>There are several ways the timer could be designed.  You are to
+    do the design as a set of four state machines that interact with
+    each other.  One state machine acts as the timer's
+    <i>controller</i>, and the other three implement the
+    <i>datapath</i> for the timer.</p>
+
+    <p>The controller state machine responds to clicks of the Set and
+    S-S buttons and to a feedback output of the datapath named "Zero"
+    to move among four states.  The state names are Start, Run, Pause,
+    and Done.  Clicking the Set button at any time puts the timer in
+    the Start state.  In the Start state, clicking the S-S button takes
+    the timer into the Run state.  Clicking the S-S button in the Run
+    state puts the timer into the Paused state, and Clicking the S-S
+    button in the Paused state puts the timer back into the Run state. 
+    The timer goes into the Finished state when the counter goes to
+    zero in the Run state.</p>
+
+    <p>The controller's job is to manage the operation of the datapath
+    of the timer, which is to be implemented by three different state
+    machines that operate on the four-bit counter.  One state machine
+    is a "do-nothing" machine that simply preserves the current state
+    of the counter.  A second state machine takes the counter into a
+    state that matches the values of the Hex key from any other state. 
+    The third state machine causes the counter to count backwards from
+    whatever state it is in to the numerically next smaller numbered
+    state.  The three state machines are to be implemented separately
+    and their "next state" signals are to be connected to the counter's
+    flip-flop's D inputs through 4x1 multiplexers.   All four
+    multiplexers are to be controlled by two bits named "Load" and
+    "Count," which are the outputs of the controller state machine.</p>
+
+    <p>There is to be an output of the datapath named "Zero" that is
+    true when the counter value is zero.  The controller state machine
+    is to use Zero as a third input (in addition to S-S and Set) to
+    tell when to go into the Finished state.</p>
+
+    <p>Although your assignment is to submit a CircuitMaker simulation
+    of the timer, a complete solution requires you to show the state
+    diagrams and state tables for the entire design.  However, you do
+    not have to submit these parts of the assignment.</p>
+
+  </ol>
+
+<hr></body></html>

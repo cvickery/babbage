@@ -1,0 +1,126 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 1</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-343 Assignment 1<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+        <p>
+          The course <a href="../index.xhtml">syllabus</a> gives the reading assignments for the course. This homework assignment should covers the
+          <a href="../Background_Material.pdf">Background_Material</a> web page. If you do not have a copy of the textbook yet (be sure to get the Fourth
+          Edition), you can still do this assignment.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div class="whitebox">
+        After reading the background material, answer the following questions:
+        <ol>
+          <li>How many orders of magnitude bigger than a fluid ounce is a gallon?</li>
+          <li>How many orders of magnitude bigger than a kilogram is a milligram?</li>
+          <li>How many picoseconds are there in a nanosecond?</li>
+          <li>How many nanoseconds are there in a millisecond?</li>
+          <li>I am thinking of a number between 1 and 100. On average, how many yes-no questions would you have to ask to find out what my number is?</li>
+          <li>There are 2<span class="superscript">3</span> bits in a byte. How many bits are there in a gigabyte of memory?</li>
+          <li>How many bits of storage are there in a 256GB disk drive?</li>
+          <li>How many different values can be representd in a byte of memory?</li>
+          <li>How many bits would it take to represent a number between 1 and 256G?</li>
+          <li>How many bits would it take to represent a number between 0 and one less than 64M?</li>
+          <li>What is the 6-bit two&rsquo;s complement representation of +18<span class="subscript">10</span>?</li>
+          <li>What is the 6-bit two&rsquo;s complement representation of -18<span class="subscript">10</span>?</li>
+          <li>What is the 12-bit two&rsquo;s complement representation of -18<span class="subscript">10</span>?</li>
+          <li>What is the result, in binary, of negating your answer to the previous question?</li>
+          <li>To convert feet to inches, do you mulitply the number of feet by 12 or do you divide by 12?</li>
+          <li>Is one nanosecond 1,000 picoseconds, or is it 0.001 picosecond?</li>
+          <li>How many picoseconds in one-eighth of a nanosecond?</li>
+          <li>How many picoseconds in eight nanoseconds?</li>
+          <li>What is the period of a 1 Hz signal?</li>
+          <li>What is the period of a 1 KHz signal?</li>
+          <li>What is the frequency of a signal with a 2 nsec period?</li>
+          <li>What is the frequency of a signal with a 200 psec period?</li>
+          <li>What is the period of a 2.5 GHz signal?</li>
+          <li>How long does it take a 7200 RPM disk to make one revolution? Give your answer in milliseconds and also in microseconds.</li>
+          <li>What is the decimal equivalent of binary 1111011.01110100? (Answer to two decimal places.)</li>
+          <li>What is the unsigned binary representation of decimal 7.25?</li>
+          <li>What is the binary representation of negative 4 using 8-bit bias-127 notation?</li>
+          <li>What is the result of negating the 4 bit two&rsquo;s complement number 0101<span class="subscript">2</span>?
+              Answer in both binary and decimal.</li>
+          <li>What is the result of negating the 4 bit two&rsquo;s complement number 0000<span class="subscript">2</span>?
+              Answer in both binary and decimal.</li>
+          <li>What is the result of negating the 4 bit two&rsquo;s complement number 1000<span class="subscript">2</span>?
+              Answer in both binary and decimal.</li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+        You may submit this assignment either by writing your answers on paper and bringing it to class on the due date or by putting your answers in
+        an email and sending it to me by midnight on the due date.
+        <p>If you choose the email option:</p>
+        <ol>
+            <li>Put your answers in the <em>body</em> of your email message, <strong>not</strong> in an attachment.</li>
+            <li>Be sure to put your name in your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-343 Assignment 1</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to either Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu or
+              vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu &mdash; but not to both.
+            </li>
+        </ol>
+        <p>
+          See <a href="../index.xhtml">the course syllabus</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../">CS-343 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

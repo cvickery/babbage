@@ -1,0 +1,241 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 3</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      img {border:1px solid blue;}
+    </style>
+  </head>
+  <body id='urn:uuid:4FEB8B18-2739-4004-9CE8-96E2ABDE02B9'>
+    <h1>CS-343 Assignment 3<br/>
+    Due March 8</h1>
+    <div id="content">
+      <h2>Reading Assignment, Reference Material, and Resources</h2>
+      <ul>
+        <li>
+          Sections 1-6 of Appendix C of the textbook, continued.
+        </li>
+        <li>
+          <a href="../../TREE_Lab">TREE_Lab</a>
+        </li>
+        <li>
+          <a href="../Using_Quartus.xhtml">Using Quartus</a>
+        </li>
+        <li>
+          <a href="../Pins_DE1.xhtml">DE1 I/O Pins</a>
+        </li>
+        <li>
+          <a href="../Using_hex2sevenseg.xhtml">Using Seven-Segment Displays</a>
+        </li>
+        <li>
+          <a href="../hex2sevenseg.v">hex2sevenseg.v</a>
+        </li>
+      </ul>
+      <h2>Assignment To Hand In</h2>
+      <div>
+        <p>
+          The assignment is to build and test a 3-bit Arithmetic Logic Unit based on the 32-bit MIPS
+          ALU developed in Appendix C of the textbook. Unlike the paper-and-pencil design used in the
+          textbook, or a software simulation, you are to build a real ALU and implement it in hardware
+          using the logic kits available for use on the course laboratory computers.
+        </p>
+        <p>
+          Do this assignment as an ordered set of steps as described below. Do not proceed to a new
+          step until the previous step is completed and tested.
+        </p>
+        <ul>
+          <li>
+            <h5>Set up a Quartus project for the assignment.</h5>
+            <p>
+              See the <a href="../../TREE_Lab">TREE_Lab</a> web page for information on making sure your laboratory
+              account is set up and working correctly. Then read the <a href="../Using_Quartus.xhtml">Using 
+              Quartus</a> web page to see how to set up a project. Put the assignment in a directory named
+              <span class="directory-name">Assignment_03</span> under your <span class="directory-name">My 
+              Projects</span> directory. Name the project “Three-bit_ALU,” and call the top level design 
+              “Three-bit_ALU_Testbed." Follow the directions on the Using Quartus web page for setting the FPGA device 
+              type.
+            </p>
+            <p>
+              Be sure you can log out of one computer, log back into another computer, and reopen your project on
+              the second computer.
+            </p>
+          </li>
+          <li>
+            <h5>Implement the full adder module.</h5>
+            <p>
+              Implement the full adder module as shown in the Using Quartus web page. Temporarilty set up your
+              “Three-bit_ALU_Testbed” module as testbed for just
+              the full adder using, three any slide switches for inputs and any two LEDs for the outputs. Make sure
+              the full adder works correctly.
+            </p>
+            <p class="standout-block">
+              If you have already completed this part of the assignment using a different name for the testbed module,
+              that’s all right. You don’t have to rename it.
+            </p>
+          </li>
+          <li>
+            <h5>Build the real testbed for the assignment.</h5>
+            <p>
+              Delete all the pins, node lines, and the full-adder symbol from your testbed, and add the following
+              items back into it:
+            </p>
+            <ul>
+              <li>
+                Ten input pins for the ten slide switches named “Switch_0,” “Switch_1,” etc. Alternatively, you may use 
+                one pin and name it “Switch[9..0].” Ten separate pins is more work to set up, but can make it easier to
+                make connections. Using the bus notation is very easy to set up, but you have to be careful making the
+                connections. I’ll use the bus notation here because it’s faster for me and because you will see what’s
+                involved in using it.
+                <p class="standout-block">
+                  While writing up the assignment, I finally learned how to use bus notation for inputs and outputs. 
+                  It’s a little weird because it relies
+                  on using the “disconnected wires” technique I mentioned in class on February 24. At least, it looks
+                  weird to me to have wires in a schematic that are not connected to anything. I updated 
+                  <a href="../Using_Quartus.xhtml#bus-naming">the Bus Wiring section
+                  of the Using Quartus web page</a> to explain it.
+                </p>
+              </li>
+              <li>
+                Ten output pins for the red LEDs. Again, this can be either ten separate pins or one pin set up using
+                bus notation. Connect the ten switches to the corresponding red LEDs.
+              </li>
+              <li>
+                Eight output pins of the green LEDs.
+              </li>
+              <li>
+                Four sets of seven output pins for the four seven-segment displays.
+              </li>
+            </ul>
+            <p>
+              If you use bus notation, your testbed will now look like this:
+              <img src="images/assignment_03-1.png" alt="screenshot of empty testbed" />
+            </p>
+          </li>
+          <li>
+            <h5>Create a symbol for the full ALU and connect it to the testbed.</h5>
+            <p>The Using Quartus web page shows how to do this.</p>
+          </li>
+          <li>
+            <h5>
+              Set up seven segment displays to show the values of the the A and B inputs to, and the
+              condition code and result outputs from, the ALU.
+            </h5>
+            <p>
+            	Also, use green LEDs 7..4 to display the four condition code bits, and green LEDs 3..0 to display the
+              four result bits.
+            </p>
+            <p>
+              Again, the Using Quartus web page shows how to do this. There is a 
+              <a href="../Using_hex2sevenseg.xhtml"> web page on Using Seven-Segment Displays</a> that includes a link
+              to a Verilog program that you will need to add to your project.
+            </p>
+            <p>
+              To add a file to your project, downlod the file into your project directory. In this case, you should
+              end up with a file named <span class="file-name">hex2sevenseg.v</span> in your
+              <span class="file-name">Assignment_03</span> directory.
+            </p>
+            <p>
+              Then open the Quartus <span class="menu-item">Project</span> menu and select the “Add/Remove Files in 
+              Project...” option. That will bring up a panel where you can browse to the file you want to add to the
+              project.
+            </p>
+            <p class="standout-block">
+              For this course, never add files that are not inside the project directory to a project. When I grade
+              your assignment, I will be making a copy of just the project directory and will not have access to any
+              files from outside that directory. The project could work fine for you, but I won’t be able to test it.
+            </p>
+          </li>
+          <li>
+            <h5>Set up the Three-Bit ALU Module, and add it to the testbed.</h5>
+            <p>
+              The ALU will have three input busses: A[2..0], B[2..0], and f[3..0]. There will be two output busses:
+              Result[2..0] and the condition code bits, CVNZ[3..0]. All you have to do is to add the pins for these
+              inputs and outputs to a new schematic diagram, and you will be able to save the module as a symbol,
+              which you can then add to the testbed module.
+            </p>
+            <p>
+              At this point, you can complete the wiring of the testbed and run the Analysis and Synthesis tool (Ctrl-K),
+              which will then allow you to do all the pin assignments for the project. (10 inputs plus 46 outputs!)
+            </p>
+          </li>
+          <li>
+            <h5>Create the module for one slice of the ALU.</h5>
+            <p>
+              Add another schematic to the project for an ALU slice. There will be seven input pins: A, B, Cin, Ainv,
+              Bneg, f_1, and f_0. There will be just two output pins: Result and Cout.
+            </p>
+            <p>
+              Implement the ALU slice as described in the textbook and as outlined in class on February 24. Save the
+              slice as a symbol.
+            </p>
+          </li>
+          <li>
+            <h5>Complete the ALU</h5>
+            <p>
+              Add three instances of the ALU slice to the ALU module, and connect them to implement the full 16-function
+              3-bit MIPS ALU.
+            </p>
+          </li>
+          <li>
+            <h5>Build and Test</h5>
+            <p>
+              Unfortunately, you have to complete all the modules for the whole assignment before you can start
+              testing. Build the project using the Build tool (Ctrl-L) and make sure the only warnings are ones
+              that make sense: just one output should be stuck at ground; no output capacitance values were
+              specified; there is no clock for the project.
+            </p>
+            <p>
+              Use the Programmer tool to download the circuit to a DE-1, and start testing. This is actually the
+              most difficult part. You have to set the input switches to various values that will test the various
+              functions that the ALU can perform on various combinations of input values, checking that both the
+              result and the condition code bits are correct. We will discuss the testing procedure in class some.
+            </p>
+          </li>
+          <li>
+            <h5>Submit the Assignment</h5>
+            <p>
+              Once you have the project working, simply send me email with “CS-343 Assignment 3” as the subject line
+              and with your name in the message body. That will signal me that I can copy your project directory
+              from the lab to my computer for testing.
+            </p>
+            <p>
+              I will make a copy of your project directory, but will re-build the project on my computer to
+              make sure there are no extraneous warnings, and then I will download the copy of the circuit to 
+              that I build into a DE-1 for testing.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

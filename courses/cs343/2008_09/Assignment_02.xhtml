@@ -1,0 +1,123 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-343 Assignment 2</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 2</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This assignment deals with basic skills related to combinational logic networks.
+        </p>
+      </div>
+      
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            Design a Full-Adder, giving the implementation as a single truth table of two functions (Sum and Carry<span
+            class="subscript">out</span>) with three input variables (A, B, and C<span class="subscript">in</span>).
+            Draw all the gates to implement the circuit using the Sum of Products technique presented in class.  </li>
+          <li>
+            Use a Karnaugh Map to minimize the Carry<span class="subscript">out</span> function of a Full Adder. Write
+            the minimized equation, and draw the gates to implement it.
+          </li>
+          <li>
+            <ol>
+              <li>
+                Give the truth table for a function with four input variables. The output is true for minterm numbers 4,
+                9, 11, 12, 13, 14, 15 (i.e., <span
+                class="equation">&Sigma;&nbsp;{&nbsp;4,&nbsp;9,&nbsp;11,&nbsp;12,&nbsp;13,&nbsp;14,&nbsp;15&nbsp;}</span>
+                ).
+              </li>
+              <li>
+                Minimize the function using both a Karnaugh Map and algebraic minimization. Be sure you get the
+                same minimized function both ways.
+              </li>   
+              <li>  
+                What is the Gate Input Count of the minimized function?
+              </li>
+              <li>
+                Draw the gates needed to implement the minimized function.
+              </li>
+              <li>
+                How many propagation delays are there in the logic network for the minimized function?
+              </li>
+            </ol>
+          </li>
+          <li>
+            Draw a diagram that uses a symbol for full adders that shows how to construct a 4-bit parallel adder. Label all inputs, outputs,
+            and the intermediate carries meaningfully.
+          </li>
+          <li>
+          	What is the number of propagation delays in the four-bit adder network?
+          </li>
+        </ol>
+      </div>
+      
+      <h2>Submit The Assignment</h2>
+      <div>
+      	<strong>This assignment is to be written out on paper</strong> and handed in on the due date. If you do not have it ready at class time,
+        you may leave in my office (SB A-222) any time before 6:15 p.m. on the due date. Just slip it under my door if I am not there.
+        <p class="standout_block">Be sure to put your name on your assignment!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs343">CSCI-343 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

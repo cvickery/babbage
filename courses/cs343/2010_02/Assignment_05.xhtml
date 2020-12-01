@@ -1,0 +1,269 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-343 Assignment 5</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../../css/assignments-print.css" />
+  </head>
+
+  <body id='urn:uuid:764E1FD0-1E39-46C1-B06C-687A28F4E1D8'>
+     <div id="header">
+      <h1>CS-343 Assignment 5</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          The current reading assignment is Sections 7-12 of Appendix C of the textbook.
+        </p>
+        <p>
+          For this assignment, you are to implement a 4-bit version of the MIPS Register File described on pages
+          C-55 and C-56 of the
+          textbook. The DE1 logic kits could easily handle a full 32-bit implementation, except that the limited number
+          of switches, keys lights would make it difficult to test such a device.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            <h5>Set up the project</h5>
+            <p class="run-in">
+              Create a directory named <span class="directory-name">Assignment_05</span> under your <span
+              class="directory-name">My Projects</span> directory.
+            </p>
+            <p class="standout-block">
+              Note the exact spelling of the directory name. I have updated the script I use to copy your projects to my
+              computer for testing, and the directory name has to be spelled exactly right to work. Specifically, note
+              the underscore in the middle of the directory name: no spaces!
+            </p>
+            <p>
+              Copy just the <a href="../hex2sevenseg.v">hex2sevenseg.v</a>
+              into your <span class="directory-name">Assignment 5</span> directory.
+            </p>
+            <p>
+              Use the New Project wizard to set up the project just as you did for the previous three assignments.  Use
+              8x4_mips_register_file (or something similar) as the project name, and name the top-level design entity
+              <span class="function-name"> Assignment_05_Testbed</span>. When the wizard asks if you want to add files
+              to the project, say “yes,” as you did for Assignments 3 and 4.
+            </p>
+          </li>
+          <li>
+            <h5>Build a 4-bit register.</h5>
+            <p>
+              Use four copies of the <span class="variablbe-name">dffe</span> storage element for the four bits of the
+              register. The inputs should be <span class="variable-name">DataIn[3..0]</span>, <span
+              class="variable-name">Clock</span>, and <span class="variable-name">WriteEnable</span>; the outputs should
+              be <span class="variable-name">DataOut[3..0]</span>.
+            </p>
+            <p>
+              Save the module as <span class="variable-name">4-bit_register</span> (or something equally clear
+              and clever). Create a symbol for it.
+            </p>
+          </li>
+          <li>
+            <h5>Build the 8&times;4 register file.</h5>
+            <p>
+              You will need seven instances of your <span class="variable-name">4-bit_register</span> module; I
+              recommend changing the instance names to make them meaningful: <span
+              class="variable-name">register_1</span>, <span class="variable-name">register_2</span>, etc. for example.
+              The instance names are the bits of text that start “inst” in the lower left corner of each symbol. Double
+              click on the text to edit it.
+            </p>
+            <p>
+              The inputs to the register file should be named <span class="variable-name">ReadRegNum_1[2..0]</span>,
+              <span class="variable-name">ReadRegNum_2[2..0]</span>, <span
+              class="variable-name">WriteRegNum[2..0]</span>, <span class="variable-name">WriteData[3..0]</span>, <span
+              class="variable-name">RegWrite</span>, and <span class="variable-name">Clock</span>.
+            </p>
+            <p>
+              The outputs from the register file shold be named <span class="variable-name">ReadData_1[3..0]</span>
+              and <span class="variable-name">ReadData_2[3..0]</span>.
+            </p>
+            <p>
+              You will need to create a multiplexer with 8 sets of four input bits using the <span
+              class="variable-name">lpm_mux</span> megafunction. When you insert the two copies you need into your
+              schematic, I suggest you right-click on them and flip them vertically so “data0” is on top rather than on
+              the bottom.
+            </p>
+            <p>
+              You will also need a 3&times;7 decoder to select which register to write to. You do not need the <span
+              class="variable-name">eq0</span> output for the decoder, do you? Be sure to check the option to include an
+              <span class="variable-name">enable</span> input in the decoder. That will be connected to the <span
+              class="variable-name">RegWrite</span> input pin; when <span class="variable-name">RegWrite</span> is
+              false, clock pulses will have no effect on the register file.
+            </p>
+            <p>
+              So there will be two ways to prevent clock pulses from changing the state of any register: 1) select
+              register number 0 for writing, or 2) make <span class="variable-name">RegWrite</span> false.
+            </p>
+            <p>
+              Save the register file as a symbol.
+            </p>
+          </li>
+          <li>
+            <h5>Build the testbed.</h5>
+            <p>
+              Connect <span class="variable-name">Switch[9]</span> to the <span class="variable-name">RegWrite</span>
+              input of the register file; <span class="variable-name">Switch[6..3]</span> go to
+              <span class="variable-name">WriteData[3..0]</span>; <span class="variable-name">Switch[5..3]</span>
+              also go to <span class="variable-name">ReadRegisterNum_1</span>;
+              <span class="variable-name">Switch[2..0]</span> go to both
+              <span class="variable-name">ReadRegisterNum_2</span> and <span class="variable-name">WriteRegNum</span>;
+              include an input pin named <span class="variable-name">Clock</span>.
+            </p>
+            <p>
+              Use all four seven-segment displays for outputs. Use <span class="variable-name">Hex_3</span> to display
+              the write register number; the inputs to the <span class="variable-name">hex2sevenseg</span> are <span
+              class="variable-name">0nnn</span><span class="subscript">2</span>, where 0 is a connection to ground, and
+              <span class="variable-name">nnn</span> comes from <span class="variable-name">switch[2..0]</span>.
+            </p>
+            <p>
+              Use <span class="variable-name">Hex_2</span> to display the <span class="variable-name">WriteData</span>
+              coming from <span class="variable-name">switch[6..3]</span>; use <span class="variable-name">Hex_1</span>
+              to display the <span class="variable-name">ReadData_1</span> output of the register file; and use
+              <span class="variable-name">Hex_0</span> to display the <span class="variable-name">ReadData_2</span>
+              output of the register file.
+            </p>
+            <p>
+              Connect Red LEDs to the corresponding switches.
+            </p>
+            <p>
+              Getting the testbed set up is messy, because switches go to multiple places and because busses have
+              to be split and joined in so many ways. Here is a screenshot you can use as a model. (Right-click to view
+              the full-scale image.)<img src="images/Assignment_5_Testbed.png" alt="Screenshot of full testbed." />
+            </p>
+          </li>
+          <li>
+            <h5>Assign the Clock and all other pins.</h5>
+            <p>
+              The switches, LEDs, and seven-segment displays are nothing new. But connecting the clock is something
+              you have not done yet. Look at the <a href="../Pins_DE1.xhtml">DE1 I/O Pins</a> page, and you will see
+              that our logic kits actually have three clock signals to choose from. Any one of them will work, but
+              I’ll assume you picked the fastest one.
+            </p>
+            <p>
+              Without doing anything more, Quartus will give a third warning (in addition to the usual two) about pins
+              assumed to be clocks. Getting rid of this warning requires making changes in the project settings that I
+              will demonstrate in class. But I won’t count off if you skip that part and have the one extra warning.
+            </p>
+          </li>
+          <li>
+            <h5>Test the register file.</h5>
+            <p>
+              The way the testbed is set up, you can always look at any two registers in the right two hex displays
+              simply by selecting them with Switches 5..3 and 2..0. We will return to this after you have written
+              something into the registers.
+            </p>
+            <p>
+              For writing, Switches 2..0 are used to select the register to be written to, and Switches 6..3 are
+              used to provide the data to be written to that register. Notice the overlaps: the register you write
+              to is always the rightmost register of the two that are always reading from. So as soon as you write
+              something into a register, you will see its value displayed in the rightmost seven segment display.
+            </p>
+            <p>
+              But also, the data bits to be written overlap with the number of the register being displayed in the
+              second seven segment display from the right. It might be instructive to figure out what is going on here,
+              but to start you can safely avert your gaze away from that digit while writing.
+            </p>
+            <p>
+              Switch 9 controls writing: when it is off, no writing takes place. When it is on, the value in Switches
+              6..3 will be written to the register selected by switches 2..0 50 million times a second. Once would
+              suffice, but you can’t turn the switch on and off fast enough; the extra writing has no effect because the
+              same value is being written into the same register over and over again.
+            </p>
+            <p>
+              To make sure the register file is working, you need to write different values into all 7 registers, and
+              then verify that you can read each value out of both the output ports. Here are some steps to get you
+              started:
+            </p>
+            <ol>
+              <li>
+                With Switch 9 off, select a register number using Switches 2..0 and enter some data using Switches 6..3.
+                The left two hex displays should show the register number and data value. For example, try setting the
+                switches to 1010 101. This means Switch 6 is on, 5 is off, 4 is on, and 3 is off, so the data displayed
+                in Hex_2 should be ‘A’. Continuing, Switch 2 is on, 1 is off, and 0 is on, so the register number
+                displayed in Hex_3 (the left one) should be ‘5’.
+              </li>
+              <li>
+                Turn Switch 9 on, and the right hex display should immediately become ‘A’. That is, the data get written
+                into register 5, and register 5’s contents are always being displayed in the right hex display.
+              </li>
+              <li>
+                Turn Switch 9 off, and the hex displays should not change. Enter different register numbers using
+                Switches 5..3 and 2..0; any time you select register 5 for either register, you should see its contents
+                (‘A’) in the corresponding hex display.
+              </li>
+            </ol>
+            <p>
+              Follow the above procedure to put various values into various registers. Make sure register 0 always
+              contains zero!
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            Once you have tested that your register file works as specified, simply log out of your account so that your
+            project will be copied back to oak, where I will go to get a copy for grading. Send me an email message when
+            your assignment is ready.
+          </li>
+          <li>Be sure to put your name in your email message!</li>
+          <li>
+            <p  class="standout-block">
+              Do not submit the assignment until you have actually tested it to be sure it works. If you tested it but
+              cannot get it to work correctly, you may submit the assignment for partial credit, <i>provided you tell me
+              in your email what problem(s) you observed during testing</i>.
+            </p>
+          </li>
+          <li class="standout-block">
+            The Subject line must be <span class="code-snippet">CS-343 Assignment 5</span>.
+          </li>
+          <li>
+            Send your email to vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu.
+          </li>
+        </ol>
+        <p>
+          See <a href="../syllabus.xhtml">the course syllabus</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

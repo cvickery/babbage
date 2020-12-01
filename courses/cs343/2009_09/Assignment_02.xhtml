@@ -1,0 +1,222 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 2</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body id='urn:uuid:33A3AA4B-485C-4D4E-93C7-E06E57EFE8AB'>
+    <div id="header">
+      <h1>CS-343 Assignment 2<br />Fall 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+      	<p>
+        	Be sure you are keeping up to date with the <a href="../syllabus.xhtml#reading-assignments">reading assignments for the course</a>.
+        </p>
+        <p>
+        	This assignment is an exercise in using the course lab to implement a set of simple combinational logic circuits: a 2&times;4 <em>decoder</em>,
+          a 4&times;1 <em>multiplexer</em>, and a 1-bit <em>full-adder</em>. All of these circuits are so commonly used that there are pre-built
+          versions that you would use in a &ldquo;real&rdquo; project. But for this assignment, you are to create each circuit using only AND, OR, and
+          NOT gates.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+      	<ol>
+        	<li>
+        		<h5>Log into your lab account and use the Quartus software to start the project.</h5>
+          	<p class="run-in">
+          		Consult the <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a> page to find out how to log into your account in the lab.
+            	Be sure to change your password to something secure. (Press Ctrl-Alt-Delete and use the "Change Password" button.)
+            	See the <a href="../Using_Quartus.xhtml">Using Quartus</a> web page for instructions on using the software.
+            	Part of the assignment will involved connecting the I/O pins of your design to the LEDs and switches on the logic kit: see the 
+            	<a href="../Pins_DE1.xhtml">DE1 I/O Pins</a> web page for the information you will need to do that.
+          	</p>
+          	<p>
+          		Create a directory named <span class="directory-name">Assignment_02</span> under your <span class="directory-name">My Projects</span>
+            	directory. Be sure to name and capitalize and spell the directory name exactly as shown: I will use a script to retrieve your project
+            	from the server, and it will depend on that. Note the underscore in the name.
+          	</p>
+          	<p>
+          		Follow the directions in the <a href="../Using_Quartus.xhtml">Using Quartus</a> web page for creating a project in your 
+            	<span class="directory-name">Assignment_02</span> directory. The name of the top-level design should be
+              <span class="variable-name">Assignment_02_Testbed</span>.
+          	</p>
+          </li>
+          <li>
+          	<h5>Set up the testbed.</h5>
+            <p class="run-in">
+            	There will be 11 inputs and 7 outputs for this assignment. Create a schematic, and add that many pins to it. Put the input pins in a
+              column on the left, and the output pins in a column on the right.
+            </p>
+            <p>
+              Name the input pins, from top to bottom: 
+              <span class="variable-name">Switch_8</span> &hellip; <span class="variable-name">Switch_0</span> (we will not use Switch 9 for this
+              assignment), <span class="variable-name">Key_1</span>, and <span class="variable-name">Key_0</span>.
+            </p>
+            <p>
+            	Name the output pins, again from top to bottom: <span class="variable-name">Red_LED_9</span>, <span class="variable-name">Red_LED_8</span>,
+              <span class="variable-name">Red_LED_7</span>, <span class="variable-name">Red_LED_6</span>, (skip 5),
+              <span class="variable-name">Red_LED_4</span>, (skip 3 and 2), <span class="variable-name">Red_LED_1</span>, and
+              <span class="variable-name">Red_LED_0</span>.
+            </p>
+            <p>
+            	Save the file with just the named pins in it. The dialog box that comes up should come filled in with 
+              &ldquo;Assignment_02_Testbed&rdquo; as the file name; if not, change it. Also be sure the "add to project" option is checked.
+            </p>
+            <p>
+            	Even though you have not implemented the project yet, and despite what it says in the Using Quartus web page, you can run
+              Analysis &amp; Synthesis, ignore all the warnings that come up, and use the Pin Planner to assign your testbed&rsquo;s pins
+              to the FPGA pins. The names you assigned to the pins will show up in the Pin planner, and you can assign them to FPGA pins according
+              to the table on the DE1 Pins page.
+            </p>
+          </li>
+          <li>
+          	<h5>Set up the circuits.</h5>
+            <p class="run-in">
+            	Create another block diagram file and put 11 input pins in a column on the left and 7 output pins in a column on the right.
+            </p>
+            <ul>
+            	<li>
+              	The top two inputs will be the inputs to the 2&times;4 decoder: name them <span class="variable-name">IN_0</span> and 
+              	<span class="variable-name">IN_1</span>.
+              </li>
+              <li>
+              	The next four inputs will be the data input to the 4&times;1 multiplexer: name them
+                <span class="variable-name">Data_0</span>, <span class="variable-name">Data_1</span>, <span class="variable-name">Data_2</span>, 
+                and <span class="variable-name">Data_3</span>.
+              </li>
+              <li>
+              	The next three inputs will be the inputs to the full adder: name them
+                <span class="variable-name">A</span>, <span class="variable-name">B</span>, and <span class="variable-name">C_in</span>.   
+              </li>
+              <li>
+              	The bottom two inputs will be the selection inputs to the 4&times;1 multiplexer: name them
+                <span class="variable-name">Sel_1</span> and <span class="variable-name">Sel_0</span>. 
+              </li>
+              <li>
+              	The top four outputs will be the outputs of the decoder: name them
+                <span class="variable-name">Y0</span>, <span class="variable-name">Y1</span>, <span class="variable-name">Y2</span>, and
+                <span class="variable-name">Y3</span>.
+              </li>
+              <li>
+              	The next output will be the output of the multiplexer: name it just plain
+                <span class="variable-name">Y</span>.
+              </li>
+              <li>
+              	The bottom two outputs will be the <span class="variable-name">Sum</span> and <span class="variable-name">Cout</span>
+                outputs of the full adder.
+              </li>
+            </ul>
+            <p>
+            	Save this file using the name <span class="file-name">Assignment_02</span>. Again, be sure it gets added to the project.
+            </p>
+            <p>
+            	Create a symbol for this diagram; the &ldquo;Using Quartus&rdquo; web page tells how.
+            </p>
+            <p>
+            	Insert a copy of this new symbol into the testbed schematic, and connect the testbed pins to the corresponding pins on the symbol. That
+              is, switches 8 and 9 will be the inputs to the decoder, switches 6, 5, 4, and 3 will be the data inputs to the multiplexer, switches
+              2, 1, and 0 will be the inputs to the full adder, keys 1 and 0 will be the selector input to the multiplexer, red LEDs 9-6 will
+              be the outputs of the decoder, red LED 4 will be the output of the multiplexer, and red LEDs 1 and 0 will be the sum and carry out
+              outputs of the full adder.
+            </p>
+          </li>
+          <li>
+          	<h5>Build and test the circuit.</h5>
+            <p class="run-in">
+            	Build the three circuits using only AND, OR, and NOT gates. I suggest you test each one as you build it rather than trying to test
+              all three at once. The &ldquo;Using Quartus&rdquo; page tells how to compile and download the project.
+            </p>
+            <p>
+            	You should be able to put switches 9 and 8 into the four combinations of up (1) and down (0) to cause the leftmost four red LEDS to light
+              up one at a time.
+            </p>
+            <p>
+            	You should be able to set a mix of ones and zeros into switches 6&mdash;3, and use the right two pushbuttons (keys) to select which
+              value shows up in red LED 4.
+            </p>
+            <p>
+            	You should be able to read the number of switches in positions 0&mdash;1 that are up (1) as a binary number in red LEDs 0 and 1.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            Once you have tested that all three of your circuits work as specified, simply log out of your account so that your project
+            will be copied back to oak, where I will go to get a copy for grading. Send me an email message when your assignment is ready.
+          </li>
+          <li>Be sure to put your name in your email message!</li>
+          <li>
+          	<p  class="standout-block">
+            	Do not submit the assignment until you have actually tested it to be sure it works. If you tested it but cannot get it to work
+            	in time, you may submit the assignment for partial credit provided you tell me in your email what problem(s) you observed during
+            	testing.
+            </p> 
+          </li>
+          <li>The Subject line must be <span class="code-snippet">CS-343 Assignment 2</span> to avoid my spam filters.</li>
+          <li>
+            Send your email to either Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu or
+            vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu &mdash; but not to both.
+          </li>
+        </ol>
+        <p>
+          See <a href="../index.xhtml">the course syllabus</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a 	href="../../../">Vickery Home</a>&mdash;<a
+      		href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+      		href="./">Course Schedule</a>&mdash;<a
+      		href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+      		href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+      		updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

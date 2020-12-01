@@ -1,0 +1,87 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>Using Seven-Segment Displays</title>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../css/assignments-print.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>Using Seven-Segment Displays in Quartus</h1>
+    </div>
+    <div id="content">
+      <h2>Directions</h2>
+      <div>
+        <p>
+          Seven segment displays are ubiquitous, so you are familiar with them even if you didn&rsquo;t know that
+          was what they are called. The DE1 has four of them, and we are going to use all four of them for this
+          assignment. Each display digit can show any of sixteen characters by lighting up different combinations of
+          the seven segments:
+        </p>
+        <p class="code-block">
+  _       _   _       _   _   _   _   _   _       _      _  _
+ | |   |  _|  _| |_| |_  |_    | |_| |_| |_| |_  |   _| |_ |_
+ |_|   | |_   _|   |  _| |_|   | |_|   | | | |_| |_ |_| |_ |
+        </p>
+        <p>
+          These sixteen characters, of course, are a perfect match for displaying hexadecimal digits. The Verilog
+          module I am supplying accepts a 4-bit binary number as its input, and outputs the correct settings for the
+          seven segments to display the corresponding hexadecimal digit.
+        </p>
+        <p>
+          Download <a href="hex2sevenseg.v">hex2sevenseg.v</a> into a Quartus project directory, add the file to
+          the project, and create a symbol for it, just as if it
+          was a block diagram file. This will cause the code to be compiled: make sure there are no mistakes in the
+          process. The symbol will have a four-wire input named <span class="variable-name">Hex[3..0]</span>, and a
+          seven-wire output named <span class="variable-name">Segments[6..0]</span>.  The conventional way to name
+          the segments of a seven-segment display is with the letters A&mdash;G (or a&mdash;g), like this:
+        </p>
+        <p class="code-block">
+       A
+     F   B
+       G
+     E   C
+       D
+        </p>
+        <p>
+          The <span class="variable-name">Segments</span> subscripts 0&mdash;6 correspond to segment letters
+          A&mdash;G, in that order.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../">Vickery Home</a>&mdash;<a
+          href="syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

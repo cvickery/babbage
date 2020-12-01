@@ -1,0 +1,525 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-343 Assignment 4</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../../css/assignments-print.css" />
+  </head>
+
+  <body id='urn:uuid:9A2774AD-7B6A-4C70-98CA-055F02D725CD'>
+    <div id="header">
+      <h1>CS-343 Assignment 4</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p class="standout-block">
+          This assignment is very similar, but not identical, to one used in CS-343 last semester, and this web
+          page is derived from the corresponding page from last semester. If you find a discrepancy between this
+          web page and how we did the design in class, it’s probably a mistake: do it the way we did in class.
+          Also, there is some
+          material from last semester’s assignment in this web page that you already know from Assignment 3;
+          it is here because it might help as you review Assignment 3 for the exam on March 2.
+        </p>
+        <p class="standout-block">
+          Although this assignment is not due until March 4, material from this assignment will be tested during
+          the exam on March 2.
+        </p>
+        <p>
+          For this assignment, you are to implement a 4-bit version of the MIPS ALU developed in Appendix C of the
+          textbook. The DE1 logic kits could easily handle a full 32-bit implementation, except that the limited number
+          of switches, keys lights would make it difficult to test such a device easily.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            <h5>Set up the project</h5>
+            <p class="run-in">
+              Create a directory named <span class="directory-name">Assignment 4</span> under your <span
+              class="directory-name">My Projects</span> directory.
+            </p>
+            <p>
+              Copy <a href="../hex2sevenseg.v">hex2sevenseg.v</a> and the full adder schematic(s) and symbol file(s) from
+              Assignment_03
+              into your <span class="directory-name">Assignment 4</span> directory.
+            </p>
+            <p>
+              Use the New Project wizard to set up the project just as you did for the previous two assignments.
+              Use 4_bit_mips_alu (or something similar) as the project name, and name
+              the top-level design entity
+              <span class="function-name"> Assignment_04_Testbed</span>. When the wizard asks if you want to add
+              files to the project, say “yes,” as you did for Assignment 3.
+            </p>
+          </li>
+          <li>
+            <h5>Create a symbol for hex2sevenseg.v</h5>
+            <p class="run-in"> (You should already be familiar with this material from Assignment 3, but it may be useful
+              for review purposes.)
+              Seven segment displays are ubiquitous, so you are familiar with them even if you didn&rsquo;t know that
+              was what they are called. The DE1 has four of them, and we are going to use all four of them for this
+              assignment. Each display digit can show any of sixteen characters by lighting up different combinations of
+              the seven segments:
+            </p>
+            <p class="code-block">
+  _       _   _       _   _   _   _   _   _       _      _  _
+ | |   |  _|  _| |_| |_  |_    | |_| |_| |_| |_  |   _| |_ |_
+ |_|   | |_   _|   |  _| |_|   | |_|   | | | |_| |_ |_| |_ |
+            </p>
+            <p>
+              These sixteen characters, of course, are a perfect match for displaying hexadecimal digits. The Verilog
+              module I am supplying accepts a 4-bit binary number as its input, and outputs the correct settings for the
+              seven segments to display the corresponding hexadecimal digit.
+            </p>
+            <p>
+              Open <span class="file-name">hex2sevenseg.v</span> in Quartus, and create a symbol for it, just as if it
+              was a block diagram file. This will cause the code to be compiled: make sure there are no mistakes in the
+              process. The symbol will have a four-wire input named <span class="variable-name">Hex[3..0]</span>, and a
+              seven-wire output named <span class="variable-name">Segments[6..0]</span>.  The conventional way to name
+              the segments of a seven-segment display is with the letters A&mdash;G (or a&mdash;g), like this:
+            </p>
+            <p class="code-block">
+           A
+         F   B
+           G
+         E   C
+           D
+            </p>
+            <p>
+              The <span class="variable-name">Segments</span> subscripts 0&mdash;6 correspond to segment letters
+              A&mdash;G, in that order.
+            </p>
+          </li>
+          <li>
+            <h5>Create a symbol for your full-adder</h5>
+            <p>
+              You already went through this in Assignment 3, and do not need to do anything if you copied the
+              symbol file(s) as well as the schematic file(s) over from Assignment 3.
+            </p>
+          </li>
+          <li>
+            <h5>Create one slice of the ALU.</h5>
+            <p>
+              Create a new block diagram file for one bit-slice of the ALU. There will be eight separate (individual)
+              input pins for <span class="variable-name">A</span>, <span class="variable-name">B</span>, <span
+              class="variable-name">Cin</span>, <span class="variable-name">SLTin</span>, <span
+              class="variable-name">Ainv</span>, <span class="variable-name">Bneg</span>, <span
+              class="variable-name">f[1]</span>, and <span class="variable-name">f[0]</span>. There will be three output
+              pins: <span class="variable-name">Result</span>, <span class="variable-name">Cout</span>, and <span
+              class="variable-name">SLTout</span>.
+            </p>
+            <p>
+              The bit slice module is fully designed in the textbook. You can simplify the Quartus implementation in a
+              few ways.
+            </p>
+            <p>
+              First, you can use the Altera <span class="variable-name">lpm_mux</span> megafunction to implement the
+              4&times;1 multiplexer used for selecting the output of the bit slice. The alternative would be to
+              assemble all the AND, OR, and NOT gates
+              to build the MUX. (But you do need to be able to draw the gates to implement a multiplexer on the exam.)
+            </p>
+            <p>
+              Use the symbol tool to open the Altera library, open up the “megafunctions” folder, and select the
+              <span class="variable-name">lpm_mux</span> megafunction. You do not need the “repeat insert” option,
+              but you do want the “launch wizard” option. Tell the wizard you want a mux with four data inputs and
+              one data output, and it will generate all the files needed for the multiplexer and a symbol you can
+              insert into your bit slice module.
+            </p>
+            <p>
+              You will probably
+              find it convenient to right-click on the symbol and flip it vertically, making the data inputs line up
+              better with the AND, OR, full-adder, and SLT elements of the schematic.
+            </p>
+            <p>
+              The <span class="variable-name">SLTin</span> input pin goes to input #3 of the 4&times;1 multiplexer. The
+              <span class="variable-name">SLTout</span> output pin connects directly to the <span
+              class="variable-name">Sum</span> output of the full adder, which also goes to input #2 of the 4&times;1
+              mux.
+            </p>
+            <p>
+              The textbook uses 2&times;1 multiplexers to select whether the A and/or B inputs should be inverted or not
+              before going to the AND, OR, and full adder. Rather than build the multiplexers (or use another
+              <span class="variable-name">lpm_mux</span> megafunction),
+              you might find it easier just to use an XOR gate as shown in class. For example, <span
+              class="variable-name">A'</span>&nbsp;=&nbsp;<span class="variable-name">A</span>&nbsp;&#x2295;&nbsp;<span
+              class="variable-name">Ainv</span> will make <span class="variable-name">A'</span> the same as <span
+              class="variable-name">A</span> if <span class="variable-name">Ainv</span> is 0, but will make it the
+              opposite of <span class="variable-name">A</span> if <span class="variable-name">Ainv</span> is 1.
+            </p>
+            <p>
+              Name this diagram &ldquo;bit_slice&rdquo;, save it as a symbol.
+            </p>
+          </li>
+          <li>
+            <h5>Build the ALU schematic.</h5>
+            <p class="run-in">Create a new schematic for the ALU with input pins for the 4-bit values of
+              <span class="variable-name">A</span>, <span class="variable-name">B</span>,
+              and the function code (<span class="variable-name">function_code</span>), and output pins for the 4-bit
+              result (<span class="variable-name">ALUout</span>) and condition code
+              (<span class="variable-name">condition_code</span>).
+            </p>
+            <p>
+              Insert four <span class="variable-name">bit_slice</span> symbols; they will each get names that appear in
+              the lower-left corner of the symbol, names like &ldquo;inst_3&rdquo;; rename them &ldquo;slice_3&rdquo;,
+              &ldquo;slice_2&rdquo;, &ldquo;slice_2&rdquo;, and &ldquo;slice_0&rdquo; by double-clicking on the instance
+              names and typing over them. I suggest you lay out the slices vertically with <span
+              class="variable-name">slice_3</span> on top, but this is not a requirement.
+            </p>
+            <p>
+              Here is a description of what you have to do to complete the ALU schematic. This screenshot of the top
+              part of the schematic should help make some of the points clear. Right-click and select “view image” to
+              see a clearer copy.
+            </p>
+            <p>
+              <img src="images/Assignment_4_condition_code.png" alt="Top part of the 4-bit MIPS ALU" />
+            </p>
+            <ul>
+              <li>
+                <p>
+                  Connect the <span class="variable-name">Cout</span> of each slice to the <span
+                  class="variable-name">Cin</span> of the next slice. As shown in the screenshot above, <span
+                  class="variable-name">Cout</span> of slice 3 is the “Carry” condition code bit, and gets connected to
+                  pin, <span class="variable-name">condition_code[3]</span>.
+                </p>
+
+                <p>
+                  Remember, <span class="variable-name">Cin</span> of slice 0
+                  connects to the <span class="variable-name">Bneg</span> input pin.
+                </p>
+              </li>
+              <li>
+                <span class="variable-name">SLTin</span> for slices 1&mdash;3 are connected to logic 0. Look under the
+                &ldquo;other&rdquo; folder of the primitives in the Symbol Tool, and locate the symbol for ground (gnd),
+                which is equivalent to the logic 0 value.  You can put in one ground symbol and connect it to all three
+                slices. If you prefer, you can put in three separate instances, one for each slice.
+                <p>
+                  Connect <span class="variable-name">SLTout</span> of slice 3 to <span class="variable-name">SLTin</span>
+                  of slice 0. The <span class="variable-name">SLTout</span> from slices 0&mdash;2 do not connect to
+                  anything.
+                </p>
+                <p>
+                  In the figure, you can see the wire leaving <span class="variable-name">SLTout</span> from slice 3 on
+                  its way down to <span class="variable-name">SLTin</span> of slice 0, and you can see that <span
+                  class="variable-name">SLTout</span> from slice 2 doesn&rsquo;t go anywhere.
+                </p>
+              </li>
+              <li>
+                The A and B input pins get connected to the A and B inputs of the slices. You can pull out Bus Lines
+                from the A and B pin arrays, and connect node lines (wires) from each slice to the bus lines.
+                Right-click on the node line, and select the bottom menu item (Properties) to name the node lines so the
+                subscripts match the slice numbers.
+                <p>
+                  The four function inputs connect to the <span class="variable-name">Ainv</span>, <span
+                  class="variable-name">Bneg</span>, <span class="variable-name">f[1]</span>, and <span
+                  class="variable-name">f[0]</span> inputs of all four slices.  <span class="variable-name">Ainv</span>
+                  connects to <span class="variable-name">function_code[3]</span>, <span class="variable-name">Bneg</span>
+                  connects to <span class="variable-name">function_code[2]</span>, <span class="variable-name">f[1]</span>
+                  connects to <span class="variable-name">function_code[1]</span>, and <span
+                  class="variable-name">f[0]</span> connects to <span class="variable-name">function_code[0]</span>.
+                </p>
+                <p>
+                  Don&rsquo;t forget that <span class="variable-name">function_code[2]</span>, connects to the <span
+                  class="variable-name">Bneg</span>) inputs to all the slices and to the <span
+                  class="variable-name">Cin</span> input to slice 0.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Condition code bits <span class="variable-name">condition_code[2..0]</span> correspond to
+                  &ldquo;oVerflow,&rdquo;, &ldquo;Negative,&rdquo;, and &ldquo;Zero&rdquo; respectively.
+                </p>
+                <p>
+                  The Negative condition code bit (<span class="variable-name">condition_code[1]</span>) is true whenever
+                  the leftmost bit of the result is 1. So <span class="variable-name">condition_code[1]</span> is really
+                  the same as <span class="variable-name">Result[3].</span> But you cannot use two different names for
+                  the same node line in Quartus. To solve this problem, insert a &ldquo;wire&rdquo; symbol that does
+                  nothing logically, but breaks a node line into two parts that can be given different names. The wire
+                  comes from the &ldquo;buffer&rdquo; folder of the Symbol Tool. You can see the wire symbol (it looks
+                  like an inverter without a bubble on the output) in the figure above.
+                 </p>
+                 <p>
+                  The Zero condition code bit (<span class="variable-name">condition_code[0]</span> is true whenever
+                  all four result bits are 0. The 4-input NOR gate on the right side of the figure takes
+                  care of this.
+                 </p>
+              </li>
+            </ul>
+            <p>
+              Create a symbol for your ALU to use in the top-level module.
+            </p>
+          </li>
+          <li>
+            <h5>Create the top-level module, <span class="variable-name">Assignment_04_Testbed</span></h5>
+            <p class="run-in">
+              Create a new block diagram to use as the testbed for the assignment.
+              There will be four input pins for connecting switches 7&ndash;4 to the four bits of operand A,
+              four input pins for connecting switches 3&ndash;0 to the four bits of operand B, and four input
+              pins for connecting key inputs (blue pushbuttons) 3&ndash;0 to the four
+              function code bits.
+            </p>
+            <p>
+              Use seven output pins for the segments of Hex_0, the seven segment display
+              to be used to show the ALU result; seven pins for Hex_1, which will be used to display the
+              condition code outputs; seven pins for Hex_2, which will be used to display the value of the B operand;
+              and seven pins for
+              Hex_3, which will be used to display the value of the A operand.
+            </p>
+            <p>
+              Add an array of eight output pins to connect to Red LEDs 7&ndash;0 to show the states of the switches,
+              and an array of four output pins to connect to Green LEDs 3&ndash;0 to show the states of the four
+              pushbuttons.
+            </p>
+            <p>
+              Insert four copies of the <span
+              class="variable-name">hex2sevenseg</span> symbol, and connect the outputs to the pin arrays for Hex_0,
+              Hex_1, Hex_2, and Hex_3.
+            </p>
+            <p>
+              Using the pushbuttons for the function code bits is nice: when testing, you will be able to set up
+              two operands using the slide switches for A and B, and then easily test different function codes by
+              manipulating the pushbuttons. But there is a problem: the pushbuttons generate a logic 0 when they are
+              pressed, and logic 1 when they are not pressed, just the opposite of what you would think they would do.
+              (Somebody saved a transister somewhere doing it this way.) So you need to invert each Key input before
+              connecting it to the <span class="variable-name">function_code</span> inputs of the ALU.
+            </p>
+            <p>
+              You could use four inverters to invert the four Key inputs, but if you use a bus for the inputs, you
+              can use a Quartus megafunction to add all four inverters as a single symbol. It’s called
+              <span class="variable-name">lpm_inv</span> in the megafunction library. Setting it up is even easier
+              than the 4&times;2 mux you set up earlier. The result looks like this:
+            </p>
+            <p>
+              <img src="images/Assignment_4_inverters.png" alt="Testbed detail showing inverters." />
+            </p>
+            <p>
+              Run Analysis &amp; Synthesis, ignore all the warnings, and go to the Pin Planner, where you should find
+              all the input and output pins listed. Use the <a href="../Pins_DE1.xhtml">DE1 I/O Pins</a> web page, and
+              make the pin assignments. There are 52 pin assignments to make: <em>what fun!</em>
+            </p>
+          </li>
+          <li>
+            <h5>Build and Debug</h5>
+            <p>
+              Compile the project. There must be no error messages and only the two warnings about “output load
+              capacitance” and nused “Reserve All Pins.”
+            </p>
+            <p class="standout-block">
+              If you get any errors and/or any warnings other than those two, fix the problems before proceeding.
+            </p>
+          </li>
+          <li>
+            <h5>Test and Debug</h5>
+            <p>
+              Once you can build the project cleanly (like getting rid of syntax errors in software), it’s time
+              for systematic testing to make sure the design actually works as intended (like getting rid of
+              semantic errors in software).
+            </p>
+            <p>
+              Testing the project is a critical component of the assignment. Paradoxically, perhaps, you might learn
+              more if you do have semantic errors to correct: by reasoning about what causes wrong behavior, you can get
+              a better sense of how the ALU works. On the other hand, semantic errors can be hard to locate and fix, so
+              let’s hope your testing goes smoothly.
+            </p>
+            <ol>
+              <li>
+                Start with all the slide switches off and the four keys not pressed. The four hexadecimal displays
+                should show 0010.
+                <div class="explanation">
+                  <p>
+                    The left two digits are zeros are because all the slide switches are off. The 1 (0001<span
+                    class="subscript">2</span>) indicates Carry, oVerflow, and Negative are all false (zero); but the
+                    Zero bit is true (one). The right zero is the result, which is indeed zero. The result is zero
+                    because the function is 0000<span class="subscript">2</span> (no keys are pressed), which says not
+                    to invert A, not to negate B, and to select the top input to the 4&times;1 multiplexers in the
+                    bit slices, which gives the AND the two operands: 0000 &amp; 0000 =&gt; 0000.
+                  </p>
+                </div>
+                <p>
+                  If the display is something other than 0010, you need to determine whether the problem is in how the A
+                  and B operands are being passed to the seven segment displays (the problem is in the testbed); how the
+                  condition code bits are being computed (probably a problem in the ALU module where the condition code
+                  bits are generated), or in the design of the bit slice (how the A and B bits get ANDed together and
+                  how the output of the AND gate goes from input number 0 of the 4&times;1 mux to the result output of
+                  the slice).
+                </p>
+              </li>
+              <li>
+                One by one, starting at the right end, slide each slide switch into the on position. The hex displays
+                should show the values 0010, 0110, 0310, 0710, 0F10, 1F81, 3F83, 7F87, and FFAF in that sequence.
+                <div class="explanation">
+                <p>
+                  As you slide switches 0&mdash;3 up, you are generating the binary values 1, 3, 7, and 15 for the B
+                  operand; the second hex digit shows those values. So far, the condition code and result values
+                  don&rsquo;t change because the A operand is still all zeros, and ANDing anything with zero is always
+                  zero.
+                </p>
+                <p>
+                  As you slide switches 4&mdash;7 up, the left hex digit shows the binary values 1, 3, 7, and 15 for the
+                  A operand. Because the B operand is all ones at this point, the result matches the value of the A
+                  operand. That is, the left digit and right digit are the same. (1 &amp; X =&gt; X).
+                </p>
+                <p>
+                  For A operand values 1, 3, and 7, the condition code value is hex 8 (1000<span
+                  class="subscript">2</span>). The value of the Z bit (on the right) is off because the result is no
+                  longer zero. The C bit is also set, which is an artifact: even though the output of the full adders is
+                  not being output as the result, the sum of the two operands is still being computed, and adding any of
+                  these values to 15 produces a carry out of the leftmost full adder, which shows up as the C bit of the
+                  condition code being 1.
+                </p>
+                <p>
+                  When the A operand is 15, the condition code changes to hex A (1010<span class="subscript">2</span>).
+                  There is still a carry out of the leftmost full adder. But in addition, the N bit is set, indicating
+                  that the result (1111<span class="subscript">2</span>) is a negative value.
+                </p>
+                </div>
+              </li>
+              <li>
+                Slide all the switches off, and press the two leftmost pushbuttons (Key 3 and Key 2). The display should
+                change from 0010 to 00AF. Check the green LEDs to make sure the pushbuttons are actually working; they
+                can be sticky sometimes.
+                <p class="explanation">
+                  Key 3 inverts the value of the A operand, (0000 =&gt; 1111), and Key 2 does the same to the value of
+                  the B operand (with the added feature that
+                  <span class="variable-name">C<span class="subscript">0</span></span> is
+                  also set to 1). So the full adders are computing 1111+1111+1 =&gt; 1110 with a carry out from the
+                  leftmost full adder, which shows up as the C bit of the condition code. But the result displayed is
+                  the output of the AND gates: 1111<span class="subscript">2</span>. There was no overflow, but the
+                  result is a negative value, and is not zero.
+                </p>
+                <p class="standout-block">
+                  Note that the C and V condition code bits are logically irrelevant when performing AND, OR and SLT
+                  functions.
+                  But they are generated anyway, and looking at their values can help verify that the circuit is working
+                  correctly.
+                </p>
+              </li>
+              <li>
+                Verify that the OR operation is working correctly by pressing Key 0 and entering various values for the
+                A and B operands. For example 4 | 1 =&gt; 5; C | A =&gt; E, etc.
+              </li>
+              <li>
+                Verify that the Add operation is correctly by pressing Key 1 for different combinations of A and B
+                operands. Add two positive values that do not overflow: 3 + 4 =&gt; 7 with C, V, N, and Z all zero.
+                Add two positive values that do overflow: 5 + 5 =&gt; A (which is the two&rsquo;s complement
+                representation of negative 6). The condition code bits should be 6 (V and N) because there was
+                overflow and the result (which &ldquo;should&rdquo; be positive) appears to be negative. Perform
+                similar experiments with negative operands that do and do not overflow.
+              </li>
+              <li>
+                Check subtraction. Press Keys 2 (<span class="variable-name">Bneg</span>) and 1 (select the full
+                adder outputs from the 4&times;1 muxes).
+                <table>
+                  <tr>
+                    <td>0090</td>
+                    <td class="explanation">
+                      0 - 0 is calculated as 0 + F + 1, so the the C bit is set because the carry in on the right
+                      propagates all the way across to the carry out on the left. The Z bit is set because the result
+                      is zero.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>0F01</td>
+                    <td class="explanation">
+                      0 minus -1 is calculated as 0 + 0 + 1 = +1, with no carry, no overflow, not negative, and not zero.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>786F</td>
+                    <td class="explanation">
+                      7 minus -8 is calculated as 7 + 7 + 1 = F (which is -1, not the 15, the &ldquo;correct&rdquo;
+                      answer. There is no carry out the left end, but there is overflow (there is a carry into the
+                      leftmost bit, but not a carry out), the result appears to be negative, so the N bit is set, and
+                      the result is not zero, so the Z bit is not set.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>6E68</td>
+                    <td class="explanation">
+                      6 minus -2 is calculated as 6 + D + 1 = 8. This is wrong; the answer should be +8, but that value
+                      cannot be represented in four bits. The V and N bits are set because the result is wrong and
+                      appears to be negative (8 is the two&rsquo;s complement representation of -8).
+                    </td>
+                  </tr>
+                </table>
+              </li>
+              <li>
+                Check the SLT function. With everything above working correctly, you can check the SLT function
+                without worrying about the condition code settings, just the result. The result should be hex 0
+                (0000<span class="subscript">2</span>) any time the value of operand A is not less than the value of
+                operand B. And it should be 1 (0001<span class="subscript">2</span>) whenever the value of operand
+                A is less than operand B. Perform the SLT function by pressing Keys 0, 1. and 1. (Keys 0 and 1
+                combine to select the bottom output of the 4&times;1 mux in the slices; Key 2 causes the B operand
+                to be negated so the full adders compute A-B.) Here are some of the display values you should see:
+                5590 (5 is equal to 5, not less than it); 5601 (5 is less than 6) F081 (hex F is -1, which is less
+                than 0); F890 (-1 is not less than -8).
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            Once you have tested that your ALU works as specified, simply log out of your account so that your project
+            will be copied back to oak, where I will go to get a copy for grading. Send me an email message when your
+            assignment is ready.  </li>
+          <li>Be sure to put your name in your email message!</li>
+          <li>
+            <p  class="standout-block">
+              Do not submit the assignment until you have actually tested it to be sure it works. If you tested it but
+              cannot get it to work correctly, you may submit the assignment for partial credit,
+              <i>provided you tell me in your email what problem(s) you observed during testing</i>.
+            </p>
+          </li>
+          <li class="standout-block">
+            The Subject line must be <span class="code-snippet">CS-343 Assignment 4</span> to avoid my spam
+            filters.
+          </li>
+          <li>
+            Send your email to vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu.
+          </li>
+        </ol>
+        <p>
+          See <a href="../syllabus.xhtml">the course syllabus</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

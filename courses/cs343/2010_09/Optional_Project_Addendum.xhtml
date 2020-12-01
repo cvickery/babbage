@@ -1,0 +1,134 @@
+<?php
+  $html_attributes = "lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:" . $html_attributes;
+    $content_type = "application/xhtml+xml";
+    header("Content-type: application/xhtml+xml");
+    echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+  }
+  else
+  {
+    $content_type = "text/html";
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+    <title>CS-343 Optional Project Addendum</title>
+    <meta http-equiv="Content-Type" content="<?php echo $content_type;?>; charset=UTF-8" />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.6.custom.css" />
+    <link rel="stylesheet" type="text/css" href= "css/optional_assignment.css" />
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.6.custom.min.js"></script>
+    <script type="text/javascript" src="js/optional_assignment.js"></script>
+  </head>
+  <body id='urn:uuid:C0569C11-F34F-4906-BD16-B18A6A519CAC'>
+
+    <h1>CS-343 Optional Project Addendum</h1>
+    <section id="content">
+    	<h2>Project Goals</h2>
+      <div>
+        <p>The goal of the <a href="CSCI-343_Optional_Project.pdf">optional project</a> is for you to demonstrate your understanding
+        of cache memory design by developing a tool so that students less enlightened than you can explore the ways in which
+        various numerical parameters that enter into the design of a cache memory system interact with one another.</p>
+        <p>
+        	I am not giving details on how the project “has” to work because the goal of the assignment is for you to figure out
+          a design that will let users explore cache parameters in an effective manner. Nonetheless, I am giving you a small sample
+          of the sort of thing I am looking for below so you don’t waste too much time getting started.
+        </p>
+      </div>
+      <h2>A Revised Requirement</h2>
+      <div>
+      	<p>
+        	The assignment document says to submit partial code on December 8th. There are several reasons for this requirement, one
+          of which is to encourage you to start work on the assignment right away. It it too big a project for you to put it off
+          until the end and still hope to do something worth 30% of your course grade. The second reason for this requirement is so
+          that I can give you feedback on your approach and can verify that you are actually doing your own development.
+        </p>
+        <p>
+        	I am altering the requirement for what is due on December 8th. You may either submit partial code as originally specified,
+          or you may submit written documentation of what your assignment will look like when it is completed. This documentation
+          must include a graphical representation of the user interface you plan to construct. It can be hand-drawn on paper and
+          submitted as a scanned image, as a Photoshop, Illustrator, SketchUp, etc. document -- check with me if not sure whether I
+          will be able to view the format you want to use for submitting it. The documentation must also include a written description
+          of the design.
+        </p>
+        <p>
+        	If you submit design documentation instead of partial code on December 8th (and it is acceptable), you can still 
+          “meaningful credit” for the assignment by providing only a partially coded project on December 14th. I can’t define
+          “meaningful” and “acceptable” precisely, but the idea is that you can get enough credit for the project to make it count
+          as much as an exam if you do a good job designing the project and also develop a working subset of the full design. Note
+          that you must submit clean, working code no matter what, but that your code does not have to implement all the features
+          you designed.
+        </p>
+      </div>
+      <h2>Sliders</h2>
+      <div>
+      	<p>
+          I mentioned “sliders” when talking about the project in class, and several people were confused by this. The basic idea
+          of the assignment is that the user will enter a numerical value for one parameter, and the application would show
+          how that new value affects the numerical values of other parameters. Feel free to require the user to type in the
+          numerical values; a slider is simply a standard graphical element that lets users adjust a numerical value by
+          operating a GUI component using the mouse. In Java, you would use a 
+          <a href="http://download.oracle.com/javase/tutorial/uiswing/components/slider.html">JSlider</a>; in JavaScript, you might
+          use the JQuery UI <a href="http://docs.jquery.com/UI/Slider">Slider</a> plugin.
+        </p>
+        <p>
+        	Use of sliders is <em>not</em> a requirement for this assignment.
+        </p>
+      </div>
+      <h2>Policy on Originality</h2>
+      <div>
+        <p>
+        	In the assignment document, I made explict what the requirements and restrictions are with respect to collaborative
+          work: basically, none allowed; you have to do the assignment on your own. Here I am reminding you that the College and
+          the University have clear standards for Academic Honesty, which make it the instructor’s decision how to handle cases
+          of detected academic dishonesty. <em>My policy is automatic failure in the course and to report the case to the
+          College’s Vice President for Student Affairs.</em>
+        </p>
+      </div>
+			<h2>Example</h2>
+      <div id="example">
+      	<p>
+        	This example uses two sliders to illustrate how the number of bytes of memory and the number of bits in a memory byte
+          address interact.
+        </p>
+        <h3>Number of Address Bits</h3>
+        <div id="address-bits-slider"></div>
+        <p>
+          <span class="slider-min">1</span>
+          <span class="slider-mid">20</span>
+          <span class="slider-max">40</span>
+        </p>
+        <h3>Number of Memory Locations</h3>
+        <div id="memory-locations-slider"></div>
+        <p>
+          <span class="slider-min">2</span>
+          <span class="slider-mid">1M</span>
+          <span class="slider-max">1T</span>
+        </p>
+        <p>
+        	Note that you can drag either slider and the other one changes in sync with it, and that the number of locations can only
+          be set to a power of two. I’ve made the bottom slider’s scale logarithmic rather than linear.
+        </p>
+        <p>
+          Remember, you are free to use text input boxes instead of sliders for your project.
+        </p>
+      </div>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </footer>
+  </body>
+</html>

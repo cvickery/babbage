@@ -1,0 +1,91 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-343 Assignment 8 Solutions</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+  </head>
+
+  <body id='urn:uuid:CCA953B2-D503-452C-B2E3-A2780DBA5373'>
+      <h1>CS-343 Assignment 8 Solutions</h1>
+      <pre>
+      A.   20 ps
+      B.    0 ps
+      C.  170 ps Instruction available
+      D.  200 ps Instruction decoded
+      E.  170 ps Read register numbers available
+      F.  205 ps Write register number available (D + 5)
+      
+        E is on the critical path for all but J-type, for which D is on the critical path.
+      
+      H and R.  80 ps PC+4 available
+      
+      I.  170 ps Branch Target Address available
+      
+      R-Type
+        J 245
+        K 250 critical
+        L 170
+        M 200
+        N 350 critical; max
+        R 80
+        T 205 (D + 5)
+      
+      beq
+        J 245
+        K 250 critical
+        L 170
+        M 200
+        N 350 critical
+        P 352 critical
+        Q 230
+        S 357 critical
+        T 363 critical; max
+      
+      j
+        R 170
+        T 205 critical; max
+      
+      lw
+        J 245 critical
+        K 175
+        L 170
+        M 200
+        N 345 critcal
+        U 495 critical
+        G 500 critical; max
+      
+      sw
+        J 245 critical
+        K 175
+        L 170
+        M 200
+        N 345 critical; max
+        O 245
+      
+      max(Tmax) = 500 ps
+      Fmax = 2.0 GHz
+      </pre>
+  </body>
+</html>
+

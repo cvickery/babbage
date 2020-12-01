@@ -1,0 +1,134 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $content_type = "application/xhtml+xml";
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $content_type = "text/html";
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 2</title>
+    <meta http-equiv="Content-Type" content="<?php echo $content_type;?>; charset=UTF-8" />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:5742B414-3ED3-4F6A-8BB5-773C282D1F70'>
+
+<h1>CS-343 Assignment 2</h1>
+
+    <div id="content">
+      <h2>Reading Assignments</h2>
+      <div>
+        Read <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a> and make sure your “roaming profile”
+        is working correctly. Then study <a href="../Using_Quartus.xhtml">Using Quartus</a>. Finally, read section
+        C.6 on carry-lookahead logic in the textbook.
+      </div>
+
+      <h2>Project Description</h2>
+      <div>
+      	<p>
+          The project is to implement a 4-bit carry-lookahead unit. Given two 4-bit values to be added and a bit
+          specifying the carry into this network, the carry-lookahead unit computes all four carry out values, as
+          well as the carry out of the leftmost position&mdash;all in a constant number of propagation delays (3)
+          for each bit position.
+        </p>
+        <p>
+        	<em>Clarification:</em> For this assignment you are to implement <em>only a 4-bit carry-lookahead unit.</em>
+          There are no addition circuits (full-adders or otherwise) involved in this assignment.
+        </p>
+      </div>
+      <h2>Development Steps</h2>
+      <ol>
+        <li>
+          Before starting, be sure your account in the TREE lab is working according to the information in the
+          <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a> web page and that
+          you are familiar with the <a href="../Using_Quartus.xhtml">Using Quartus</a> web page.
+        </li>
+        <li>
+          First, create a directory for this project directly under your My Projects directory in the lab. 
+          Use the name “Assignment 2” for this directory for this assignment.
+        </li>
+        <li>
+          Now open Quartus and use the New Project Wizard to set up your project. The top level directory, of course,
+          must be the directory you just created. The name of the project is to be “carry-lookahead-unit,” and the name
+          of the top-level entity is to be “carry-lookahead-testbed.” Use the FPGA part number from the 
+          <a href="../Pins_DE1.xhtml">DE1 I/O Pins</a> web page when you get to that step of the wizard. Otherwise,
+          you can use all the default values the wizard suggests.
+        </li>
+        <li>
+          Create a block diagram for the carry-lookahead unit. There should be an array of four input pins for the
+          “A” inputs, a second array of four input pins for the “B” inputs, and a ninth input pin for the Carry In
+          (C<span class="subscript">in</span>) to the entire unit. There should be an array of four output pins for
+          the four carry out signals, C[4..1]. Save the block diagram as a symbol.
+        </li>
+        <li>
+          Create a second block diagram for the carry-lookahead testbed. Include input pins for all ten of the slide
+          switches, and output pins for all the red LEDs and four of the green LEDs. Include a copy of the symbol for
+          the carry-lookahead unit; connect switches 9:6 to the A 3:0 inputs; switches 5:2 to the B 3:0 inputs; switch 0
+          to the Carry In input, and the four outputs to Green LEDs 3:0. For feedback, also connect all ten slide
+          switches to the corresponding red LEDs. Note that slide switch 1 will do nothing except to light up the
+          corresponding red LED.
+        </li>
+        <li>
+          At this point, you should be able to compile your design, which will make the names of the I/O pins available
+          for assigning to the proper DE-1 LEDs and switches.
+        </li>
+        <li>
+          All that remains is to implement the actual carry-lookahead logic. You will need an AND gate to produce the
+          carry generate value for each pair of data inputs, and an OR gate, in parallel with the AND gates, for the
+          carry propagates.
+          <p class="standout-block">
+            Remember: the purpose of carry-lookahead logic is to eliminate the chaining of propagation delays across
+            the bit positions (“slices”) of a parallel adder. Your logic networks for each of the four carry outputs
+            may use only C<span class="subscript">0</span>, the four carry-generate signals, and the four
+            carry-propagate signals as their inputs. Do <strong>not</strong> use any other carry values or any other
+            intermediate values to reduce the complexity of your implementation: you are designing for speed, not to
+            reduce the number of gates.
+          </p>
+          <p>
+          	The Quartus logic primitives do not include the 5-input AND and OR gates you need for this assignment,
+            but there are 6-input gates you can use instead. Connect the unused input of the AND gate to Vcc and the
+            unused input of the OR gate to ground.
+          </p>
+        </li>
+        <li>
+        	Once your assignment builds with no more than the expect two warning messages and no error messages, be
+          sure to test it carefully to be sure it works. <em>Update:</em> if you install version 10 of the Quartus
+          software for use off campus, you will receive two addional warnings about the classic timing analyzer, which
+          you should ignore.
+        </li>
+      </ol>
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you have built and tested your assignment let me know it is ready for grading by sending me an
+          email message (Christopher.Vickery<span class="at" title="Change to
+          @">at</span>qc.cuny.edu) by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of all email you send me this semester must start, “CS-343.’ Your email message for this
+          assignment must be: “CS-343 Assignment 2.” 
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

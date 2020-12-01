@@ -1,0 +1,180 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+  <title>SPIM Assignment</title>
+
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="../..//css/style-all.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="screen"
+        href="../..//css/style-screen.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="print"
+        href="../../css/style-print.css"
+  />        
+
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>SPIM Assignment</h1>
+  </div>
+
+  <div id="content">
+    <h2>Introduction</h2>
+    <div class="whitebox">
+
+      <p>To help you become familiar with the MIPS machine and assembly
+      languages, you are to write a function that computes the sum of the
+      elements in a vector of integers.  Your function name is to be <span
+      class="functionName">addem</span>.  I am supplying a program called
+      <span class="programName">driver </span> that will read in a set of
+      numbers, call your function, and display the results.</p>
+      
+      <p>You may use any text editor to prepare your program.  <span
+      class="programName">Vim </span> is available in the lab, and there is
+      a <a href="../../cs081/using_vim.xhtml">Tiny Vim Tutorial</a>
+      for my CS-081 course that will provide you with enough information
+      started with it.  Alternatively, you could use <span
+      class="programName">Notepad </span> or any other text editor of your
+      choice to prepare your code.</p>
+      
+      <p>Here&rsquo;s an outline of your program:</p>
+      
+      <div class="codeBlock">
+                  .globl  addem
+                  .text
+      addem:
+            # Your code goes here.
+                  jr      $ra               # Return to caller
+                  .end
+
+      </div>
+
+    <p>The first two lines and the last one are assembler directives.  The
+    first line tells the assembler that <span class="functionName">addem
+    </span>is a global symbol; it&rsquo;s needed so the driver program can
+    call your code using this name.  The <span
+    class="codeSnippet">.text</span> directive tells the assembler that the
+    information that follows is executable code.  &ldquo;Text&rdquo; is the
+    traditional Unix name for the code segment of a program.  The last line
+    is actually optional.</p>
+    
+    <p>The <span class="codeSnippet">jr&nbsp;$ra</span> instruction is the
+    standard MIPS instruction for returning from a subroutine.  The MIPS
+    <span class="functionName">jal</span> (jump and link) instruction, which
+    is used to call a subroutine, puts the return address in register 31,
+    which has the symbolic name <span class="functionName">$ra</span>.</p>
+
+    <p>The other information you need in order to write your code is how the
+    driver program passes parameters to your program and how your program is
+    to return the sum.  In this case, the driver program puts the memory
+    address of the vector to be summed in register <span
+    class="functionName">$a0</span> (Register 4) and the number of words in
+    the array in register <span class="functionName">$a1</span> (Register
+    5).  Your function is to return the sum in register <span
+    class="functionName">$v0</span> (Register 2).</p>
+
+    </div>
+
+    <h2>Notes on Using The Simulator</h2>
+    <div class="whitebox">
+    
+      <p>When you first run SPIM, you may see a dialog box saying something
+      about not being able to load the exceptions.s file.  Select the option
+      to browse to the file, and browse to <span class="fileName">C:\Program
+      Files\PCSpim\exceptions.s </span> You only have to do this once.</p>
+
+      <p>While you are looking at the Settings dialog box, be sure the
+      options are set as follows:   <cite>Save window positions</cite>,
+      <cite>General registers in hexadecimal</cite>, <cite>Mapped
+      I/O</cite>, <cite>Allow pseudo instructions</cite>, and <cite>Load
+      exception file (as above)</cite> must all be ON (checked), and all
+      other options must be OFF (unchecked).  You can also get to the
+      Settings dialog box from the simulator&rsquo;s Simulator menu.</p>
+
+      <p>Download my <a href="driver.s">driver.s file</a> and save it in a
+      directory that you set up for this assignment.  Use your text editor
+      to prepare your <span class="fileName">addem.s </span> file in the
+      same directory.  Start SPIM, and use File-&gt;Open (or click the icon
+      on the toolbar) to load either one of the two <span
+      class="fileName">.s </span>files.  Then load the other one.  If you
+      are asked whether to reinitialize the simulator, click Yes for the
+      first file and No for the second one.  If you get any errors at this
+      point, they should be in your file, and you will have to correct your
+      code and try loading it again.</p>
+      
+      <p>Once both files load successfully, use the F5 key to start the
+      program running.  You will be asked what starting address to use. The
+      correct value (0x00400000) will be the default value, so you can just
+      click OK.  If all goes well, you will see a greeting in the
+      simulator&rsquo;s Console window, and a prompt for you to enter a
+      number.  You may need to Alt-Tab to the console window if it is hidden
+      by the main simulator window.  If the console window isn&rsquo;t on
+      the screen at all, something is probably wrong; it should appear
+      automatically.  But you can force it to appear by using the
+      simulator&rsquo;s Window menu.</p>
+      
+      <p>Enter one number per line, and type Control-D to indicate that you
+      are finished.  Use both positive and negative values, and run the
+      program several times with varying numbers of input lines to make sure
+      it is robust.  You cannot edit the numbers as you type them in, so any
+      backspace or rubout keystrokes (or anything else that isn&rsquo;t a
+      decimal digit after the optional plus or minus sign at the beginning)
+      will generate an error message and the number will be discarded.</p>
+
+      <p>Hopefully, your program won&rsquo;t work correctly the first time.
+      (You&rsquo;ll learn more that way!)  You can single step through the
+      code using the F10 key, but you will probably want to let the program
+      run full speed through my driver code until it gets to your function. 
+      (Also, I was unable to get the simulator to do character input when
+      single-stepping.)  To set a breakpoint, use the
+      Simulator-&gt;Symbol&nbsp;table menu item to see what address your
+      subroutine starts at.  Then use Control-B to set a breakpoint there,
+      and run the program using F5.  Then you can single step through the
+      instructions in your code, looking at the register values in the top
+      pane and the contents of data memory in the third pane as you progress
+      through the code.</p>
+
+      <p>If the simulator goes into an endless loop displaying
+      &ldquo;Exception&rdquo; messages, use Control-C to stop it.  Likewise,
+      use Control-C if your function goes into an endless loop.  In either
+      case, you will need to reload the program files.  Sometimes, you have
+      no choice but to exit the whole simulator and start over.</p>
+
+    </div>    
+    
+  </div>
+
+  <div id="footer"><a
+  	href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+    href="../">CS-343 Home</a>&nbsp;-&nbsp;<a
+    href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+    href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+		Last updated <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+  </div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-343 Assignment 6</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 6</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+        	This assignment is also a topic guide for the final exam. You can receive full credit for the assignment even
+          if your answers are incomplete. I will publish the solutions on Tuesday the 16<span class="superscript">th</span>, hopefully in time to be helpful
+          as you prepare for the exam on the 18<span class="superscript">th</span>.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <h3>Readings</h3>
+        <p>
+        	Chapter 5: &sect;&nbsp;5.1&mdash;5.4. Note the material on
+          Performance
+          of Single-Cycle Machines starting on page 315, which was covered on in class, but not in the previous homework assignment.
+        </p>
+        <p>
+        	Chapter 6: &sect;&nbsp;6.1&mdash;6.3. Also, Figure 6.26 in &sect;&nbsp;6.4 (page 403) is a good summary of what control information has to be
+          carried forward in each pipeline state.
+        </p>
+        <p>
+        	Chapter 7: &sect;&nbsp;7.1&mdash;7.2. Pay attention to the concept of the memory hierarchy and why cache hit ratios are so much better than
+          you would expect from random processes.
+        </p>
+        <p>
+        	Chapter 8: &sect;&nbsp;8.1&mdash;8.4; omit &sect;&nbsp;8.3. Understand the three components of disk access time; that mechanical movement of
+          disks leads to enormously long access times compared to all electronic devices; the need for chipsets to manage busses with different speeds;
+          bandwidth.
+        </p>
+        <h3>
+        	Questions for this assignment:
+        </h3>
+        <ol>
+          <li>
+          	What determines the maximum clock speed that can be used in the single-cycle CPU design?
+          </li>
+          <li>
+          	What determines the maximum clock speed that can be used in a pipelined CPU?
+          </li>
+          <li>
+          	What is a &ldquo;perfectly balanced&rdquo; pipeline? How fast could the clock be made in a perfectly balanced pipeline of
+            <span class="variableName">n</span> stages
+            compared to a single-cycle design of the same datapath?
+          </li>
+          <li>
+          	What is the equation for the execution time of a program? Use three product terms on the right.
+          </li>
+          <li>
+          	In the above equation, what is the CPI for a a single-cycle CPU design? For a pipelined design with <span class="variableName">n</span> stages?
+          </li>
+          <li>
+          	Answer Exercises 6.1 and 6.2 at the end of Chapter 6. Note that 6.2.b is essentially the same as Question 3 above. Note that whichever way you
+            answer 6.1.a, you have to show how you compute speedup based on the equation in Question 4 above.
+          </li>
+          <li>
+          	Name and define the three types of pipeline hazards. Give examples of how to reduce or eliminate all three.
+          </li>
+          <li>
+          	How many pipeline registers are there for an <span class="variableName">n</span> stage pipeline?
+          </li>
+          <li>
+          	What control and data information is in each pipeline register for the five-stage pipeline used in the book?
+          </li>
+          <li>
+          	What are the advantages and disadvantages of a very deep pipeline?
+          </li>
+          <li>
+          	What do SRAM and DRAM stand for; which is faster; which is more dense; which is more suitable for cache; which is more suitable for main
+            memory?
+          </li>
+          <li>
+          	What is <span class="variableName">temporal locality</span>, and how does it affect cache performance?
+          </li>
+          <li>
+          	What is a cache <span class="variableName">hit</span>; what is the <span class="variableName">hit ratio</span>; what happens when there is a
+            cache miss that causes the probability of a cache hit to be very high in the immediate future?
+          </li>
+          <li>
+          	Is cache management done by hardware, software, or a combination of both?
+          </li>
+          <li>
+          	What is the relationship between a <span class="variableName">cache line</span> and a main memory <span class="variableName">block</span>?
+          </li>
+          <li>
+          	What housekeeping information is kept in a cache in addition to the actual cache data in each line?
+          </li>
+          <li>
+          	Describe <span class="variableName">direct-mapped</span>, <span class="variableName">set-associative</span>, and 
+            <span class="variableName">fully-associative</span> cache designs.
+          </li>
+          <li>
+          	What is <span class="variableName">bandwidth</span>? Calculate the bandwidth between main memory and the CPU if each access takes 100ps and
+            transfers one word at a time. Be sure to use the correct unit of measure.
+          </li>
+          <li>
+          	Calculate the bandwidth between a cache and main memory if each access takes 50ps and transfers 16 words at a time. Use the same unit of measure
+            as in the previous question.
+          </li>
+          <li>
+          	What is the average access time of a disk with a sector size of 1024 bytes and 200 tracks if it takes 2 msec to move from one track to another; 
+            the disk rotates at 7200 RPM;
+            and the disk is connected to memory through a 512 MB/s bus. Assume seek time is not optimized by the operating system. 
+          </li>
+          <li>
+          	What bandwidth bus would be required to transfer an entire track from disk to memory using the disk described in the previous question if there
+            are 1024 sectors per track?
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment By Email</h2>
+      <div>
+        <p>
+          I prefer receiving your answers as plain text in the body of your email message. If you use a word processor,
+          paste your answers into the body of your message rather than sending an attachment.
+        </p>
+        <p>
+          Send your email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-343&nbsp;Assignment&nbsp;6</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p class="standout_block">Be sure to put your name in your email message!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs343">CSCI-343 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

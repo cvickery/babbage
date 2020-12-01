@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CS-343 Assignment 5 Solutions</title>
+  </head>
+  <body>
+    <p>
+      <strong>Note:</strong> The following answers are taken from the
+      Instructor&rsquo;s Manual for the textbook.  Do not make them
+      available publicly.<br>
+
+      Let me know if you have any problems with them.<br>
+      
+      <em>Dr. Vickery</em>
+    </p>  
+  <pre>
+5.1   Combinational logic only: a, b, c, h, i
+      Sequential logic only: f, g, j
+      Mixed sequential and combinational: d, e, k
+
+5.8   A modification to the datapath is necessary to allow the new PC to
+      come from a register (Read data 1 port), and a new signal (e.g.,
+      JumpReg) to control it through a multiplexor as shown in Figure 5.42.
+
+      A new line should be added to the truth table in Figure 5.18 on page
+      308 to implement the jr instruction and a new column to produce the
+      JumpReg signal.
+
+5.9   A modification to the data path is necessary to feed the shamt field
+      (instruction[10:6]) to the ALU in order to determine the shift amount.
+      The instruction is in R-Format and is controlled according to the
+      first line in Figure 5.18 on page 308.
+
+      The ALU will identify the sll operation by the ALUop field.
+
+      Figure 5.13 on page 302 should be modified to recognize the opcode of
+      sll: the third line should be changed to 1X1X0000 0010 (to
+      discriminate the add and ssl functions), and a new line, inserted, for
+      example, 1X0X0000 0011 (to define sll by the 0011 operation
+      code).      
+
+5.10  One possible lui implementation  doesn't need a modification to the
+      datapath: We can use the ALU to implement the shift operation. The
+      shift operation can be like the one presented for Exercise 5.9, but
+      will make the shift amount as a constant 16. A new line should be
+      added to the truth table in Figure 5.18 on page 308 to define the new
+      shift function to the function unit. (Remember two things: first,
+      there is no funct field in this command; second, the shift operation
+      is done to the immediate field, not the register input.)
+
+        RegDst    = 1: To write the ALU output back to the destination
+                        register ($rt).
+        ALUSrc    = 1: Load the immediate field into the ALU.
+        MemtoReg  = 0: Data source is the ALU.
+        RegWrite  = 1: Write results back.
+        MemRead   = 0: No memory read required.
+        MemWrite  = 0: No memory write required.
+        Branch    = 0: Not a branch.
+        ALUOp     = 11: sll operation.
+
+      This ALUOp (11) can be translated by the ALU as shl,ALUI1,16 by
+      modifying the truth table in Figure 5.13 in a way similar to Exercise
+      5.9.
+    </pre>
+    <p>
+      The following solutions are from Dr. Vickery: Let me know if you find any errors!
+    </p>
+    <pre>
+ 
+1.  The rt and rd fields of the instruction; immediate format instructions use
+    the rd field as part of the immediate operand, and they do not need the rt
+    field for the second register, so they use the rt field for the desination
+    register. The RegDst signal controls the 2&times;5 multiplexer. The mux has
+    two 5-bit inputs (rt and rd) and a 5-bit output (Write Register #).
+    Internally, it is five 2&times;1 multiplexers, all controlled by the same
+    RegDst control signal.
+
+2.  The output of the ALU and the output of the data memory; a 2&times;32 mux,
+    contolled by the MemtoReg control signal is used to select whether the ALU
+    or data memory provides the data to the register file&rsquo;s Write Date
+    input. MemtoReg is true only for sw (store word) instructions.
+
+3.  It has 2^32 bytes organized as 2^30 32-bit words. Addresses are 32 bits wide
+    because the memory is byte addressable. But the rightmost two bits of an
+    address would be something other than 2'b00 only when doing byte or halfword
+    loads or stores, which is never the case for the MIPS subset we are working
+    with in this course.
+
+4.  a. Arithmetic and logical operations using an immediate operand, such as addi
+    andi.
+    b. Instructions that use the immediate field to calculate an
+    &ldquo;effective address&rdquo; for data memory accesses; lw and sw are the
+    only two used in this course.
+    c. Conditional branch instructions, which use the immediate field to compute
+    the branch target address. beq and bne are examples.
+
+5.  {16{I[15]}, I[15:0]}
+
+6.  {16'b0, I[15:0]} Logical (bit-wise AND and OR) do not do sign extension
+    because they are used for operations involving unsigned numbers.
+
+7.  Effective_Address = R[rs] + {14{I[15]}, I[15:0], 2'b00};
+
+8.  Branch_Target_Address = PC + 4 + {14{I15], I[15:0], 2'b00};
+
+9.  Jump_Address = {PC[31:28], I[25:0], 2'b00};
+
+10. Data Memory, the register file, and the PC. (In a pipelined datapath, all
+    the pipeline registers are connected to the clock too.)
+
+
+    </pre>
+  </body>
+</html>

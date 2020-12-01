@@ -1,0 +1,170 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Assignment 7 Solutions</title>
+  </head>
+  <body>
+    <p>
+      <strong>Note:</strong> These answers are taken from the
+      Instructor&rsquo;s Manual for the textbook.  Do not make them
+      available publicly.<br />
+
+      Let me know if you have any problems with them.<br />
+      
+      <em>Dr. Vickery</em>
+    </p>  
+  <pre>
+5.1   Combinational logic only: a, b, c, h, i
+      Sequential logic only: f, g, j
+      Mixed sequential and combinational: d, e, k
+
+5.2   a. RegWrite = 0: All R-format instructions, in addition to lw,
+      will not work because these instructions will not be able to
+      write their results to the register file.
+
+      b. ALUop1 = 0: All R-format instructions except subtract will
+      not work correctly because the ALU will perform subtract instead
+      of the required ALU operation.
+
+      c. ALUop0 = 0: beq instruction will not work because the ALU
+      will perform addition instead of subtraction (see Figure 5.12),
+      so the branch outcome may be wrong.
+
+      d. Branch (or PCSrc) = 0: beq will not execute correctly. The
+      branch instruction will always be not taken even when it should
+      be taken.
+
+      e. MemRead = 0: lw will not execute correctly because it will
+      not be able to read data from memory.
+
+      f. MemWrite = 0: sw will not work correctly because it will not
+      be able to write to the data memory.
+
+5.3   a. RegWrite = 1: sw and beq should not write results to the
+      register file.  sw ( beq) will overwrite a random register with
+      either the store address (branch target) or random data from the
+      memory data read port.
+
+      b. ALUop0 = 1: lw and sw will not work correctly because they
+      will perform subtraction instead of the addition necessary for
+      address calculation.
+
+      c. ALUop1 = 1: lw and sw will not work correctly.  lw and sw
+      will perform a random operation depending on the least
+      significant bits of the address field instead of addition
+      operation necessary for address calculation.
+
+      d. Branch = 1: Instructions other than branches (beq) will not
+      work correctly if the ALU Zero signal is raised. An R-format
+      instruction that produces zero output will branch to a random
+      address determined by its least significant 16 bits.
+
+      e. MemRead = 1: All instructions will work correctly. (Data
+      memory is always read, but memory data is never written to the
+      register file except in the case of lw .)
+
+      f. MemWrite = 1: Only sw will work correctly. The rest of
+      instructions will store their results in the data memory, while
+      they should not.
+
+5.8   A modification to the datapath is necessary to allow the new PC to
+      come from a register (Read data 1 port), and a new signal (e.g.,
+      JumpReg) to control it through a multiplexor as shown in Figure 5.42.
+
+      A new line should be added to the truth table in Figure 5.18 on page
+      308 to implement the jr instruction and a new column to produce the
+      JumpReg signal.
+
+5.10  One possible lui implementation  doesn't need a modification to the
+      datapath: We can use the ALU to implement the shift operation. The
+      shift operation can be like the one presented for Exercise 5.9, but
+      will make the shift amount as a constant 16. A new line should be
+      added to the truth table in Figure 5.18 on page 308 to define the new
+      shift function to the function unit. (Remember two things: first,
+      there is no funct field in this command; second, the shift operation
+      is done to the immediate field, not the register input.)
+
+        RegDst    = 1: To write the ALU output back to the destination
+                        register ($rt).
+        ALUSrc    = 1: Load the immediate field into the ALU.
+        MemtoReg  = 0: Data source is the ALU.
+        RegWrite  = 1: Write results back.
+        MemRead   = 0: No memory read required.
+        MemWrite  = 0: No memory write required.
+        Branch    = 0: Not a branch.
+        ALUOp     = 11: sll operation.
+
+      This ALUOp (11) can be translated by the ALU as shl,ALUI1,16 by
+      modifying the truth table in Figure 5.13 in a way similar to Exercise
+      5.9.
+
+5.11  A modification is required for the datapath of Figure 5.17 to perform
+      the autoincrement by adding 4 to the $rs register through an
+      incrementer. Also we need a second write port to the register file
+      because two register writes are required for this instruction. The new
+      write port will be controlled by a new signal, "Write 2", and a data
+      port, "Write data 2." We assume that the Write register 2 identifier
+      is always the same as Read register 1 ($rs). This way "Write 2"
+      indicates that there is second write to register file to the register
+      identified by "Read register 1," and the data is fed through Write
+      data 2.
+
+      A new line should be added to the truth table in Figure 5.18 for the
+      l_inc command as follows:
+
+        RegDst    = 0: First write to $rt.
+        ALUSrc    = 1: Address field for address calculation.
+        MemtoReg  = 1: Write loaded data from memory.
+        RegWrite  = 1: Write loaded data into$rt.
+        MemRead   = 1: Data memory read.
+        MemWrite  = 0: No memory write required.
+        Branch    = 0: Not a branch, output from the PCSrc controlled mux
+                       ignored.
+        ALUOp     = 00: Address calculation.
+        Write2    = 1: Second register write (to $rs).
+
+      Such a modification of the register file architecture may not be
+      required for a multiple- cycle implementation, since multiple writes
+      to the same port can occur on different cycles.
+
+5.12  This instruction requires two writes to the register file. The only
+      way to implement it is to modify the register file to have two write
+      ports instead of one.
+
+5.28  Load instructions are on the critical path that includes the following
+      functional units: instruction memory, register file read, ALU, data
+      memory, and register file write. Increasing the delay of any of these
+      units will increase the clock period of this datapath. The units that
+      are outside this critical path are the two adders used for PC
+      calculation (PC + 4 and PC + Immediate field), which produce the
+      branch outcome.
+
+      Based on the numbers given on page 315, the sum of the the two adder?s
+      delay can tolerate delays up to 400 more ps.
+
+      Any reduction in the critical path components will lead to a reduction
+      in the clock period.
+
+    </pre>
+  </body>
+</html>

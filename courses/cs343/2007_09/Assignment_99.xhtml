@@ -1,0 +1,642 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Optional Assignment</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+    <link rel="stylesheet" type="text/css" href="css/assignment_99.css" media="all" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>CS-343 Optional Assignment</h1>
+      <h2>MIPS Single-Cycle CPU Implementation</h2>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>
+          This is an optional assignment. It will be graded on a 100-point scale and it will count as much as one exam,
+          provided your score on it will improve your course average. Except for your time investment, there is no risk
+          in working on this assignment: if it does not improve your course grade it will not count. If you complete all
+          steps through Step 3 (see below) successfully, I am promising a grade of 85 or better for the assignment.
+        </p>
+        <p>
+          The assignment is to implement the complete single-cycle design of the MIPS CPU as presented in Chapter 5 of
+          the textbook, augmented to include immediate instructions. I am supplying a complete working version of the
+          project written in Verilog. Your job is to subtitute your own schematic diagrams for my Verilog modules.
+        </p>
+        <p>
+          You may work on this assignment with one other person. Both people on the team will receive the same grade for
+          the assignment. Be sure to tell me who you work with and which account has the final version of the project.
+          You may work alone if you prefer. Like other assignments in this course, you are free to consult with other
+          people about the assignment (don&rsquo;t forget that there is a discussion board available where you can
+          ask/answer questions. But each team must implement its own schematics diagrams and test its own design.
+        </p>
+      </div>
+
+      <h2>Project Development</h2>
+      <div class="whitebox">
+        <p>
+          You are going to start with a working version of the project, which I am providing in a Zip file: <a
+          href="../Single_Cycle_Datapath.zip">Single_Cycle_Datapath.zip</a>. Create a subdirectory named <span
+          class="directoryName">Optional_Assignment</span> in your <span class="directoryName">My Projects</span>
+          directory, unzip my implementation there, delete the <span class="directoryName">db</span> subdirectory there
+          (it is for a different version of Quartus), open the project, be sure it builds with no errors, and test it as
+          described below.
+        </p>
+        <p class="standoutBox">
+          I am continuing to update the code for the project.
+          <br />
+          The timestamp of the current version is <strong><?php
+          echo date('r', filemtime('../Single_Cycle_Datapath.zip'));
+          ?></strong>.
+        </p>
+        
+        <table id="version_table">
+          <tr>
+            <th>Date</th><th>Changes</th>
+          </tr>
+          <tr>
+            <td>December&nbsp;17, 2007</td>
+            <td>
+            	Removed line #109 from <span class="fileName">single_cycle_datapath.qsf</span>, which was causing an
+              error when building the project using earlier versions of Quartus.
+            </td>
+          </tr>
+          <tr>
+            <td>December&nbsp;16, 2007</td>
+            <td>
+              Replaced Data Memory, which had used off-FPGA SRAM on the DE1, with on-FPGA RAM using Altera SyncRam
+              megafunction as a fix to the Data Memory problems. Switched to slower FPGA clock rate for reliability.
+            </td>
+          </tr>
+          <tr>
+            <td>December&nbsp;10, 2007</td>
+            <td>
+              <ul>
+                <li>Fixed the branch logic, which was backwards.</li>
+                <li>Changed the sample program so some of the computed values are non-zero in the left half.</li>
+                <li>Fixed the <span class="functionName">andi </span> and <span class="functionName">ori </span>
+                instructions so they zero-extend their immediate operands instead of sign-extending them.</li>
+                <li>Implemented the <span class="functionName">lui</span> instruction.</li>
+                <li>Changed the name of the &ldquo;Sign Extend&rdquo; module to &ldquo;Generate Immediate Operand&rdquo;,
+                reflecting the need to route the op code to it in order to handle the three immediate instructions
+                listed above.</li>
+                <li><strong>Bug: </strong> Data memory operations are not working correctly.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>December&nbsp;5, 2007</td>
+            <td>
+              Fixed a compile-time error in the Verilog code for the data memory that had not been present in the 
+              previous version of Quartus.
+            </td>
+          </tr>
+          <tr>
+            <td>April&nbsp;20, 2007</td>
+            <td><ul><li><strong>Bug Fix:</strong> Control unit was not
+            recognizing op codes properly.</li><li>Test program now lets
+            you see the results of memory read
+            operations.</li><li>Changed name of files named <span
+            class="fileName">CPU_Register.xxx</span> to <span
+            class="fileName">PC_Register.xxx</span>.</li></ul></td>
+          </tr>
+          <tr>
+            <td>April&nbsp;19, 2007</td>
+            <td>Original Version</td>
+          </tr>
+        </table>
+
+        <p>
+          From this point forward, you will always have a working version of the project that you can submit. As you
+          complete each of the development steps listed below, create a backup copy of the project in a directory named
+          <span class="directoryName">Optional_Assignment.<i>n</i></span>, where <i>n</i> is the tested and completed
+          step number.
+        </p>
+        
+        <h3>Development Steps</h3>
+          <ol>
+            <li>
+              <h5>Test the design distrbuted in the Zip file.</h5>
+              <p class="runin">
+                Build the project as distributed, and load it into a DE1. See the section on <a href="#testing">Testing 
+                the Project</a> below, and practice using the testbed to examine and verify the correct behavior of
+                the project using the supplied testbed.
+              </p>
+            </li>
+            <li>
+              <h5>
+                Immplement the full 32-bit ALU.
+              </h5>
+              <p class="runin">
+                In <a href="Assignment_02.xhtml">Assignment 2</a> you implemented a 4-bit version of the MIPS ALU using
+                four 1-bit slices, along with logic for producing all four condition code bits (CVNZ). Now you need a
+                full 32-bit ALU, but you need to generate only the Zero condition code bit.
+              </p>
+              <p class="standoutBox">
+                Look at the symbol for the ALU in the schematic part of the project I am supplying for the exact input and
+                output names you need to use for your ALU. If you fail to use exactly the same pin names, your
+                implementation will not be able to substitute directly for mine and you will have to go through a lot of
+                extra work to get your project to function.
+              </p>
+              
+              <p>
+                Build your 32-bit ALU hierarchicaly: the top level matches the symbol used in <span class="fileName">
+                single_cycle_datapath.v</span>. Implement the top level using 4 8-bit ALU slices. Each 8-bit slice has the
+                four function code bits as inputs, eight A_operand inputs, eight B_operand inputs, eight result outputs, 
+                one Zero condition code output, one SLTin input, one SLTout output, a carry_in, and a carry_out. Here is
+                a rough schematic for implementing the top-level of your ALU: (Right-click to save/view full-size image.)
+              </p>
+              <p><img src="images/MIPS_ALU.png"
+                      alt="MIPS ALU Constructed from four 8-bit slices"
+                      width="100%" />
+              </p>
+              <p>
+                Once you have the project that I supplied set up and working, copy that whole project directory to another 
+                directory named <span class="directoryName">Step_1</span>. Open the project in <span 
+                class="directoryName">Step_1</span>, make sure it still builds correctly, and then go to the <span 
+                class="menuItem">Project-&gt;Add/Remove&nbsp;Files&nbsp;in&nbsp;Project</span> menu item, and delete
+                <span class="fileName">ALU.v</span> (my Verilog implementation of the ALU) from the project.
+                Provided you used the correct pin names for the top level part of your design, you will not have to
+                create a new symbol file for your ALU. This is important, because having your implementation match
+                the symbol already used in <span class="fileName">single_cycle_data_path.bdf</span> means you do not need
+                to modify that schematic. Just construct your ALU, making sure each BDF file gets added to the project,
+                and when you re-build the project, your ALU will have replaced the Verilog one that you deleted above.
+              </p>
+              <p>
+                Test this version of the project just as carefully as you did the previous version. Make sure every ALU
+                operation works correctly. When the project is working, copy the entire project directory to another
+                directory named <span class="directoryName">Step_2</span> and proceed to the next step.
+              </p>
+            </li>
+            <li>
+              <h5>Implement the register file.</h5>
+              <p class="runin">
+                Open the project in the <span class="directoryName">Step_2 </span> directory and remove
+                <span class="fileName">Register_File.v </span> from the project. Copy your 
+                <span class="fileName">MIPS_Register_File.bdf </span> and any additional sub-diagrams (if any) that you
+                created for <a href="Assignment_05.xhtml">Assignment 5</a> into your <span 
+                class="directoryName">Step_2</span> directory. Rename <span class="fileName">MIPS_Register_File.bdf </span>
+                to just <span class="fileName">Register_File.bdf </span> so it will match this project. Now,
+                use the <span 
+                class="menuItem">Project-&gt;Add/Remove&nbsp;Files&nbsp;in&nbsp;Project</span> menu item to add this 
+                (these)
+                file(s) to this project. Open up the register file schematic and change the pin names so they exactly
+                match the names used for the <span class="variableName">Register_File</span> symbol in
+                <span class="fileName">single_cycle_datapath.bdf</span> (<span 
+                class="variableName">read_reg_1[4..1]</span>, etc.)
+              </p>
+              <p>
+                At this point, you will have to make a change to the top-level schematic for the project. The design uses
+                two clock inputs: <span class="variableName">CPU_Clock</span> is the one that is connected to <span
+                class="variableName">Key0</span> so you can step through the execution one clock cycle at a time.  The
+                other clock is called <span class="variableName">FPGA_Clock</span>, and is connected to one of the
+                actual high-speed clock inputs the DE1 board supplies to the FPGA. The <span
+                class="variableName">FPGA_Clock</span> is the one that was just called <span
+                class="variableName">Clock</span> in Assignment 5. The Verilog version of the register file used the
+                <span class="variableName">CPU_Clock</span>, but your register file probably will not work reliably
+                unless it uses the <span class="variableName">FPGA_Clock</span> instead. (I have not tested this; you
+                can try testing your design with the <span class="variableName">CPU_Clock</span> and ignore what I am
+                about to say if it works.) The fix is to connect the <span class="variableName">CPU_Clock</span> input
+                of the Register File to the <span class="variableName">FPGA_Clock</span> instead of the
+                schematic&rsquo;s <span class="variableName">CPU_Clock</span>. The input pin for <span
+                class="variableName">FPGA_Clock</span> is over on the right side, below the <span
+                class="variableName">data_memory</span>.
+              </p>
+              <p class="standoutblock">
+              	Your schematic has to use the same pin names as the existing <span 
+                class="variableName">Register_File</span> symbol. So the input named <span 
+                class="variableName">Clock</span> in Assignment 5 has to be renamed to <span 
+                class="variableName">CPU_Clock</span>, even though it is actually connected to a pin named
+                <span class="variableName">FPGA_Clock</span>! (sigh)
+              </p>
+              <p>
+              	Build your design and test it carefully. Make sure all the register operations work correctly, starting
+                with the values read from register 0 in the first instruction! Once everything is working correctly,
+                copy the entire <span class="directoryName">Step_2</span> directory to another one named
+                <span class="directoryName">Step_3</span>.
+              </p>
+            </li>
+            <li>
+              The following modules remain to be built:
+              <ol class="level2outline">
+              	<li><span class="variableName">control_unit</span></li>
+              	<li><span class="variableName">alu_control</span></li>
+              	<li><span class="variableName">gen_immediate_operand</span></li>
+              	<li><span class="variableName">calc_JumpAddress</span></li>
+              	<li><span class="variableName">calc_BranchTargetAddress</span></li>
+              	<li><span class="variableName">PC_Register</span></li>
+              </ol>
+              <p>
+              	Implement as many of these as you have time for; you may do them in any order (calculating the jump and
+                branch target addresses should be particularly easy), but you must complete and test each one you do before
+                starting work on the next one. Use a different naming scheme for these units: name the directories for
+                each step <span class="directoryName">Step_4-calc_JumpAddress</span>, <span 
+                class="directoryName">Step_5-calc_BranchTargetAddress</span>, etc. But substitute the actual name of the
+                unit you implement in each step so I can tell which directory contains which unit when I look at your
+                assignment.
+              </p>
+              <p class="standoutblock" id="last_step_rule">
+              	When you stop working on the project (I do not expect anyone to have enough time to do the whole thing),
+                the last step you worked on might or might not be working: be sure to tell me its status in the email
+                you send me.
+              </p>
+              <p class="standoutblock">
+              	You will receive no credit for attempting more than one non-working step. You will <strong>lose 
+                points</strong> if your
+                account has a non-working design in any directory except the one with the highest step number you got to.
+              </p>
+            </li>
+          </ol>
+      </div>
+      
+      <h2 id="testing">Testing the Project</h2>
+      <div class="whitebox">
+        <p>
+          At each step of the project, you need to test the design carefully to make sure it works correctly before
+          starting work on the next step. Because of the complexity of the CPU, there is no way to track down problems
+          except by testing each small change: if the processor doesn&rsquo;t work, you know the problem is in whatever
+          you changed last.
+        </p>
+        <p>
+          You may construct your own test program, but the following description is based on the sample program I
+          provided with the original design. Once you are comfortable with the steps listed here, you can adapt it as
+          necessary to your own sample programs.
+        </p>
+        <p>
+          Analyzing the processor consists of looking at and interpreting all the information available for each
+          instruction in the program under test. Remember: Key 0 is the system clock and this is the single-cycle
+          design, so each click of Key 0 completes the execution of one instruction. When you first load the design into
+          a DE1, the PC register will have the value 0x00000000 (at least, it <em>should</em>), which means that you can
+          look at all the settings for the first instruction in the program. Pressing Key 0 will execute that
+          instruction and advance the PC register to 0x00000004, and you can then look at all the information for that
+          instruction. The following show you what information you can select to look at and how the control signals are
+          displayed when you select them for display.  Keys 3-1 are used to select the information to display.
+        </p>
+        <div id="info-select">
+          <table>
+            <tr><th>Key[3:1]</th><th>Display</th></tr>
+            <tr><td>3'b000</td><td>Current Program Counter (PC)</td></tr>
+            <tr><td>3'b001</td><td>Current Instruction</td></tr>
+            <tr><td>3'b010</td><td>Read Data 1 (R<span
+              class="subscript">rs</span>)</td></tr>
+            <tr><td>3'b011</td><td>Read Data 2 (R<span
+              class="subscript">rt</span>)</td></tr>
+            <tr><td>3'b100</td><td>ALU Result</td></tr>
+            <tr><td>3'b101</td><td>Debug (Branch target address)</td></tr>
+            <tr><td>3'b110</td><td>Data Memory data out</td></tr>
+            <tr><td>3'b111</td><td>Control Signals</td></tr>
+          </table>
+          <p class="legend">Display Item Selection</p>
+        </div>
+        <div id="controls_table">
+          <table>
+            <tr> <th>Name</th><th>Bit Position</th><th>Hex Display</th> </tr>
+            <tr> <td>RegDst</td><td>9</td><td>0200</td> </tr>
+            <tr> <td>Jump</td><td>8</td><td>0100</td> </tr>
+            <tr> <td>Branch</td><td>7</td><td>0080</td> </tr>
+            <tr> <td>MemRead</td><td>6</td><td>0040</td> </tr>
+            <tr> <td>MemtoReg</td><td>5</td><td>0020</td> </tr>
+            <tr> <td>ALUOp[1]</td><td>4</td><td>0010</td> </tr>
+            <tr> <td>ALUOp[0]</td><td>3</td><td>0008</td> </tr>
+            <tr> <td>MemWrite</td><td>2</td><td>0004</td> </tr>
+            <tr> <td>ALUSrc</td><td>1</td><td>0002</td> </tr>
+            <tr> <td>RegWrite</td><td>0</td><td>0001</td> </tr>
+          </table>
+          <p class="legend">Control Signals</p>
+        </div>
+        
+        <p class="clear">
+          The sample program is designed to test various features of the CPU. Here is the rationale behind the choice of
+          instructions.
+        </p>
+        <p>
+          First, here is the sample program in the form of part of a PC-spin log file. Everything to the right of each
+          colon (:) is the assembly language program file that the PC-Spim simulator can load and execute. The
+          information to the left of each semicolon (;) is the assembled equivalent of the assembly language. The line
+          numbers in between start at 3 instead of 1 because some comment lines have been omitted. The # symbols mark
+          comments that were in the original source code file.
+        </p>
+        <p class="codeBlock">
+                                            ;  3:       .text
+ [0x00400000] 0x00003020  add $6, $0, $0    ;  4: main: add   $6, $0, $0     # r6&lt;=00000000
+ [0x00400004] 0x3c061000  lui $6, 4096      ;  5:       lui   $6, 0x1000     # Needed for PC-SPIM
+ [0x00400008] 0x34029111  ori $2, $0, 37137 ;  6:       li    $2, 0x9111     # r2&lt;=00009111
+ [0x0040000c] 0x00421820  add $3, $2, $2    ;  7:       add   $3, $2, $2     # r3&lt;=00012222
+ [0x00400010] 0x00632020  add $4, $3, $3    ;  8:       add   $4, $3, $3     # r4&lt;=00024444
+ [0x00400014] 0x00822822  sub $5, $4, $2    ;  9:       sub   $5, $4, $2     # r5&lt;=0001b333
+ [0x00400018] 0xacc20008  sw $2, 8($6)      ; 10:       sw    $2, 8($6)      # M[00000008]&lt;=00009111
+ [0x0040001c] 0xacc3000c  sw $3, 12($6)     ; 11:       sw    $3, 12($6)     # M[0000000C]&lt;=00012222
+ [0x00400020] 0x20c60003  addi $6, $6, 3    ; 12:       addi  $6, $6, 3      # r6&lt;=00000003
+ [0x00400024] 0x20c60009  addi $6, $6, 9    ; 13:       addi  $6, $6, 9      # r6&lt;=0000000C
+ [0x00400028] 0xacc40004  sw $4, 4($6)      ; 14:       sw    $4, 4($6)      # M[00000010]&lt;=00024444
+ [0x0040002c] 0x8cc7fffc  lw $7, -4($6)     ; 15:       lw    $7, -4($6)     # r7&lt;=M[00000008] (00009111)
+ [0x00400030] 0x30e0ffff  andi $0, $7, -1   ; 16:       andi  $0, $7, 0xFFFF # Check contents of r7
+ [0x00400034] 0x8cc70000  lw $7, 0($6)      ; 17:       lw    $7, 0($6)      # r7&lt;=M[0000000C] (00012222)
+ [0x00400038] 0x30e0ffff  andi $0, $7, -1   ; 18:       andi  $0, $7, 0xFFFF # Check contents of r7
+ [0x0040003c] 0x8cc70004  lw $7, 4($6)      ; 19:       lw    $7, 4($6)      # r7&lt;=M[00000010] (00024444)
+ [0x00400040] 0x30e0ffff  andi $0, $7, -1   ; 20:       andi  $0, $7, 0xFFFF # Check contents of r7
+ [0x00400044] 0x1062ffee  beq $3, $2, -72   ; 21:       beq   $3, $2, main   # no branch
+ [0x00400048] 0x08100000  j 0x00400000      ; 22:       j     main           # jump
+                                            ; 23:       .end
+        </p>
+        <p>
+          The numbers in square brackets on the left side of lines 4-22 are memory addresses. The PC-Spim simulator
+          implements a single memory for instructions and data. Instructions go into a &ldquo;text&rdquo; (code) segment
+          that conventionally starts at memory address 0x00400000 for application programs like this. (The operating
+          system kernel occupies the memory addresses below this.) Memory addresses from 0x10000000 on up are used for
+          the program&rsquo;s data. But for the single-cycle CPU we implement on the FPGA, these two segments are
+          actually separate memories, both of which use addresses starting at 0x00000000. The code I am providing uses
+          Verilog to implement 64 words of instruction memory on the FPGA itself and provides a Verilog interface that
+          implements data memory using a 512KB SRAM (Static RAM) chip on the DE1, separate from the FPGA.
+        </p>
+        <p>
+          The first line (line 3) says that the following statements will go into the text segment. The first
+          instruction has the label <span class="variableName">main</span> to indicate the first instruction to be
+          executed. This is a carry-over from the C/C++ programming languages, where execution always starts at the
+          <span class="functionName">main()</span> function.  To run the program, there has to be a startup routine that
+          sets up the parameters to be passed to main, followed by a jump to main(), followed by (in case main()
+          returns) an <span class="functionName">exit()</span> call to the operating system.  The significance of all
+          these details is that this program will be loaded into memory location 0x00000000 in our FPGA implementation
+          of the CPU, but will be loaded into memory location 0x00400024 when run in the PC-Spim simulator. That address
+          is 0x00400000, the traditional load point for MIPS programs, plus room for the nine instructions that make up
+          the statup code. The difference in addresses has to be taken into account if you try to follow the program
+          steps on the FPGA and in the simulator at the same time. In the simulator you would see addresses starting at
+          0x00400024, but I've edited the above listing so the addresses will look more like the FPGA addresses. In the
+          descriptions below I have included the FPGA instruction-memory address for each instruction.
+        </p>
+        <p>
+          Here is a description of what to look for while executing the sample program:
+        </p>
+        <dl>
+          <dt class="codeBlock">0x0000: add   $6, $0, $0</dt>
+              <dd>
+                <p>
+                  With no keys pressed, the PC is displayed: Use switch 9 to verify that both halves of the PC are 0x0000.
+                </p>
+                <p>
+                  The assembled code for this instruction is 0x00003020. Pressing just Key 1 selects the output of
+                  Instruction memory for display: with switch 9 down you should see 0x3020, and with switch 9 up you
+                  should see 0x0000. Reading from register 0 should produce all zeros, so using Keys 3-1 to enter either
+                  010<span class="subscript">2</span> (Read register 1) or 011<span class="subscript">2</span> (Read
+                  register 2) and with switch 9 in either the up or down position should always display the value
+                  0x0000.
+                </p>
+                <p>
+                  Press Key 3 to see the ALU result: 0 + 0 = 0, so the hex displays should show 0x0000 for both
+                  positions of switch 9.
+                </p>
+                <p>
+                  This is not a branch instruction, so the debug register is not relevant. But you could verify that the
+                  value displayed is what the branch target address would be if this were a branch instruction:
+                  0x0000C084.  This value is PC+4 (0x00000004) plus the rightmost sixteen bits of the instruction, sign
+                  extended.
+                </p>
+                <p>
+                  Data memory out could be anything at this point because no memory operations have been performed yet.
+                </p>
+                <p>
+                  The control signals should display 0x0211 (whichever position switch 9 is in): RegDst, ALUOp[1], and
+                  RegWrite are true. That is, the <span class="variableName">rd</span> field rather than the <span
+                  class="variableName">rt</span> field is being used as the destination register number (because this is
+                  an R-Format instruction), the ALU function code will be determined by the <span
+                  class="variableName">func</span> field of the instruction (again, because this is an R-Format
+                  instruction), and the register file will be written into.
+                </p>
+                <p>
+                  Finally, the five rightmost red LEDs show the write register number (00110<span
+                  class="subscript">2</span>), which is the <span class="variableName">rd</span> field of the
+                  instruction (the destination register number is 6).
+                </p>
+                
+              </dd>
+          <dt class="codeBlock">0x0004: lui   $6, 0x1000</dt>
+            <dd>
+              <p>
+                This instruction is in the program to make it work in the simulator&mdash;it loads the left half of the
+                address of the memory&rsquo;s data segment into register 6. Since it also zeros out the right half of
+                the destination register, this one instruction is sufficient to put 0x1000000 into register 6. Select
+                100<span class="subscript">2</span> with Keys 3:1 to verify that the ALU output is this value.
+              </p>
+              <p>
+                Remember, however, that this instruction is not actually needed when running the program on the FPGA
+                because: (a) The &ldquo;data segment&rdquo; is actually the separate Data Memory rather than part of the
+                unified instruction-data memory used by the simulator.  (b) The DE1 SRAM chip used for the data memory
+                holds only 512KB (64K words), so only the rightmost 19 bits of memory addresses are actually used and
+                any bits in the leftmost 13 bit positions are ignored.  The memory address loaded into register 6 by
+                this instruction is effectively 0x00000000.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x0008: li    $2, 0x9111</dt>
+            <dd>
+              <p>
+                Load immediate is a pseudo-operation. As you can see from the listing, the assembler treats it as an
+                <span class="functionName">or immediate</span> instruction using zero as the first operand. Looking at
+                the ALU output verifies that the immediate operand (0x00009111) is the proper computed value, indicating
+                that immediate instructions are at least partly working correctly. The next instruction will verify that
+                the value was written to the register file correctly.
+              </p>
+              <p>
+                Note that the operand value has been zero-extended rather than sign-extended. The <span
+                class="functionName">andi</span> and <span class="functionName">ori</span> instructions are unlike other
+                I-Format instructions in this regard.
+              </p>
+              <p>
+                Verify that the control signal display is 0x1B. The seven segment display has a tough time displaying a
+                'B' because all seven segments lighted up would look like an '8'. So it shows a lower-case version
+                ('b'), which in turn looks a lot like a '6' -- but that symbol has a line on the top. (Sigh.) Anyway,
+                note that this indicates that the two ALUOp bits are 2'b11, an unused combination in the textbook. I
+                used this setting for I-Format instructions that are not lw/sw/beq/bne. That is, for immediate
+                instructions where the ALU function depends on the instruction&rsquo;s operation code bits. If you look
+                at the top level schematic diagram I supplied, you will see that the op code bits go into the ALU
+                Control unit (my <span class="functionName">alu_control</span> module), which is different from the
+                textbook.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x000C: add   $3, $2, $2</dt>
+            <dd>
+              <p>
+                This is the first R-type instruction that reads non-zero values from the register file, so it is
+                important to verify that both read register values are the same as the value loaded into register 2 in
+                the previous instruction. The ALU should calculate the sum of 0x00009111 and 0x000091111, which is
+                0x00012222; you should verify this by looking at both halves of the ALU result in the seven-segment
+                displays.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x0010: add   $4, $3, $3</dt>
+            <dd>
+              <p>
+                Be sure the result of the previous instruction is being properly read out from both read register values
+                of the register file. Adding 0x00012222 plus itself should be 0x00024444; check ALU out here and read
+                register 1 in the next instruction to verify that the calculation was done correctly.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x0014: sub   $5, $4, $2</dt>
+            <dd>
+              <p>
+                Be sure the two register operands are 0x00024444 and 0x00009111 and that the ALU calculates the proper
+                difference: 0x0001B333. This is the first test of the ALU doing subtraction.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x0018: sw    $2, 8($6)</dt>
+            <dd>
+              <p>
+                At this point, register 6 has zero in it. (Actually, 0x10000000 because of the lui instruction on line
+                5, but that makes no difference for thi present design.) So register 2 should be stored on memory
+                location 0x00000008. You can verify the address by looking at the ALU output, and that the correct data
+                value is being written (read register 2, selector 3'b011, should be 0x00009111), but you will not be
+                able to verify that the data value was actually stored correctly until it are read out of memory using a
+                <span class="functionName">lw</span> instruction below.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x001C: sw    $3, 12($6)</dt>
+            <dd>
+              <p>You should be able to verify the effective address (0x0000000C) and the data (0x00012222).</p>
+            </dd>
+          <dt class="codeBlock">0x0020: addi  $6, $6, 3</dt>
+            <dd>
+              <p>
+                Check that the ALU result is 0x00000003. This is the first instruction to test whether the addi function
+                is being processed correctly for immediate instructions.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x0024: addi  $6, $6, 9</dt>
+            <dd>
+              <p>
+                This instuction completes the process of putting the address 0x0000000C into register 6. That&rsquo;s
+                the address where 0x00012222 was stored.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x0028: sw    $4, 4($6)</dt>
+            <dd>
+              <p>
+                Nothing new is being tested here: 0x00024444 should be the value written into memory address 0x00000010.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x002C: lw    $7, -4($6)</dt>
+            <dd>
+              <p>
+                This instruction tests the use of a negative immediate value as well as reading from data memory. Check
+                the control signals MemRead, MemtoReg, ALUSrc, and RegWrite (0x0063) to be sure they are set correctly.
+                Red LEDs 0-2 should all be on, indicating that the destination register is number 7. And selector code
+                3'b110 should show that the data being read from memory is 0x00009111.
+              </p>
+              <p class="standoutBlock">
+                As of this writing, the correct data value is not being read, indicating an error in Dr. Vickery&rsquo;s
+                Verilog interface to the SRAM on the DE1. The problem could be in either the read or the write operation
+                (or both!).
+              </p>
+            </dd>
+          <dt class="codeBlock">0x0030: andi  $0, $7, 0xFFFF</dt>
+            <dd>
+              <p>
+                This, and the next two <span class="functionName">andi</span> instructions were designed to test whether
+                the <span class="functionName">lw</span> instructions wrote the correct values into the register file.
+                ANDing the contents of register 7 with 0x0000FFFF should force the left half of the ALU output to be
+                all zeros regardless of what was read out. But the right half of the ALU output should match the data
+                read from data memory by the previous instruction.
+              </p>
+            </dd>
+          <dt class="codeBlock">0x0034: lw    $7, 0($6)</dt>
+            <dd>
+              <p>Verify that the effective address is 0x0000000C and that the data value is 0x0012222.</p>
+            </dd>
+          <dt class="codeBlock">0x0038: andi  $0, $7, 0xFFFF</dt>
+            <dd>
+              <p>Verify that the ALU output is 0x00002222.</p>
+            </dd>
+          <dt class="codeBlock">0x003C: lw    $7, 4($6)</dt>
+            <dd>
+              <p>Verify that the effective address is 0x00000010 and that the data value is 0x00024444.</p>
+            </dd>
+          <dt class="codeBlock">0x0040: andi  $0, $7, 0xFFFF</dt>
+            <dd>
+              <p>Verify that the ALU output is 0x00004444.</p>
+            </dd>
+          <dt class="codeBlock">0x0044: beq   $3, $2, main</dt>
+            <dd>
+              <p>
+                The two operands read from the registers should be 0x00012222, and 0x00009111, which are not equal, so
+                the branch should not be taken. Verify that the branch and ALUOp[0] control signals are true. The latter
+                forces the ALU to subtract, and the ALU output should be non-zero (0x00001111 to be precise). The
+                difference is not zero, so the branch should not be taken and the next instruction should be executed.
+              </p>
+           </dd>
+          <dt class="codeBlock">0x0048: j     main</dt>
+            <dd>
+              <p>
+                The jump address is 0x00400000, so stepping to the next instruction should change the PC to that value,
+                which you should be able to verify. But because the Verilog code implements only 64 words of instruction
+                memory, this address aliases to zero, and the program starts over again from the beginning.
+              </p>
+            </dd>
+            </dl>
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+        <p>
+          If you do the project, you must tell me by email any time before the due date. Be sure to tell me the name of
+          your partner and which account has the project if you work in a team. I will collect all the
+          projects from the lab server at midnight on the due date: <strong>Saturday, December 22</strong>. If you
+          tell me you are going to work on the assignment and later change your mind, please let me know before
+          the due date so I don&rsquo;t spend time looking at your project.
+        </p>
+        <p>
+          Send your email to me by midnight of the due date. My email address is: <span class="emailAddress
+          codeBlock">vickery at babbage.cs.qc.edu</span>. Be sure to tell me whether the last step you worked on is
+          functional or not in your email message, as explained <a href="#last_step_rule">above</a>.
+        </p>
+        <p class="standout_block">
+          <strong>You must use exactly this Subject line for your email to be sure I actually receive it:</strong> <span
+          class="codeBlock">CS-343 Optional Assignment</span>.<br />Include the "CS-343" part in the subject line of
+          <em>all</em> messages you send to me this semester.
+        </p>
+        <p>
+          If you do not receive an &ldquo;OK, I&rsquo;ll check it out!&rdquo; reply from me within a day or two of
+          submitting the assignment, it means I did not receive it. But I will be sending that acknowledgement manually,
+          so don&rsquo;t resubmit the assignment until I have had a chance to reply to the first one.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home</a>&nbsp;-&nbsp;<a
+           href="http://validator.w3.org/check?uri=referer"> XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer"> CSS</a>
+      </p>
+      <p><em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em></p>
+    </div>
+  </body>
+</html>

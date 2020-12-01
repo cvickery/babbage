@@ -1,0 +1,185 @@
+<?php
+  echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>COAD 4e Chapter 4</title>
+		<meta http-equiv="content-type"	content="text/html;charset=utf-8" />
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+	</head>
+
+	<body>
+		<pre>
+4.6.1 The IF stage includes the MUX for selecting the input to the PC, the PC, the adder for
+      computing PC+4, and the Instruction Memory. No delay is given for reading from the PC, so
+      the critical path is either the adder and the MUX, or the time it takes to read from IM.
+      For both
+      a. and b. the IM time far exceeds the adder plus mux time, so the answers are:
+      a. 400 ps
+      b. 500 ps
+
+4.6.2 Read from PC; read from IM | calculate PC+4; read regs | sign extend; shift left 2;
+      PC+4 + {14{Immediate[15]},Immediate, 2'b0}
+
+      (Semicolons show sequential delays, while vertical bars show parallel delays; use the max
+      of parallel delays.)
+
+      a. 0; 400 | 100; 200 | 20;  2; 100 = 0 + 400 + 200 + 2  + 100 = 702 ps
+      b. 0; 500 | 150; 220 | 90; 20; 150 = 0 + 500 + 220 + 20 + 150 = 890 ps
+
+      Note: the mux between the BTA adder and PC is not included because BTA output is always
+      used.
+
+4.6.3 As above, but need mux going into ALU, and the ALU itself:
+
+a. 0; 400 | 100; 200 | 20;  2 |  30; 100 | 120;  30 = 0 + 400 + 200 +  30 + 120 +  30 =  780 ps
+b. 0; 500 | 150; 220 | 90; 20 | 100; 150 | 180; 100 = 0 + 500 + 220 + 100 + 150 + 100 = 1070 ps
+
+4.7.1 Read from PC; read from IM | calculate PC+4; read regs; ALU; write regs
+      (No need to calculate BTA, mux to select input to PC, sign extend, or mux to select input
+      to ALU.)
+      a.  0; 400 | 100; 200; 120; 0 = 720 ps
+      b.  0; 500 | 150; 220; 180; 0 = 900 ps
+
+4.7.2 Read from PC; read from IM | calculate PC+4; read regs | sign extend; ALU; read DM; write
+      regs
+      (No need to calculate BTA, mux to select input to PC, mux to select input to ALU, or mux
+      to select data to write back.)
+      a.  0; 400 | 100; 200 | 20; 120;  350; 0 = 1070 ps
+      b.  0; 500 | 150; 220 | 90; 180; 1000; 0 = 1900 ps
+
+4.7.3 Time for lw must now include all the items omitted in previous question.
+      Read from PC; read from IM | calculate PC+4; read regs | sign extend; (mux for ALU; ALU) |
+      (shift left 2; calculate BTA); (mux to select PC address | read DM; mux to select write
+      data); write regs
+
+      a. 0; 400 | 100; 200 | 20; ( 30; 120) | ( 0; 100);  30 | ( 350;  30); 0
+       = 0; 400      ; 200     ;  150       |  100     ;  30 |  380      ; 0 = 1130 ps
+
+      b. 0; 500 | 150; 220 | 90; (100; 180) | (20; 150); 100 | (1000; 100); 0
+       = 0; 500      ; 220     ;  280       |  170     ; 100 |  1100      ; 0 = 2100 ps
+
+4.7.4
+      a. lw + sw = 30%
+      b. 50%
+
+4.7.5
+      a. addi + beq + lw + sw = 65%
+      b. 70%
+      For add and not, it is computing the sign extended value of the rd, shamt, and funct
+      fields.
+
+4.7.6
+      a. IM is used for all instructions, and has the longest latency of all components.
+      Reducing its latency by 10% would take 40 ps off the worst-case latency, making it 1090.
+      1130 ÷ 1090 is 1.037, so the speedup is 3.7%.
+
+      b. IM is used for all instructions, but DM has double the latency as IM and is used for
+      half the instructions.  So if you take 10% off the IM time, the cycle time for all
+      instructions becomes 2050 ps. If you take 10% off the cycle time for half the
+      instructions, the average cycle time becomes (0.5 × 2100) + (0.5 × 2050) = 2075 ps.  So
+      reduce the IM latency by 10% for a speedup of 2100 ÷ 2050 = 1.024, so the speedup is 2.4%.
+
+4.9.1
+      a. 8CC10028
+      b. 1442FFFF
+
+4.9.2
+      a. 6, yes; 1, yes (but value is not used)
+      b. 1, yes; 2, yes
+
+4.9.3
+      a. 1, yes
+      b. 2, no
+
+4.9.4
+      a. RegDst is 0 (use rt); MemRead = 1
+      b. RegWrite is 0; MemRead = 0
+
+4.12.1
+      a. pipelined: 500 ps; non-pipelined: 1650 ps
+      b. pipelined: 190 ps; non-pipelined:  800 ps
+
+4.12.2
+      a. 500 ps; 1650 ps
+      b. 190 ps;  800 ps
+
+4.12.3
+      a. MEM; 400 ps
+      b.  IF; 190 ps
+
+4.12.4
+      a.  25%
+      b.  45%
+
+4.12.5
+      a.  65% (ALU + lw)
+      b.  60%
+
+4.12.6  Use answers to 4.12.1 or 4.12.2 for the pipelined and single-cycle designs.
+          ALU: IF + ID + EX + WB
+          beq: IF + ID + EX
+          lw:  IF + ID + EX + MEM + WB
+          sw:  IF + ID + EX + MEM
+
+        a.  .50 (300 + 400 + 350 + 100)       =  575.0
+            .25 (200 + 400 + 350)             =  237.5
+            .15 (200 + 400 + 350 + 500 + 100) =  232.5
+            .10 (200 + 400 + 350 + 500)       =   72.5
+                                              = 1117.5 ps
+
+        b.  .30 (200 + 150 + 120 + 140)       =  183.0
+            .25 (200 + 150 + 120)             =  117.5
+            .30 (200 + 150 + 120 + 190 + 140) =  240.0
+            .15 (200 + 150 + 120 + 190)       =   99.0
+                                              =  639.5 ps
+
+4.13.1  (cc refers to clock cycles; it takes 7 clock cycles to execute all three instructions.)
+        a.    IF  ID  EX  ME  WB
+          lw  cc1 cc2 cc3 cc4 cc5
+          add cc2 cc3 cc4 cc4 cc6
+          sw  cc3 cc4 cc5 cc6 cc7
+
+          When the sw reads its registers in cc4, rs ($1) is in the ME/WB register, so the
+          reference is a type 2a hazard (pg 365). rt ($r6) is in the EX/ME, so this is a type 1a
+          hazard.
+
+        b.    IF  ID  EX  ME  WB
+          lw  cc1 cc2 cc3 cc4 cc5
+          sw  cc2 cc3 cc4 cc4 cc6
+          add cc3 cc4 cc5 cc6 cc7
+
+          When the sw tries to get the values of both rs and rt ($5) in cc3, it has not yet been
+          read from ME because the lw is still in the EX stage, so this data dependency will
+          cause a stall.
+
+          When the add needs the value of $5 for both rs and rt in cc4, the value is now in
+          ME/WB, so this is a type 1a hazard.
+
+4.13.2
+          a. lw, add, nop, sw
+          b. lw, nop, nop, sw, add
+
+4.13.3
+          a. No nops needed
+          b. lw, nop, sw, add
+
+4.13.4
+          a. 8×300 = 2400 ps; 7×400 = 2800 ps; slowdown is 2400/2800 = 0.86
+          (8 clocks because of one nop with no forwarding
+
+          b. 9×200 = 1800 ps; 8×250 = 2000 ps; slowdown is 1800/2000 = 0.90
+          (9 = 7 + 2 nops; 8 = 7 + 1 nop)
+
+4.13.5
+          a.  lw, add, nop, sw
+          b.  lw, nop, nop, sw, add
+
+4.13.6
+          a.  8×300 = 2400 ps; 8×360 = 2880 ps; slowdown is 2400/2880 = 0.83
+          b.  9×200 = 1800 ps; 9×220 = 1980 ps; slowdown is 1800/1980 = 0.91
+		</pre>
+	</body>
+</html>

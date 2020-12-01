@@ -1,0 +1,336 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-343 Assignment 3</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 3</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This assignment gives you a chance to practice building combinational logic circuits using the &ldquo;DE1&rdquo; prototyping circuit boards
+          available in the course
+          laboratory. The assignment consists of one required part, and two optional parts. Completing the optional parts will give you credit for extra
+          homework assignments, offsetting points you might miss on other homeworks, or even raising your homework score above "full credit."
+        </p>
+        <ul>
+        	<li>
+          	For information on accessing your account in the course laboratory, see <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a>.
+          </li>
+          <li>
+          	The list of I/O Pin names and numbers for the DE1 prototyping board is at <a href="../Pins_DE1.xhtml">DE1 I/O Pins</a>.
+          </li>
+        </ul>
+      </div>
+      <h2>DE1 Prototyping Kits</h2>
+      <div>
+      	<p>
+        	The DE1 Prototyping Kits are circuit boards with an <a href="http://www.altera.com">Altera</a> Field Programmable Logic Array (FPGA)
+          chip that is connected to several switches,
+          buttons, LEDs (light emitting diodes), seven-segment displays, clocks, memories, audio I/O, and video output devices. In this assignment, you will
+          learn to use Altera&rsquo;s <span class="programName">Quartus</span> software to build a configuration file that you can download from the PC
+          to the DE1 over a standard USB cable.
+        </p>
+        <p>
+        	There are DE1 kits in the Computer Science Department laboratory that you can sign out (while the department office is open) and use with the
+          computers in the open part of the TREE lab in SB room A-205.
+        </p>
+        <p>
+        	There are enough DE1 kits available for you to sign one out to take home if you want to work at home. You can access the Quartus software in the
+          lab from off campus (see the <a href="../../TREE_Lab/using_scp.xhtml">Working From Off Campus</a> web page), but you would need to take a kit
+          home in order to test your project. If you do want to take a kit home, you must first install the Quartus software on your computer and get a
+          license file from Altera to get it to work.
+        </p>
+        <ul>
+        	<li>
+          	<p>
+            	The Quartus software is about 1GB; download it from Altera&rsquo;s web site at <a
+            	href="https://www.altera.com/support/software/download/altera_design/quartus_we/dnl-quartus_we.jsp">Quartus Web Edition Software v8.0 SP1</a>.
+            </p>
+            <p>
+            	You will need to register with Altera to do the download.
+            </p>
+          </li>
+          <li>
+          	You will also need a free license to use the software. Use the link that is right under the yellow &ldquo;Download&rdquo; button on the <a
+            href="https://www.altera.com/support/software/download/altera_design/quartus_we/dnl-quartus_we.jsp">Quartus Web Edition Software v8.0 SP1</a>
+            page.
+          </li>
+          <li>
+          	The software available for downloading from Altera is newer (version 8.0 SP1) than the version in the lab (version 7.2), but that will not
+            make any difference for this project.
+          </li>
+        </ul>
+        <p class="standout_block">
+        	If you take a DE1 kit home, you are responsible for returning it in working order to the department. The cost for replacing a lost or broken kit
+          is $125. You can purchase your own kit directly from the DE1 manufacturer in Taiwan, <a 
+          href="http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&amp;CategoryNo=39&amp;No=83">www.terasic.com</a>.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+          	<h5>Set up and test the Quartus project for the assignment.</h5>
+            <p>
+            	I am providing a completed version of the project, written entirely in Verilog. Download <a href="MIPS_ALU.zip">MIPS_ALU.zip</a>
+              and unzip it into the <span class="directoryName">My Projects</span> directory (folder) you will find under <span 
+              class="directoryName">My Documents</span> in your lab account. If you are working from home, you may unzip the file any place that is
+              convenient. You should now have a directory named <span class="directoryName">MIPS_ALU</span>. You will get about 100 files, including a
+              subdirectory named <span class="directoryName">db</span>.
+            </p>
+            <p>
+            	Start Quartus, and open the project file, <span class="fileName">MIPS_ALU\MIPS_ALU.qpf</span>. When you try to open a file, the default
+              will be to select a &ldquo;design file;&rdquo; you have to change the file type to &ldquo;project files&rdquo; to see this file so you
+              can open it.
+            </p>
+            <p>
+            	The project is all built and ready to go. Connect the DE1 to a USB port on your computer.
+            	  (There is a power cord in the box with the DE1, but you don't need it: the USB port should
+            	  supply all the power you need.) The red and green LEDs and the four seven-segment displays
+            	  should start flashing in an &ldquo;interesting&rdquo; pattern to show that the board is
+            	  connected and working. There is a big red pushbutton that can be used to turn the board
+            	  off, which never needs to be pressed. But if the board does not light up, you might need
+            	  to press this button. Also, there is a little slide switch on the left edge of the board
+            	  labeled &ldquo;Run/Prog;&rdquo; make sure it is in the &ldquo;Run&rdquo;
+              position. (It never needs to be in the other position.)
+            </p>
+            <p>
+            	To test the project, be sure the DE1 is plugged in and active, and then click the &ldquo;Programmer&rdquo; button, which the the third from 
+              the right near the top of the Quartus window. This will
+              open a subwindow for the file, MIPS_ALU_Testbed.cdf. You should see a file named MIPS_ALU_Testbed.sof listed in that subwindow; this is the
+              programming file that you are going to download to the FPGA on the DE1 board. Near the top of the subwindow there is a &ldquo;Hardware
+              Setup&rdquo; button. You need to click on that to open a dialog window that you use to select the &ldquo;USB Blaster&rdquo; option for
+              doing the download. If the DE1 isn&rsquo;t already plugged in when you click this button, you will not see the USB Blaster option, and will have
+              to exit the dialog window and try again after the device is connected to the computer. You shouldn&rsquo;t need to change anything else, but
+             just in case, be sure the Mode window has the JTAG option selected. The Start button should be enabled; click on it, wait a couple of seconds
+             for the project to download to the board, and observe that the lights have stopped flashing. Assuming the ten slide switches are all in their
+             &ldquo;off&rdquo; position (towards the bottom edge of the board), and assuming you are not pressing any of the blue push buttons, the red and
+             green LEDs should all be off, and the seven segment displays should show 0010<span class="subscript">16</span>.
+            </p>
+            <ul>
+            	<li>
+              	The leftmost four slide switches are the A inputs to the ALU. As you turn them on and off, observe that the red LEDs above them turn on
+                and off,
+                and that their hexadecimal value appears in the leftmost seven segment display (marked HEX3 on the circuit board).
+              </li>
+              <li>
+              	The middle two switches (numbers 4 and 5) are connected to the middle two red LEDs, but otherwise do nothing.
+              </li>
+              <li>
+              	The rightmost four switches are the B inputs to the ALU. They are connected to red LEDs 0-3 and to the second seven segment display (HEX2).
+              </li>
+              <li>
+              	The four push buttons (KEY3 .. KEY0) are connected to the rightmost four green LEDs, and supply the four function bits for the ALU:
+                A<span class="subscript">inv</span> (KEY3), B<span class="subscript">neg</span> (KEY2), F<span class="subscript">1</span> (KEY1),
+                and F<span class="subscript">0</span> (KEY0).
+              </li>
+              <li>
+              	The third seven segment display (HEX1) displays the condition code bits: C, V, N, and Z from left to right as a 4-bit value.
+              </li>
+              <li>
+              	The rightmost seven segment display (HEX0) displays the ALU result, in hexadecimal.
+              </li>
+              <li>
+              	The other four green LEDs (7-4) are not connected to anything, and will stay off.
+              </li>
+            </ul>
+            <p>
+              Try various combinations of values for A, B, and function code bits, and verify that you understand what the circuit is doing and that the
+              values displayed are always correct. For example, the initial values on the seven segment displays, 0010<span class="subscript">16</span>,
+              corresponds to A and B both being
+              0000<span class="subscript">2</span>, the condition code bits equal to 0010<span class="subscript">2</span>, and a result of
+              0000<span class="subscript">2</span>. With no buttons pressed, this corresponds to 
+              0000<span class="subscript">2</span>,&nbsp;&amp;&nbsp;0000<span class="subscript">2</span>, with carry, overflow, negative, and zero equal to
+              0001<span class="subscript">2</span>, and a result of 0000<span class="subscript">2</span>. (Tell me if you find any errors!)
+            </p>
+          </li>
+          <li>
+          	<h5>Required: Implement the full adder module as a schematic diagram.</h5>
+            <p>
+            	I have implemented the ALU as a set of five Verilog modules: <span class="fileName">MIPS_ALU_Testbed.v</span>, 
+              <span class="fileName">MIPS_ALU.v</span>, <span class="fileName">Bit_Slice.v</span>,  <span class="fileName">Full_Adder.v</span>, and 
+              <span class="fileName">hex2sevenseg.v</span>. The testbed module connects the switches, buttons, LEDs, and seven segment displays on the
+              DE1 to the MIPS ALU, which is implemented in the eponymous module. The ALU uses four copies of the Bit_Slice module, each of which has
+              one copy of the Full_Adder module. In addition, the Testbed module uses four instances of the hex2sevenseg module to generate the combinations 
+              of segments to
+              illuminate for displaying the hexadecimal values 0-F. If you go to the Quartus <span class="menu_item">Project</span> menu and select
+              add/remove files, you will see the files for these five modules, along with two others that were generated by the Altera multiplexer
+              megawizard.
+            </p>
+            <p>
+            	For this part of the assignment, you are to create a schematic diagram to implement the Full_Adder module. If you use the project navigator
+              to open the <span class="fileName">Full_Adder.v</span> file, you will see this:
+            </p>
+            <p class="code_block">
+//  Full_Adder.v
+/*  A full adder.
+ *  C. Vickery October, 2008
+ */
+module Full_Adder (
+  input   wire Ain, Bin, Cin,
+  output  wire Sum, Cout
+  );
+
+  assign Sum = Ain ^ Bin ^ Cin;
+  assign Cout = (Ain &amp; Bin) | (Ain &amp; Cin) | (Bin &amp; Cin);
+
+endmodule
+            </p>
+            <p>
+            	The <span class="functionName">module</span> statement at the beginning declares the inputs and outputs for the module: your schematic
+              diagram must use exactly the same names (capitalization matters) for the three input pins and two output pins of your schematic.
+            </p>
+            <p>
+              Use the <span class="menu_item">File&rarr;New</span> menu item to create a new file, and select "Block diagram schematic" for the file type.
+              Add three input pins and two output pins to the schematic and name them so they match the names in the Verilog
+              module, as demonstrated in class. Save the file with the name <span class="fileName">Full_Adder</span> (Quartus will add a 
+              <span class="fileName">.bdf</span>, for
+              &ldquo;Block Diagram File,&rdquo; automatically.) Be sure the &ldquo;Add to project&rdquo; option is checked in the save dialog.
+            </p>
+            <p>
+            	Implement the full adder function. The result should look something like this: (Download the image if you need to see it more clearly):
+            </p>
+						<p>
+              <img src="images/Full_Adder.png" alt="Full Adder schematic diagram" width="500" />
+            </p>
+            <p>
+            	In the above diagram, the <span class="functionName">Sum</span> function is implemented using two XOR gates because there is no three-input
+              XOR gate in the Quartus library. You could also implement it using four AND gates and an OR gate.
+            </p>
+            <p>
+            	At this point, you have two different implementations of the Full Adder module. Go to the <span class="menu-item">Project</span> menu,
+              and delete the <span class="fileName">Full_Adder.v</span> file from the project. Note that you do not need to actually delete the file
+              from the project directory, just remove it from the list of files that are listed under the Project menu. While you are there, verify that
+              your <span class="fileName">Full_Adder.bdf</span> file is listed as one of the files in the project.
+            </p>
+            <p>
+            	Verify that your block diagram can be processed with no warnings, and no errors. You do this by typing &lt;Ctrl&gt;&ndash;K to run just
+              the Analysis and Synthesis part of the build process. There should be a message in the bottom panel saying there are No Warnings and No
+              Errors when this step completes. If not, there is something wrong with your schematic, which you will have to fix before proceeding.
+            </p>
+            <p>
+            	Now buld a new <span class="fileName">.sof</span> file for the project that uses your new full adder module: type &lt;Ctrl&gt;&ndash;L.
+              This will take a couple of minutes, and there will be the following warnings that you can safely ignore: 
+            </p>
+            <p>
+            	<img src="images/quartus_warnings.png" alt="Four warnings you can ignore." width="500" />
+            </p>
+            <p>
+            	If you see just the four warnings shown above, you can launch the programmer again as you did earlier, and download your new
+              <span class="fileName">MIPS_ALU_Testbed.sof</span> and test it out. (Note: while writing this, I updated my version of Quartus to
+              8.0, and got only the last two warnings.)
+            </p>
+          </li>
+          <li>
+          	<h5>Optional: Implement the Bit_Slice module.</h5>
+            <p class="standout_block">
+            	You will receive no credit for working on this part of the assignment unless the previous step works perfectly. Be sure to test
+              your project carefully before starting this step.
+            </p>
+            <p>
+            	Follow the procedure outlined above to create your schematic for the Bit_Slice module. Be sure to use the 
+              <span class="fileName">Bit_Slice.v</span> source code to get the input and output pin names. (Alternatively, you can see what they are
+              by looking at the symbol in the project library.)
+            </p>
+              
+              <p>The bit slice needs a 4&times;1 multiplexer, which
+              you could construct using the Altera &ldquo;lpm_mux&rdquo; megawizard, as demonstrated in class. But since I already did that, the symbol
+              is already available in the project library, and the implementation is already available in the two extra <span class="fileName">.v</span>
+              files alluded to earlier. You can base your implementation on mine:
+            </p>
+            <p>
+            	<img src="images/Bit_Slice.png" alt="Bit Slice schematic diagram" width="500" />
+            </p>
+          </li>
+          <li>
+          	<h5>Optional: Implement the full MIPS_ALU module.</h5>
+            <p class="standout_block">
+            	You will receive no credit for working on this part of the assignment unless the previous step works perfectly. Be sure to test
+              your project carefully before starting this step.
+            </p>
+            <p>
+            	Once you have done the previous two steps, the procedure for this one should be clear by now. But the schematic is a bit more elaborate:
+            </p>
+            <p>
+            	<img src="images/MIPS_ALU.png" alt="MIPS ALU schematic diagram" width="500" />
+            </p>
+          </li>
+        </ol>
+      </div>
+      
+      <h2>Submit The Assignment</h2>
+      <div>
+      	<p>
+        	When you are ready for me to look at your project, send me an email message containing your name and a statement of which parts of the project
+          you completed. I will retrieve your project from the TREE lab server and check it out. Send your email to:
+        </p> 
+        <address>
+        	Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-343&nbsp;Assignment&nbsp;3</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p class="standout_block">Be sure to put your name in your email message!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs343">CSCI-343 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

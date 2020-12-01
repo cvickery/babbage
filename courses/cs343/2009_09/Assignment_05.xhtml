@@ -1,0 +1,286 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 5</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="css/assignment_05.css" />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head>
+
+  <body id='urn:uuid:D3FEAF6B-478E-481A-A049-2534F94A91EC'>
+    <div id="header">
+      <h1>CS-343 Assignment 5</h1>
+    </div>
+    <div id="content">
+      <h2>Summary</h2>
+      <div>
+        Do a timing analysis of the single-cycle datapath developed in Chapter 4 of the text.
+      </div>
+      <h2>Specifics</h2>
+      <div>
+        <p>
+          Figure 4.24 on page 329 is a diagram of the complete MIPS single-cycle datapath that you
+          are to analyze. The goal is to determine the maximum clock speed that can be used, given
+          some knowledge about the propagation delays of the various components of the datapath.
+        </p>
+        <p>
+          Not to give away the answer, but we know that the worst-case number of propagation delays
+          will be for <em>lw</em> instructions because they require the longest sequence of operations
+          to complete (fetch the instruction, read from the register file, compute the effective
+          address, read from data memory, and write back to the register file.) For this assignment,
+          you are to do a detailed analysis to determine just how long this critical path will take.
+          And to be sure we are right about <em>lw</em> being the critical instruction, you are to
+          analyze branch, jump, and R-Type instructions too.
+        </p>
+        <h3>Assumptions</h3>
+        <p>
+          The following table shows the propagation delays we will work with for all the elements in
+          Figure 4.24, in picoseconds.
+        </p>
+        <table>
+          <tr>
+            <th>Element</th><th>picoseconds</th>
+          </tr>
+          <tr>
+            <td>Multiplexer</td><td>10</td>
+          </tr>
+          <tr>
+            <td>Adder</td><td>100</td>
+          </tr>
+          <tr>
+            <td>Memory Read</td><td>100</td>
+          </tr>
+          <tr>
+            <td>Memory Write</td><td>100</td>
+          </tr>
+          <tr>
+            <td>Register file Read</td><td>100</td>
+          </tr>
+          <tr>
+            <td>Register file Write</td><td>100</td>
+          </tr>
+          <tr>
+            <td>PC read</td><td>10</td>
+          </tr>
+          <tr>
+            <td>ALU</td><td>200</td>
+          </tr>
+          <tr>
+            <td>Shift</td><td>0</td>
+          </tr>
+          <tr>
+            <td>Sign Extend</td><td>0</td>
+          </tr>
+          <tr>
+            <td>Control</td><td>50</td>
+          </tr>
+        </table>
+        <p>
+        	And here is a version of Figure 4.24 with the above values marked in in red:
+        	<img src="images/Figure_4.24.png" alt="marked up diagram>" />
+        </p>
+        <p>
+          Notes: Combine the jump and branch multiplexers in the upper right side of Figure 4.24 into one
+          multiplexer, as shown in class. Assume the main control unit and the ALU control each take 50 psec.
+        </p>
+        <p>
+          Start each analysis with the edge of a clock pulse that loads a new value into the PC.
+        </p>
+        <p>
+          Write out the answers to all the following questions:
+        </p>
+        <h3>Analysis Procedure: Jump</h3>
+        <ol>
+          <li>How long does it take to fetch the instruction?</li>
+          <li>
+            How long does it take the Control Unit to decode the instruction and set the <em>Jump</em>
+            control signal?
+          </li>
+          <li>
+            Which takes longer: calculating PC+4 or fetching the instruction from Instruction Memory?
+          </li>
+          <li>
+            When is the Jump Address valid?
+          </li>
+          <li>
+            When would it be safe for the next clock pulse to occur?
+          </li>
+        </ol>
+        <h3>Analysis Procedure: Branch</h3>
+        <ol>
+          <li>How long does it take to fetch the instruction?</li>
+          <li>
+            How long does it take the Control Unit to decode the instruction and set the <em>Branch</em>
+            control signal?
+          </li>
+          <li>
+            When is the Branch Target Address valid?
+          </li>
+          <li>
+            When is the A operand to the ALU valid?
+          </li>
+          <li>
+            When is the B operand to the ALU valid?
+          </li>
+          <li>
+            When is the function code input to the ALU valid?
+          </li>
+          <li>
+            When is the Z output of the ALU valid?
+          </li>
+          <li>
+            When would it be safe for the next clock pulse to occur?
+          </li>
+        </ol>
+        <h3>Analysis Procedure: R-Type</h3>
+        <ol>
+          <li>How long does it take to fetch the instruction?</li>
+          <li>
+            How long does it take the Control Unit to decode the instruction and set the <em>ALUSrc</em>
+            control signal?
+          </li>
+          <li>
+            When is the A operand to the ALU valid?
+          </li>
+          <li>
+            When is the B operand to the ALU valid?
+          </li>
+          <li>
+            When is the function code input to the ALU valid?
+          </li>
+          <li>
+            When is the ALU result valid?
+          </li>
+          <li>
+            When is the WR Reg input to the register file valid?
+          </li>
+          <li>
+            When is the Write Data input to the register file valid?
+          </li>
+          <li>
+            When would it be safe for the next clock pulse to occur?
+          </li>
+        </ol>
+        <h3>Analysis Procedure: Store</h3>
+        <ol>
+          <li>How long does it take to fetch the instruction?</li>
+          <li>
+            How long does it take the Control Unit to decode the instruction and set the <em>ALUSrc</em>
+            control signal?
+          </li>
+          <li>
+            When is the A operand to the ALU valid?
+          </li>
+          <li>
+            When is the B operand to the ALU valid?
+          </li>
+          <li>
+            When is the function code input to the ALU valid?
+          </li>
+          <li>
+            When is the ALU result valid?
+          </li>
+          <li>
+            When is the MemWrite control signal valid?
+          </li>
+          <li>
+            When would it be safe for the next clock pulse to occur?
+          </li>
+        </ol>
+        <h3>Analysis Procedure: Load</h3>
+        <ol>
+          <li>How long does it take to fetch the instruction?</li>
+          <li>
+            How long does it take the Control Unit to decode the instruction and set the <em>ALUSrc</em>
+            control signal?
+          </li>
+          <li>
+            When is the A operand to the ALU valid?
+          </li>
+          <li>
+            When is the B operand to the ALU valid?
+          </li>
+          <li>
+            When is the function code input to the ALU valid?
+          </li>
+          <li>
+            When is the ALU result valid?
+          </li>
+          <li>
+            When is the MemRead control signal valid?
+          </li>
+          <li>
+            When is the WR Reg input to the register file valid?
+          </li>
+          <li>
+            When is the Write Data input to the register file valid?
+          </li>
+          <li>
+            When would it be safe for the next clock pulse to occur?
+          </li>
+        </ol>
+        <h2>Final Analysis</h2>
+        <div><p>What is the longest clock period needed for any instruction?</p>
+        <p>What is the maximum clock frequency that could be used?</p></div>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          Write your answers in the body of an email message (do not send an attachment), and send it
+          to me by midnight of the due date.
+        </p>
+        <p>
+          Send me email (vickery<span class="at" title="change to @">at</span>babbage.cs.qc.cuny.edu)
+          with &ldquo;CS-343
+          Assignment 5&rdquo; as the subject. Be sure to put your name in the body of your message.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

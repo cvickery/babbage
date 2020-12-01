@@ -1,0 +1,149 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $content_type = "application/xhtml+xml";
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $content_type = "text/html";
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Final Exam Topics</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      th { color:#333; }
+    </style>
+  </head>
+  <body id='urn:uuid:41038CEB-547C-4F54-BF3B-02BBBDF8CE14'>
+    <h1>CS-343 Final Exam Topics</h1>
+    <section id="content">
+    	<h2>Format and Content</h2>
+      <section>
+      	<p>
+        	The exam is non-cumulative in the sense that questions that appeared on the midterm exam will not be repeated on
+          the final exam. However, the material covered in the second half of the course builds on and reiterates material
+          covered in the first part of the course, so some overlap is inevitable.
+        </p>
+        <p>
+        	The exam will consist of a mix of short answer questions and diagrams.
+        </p>
+        <p>
+          You do not need to memorize MIPS op codes, function codes, or control signal names. But you have to know what
+          they all are and what they do.
+        </p>
+        <p>
+        	The exam will be based on the Appendix C sections 7, 8, 9, and 11; Chapter 5 sections 1-5; Chapter 4 sections
+          1-8; the material related to Assignments 4-7; and class lectures.
+        </p>
+      </section>
+      <h2>For the final exam you should be able to:</h2>
+      <ul>
+        <li>Name and give the widths for all the inputs and outputs of a memory system, given the memory’s width and height.</li>
+        <li>Name, give the widths, and tell the meaning of all the inputs and outputs of an SRAM memory chip.</li>
+        <li>Use flip-flops, a decoder, and gates to implement a small SRAM chip.</li>
+        <li>Use tristate buffers in a memory system.</li>
+        <li>Use a multiplexer to retrieve one word from a memory with a wider data bus than the word width.</li>
+        <li>Draw a diagram showing how to construct a memory system from individual memory chips.</li>
+        <li>Tell the differences between DRAM and SRAM memories.</li>
+        <li>Identify the inputs, outputs, and the widths of the three ports of the MIPS register file.</li>
+        <li>
+        	Draw a diagram showing the inputs, internal structure, and outputs of each module used in the design
+        	of the subset of the MIPS register file implemented in Assignment 5.
+        </li>
+        <li>
+        	Describe the levels of the memory hierarchy, and identify tradeoffs among the three parameters that determine each level’s
+          position in the hierarchy relative to the CPU.
+        </li>
+        <li>
+        	Define lines and blocks.
+        </li>
+        <li>
+        	Calculate the expected hit ratio of a given cache design given a random pattern of memory acceesses.
+        </li>
+        <li>
+        	Explain temporal and spatial locality; explain how these phenomena affect the observed hit ratio attained by cache
+          memory systems.
+        </li>
+        <li>
+        	Calculate the number of bits in each field of a memory address given various combinations of cache and main memory
+          design parameters.
+        </li>
+        <li>
+        	Define direct-mapped, set-associative, and fully-associative cache designs.
+        </li>
+        <li>
+        	Tell how the way in which an array is accessed affects the cache hit ratio.
+        </li>
+        <li>
+        	Define cold start, capacity, and conflict misses.
+        </li>
+        <li>
+        	Define round-robin, least recently used (LRU), random, and optimal cache replacement algorithms.
+        </li>
+        <li>
+        	Explain the role of the V bit in cache designs.
+        </li>
+        <li>
+        	Draw and explain the implementation of a cache system.
+        </li>
+        <li>
+        	Define write through and write back cache designs, and discuss the pros and cons of each.
+        </li>
+        <li>
+        	Define cache coherency and how it can be dealt with.
+        </li>
+        <li>
+        	Draw a diagram that shows the PC register in the MIPS datapath, including all the input sources to it.
+        </li>
+        <li>
+        	Explain the timing of the single-cycle MIPS datapath.
+        </li>
+        <li>
+        	Identify all the control signals in the single-cycle MIPS datapath, and tell how each one would be set for
+          each type of MIPS instruction.
+        </li>
+        <li>
+        	Explain the operation of all three types of I format instruction.
+        </li>
+        <li>
+        	Write or interpret Verilog expressions for MIPS instructions, including expressions involving sign extension,
+          bit concatenation, and simple binary constants.
+        </li>
+        <li>
+        	Identify and draw diagrams showing the inputs, outputs, and connections among various elements of the MIPS single
+          cycle datapath.
+        </li>
+        <li>
+        	Explain the rationale behind a pipelined implementation of the MIPS datapath.
+        </li>
+        <li>
+        	Calculate the speedup of a perfectly balanced pipelined datapath.
+        </li>
+        <li>
+        	Define structural, control, and data hazards in pipelined datapaths, and how to eliminate or minimize them.
+        </li>
+        <li>
+        	Tell the advantages and disadvantages of deeply pipelined datapaths.
+        </li>
+      </ul>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML5</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

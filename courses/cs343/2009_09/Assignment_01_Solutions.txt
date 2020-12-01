@@ -1,0 +1,159 @@
+   1.  How many orders of magnitude larger than 520 is 40,000?
+
+        The nearest power of ten to 520 is 1,000, and the nearest power of ten
+        to 40,000 is 10,000, so 40,000 is just one order of magnitude larger
+        than 520.
+
+   2.  How many orders of magnitude larger than 520 is 90,000?
+
+        The nearest power of ten to 90,000 is 100,000, so 90,000 is two orders
+        of magnitude larger than 520.
+
+   3.  How many orders of magnitude larger than a picosecond is a millisecond?
+
+        A picosecond is 10^-12; a millisecond is 10^-3, so a millisecond is
+        12-3=9 orders of magnitude larger than a picosecond.
+
+   4.  Convert 250 nanoseconds to picoseconds.
+
+        250,000 picoseconds
+
+   5.  Convert 250 nanoseconds to microseconds.
+
+        0.250 microseconds
+
+   6.  Convert 250 milliseconds to nanoseconds.
+
+        250,000,000 nanoseconds
+
+   7.  What is the “normal” representation of 5,280µsec?
+
+        5.280 msec.
+
+   8.  On the average, how many yes/no questions would you have to ask someone
+       if they were thinking of a number between 1 and 10?
+
+          log2(10) = ln(10) / ln(2) = 3.322
+
+   9.  How many bits would you need to encode the digits 0 … 9?
+
+        ceil(log2(10)) = 4
+
+  10.  Write out two different binary codes to represent the digits 0 … 9.
+
+         BCD    Gray
+      0  0000   0000
+      1  0001   0001
+      2  0010   0011
+      3  0011   0010
+      4  0100   0110
+      5  0101   0111
+      6  0110   0101
+      7  0111   0100
+      8  1000   1100
+      9  1001   1101
+      *  1010   1111
+      *  1011   1110
+      *  1100   1010
+      *  1101   1011
+      *  1110   1001
+      *  1111   1000
+
+      * = unused code values
+      Gray code: only 1 bit differs between adjacent values.
+
+  11.  Calculate the weighted average of the following values; show all work:
+
+                  	Value	Frequency
+                    70	  200
+                    80	  100
+                    90	  700
+
+        Divide each frequency by 1000, and their sum is 1.0, so 70×.2 + 80×.1 + 90×.7 = 85
+
+  12.  At Queens College, grade point averages use the number of credits for each
+       letter grade as the weights and the following table to relate letter grades to
+       values:
+
+                  	Grade	Value
+      							A+	  4.0
+      							A	    4.0
+      							A-	  3.7
+      							B+	  3.3
+      							B	    3.0
+      							B-	  2.7
+      							C+	  2.3
+      							C	    2.0
+      							C-	  1.7
+      							D+	  1.3
+      							D	    1.0
+      							F	    0.0
+
+        What is the GPA of a student who has received A- in 3 courses, B+ in 2
+        courses, and B in 5 courses, if each course was 3 credits? Show all work.
+
+          9×3.7 + 6×3.3 + 15×3.0 = 98.1
+          98.1 /(9+6+15) = 3.270
+
+  13.  What would be the GPA of the student in the previous question if he had
+       failed a 1-credit course in addition to receiving the grades listed in the
+       question?
+
+          98.1/(9+6+15+1) = 3.164
+
+  14.  Show the terms needed to calculate how many bits would be needed to record 10
+       sec of CD-quality music (stereo). That is, do not do the calculation, but show
+       what numbers would be multiplied together to get the answer.
+
+          44,000 samples per second × 10 seconds × 2 channels × 12 bits per channel
+
+  15.  How many bits in 64 KB? Show all work.
+
+          64 = 2^6
+           K = 2^10
+           B = 2^3
+        64KB = 2^19 bits
+             = 524,288 bits
+
+  16.  A disk spins at 10,000 RPM. How long does it take to make one revolution? Answer
+       in seconds, using the correct unit of measure to give a “normal” value with the
+       integer part between 1 and 999.
+
+       10,000 RPM / 60 = 166.667 RPS (revolutions per second) = 0.006 seconds per
+       revolution = 6 msec.
+
+  17.  How long would it take to transfer a 250 MB program from disk to main
+       memory if the initial latency is 5 msec and the bandwidth of the channel
+       between the disk and main memory is 600 Mbps? Show all work.
+
+       250 MB = 2000 Mb
+
+       2000Mb/600Mbs = 3.333 sec transfer time
+                     + 0.005 sec latency
+                     -------
+                       3.338 sec
+
+  18.  How long would it take to execute one million instructions if the average
+       number of clock cycles per instruction is 2.2 and the clock speed is 3 GHz?
+       Show all work.
+
+          sec/program = instructions/program × clocks/instruction × seconds/clock
+                      = 10^6 × 2.2 × 1/3 × 10^-9
+                      = 0.0007333 sec
+                      = 733.3 microseconds
+
+  19.  “Computer A is twice as fast as computer B.” What does that mean in terms
+       of how long it takes the two computers to execute a program?
+
+          Computer A requires half as much time to execute the program compared to Computer b.
+
+  20.  “Computer A is 100% slower than Computer B.” Turn that into a meaningful
+       statement, if you can. If you cannot, explain why not.
+
+          My best guess would be to interpret "is 100% slower" to mean "requires
+          100% more time." 100% more time would mean twice as much time, so
+          Computer A is apparently half as fast as Computer B.
+          
+          But that's just a guess. When comparing ratios, it makes more sense to talk about
+          the ratio of the slower time divided by the longer time, and it is ambiguous what
+          the times involved in a "times slower" sentence mean.

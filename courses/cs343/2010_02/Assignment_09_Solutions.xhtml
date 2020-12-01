@@ -1,0 +1,244 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-343 Assignment 9 Solutions</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../../css/assignments-print.css" />
+    <style type="text/css">
+      p {
+        background-color:#ccc;
+        color:green;
+        padding:0.5em;
+        border-radius:0.5em;
+        box-shadow:0.25em 0.25em 0.25em #600;
+        -webkit-box-shadow:0.25em 0.25em 0.25em #600;
+        -moz box-shadow:0.25em 0.25em 0.25em #600;
+      }
+      br+strong {padding-left:1em;}
+    </style>
+  </head>
+
+  <body id='urn:uuid:4E65687A-96D0-4302-BC30-B046A8C9A448'>
+     <div id="header">
+      <h1>CS-343 Assignment 9 Solutions</h1>
+    </div>
+    <div id="content">
+      <h2>Answers</h2>
+      <div>
+        <ol>
+          <li>
+            If a single-cycle processor design has a clock frequency of <em>F</em>, what would be the optimal
+            speedup if the design is converted to a pipelined design with <em>n</em> stages?
+            <p>The optimal speedup would be <em>n</em>-times faster.</p>
+          </li>
+          <li>
+            Define <em>instruction latency</em> and <em>instruction throughput.</em> Read the next two questions before
+            answering this one.
+            <p>
+              Latency is the time that elapses from the moment an instruction is selected for execution (by putting its
+              address in the PC) to the time it is “retired” (finishes execution). Throughput is the rate at which
+              instructions are retired: instructions per second.
+            </p>
+          </li>
+          <li>
+            What is the relationship between latency and throughput for a single-cycle processor design?
+            <p>
+              They are the same.
+            </p>
+          </li>
+          <li>
+            What is the relationship between latency and throughput for a pipelined processor?
+            <p>
+              Latency is <em>n</em> times the clock period; throughput approaches one instruction per clock period.
+            </p>
+          </li>
+          <li>
+            What is a <em>perfectly balanced</em> pipeline?
+            <p>
+              One in which each stage has exactly the same maximum propagation delay.
+            </p>
+          </li>
+          <li>
+            A ten-stage pipeline has the following maximum propagation delays in each stage (in psec): 50, 55,
+            45, 57, 49, 54, 48, 47, 2, and 2000. What would be the maximum clock speed at which this processor could
+            operate?
+            <p>
+              The slowest stage takes 2 nsec, so the maximum clock frequency is 0.5 GHz (500 MHz).
+            </p>
+          </li>
+          <li>
+            For the previous question: what would be the <em>instruction latency</em> of the processor? Be sure to
+            indicate both the numerical value and the proper unit of measure.
+            <p>
+              Since there are ten stages, and the clock period has to be 2 nsec, the latency would be 20 nsec.
+            </p>
+          </li>
+          <li>
+            For the above pipeline, what would be the <em>instruction throughput</em> of the processor, assuming there
+            are no hazards?
+            <p>500 MIPS (millions of instructions per second)</p>
+          </li>
+          <li>
+            If it was your job to improve the design of the above pipeline design, what would you try to do?
+            <p>
+              Balance the pipeline: reduce the propagation delays in the last (slowest) stage. The last stage
+              might be divided into a number of smaller stages, but that would lead to a deep pipeline, which
+              makes control hazards hard to manage. Maybe there would be ways to move some of the last stage’s
+              logic into some of the earlier stages. Even if that increased the propagation delays for those
+              stages, it would be better for throughput because slowest stage would be come faster, and the clock
+              rate could therefore be increased.
+            </p>
+          </li>
+          <li>
+            Define <em>structural,</em> <em>control,</em> and <em>data</em> hazards. Read the next question before
+            answering this one.
+            <p>
+              <strong>Structural:</strong> an operation cannot be performed at a certain time because the circuitry
+              needed to implement it is needed for another operation at the same time. <strong>Control:</strong>
+              conditional branching causes the decision about the next instruction to enter the pipeline to be
+              delayed until the branch instruction processes through enough pipeline stages to make the decision
+              known. <strong>Data:</strong> an instruction requires, for one or more of its operands, on the result
+              of a previous instruction that has not yet been retired.
+            </p>
+          </li>
+          <li>
+            Give an example of each of the three types of hazards listed above.
+            <p>
+              <strong>Structural:</strong> The need to computer PC+4 at the same time a previous instruction is
+              using the ALU during the EXE stage. The resolution is to have a separate adder for computing
+              PC+4. <strong>Control:</strong> Any time a <em>beq</em> or <em>bne</em> instruction occurs.
+              <strong>Data:</strong> Any time an instruction needs the
+              result of a previous instruction, such as a <em>lw</em> or any R-type instruction, before that result
+              is actually written into the register file.
+            </p>
+          </li>
+          <li>
+            For each of the following terms, tell which of the three typess of hazard it is designed to deal with, and
+            tell briefly how it does so.
+            <ul>
+              <li>
+                delayed branch
+                <p>
+                  <strong>Control:</strong> Execute the instruction immediately following the branch instruction
+                  unconditionally, which can give the branch instruction enough time to decide whether the branch
+                  will be taken or not.
+                </p>
+              </li>
+              <li>
+                delayed load
+                <p>
+                  <strong>Data:</strong> The formal specification of the Instruction Set Architecture (ISA) states
+                  that an instruction that accesses a register immediately following a <em>lw</em> instruction that
+                  loads a value into that register will get the old value of the register, not the value generated
+                  by the <em>lw</em>.
+                </p>
+              </li>
+              <li>
+                register forwarding
+                <p>
+                  <strong>Data:</strong>  The value needed is taken from a pipeline register rather than waiting
+                  for the result to be written to the register file.
+                </p>
+              </li>
+              <li>
+                branch prediction
+                <p>
+                  <strong>Control:</strong> The CPU keeps track of whether the branch instruction was taken or not
+                  the previous time it was executed, and starts to fetch and execute (but not
+                  to retire) instructions on the assumption that the same branch decision will be made this time.
+                  If the prediction turns out to be wrong, the partially-processed instructins must not affect the
+                  state of the registers or memory.
+                </p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            For each of the four pipeline registers in Figure 4.51 on page 362, note that there is a certain number of
+            arrows going into each one: 2 into IF/ID; 9 into ID/Ex; 7 into EX/MEM; and 4 into MEM/WB. For each register:
+            <ul>
+              <li>Tell the name of the register</li>
+              <li>Tell how many bits each arrow going into the register represents, in order from top to bottom.</li>
+              <li>
+                Tell what information is represented by each arrow going into the register.
+              </li>
+            </ul>
+            <p>
+              <strong>IF/ID:</strong>
+              <br /><strong>PC + 4:</strong> 32 bits;
+              <br /><strong>An instruction to be executed:</strong> 32 bits;
+              <br /><strong>Total:</strong> 64 bits.
+            </p>
+            <p>
+              <strong>ID/EX:</strong>
+              <br /><strong>WB:</strong> the <em>RegWrite</em> and <em>MemToReg</em>
+              control signals (2 bits);
+              <br /><strong>M:</strong> The <em>MemWrite</em> and <em>MemRead</em> control signals (2 bits);
+              <br /><strong>The <em>branch</em> control signal:</strong> 1 bit;
+              <br /><strong>EX:</strong> The ALUSrc and ALUOp control signals (3 bits because ALUOp is two bits);
+              <br /><strong>PC+4:</strong> 32 bits;
+              <br /><strong>R[rs]:</strong> 32 bits;
+              <br /><strong>R[rt]:</strong> 32 bits;
+              <br /><strong>Sign extended immediate (includes function code bits):</strong> 32 bits;
+              <br /><strong>The <em>rt</em> and <em>rd</em> instruction fields:</strong> 10 bits.
+              <br /><strong>Total:</strong> 146 bits.
+            </p>
+            <p><strong>EX/MEM:</strong>
+              <br /><strong>WB:</strong> the <em>RegWrite</em> and <em>MemToReg</em>
+              control signals (2 bits);
+              <br /><strong>M:</strong> The <em>MemWrite</em> and <em>MemRead</em> control signals (2 bits);
+              <br /><strong>The <em>branch</em> control signal:</strong> 1 bit;
+              <br /><strong>The Branch Target Address (BTA):</strong> 32 bits;
+              <br /><strong>The Zero (Z) condition code bit:</strong> 1 bit;
+              <br /><strong>Ther ALU Result:</strong> 32 bits;
+              <br /><strong>R[rt]</strong> 32 bits;
+              <br /><strong>The write register number:</strong> 5 bits;
+              <br /><strong>Total:</strong> 107 bits.
+            </p>
+            <p><strong>Mem/WB:</strong>
+              <br /><strong>WB:</strong> the <em>RegWrite</em> and <em>MemToReg</em>
+              control signals (2 bits);
+              <br /><strong>Data from Memory:</strong> 32 bits;
+              <br /><strong>ALU Result:</strong> 32 bits;
+              <br /><strong>The write register number:</strong> 5 bits;
+              <br /><strong>Total:</strong> 71 bits.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,324 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+  <title>CS-343 - Fall 2006</title>
+
+  <link rel="shortcut icon" href="../favicon.ico" />
+  <link rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="/courses/css/style-all.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="screen"
+        href="/courses/css/style-screen.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="print"
+        href="/courses/css/style-print.css"
+  /></head>
+
+<body>
+
+  <div id="header">
+    <h1>CS-343 - Fall 2006</h1>
+  </div>
+
+  <div id="content">
+    <h2>Course Info</h2>
+    <div class="whitebox">
+
+      <p>Section 1T3RA, Registration Code 3182
+      <br />Meets Tue &amp; Thur 1:40 - 2:55 pm.  SB B141</p>
+      <ul>
+        <li><a href="../index.xhtml">Course Syllabus and textbook
+        information.</a></li>
+        <li><a href="../errata.php">Errata List for the
+        textbook.</a></li>
+        <li><a href="/contact_info.xhtml">Vickery Contact Information and
+        Office Hours</a></li>
+        <li><a href="check_grades.xhtml">Check My Grades</a></li>
+        <li><a href="../Exams">Past Exams</a></li>
+        <li><a href="http://babbage.cs.qc.edu/Fora/Courses/viewforum.php?f=3">Course
+        Forum</a></li>
+      </ul>
+
+    </div>
+    <h2>Schedule</h2>
+    <div>
+      <table summary="Fall 2006 Class Schedule">
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Date</th>
+            <th>Notes and Assignments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>August 30<br />Wed</td>
+            <td>Classes Start</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>August 31<br />Thurs</td>
+            <td>Course Introduction.  Gates.</td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>September 4<br />Mon</td>
+            <td>College Closed (Labor Day)</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>September 5<br />Tues</td>
+            <td><strong>Read Appendix B of the textbook.</strong>
+            <br />Combinational Logic.  Introduction to Quartus.
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>September 6<br />Wed</td>
+            <td>Classes follow Monday schedule</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>September 7<br />Thurs</td>
+            <td>Assignment 1 walk through.</td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>September 12<br />Tues</td>
+            <td>Combinational Logic</td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>September 14<br />Thurs</td>
+            <td>ALU Design</td>
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>September 19<br />Tues</td>
+            <td><strong><a href="./Assignment_01.xhtml">Assignment 1</a>
+            Due</strong>
+              <br />Read <a href="/courses/Minimize/">Minimization Web Page</a>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">7</th>
+            <td>September 21<br />Thurs</td>
+            <td>Sequential Logic and Finite State Machines (FSMs)</td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>September 22<br />Fri</td>
+            <td>No Classes (Rosh Hashanah)</td>
+          </tr>
+          <tr>
+            <th scope="row">8</th>
+            <td>September 26<br />Tues</td>
+            <td>FSM implementation.  Edge-triggered D flip-flop design.</td>
+          </tr>
+          <tr>
+            <th scope="row">9</th>
+            <td>September 28<br />Thurs</td>
+            <td><strong><a href="Assignment_02.xhtml">Assignment 2</a></strong>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>October 2<br />Mon</td>
+            <td>No Classes (Yom Kippur)</td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>October 3<br />Tues</td>
+            <td><strong>Classes follow Monday Schedule</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">10</th>
+            <td>October 5<br />Tues</td>
+            <td>Assignment 2 Due Date
+              <br />Implementing sequential designs in Quartus
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>October 9<br />Mon</td>
+            <td>College Closed (Columbus Day)</td>
+          </tr>
+          <tr>
+            <th scope="row">11</th>
+            <td>October 10<br />Tues</td>
+            <td><strong><a href="Assignment_03.xhtml">Assignment
+            3</a></strong></td>
+          </tr>
+          <tr>
+            <th scope="row">12</th>
+            <td>October 12<br />Thurs</td>
+            <td>Register File Design </td>
+          </tr>
+          <tr>
+            <th scope="row">13</th>
+            <td>October 17<br />Tues</td>
+            <td>Memory Design; tristate gates<br />
+            MIPS R Format instructions </td>
+          </tr>
+          <tr>
+            <th scope="row">14</th>
+            <td>October 19<br />Thurs</td>
+            <td><strong>Review Chapter 2 and the Green Card</strong><br />
+              I Format Instructions; <em>lw</em> and <em>sw</em>
+              instructions. </td>
+          </tr>
+          <tr>
+            <th scope="row">15</th>
+            <td>October 24<br />Tues</td>
+            <td><strong>Midterm Exam</strong><br />
+              Assignment 3 Due Date <br />
+            <a href="Assignment_04.xhtml">Assignment 4</a></td>
+          </tr>
+          <tr>
+            <th scope="row">16</th>
+            <td>October 26<br />
+            Thurs</td>
+            <td>Branch instructions </td>
+          </tr>
+          <tr>
+            <th scope="row">17</th>
+            <td>October 31<br />Tues</td>
+            <td><strong>P/NC Drop Period Ends</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">18</th>
+            <td>November 2<br />Thurs</td>
+            <td>Assignment 4 Due Date <br />
+            <strong>Read Chapter 5</strong><br />
+            MIPS Single Cycle (SC) Datapath </td>
+          </tr>
+          <tr>
+            <th scope="row">19</th>
+            <td>November 7<br />Tues</td>
+            <td>MIPS SC Control Signals by Instruction </td>
+          </tr>
+          <tr>
+            <th scope="row">20</th>
+            <td>November 9<br />Thurs</td>
+            <td>MIPS SC Control Unit Design<br />
+            <a href="Assignment_05.xhtml">Assignment 5</a></td>
+          </tr>
+          <tr>
+            <th scope="row">21</th>
+            <td>November 14<br />Tues</td>
+            <td>Performance measurement. Multi-cycle state diagram.</td>
+          </tr>
+          <tr>
+            <th scope="row">22</th>
+            <td>November 16<br />Thurs</td>
+            <td>Multi-cycle states and control signals.</td>
+          </tr>
+          <tr>
+            <th scope="row">23</th>
+            <td>November 21<br />Tues</td>
+            <td>Multi-cycle control unit state machine.<br/>
+                Assignment 5 Due Date
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>November 22<br />Wed</td>
+            <td>Classes follow Friday Schedule</td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>November 23<br />Thurs</td>
+            <td>No Classes (Thanksgiving)</td>
+          </tr>
+          <tr>
+            <th scope="row">24</th>
+            <td>November 28<br />
+            Tues</td>
+            <td>Cycle-level CPU simulation </td>
+          </tr>
+          <tr>
+            <th scope="row">25</th>
+            <td>November 30<br />
+            Thurs</td>
+            <td>Multi-cycle controller design.<br />
+            <a href="Assignment_06.xhtml">Assignment 6</a> Due Date</td>
+          </tr>
+          <tr>
+            <th scope="row">26</th>
+            <td>December 5<br />Tues</td>
+            <td>Memory Hierarchy<br />
+              <strong>Read Chapter 7</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">27</th>
+            <td>December 7<br />
+            Thurs</td>
+            <td>Cache Design.</td>
+          </tr>
+          <tr>
+            <th scope="row">28</th>
+            <td>December 12<br />
+            Tues</td>
+            <td>Cache Design, continued.</td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>December 14<br />
+            Thurs</td>
+            <td>Reading Day<br />
+            <strong>Optional <a href="Extra_Credit.xhtml">Extra Credit
+            Assignment</a> Due </strong>&nbsp;-&nbsp; <a
+            href="../MIPS_Multi-cycle">Simulator Support Files</a></td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>December 20<br />Wed</td>
+            <td><strong>Final Exam<br />
+							1:45 - 3:45 pm</strong><br />
+              Optional <a href="../Cache_Parameters_Worksheet.pdf">Assignment
+              7</a> Due Date</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="..">CS-343 Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>
+    </p>
+    <p><em>Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.</em>
+    </p>
+  </div>
+</body>
+</html>

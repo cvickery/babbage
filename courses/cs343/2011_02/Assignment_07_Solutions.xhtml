@@ -1,0 +1,273 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 7 Solutions</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+		  .solution-block {
+				margin: 0.5em 0.5em 0.5em -2em;
+				padding:0.5em;
+			  white-space:pre-wrap;
+				font-family:"Lucida Console", Monaco, monospace;
+				background-color:#ccc; 
+				border:1px solid blue;
+			}
+      img {border:1px solid blue;}
+      .big-sig {font-size:1.2em; font-weight:bold;position:relative;top:0.1em;}
+    </style>
+  </head>
+  <body id='urn:uuid:0F62E04E-9C04-4938-9F11-9AF434C077A3'>
+    <h1>CS-343 Assignment 7<br/>
+    Solutions</h1>
+    <div id="content">
+      <h2>Answers</h2>
+      <div>
+        <ol>
+          <li>
+            Figure 4.1 shows two adders. Which one (the left one or the right one) is used to compute Branch Target Addresses?
+<div class="solution-block">The right one. The left one has 4 as one input because it computes PC+4. The right one computes PC+4 + part of the instruction
+(namely the immediate field shifted left two positions and sign extended), which is the Branch Target Address.
+</div>
+          </li>
+          <li>
+            Explain why the output of the ALU is connected to both the Data Memory and the Register File.
+<div class="solution-block"> The ALU is used to compute memory addresses for <em>lw</em> and <em>sw</em> instructions, so its output
+has to go to the address input of data memory. It also computes arithmetic results for R-type instructions, so its output has to go
+to the WD input of the register file also. At most one of these two destinations would be used for any particular instruction.
+</div>
+          </li>
+          <li>
+            Where do the <em>rs</em> and <em>rt</em> instruction fields connect in Figure 4.7?
+<div class="solution-block">To the RR1 and RR2 inputs of the register file.
+</div>
+          </li>
+          <li>
+            Where do the <em>R[rs]</em> and <em>R[rt]</em> values connect in Figure 4.7?
+<div class="solution-block">They come from the RD1 and RD2 outputs of the register file.
+</div>
+          </li>
+          <li>
+            Construct a table with three rows, labelled <em>R-type</em>, <em>lw</em>, and <em>sw</em>, and three columns
+            labelled <em>RegWrite</em>, <em>MemWrite</em>, and <em>MemRead</em>. Put a “1” in each cell where the indicated control
+            signal would be true for the given op code, and a “0” in all the other cells.
+<table class='solution-block'>
+  <tr>
+    <th></th><th>RegWrite</th><th>MemWrite</th><th>MemRead</th>
+  </tr>
+  <tr>
+    <th>R-type</th><td>1</td><td>0</td><td>0</td>
+  </tr>
+  <tr>
+    <th>lw</th><td>1</td><td>0</td><td>1</td>
+  </tr>
+  <tr>
+    <th>sw</th><td>0</td><td>1</td><td>0</td>
+  </tr>
+</table>
+          </li>
+          <li>
+            Why is there no “<em>RegRead</em>” control signal?
+<div class="solution-block">Because it is always safe to read two registers from the register file even if their values are
+not used. As long as their values are not used to alter the state of the registers and/or the data memory, no harm is done by reading them out.
+</div>
+          </li>
+          <li>
+            For the Data Memory unit (Figure 4.8), assume the <em>MemRead</em> control signal signal is <em>true</em>, and answer the
+            following questions:
+            <ol>
+              <li>What is the op code of the instruction being executed?
+<div class="solution-block"><em>lw</em>: that is the only instruction that reads from main memory.
+</div>
+              </li>
+              <li>Which inputs and/or outputs are irrelevant when <em>MemRead</em> is true?
+<div class="solution-block">DataIn is ignored when reading from memory.
+</div>
+              </li>
+              <li>Which inputs and/or outputs must be set to zero when <em>MemRead</em> is true?
+<div class="solution-block">The MemWrite control signal must be false when reading.
+</div>
+              </li>
+            </ol>
+          </li>
+          <li>
+            For the Data Memory unit (Figure 4.8), assume the <em>MemWrite</em> control signal signal is <em>true</em>, and answer the
+            following questions:
+            <ol>
+              <li>What is the op code of the instruction being executed?
+<div class="solution-block"><em>sw: that is the only instruction that writes to main memory.</em>
+</div>
+              </li>
+              <li>Which inputs and/or outputs are irrelevant when <em>MemWrite</em> is true?
+<div class="solution-block">DataOut is not used when writing to memory</div>
+              </li>
+              <li>Which inputs and/or outputs must be set to zero when <em>MemWrite</em> is true?
+<div class="solution-block">MemRead must be false when writing.
+</div>
+              </li>
+            </ol>
+          </li>
+          <li>
+            What is the ALU used for during the execution of <em>beq</em> instructions?
+<div class="solution-block">It subtracts R[rt] from R[rs] to see if they are equal.</div>
+          </li>
+          <li>
+            What is the purpose of the <em>MemToReg</em> control signal?
+<div class="solution-block">If it is true, the data read from memory will be connected to the WD input of the register file.
+Otherwise, the output of the ALU will be connected to the WD input of the register file.
+</div>
+          </li>
+          <li>
+            For which op code(s) will the <em>MemToReg</em> control signal be true?
+<div class="solution-block">Only the <em>lw</em> instruction.
+</div>
+          </li>
+          <li>
+            What is the purpose of the AND gate in Figure 4.17?
+<div class="solution-block">To tell if the op code is <em>beq</em> <em>AND</em> the ALU result is zero.
+</div>
+          </li>
+          <li>
+            What must the value of <em>RegDst</em> be for R-type instructions?
+<div class="solution-block">For R-type instructions, the <em>rd</em> field of the instruction should be connected to the WR (write register number) input of the register file. Since the <em>rd</em> field occupies bits 15-11 of R-type instructions, RegDst should be 1 for R-type instructions.
+</div>
+          </li>
+          <li>
+            What must the value of <em>RegDst</em> be for <em>lw</em> instructions?
+<div class="solution-block">For <em>lw</em> instructions, the immediate field “covers” the <em>rd</em> field, and the <em>rt</em> field, bits 20-16, must be used instead. Thus, RegDst has to be set to 0 for <em>lw</em> instructions.
+</div>
+          </li>
+          <li>
+            What must the value of <em>RegDst</em> be for <em>sw</em> instructions, and why?
+<div class="solution-block">It doesn’t matter: <em>sw</em> instructions don’t cause anything to be written into the register file, so it doesn’t matter what bits are connected to the WR input to the register file.
+</div>
+          </li>
+          <li>
+            What must the value of <em>RegDst</em> be for <em>beq</em> instructions, and why?
+<div class="solution-block">It doesn't matter: <em>beq</em> instructions don’t cause anything to be written into the register file, so it doesn’t matter what bits are connected to the WR input to the register file.
+</div>
+          </li>
+          <li>Define <em>instruction latency</em>.
+<div class="solution-block">The amount of <em>time</em><em> it takes to process (fetch and execute) an instruction.</em></div>
+          </li>
+          <li>Define <em>instruction throughput</em>.
+<div class="solution-block">The <em>rate</em> at which instructions are processed (completed). Instructions per second.</div>
+          </li>
+          <li>What is the relationship between latency and throughput for the single-cycle datapath?
+<div class="solution-block">For the single-cycle datapath, they are simple reciprocals of each other. It takes exactly one clock period to fetch and execute an instruction using the single-cycle datapath, and one instruction is completed for each clock period. In this case, the instruction rate (throughput) is the reciprocal of the clock period.
+</div>
+          </li>
+          <li>What is the equation for the time it takes to execute a program?
+<div class="solution-block">Seconds/Program = Instructions/Program × Clock cycles/Instruction × Seconds/Clock cycle
+</div>
+          </li>
+          <li>What determines the minimum clock period for the single-cycle datapath? (General answer.)
+<div class="solution-block">The largest number of propagations delays necessary to process the slowest instruction.
+</div>
+          </li>
+          <li>Which one instruction determines the minimum clock period for the single-cycle datapath, and why?
+<div class="solution-block"><em>lw</em>, because it requires the longest sequence of dependencies: instruction fetch, register read, compute address, read from memory, write to register file.</div>
+          </li>
+          <li>What is a <em>perfectly balanced</em> pipeline?
+<div class="solution-block">One in which the number of propagation delays in each stage are exactly equal.
+</div>
+          </li>
+          <li>What is the relationship between latency and throughput for a pipelined datapath?
+<div class="solution-block">Latency is the sum of the propagation delays in all the stages for a perfectly balanced pipeline. But if the pipeline is not perfectly balanced, the latency is <em>n</em> times the number of propagation delays in the slowest stage, where <em>n</em> is the number of pipeline stages.
+</div>
+          </li>
+          <li>
+            What is the maximum clock speed for a perfectly balanced <em>n</em>-stage pipelined datapath compared to
+            a single-cycle datapath implemented using the same technology (same propogation delays for the gates)?
+<div class="solution-block">It will be <em>n</em> times faster.
+</div>
+          </li>
+          <li>
+            What is the instruction <em>latency</em> for a perfectly balanced <em>n</em>-stage pipelined datapath compared to
+            a single-cycle datapath implemented using the same technology?
+<div class="solution-block">The latency does not change.</div>
+          </li>
+          <li>
+            What is the instruction <em>throughput</em> for a perfectly balanced <em>n</em>-stage pipelined datapath compared to
+            a single-cycle datapath implemented using the same technology?
+<div class="solution-block">It will be <em>n</em> times greater.</div>
+          </li>
+          <li>
+            Define <em>structural</em>, <em>data</em>, and <em>control</em> hazards.
+<div class="solution-block">Structural: when two different instructions need the same piece of computational hardware at the same time and one has to wait for the other.
+Data: When an instruction requires an operand value that is not available at the time it is needed.
+Control: when a branch instruction causes instructions already partially executed to be abandoned.
+</div>
+          </li>
+          <li>
+            Give an example of a structural hazard and tell how it can be eliminated.
+<div class="solution-block">Trying to use the ALU to compute the BTA and the difference between R[rs] and R[rt] at the same time. The solution is to add a separate adder to the datapath for computing the BTA.
+</div>
+          </li>
+          <li>Give an example of a data hazard and give the name of the technique that can be used to minimize its effect.
+<div class="solution-block">When an operand from an instruction is a result produced by a previous instruction that is still working its way through the pipeline. <em>Register Forwarding</em> is the name of the technique that gets the needed result from a “downstream” pipeline register without waiting for it to work its way down to the last stage and written back to the register file.
+</div>
+          </li>
+          <li>How are unavoidable data hazards dealt with in the MIPS instruction set architecture?
+<div class="solution-block"><em>Delayed loads</em> is the technique that defines the MIPS instruction set so that the next instruction following a <em>lw</em> instruction is guaranteed not to receive the value fetched by the <em>lw</em> instruction; it gets the previous value.
+</div>
+          </li>
+          <li>Give an example of a control hazard and name a technique that can be used to minimize its effect.
+<div class="solution-block">All conditional branch instructions introduce control hazards. One solution is <em>speculative execution</em> in which part of the datapath hardware id duplicated so that both the instructions immediately following the branch instruction and those starting at the BTA start being processed while waiting for the the decision whether to branch or not has been resolved.
+</div>
+          </li>
+          <li>What type of hazard is <em>register forwarding</em> used for?
+<div class="solution-block">Data hazards: see above.</div>
+          </li>
+          <li>Summarize how register forwarding works.
+<div class="solution-block">When an instruction enters the ID stage, its <em>rs</em> and <em>rt</em> register numbers are compared to the destination register numbers of all instructions currently ahead of it in the pipeline. If there is a match, the data from the corresponding pipeline register is substituted for the R[rs] or R[rt] output of the register file as necessary.
+</div>
+          </li>
+          <li>What is the advantage of deep (many stages) pipelines?
+<div class="solution-block">The throughput increases proportionately to the number of stages, because the clock speed increases in proportion to the number of stages.
+</div>
+          </li>
+          <li>What is the disadvantage of deep pipelines?
+<div class="solution-block">The penalty for control hazards is greater than for shallower pipelines because more partially completed instructions have to be discarded.
+</div>
+          </li>
+          <li>Write a sentence that summarizes the contents of all pipeline registers.
+<div class="solution-block">Each pipeline register holds all the control and data information that will be needed in successive stages of the pipeline to complete execution of the instruction at the current stage of the pipeline.
+</div>
+          </li>
+          <li>If a pipeline has <em>n</em> stages, how many places does the system clock connect to?
+<div class="solution-block"><em>n</em> + 1: One for the PC, one for the register file, plus <em>n</em> - 1 for the pipeline registers.</div>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

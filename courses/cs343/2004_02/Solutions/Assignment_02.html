@@ -1,0 +1,174 @@
+<html><head><title>CS-343 Assignment 2</title>
+<style type="text/css">
+      p { margin-left: 1em; margin-right: 4em; }
+      p.block
+      {
+        margin-left:  3em;
+        margin-right: 6em;
+        border:       solid;
+        padding:      1em;
+      }
+      li { margin-right: 10em; }
+      div.ans
+      {
+        border:       solid;
+        background:   #ffffff;
+      }
+</style>
+<style type="text/css" media="screen">
+   body { font-family: sans-serif }
+</style>
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>CS-343 Assignment 2</h1>
+</center>
+
+<h2>Due Date and Submission</h2>
+
+  <p>This assignment is due by <b>midnight, February 9</b>  Submit it
+  by sending email to me at the address,
+  <i>vickery@babbage.cs.qc.edu</i>.  Be sure to put "CS-343 Assignment
+  2" in the subject of your email and to put your name/ID in the
+  message body.</p>
+
+  <p>I prefer it if you put your answers inline in the body of your
+  message instead of as an attachment.  And I prefer plain text over
+  HTML or word processor documents.</p>
+
+<h2>The Assignment</h2>
+
+  <ol>
+
+    <li>Computer A is twice as fast as computer B.  Computer A takes ten
+    seconds to run a program.  How long will computer B take to run the
+    same program?
+
+<div class="ans">
+    <p>Twice as long, 20 sec.</p>
+</div>
+
+    <li>Computer A is 60% faster than computer B.  Computer A takes ten
+    seconds to run a program.  How long will computer B take to run the
+    same program?
+
+<div class="ans">
+  <p>If A is 60% faster, it is 1.6 times faster.  That means that the
+  execution time for B divided by the execution time for A is 1.6. 
+  Since the time for A is 10, the time for B will be 1.6 / 1 = B / 10,
+  and B = 16 seconds</p>
+</div>
+
+    <li>Computer B is 60% slower than computer A.  Computer A takes ten
+    seconds to run a program.  How long will computer B take to run the
+    same program?
+
+<div class="ans">
+  <p>The wording is arguably ambiguous.  Presumably the statement means
+  that B is 40% finished with the program when A finishes all of it. 
+  So B's execution time is given by 0.4*B = 10, which means B's
+  execution time will be 25 sec.</p>
+</div>
+
+    <li>Computer B is twice as slow as computer A.  Computer A takes ten
+    seconds to run a program.  How long will computer B take to run the
+    same program?
+
+<div class="ans">
+  <p>This is another example of awkward wording.  Presumably twice as
+  slow means half as fast.  So B will take 2 * 10 = 20 sec to complete
+  the program.</p>
+</div>
+
+    <li>A particular Instruction Set Architecture (ISA) has four
+    classes of instruction: load/store, fixed-point, floating-point,
+    and branching.  Load/store instructions all require 2 clock cycles
+    to execute, fixed-point instructions all execute in one clock
+    cycle, floating-point instructions all require 8 clock cycles to
+    execute, and branch instructions take one clock cycle if the branch
+    is successful and two clock cycles if the branch fails.  A program
+    is run on a processor with this ISA and measurements show that 20%
+    of the instructions executed are load/store, 50% are fixed-point,
+    5% are floating-point, and the remainder are branches.  Just 15% of
+    the branches fail.  What is the average number of clock cycles per
+    instruction?
+
+<div class="ans">
+
+  <p>This is a weighted average problem.  The weights are 0.2 for
+  load/store, 0.5 for fixed-point, and 0.05 for floating point.  Since
+  the weights have to sum to 1.0, the weight for branches is 0.25. 
+  Therefore
+  failed branches account for 0.25 * 0.15 = 0.0375 and the weight for
+  successful branches is 0.25 - 0.0375 = 0.2125.  So the average is
+  (0.2*2)+(0.5*1)+(0.05*8)+(0.2125*1)+(0.0375*2) = 1.5875 clock cycles
+  per instruction.</p>
+
+</div>
+
+    <li>For the previous question, the processor operates with a 2 GHz
+    clock, and the program executes 3 million instructions.  How long
+    does it take the program to execute?
+
+<div class="ans">
+  <p>Execution time S/P = S/C * C/I * I/P (<u>S</u>econds,
+  <u>C</u>locks, <u>I</u>nstructions, <u>P</u>rogram).  The period (S/C)
+  is 1/(2*10<sup>9</sup>) sec (0.5 nsec or 500 psec), so the total
+  execution time is 0.5*10^-9 * 1.5875 * 3000000 = 0.002379 sec, or
+  2.379 msec.</p>
+</div>
+
+    <li>A 1.5 GHz clock is used to synchronize the inputs to a logic
+    network that has 7 levels.  What is the maximum allowable
+    propagation delay per gate?
+
+<div class="ans">
+  <p>The period of a 1.5GHz clock is 1/(1.5*10<sup>9</sup>) = 1/1.5 *
+  10<sup>-9</sup> = 0.667 * 10<sup>-9</sup> = 667 * 10<sup>-12</sup>,
+  which is 667 psec.  Dividing 667 by 7, the maximum delay per gate is
+  95.286 psec.</p>
+</div>
+
+    <li>A logic network has a 5 levels and the gates have a maximum
+    propagation delay of 12 psec.  What is the maximum clock rate that
+    can be used to synchronize the inputs to this network?
+
+<div class="ans">
+  <p>There would be 5 * 12 = 60 psec delay time in the logic network, so
+  the inputs could be driven by a clock with a period of 60 psec or
+  more.  The frequency of a 60 psec clock is 1/60*10<sup>-12</sup>,
+  which is 1/60 * 10<sup>12</sup> = 0.016 * 10<sup>12</sup> = 16 *
+  10<sup>9</sup>.  So the maximum frequency would be 16GHz.</p>
+</div>
+
+    <li>A computer has 1,024 registers (numbered 0 to 1,023).
+    Arithmetic instructions for this computer hold three register
+    numbers. How many bits are needed to hold the register numbers?
+
+<div class="ans">
+  <p><i>log<sub>2</sub>(1024)</i> is 10, so each register number
+  requires ten bits, for a total of 30 bits.</p>
+</div>
+
+    <li>A byte-addressable memory is one that assigns a unique binary
+    number as the address of each byte.  How many bits are needed for
+    the addresses of a 1GB (gigabyte) byte-addressable memory?
+
+<div class="ans">
+  <p>1G is 2<sup>0</sup> * 2<sup>30</sup>, or 2<sup>30</sup>.  And
+  <i>log</i><sub>2</sub>(2<sup>30</sup>) is 30.  So 30 bits are
+  needed.</p>
+</div>
+
+    <li>How many bits are needed for the addresses of a 16MB
+    byte-addressable memory?
+
+<div class="ans">
+  <p>16M is 2<sup>4</sup> * 2<sup>20</sup>, or 2<sup>24</sup>.  And
+  <i>log</i><sub>2</sub>(2<sup>24</sup>) is 24.  So 24 bits are
+  needed.</p>
+
+</div>
+
+  </ol>
+
+<hr></body></html>

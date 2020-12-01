@@ -1,0 +1,440 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 2</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+    <style type="text/css" media="all">
+      table { width: 20%; }
+      th,td  { text-align: center; }
+      .imgBox { text-align: center; padding: 1em 2em; }
+    </style>
+    <style type="text/css" media="print">
+      img { max-width: 100%; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 2</h1>
+    </div>
+
+    <div id="content">
+      <h2>Overview</h2>
+      <div class="whitebox">
+
+        <p>Working with the constraints imposed by the the number of
+        switches and buttons available on the Altera UP2, this assignment is
+        to implement an approximation of the MIPS ALU developed in Appendix
+        B of the textbook.</p>
+        
+        <p>You may need to consult the reference material for using the lab
+        and for the pin connections of the UP2 from <a
+        href="./Assignment_01.xhtml">Assignment 1</a>.</p>
+        
+        <p>Because there are 8 switches and 2 pushbuttons available on the
+        UP2, you will construct a modified version of the MIPS ALU.  First
+        of all, it will be just 4-bits wide instead of 32.  Use Switches 1-4
+        for A<sub>3</sub>, A<sub>2</sub>, A<sub>1</sub>, and A<sub>0</sub>
+        respectively.  That is, you will set the value of the 4-bit A
+        operand will by using the leftmost 4 switches.  Use switches 5-8 for
+        the value of the B operand.  The two pushbuttons allow us to select
+        just four function codes.  We will call PB2 (the button nearer to
+        the bank of switches) F<sub>0</sub> and PB1 F<sub>1</sub>.</p>
+        
+        <p>The functions to implement will be:</p>
+
+        <table summary="ALU function codes">
+           <tr>
+            <th scope="col" colspan="2">Function Code</th>
+            <th scope="col" rowspan="2">Function</th>
+           </tr>
+           <tr>
+            <th scope="col">F<sub>1</sub></th>
+            <th scope="col">F<sub>0</sub></th>
+           </tr>
+           <tr>
+            <td>0</td><td>0</td><td>A &amp; B</td>
+           </tr>
+           <tr>
+            <td>0</td><td>1</td><td>A | B</td>
+           </tr>
+           <tr>
+            <td>1</td><td>0</td><td>A + B</td>
+           </tr>
+           <tr>
+            <td>1</td><td>1</td><td>A - B</td>
+           </tr>
+        </table>
+        
+      <p>Here is a list of input pin assignments to use:</p>
+      
+      <table summary="Pin assignments">
+        <tr>
+          <th scope="col">Pin</th>
+          <th scope="col">Input</th>
+          <th scope="col">Name</th>
+        </tr>
+        <tr>
+          <td>PIN_41</td><td>Switch 1</td><td>A<sub>3</sub></td>
+        </tr>
+        <tr>
+          <td>PIN_40</td><td>Switch 2</td><td>A<sub>2</sub></td>
+        </tr>
+        <tr>
+          <td>PIN_39</td><td>Switch 3</td><td>A<sub>1</sub></td>
+        </tr>
+        <tr>
+          <td>PIN_38</td><td>Switch 4</td><td>A<sub>0</sub></td>
+        </tr>
+        <tr>
+          <td>PIN_36</td><td>Switch 5</td><td>B<sub>3</sub></td>
+        </tr>
+        <tr>
+          <td>PIN_35</td><td>Switch 6</td><td>B<sub>2</sub></td>
+        </tr>
+        <tr>
+          <td>PIN_34</td><td>Switch 7</td><td>B<sub>1</sub></td>
+        </tr>
+        <tr>
+          <td>PIN_33</td><td>Switch 8</td><td>B<sub>0</sub></td>
+        </tr>
+        <tr>
+          <td>PIN_28</td><td>Button 1</td><td>F<sub>1</sub></td>
+        </tr>
+        <tr>
+          <td>PIN_29</td><td>Button 2</td><td>F<sub>0</sub></td>
+        </tr>
+      </table>
+
+      <p>And here is a list of output pin assignments to use:</p>
+      
+      <table summary="Output pin assignments">
+        <tr>
+          <th scope="col">Pin</th>
+          <th scope="col">Name</th>
+        </tr>
+        <tr>
+          <td>PIN_6</td><td>Left Segment A</td>
+        </tr>
+        <tr>
+          <td>PIN_7</td><td>Left Segment B</td>
+        </tr>
+        <tr>
+          <td>PIN_8</td><td>Left Segment C</td>
+        </tr>
+        <tr>
+          <td>PIN_9</td><td>Left Segment D</td>
+        </tr>
+        <tr>
+          <td>PIN_11</td><td>Left Segment E</td>
+        </tr>
+        <tr>
+          <td>PIN_12</td><td>Left Segment F</td>
+        </tr>
+        <tr>
+          <td>PIN_13</td><td>Left Segment G</td>
+        </tr>
+        <tr>
+          <td>PIN_17</td><td>Right Segment A</td>
+        </tr>
+        <tr>
+          <td>PIN_18</td><td>Right Segment B</td>
+        </tr>
+        <tr>
+          <td>PIN_19</td><td>Right Segment C</td>
+        </tr>
+        <tr>
+          <td>PIN_20</td><td>Right Segment D</td>
+        </tr>
+        <tr>
+          <td>PIN_21</td><td>Right Segment E</td>
+        </tr>
+        <tr>
+          <td>PIN_23</td><td>Right Segment F</td>
+        </tr>
+        <tr>
+          <td>PIN_24</td><td>Right Segment G</td>
+        </tr>
+      </table>
+
+      </div>
+
+
+      <h2>Design Overview</h2>
+      <div class="whitebox">
+
+        <p>It make sense to approach this assignment using an hierarchical
+        approach.  The top-level design will include the input pins, the
+        ALU, the seven segment display drivers, and the output pins.  In the
+        top-level, the ALU will be a single symbol, just like the
+        bin2sevenseg symbols.  The second level down will consist of the
+        ALU, Constructed from four &ldquo;slices&rdquo; of the entire ALU,
+        along with the logic to control the carry into position zero and the
+        logic to generate the four condition code bits.  Finally, each slice
+        will consist of a full adder, a 4x1 multiplexer, and the gates
+        needed to make the slice implement the four functions.</p>
+
+        <p>Thus, you will be constructing five schematic files for this
+        assignment: the top level design (Assignment_02), the ALU
+        (mips_alu), an ALU slice (alu_slice), a full adder (full_adder), and
+        a 4x1 multiplexer (4x1_mux).  The remainder of this web page will
+        step you through the process of constructing each schematic and
+        testing the result.</p>
+
+      </div>
+
+      <h2>Procedure</h2>
+      <div class="whitebox">
+      
+        <ol>
+        
+          <li>
+
+            <h5>Create a Quartus project for the assignment.</h5> <p
+            class="runin">Create a subdirectory named <span
+            class="directoryName">Assignment_02</span> under your <span
+            class="directoryName">My Projects</span> directory and create a
+            project there named <span
+            class="programName">Assignment_02</span>, and with the 
+            top-level design entity is named <span
+            class="programName">Assignment_02</span> also.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Add current version of <span
+            class="programName">hex2sevenseg.v</span> to your project.</h5> 
+            <p class="runin">You will be using two seven segment displays
+            for this assignment, one to display the 4-bit result and one to
+            display the 4 condition code bits.  I am supplying <a
+            href="./hex2sevenseg.v">an updated version of the Verilog
+            program I provided for Assignment 1</a>.  This version differs
+            from the one for Assignment 1 in two ways: (1) segment G works,
+            and (2) it takes positive logic values in and generates negative
+            logic values out.  Thus, if you connect the outputs directly to
+            the pins of a seven segment display and provide inputs where 1
+            means true and 0 means false, the display will show the correct
+            hexadecimal representation of the input bits.  Download the new
+            file into your <span class="directoryName">Assignment_02</span>
+            directory, add it to the project, and convert it to a block
+            symbol as you did in Assignment 1.  You only need to do this
+            once even though you will be using two copies of it in your
+            assignment.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Start at the bottom of the hierarchy.</h5> <p
+            class="runin">In order to have the symbols for available for
+            dropping into the upper levels of the hierachy, you need to
+            build the lower levels first.  You need to create two
+            schematics, one for the 4x1 Mux and one for the full adder.</p>
+            
+            <p>You can use XOR gates to produce the sum for the full adder. 
+            After minimizing the carry out function, your schematic should
+            look something like this:</p>
+            
+            <div class="imgBox">
+              <img src="images/full_adder.png" alt="Schematic diagram of a full
+              adder" />
+            </div>
+
+            <p>Your 4x1 multiplexer should look something like this:</p>
+            
+            <div class="imgBox">
+              <img src="images/4x1_Mux.png" alt="Schematic diagram
+              of a 4x1 multiplexer" />
+            </div>
+
+            <p>Convert both these schematics to symbols, and you are ready to
+            use them to construct the schematic for a one-bit slice of the
+            ALU.  Rather than give you the schematic for the slice, here is
+            the symbol, showing the inputs and outputs for it:</p>
+
+            <div class="imgBox">
+              <img src="images/alu_slice_symbol.png" alt="Schematic symbol for a
+              bit-slice of the ALU" />
+            </div>
+
+            <p>You will need to design the logic to perform the four
+            operations listed at the top of this web page.</p>
+            
+            <p>Save your schematic as a symbol, and then create the
+            schematic for the full four-bit ALU.  In my implementation, I
+            inverted B inside the slices for the subtract operation, but you
+            could decide to do that in the full ALU level if you prefer.
+            (See if you can figure out what the trade-offs of the two
+            approaches are.)  You need to generate the correct value for
+            C<sub>0</sub> and for the four condition code bits: <span
+            class="variableName">Carry</span> (C<sub>4</sub>), <span
+            class="variableName">oVerflow</span> (C<sub>4</sub> !=
+            C<sub>3</sub>), <span class="variableName">Negative</span>
+            (Result<sub>3</sub>), and <span class="variableName">Zero</span>
+            (Result<sub>0:3</sub> all zero).  Here is my schematic for <span
+            class="programName">mips_alu</span>:</p>
+
+            <div class="imgBox">
+              <img src="images/mips_alu.png" alt="Schematic diagram for a
+              4-bit ALU" />
+            </div>
+
+            <p>Save your <span class="programName">mips_alu</span> as a
+            symbol.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Build the top-level schematic and test it.</h5> <p
+            class="runin">The top-level schematic, <span
+            class="programName">Assignment_02.bdf</span>, consists of ten
+            input pins, one instance of <span
+            class="variableName">mips_alu</span>, two instances of <span
+            class="variableName">hex2sevenseg</span>, and 14 output pins. 
+            An issue that needs to be addressed is that the buttons and
+            switches generate logic values of zero when they are pressed
+            (buttons) or down (switches).  To generate positive logic, each
+            one needs to be inverted before going to the ALU.  Here is my
+            top-level schematic:</p>
+
+            <div class="imgBox">
+              <img src="images/assignment_02.png" alt="Schematic diagram for the
+              top-level design" />
+            </div>
+            
+            <p>There are 2<sup>10</sup> combinations of input values.  One
+            question on the first exam will require you to give the output
+            values for any set of inputs.  Here are a few examples you can
+            start with to check the basic functionality of your circuit:</p>
+            
+            <dl>
+            
+              <dt>All switches off (up) and both buttons up.</dt> <dd>Both
+              buttons up is the AND function.  All switches up makes both of
+              the operands 0x0, so the result should be 0x0 in the right hex
+              display.  Since the result is zero, the Zero condition code
+              bit (the rightmost one) should be on and there should be no
+              Carry or oVerflow, and the result is not negative.  So the
+              left hex digit should be 0x1. Together, the displays show
+              0x10.</dd>
+
+              <dt>All switches off and various combinations of buttons
+              pressed.</dt> <dd>  Pushing either button should not change
+              the display because 0+0 = 0|0 = 0. But pushing both buttons
+              (0-0) should produce a Carry out of the leftmost bit because
+              the ALU calculates (0x0 + 0xF + 1). Since Carry is the
+              leftmost bit of the condition code, the displays should show
+              0x90.</dd>
+
+              <dt>A = -8 and B = 1 (Switches 1 and 8 down.)</dt> <dd>AND:
+              0x10 because the two operands have no bits in common.  OR:
+              0x29 because (1000<sub>2</sub> | 0001<sub>2</sub>) is
+              1001<sub>2</sub> (0x9), which is a negative number in
+              two&rsquo;s complement notation, so the Negative condition
+              code bit is on.  The others are off because there is no Carry,
+              no oVerflow, and the result is not Zero. Add: 0x29 because in
+              this case adding is the same is OR.  Subtract: 0xC7.  The
+              calculation is (0x8 + 0xE + 1), which is decimal -8 -1.  The
+              correct answer, -9, cannot be represented as a 4-bit
+              two&rsquo;s complement number.  Doing the calculation by hand
+              shows that there is a Carry out of the leftmost position, and
+              the oVerflow bit is set to indicate that the answer, which
+              appears to be +7, is incorrect.  The result generated is
+              positive (even though the correct answer would be negative),
+              so the Negative bit is off.  The generated result is not Zero
+              either, so that bit is off, yielding CVNZ = 1100<sub>2</sub>,
+              which is 0xC.</dd>
+
+            </dl>
+
+
+          </li>
+
+        </ol>
+      
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+      
+        <p>When you have completed the circuit and tested to be sure it
+        works correctly, send me an email message telling me the project is
+        ready for grading.  Be sure to put <strong>CS-343 Assignment
+        2</strong> in the subject line to avoid the wrath of my spam
+        filters!  I will get a copy of your assignment from <span
+        class="computerName">maple</span> and test it.</p>
+
+        <p>If you worked on the assignment with someone else, be sure to
+        list the names of both contributers in the email message so you both
+        get full credit.  Be sure to tell me which account has the final
+        version of the project for me to look at.</p>
+        
+        <p>Remember, it is perfectly all right to help each other to do the
+        assignment.  Just don&rsquo;t exchange design files with each other;
+        nobody learns anything if you do that.</p>
+
+        <p><strong>Due Date</strong>  The assignment is due by midnight,
+        September 28.  Do not submit the assignment unless you have verified
+        that it works correctly using an actual UP2 in the lab.  Having said
+        that, you can get partial (half) credit for &ldquo;trying.&rdquo; 
+        Just say in your email that the assignment is incomplete, and I will
+        look at your project, but not try to run it.</p>
+
+      </div>
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="../">CS-343 Home</a>&nbsp;-&nbsp;
+        <a href="./">CS-343 Fall 2006</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

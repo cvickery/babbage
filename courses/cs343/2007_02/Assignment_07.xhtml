@@ -1,0 +1,118 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 7</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 7</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>Assignment 7</h2>
+      <div class="whitebox">
+        <ol>
+          <li>Exercises 6.1, 6.2, 6.14.  (Note the typo in 6.14 part a: it
+          should say, &ldquo;The PC has the value 100<span
+          class="subscript">ten</span>, the address of the <span
+          class="codeSnippet">sub</span> instruction.&rdquo;</li>
+          
+          <li>The following questions have to do with a disk drive that has
+          the following parameters:
+          
+            <ul>
+              <li>There are two platters, and both surfaces are used for
+              data on both platters.</li>
+              <li>There are 25,000 tracks per surface.</li>
+              <li>There are 1,000 sectors on every cylinder (no cylinder
+              zones).  Each sector contains 512 bytes of data.</li>
+              <li>The disk rotation speed is 14,400 RPM.</li>
+              <li>Moving the heads requires 1 msec of acceleration time, 1
+              msec of deceleration time, and 0.5 msec for each track position
+              moved.</li>
+            </ul>
+            <ol>
+              <li>What is the total capacity of the drive?  Note that there
+              are two ways to answer this: (<em>i</em>) use standard units
+              of measure, where 1G is 10<span class="superscript">9</span>,
+              which is the conventional way to measure disk capacities, and
+              (<em>ii</em>) use binary units of measure where 1G is 2<span
+              class="superscript">30</span>, which is the conventional way
+              to measure memory capacities other than disks.  Answer both
+              ways, and be sure to indicate which is which.</li>
+              
+              <li>What is the average seek time (head movement time)? 
+              Assume the operating system optimizes accesses so that 10% of
+              the accesses require no head movement, 10% require moving the
+              heads one track position, 10% require moving the heads two
+              track positions, 10% require moving the heads three track
+              positions, and 10% require moving the heads four track
+              positions.  Then, to simplify things, assume 25% require
+              moving the heads ten track position and the remaining 25%
+              requre moving the heads 100 track positions.</li>
+              
+              <li>What is the rotation time for this disk, in milliseconds,
+              and what is the average rotational delay?  Assume there is no
+              sector cache on the disk and that the operating system
+              accesses sectors in a random order.</li>
+
+              <li>What is the average access time for this disk given the
+              above parameters?</li>
+
+            </ol>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

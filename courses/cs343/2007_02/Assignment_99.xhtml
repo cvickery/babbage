@@ -1,0 +1,385 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Extra Credit Assignment</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../courses/css/style-print.css"
+    />        
+
+    <style type="text/css" media="all">
+      dl { margin-left: 2.5em; }
+      #controls_table { width: 20%; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Extra Credit Assignment</h1>
+    </div>
+
+    <div id="content">
+      <h2>Overview</h2>
+      <div class="whitebox">
+
+        <p>You have the option of working on an ambitious extra-credit
+        assignment for the course: implementing the single-cycle processor
+        from Chapter 5 on the Altera DE-1 logic kit.  I will provide you
+        with a top-level design schematic, and your job will be to implement
+        each of the custom symbols in that schematic.</p>
+
+        <p>I encourage you to work with a partner on the project, but you
+        may not work in a group with more than two people in it.  On the
+        other hand, feel free to help others out, to post and answer
+        questions about the assignment on the <a
+        href="http://babbage.cs.qc.edu/Fora/Courses">course discussion
+        board</a>, and to ask me questions.</p>
+
+        <p class="standoutBox">Contrary to what I said in class when I first
+        announced this assignment, your grade on the project will
+        <em>substitute</em> for your lowest exam score in the course. 
+        However, if your grade on the project is lower than your lowest exam
+        score it will not count against you.</p>
+
+        <p>Because the project is complex, there are some ground rules to
+        follow:</p>
+        
+        <ul>
+
+          <li>If you plan to work on the project, you must decide to do so
+          right away, and you must start work on the project immediately. 
+          Send me an email by <em>April 18</em> telling me if you plan to
+          attempt the assignment. If you are going to work with a partner,
+          tell me whose account you will be using for doing the work. On
+          Friday of each week between now and the due date, I will look at
+          your project directory to evaluate whether you are making
+          satisfactory progress or not.  <strong>You will receive no credit
+          for the assignment if you do not show evidence of working on it
+          systematically each week.</strong></li>
+
+          <li>You will have to work from my top-level design file, which is
+          described below.</li>
+          
+          <li>You must develop the project systematically, following the
+          steps outlined below <em>in the order given</em>.  At the end of
+          each week, send me an email telling me which step you are working
+          on; I will check that you have completed all previous steps
+          correctly.</li>
+          
+          <li>Careful testing of each stage of the design is a crucial part
+          of the development process.</li>
+          
+          <li>You do not have to complete the entire design to receive a
+          passing grade for the assignment.</li>
+
+        </ul>
+        
+        <h3>Project Scope</h3>
+        <div class="whitebox">
+        
+          <p>The project has both limitations and added features compared to
+          the processor designed in the textbook.  The two main limitations
+          have to do with the implementation of the instruction and data
+          memories.  I will supply you with complete Verilog implementations
+          of both.</p>
+
+          <p>The instruction memory has room for just 64 instructions, with
+          their values hard-coded into Verilog assignment statements.  To
+          test your design fully, you will need to try various sequences of
+          instructions.  You can use the MIPS simulator that comes with the
+          textbook to translate assembly language programs into hexadecimal
+          codes, which you can then cut and paste into the Verilog
+          assignment statements to initialize your instruction ROM.</p>
+          
+          <p>The data memory is implemented using the SRAM (static RAM) chip
+          on the DE1 kit, which limits its size to 512KB instead of 4GB.</p>
+          
+          <p>The textbook design has to be expanded to incorporate immediate
+          instructions in order to be able to test it.  The problem with the
+          textbook design is that none of the instructions included will
+          produce non-zero values that you could examine to tell whether
+          anything is happening or not.  There are some other possibilities
+          for dealing with this problem, but implementing immediate
+          instructions is not hard and makes it possible to generate useful
+          test programs more easily.</p>
+
+        </div>
+
+      </div>
+      
+      <h2>Top Level Design</h2>
+      <div class="whitebox">
+      
+        <p>The top-level design has to manage all the I/O for the design,
+        and to provide the infrastructure for debugging the project as you
+        go along.</p>
+        
+        <p><span class="variableName">Key_0</span>, the rightmost of the
+        four pushbuttons on the DE1, is used as the CPU clock for the
+        system.  The idea is that you will manually generate each clock
+        pulse by pressing <span class="variableName">Key_0</span> so you can
+        check everything out before generating the next one.</p>
+        
+        <p>The four seven-segment displays show the status of various parts
+        of the system.  The following values can be displayed:</p>
+        
+        <dl>
+          <dt>3'b000:</dt><dd>Current Program Counter (PC)</dd>
+          <dt>3'b001:</dt><dd>Current Instruction</dd>
+          <dt>3'b010:</dt><dd>Read Data 1 (R<span
+            class="subscript">rs</span>)</dd>
+          <dt>3'b011:</dt><dd>Read Data 2 (R<span
+            class="subscript">rt</span>)</dd>
+          <dt>3'b100:</dt><dd>ALU Result</dd>
+          <dt>3'b101:</dt><dd>Debug (branch target address)</dd>
+          <dt>3'b110:</dt><dd>Data Memory data out</dd>
+          <dt>3'b111:</dt><dd>Control Signals</dd>
+        </dl>
+
+        <p>The three pushbuttons, <span class="variableName">Key_3</span>,
+        <span class="variableName">Key_2</span>, and <span
+        class="variableName">Key_1</span> are used to select which value is
+        to display.  Since the four seven-segment displays can only show 16
+        bits of information at a time, the leftmost slide switch (<span
+        class="variableName">SW_9</span> selects whether to show the
+        rightmost 16 bits (when the switch is towards the edge of the DE1
+        board) or leftmost 16 bits (when the switch is towards the
+        hexadecimal displays) of the value selected with Keys 3:1.  There
+        are only ten control signals, so <span
+        class="variableName">SW_9</span> has no effect when displaying
+        them.</p>
+        
+        <p>There are ten control signals.  The following table shows the
+        order in which they are displayed when you select 3'b111 with Keys
+        1-3:</p>
+
+        <table id="controls_table">
+          <tr>
+            <th>Name</th><th>Bit Position</th><th>Hex Display</th>
+          </tr>
+          <tr>
+            <td>RegDst</td><td>9</td><td>0200</td>
+          </tr>
+          <tr>
+            <td>Jump</td><td>8</td><td>0100</td>
+          </tr>
+          <tr>
+            <td>Branch</td><td>7</td><td>0080</td>
+          </tr>
+          <tr>
+            <td>MemRead</td><td>6</td><td>0040</td>
+          </tr>
+          <tr>
+            <td>MemtoReg</td><td>5</td><td>0020</td>
+          </tr>
+          <tr>
+            <td>ALUOp[1]</td><td>4</td><td>0010</td>
+          </tr>
+          <tr>
+            <td>ALUOp[0]</td><td>3</td><td>0008</td>
+          </tr>
+          <tr>
+            <td>MemWrite</td><td>2</td><td>0004</td>
+          </tr>
+          <tr>
+            <td>ALUSrc</td><td>1</td><td>0002</td>
+          </tr>
+          <tr>
+            <td>RegWrite</td><td>0</td><td>0001</td>
+          </tr>
+        </table>
+
+        <p>There are ten red LEDs and eight green LEDs on the DE1 that you
+        are free to use in any way you please.  In the top-level design I am
+        providing, they are connected to various slide switches and control
+        unit outputs; you will probably want to connect them to various
+        parts of your design as you debug different sections.</p>
+
+      </div>
+      
+      <h2>Development Steps</h2>
+      <div class="whitebox">
+      
+        <ol>
+        
+          <li>
+          
+            <h5>Download the <a href="Single_Cycle_Datapath.zip">Quartus
+            Project that I am supplying</a> and  test it.</h5> <p
+            class="runin">Click on the link to download the Zip file that I
+            am providing, and unzip it into your <span
+            class="directoryName">My Projects</span> directory, where you
+            will get a Quartus project in a directory named <span
+            class="directoryName">Single_Cycle_Datapath</span>. The project
+            is complete, so you should be able to open the project by
+            double-clicking on the project file, <span
+            class="fileName">single_cycle_datapath.qpf</span>.</p>
+
+            <p class="standoutBox">There will undoubtedly be updates to the
+            Zip file.<br />The timestamp of the current version is <strong><?php
+            echo date('r', filemtime('Single_Cycle_Datapath.zip'));
+            ?></strong>.
+            </p>
+            
+            <table>
+              <tr>
+                <th>Date</th><th>Changes</th>
+              </tr>
+              <tr>
+                <td>April 19</td>
+                <td>Original Version</td>
+              </tr>
+              <tr>
+                <td>April 20</td>
+                <td><ul><li><strong>Bug Fix:</strong> Control unit was not
+                recognizing op codes properly.</li><li>Test program now lets
+                you see the results of memory read
+                operations.</li><li>Changed name of files named <span
+                class="fileName">CPU_Register.xxx</span> to <span
+                class="fileName">PC_Register.xxx</span>.</li></ul></td>
+              </tr>
+            </table>
+            
+            <p>Download the programming file, <span
+            class="fileName">single_cycle_datapath.sof</span> to a DE1 kit,
+            and step through the sample code provided to be sure you
+            understand how to work with the buttons and switches, and how to
+            interpret the values displayed on the seven segment displays and
+            the LEDs.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Optional: Use PC SPIM to run a test program.</h5>
+
+            <p class="runin">PC SPIM is a simulator of the MIPS processor
+            that came on the CD accompanying the textbook.  You can also
+            download it from <a
+            href="http://www.cs.wisc.edu/~larus/SPIM/pcspim.zip">www.cs.wisc.edu/~larus/SPIM/pcspim.zip</a>.</p>
+
+            <p>You can write a MIPS assembly language program using any text
+            editor, load it into the simulator, and single step through it
+            to verify that it does what you expect.  Then, you can save the
+            state of the simulator in another text file (normally called
+            <span class="fileName">PCSpim.log</span>), and use that to update
+            the contents of the ROM in <span
+            class="fileName">instruction_memory.v</span>.</p>
+
+            <p>You need to set the following options in PC SPIM, which you
+            can do from the program&rsquo;s <span
+            class="menuItem">Simulator->Settings</span> menu item: turn on
+            &ldquo;<em>Save window positions</em>,&rdquo; &ldquo;<em>General
+            registers in hexadecimal</em>,&rdquo; &ldquo;<em>Delayed
+            Branches</em>,&rdquo; and &ldquo;<em>Allow pseudo
+            instructions</em>;&rdquo; turn off &ldquo;<em>Bare
+            machine</em>&rdquo; and &ldquo;<em>Load exception
+            file</em>.&rdquo;  The other options don&rsquo;t matter.</p>
+
+          </li>
+
+          <li>
+          
+            <h5>Implement the Program Counter</h5> <p class="runin">The zip
+            file I provided contains a file named <span
+            class="fileName">PC_Register.bsf</span>, which is the symbol for
+            the Program Counter.  My Verilog implementation of that symbol
+            is in a file named <span class="fileName">PC_Register.v</span>. 
+            Your job is to add a new block diagram file to the project named
+            <span class="fileName">PC_Register.bdf</span> and to implement
+            the same functionality as the Verilog program in that schematic
+            diagram file.  That is, you will need 32 flip-flops that get
+            loaded each time <span class="variableName">CPU_Clock</span>
+            goes true.  To get you started, I built a skeleton version of
+            <span class="fileName">PC_Register.bdf</span> and left it in the
+            project directory.  You can simply add that file to the project
+            and remove <span class="fileName">PC_Register.v</span> from the
+            project (without actually deleting the .v file from the disk if
+            you want to keep it) using the <span
+            class="menuItem">Project->Add/Remove files in project</span>
+            menu item.</p>
+            
+            <p class="standoutBlock">Be sure to test your project carefully
+            with your version of the PC in place before proceeding to the
+            next step.</p>
+
+          </li>
+        
+          <li>
+          
+            <h5>Implement the Register File</h5>
+            <p class="runin"></p>
+            
+          </li>
+          
+          <li>
+          
+            <h5>Implement the ALU</h5>
+            <p class="runin"></p>
+            
+          </li>
+          
+          <li>
+          
+            <h5>Implement the Control Unit</h5>
+            <p class="runin"></p>
+            
+          </li>
+          
+          <li>
+          
+            <h5>Implement the Multiplexers</h5>
+            <p class="runin"></p>
+            
+          </li>
+        </ol>
+      
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

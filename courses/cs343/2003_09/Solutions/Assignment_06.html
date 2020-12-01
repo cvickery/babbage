@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>CS-343 Assignment 6</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; background: #ccffcc;
+    padding: 1em; }
+    div.ans
+    {
+      font-weight:      bolder;
+      background:       #ccffcc;
+      padding:          1em;
+    }
+
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>CS-343 Assignment 6</h1>
+</center>
+
+<h2>DUE November 3</h2>
+<hr>
+
+  <p>Download a copy of the ARC Simulator from <a
+  href="../../../ARC_Simulator">this web page</a>.  If you are not
+  already familiar with the ARC Simulator, read the information on that
+  page before, during, or after you download the simulator.  Use the
+  copy provided on that web page, not the one available directly from
+  the textbook because I've fixed the jar file so you can click on it
+  to run it.</p>
+
+  <p>Code and simulate an ARC program that includes code that looks like
+  this:</p>
+  
+  <pre>
+              .org  0x40000C
+      first:  5   ! Start an array of integers
+              10
+              .   ! Any number of additional lines 
+              .   ! containing numbers
+              .   ! go here.
+      last:   -5
+      sum:    0
+  </pre>
+
+  <p>Your program is to compute the sum of all the numbers between
+  <i>first</i> and <i>last</i> (including both of those) and store the
+  result in <i>sum</i>.</p>
+
+  <p>Save your program in a file named "arc_add.asm" and mail the file
+  to me by midnight of the due date.  Be sure to put "CSCI-343
+  Assignment 6" in the subject line and to include your name and
+  student ID number in the body of your message.</p>
+
+<h2>Issues</h2>
+
+  <p>This assignment's simplicity is deceptive.  First of all, note
+  that the .org directive causes the first number to occupy memory
+  location 0x30000C.  If you try to load the first number into a
+  register using an instruction like, "ld [first], %r1" you will get an
+  error message from the assembler because the address 0x40000C will
+  not fit into the 13-bit immediate field of an <i>ld</i> instruction. 
+  Instead, you will have to break the address into two parts, load them
+  into a single register, and then use that register for loading the
+  value you want. For example, you could use a <i>sethi</i> instruction
+  to load the leftmost 22 bits of 0x0400000C into register 5, then use
+  an <i>or</i> instruction to load the rightmost ten bits of 0x0400000C
+  into register 5, and then load the contents of <i>first</i> into
+  register 1 with "ld %r5, %r0, %r1."</p>
+  
+  <p>The other issue with this program is that a natural way to
+  implement it is to use indexing to step through the elements of the
+  array.  So you could load the address of <i>first</i> into some
+  register, say register 5 again, and use code like this to access
+  succesive elements of the array:</p>
+  
+  <pre>
+                  add   %r0, %r0, %r6 ! clear index register
+            loop: ...   ! test whether last has been reached
+                  ...   ! add next number
+                  add   %6, 4, %6 ! increment index register
+                  ld    [%r5+%r6], %r1  ! get next element of array
+                  b     loop:
+  </pre>
+
+  <p>The problem here is that the ARC simulator would execute the
+  <i>ld</i> instruction just fine, but the ARC assembler doesn't
+  recognize the syntax of the assembly language statement.  Until I
+  finish my "new-improved" ARC assembler, you'll have to figure out a
+  way around the problem, for example by adding 4 to the address in
+  register 5 each time through the loop instead of using register 6 at
+  all.</p>
+  
+  <p>Also, note that the <i>ld</i> instruction I wrote in the previous
+  paragraph is not recognized by the existing ARC assembler.  You would
+  have to write that code as "ld %r5, %r1" to get it to assemble.</p>
+
+<div class="ans">
+<center><h1>addemup.asm</h1></center>
+<hr>
+<pre>
+      !   Add values stored in memory locations first through last.
+      !
+      !   Because the data array is located at an address that can
+      !   not be represented in 13 bits, a ld instruction cannot
+      !   use an immediate address for loading the values to be
+      !   added.  And because the starting address of the data
+      !   is wider than 22 bits, addesses to be loaded into a register
+      !   have to be broken manually into the leftmost 22 bits and the
+      !   rightmost 10 bits.  The real SPARC assembler provides
+      !   special operators for extracting the left-most 22 and right-most
+      !   10 bits of an address, but we have to do it manually.
+      !
+              .begin
+              .org    2048            ! Stadard starting place
+      
+              sethi   0x01000, %r1    ! High-order 22 bits of first
+              or      %r1, 0x0C, %r1  ! Low-order 10 bits of first
+      
+              sethi   0x01000, %r2    ! High-order 22 bits of sum
+              or      %r2, 0x34, %r2  ! Low-order 10 bits of sum
+      
+              add     %r0, %r0, %r3   ! Initialze sum register
+      loop:   ld      %r1, %r4        ! Get next value
+              add     %r3, %r4, %r3   ! Caculate new sum
+              add     %r1, 4,  %r1    ! Point to next value
+              subcc   %r1, %r2, %r0   ! Check if next address is past last
+              bne     loop
+              st      %r3, %r2        ! Store sum in memory
+              halt
+      
+              .org  0x40000C          ! Address wider than 22 bits
+      first:  5
+              10 15 20 -1 -2 -3 -4 -5
+      last:   100
+      sum:    0
+      
+              .end
+</pre>
+</div>
+
+<h2>Optional (Extra Credit)</h2>
+
+  <p>If you would like to hone your ARC assembly language programming
+  skills, write your code as a subroutine that receives two addresses
+  as parameters (in registers) and returns the sum in another
+  register.  Code a main program that uses the subroutine to add two or
+  three different sets of numbers.</p>
+
+  <p>If you do this, be sure to mention it in your email so that I
+  am sure to give you the extra credit.</p>
+
+<div class="ans">
+<center><h1>addemup_main.asm</h1></center>
+<hr>
+<pre>
+      !   Use a subroutine to add arrays
+      !
+      !   Register usage:
+      !
+      !     %r1   Address of first number to sum
+      !     %r2   Address of last number to sum
+      !     %r3   Sum is returned here
+      !
+      !   Simulator bug: sethi doesn't clear the low-order ten bits
+      !   of the register as it should.  Assember bug: 0x1FFF not allowed
+      !   as a simm13 value.  Simulator bug: bpos test for (not N) instead
+      !   (not Z and not N).  Code workarounds: Use two instructions to
+      !   get the value 0xFFFFFC00 into reg 5, and AND this with the
+      !   destination register after each sethi instruction.  Use two
+      !   branch instructions to test the Z and N bits instead of bpos.
+      !   And generate address constants for sethi/or instructions manually.
+      !
+      
+              .org    2048            ! Stadard starting place
+      
+      ! Main program
+      ! --------------------------------------------------------------------
+      main:   add     %r0, -1, %r5    ! Construct a bitmask ...
+              xor     %r5, 0x3FF, %r5 ! ... to fix assember/simulator bugs
+      
+              !   Sum all the numbers
+              sethi   0x01000, %r1    ! High-order 22 bits of first
+              and     %r1, %r5, %r1   ! Fix simulator bug
+              or      %r1, 0x0C, %r1  ! Low-order 10 bits of first
+              sethi   0x01000, %r2    ! High-order 22 bits of last
+              and     %r2, %r5, %r2   ! Fix simulator bug
+              or      %r2, 0x30, %r2  ! Low-order 10 bits of last
+              call    addem
+      
+              !   Sum the last half
+              sethi   0x01000, %r1    ! High-order 22 bits of mid
+              and     %r1, %r5, %r1   ! Fix simulator bug
+              or      %r1, 0x20, %r1  ! Low-order 10 bits of mid
+              sethi   0x01000, %r2    ! High-order 22 bits of last
+              and     %r2, %r5, %r2   ! Fix simulator bug
+              or      %r2, 0x30, %r2  ! Low-order 10 bits of last
+              call    addem
+      
+              !   Sum the first half
+              sethi   0x01000, %r1    ! High-order 22 bits of first
+              and     %r1, %r5, %r1   ! Fix simulator bug
+              or      %r1, 0x0C, %r1  ! Low-order 10 bits of first
+              sethi   0x01000, %r2    ! High-order 22 bits of mid
+              and     %r2, %r5, %r2   ! Fix simulator bug
+              or      %r2, 0x20, %r2  ! Low-order 10 bits of mid
+              call    addem
+      
+      here:   ba      here            ! Endless loop to keep simulator
+                                      ! from running through the subroutine
+      
+      ! Subroutine to add numbers
+      ! --------------------------------------------------------------------
+      addem:  add     %r0, %r0, %r3   ! Initialze sum register
+      loop:   ld      %r1, %r4        ! Get next value
+              add     %r3, %r4, %r3   ! Caculate new sum
+              add     %r1, 4,  %r1    ! Point to next value
+              subcc   %r1, %r2, %r0   ! Check if next address is past last
+              bneg    loop            ! Do next value if it isn't
+              be      loop
+      return: jmpl    %r15+4, %r0     ! Return to caller
+      
+              .org  0x40000C          ! Address wider than 22 bits
+      first:  5
+              10 15 20 -1
+      mid:    -2 -3 -4 -5
+      last:   100
+      
+              .end
+</pre><hr>
+</div>
+<hr>
+</body>
+</html>

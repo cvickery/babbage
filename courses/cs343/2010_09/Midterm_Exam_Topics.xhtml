@@ -1,0 +1,93 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $content_type = "application/xhtml+xml";
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $content_type = "text/html";
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Midterm Exam Topics</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      th { color:#333; }
+    </style>
+  </head>
+  <body>
+    <h1>CS-343 Midterm Exam Topics</h1>
+    <section id="content">
+      <h1>For the midterm exam you should be able to:</h1>
+      <ul>
+        <li>Use correct units of measurement for information, time, and rate (frequency)</li>
+        <li>Use correct measurement prefixes for units of information, time, and rate and to represent a given value with
+        different prefixes</li>
+        <li>Perform calculations involving measures of information, time, and rate without a calculator</li>
+        <li>Represent logic functions using truth tables, Boolean equations, and logic networks</li>
+        <li>Represent a function given in one form into either of the other two</li>
+        <li>Define terms: <em>minterm, literal, propagation delay</em></li>
+        <li>Minimize logic functions using Karnaugh maps and algebraic reduction, and to draw a logic network for the
+        minimized function</li>
+        <li>Compute the gate input count measure of complexity for a logic network</li>
+        <li>Compute the worst-case propagation delay through a logic network</li>
+        <li>Draw the gates to implement multiplexers with various numbers of data inputs</li>
+        <li>Draw a diagram showing how to construct a multiplexer with <em>n</em> output using <em>n</em>
+        one-output multiplexers
+        </li>
+        <li>Tell the output value(s) of a multiplexer given the input values</li>
+        <li>Draw the gates to implement any one of the four functions in a 4-bit carry-lookahead unit</li>
+        <li>Explain the rationale for adding a carry-lookahead unit to the design of a parallel adder</li>
+        <li>Draw the gates to implement one slice of the MIPS ALU for use with a carry-lookahead unit</li>
+        <li>
+          Define or identify Quartus terminology: pins, bus lines, node lines, block diagram file, pin
+          assignment, device programmer, bus and node naming, top-level module, testbed.
+        </li>
+        <li>
+          Describe the operation of the DE1 I/O elements: switches, keys, seven segment displays, and LEDs.
+        </li>
+        <li>
+          Given hexadecimal values for A, B, and <em>f</em> in the following table, fill in the corresponding
+          values for CVNZ (the condition code bits) and Result, both expressed as hexadecimal values:
+          <table>
+            <tr><th>A</th><th>B</th><th><em>f</em></th><th>CVNZ</th><th>Result</th></tr>
+            <tr><th></th><th></th><th></th><td>&#x00A0;</td><td>&#x00A0;</td></tr>
+          </table>
+        </li>
+        <li>
+          Perform the negation operation on both positive and negative two’s complement numbers
+        </li>
+        <li>
+          Define the Carry, Overflow, Negative, and Zero condition code bits
+        </li>
+        <li>
+          Perform the sign-extension operation on two’s complement values
+        </li>
+        <li>
+          Tell the difference between <em>combinational</em> and <em>sequential</em> logic circuits
+        </li>
+        <li>
+          Identify the inputs and outputs of a an edge-triggered D-type flip-flop, and identify which ones
+          correspond to the <em>present state</em> and <em>next state</em> of the device
+        </li>
+      </ul>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML5</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,243 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-343 Assignment 4</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 4</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This assignment is to design and implement the modulo-4 up/down counter developed in class on October 23.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+          There is one significant difference between the counter developed in class and the one you are to implement: instead of using  D flip-flops
+          with preset and clear inputs, you are to use a slightly more complex flip-flop, which has an additional input called "Enable." When you
+          pick the flip-flop from the  list of devices in Quartus (under the &ldquo;storage&rdquo; group), it is called <span class="functionName">dffe</span>
+          (for &ldquo;D flip-flop with enable&rdquo;). Read on for a explanation.
+        </p>
+        <ol>
+          <li>
+            <h5>Download and test the full Verilog implementation</h5>
+            <p>
+              Create a new folder in your <span class="directoryName">My Projects</span> directory named <span class="directoryName">UpDnCounter</span>, then
+              download <a href="UpDnCounter.zip">UpDnCounter.zip</a> and unzip it into that directory. Open up the project in Quartus, download the
+              configuration file to a DE-1 kit, and verify that it works as follows:
+            </p>
+            <ul>
+              <li>
+                Key[1] and Key[0] are the <span class="variableName">Up</span> and <span class="variableName">Dn</span> inputs, respectively.
+              </li>
+              <li>
+                Switch[9] is a &ldquo;Run/Step&rdquo; switch. When it is in the up position the counter should count at a rate of 2 steps per
+                second if one of the Up/Dn inputs is true, driven by one of the three hardwired clocks on the DE-1 board. When this slide switch is in
+                the down position, Key[2] works like a &ldquo;human clock:&rdquo; each time you (or any other human) press Key 1, the counter counts up or
+                down, again according to whether Key[1] or Key[0] is being held down at the same time.
+              </li>
+              <li>
+                Key[3] is the Reset input: pressing this key resets the counter to the Zero state.
+              </li>
+              <li>
+                The ten red LEDs show the states of the ten slide switches. For this assignment, Switches[8:0] are not connected to anything else except
+                these lights.
+              </li>
+              <li>
+                The green LEDs are connected as follows:
+                <ul>
+                  <li>Green LEDs[3:0] are connected to the corresponding Key inputs.</li>
+                  <li>
+                    Green LEDs[5:4] show the state of the counter&rsquo;s two state flip-flops, <span class="variableName">S1</span> and
+                    <span class="variableName">S0</span>.</li>
+                  <li>Green LED[6] shows the state of the internal &ldquo;enable&rdquo; signal described below.</li>
+                  <li>Green LED[7] shows the Z output of the modulo-4 counter: the bit that is supposed to be one whenever the counter is
+                  in state 0 (both state flip-flops off).</li>
+                </ul>
+              </li>
+              <li>
+                Of the four seven segment displays, only the right one is used. (The other four will always show &lsquo;888.&rsquo;) The right two bits
+                driving this seven segment display are the same as Green LEDs[5:4]: the values of the counter&rsquo;s two state flip-flops. The other
+                two bits show the state of another two-bit Finite State Machine, which is used to control the Human Clock, as described below. There is
+                a table near the bottom of this page that tells how to interpret the values displayed.
+              </li>
+            </ul>
+            <p>
+              The assignment is less complex than it might seem: it&rsquo;s the testbed that is somewhat complex, not the modulo-4 counter that you are
+              to implement. Here is the symbol for the counter you are to build:
+            </p>
+            <p>
+              <img src="images/UpDnCounter.bsf.png" alt="Up-Down Counter Schematic Symbol" />
+            </p>
+            <p>
+              Everything is the same as the module developed in class except for the extra input marked &ldquo;Enable.&rdquo; As you might guess, this
+              input gets connected to the &ldquo;ENA&rdquo; inputs of the two state flip-flops in your counter.
+            </p>
+            <p>
+              Here&rsquo;s what&rsquo;s going on: I wanted
+              to have the counter operate automatically either using one of the hardware clocks built onto the DE-1 kits (I used the 50 MHz clock) or
+              manually, by having you press one of the Key pushbuttons. The automatic mode is nice when everything is working, but it might be too fast when
+              debugging your design. The manual mode lets you generate clock pulses only when you want them. A secondary issue is that running your FSM at
+              50 MHz would make it go much, much too fast to see anything happening, so I needed to slow the 50 MHz clock down to something reasonable (I
+              used 2 Hz). One of the cardinal rules of synchronous circuit design is not to put any gates between the clock input signal and the clock
+              inputs of any of the flip-flops. If the number of propagation delays is different for different flip-flops you get something called
+              &ldquo;clock skew,&rdquo; and all those synchronized flop-flop state changes aren&rsquo;t really synchronized any more. The
+              <span class="variableName">ENA</span> input to the flip-flops addresses exactly this problem: when it is true, the flip-flops work just like
+              the ones we developed in class, but when it is false, the flip-flops never change state.
+            </p>
+            <p>
+              The testbed includes a section that makes
+              <span class="variableName">ENA</span> true for just one clock cycle out of every 50,000,000 whenever Switch[9] is in the &ldquo;Run&rdquo;
+              (up) position. Two positive edges of the 50 MHz clock actually
+              get through to the flip-flops each time <span class="variableName">ENA</span> is on, so the effective clock speed is 2 Hz.
+            </p>
+            <p>
+              The other thing the testbed does is to make <span class="variableName">ENA</span> true for just one clock cycle each time Key[2] is pressed
+              while Switch[9] is in the &ldquo;Step&rdquo; (down) position, which is not as simple as it might seem! The logic goes something like this:
+              each time the 50 MHz clock goes true, check the state of Key[2], and cycle through four states. Stay in the first state until the user
+              presses the key, then go to the second state, where <span class="variableName">ENA</span> is made true. The very next clock pulse transfers
+              the circuit into its third state, where it turns off <span class="variableName">ENA</span>, resulting in a one clock period long pulse
+              on <span class="variableName">ENA</span>. The very next clock pulse after that transfers the ciruit into its fourth state, where it remains
+              until the key is released and the cycle starts over again.
+            </p>
+          </li>
+          <li>
+            <h5>Develop the state table for the up/down counter.</h5>
+            <p>
+              In class, we made the <span class="functionName">Reset</span> input independent of the clock by connecting it to the asynchronous clear
+              inputs of the state flip-flops. Likewise, the<span class="functionName"> Enable</span> input is also independent of the clock (actually
+              it controls whether the clock does anything or not) and thus, like the <span class="functionName">Reset</span> input, is not part of your
+              design. So write out the sixteen row state table based on the four inputs: <span class="functionName">Up</span>,
+              <span class="functionName">Dn</span>, and the present states of the two state flip-flops. Remember: you have to decide how to handle the
+              &ldquo;meaningless&rdquo; combination of trying to count both up and down at the same time. (In the Verilog implementation, they cancel
+              each other out: you get to decide how you want them to work in your implementation.)
+            </p>
+            <p>
+              You have to hand in your state table and show how you minimized the input functions for the two state flip-flops. You may either hand this
+              part of the assignment in on paper during class on the assignment due date (October 30<span class="superscript">th</span>), or submit them
+              in electronic form as attachments to the email when you submit the assignment.
+            </p>
+          </li>
+          <li>
+            <h5>Build your own implementation of <span class="functionName">UpDnCounter</span> as a schematic, and test it.</h5>
+            <p>
+              Remove <span class="fileName">UpDnCounter.v</span> from the project, and create your own schemitic (.bdf file) that does the same
+              thing. Be sure you name your inputs and outputs exactly the same way as the Verilog version does.
+            </p>
+            <p>
+              You should have noticed when testing the full Verilog version that the right seven segment display gives hard to understand values
+              when operating in manual mode because the Human Clock state machine is being displayed along with the up/down counter state. This is not
+              an issue when Switch 9 is up because the Human Clock is disabled then.
+            </p>
+            <table>
+              <caption>Interpreting The Seven Segment Display In Manual (Single Step) Mode</caption>
+              <tr><th rowspan="2" scope="col">Hex</th><th colspan="2" scope="col">Meaning</th></tr>
+              <tr><th scope="col">Human Clock FSM</th><th scope="col">Up/Dn FSM</th></tr>
+
+              <tr><th scope="row">0</th><td>Waiting for Key[2] press</td><td>State 0</td></tr>
+              <tr><th scope="row">1</th><td>Waiting for Key[2] press</td><td>State 1</td></tr>
+              <tr><th scope="row">2</th><td>Waiting for Key[2] press</td><td>State 2</td></tr>
+              <tr><th scope="row">3</th><td>Waiting for Key[2] press</td><td>State 3</td></tr>
+
+              <tr><th scope="row">4</th><td>Key[2] pressed (0-10 nsec)</td><td>State 0</td></tr>
+              <tr><th scope="row">5</th><td>Key[2] pressed (0-10 nsec)</td><td>State 1</td></tr>
+              <tr><th scope="row">6</th><td>Key[2] pressed (0-10 nsec)</td><td>State 2</td></tr>
+              <tr><th scope="row">7</th><td>Key[2] pressed (0-10 nsec)</td><td>State 3</td></tr>
+
+              <tr><th scope="row">8</th><td>Key[2] pressed (10-20 nsec)</td><td>State 0</td></tr>
+              <tr><th scope="row">9</th><td>Key[2] pressed (10-20 nsec)</td><td>State 1</td></tr>
+              <tr><th scope="row">A</th><td>Key[2] pressed (10-20 nsec)</td><td>State 2</td></tr>
+              <tr><th scope="row">b</th><td>Key[2] pressed (10-20 nsec)</td><td>State 3</td></tr>
+
+              <tr><th scope="row">C</th><td>Waiting for Key[2] release</td><td>State 0</td></tr>
+              <tr><th scope="row">d</th><td>Waiting for Key[2] release</td><td>State 1</td></tr>
+              <tr><th scope="row">E</th><td>Waiting for Key[2] release</td><td>State 2</td></tr>
+              <tr><th scope="row">F</th><td>Waiting for Key[2] release</td><td>State 3</td></tr>
+
+            </table>
+            <p>
+              Note that hex values 4-B appear for only 10 nsec each, so you will never see them. But you will see values C-F for as long as
+              you hold down Key[2]; which one you see depends on the state of the Up/Dn FSM.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          When you are ready for me to look at your project, send me an email message containing your name and a sentence telling me what rule you followed
+          for the case when both <span class="variableName">Up</span> and <span class="variableName">Dn</span> are true at the same time. I will retrieve your
+          project from the TREE lab server and check it out. If your did not submit your state table and derived equations on paper in class, you may
+          attach an electronic version to your email. Send your email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-343&nbsp;Assignment&nbsp;4</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p class="standout_block">Be sure to put your name in your email message!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs343">CSCI-343 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

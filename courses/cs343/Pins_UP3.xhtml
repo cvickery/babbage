@@ -1,0 +1,143 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>UP3 I/O Pins</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+
+    <style type="text/css" media="all">
+      .switch, .led   { background-color: #efe; color: #000; }
+      .button, .clock { background-color: #fef; color: #000; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>UP3 I/O Pins</h1>
+    </div>
+
+    <div id="content">
+      <h2>Buttons, Switches, and LEDs</h2>
+      <div class="whitebox">
+
+        <p>The Cyclone EP1C6Q240C8 FPGA on the UP3 Logic Kit has four
+        &ldquo;dip&rdquo; switches in a block marked SW3 (SW3.1, SW3.2,
+        SW3.3, and SW3.4), four push buttons (SW4, SW5, SW6, and SW7), and
+        four LEDs named D4, D5, D6, and D7.</p>
+
+        <p>The dip switches generate logic &ldquo;1&rdquo; when pushed to
+        the ON position; the push buttons generate logic &ldquo;0&rdquo;
+        when pressed, and the LEDs turn on when their pins are at logic
+        &ldquo;0&rdquo;.  The following table shows which FPGA pin numbers
+        are connected to these twelve devices:</p>
+
+        <p>The frequencies of the three clock signals depend on the
+        configuration of some jumpers on the board. The 48 MHz clock on pin
+        29 is a default setting; the other two clocks have no default
+        values.</p>
+
+        <table>
+          <col width="50%" /><col width="50%" />
+          <tr>
+            <th>Connection</th><th>FPGA Pin</th>
+          </tr>
+          <tr class="clock">
+            <td>CLK 1: 48 MHz or 14.318 MHz</td>
+            <td>PIN_29</td>
+          </tr>
+          <tr class="clock">
+            <td>CLK 3: 3.33 MHz or 4.318 MHz</td><td>PIN_152</td>
+          </tr>
+          <tr class="clock">
+            <td>CPU Clock: 66 MHz or 100 MHz</td><td>PIN_153</td>
+          </tr>
+          <tr class="switch">
+            <td>SW3.1</td><td>PIN_58</td>
+          </tr>
+          <tr class="switch">
+            <td>SW3.2</td><td>PIN_59</td>
+          </tr>
+          <tr class="switch">
+            <td>SW3.3</td><td>PIN_60</td>
+          </tr>
+          <tr class="switch">
+            <td>SW3.4</td><td>PIN_61</td>
+          </tr>
+          <tr class="button">
+            <td>SW4</td><td>PIN_48</td>
+          </tr>
+          <tr class="button">
+            <td>SW5</td><td>PIN_49</td>
+          </tr>
+          <tr class="button">
+            <td>SW6</td><td>PIN_57</td>
+          </tr>
+          <tr class="button">
+            <td>SW7</td><td>PIN_62</td>
+          </tr>
+          <tr class="led">
+            <td>D4</td><td>PIN_56</td>
+          </tr>
+          <tr class="led">
+            <td>D5</td><td>PIN_55</td>
+          </tr>
+          <tr class="led">
+            <td>D6</td><td>PIN_54</td>
+          </tr>
+          <tr class="led">
+            <td>D7</td><td>PIN_53</td>
+          </tr>
+
+        </table>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

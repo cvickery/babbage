@@ -1,0 +1,267 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 4 Solutions</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      img {border:1px solid blue;}
+      .big-sig {font-size:1.2em; font-weight:bold;position:relative;top:0.1em;}
+    </style>
+  </head>
+  <body id='urn:uuid:4E79580D-E842-47FF-B123-DF998A7C40E2'>
+    <h1>CS-343 Assignment 4<br/>
+    Solutions</h1>
+    <div id="content">
+      <h2>Solutions</h2>
+      <div>
+        <ol>
+          <li>
+            Write the complete equation for c<span class="subscript">2</span> using carry-lookahead logic.
+            That is, the only variables you can use are c<span class="subscript">0</span>,
+            g<span class="subscript">0</span>, p<span class="subscript">0</span>, g<span class="subscript">1</span>,
+            and p<span class="subscript">1</span>. (The answer is in the textbook.)
+            <div class="code-block">
+c<span class="subscript">2</span> = g<span class="subscript">1</span> + p<span class="subscript">1</span>g<span class="subscript">0</span> + p<span class="subscript">1</span>p<span class="subscript">0</span>c<span class="subscript">0</span>
+            </div>
+          </li>
+          <li>
+            Rewrite the equation for c<span class="subscript">2</span> using only the only variables:
+            a<span class="subscript">0</span>, b<span class="subscript">0</span>, c<span class="subscript">0</span>,
+            a<span class="subscript">1</span>, b<span class="subscript">1</span>. Note that you may
+            <em>not</em> use c<span class="subscript">1</span> in the expression.
+<div class="code-block">
+c<span class="subscript">2</span> = a<span class="subscript">1</span>b<span class="subscript">1</span> + a<span class="subscript">1</span>a<span class="subscript">0</span>b<span class="subscript">0</span> + b<span class="subscript">1</span>a<span class="subscript">0</span>b<span class="subscript">0</span> + a<span class="subscript">1</span>b<span class="subscript">0</span>c<span class="subscript">0</span> + a<span class="subscript">0</span>b<span class="subscript">1</span>c<span class="subscript">0</span>
+
+</div>
+          </li>
+          <li>
+            Why must you not use c<span class="subscript">1</span> in the previous equation?
+<div class="code-block">
+  It would introduce an additional level of propagation delays,
+  defeating the purpose of carry-lookahead logic.
+</div>
+          </li>
+          <li>
+            Give the sum of products value for segment 1 of a seven segment display using sigma notation.
+            For example: segment 0 is on for the digits 0, 2, 3, 5, 6, 7, 8, 9, A, C, E, and F, so the sum of
+            products value for segment 0 using sigma notation would be <span class="big-sig">Σ</span>(0, 2, 3,
+            5, 6, 7, 8, 9, 10, 12, 14, 15).
+<div class="code-block">
+  segment<span class="subscript">1</span> = <span class="big-sig">Σ</span>(0, 1, 2, 3, 4, 7, 8, 9, 10, 13)
+</div>
+          </li>
+          <li>
+            Use a Karnaugh Map to minimize the answer to the previous question.
+<div class="code-block">
+Assume the inputs, from left to right, are a, b, c, and d.
+There is more than one solution.
+Here is the Karnaugh Map before drawing in the circles. The rows are for a and b;
+the columns are for c and d.
+    <table>
+      <tr><th></th><th>00</th><th>01</th><th>11</th><th>10</th></tr>
+      <tr><th>00</th><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><th>01</th><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><th>11</th><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+      <tr><th>10</th><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+    </table>
+
+One solution is:
+
+    segment<span class="subscript">1</span> = a'b' + b'd' + a'c'd' + a'cd + ac'd
+
+Since I can’t easily draw the circles around the terms, here is a description of where
+each one goes and how it relates to the map:
+
+      a'b' is the four cells in the top row
+      b'd' is the four corner cells (you can do this: a student asked about it in class)
+      a'c'd' is the two cells at in the left column of the first two rows
+      a'cd is the two cells in the top two rows of the third column
+      a'c'd is the two cells in the second column, bottom two rows
+</div>
+          </li>
+          <li>
+            Define arithmetic <em>overflow</em> for two’s complement numbers.
+<div class="code-block">
+  Overflow is when the numerically correct result is not within the range of values
+  that can be represented using the number <em>n</em> of bits available. That is,
+  when the value of the result is outside the range:
+  -2<span class="superscript"><em>n</em>-1</span> to +2<span class="superscript"><em>n</em>-1</span> - 1
+</div>
+          </li>
+          <li>
+            When is the <em>Z</em> condition code bit true?
+<div class="code-block">
+  When the result is all zeros.
+</div>
+          </li>
+          <li>
+            When is the <em>N</em> condition code bit true?
+<div class="code-block">
+  When the result is negative.
+  That is, when the leftmost bit of the result (the sign bit) is 1.
+</div>
+          </li>
+          <li>
+            What is the bit-wise AND of 0xFFFF and 0x1234?
+<div class="code-block">
+  0x1234
+</div>
+          </li>
+          <li>
+            What is the bit-wise OR of 0x1234 and 0x7DCB?
+<div class="code-block">
+  0xFFFF
+</div>
+          </li>
+          <li>
+            What is the decimal value of the 16-bit two’s complement number 0xFFFC?
+<div class="code-block">
+  -4
+</div>
+          </li>
+          <li>
+            What is the decimal value of the 16-bit two’s complement number 0x0064?
+<div class="code-block">
+  +100
+</div>
+          </li>
+          <li>
+            Convert the 16-bit two’s complement number 0x89AB to the equivalent 32-bit number. Answer in
+            hexadecimal.
+<div class="code-block">
+  0xFFFF89AB
+</div>
+          </li>
+          <li>
+            Convert the 16-bit two’s complement number 0x789A to the equivalent 32-bit number. Answer in
+            hexadecimal.
+<div class="code-block">
+  0x0000789A
+</div>
+          </li>
+          <li>
+            What is the two’s complement of 0x1234? Answer in hexadecimal.
+<div class="code-block">
+  0xEDCC
+</div>
+          </li>
+          <li>
+            What is the two’s complment of 0xFFFF? Answer in hexadecimal.
+<div class="code-block">
+  0x0001
+</div>
+          </li>
+          <li>What is the decimal value of the 16-bit two’s complement number, 0xFF85?
+<div class="code-block">
+  -123
+</div>
+          </li>
+          <li>What is the decimal value of the 16-bit two’s complement number, 0x0123?
+<div class="code-block">
+  256 + 32 + 3 = 291
+</div>
+          </li>
+          <li>
+            Assume the slide switches are set to 011 101 1100 for Assignment 3.
+            <ol>
+              <li>What is the binary value of A?
+<div class="code-block">
+  011
+</div>
+              </li>
+              <li>What is the binary value of B?
+<div class="code-block">
+  101
+</div>
+              </li>
+              <li>What is the binary value of A'?
+<div class="code-block">
+  100
+</div>
+              </li>
+              <li>What is the binary value of B'?
+<div class="code-block">
+  010
+</div>
+              </li>
+              <li>What is the binary result of ANDing A' and B'?
+<div class="code-block">
+  000
+</div>
+              </li>
+              <li>What is the binary result of ORing A' and B'?
+<div class="code-block">
+  110
+</div>
+              </li>
+              <li>What is the binary result of Adding A' + B' + C<span class="subscript">0</span>
+<div class="code-block">
+  111 (C<span class="subscript">0</span> is Bneg, which is 1.)
+</div>
+              </li>
+              <li>What is the binary value of the SLT<span class="subscript">in</span> inputs to the slices?
+<div class="code-block">
+  001 (The leftmost bit of the previous answer is the rightmost bit of this one.)
+</div>
+              </li>
+              <li>What are C<span class="subscript">2</span> and C<span class="subscript">3</span>?
+<div class="code-block">
+  0 and 0
+</div>
+              </li>
+              <li>What are the names and values of the four condition code bits?
+<div class="code-block">
+  C is 0 ( C<span class="subscript">3</span> )
+  V is 0 ( C<span class="subscript">3</span> &#x2295; C<span class="subscript">2</span> )
+  N is 0 (This is based on the result, not on the sum)
+  Z is 1 (See next answer)
+</div>
+              </li>
+              <li>What is the result output of the ALU, in binary?
+<div class="code-block">
+  000 (The AND result)
+</div>
+              </li>
+            </ol>
+          </li>
+          <li>
+            Draw all the gates to implement an 8&#x00D7;1 multiplexer. If you submit the assignment on paper, you
+            may draw the gates as a Quartus block diagram file and print the diagram. If you submit the assignment
+            by email, you may submit the block diagram file itself. Be sure to include the input and output pins
+            and to name them meaningfully.
+            <img src="../images/8x1_MUX_gates.png" alt="8x1 Multiplexer Block Diagram" />
+          </li>
+        </ol>
+      </div>
+    </div>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

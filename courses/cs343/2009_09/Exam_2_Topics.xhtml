@@ -1,0 +1,131 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Exam 2 Topics</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head>
+
+  <body id='urn:uuid:BA0432B4-0E51-4E0C-8FFE-C18123EAA10A'>
+    <div id="header">
+      <h1>CS-343 Exam 2 Topics</h1>
+    </div>
+    <div id="content">
+      <h2>Readings and Assignments</h2>
+      <div>
+        <p>
+          The exam will be cumulative in the sense that you will need to remember material from the first part of
+          the course in order to answer some of the questions. But material covered before the first exam will not
+          be explicitly tested again.
+        </p>
+        <ul>
+          <li>Textbook Appendix C, Sections C.7 through C.11</li>
+          <li>Textbook Chapter 2 (review material)</li>
+          <li>Textbook Chapter 4, Sections 4.1 through 4.3</li>
+          <li>Assignment 4</li>
+          <li>Class Notes</li>
+        </ul>
+      </div>
+      <h2>Topics</h2>
+      <div>
+      	<p class='standout-block'>
+        	<strong>Disclaimer: </strong>There may be topics on the exam that I&rsquo;ve forgotten to list here.
+          If I update the list, I will post notices on the course forum and Twitter.
+        </p>
+        <ul>
+        	<li>Difference between combinational and sequential logic</li>
+          <li>Anatomy of clock signals: positive edge, negative edge, period, frequency</li>
+          <li>Sequential devices: Unclocked R-S Latch, Clocked R-S Latch, D Latch, D Flip-flop</li>
+          <li>Finite State Machine model: state register and combinational logic
+          	<ul>
+            	<li>Present state, next state, external inputs, external outputs</li>
+              <li>State diagrams (circles and arcs)</li>
+              <li>FSM timing: clock edges and minimum clock period</li>
+              <li>Why latches cannot be used for state registers</li>
+              <li>Number of flip-flops in state registers</li>
+            </ul>
+          </li>
+          <li>Clock skew: why flip-flops have <em>enable</em> inputs and what they do</li>
+          <li>State table (truth table for an FSM&rsquo;s combinational logic) design</li>
+          <li>Register design: connections of clock, enable, and data inputs; data outputs</li>
+          <li>Design and implementation of MIPS register file
+          	<ul>
+            	<li>Names and purposes of all inputs and outputs</li>
+            	<li>Full MIPS <em>vs.</em> Assignment 4: number of wires for all inputs and outputs</li>
+              <li>Register 0</li>
+              <li>Reason for two read ports but only one write port</li>
+            </ul>
+          </li>
+          <li>Design of multiplexers with multiple outputs</li>
+          <li>RAM: chip select input and tristate outputs</li>
+          <li>RAM: purposes and numbers of bits for inputs and outputs</li>
+          <li>RAM: construction of deep memories from shallow chips; address decomposition and decoding</li>
+          <li>MIPS Instruction Set Architecture
+          	<ul>
+            	<li>Memory capacity and addressing</li>
+              <li>Three instruction formats</li>
+              <li>The Program Counter (PC)</li>
+            </ul>
+          </li>
+          <li>MIPS single-cycle datapath: Inputs to the PC</li>
+          <li>MIPS single-cycle datapath: Using ROM for instruction memory</li>
+          <li>MIPS single-cycle datapath: Use of <em>rs</em>, <em>rd</em>, and <em>rd</em> fields</li>
+          <li>MIPS single-cycle datapath: R[rs] and R[rt]</li>
+          <li>MIPS single-cycle datapath: Op code and function code fields</li>
+          <li>MIPS single-cycle datapath: Implementation of <em>beq</em> and <em>bne</em> instructions
+          	<ul>
+            	<li>Calculation of Branch Target Address (BTA)</li>
+              <li>Verilog notation for BTA</li>
+              <li>Deciding whether to use BTA or not</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,77 @@
+<html><head><title>Fetch_Execute.java</title></head>
+<body><center><h1>Fetch_Execute.java</h1></center><hr><pre>
+      //  Fetch_Execute.java
+      
+      import java.io.*;
+      
+      /**   The algorithm of a CPU's Fetch-Execute cycle expressed in Java.
+        *   This code compiles and runs; making a full computer out of it is
+        *   left as an exercise for the student!
+        */
+        public class Fetch_Execute
+        {
+          static int[]  Memory = new int[ 1024*1024 ];
+          static int    IR, PC;
+      
+          //  main()
+          //  --------------------------------------------------------------
+          /**
+            *   Loads a program into the computer's memory and executes it.
+            */
+            public static void main( String[] args ) throws IOException
+            {
+              //  Load a program into the computer's memory
+              if ( args.length != 1 )
+              {
+                System.err.println( "Usage: java Fetch_Execute &lt;file&gt;" );
+                System.exit( 1 );
+              }
+              BufferedReader br = new BufferedReader(
+                                                new FileReader( args[0] ) );
+              String buf = null;
+      
+              while ( (buf = br.readLine()) != null )
+              {
+                String[] ad = buf.split( " " ); // Separate address/data
+                int addr = Integer.parseInt( ad[0] );
+                int data = Integer.parseInt( ad[1] );
+                Memory[ addr ] = data;
+              }
+      
+              //  Here's the fetch-execute cycle
+              //  ----------------------------------------------------------
+              PC = 0;
+              while ( true )
+              {
+                IR = Memory[ PC++ ];
+                execute();
+              }
+            }
+      
+            //  execute()
+            //  ------------------------------------------------------------
+            /**
+              *   Executes the instruction in the IR.
+              *   Assume instructions are 32 bits long with a seven bit
+              *   op code in bits 24:30.
+              */
+              static void execute( )
+              {
+                int op_code = (IR &amp; 0x7F000000) &gt;&gt; 24;
+                switch ( op_code )
+                {
+                  case 0x01:
+                    //  Execute an instruction with op code of 0x01 ...
+                    break;
+      
+                  case 0x02:
+                    //  Execute an instruction with op code of 0x02 ...
+                    break;
+      
+                   // Other cases for other op codes ...
+      
+                }
+              }
+        }
+      
+</pre><hr></body></html>

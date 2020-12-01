@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>CS-343 Assignment 6</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; background: #ccffcc;
+    padding: 1em; }
+    div.ans
+    {
+      font-weight:      bolder;
+      background:       #ccffcc;
+      padding:          1em;
+    }
+
+  </style>
+
+</head>
+
+<body>
+<center>
+<h1>CS-343 Assignment 6</h1>
+</center>
+
+<h2>DUE November 3</h2>
+<hr>
+
+  <p>Download a copy of the ARC Simulator from <a
+  href="../../../ARC_Simulator">this web page</a>.  If you are not
+  already familiar with the ARC Simulator, read the information on that
+  page before, during, or after you download the simulator.  Use the
+  copy provided on that web page, not the one available directly from
+  the textbook because I've fixed the jar file so you can click on it
+  to run it.</p>
+
+  <p>Code and simulate an ARC program that includes code that looks like
+  this:</p>
+  
+  <pre>
+              .org  0x40000C
+      first:  5   ! Start an array of integers
+              10
+              .   ! Any number of additional lines 
+              .   ! containing numbers
+              .   ! go here.
+      last:   -5
+      sum:    0
+  </pre>
+
+  <p>Your program is to compute the sum of all the numbers between
+  <i>first</i> and <i>last</i> (including both of those) and store the
+  result in <i>sum</i>.</p>
+
+  <p>Save your program in a file named "arc_add.asm" and mail the file
+  to me by midnight of the due date.  Be sure to put "CSCI-343
+  Assignment 6" in the subject line and to include your name and
+  student ID number in the body of your message.</p>
+
+<h2>Issues</h2>
+
+  <p>This assignment's simplicity is deceptive.  First of all, note
+  that the .org directive causes the first number to occupy memory
+  location 0x30000C.  If you try to load the first number into a
+  register using an instruction like, "ld [first], %r1" you will get an
+  error message from the assembler because the address 0x40000C will
+  not fit into the 13-bit immediate field of an <i>ld</i> instruction. 
+  Instead, you will have to break the address into two parts, load them
+  into a single register, and then use that register for loading the
+  value you want. For example, you could use a <i>sethi</i> instruction
+  to load the leftmost 22 bits of 0x0400000C into register 5, then use
+  an <i>or</i> instruction to load the rightmost ten bits of 0x0400000C
+  into register 5, and then load the contents of <i>first</i> into
+  register 1 with "ld %r5, %r0, %r1."</p>
+  
+  <p>The other issue with this program is that a natural way to
+  implement it is to use indexing to step through the elements of the
+  array.  So you could load the address of <i>first</i> into some
+  register, say register 5 again, and use code like this to access
+  succesive elements of the array:</p>
+  
+  <pre>
+                  add   %r0, %r0, %r6 ! clear index register
+            loop: ...   ! test whether last has been reached
+                  ...   ! add next number
+                  add   %6, 4, %6 ! increment index register
+                  ld    [%r5+%r6], %r1  ! get next element of array
+                  b     loop:
+  </pre>
+
+  <p>The problem here is that the ARC simulator would execute the
+  <i>ld</i> instruction just fine, but the ARC assembler doesn't
+  recognize the syntax of the assembly language statement.  Until I
+  finish my "new-improved" ARC assembler, you'll have to figure out a
+  way around the problem, for example by adding 4 to the address in
+  register 5 each time through the loop instead of using register 6 at
+  all.</p>
+  
+  <p>Also, note that the <i>ld</i> instruction I wrote in the previous
+  paragraph is not recognized by the existing ARC assembler.  You would
+  have to write that code as "ld %r5, %r1" to get it to assemble.</p>
+
+<h2>Optional (Extra Credit)</h2>
+
+  <p>If you would like to hone your ARC assembly language programming
+  skills, write your code as a subroutine that receives two addresses
+  as parameters (in registers) and returns the sum in another
+  register.  Code a main program that uses the subroutine to add two or
+  three different sets of numbers.</p>
+
+  <p>If you do this, be sure to mention it in your email so that I
+  am sure to give you the extra credit.</p>
+
+<hr>
+</body>
+</html>

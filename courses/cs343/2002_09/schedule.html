@@ -1,0 +1,329 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>CS-343 Computer Organization</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #808020;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+        td.prev
+        {
+          color:                black;
+          background-color:     #ffccff;
+        }
+        th, td.this
+        {
+          color:                black;
+          background-color:     #ccffcc;
+        }
+  </style>
+</head>
+
+<body>
+<center>
+<h1>CS-343 Computer Organization</h1>
+<h2>Section 9MD3 (2505) Mon/Wed 9:00 - 10:15
+<br>Section 10MDA (2506) Mon/Wed 10:30 - 11:45
+<br>SB B-141
+<br>Fall 2002
+<br>Dr. Vickery</h2>
+</center>
+
+<hr>
+
+<h2>Course Schedule</h2>
+
+<p>This is the first semester CS-343 is being offered.  Initially, the
+table below shows what material I plan to cover in the course, which
+you may use to get an idea of what we will be doing this term.  But
+the sections in red give an impossibly short amount of time for each
+topic.  As the semester progresses, I will update the table to show
+the actual assignments and due dates for this semester.  As I update
+the table, I will change the background color from red to green.
+There is plenty of material to fill all those empty boxes!</p>
+
+<table align="center" border="1" cellpadding="5" width="90%">
+
+  <tr>
+    <th width="5%">Class<br>Number
+    <th width="15%">Date
+    <th>Topics and Assignments
+
+  <tr>
+    <td class="this" align=center>1
+    <td class="this">September 4
+    <td class="this">Course Introduction; review combinational logic.
+    <br><b><a href="./Assignments/Assignment_01.html">Assignment
+    1</a> Due</b>
+    <br>Memorize the <a href="../Units_of_Measure.html">Units of
+    Measure</a> and the <a href="../Powers_of_Two.html">Powers of
+    Two</a> Charts if you have not done so already.
+    <br><b>Review Appendix A through section A.10.</b> 
+
+
+  <tr>
+    <td class="this" align=center>2
+    <td class="this">September 9
+    <td class="this">Sequential logic.
+    <br><b>Read Section A.11</b> 
+
+  <tr>
+    <td class="this" align=center>3
+    <td class="this">September 11
+    <td class="this">Level and Edge Sensitive Circuits.
+
+  <tr>
+    <td class="this" align=center>&nbsp;
+    <td class="this">September 16
+    <td class="this"><b>No Class</b> (Yom Kipur)
+
+  <tr>
+    <td class="this" align=center>4
+    <td class="this">September 17 (Tuesday follows Monday schedule.)
+    <td class="this">Finite State Machines
+    <br><b>Read Sections A.12 and A.13</b>
+    <br><b>No Quiz</b>
+
+  <tr>
+    <td class="this" align=center>5
+    <td class="this">September 18
+    <td class="this">Finite State Machine Design
+    <br><b>Read Sections A.14 and A.15</b>
+    <br><b><a href="./Assignments/Assignment_02.html">Assignment 2</a> Due</b>
+    <br><a href="./Assignments/Assignment_02_Solutions.html">Assignment 2 Solutions</a>
+
+  <tr>
+    <td class="this" align=center>6
+    <td class="this">September 23
+    <td class="this">Registers and Counters
+    <br><b>Read / Review pages 99 through 120</b>
+
+  <tr>
+    <td class="this" align=center>7
+    <td class="this">September 25
+    <td class="this">Serial Multiplier Design
+    <br><b><a href="./Assignments/Assignment_03.html">Assignment 3</a>
+    Due</b>
+    <br><a href="./Assignments/Assignment_03_Solutions.html">Assignment 3 Solutions</a>
+
+  <tr>
+    <td class="this" align=center>8
+    <td class="this">September 30
+    <td class="this">Serial Multiplier, continued
+    <br><a href="./Multiplier/Multiplier.html">Multiplier Design Web Page</a>
+    <br><b>Read Chapter 6</b>
+
+  <tr>
+    <td class="this" align=center>9
+    <td class="this">October 2
+    <td class="this">Instruction Set Architectures
+    <br>The Fetch-Execute Cycle
+
+  <tr>
+    <td class="this" align=center>10
+    <td class="this">October 7
+    <td class="this">The ARC ISA
+    <br>Arithmetic format instructions.  AddCC <i>vs.</i> Add;
+    <br>Two's complement condition code logic, Carry/Overflow/Negative/Zero;
+    <br>Bitwise operations and ALU circuits to support them; Two's
+    <br>complement sign extension; using sign extension to place 13-bit
+    <br>immediate operands on the 32-bit B-Bus.  The PC and IR
+    <br>registers; instruction fetch: IR &lt;- Memory[PC].  Single clock
+    <br>cycle to transfer R<sub>rs1</sub> and R<sub>rs2</sub> to ALU,
+    compute arithmetic 
+    <br>or logic value, and return result to R<sub>rd</sub>; ALU
+    computes all values
+    <br>and uses multiplexors to select the correct one for the result.
+
+  <tr>
+    <td class="this" align=center>11
+    <td class="this">October 9
+    <td class="this"><b>*** First Exam ***</b>
+
+  <tr>
+    <td class="this" align=center>&nbsp;
+    <td class="this">October 14
+    <td class="this"><b>No Class</b> (Columbus Day)
+
+  <tr>
+    <td class="this" align=center>12
+    <td class="this">October 16
+    <br>(Wednesday follows Monday schedule.)
+    <td class="this" valign="top">ARC ISA: Load/Store/Sethi
+    <br>&nbsp;
+
+  <tr>
+    <td class="this" align=center>13
+    <td class="this">October 21
+    <td class="this">Exam 1 Post Mortem; expect to be tested on FSM
+    design again.
+    <br>The ARC <i>call</i> instruction.
+    <br><b><a href="./Assignments/Assignment_04.html">Assignment 4</a>
+    Due</b>
+    <br><a href="./Assignments/Assignment_04_Solution.html"> Assignment
+    4 Solution</a>
+
+  <tr>
+    <td class="this" align=center>14
+    <td class="this">October 23
+    <td class="this">ARC calls, branches, and jumps.
+    <br>The ARC Datatpath design
+
+  <tr>
+    <td class="this" align=center>15
+    <td class="this">October 28
+    <td class="this">ARC Register File Design
+
+  <tr>
+    <td class="this">&nbsp;
+    <td class="this">October 30
+    <td class="this" align="center"><b>*** Last Day to Drop ***</b>
+
+  <tr>
+    <td class="this" align=center>16
+    <td class="this">October 30
+    <td class="this">ARC Register File and ALU Design
+
+  <tr>
+    <td class="this" align=center>17
+    <td class="this">November 4
+    <td class="this">ALU and Barrel Shifter; Lookup Tables
+    <br>Microprogrammed Control Unit Design
+    <br>Microprogrammed CU relationship to Finite State Machine model
+
+  <tr>
+    <td class="this" align=center>18
+    <td class="this">November 6
+    <td class="this">ARC Control Word fields.
+
+<a name="now"></a>
+
+  <tr>
+    <td class="this" align=center>19
+    <td class="this">November 11
+    <td class="this">ARC Control Word Sequences for ISA Fetch-execute
+    cycle.
+
+  <tr>
+    <td class="this" align=center>20
+    <td class="this">November 13
+    <td class="this">Microcode to execute <i>ld</i> and <i>subcc</i>
+    instructions.
+    <br><b><a href="./Assignments/Assignment_05.html">Assignment 5</a>
+    Due</b>
+    <br><a
+    href="./Assignments/Assignment_05_Solutions.html">Assignment 5
+    Solutions</a>
+
+  <tr>
+    <td class="this" align=center>21
+    <td class="this">November 18
+    <td class="this"><b>*** Exam 2 ***</b>
+    <br>During the exam, you will be provided with photocopies of
+    some of the figures in Chapter 6. <a href="./Exam_2_Figures.html">
+    Click Here</a> for a list of the figures you will get.
+
+  <tr>
+    <td class="this" align=center>22
+    <td class="this">November 20
+    <td class="this">Memory Hierarchy; Memory operations.
+    <br><b>Read Chapter 7 through page 268</b>
+
+  <tr>
+    <td class="this" align=center>23
+    <td class="this">November 25
+    <td class="this">Exam Post Mortem
+    <br>RAM Design: SRAM/DRAM; SRAM Binary Cell; SRAM IC; RAM Memory System.
+
+  <tr>
+    <td class="this" align=center>24
+    <td class="this">November 27
+    <td class="this">Memory System Design
+
+  <tr>
+    <td class="this" align=center>25
+    <td class="this">December 2
+    <td class="this">Cache Memory: Direct Mapped
+
+  <tr>
+    <td class="this" align=center>26
+    <td class="this">December 4
+    <td class="this">Associative and Set-Associative caches
+    <br>I/O System: Device Controllers
+    <br><b>Read Chapter 8 through page 313.
+
+  <tr>
+    <td class="this" align=center>27
+    <td class="this">December 9
+    <td class="this">I/O System: Programmed I/O and Interrupt Processing
+    <br><b><a href="./Assignments/Assignment_06.html">Assignment 6</a>
+    Due</b>
+    <br><a href="./Assignments/Assignment_06_Solutions.html">Assignment 6</a>
+    Solutions (HTML)
+    <br><a href="./Assignments/Assignment_06_Solutions.pdf">Assignment 6</a>
+    Solutions (PDF)
+
+  <tr>
+    <td class="this" align=center>28
+    <td class="this">December 11
+    <td class="this">I/O Busses: Asynchronous and synchronous
+    <br>Bus hierarchies
+
+  <tr>
+    <td class="this" align=center>&nbsp;
+    <td class="this">December 17/19
+    <td class="this" align=center><b>*** Final Exam ***
+    <p align="left">Section 9MD3: December 17; SB B-145; 11:00 to 1:00
+    <br>Section 10MDA: December 19; SB C-201; 11:00 to 1:00</p></b>
+
+</table>
+
+<h2><a href="./administrivia.html">Course Administration</a></h2>
+
+<p>Click on the link above for information about the textbook for the
+course, how grades will be computed, the policy on homework, etc.</p>
+
+<h2>Check Grades</h2>
+
+<p>Click one of the links below to see what grades I have recorded for
+you so far this term.  You need to send me a "codeword" to access your
+grades.  See Homework Assignment 1 for details.</p>
+
+<ul>
+  <li><a href="./9MD3/check_grades.html">9 o'clock Section</a>
+  <li><a href="./10MDA/check_grades.html">11 o'clock section</a>
+</ul>
+
+<p class="block">Grades become permanent two weeks after they are
+posted, so be sure to check your grades regularly to be sure there
+haven't been any mistakes.</p>
+
+<hr>
+<p>
+ <a href="http://jigsaw.w3.org/css-validator/">
+  <img style="border:0;width:88px;height:31px"
+       src="../vcss.bmp" 
+       alt="Valid CSS!">
+ </a>
+ <a href="http://validator.w3.org/check/referer">
+   <img height=31 alt="Valid HTML 4.0!" src="../vh40.png"
+        width=88 
+        border=0></a>
+</p>
+<hr></body></html>

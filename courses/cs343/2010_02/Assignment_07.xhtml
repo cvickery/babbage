@@ -1,0 +1,240 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-343 Assignment 7</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../../css/assignments-print.css" />
+  </head>
+
+  <body id='urn:uuid:1137EE67-EBC3-47F7-83D4-9C832DAFD855'>
+     <div id="header">
+      <h1>CS-343 Assignment 7</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This is a two-part assignment. The first part is required, and the second part is optional. If you complete
+          the second part, it will count 10% of your course grade, replacing part of the course grade would be derived
+          from the three exams. That is, all other assignments as a group will count 10%, the optional part of this
+          assignment will count 10%, and the three exams as a group will count 80%.
+        </p>
+        <div class="standout-block">
+          <p>
+            Unlike other assignments for this course, you must do your own work for these assignments. You are
+            encouraged to discuss the assignments with other people, but you must produce the actual deliverables for
+            this assignment by yourself.
+          </p>
+          <p style="text-align:center;font-weight:bold;">
+            The penalty for failing to follow this policy is automatic failure of the entire course.
+          </p>
+        </div>
+        <ul>
+          <li>The due date for the required part of the assignment is <strong>April 22</strong>.</li>
+          <li>
+            The optional part of the assignment is in three parts. Part I is due <strong>April 29</strong>,
+            Part II is due <strong>May 6</strong>, and
+            Part III is due on the last day of class, <strong>May 13</strong>.
+          </li>
+        </ul>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            <h5>Required: Prepare an annotated bibliography on a current topic in computer architecture.</h5>
+            <p>
+              An annotated bibliography is a list of documents (books or book chapters, news, journal, or web articles,
+              Wikipedia entries, company literature, etc.), along with a 1-2 sentence summary for each document that
+              tells what information the document provides.
+            </p>
+            <p>
+              This assignment requires three steps: (1) pick a topic from the list below, (2) find the documents,
+              and (3) prepare the bibliography.
+            </p>
+            <p>
+              Here is a list of topics to choose from, along with some questions that documents on this topic might
+              address. If you have a different topic you would like to use, let me know by <strong>April 20</strong>.
+              But if you pick one of the topics from this list, you do not have to contact me ahead of time.
+            </p>
+            <ul>
+              <li>
+                <strong>Multicore Computing</strong>. What is driving the shift from ever-faster uniprocessors to
+                multicore processors? What is the current state of the art? What are the predictions for how
+                rapidly the number of cores will increase? What are the implications for software development?
+              </li>
+              <li>
+                <strong>Power Consumption</strong>. How much electrical power does Google use? How does power
+                consumption affect the design of various computing devices? What techniques are used by mobile
+                processors, such as the Atom processor, to manage power consumption?
+              </li>
+              <li>
+                <strong>The iPad</strong>. Is it a good thing? Is it a bad thing? Separate question: do you want one?
+                What are the design constraints from a computer architecture point of view? What information is
+                available about the processor, the software, the battery, and the peripherals?
+              </li>
+              <li>
+                <strong>Graphics Processing</strong>. What are graphics processors and how are they programmed? How are
+                graphics processors and gaming related?  What makes graphics processors interesting for non-graphics
+                computing? What changes are taking place in graphics processors? What is the future of NVIDIA? What is
+                Larrabee? What is CUDA?
+              </li>
+              <li>
+                <strong>Mobile Architectures</strong>. What processors are used in mobile devices? What are the
+                constraints mobile devices place on these processors, and <em>vice-versa</em>? Why is the Intel
+                Archecture so notably absent from mobile devices? Or is it? What is the multitasking issue?
+              </li>
+              <li>
+                <strong>Bus Structures</strong>. Busses connect the CPU to the peripheral devices. What are the busses
+                currently in use? How to they vary in bandwidth? What new busses are under development? What are
+                “chipsets?” What changes are taking place in chipset design, and what factors are driving these
+                changes?
+              </li>
+            </ul>
+            <p>
+              Once you select your topic, look for documents related to the topic. Several of these topics are
+              introduced in the textbook for the course, so that is a good place to start. Wikipedia is an obvious place
+              to start looking too, and the Ars Technica web site is another good resource. Manufacturers such as Intel,
+              NVIDIA, and Arm all provide useful documents about their products. As you look at documents, write down
+              two critical pieces of information about each of them:
+            </p>
+            <ol>
+              <li>
+                <h5>How to find the information again.</h5>
+                <p>
+                  For online resources, this is the URL, the title of the article, and the author (or company name if
+                  there is no author given).  For printed media, record the title, author, publisher, year of
+                  publication, and the page numbers or chapter number if the item is a book or journal article.
+                </p>
+              </li>
+              <li>
+                <h5>Notes on the content.</h5>
+                <p>
+                  You do not need to read the documents carefully. Just look them over to see if they are interesting
+                  and whether they contain information that might be useful if you were to actually write a paper
+                  on your topic.
+                </p>
+                <p>
+                  Write notes for each document to remind yourself what’s in it and why it looked interesting. Or a note
+                  telling why it doesn’t look interesting.
+                </p>
+              </li>
+            </ol>
+            <p>
+              You might find as you look at documents that you want to change topics, or follow a subtopic in more
+              detail. It is perfectly all right to do so.
+            </p>
+            <p>
+              When you have 5-10 documents that you think are good, prepare your bibliography: a list of documents and a
+              sentence or two telling what each one is about. The only differences between the bibliography and your
+              notes are: (1) the bibliography is to be structured as a numbered list, with each list item starting with
+              the name/title of the document and information telling readers how to locate it; (2) you need to turn your
+              notes on what’s in each document into gramatically-correct English prose, 1-3 sentences for each item.
+            </p>
+            <p>
+              Prepare your bibiliography using a word processor, and submit it to me as an email attachment by midnight
+              of the due date.
+            </p>
+          </li>
+          <li>
+            <h5>Optional: Write a 3-5 page paper on your topic.</h5>
+            <p>
+              The paper is to be written in three stages;
+              you cannot receive credit for later stages if you have not completed the earlier stages on time.
+            </p>
+            <ol>
+              <li id='stage-a'>
+                <h5>Due April 29:</h5>
+                <p>
+                  Prepare an outline of your paper. The outline consists of headings, subheadings, sub-subheadings,
+                  etc., but no sentences. The basic structure of the paper will consist of a <em>title and author</em>
+                  and sections for the <em>introduction</em>, <em>body</em>, and <em>conclusions.</em> Your outline
+                  should start with this structure, and list the order of subtopics and sub-subtopics that will appear
+                  within the body of the paper.
+                </p>
+                <p>
+                  To prepare the outline, you need to have read the documents in your bibliography, thought about what
+                  they say, and to have decided what you want to say about them.
+                </p>
+                <p>
+                  Most word processors will make it easy for you to use different styles for the headings, subheadings,
+                  etc. Use them.
+                </p>
+                <p>
+                  I will make comments on the outline, and you should revise your outline based on my comments and/or
+                  ideas you have as you work on the paper in more depth.
+                </p>
+              </li>
+              <li id='stage-b'>
+                <h5>Due May 6:</h5>
+                <p>
+                  Prepare a first draft of your paper. Expand your (revised) outline into a series of paragraphs. Just
+                  take the headings, subheadings, and sub-subheadings, and put 1-3 paragraphs after each one!
+                </p>
+                <p>
+                  The paragraphs you write must be in your own words. For this paper, there must be <em>no</em> direct
+                  quotes or even any simple paraphrases taken from any other documents. Rather, you are to summarize
+                  what you learned from the documents you read. But tell where each idea came from, either by using
+                  an item number from your bibliography or by making it clear that you are expressing your own thought
+                  on the topic. Here is an example: <em>Intel [3] wants us to believe that multicore processors
+                  are the cat’s pajamas, but they are wrong because cats don’t have pajamas.</em> Hopefully, you can
+                  do better than that.
+                 </p>
+                <p>
+                  Again, I will make comments on the draft. I will not correct punctuation, spelling, or grammar
+                  mistakes, but I will note problems that I see. Be sure to use&mdash;and pay attention to&mdash;your
+                  word processor’s spell checker and grammar checker. I will also comment on the clarity and cogency of
+                  your writing.
+                </p>
+                <p>
+                  It’s all right to add items to your bibliography at this point if you want to. But it is not
+                  necessary.
+                </p>
+              </li>
+              <li id='stage-c'>
+                <h5>Due May 13:</h5>
+                <p>
+                  Polish your paper, and hand it in.
+                </p>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

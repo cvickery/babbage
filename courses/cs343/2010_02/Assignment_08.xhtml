@@ -1,0 +1,176 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-343 Assignment 8</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../../css/assignments-print.css" />
+    <style type="text/css">
+    	#worksheet-link { background-color:white; border:1px solid white;}
+      #worksheet-link:hover { border: 1px solid blue; }
+      #worksheet-link>img { margin: 0 .5em; border: 0;}
+    </style>
+  </head>
+
+  <body id='urn:uuid:03669F20-1C36-4855-864F-4D225363D235'>
+     <div id="header">
+      <h1>CS-343 Assignment 8</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This exercise is to do a timing analysis of the single-cycle datapath for the MIPS processor developed in the
+          book. For each of the instruction classes, <em>R-type</em>, <em>Branch</em> (beq and bne), <em>Jump</em>, and
+          Memory (<em>lw</em> and <em>sw</em>), you are to determine how much time is required from the moment a new
+          address is loaded into the program counter (PC) until it is safe to load the address of the next instruction.
+        </p>
+        <p>
+          Because the timing is different for <em>lw</em> and <em>sw</em>, they have to be analyzed separately, giving
+          five different analyses that you will perform.
+        </p>
+        <p>
+          After you complete the analyses, you are to determine the maximum allowable clock frequency for the processor.
+        </p>
+        <p>
+          Remember, the purpose of this assignment is to help you to understand the course material.
+          You can get away with handing in someone else’s work, but if you do not learn
+          how to do the analyses yourself, you will not be able to answer exam questions about them.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        Use the following timing parameters for your analyses:
+        <table>
+          <tr>
+            <th>Element</th><th>Time Delay</th>
+          </tr>
+          <tr>
+            <td>Wires; bit concatenation, etc.</td><td class="numeric">0 ps</td>
+          </tr>
+          <tr>
+            <td>Individual gates</td><td class="numeric">2 ps</td>
+          </tr>
+          <tr>
+            <td>Multiplexers</td><td class="numeric">5 ps</td>
+          </tr>
+          <tr>
+            <td>Control logic; ALU control</td><td class="numeric">30 ps</td>
+          </tr>
+          <tr>
+            <td>Read a new value from a single register (the PC)</td><td class="numeric">20 ps</td>
+          </tr>
+          <tr>
+            <td>Read values from the register file</td><td class="numeric">75 ps</td>
+          </tr>
+          <tr>
+            <td>Write a value into the register file</td><td class="numeric">75 ps</td>
+          </tr>
+          <tr>
+            <td>32-bit parallel adder</td><td class="numeric">60 ps</td>
+          </tr>
+          <tr>
+            <td>ALU</td><td class="numeric">100 ps</td>
+          </tr>
+          <tr>
+            <td>Read or write any memory</td><td class="numeric">150 ps</td>
+          </tr>
+        </table>
+        <p>
+          Here is Figure 4.24 of the textbook, marked up with letters identifying various points in the datapath:
+        </p>
+        <img src="images/Assignment_8_Diagram.png" alt="The MIPS Single-Cycle Datapath" />
+        <p>There are a few things to note about this figure:</p>
+        <ul>
+          <li>
+            The textbook implements the <em>beq</em>, but not the <em>bne</em> instruction, so the logic for deciding
+            whether to branch or not is simpler than what we did in class. Base your analyses on Figure 4.24, not
+            on what we did in class.
+          </li>
+          <li>
+            The textbook uses two 2&times;32 multiplexers for computing the next instruction address, and they are in
+            the upper right section of the figure. In class, we combined these two into one 4&times;32 mux (and drew
+            it to the left of the PC). Again, base your analyses on Figure 4.24, not what we did in class.
+          </li>
+          <li>
+            The letter L is used to identify two different wires that appear to have different sources, but they
+            always are valid at the same time because we are saying that the sign extension logic introduces no
+            propagation delays.
+          </li>
+          <li>
+            The top data input to the mux going into the ALU does not to have a letter because it is valid at the
+            same time as J.
+          </li>
+          <li>
+            D refers to all the outputs of the main control unit.
+          </li>
+          <li>
+            N is for both outputs of the ALU.
+          </li>
+        </ul>
+        <p>
+          Download and print a copy of the worksheet for this assignment: 
+          <a id="worksheet-link" href="Assignment_08.pdf" >
+          <img src="images/Assignment_8_Worksheet.png" 
+               alt="link to worksheet" /></a>,
+          and fill it in for the
+          five instruction types listed. Put in the time at which each point in the datapath <em>that is used by
+          that instruction type</em> would become valid. For example, R-type instructions do not use data memory, so
+          you would not fill in values for O or U.
+        </p>
+        <p>
+          Draw a circle around each value that is on the critical path for that instruction type.
+        </p>
+        <p>
+          For <em>t<span class="subscript">max</span></em>, put in the time at which it would be safe for the next
+          clock pulse to occur for each type of instruction. For the PC, the register file, and data memory, assume
+          there is no problem applying the next clock pulse to the datapath as soon as the inputs to those elements
+          are stable.
+          In other words, assume it is safe to overlap the actual writing to these elements with the processing of the
+          next instruction.
+        </p>
+        <p>
+          Circle the maximum <em>t<span class="subscript">max</span></em>, and then fill in the value for
+          <em>F<span class="subscript">max</span></em>, the maximum clock frequency that could be used.
+        </p>
+      </div>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      Bring your completed copy of the worksheet to class on the due date.
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,627 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>Using Quartus</title>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../css/style-screen.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../css/assignments-print.css"
+    />
+  </head>
+
+  <body id='urn:uuid:5865E7BE-804E-40B3-9D3E-63891C214E09'>
+
+    <div id="header">
+      <h1>Using Quartus</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This is a guide to using the Quartus II software from <a
+          href="http://www.altera.com">Altera Corporation</a> to construct logic circuits that you
+          can test on the DE1 prototyping boards available in the department. The Quartus software
+          is already installed on the computers in the department&rsquo;s TREE lab, and DE1
+          prototyping boards are available for you to sign out from the Department Office, SB Room
+          A-202.
+        </p>
+        <div>
+          <h3>References:</h3>
+          <ul>
+            <li>
+              For information on accessing your account in the TREE laboratory, see <a
+              href="../TREE_Lab/index.xhtml">TREE Lab Information</a>.
+            </li>
+            <li>
+              For information on accessing your account in the TREE laboratory from off campus, see
+              <a href="../TREE_Lab/using_scp.xhtml">Working From Off Campus</a>.
+            </li>
+            <li>
+              The list of I/O Pin names and numbers for the DE1 prototyping board is at <a
+              href="Pins_DE1.xhtml">DE1 I/O Pins</a>.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <h2>DE1 Prototyping Kits</h2>
+      <div>
+        <p>
+          The DE1 Prototyping Kits are circuit boards with an <a
+          href="http://www.altera.com">Altera</a> Field Programmable Logic Array (FPGA) chip that is
+          connected to several switches, buttons, LEDs (light emitting diodes), seven-segment
+          displays, clocks, memories, audio I/O, and video output devices. In this assignment, you
+          will learn to use Altera&rsquo;s <span class="programName">Quartus</span> software to
+          build a configuration file that you can download from the PC to the DE1 over a standard
+          USB cable.
+        </p>
+        <p>
+          There are DE1 kits in the Computer Science Department laboratory that you can sign out
+          (while the department office is open) and use with the computers in the open part of the
+          TREE lab in SB room A-205.
+        </p>
+        <p>
+          There may be enough DE1 kits available for you to sign one out to take home if you want to
+          work at home. You can access the Quartus software in the lab from off campus (see the <a
+          href="../TREE_Lab/using_scp.xhtml">Working From Off Campus</a> web page), but you would
+          need to take a kit home in order to test your project. If you do want to take a kit home,
+          you must first install the Quartus software on your computer and get a license file from
+          Altera to get it to work.
+        </p>
+        <ul>
+          <li>
+            <p>
+              The Quartus software is about 1GB; download it from Altera&rsquo;s web site at <a
+              href="https://www.altera.com/support/software/download/altera_design/quartus_we/dnl-quartus_we.jsp">Quartus
+              Web Edition Software</a>.
+            </p>
+            <p>
+              You will need to register with Altera to do the download.
+            </p>
+          </li>
+          <li>
+            You will also need a free license to use the software. Use the link that is right under
+            the yellow &ldquo;Download&rdquo; button on the <a
+            href="https://www.altera.com/support/software/download/altera_design/quartus_we/dnl-quartus_we.jsp">Quartus
+            Web Edition Software</a>
+            page.
+          </li>
+          <li>
+            The software available for downloading from Altera may be newer than the version
+            installed in the lab, but that will not make any difference for the projects for this
+            course.
+          </li>
+          <li>
+            Once you have successfully downloaded, installed, and run the Quartus software on your
+            off-campus computer, send me an email letting me know, and I will give permission for
+            you to sign out a DE1 from the department office for off-campus use. There is no point
+            taking out a DE1 until you have verified that you can install and run the software
+            successfully on your computer.
+          </li>
+        </ul>
+        <p class="standout_block">
+          If you take a DE1 kit home, you are responsible for returning it in working order to the
+          department. The cost for replacing a lost or broken kit is $125. You can purchase your own
+          kit directly from the DE1 manufacturer in Taiwan, <a
+          href="http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&amp;CategoryNo=39&amp;No=83">www.terasic.com</a>.
+        </p>
+      </div>
+      <h2>Doing A Project</h2>
+      <div>
+        <p>
+          To make things concrete, the following procedure describes how to build and test a very
+          simple logic circuit, a single full-adder.
+        </p>
+        <ol>
+          <li>
+            <h5>Make sure your lab account is working.</h5> Verify that your computer account in the
+            TREE lab is working correctly. Follow the directions given in the <a
+            href="../TREE_Lab/index.xhtml">TREE Lab Information</a> web page. Even if you decide to
+            work from off-campus, you will need to use your TREE lab account to submit your
+            assignment. (I will copy your assignment directory from the copy of your roaming profile
+            kept on the server, so be sure the roaming profile feature is working for you.)
+          </li>
+          <li>
+            <h5>Start Quartus.</h5>
+            <p>
+              Start Quartus (a blue icon on the desktop of any computer in the TREE domain) and be
+              sure no licensing errors occur. If you get a dialog box that looks like this:</p>
+              <p><img src="images/using_quartus-01.png" alt="screenshot" /></p> <p>be sure to select
+              the &ldquo;Specify valid license file&rdquo; option.  Especially if you are using one
+              of the computers in the lab, selecting either of the first two options can mess things
+              up. (Alternatively, you can click &ldquo;Cancel&rdquo; and try to find someone to help
+              you.)
+            </p>
+            <p>
+              The name of the valid license &ldquo;file&rdquo; to use is <span
+              class="computerName">@oak.cs.qc.cuny.edu</span>, which is not really a file at all.
+              The '@' at the beginning tells Quartus to get your license from the server rather than
+              from a file on the computer you are working on.  Altera has donated 22 Quartus
+              licenses to us for use in the TREE lab. There is no way to use these licenses from
+              off-campus, which is why you have to go through the licensing process yourself if you
+              are using the Web Edition of the software.
+            </p>
+            <p class="standout-block">
+              Sometimes network glitches cause the computers in the lab to lose their license even
+              though a valid license was obtained when you started working. If you try to build your
+              project (see below) and get a licensing error, open up the license manager (<span
+              class="menuItem">Tools&minus;&gt;License Setup</span>), and just re-enter <span
+              class="computerName">@oak.cs.qc.cuny.edu</span> in the License file box; you should
+              see a long list of items displayed in the &ldquo;Licensed AMPP/MegaCore
+              functions&rdquo; box.
+            </p>
+          </li>
+          <li>
+            <h5>Create a Project</h5>
+            <p>
+              Your account should already have a directory named <span class="directoryName">My
+              Projects</span> under your <span class="directoryName">My Documents</span> directory.
+              If not, create one, being sure to spell it and capitalize it exactly as shown here
+              (one space between &ldquo;My&rdquo; and &ldquo;Projects.&rdquo;)
+            </p>
+            <p>
+              In Quartus, click on <span class="menuItem">File&minus;&gt;New Project Wizard</span>
+              to set up your new project.
+            </p>
+            <p>
+              For the working directory, specify (or navigate to) a directory under your <span
+              class="directoryName">My Projects</span> directory, using whatever name for that
+              directory your assignment specifies. For this example, assume the directory name is
+              <span class="directoryName">Full_Adder</span>. The name of the project will also be
+              given to you in your assignment; in this case, assume it is also <span
+              class="directoryName">Full_Adder</span>.
+            </p>
+            <p>
+              To complete the first page of the wizard, you need to specify the name of the
+              top-level design entity for the project. The wizard will fill that in with the name of
+              the project, but you will normally have to change this to something else because there
+              has to be a higher-level circuit that connects your design to the I/O devices on the
+              DE1 board. Such circuits are typically called &ldquo;test harnesses&rdquo; or
+              &ldquo;testbeds.&rdquo; For this project, change the name of the top-level design
+              entity from &ldquo;Full_Adder&rdquo; to &ldquo;Full_Adder_Testbed.&rdquo;
+            </p>
+            <p>
+              Click <span class="menuItem">Next</span>, and skip the next page for adding files to
+              the project. However, if design files were provided to you as part of an assignment
+              (typically, Verilog programs that implement part of an assignment for you), you should
+              copy those design files into the project directory you are constructing, and add them
+              to the project here. You can also do this step later using the <span
+              class="menuItem">Project&minus;&gt;Add/Remove Files</span> menu item, so it always
+              safe to skip over this page if you want to.
+            </p>
+            <p>
+              The third page of the wizard is where you specify the particular Altera FPGA that your
+              design will be built for. The FPGA on the DE1 is a &ldquo;Cyclone II&rdquo; device,
+              part number EP2C20F484C7, so select that. If you get this wrong here, you can change
+              it later using the <span class="menuItem">Assignments&minus;&gt;Device</span> menu
+              item.
+            </p>
+            <p>
+              Click <span class="menuItem">Next</span>, and skip the next page, &ldquo;EDA Tool
+              Settings.&rdquo; We will use the tools that are built into Quartus instead of any
+              third-party specialized tools.
+            </p>
+            <p>
+              The fifth page is just a summary of the settings for your project; click <span
+              class="menuItem">Finish</span>, if it looks all right.
+            </p>
+          </li>
+          <li>
+            <h5>Construct Schematic and Symbol Files</h5>
+            <p>
+              Use the new document icon on the toolbar (far left) or the <span
+              class="menuItem">File&minus;&gt;New</span> menu item to create a new schematic
+              diagram. (Pick &ldquo;Block Diagram/Schematic&rdquo; from the dialog that opens up.)
+              You will need two schematics: one that you will name <span
+              class="fileName">Full_Adder_Testbed.bdf</span> (it is a &ldquo;block diagram
+              file&rdquo;, and Quartus will automatically add a <span class="fileName">.bdf</span>
+              extension to the file name if you do not type it), and the second will be named <span
+              class="fileName">Full_Adder.bdf</span>.  You can create both files at the same time,
+              giving them their proper names when you save them to disk. But you cannot save them to
+              disk until you put something in them.
+            </p>
+            <p>
+              Add three input pins and two output pins to both diagram files using the Symbol Tool
+              from the vertical toolbar in the middle of the Quartus window (the button has a
+              picture of a two-input AND gate on it). You have to navigate down from <span
+              class="directoryName">quartus/libraries</span> to <span
+              class="directoryName">primitives</span> to <span class="directoryName">pins</span> to
+              get to the input and output pins. Once you have added the pins, you can save the two
+              schematics.  Save one as <span class="fileName">Full_Adder_Testbed.bdf</span>. (Since
+              that is name of the top-level design entity, it will be the default file name offered
+              by Quartus for the first diagram file that you save.) Save the other as <span
+              class="fileName">Full_Adder.bdf</span>. Be sure the &ldquo;Add file to current
+              project&rdquo; checkbox is checked in the Save dialog for both files.
+            </p>
+            <p>
+              The testbed for a project can be quite elaborate, but for the current example it will
+              simply connect the three input bits and the two output bits of the full adder to FPGA
+              pins that go to three slide switches and two LEDs on the DE1 kit. We will use the
+              three rightmost slide switches for the inputs, so click on the input pin names in the
+              testbed and change them to <span class="variableName">Switch_2</span>, <span
+              class="variableName">Switch_1</span>, and <span class="variableName">Switch_0</span>.
+              We will use the leftmost two red LEDs for the carry out and the sum, so rename the two
+              output pins <span class="variableName">Red_LED_9</span> and <span
+              class="variableName">Red_LED_8</span>. The exact naming is not critical; you just need
+              to be able to tell which switch/LED will connect to which I/O pin in your testbed. At
+              this point your testbed schematic should look like this:
+            </p>
+            <p>
+              <img src="images/using_quartus-02.png" alt="screenshot of testbed pins" />
+            </p>
+            <p>
+              You will need to tell Quartus which FPGA pins correspond to the switches and LEDs on
+              the DE1. You could do that now, but it will go a little more smoothly if you complete
+              the testbed schematic first. And to do that, you need to complete the full adder
+              schematic so you will have something to put in the testbed.
+            </p>
+            <p>
+              First give meaningful pin names for the I/O pins in the full adder. <span
+              class="functionName">A</span>, <span class="functionName">B</span>, <span
+              class="functionName">Cin</span>, <span class="functionName">Cout</span>, and <span
+              class="functionName">Sum</span>, for example. Use the Symbol Tool to select the gates
+              you need from the <span class="directoryName">Logic</span> &ldquo;folder&rdquo; in
+              <span class="directoryName">quartus/libraries/primitives</span>. If you want to use a
+              3-input XOR for the <span class="functionName">Sum</span> output, you will have to
+              construct it using two 2-input XOR gates.
+            </p>
+            <p>
+              In order to put your full adder in the testbed, you have to create a symbol for it.
+              <span class="menuItem">File&minus;&gt;Create/Update&minus;&gt;Create Symbol Files for
+              Current File</span> will create a &ldquo;Block Symbol File&rdquo; named <span
+              class="fileName">Full_Adder.bsf</span> for you, and add it to your project. Once you
+              have done that successfully, you can switch back to your testbed schematic, click on
+              the Symbol Tool, and you will find a second top-level folder named <span
+              class="directoryName">Project</span>, which will contain your full adder. Add it to
+              the schematic and connect the I/O pins to the full adder pins to complete the testbed.
+              Your testbed should look like this:
+            </p>
+            <p>
+              <img src="images/using_quartus-04.png" alt="screenshot of complete testbed" />
+            </p>
+            <p>
+              In order to connect the testbed pins to the FPGA pins, you have to let Quartus build
+              your project once so it can discover the names of the pins in your top-level design
+              element (the testbed). A complete build can take a couple of minutes, but at this
+              point you can save some time by just running the &ldquo;Analysis &amp; Synthesis of
+              current file&rdquo; part of the full build process. Be sure the testbed is the current
+              document in the editor window, and click on the middle button in the group of three
+              that looks like this: <img src="images/using_quartus-03.png" alt="screenshot" /> in
+              the toolbar at the top of the Quartus window. There should be no errors or warnings
+              when you run this step. If not, you have to fix whatever is wrong before proceeding.
+            </p>
+          </li>
+          <li>
+            <h5>Make the pin assignments.</h5>
+            <p>
+              There are two different tools that you can use to tell Quartus which FPGA pins to
+              connect to the I/O pins of your testbed: the pin planner, and the assignment editor.
+              It turns out the pin planner works better than the assignment editor. You can launch
+              the pin planner from either the <span
+              class="menuItem">Assignments&minus;&gt;Pins</span> menu item. or by clicking on the
+              middle icon in this group in the top toolbar: <img src="images/using_quartus-05.png"
+              alt="screenshot" />. When the pin planner comes up, the bottom of the panel should
+              show a spreadsheet view that lists the I/O pin names you set up for your testbed. If
+              not, something went wrong in the previous steps, and you will have to go back to fix
+              it. (Did you get all green messages when you ran Analysis &amp; Synthesis?)
+            </p>
+            <p>
+              Using the <a href="Pins_DE1.xhtml">DE1 I/O Pins</a> web page to find out what FPGA
+              pins are connected to the various DE1 lights and switches, edit the Location column of
+              the pin assignment spreadsheet so it looks like this:
+            </p>
+            <p>
+              <img src="images/using_quartus-06.png" alt="screenshot of pin assignments" />
+            </p>
+            <p>
+              Now you should be able to do a full build of your project. Click the &ldquo;Start
+              Compilation&rdquo;button to the left of the Analysis &amp; Synthesis button in the top
+              toolbar or click the <span class="menuItem">Processing&minus;&gt;Start
+              Compilation</span> menu item, or use the Control-L keyboard shortcut. The following
+              two warnings are expected, and can be ignored:
+            </p>
+            <p>
+              <img src="images/using_quartus-07.png" alt="screenshot of warnings" />
+            </p>
+            <p>
+              But if you see any errors or any other warnings, something went wrong and needs to be
+              fixed.
+            </p>
+          </li>
+          <li>
+            <h5>Test your project.</h5>
+            <p>
+              The project is all built and ready to go. Connect the DE1 to a USB port on your
+              computer.  (There is a power cord in the box with the DE1, but you don&rsquo;t need
+              it: the USB port should supply all the power you need.) The red and green LEDs and the
+              four seven-segment displays should start flashing in an &ldquo;interesting&rdquo;
+              pattern to show that the board is connected and working. There is a big red pushbutton
+              that can be used to turn the board off, which never needs to be pressed. But if the
+              board does not light up, you might need to press this button. Also, there is a little
+              slide switch on the left edge of the board labeled &ldquo;Run/Prog;&rdquo; make sure
+              it is in the &ldquo;Run&rdquo; position. (It never needs to be in the other position.)
+            </p>
+            <p>
+              To test the project, be sure the DE1 is plugged in and active, and then click the
+              &ldquo;Programmer&rdquo; button, which the the third from the right near the top of
+              the Quartus window. This will open a subwindow for the file, Full_Adder_Testbed.cdf.
+              You should see a file named Full_Adder_Testbed.sof listed in that subwindow; this is
+              the programming file that you are going to download to the FPGA on the DE1 board.
+            </p>
+            <p>
+              Near the top of the subwindow there is a &ldquo;Hardware Setup&rdquo; button. If the
+              &ldquo;USB Blaster&rdquo; device is not already selected, you will need to click on
+              the setup button to open a dialog window that you use to select that device for
+              downloading the programming file to the FPGA. If the DE1 isn&rsquo;t already plugged
+              in when you click this button, you will not see the USB Blaster option, and will have
+              to exit the dialog window and try again after the device is connected to the computer.
+            </p>
+            <p>
+              You shouldn&rsquo;t need to change anything else, but just in case, be sure the Mode
+              window has the JTAG option selected. The Start button should be enabled; click on it,
+              wait a couple of seconds for the project to download to the board, and observe that
+              the lights have stopped flashing. Assuming the ten slide switches are all in their
+              &ldquo;off&rdquo; position (towards the bottom edge of the board), and assuming you
+              are not pressing any of the blue push buttons, the red and green LEDs should all be
+              off, and the seven segment displays should show 8888<span class="subscript">16</span>.
+            </p>
+            <p>
+              Slide the right 3 switches up and down to generate all 8 combinations of inputs to the
+              full adder. The rightmost two red LEDs should light up in the correct patterns to
+              verify the <span class="functionName">Sum</span> and <span
+              class="functionName">Cout</span> functions are implemented correctly. The lights
+              should display a binary number (00<span class="subscript">2</span>, 01<span
+              class="subscript">2</span>, 10<span class="subscript">2</span>, or 11<span
+              class="subscript">2</span>) telling whether 0, 1, 2, or all 3 of the switches are in
+              the up position.
+            </p>
+            <p>
+              If your project does not operate as expected, you will have to figure out what went wrong and fix it.
+            </p>
+          </li>
+        </ol>
+      </div>
+      <h2 id="bus-wiring">Bus Wiring</h2>
+      <div>
+        <p>
+          Busses are collections of related wires. You don&rsquo;t need them for a simple project
+          like the full adder example we have been working with, but busses become useful as soon as
+          projects get just a little bit more complicated. For example, the Keys (pushbuttons) on
+          the DE1 generate a logic 0 when pressed and a logic 1 when not pressed, just backwards
+          from the way you think they should work. If you decide to run all four Key inputs through
+          inverters before connecting them to the rest of your circuit so they make more sense, the
+          group of four wires can be treated as a bus.  Setting up separate I/O pins for all the
+          wires in a bus can be tedious and error prone, but Quartus provides some relief. Here is
+          an example of a bus being used to connect the four Key inputs of the DE1 to a circuit:
+        </p>
+        <p>
+          <img src="images/using_quartus-08.png" alt="screenshot of a bus" />
+        </p>
+        <p>
+          Working from left to right, first notice that there is just one input pin symbol, but that
+          it has the name &ldquo;Key_inv[3..0].&rdquo; As you might guess, the square brackets are
+          used for subscripts. In this case the <span class="code-snippet">..</span> indicates the
+          range of subscript values from 3 down to 0. Notice next that the &ldquo;wire&rdquo; coming
+          out of the pin symbol is thicker than the wires you normally use: it is a bus. You can
+          convert a wire to a bus (or vice versa) by right-clicking on it and selecting <span
+          class="menuItem">Node Line</span> (for a wire) or <span class="menuItem">Bus Line</span>
+          from the context menu that opens up.  You will not find the <span class="menuItem">Conduit
+          Line</span> option useful; it is used to group wires when you don&rsquo;t want to create a
+          bus.
+        </p>
+        <p>
+          The next item in the diagram is a set of four inverters connected to the bus; this is an
+          <span class="functionName">lpm_inv</span> &ldquo;megafunction.&rdquo; You get one from the
+          <span class="directoryName">megafunctions&mdash;&gt;gates</span> directory of the Altera
+          libraries under the Symbol Tool. When you select it, a wizard will pop up that asks you
+          how wide you want your bus; in this case the answer was 4, and the wizard generated all
+          four inverters as a group, ready to be connected to busses on both sides. This single
+          symbol takes care of inverting the four separate logic values from the four pushbuttons
+          instead of having to set up four separate input pin symbols and four separate inverters.
+          Note that the bus coming out of the inverters has a name, &ldquo;Key[3..0].&rdquo; You
+          give a name to a bus or a wire by right-clicking on it and selecting <span
+          class="menuItem">Properties</span>, the last item on the context menu.
+        </p>
+        <p class="standout-block">
+          You don’t need to use a megafunction: if you just place a regular inverter on a bus and
+          delete the section of the bus that goes through the symbol, Quartus will automatically
+          generate as many inverters are there are wires in the bus, although you will see just one
+          inverter symbol.
+        </p>
+        <h3 id="bus-naming">Bus Naming</h3>
+        <p>
+          Bus and wire names are global symbols. If you use the same name for two busses or wires,
+          Quartus will automatically connect them together, internally, when you compile your
+          design. If the input pins in the figure above had been named &ldquo;Key[3..0],&rdquo;
+          instead of &ldquo;Key_inv[3..0]&rdquo; Quartus would give an error about outputs connected
+          to inputs when you try to build the project; the bus going into the inverters gets its
+          name from the pins going into the bus, and that name has to be different from the name of
+          the bus going out of the inverters. (You can&rsquo;t connect the outputs of the inverters
+          to the input pins.)
+        </p>
+        <p>
+          The next part of the figure shows four wires (node lines) coming down from the Key bus.
+          Each has been named using subscript notation to tell which one connects to which wire in
+          the bus. Strictly speaking, because of the global naming of wires and busses, those wires
+          do not actually have to be connected to the bus; they just have to be named correctly. But
+          the schematic looks funny with dangling wires, so it&rsquo;s a good idea to make the
+          connections in your schematics, as shown.
+        </p>
+        <p>
+          However, there are times when the only sane way to make the proper connections is to leave wires
+          or busses dangling and to use names to connect them together. We will look at two examples: one
+          for an input buss, and one for an output bus.
+        </p>
+        <h4>Input Bus Example</h4>
+        <p>
+          Let’s Say you want to connect the ten slide switches to the ten red LEDs to show the state of each
+          switch. Using a bus, it’s easy: <img src="images/using_quartus-09.png"
+          alt="screenshot of switches connected to LEDs"/>
+        </p>
+        <p>
+          But now let’s say you also need to connect the input switches to various inputs of a device you
+          are testing. The following diagram shows how to connect switches 9, 8, and 7 to inputs A[2], A[1],
+          and A[0] (of a three-bit ALU) without actually making the connection in the schematic. The big X a the end
+          of the input bus for the ALU looks strange (it indicates “no connection”), but the bus naming sets
+          up exactly the connections needed: <img src="images/using_quartus-10.png"
+          alt="screenshot showing unconnected, but named, inputs" /> 
+        </p>
+        <h4>Output Bus Example</h4>
+        <p>
+          Assume the three-bit ALU from the previous example produces a result that we want to
+          display on both a seven-segment display and on three green LEDs. To make the example
+          complete, assume that the ALU also produces four condition code bits named CVNZ[3..0] that
+          we want to display in a second seven-segment display as well as on four more green LEDs.
+        </p>
+        <p>
+          For this example, we can take advantage of Quartus’s <em>bit concatenation</em> notation,
+          which simply means listing the names of the bits in a bus in left to right order,
+          separated by commas. For example instead of labeling a bus <code>A[2..0]</code> we could
+          have used the more tedious bit concatenation form, <code>A[2],A[1],A[0]</code>. But bit
+          concatenation saves the day when setting up the connections to the array of green LED
+          output pins: <img src="images/using_quartus-11.png" alt="screenshot showing bit
+          concatenation" />
+        </p>
+        <p>
+          The above figure has a <code>0</code> in the middle of the bus name, which needs some
+          explanation.  The example has eight output pins (Green_LED[7..0]) but only seven input
+          values (4 for CVNZ[3..0] plus 3 for Result[2..0]). The idea is just to connect logic 0 to
+          the extra LED, Green_LED[3], so it is always off.  But “0” has to be set up as a named
+          wire to do this. (We could have used another name, like "Logic_0", but just plain “0”
+          works fine.) So somewhere in this schemtic is this little structure: <img
+          src="images/using_quartus-12.png" alt="setting up 0 as a node name" />
+        </p>
+        <h4>Module to Module Example</h4>
+        <p>
+          Building on the previous example, and given a <a href="Using_hex2sevenseg.xhtml">module
+          named hex2sevenseg</a> that converts a 4-bit binary input to the seven outputs needed to
+          display hexadecimal values, the outputs of our three-bit ALU can be connected to the
+          inputs of two instances of this module like this: <img src="images/using_quartus-13.png"
+          alt="module to module bus connections" />
+        </p>
+      </div>
+      <h2 id="sequential-designs">Sequential Designs</h2>
+      <div>
+
+        <p>
+          The full adder project uses only combinational logic. When you do projects that use
+          sequential circuits, you will need to deal with clocks in your design. There are three
+          different clock generator circuits on the DE1 prototyping board. You can also operate your
+          sequential circuits by using any one of the blue pushbuttons as a clock signal.
+        </p>
+        <p class="standout-block">
+          The blue pushbuttons generate inverted inputs to the FPGA: pressing a button produces a
+          zero and not pressing it produces a one.  The easiest way to deal with this is normally to
+          connect the pushbuttons to inverters in the testbed. But doing this for clock inputs to
+          flip-flops will generate some warnings from Quartus. You should be able to ignore those
+          particular warnings.
+        </p>
+        <p>
+          Quartus does a timing analysis for all your designs to make sure the propagation delays in
+          your combinational logic do not exceed the period of the clock signal you are using. The
+          reason you can ignore the warnings when you use a pushbutton as a manual clock is that you
+          cannot possibly press the button fast enough to interfere with the propagation delays in
+          your circuit.  But for the other clock sources, you can tell Quartus how fast the clock is
+          that you want to use, and the timing analyzer will check to be sure your design meets the
+          required timing constraints. For the projects you do, this should never be an issue, but
+          you can suppress some warnings from the timing analyzer if you set up the clock
+          information for your sequential design projects.
+        </p>
+        <p>
+          The third item down in the <span class="menuItem">Assignments</span> menu is for <span
+          class="menuItem">Timing Analysis Settings</span>.  Under &ldquo;Classic Timing Analyzer
+          Settings&rdquo; set the &ldquo;Default required fmax&rdquo; to the speed of the DE1 clock
+          you are using for your design, and you should be good to go. If you look at the
+          Compilation Report window that is generated when you build your project, you can see the
+          &ldquo;Worst case tpd&rdquo; and the total number of propagation delay paths through your
+          design, if any, that fail to meet your specified <span class="variableName">fmax</span>.
+          The name <span class="variableName">fmax</span> stands for <span
+          class="functionName">f<span class="subscript">max</span></span>, the maximum frequency of
+          a clock signal, and the name <span class="variableName">tpd</span> stands for <span
+          class="functionName">t<span class="subscript">pd</span></span>, the longest propagation
+          delay time for a network.
+        </p>
+        <h3 id="SDC Files">SDC Files For Sequential Designs</h3>
+        <p>
+          Starting with Quartus II version 10, there are many warnings, some of them “critical,” that
+          you can eliminate by adding a Synopsis Design Constraints (SDC) file to your sequential project.
+          An SDC file is a text file that, in this case, describes the period of a clock signal used in
+          a project. Quartus analyzes the propagation delays in sequential networks, and uses the
+          information in the SDC file to make sure the clock period is long enough for the worst-case
+          delays in the project’s datapath.
+        </p>
+        <p>
+          You can create an SDC file from the File/New menu: it is under the “Other Files” section at the
+          bottom of the menu panel. For a 50 MHz clock connected to an input pin named “clock” you can
+          use the following code in your file:
+        </p>
+<div class="code-block">
+create_clock -period 20.000 \
+             -waveform { 0.000 10.000 } \
+             [get_ports clock]
+
+</div>
+          <p>
+            The first line says the period of the clock is 20 nsec, the second line says the rising
+            edge of the clock occurs 0 nsec into the clock period and the falling edge occurs 10 nec
+            into the clock period. (This describes a clock with a 50% duty cycle: the first half of
+            each cycle it is on, and the second half it is off.) The last line says that the clock
+            comes from an input pin named “clock.” The backslashes at the ends of the first two lines
+            are continuation markers: you could omit them and type the whole file on just one line
+            if you wanted to. If you do use backslashes, they have to be absolutely the last thing
+            on the lines where you use them. Even space characters to the right of them will cause
+            errors when you try to build your project. So this might be easier to type:
+          </p>
+<div class="code-block">
+create_clock -period 20.000 -waveform { 0.000 10.000 } [get_ports clock]
+
+</div>
+          <p>
+            Once you have typed in your SDC file, save it using a filename that seems appropriate for
+            your project, and be sure it is added to the project’s files. Your build step should generate
+            only three warnings and no errors.
+          </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../">Vickery Home</a>
+      <a href="../cs343">CSCI-343 Home Page</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      <em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em>
+    </div>
+  </body>
+</html>

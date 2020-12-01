@@ -1,0 +1,202 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-343 Assignment 2</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='./feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:AA6B8382-58B7-4C17-83BB-4E77A39EFD64'>
+  	<h1>CS-343 Assignment 2<br/>
+    Due February 17</h1>
+    <div id="content">
+      <h2>Reading Assignment</h2>
+      <ul>
+        <li>
+        	Sections 1-6 of Appendix C of the textbook, continued. We are skipping around some in class, and
+          have already covered section C.6 in class even though we have not completed the design of the ALU yet.
+        </li>
+        <li>
+          Remember, if you studied some assembly language other than MIPS in your prerequisite for this course 
+          (or if you 
+          did, but your MIPS skills are rusty) study Sections 1-10 of Chapter 2 of the textbook. You will need to
+          comfortable with this material when we finish Appendix C.
+        </li>
+        <li>
+        	The textbook mentions (but does not cover) minimization, which is important for this assignment.
+          There are many tutorials available on the web; the one I prepared is 
+          <a href="../../Minimize/index.xhtml">Minimizing Boolean Functions</a>, which you should read before
+          doing this assignment.
+        </li>
+      </ul>
+      <h2>Assignment To Hand In</h2>
+      <div>
+        <p>
+        	This assignment requires you to draw schematic diagrams for logic networks. Unfortunately, we have
+          not started using the software that we have available for creating these schematics, so you will
+          have to draw your diagrams on paper and bring the assignment to class with you on the due date.
+        </p>
+        <p>
+          Be sure to put your name on your assignment paper so I know who submitted
+          it.
+        </p>
+        <p>There are sixteen possible functions of two boolean variables:</p>
+        <table>
+        	<tr>
+            <th>a</th><th>b</th>
+            <th>Y<span class="subscript">15</span></th>
+            <th>Y<span class="subscript">14</span></th>
+            <th>Y<span class="subscript">13</span></th>
+            <th>Y<span class="subscript">12</span></th>
+            <th>Y<span class="subscript">11</span></th>
+            <th>Y<span class="subscript">10</span></th>
+            <th>Y<span class="subscript">9</span></th>
+            <th>Y<span class="subscript">8</span></th>
+            <th>Y<span class="subscript">7</span></th>
+            <th>Y<span class="subscript">6</span></th>
+            <th>Y<span class="subscript">5</span></th>
+            <th>Y<span class="subscript">4</span></th>
+            <th>Y<span class="subscript">3</span></th>
+            <th>Y<span class="subscript">2</span></th>
+            <th>Y<span class="subscript">1</span></th>
+            <th>Y<span class="subscript">0</span></th>
+          </tr>
+          <tr>
+             <th>0</th><th>0</th>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+          </tr>
+          <tr>
+             <th>0</th><th>1</th>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>1</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+             <td>0</td>
+          </tr>
+          <tr>
+             <th>1</th><th>0</th>
+             <td>1</td>
+             <td>1</td>
+             <td>0</td>
+             <td>0</td>
+             <td>1</td>
+             <td>1</td>
+             <td>0</td>
+             <td>0</td>
+             <td>1</td>
+             <td>1</td>
+             <td>0</td>
+             <td>0</td>
+             <td>1</td>
+             <td>1</td>
+             <td>0</td>
+             <td>0</td>
+          </tr>
+          <tr>
+             <th>1</th><th>1</th>
+             <td>1</td>
+             <td>0</td>
+             <td>1</td>
+             <td>0</td>
+             <td>1</td>
+             <td>0</td>
+             <td>1</td>
+             <td>0</td>
+             <td>1</td>
+             <td>0</td>
+             <td>1</td>
+             <td>0</td>
+             <td>1</td>
+             <td>0</td>
+             <td>1</td>
+             <td>0</td>
+          </tr>
+        </table>
+        <ol>
+          <li>
+          	How many possible functions of three boolean variables are there?
+          </li>
+          <li>
+            How many four variable functions are possible?
+          </li>
+          <li>
+            What is the expression that relates the number of input variable to the number of
+            possible boolean functions?
+          </li>
+          <li>
+            For each of the sixteen two-input functions:
+            <ol>
+              <li>Draw a Karnaugh Map to minimize the function</li>
+              <li>
+                Using only AND, OR, NOT, 0, 1, and wires, draw a schematic diagram that implements each
+                minimized function. (For 0 you may use the symbol for ground; for 1 you may use “Vcc.”
+                Or you can simply use 0 and 1 as input values where you need them.)
+              </li>
+              <li>
+                Examine each function, and where the function has a name, tell what the name is. For example,
+                the name of Y<span class="subscript">1</span> is “AND.” Y<span class="subscript">2</span>
+                Y<span class="subscript">4</span>, Y<span class="subscript">11</span>, and
+                Y<span class="subscript">13</span> are the only four that you might not be able to name.
+                (In formal logic they are variants of “implication.” a implies b if a is false or b is true:
+                function Y<span class="subscript">13</span>.)
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </div>
+  </body>
+</html>

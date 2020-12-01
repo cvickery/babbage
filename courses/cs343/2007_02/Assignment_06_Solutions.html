@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <p>
+      <strong>Note:</strong> These answers are taken from the
+      Instructor&rsquo;s Manual for the textbook.  Do not make them
+      available publicly.<br>
+
+      Let me know if you have any problems with them.<br>
+      
+      <em>Dr. Vickery</em>
+    </p>  
+  <pre>
+5.1   Combinational logic only: a, b, c, h, i
+      Sequential logic only: f, g, j
+      Mixed sequential and combinational: d, e, k
+
+5.2   a. RegWrite = 0: All R-format instructions, in addition to lw,
+      will not work because these instructions will not be able to
+      write their results to the register file.
+
+      b. ALUop1 = 0: All R-format instructions except subtract will
+      not work correctly because the ALU will perform subtract instead
+      of the required ALU operation.
+
+      c. ALUop0 = 0: beq instruction will not work because the ALU
+      will perform addition instead of subtraction (see Figure 5.12),
+      so the branch outcome may be wrong.
+
+      d. Branch (or PCSrc) = 0: beq will not execute correctly. The
+      branch instruction will always be not taken even when it should
+      be taken.
+
+      e. MemRead = 0: lw will not execute correctly because it will
+      not be able to read data from memory.
+
+      f. MemWrite = 0: sw will not work correctly because it will not
+      be able to write to the data memory.
+
+5.3   a. RegWrite = 1: sw and beq should not write results to the
+      register file.  sw ( beq) will overwrite a random register with
+      either the store address (branch target) or random data from the
+      memory data read port.
+
+      b. ALUop0 = 1: lw and sw will not work correctly because they
+      will perform subtraction instead of the addition necessary for
+      address calculation.
+
+      c. ALUop1 = 1: lw and sw will not work correctly.  lw and sw
+      will perform a random operation depending on the least
+      significant bits of the address field instead of addition
+      operation necessary for address calculation.
+
+      d. Branch = 1: Instructions other than branches (beq) will not
+      work correctly if the ALU Zero signal is raised. An R-format
+      instruction that produces zero output will branch to a random
+      address determined by its least significant 16 bits.
+
+      e. MemRead = 1: All instructions will work correctly. (Data
+      memory is always read, but memory data is never written to the
+      register file except in the case of lw .)
+
+      f. MemWrite = 1: Only sw will work correctly. The rest of
+      instructions will store their results in the data memory, while
+      they should not.
+
+5.8   A modification to the datapath is necessary to allow the new PC to
+      come from a register (Read data 1 port), and a new signal (e.g.,
+      JumpReg) to control it through a multiplexor as shown in Figure 5.42.
+
+      A new line should be added to the truth table in Figure 5.18 on page
+      308 to implement the jr instruction and a new column to produce the
+      JumpReg signal.
+
+5.9   A modification to the data path is necessary to feed the shamt field
+      (instruction[10:6]) to the ALU in order to determine the shift amount.
+      The instruction is in R-Format and is controlled according to the
+      first line in Figure 5.18 on page 308.
+
+      The ALU will identify the sll operation by the ALUop field.
+
+      Figure 5.13 on page 302 should be modified to recognize the opcode of
+      sll: the third line should be changed to 1X1X0000 0010 (to
+      discriminate the add and ssl functions), and a new line, inserted, for
+      example, 1X0X0000 0011 (to define sll by the 0011 operation
+      code).      
+
+5.10  One possible lui implementation  doesn't need a modification to the
+      datapath: We can use the ALU to implement the shift operation. The
+      shift operation can be like the one presented for Exercise 5.9, but
+      will make the shift amount as a constant 16. A new line should be
+      added to the truth table in Figure 5.18 on page 308 to define the new
+      shift function to the function unit. (Remember two things: first,
+      there is no funct field in this command; second, the shift operation
+      is done to the immediate field, not the register input.)
+
+        RegDst    = 1: To write the ALU output back to the destination
+                        register ($rt).
+        ALUSrc    = 1: Load the immediate field into the ALU.
+        MemtoReg  = 0: Data source is the ALU.
+        RegWrite  = 1: Write results back.
+        MemRead   = 0: No memory read required.
+        MemWrite  = 0: No memory write required.
+        Branch    = 0: Not a branch.
+        ALUOp     = 11: sll operation.
+
+      This ALUOp (11) can be translated by the ALU as shl,ALUI1,16 by
+      modifying the truth table in Figure 5.13 in a way similar to Exercise
+      5.9.
+
+5.11  A modification is required for the datapath of Figure 5.17 to perform
+      the autoincrement by adding 4 to the $rs register through an
+      incrementer. Also we need a second write port to the register file
+      because two register writes are required for this instruction. The new
+      write port will be controlled by a new signal, "Write 2", and a data
+      port, "Write data 2." We assume that the Write register 2 identifier
+      is always the same as Read register 1 ($rs). This way "Write 2"
+      indicates that there is second write to register file to the register
+      identified by "Read register 1," and the data is fed through Write
+      data 2.
+
+      A new line should be added to the truth table in Figure 5.18 for the
+      l_inc command as follows:
+
+        RegDst    = 0: First write to $rt.
+        ALUSrc    = 1: Address field for address calculation.
+        MemtoReg  = 1: Write loaded data from memory.
+        RegWrite  = 1: Write loaded data into$rt.
+        MemRead   = 1: Data memory read.
+        MemWrite  = 0: No memory write required.
+        Branch    = 0: Not a branch, output from the PCSrc controlled mux
+                       ignored.
+        ALUOp     = 00: Address calculation.
+        Write2    = 1: Second register write (to $rs).
+
+      Such a modification of the register file architecture may not be
+      required for a multiple- cycle implementation, since multiple writes
+      to the same port can occur on different cycles.
+
+5.12  This instruction requires two writes to the register file. The only
+      way to implement it is to modify the register file to have two write
+      ports instead of one.
+
+5.13  From Figure 5.18, the MemtoReg control signal looks identical to
+      both signals, except for the don't care entries which have
+      different settings for the other signals. A don't care can be
+      replaced by any signal; hence both signals can substitute for
+      the MemtoReg signal.
+
+      Signals ALUSrc and MemRead differ in that sw sets ALSrc (for
+      address calculation) and resets MemRead (writes memory: can't
+      have a read and a write in the same cycle), so they can't
+      replace each other. If a read and a write operation can take
+      place in the same cycle, then ALUSrc can replace MemRead, and
+      hence we can eliminate the two signals MemtoReg and MemRead from
+      the control system.
+
+      Insight: MemtoReg directs the memory output into the register file;
+      this happens only in loads. Because sw and beq don&rsquo;t produce
+      output, they don't write to the register file (Regwrite = 0), and the
+      setting of MemtoReg is hence a don't care. The important setting for a
+      signal that replaces the MemtoReg signal is that it is set for lw
+      (Mem-&gt;Reg), and reset for R-format (ALU-&gt;Reg), which is the case
+      for the ALUSrc (different sources for ALU identify lw from R-format)
+      and MemRead (lw reads memory but not R-format).
+
+5.14  swap $rs,$rt can be implemented by:
+
+        addi $rd,$rs,0
+        addi $rs,$rt,0
+        addi $rt,$rd,0
+
+      if there is an available register, $rd, or:
+
+        sw $rs,temp($r0)
+        addi $rs,$rt,0
+        lw $rt,temp($r0)
+
+      if not.
+
+      Software takes three cycles, and hardware takes one cycle. Assume Rs
+      is the ratio of swaps in the code mix and that the base CPI is 1:
+      
+      Average MIPS time per instruction =
+        Rs * 3 * T + (1 ? Rs ) * 1 * T = (2 Rs + 1) * T
+
+      Complex implementation time = 1.1 * T
+
+      If swap instructions are greater than 5% of the instruction mix, then
+      a hardware implementation would be preferable.
+
+5.28  Load instructions are on the critical path that includes the following
+      functional units: instruction memory, register file read, ALU, data
+      memory, and register file write. Increasing the delay of any of these
+      units will increase the clock period of this datapath. The units that
+      are outside this critical path are the two adders used for PC
+      calculation (PC + 4 and PC + Immediate field), which produce the
+      branch outcome.
+
+      Based on the numbers given on page 315, the sum of the the two adder?s
+      delay can tolerate delays up to 400 more ps.
+
+      Any reduction in the critical path components will lead to a reduction
+      in the clock period.
+
+5.29  a. RegWrite = 0: All R-format instructions, in addition to lw, will
+      not work because these instructions will not be able to write their
+      results to the register file.
+
+      b. MemRead = 0: None of the instructions will run correctly because
+      instructions will not be fetched from memory.
+
+      c. MemWrite = 0: sw will not work correctly because it will not be
+      able to write to the data memory.
+
+      d. IRWrite = 0: None of the instructions will run correctly because
+      instructions fetched from memory are not properly stored in the IR
+      register.
+
+      e. PCWrite = 0: Jump instructions will not work correctly because
+      their target address will not be stored in the PC.
+
+      f. PCWriteCond = 0: Taken branches will not execute correctly because
+      their target address will not be written into the PC.
+
+5.30  a. RegWrite = 1: Jump and branch will write their target address into
+      the register file. sw will write the destination address or a random
+      value into the register file.
+
+      b. MemRead = 1: All instructions will work correctly. Memory will be
+      read all the time, but IRWrite and IorD will safeguard this signal.
+
+      c. MemWrite = 1: All instructions will not work correctly. Both
+      instruction and data memories will be written over by the contents of
+      register B.
+
+      d. IRWrite = 1: lw will not work correctly because data memory output
+      will be translated as instructions.
+
+      e. PCWrite = 1: All instructions except jump will not work correctly.
+      This signal should be raised only at the time the new PC address is
+      ready (PC + 4 at cycle 1 and jump target in cycle 3). Raising this
+      signal all the time will corrupt the PC by either ALU results of
+      R-format, memory address of lw / sw, or target address of conditional
+      branch, even when they should not be taken.
+
+      f. PCWriteCond = 1: Instructions other than branches (beq) will not
+      work correctly if they raise the ALU's Zero signal. An R-format
+      instruction that produces zero output will branch to a random address
+      determined by their least significant 16 bits.
+
+5.31  RegDst can be replaced by !ALUSrc, !MemtoReg, !MemRead, ALUop1.
+      MemtoReg can be replaced by !RegDst, ALUSrc, MemRead, or !ALUOp1.
+      Branch and ALUOp0 can replace each other.
+
+5.32  We use the same datapath, so the immediate field shift will be done
+      inside the ALU.
+
+        1. Instruction fetch step: This is the same (IR &lt;= Memory[PC]; PC
+        &lt;= PC + 4)
+
+        2. Instruction decode step: We don't really need to read any
+        register in this stage if we know that the instruction in hand is a
+        lui, but we will not know this before the end of this cycle. It is
+        tempting to read the immediate field into the ALU to start shifting
+        next cycle, but we don't yet know what the instruction is. So we
+        have to perform the same way as the standard machine does. A &lt;= 0
+        ($r0); B &lt;= $rt; ALUOut &lt;= PC + (sign-extend(immediate
+        field));
+
+        3. Execution: Only now we know that we have a lui. We have to use
+        the ALU to shift left the low-order 16 bits of input 2 of the
+        multiplexor. (The sign extension is useless, and sign bits will be
+        flushed out during the shift process.) ALUOut &lt;= {IR[15-0],16(0)}
+
+        4. Instruction completion: Reg[IR[20-16]] = ALUOut.
+
+      The first two cycles are identical to the FSM of Figure 5.38. By the
+      end of the second cycle the FSM will recognize the opcode. We add the
+      Op='lui', a new transition condition from state 1 to a new state 10.
+      In this state we perform the left shifting of the immediate field:
+      ALUSrcA = x, ALUSrcB = 10, ALUOp = 11 (assume this means left shift of
+      ALUSrcB). State 10 corresponds to cycle 3. Cycle 4 will be translated
+      into a new state 11, in which RegDst = 0, RegWrite, MemtoReg = 0.
+      State 11 will make the transition back to state 0 after completion.
+
+      As shown above, the instruction execution takes 4 cycles.
+
+5.33  This solution can be done by modifying the data path to extract and
+      shift the immediate field outside the ALU. Once we recognize the
+      instruction as lui (in cycle 2), we will be ready to store the
+      immediate field into the register file the next cycle. This way the
+      instruction takes 3 cycles instead of the 4 cycles of Exercise 5.26.
+
+      1. Instruction fetch step: Unchanged.
+
+      2. Instruction decode: Also unchanged, but the immediate field
+      extraction and shifting will be done in this cycle as well.
+
+      3. Now the final form of the immediate value is ready to be loaded
+      into the register file. The MemtoReg control signal has to be modified
+      in order to allow its multiplexor to select the immediate upper field
+      as the write data source. We can assume that this signal becomes a
+      2-bit control signal, and that the value 2 will select the immediate
+      upper field.
+
+      The first two cycles are identical to the FSM of Figure 5.38. By the
+      end of the second cycle, the FSM will recognize the opcode. We add the
+      Op = 'lui', a new transition condition from state 1 to a new state 10.
+      In this state we store the immediate upper field into the register
+      file by these signals: RedDst = 0, RegWrite, MemtoReg = 2. State 10
+      will make the transition back to state 0 after its completion.
+
+    </pre>
+  </body>
+</html>

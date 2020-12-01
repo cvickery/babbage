@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>CS-343 Assignment 6 Solutions</title>
+  </head>
+  <body>
+  <pre>
+
+1. The wort-case propagation delays in the datapath (i.e., when fetching and
+executing a load word instruction) determines the minimum allowable period of the
+clock, and thus the maximum clock rate.
+
+2. The maximum propagation delays in any of the stages of the pipeline
+determines the minimum allowable period of the clock.
+
+3. A perfectly balance pipeline has the same number of propagation delays in all
+its stages. The clock of an n-stage perfectly balanced pipeline will be n-times
+faster than the clock of a single-cycle design.
+
+4. S/P = I/P * C/I * S/C Where S is seconds, P is program, I is instructions, C
+is clock pulses
+
+5. CPI  (C/I) for the single-cycle design is 1 by definition; it is n for an
+n-stage pipeline.
+
+6. 6.1.a: No, because there are other stages that would require the original
+clock period.
+   6.1.b: Yes, now the minimum period would go from 200 to 250ps, so the maximum
+   clock speed will go from 5GHz to 4GHz.
+
+   6.2.a: 10^6 * 100 * 10^-12 = 10^(6+2-12) = 10^-4 = 100*10^-6 = 100
+   microseconds
+
+   6.2.b Twenty times faster.
+
+   6.2.c Both: the clock speed will have to be reduced to allow for the overhead
+   in each stage, affecting throughput; and latency will be affected because it
+   will take longer for each instruction to go through the pipeline.
+
+7. a) Structural, when two different instructions need access to the same
+hardware at the same time. Solution is to add more hardware sot there will be no
+conflict. An example would be to have a separate adder for computing PC+4 in the
+IF stage so an earlier instruction can use the ALU during its EXE stage.
+   b) Control, when a branch or jump instruction causes the wrong instructions
+   to be in the pipeline. One (partial) solution is to unconditionally executing
+   the next instruction after a branch or jump.
+   c) Data, when an instruction needs an operand whose value is being computed
+   by an instruction that is still in the pipeline. A solution is to use
+   register forwarding, which involves getting the operand out of a pipeline
+   register instead of waiting for it to be written back to the register file.
+
+8. n-1
+
+9. Ignoring Jump instructions:
+
+   IF/ID: The Instruction (32 bits) and PC+4 (32 bits)
+
+   ID/EX: PC+4, R[rs], R[rt], Sign-extended Immediate (512 bits);
+   EXE control (ALUOp, ALUSrc), MEM control (branch, MemWrite, MemRead) and WB
+   control (rt, rd, RegDst, MemtoReg amd WriteReg #) control bits (another 19
+   bits).
+
+   EX/MEM: ALU result, Z bit from ALU, R[rt], Branch Target Address (97 bits);
+   MEM control (branch, MemWrite, MemRead); WB control (MemtoReg, Write Reg #),
+   an additional 9 bits.
+
+  MEM/WB: ALU result, Data from memory (64 bits); MemtoReg, Write Reg # (6
+  bits).
+
+10. The main advantage is the possibility of a very fast clock, meaning that
+instrucitons can be retired at a very high rate (high throughput). The big
+disadvantage, assuming ways can be found to divide the datapath into so many
+pieces, is the big penalty for branches and jumps that cause the pipleine to be
+flushed.
+
+11. Static and Dynamic Random Access Memory. SRAM is faster; DRAM is more dense.
+SRAM is more suitable for cache; RRAM for main memory.
+
+12. Temporal locality refers to the fact that programs tend to execute
+instructions from a small region of memory at a time; likewise, they tend
+operate on data from small regions of memory at a time. The both enhance cache
+performance because instructions and data brought into cache from main memory
+are likely to be used repeatedly for some period of time.
+
+13. A hit is when a memory request can be satisfied by information already in
+the cache. The hit ratio is the proportion of total memory accesses that result
+in cache hits. When there is a cache miss a block consisting of several words of
+main memory, not just the word that was requested, are copied into cache at the
+same time as the word that was requested. Because of temporal locality, these
+extra words are highly likely to be accessed by the processor in the near
+future.
+
+14. It's all hardware.
+
+15. They are the same size. Each cache miss causes a "block" of main memory to be
+copied into a "line" of cache data.
+
+16. There has to be a tag that tells which block of main memory (if any) is
+currently residing in the cache line.
+
+17. Direct: each block of main memory has a single line in cache that it can
+occupy. Set-associative: each block of main memory can be copied into one of
+several cache lines. For example, a 4-way set associative design allows each
+block of main memory to be copied into any of 4 different cache lines. A fully
+associative cache design allows each block of main memory to be loaded into any
+cache line. Direct is the same as set associative with a set size of 1; fully
+associative is the same as set associative with a set size equal to the number
+of lines of cache.
+
+18. Bandwith is the rate at which information can be transferred along a
+communciation channel such as a bus; it is measured in bits per second.  100ps
+per transfer is a transfer rate of 10GHz; 32 bits per transfer gives a bandwidth
+of 320Gb/sec = 40GB/sec for the bus between the cache and the processor in this
+example.
+
+19. This is twice as many transfers per second and 16 times as many bits per
+transfer as the previous example, so this bus will have a bandwidth that is
+2^(1+4) = 32 times faster than the previous answer; 1,280 GB/sec. (Both of these
+questions are using ridiculously high numbers because bus clocks speeds are
+normally significantly less than 1 GHz.)
+
+20. Seek time: average 100 tracks at 2 ms/track = 200 msec
+    Rotational delay: 7200 RPM = 120 revolutions per second = 8.33 msec per
+    revolution. Average is half a revolution = 4.167 msec
+    Transfer time: If the bus can transfer 512MB in one second, it can transfer
+    1024 bytes in 2^10/2^29 = 2^-19 sec, about 2 microseconds = 0.002 msec
+    Total: 204.169 milliseconds.
+
+21. The transfer is 1024 bytes times 1024 sectors = 2^20 bytes. The time of one
+revolution is 8.33 msec, so the bandwidth has to be 2^20 bytes per .00833 sec =
+125,879,472 bytes per second (125MB/sec).
+
+    </pre>
+  </body>
+</html>
+

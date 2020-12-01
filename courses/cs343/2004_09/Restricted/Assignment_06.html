@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head><title>CS-343 Assignment 6 Solutions</title>
+<style type="text/css">
+  img  { border: none; }
+  body { background: #ffffcc; }
+  h1   { text-align: center;  }
+  p { margin-left: 1em; margin-right: 2em; }
+  div.whitebox {background:white;border:solid; margin:1em; padding:1em;}
+</style>
+<style type="text/css" media="screen">
+  body { font-family: sans-serif }
+</style>
+</head>
+<body>
+<h1>CS-343 Assignment 6 Solutions</h1>
+
+<h2>Question 1</h2>
+<div class="whitebox">
+
+  <ul>
+    <li><b>depth:</b> The number of stages in a pipeline.</li>
+    <li><b>latency:</b> The time it takes for an instruction to emerge
+    from a pipeline after entering it.</li>
+    <li><b>throughput:</b>  The rate at which instructions are
+    completed.</li>
+    <li><b>bubble:</b>  A pipeline stage that is doing no useful work.</li>
+    <li><b>stall:</b> The situation when one or more pipeline stages
+    repeat the same operation while waiting for a control or data hazard
+    to clear.</li>
+    <li><b>structural hazard:</b> A limitation on parallelism due to
+    lack of hardware resources, such as arithmetic units or
+    interconnection pathways.</li>
+    <li><b>data hazard:</b>  A dependency between the generation of a
+    result and its use that must be accounted for in the design of a
+    pipeline.</li>
+    <li><b>control hazard:</b>  The possible execution of incorrect
+    instructions due to branch and jump instructions in a pipelined
+    datapath.</li>
+    <li><b>reordering:</b>  Changing the sequence in which instructions
+    are executed compared to the sequence in a program.  May be done by
+    either a compiler or in hardware to reduce or eliminate data and
+    control hazards.</li>
+    <li><b>result forwarding:</b>  A technique for reducing or
+    eliminating data hazards in a pipelined design in which a result
+    is passed directly back to an earlier stage without waiting for the
+    instruction to pass completely through the pipeline.</li>
+    <li><b>delayed branch:</b>  A technique for reducing or eliminating
+    control hazards in a pipelined design in which the instruction
+    following a branch instruction is always executed regardles of
+    whether the branch is taken or not.  Instruction reordering (see
+    above) is used to fill this "delay slot" with productive work
+    whenever possible, but if this fails a <i>nop</i> (no-operation)
+    instruction has to be used to fill the slot.</li>
+    <li><b>prediction:</b>  A technique for deciding which fork
+    following a branch instruction to feed into the pipeline in an
+    attempt to reduce pipeline stalls.</li>
+    <li><b>speculative execution:</b>  A technique in which both forks
+    following a branch are executed in parallel, and the unused fork is
+    discarded once the result of the branch condition has been
+    determined.</li>
+  </ul>
+</div>
+
+<h2>Question 2</h2>
+<div class="whitebox">
+  <ul>
+    <li>5 GHz</li>
+    <li>It would be five times (400%) faster.</li>
+  </ul>
+</div>
+
+<h2>Question 3</h2>
+<div class="whitebox">
+  <ul>
+
+    <li><b>IF/ID</b>: 62 or 64 bits: Instruction (32) and PC+4 (32 or
+        30)</li>
+
+    <li><b>ID/EX</b>: 114 bits: WB (2), M (2), EX (4), Read data 1&amp;2
+    (64), Address/Immediate (32), and <i>rt</i>&amp;<i>rd</i> (10)</li>
+
+    <li><b>EX/MEM</b>: 72 or 74 bits: WB (2), M (2), Branch target (30
+    or 32), Zero bit from ALU (1), ALU result (32), and writeback
+    register number (5)</li>
+
+    <li><b>MEM/WB</b>: 71 bits: WB (2), Mem data (32), ALU result (32),
+    and writeback register number (5).</li>
+
+  </ul>
+</div>
+
+<h2>Question 4</h2>
+<div class="whitebox">
+  <p>These two figures, and Figure 6.33 as well, do not show the
+  connection from the register file to the top Mux of the ALU.</p>
+</div>
+
+
+<hr />
+    <p>
+      <a href="http://validator.w3.org/check?uri=referer"><img
+          src="http://www.w3.org/Icons/valid-xhtml11"
+          alt="Valid XHTML 1.1!" height="31" width="88" /></a>
+    </p>
+</body></html>
+

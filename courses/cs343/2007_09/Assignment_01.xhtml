@@ -1,0 +1,115 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-343 Assignment 1</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../../courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../../courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../../courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 1</h1>
+    </div>
+
+    <div id="content">
+
+      <h2>Reading</h2>
+      <div class="whitebox">
+        <ul>
+          <li><a href="../Background_Material.pdf">Background Material</a></li>
+          <li>Textbook, Chapters 1 (all) and 2 (Sections 2.1 through 2.6).</li>
+          <li>Textbook, <a href="../COAD3e/Appendix_B.pdf">Appendix B.</a></li>
+          <li><a href="../../Minimize/">Web Page on Minimization</a></li>
+        </ul>
+      </div>
+
+      <h2>Exercises</h2>
+      <div class="whitebox">
+        <ul>
+          <li>Questions 1-12 from the end of the <cite>Background
+          Material</cite>.</li>
+          <li>Exercises 1.1 through 1.48 from the end of Chapter 1.</li>
+          <li>Nothing from Chapter 2: just read through the material
+          for now.</li>
+        </ul>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+      
+        <p><strong>Write your name</strong> and your answers to the
+        questions in an email message.  I read email as text only, so there
+        is no point in formatting your answers with special font effects,
+        etc.  For Exercises 1.1 through 1.45 you can just write the letters
+        and numbers of your answers in sequence.</p>
+
+        <p>Send your email to me by midnight of the due date using an email
+        account that you use regularly.  I will add that email address to a
+        mailing list for the course.  The mailing list will be used for
+        occasional announcements during the semester. My email address
+        is:</p>
+
+        <address>vickery at babbage.cs.qc.edu</address>
+
+        <p><strong>You must use exactly this Subject line for your email to
+        be sure I actually receive it:</strong> <span
+        class="codeBlock">CS-343 Assignment 1</span></p>
+
+        <p>If you do not receive an &ldquo;OK, I&rsquo;ll check it
+        out&rdquo; reply from me within a day or two of submitting the
+        assignment, it means I did not receive it.  But I will be sending
+        that acknowledgement manually, so don&rsquo;t resubmit the
+        assignment until I have had a chance to reply to the first one.</p>
+
+      </div>      
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,327 @@
+<html><head><title>CS-343 Assignment 5</title>
+<style type="text/css">
+      p { margin-left: 1em; margin-right: 4em; }
+      p.block
+      {
+        margin-left:  3em;
+        margin-right: 6em;
+        border:       solid;
+        padding:      1em;
+      }
+      li { margin-right: 10em; }
+      div.ans
+      {
+        border:       solid;
+        background:   #ffffff;
+      }
+      dl
+      {
+        margin-left:  3em;
+        font-weight:   bold;
+      }
+      dd
+      {
+        padding:        0.5em;
+        background:     #C0ffC0;
+        margin-right:   3em;
+      }
+      table
+      {
+        layout:           fixed;
+        padding:          0.5em;
+        margin-left:      3em;
+        border-collapse:  collapse;
+        border-style:     solid;
+        empty-cells:      show;
+        background:       white;
+      }
+      th
+      {
+        padding:          0.5em;
+        border:           solid;
+      }
+      td
+      {
+        padding:          0.5em;
+        border:           solid;
+      }
+      
+</style>
+<style type="text/css" media="screen">
+   body { font-family: sans-serif }
+</style>
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>CS-343 Assignment 5</h1>
+</center>
+
+<h2>Due Date and Submission</h2>
+
+  <p>This assignment is due by <b>midnight, May 3</b>.  Submit it
+  by sending email to me at the address,
+  <i>vickery@babbage.cs.qc.edu</i>.  Be sure to put "CS-343 Assignment
+  5" in the subject of your email and to put your name/ID in the
+  message body.</p>
+
+<h2>The Assignment</h2>
+
+  <p>The assignment is to write out the answers to Exercises <b>7.2,
+  7.3, 7.4, 7.7, 7.8, 7.9, </b>and<b> 7.10</b> on pages 293 - 295 of
+  the textbook.  Submit your answers in the body of your email message,
+  not as an attachment, and <u>not</u> as a Word or PDF document.</p>
+
+  <p>Remember, you are encouraged to use the Discussion Board on the
+  course's Blackboard page (<a
+  href="http://blackboard.qc.edu">blackboard.qc.edu</a>) when you are
+  working on this and all other assignments in this course.</p>
+
+<h2>Answers</h2>
+
+  <dl>
+
+    <dt>7.2:</dt>
+    <dd>
+      <table>
+        <tr>
+          <th>Op</th>
+          <th>B</th>
+          <th>A</th>
+          <th> <i>op(</i>A, B<i>)</i></th>
+          <th>Address</th>
+          <th>Contents</th>
+        </tr>
+        <tr>
+          <td>00</td>
+          <td>0000 0100</td>
+          <td>0001 0000</td>
+          <td>0001 0100</td>
+          <td>00410</td>
+          <td>14</td>
+        </tr>
+        <tr>
+          <td>01</td>
+          <td>0000 0100</td>
+          <td>0001 0000</td>
+          <td>0000 1100</td>
+          <td>10410</td>
+          <td>0C</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>0000 0100</td>
+          <td>0001 0000</td>
+          <td>0100 0000</td>
+          <td>20410</td>
+          <td>40</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>0000 0100</td>
+          <td>0001 0000</td>
+          <td>0000 0400</td>
+          <td>30410</td>
+          <td>04</td>
+        </tr>
+      </table>
+    </dd>
+
+    <dt>7.3:</dt>
+    <dd>
+
+      <p>This is a 2<sup>m</sup> x 4n memory built from 2<sup>m</sup> x
+      n memory chips, so there must be one row of four chips.  In this
+      case, m is 3 and n is 8.</p>
+      
+      <p><img src="./Murdocca_7-3.png" alt="Diagram for Exercise 7.3" /></p>
+
+    </dd>
+
+    <dt>7.4:</dt>
+    <dd>
+    
+      <p>This is a 4(2<sup>m</sup>) x n memory built from 2<sup>m</sup> x
+      n memory chips, so there must be four rows of chips, with one
+      column per row.  In this case, m is 2 and n is 4.</p>
+      
+      <p><img src="./Murdocca_7-4.png" alt="Diagram for Exercise 7.4" /></p>
+    
+    </dd>
+
+    <dt>7.7:</dt>
+    <dd>
+    <p>16K is 2<sup>14</sup>, so it takes 14 bits to select a block of
+    main memory, plus 4 bits to select a word within a block, for a
+    total of 18 bits for main memory addresses.  Each block is mapped
+    to one of 128 (= 2<sup>7</sup>) slots in the cache, so 7 bits are
+    required to select the slot, leaving 7 bits for the tag that the
+    cache has to record to tell what block is occupying each slot.  The
+    format of a main memory address would be:</p>
+
+    <table>
+      <tr>
+        <th>Tag</th>
+        <th>Slot #</th>
+        <th>Word<br />in Slot
+      </tr>
+      <tr>
+        <td align="center">7 bits</td>
+        <td align="center">7 bits</td>
+        <td align="center">4 bits</td>
+      </tr>
+    </table>
+
+    <p>The following table shows the memory addresses that are accessed
+    broken down by what cache slot they correspond to.  For each slot,
+    the third column shows the number of accesses made to that block
+    per iteration of the loop.</p>
+
+    <table>
+      <tr>
+        <th>Address<br />Range</th>
+        <th>Slot<br />Number</th>
+        <th>Number<br />of Accesses</th>
+      </tr>
+
+      <tr>
+        <td>15</td>
+        <td>0</td>
+        <td>1</td>
+      </tr>
+
+      <tr>
+        <td>16-31</td>
+        <td>1</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>32-47</td>
+        <td>2</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>48-63</td>
+        <td>3</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>64-79</td>
+        <td>4</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>80-95</td>
+        <td>5</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>96-111</td>
+        <td>6</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>112-127</td>
+        <td>7</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>128-143</td>
+        <td>8</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>144-159</td>
+        <td>9</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>160-175</td>
+        <td>10</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>176-191</td>
+        <td>11</td>
+        <td>16</td>
+      </tr>
+
+      <tr>
+        <td>192-200</td>
+        <td>12</td>
+        <td>9</td>
+      </tr>
+
+    </table>
+
+    <p>There are 186 locations accessed (the sum of the numbers in the
+    third column), so for ten iterations, there would be a total of
+    186&nbsp;*&nbsp;4&nbsp;=&nbsp;1860 accesses,  There would be 13
+    cache misses (once for each slot used), so the hit ratio, HR, is
+    (1860-13)/1860&nbsp;=&nbsp;0.993.</p>
+
+    <p>The average access time would be (HR&nbsp;*&nbsp;10) +
+    ((1&nbsp;-&nbsp;HR)&nbsp;*&nbsp;210&nbsp;=&nbsp;11.40 nsec.</p>
+
+    </dd>
+
+    <dt>7.8:</dt>
+    <dd>There are 8 words per block, so 3 bits are needed to select a
+    word within a block.  There are 2<sup>16</sup> words of main memory,
+    so addresses are 16 bits wide.  Three of those 16 bits select the
+    word within a block, so the other 13 are used as the tag for a fully
+    associative memory.  Memory locations 20-23 occupy cache slot 2,
+    locations 24-31 occupy slot 3, 32-39 occupy slot 4, and 40-45 are
+    all in slot 5.  (e.g, address 20 as sixteen bits is
+    0000000000010&nbsp;100, which can be interpreted as slot 2, word 4.)
+    There will be (45-20+1)=(26) access at the beginning and
+    (45-28+1)=(18) accesses on each of the four iterations, for a total
+    of 26+4*18=98 accesses.  There will be one miss for each of slots 2,
+    3, 4, and 5, so the hit ratio is (98-4)/98 = 0.95918.  The average
+    access time is HR*40 + (1-HR)*1040 = 80.816 nsec.
+    </dd>
+
+    <dt>7.9:</dt>
+    <dd>
+
+      <p>For Fig. 7-13, there are
+      2<sup>5</sup>*2<sup>3</sup>&nbsp;=&nbsp;2<sup>8</sup> bits per
+      block.  There are 2<sup>14</sup> slots, so there are
+      2<sup>8</sup>*2<sup>14</sup> = 2<sup>22</sup> bits of cache for
+      storing the information from the memory blocks.  Plus there are
+      an additional 27+1+1 = 29 bits of housekeeping information (tag,
+      valid, and dirty bits) for each of the 2<sup>14</sup> slots, for
+      a total of 4,669,440 bits. (About half a megabyte.)</p>
+
+      <p>For Fig. 7-14, the values are the same, except there are only
+      15 bits of housekeeping information per slot.  So there are
+      2<sup>22</sup> plus 15*2<sup>14</sup>, or 4,440,064 bits.  (Less
+      than the size of the associative cache, but still also about half
+      a megabyte.)</p>
+
+    </dd>
+
+    <dt>7.10:</dt>
+    <dd>
+    
+    <p>Each block spans 2<sup>14+5</sup> addresses, so accesses spaced
+    by that amount will cause a miss every time.  That is, addresses
+    512K words apart from each other.</p>
+    
+    <p>If there is a miss on every memory access, the hit ratio is zero
+    and the effective access time is 1000 nsec.  The 10 nsec doesn't get
+    added in because load through is used.</p>
+    
+    </dd>
+
+  </dl>
+
+<hr></body></html>

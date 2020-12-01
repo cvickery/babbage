@@ -1,0 +1,112 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-343 Assignment 5</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignments.css"
+    />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-343 Assignment 5</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        This is an exercise in working with MIPS machine and assembly language.
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+        	There is a <a href="../SPIM_Assignment/">separate web page describing the assignment</a>.
+        </p>
+        <p>
+        	In addition to writing and debugging the subroutine described in that web page, do the following:
+          Use the <span class="menuItem">Simulator&mdash;&gt;Display symbol table</span> menu item to determine
+          the address at which <span class="functionName">addem</span> was loaded into memory. Then use the <span
+          class="menuItem">Simulator&mdash;&gt;Display symbol table</span> menu item to set a breakpoint at that
+          address. Run your program (F5) and when it reaches the breakpoint, single step through your program (F10)
+          and write down, for the next three instructions executed: (a) the address of the instruction, (b) the
+          machine language representation of the instruction, (c) the &ldquo;native&rdquo; assembly language instruction,
+          (d) the actual assembly language statement you wrote, (e) the number of the register affected by the
+          instruction, (f) the contents of that register before the instruction was executed, (g) the contents of the
+          register after the instruction was executed, and (h) a comment telling what the instruction accomplished in
+          the context of the algorithm being implemented.            
+          </p>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+        	Send me an email message with your your written answers in the body of the message and with your code file named
+          <span class="fileName">addem.s</span> attached to it. The usual stuff:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-343&nbsp;Assignment&nbsp;5</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p class="important">Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.<br />
+      <a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-343 Home Page</a><br /><a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>
+    </div>
+  </body>
+</html>

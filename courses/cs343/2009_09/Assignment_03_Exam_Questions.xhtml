@@ -1,0 +1,162 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Sample Exam Questions Based On CS-343 Assignment 3</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="css/assignment_03.css" />
+  </head>
+
+  <body>
+    <h1>Sample Exam Questions Based On <a href="Assignment_03.xhtml">CS-343 Assignment 3</a></h1>
+    <div class="explanation">
+    	<p>
+      	If you are uncertain about how to answer any of these questions, I suggest you try using the 
+        <a href="http://babbage.cs.qc.cuny.edu/Fora/Courses/viewforum.php?f=5">course forum</a> to
+        discuss them.
+      </p>
+      <ol style="font-size:0.8em;">
+        <li>
+          Label the inputs and outputs of this ALU symbol for the full MIPS ALU designed in the textbook. Show
+          the number of wires for each input and output:<br />
+          <img height="100" src="images/ALU_Symbol.png" alt="ALU Symbol" />.
+        </li>
+        <li>
+          Label the inputs and outputs of this ALU symbol for the ALU developed in Assignment 3. Show
+          the number of wires for each input and output:<br />
+          <img height="100" src="images/ALU_Symbol.png" alt="ALU Symbol" />.
+        </li>
+        <li>
+        	True or False: Quartus software does not allow the same project to contain both Verilog and schematic
+          diagram modules.
+        </li>
+        <li>
+        	What is the purpose of a &ldquo;testbed&rdquo; module?
+        </li>
+        <li>
+        	How do you incorporate one module inside another one in Quartus? Your answer should involve the use of pins
+          and symbols.
+        </li>
+        <li>
+        	What operation has to be performed before you can use the Pin Planner for a Quartus project?
+        </li>
+        <li>
+        	Using the letters A-G to name the segments of a seven-segment display, tell which segments would be
+          turned on for each of the following 4-bit values: 0000<span class="subscript">2</span>,
+          0001<span class="subscript">2</span>, 0010<span class="subscript">2</span>, &hellip;,
+          1111<span class="subscript">2</span>
+        </li>
+        <li>
+        	What is the difference between a bus line and a node line?
+        </li>
+        <li>
+        	If a node line connects to a bus line, how do you tell which wire in the bus it connects to? (Explain how wires
+          are named and how subscripts are used.)
+        </li>
+        <li>
+        	List the names of all the inputs and outputs of an ALU slice, and briefly tell what purpose each one
+          serves.
+        </li>
+        <li>
+        	Draw a diagram that shows the relationship between the <span class="variableName">A</span> and
+          <span class="variableName">Ainv</span> inputs to generate the value used as one input to the AND gate. 
+        </li>
+        <li>
+        	What is the difference between the relationship of <span class="variableName">Ainv</span>
+          to <span class="variableName">A</span> and the relationship of <span class="variableName">Bneg</span>
+          to <span class="variableName">B</span>
+          inside an ALU slice? If there is no difference there, then what is the difference between the two?
+        </li>
+        <li>
+        	Explain the need for a <span class="functionName">wire</span> symbol in the Quartus implementation of the ALU?
+        </li>
+        <li>
+        	Name the ALU function code bits from left to right, and tell what each bit does.
+        </li>
+        <li>
+        	Generic Question: complete a row from the following table; an example row is given.
+          <table class="exam-question">
+          	<tr>
+            	<th>Hex Values</th><th>A</th><th>B</th><th>Func</th><th>CVNZ</th><th>Result</th>
+            </tr>
+            <tr class="problem">
+            	<th>Problem</th><th>0</th><th>0</th><th>2</th><td>1</td><td>0</td>
+            </tr>
+            <tr class="explanation">
+            	<th>Explanation</th>
+              <td colspan="5">
+              	&ldquo;The function code calls for the Add operation without inverting A or negating B.<br />
+                0 &amp; 0 =&gt; 0. C, V, and N are all false because there is no carry or overflow and
+                the result is not negative. The Z bit is true because the result is all zeros.&rdquo;
+              </td>
+            </tr>
+            <tr class="problem">
+            	<th>Problem</th><th>0</th><th>0</th><th>1</th><td></td><td></td>
+            </tr>
+            <tr class="explanation">
+            	<th>Explanation</th>
+              <td colspan="5"><strong>Note:</strong>
+              	For AND and OR, you still need to tell how all four condition code bits will be set and why.
+                (This is different from how this question was asked in previous semesters.)
+              </td>
+            </tr>
+          </table>
+          <p>
+          	The only function code settings asked will be 0 (AND), 1 (OR), 2 (Add), 6 (Sub), 7 (SLT), C (NOR),
+            and D (NAND). So there are only 16 &times; 16 &times; 7 possible questions to choose from!
+          </p>
+          <p>
+          	(Quick: how many possible questions is that?)
+          </p>
+        </li>
+      </ol>
+    </div>
+    <div id="footer">
+      <a  href="../../../">Vickery Home</a>&mdash;<a
+          href="../syllabus.xhtml">CS-343 Syllabus</a>&mdash;<a
+          href="./">Course Schedule</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+          updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+
