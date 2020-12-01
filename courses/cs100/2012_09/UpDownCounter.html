@@ -1,0 +1,440 @@
+<html><head><title>Teagueduino Project: Up/Down Counter</title><style type='text/css'>body {background: #E5E5E5 ; color: #333; font-family: Arial, sans-serif; padding: 25px;}
+a {color: #000; text-decoration: none; font-weight: 600;}
+ a:hover {color: #000; text-decoration: underline;}
+.allHexData {font-size: 12px; font-family: monospace; display: none;}
+.teagueduinoInfo, .teagueduinoCode {
+  font-size: 12px; font-family: Arial, sans-serif; line-height: 16px; padding: 20px; border-top: 2px solid #000; margin: 20px; background: #FFF;
+}
+.teagueduinoTitle   {padding-left: 20px; font-size: 18px;}
+.teagueduinoInfoSect {font-size: 14px; font-weight: 600;}
+.teagueduinoDesc, .teagueduinoBy, .teagueduinoCategory, .teagueduinoVersion {padding-left: 20px; font-size: 12px; white-space: pre-wrap;}
+.teagueduinoInNote  {display: inline-block; color: rgb(68, 112, 234);}
+.teagueduinoOutNote {display: inline-block; color: rgb(216, 128, 22);}
+.blockDiv {padding-bottom: 20px; padding-right: 50px;}
+.codeBlock {padding: 10px; border: 1px solid #CCC; margin-bottom: 20px; width: 250px;}
+.codeLine  {font-size: 10px; line-height: 12px; }
+.spCode_Indent {border-left: 2px solid #EEE; width: 10px; display: inline-block; height: 12px;}
+.spCode_0  {color: rgba(200,200,200,1.0); font-size: 13px;}
+.spCode_1  {color: rgba(33,33,33,1.0);}
+.spCode_2  {color: rgba(68,112,234,1.0);}
+.spCode_3  {color: rgba(216,128,22,1.0);}
+.spCode_4  {color: rgba(154,45,149,1.0);}
+.spCode_5  {color: rgba(193,0,46,1.0);}
+.spCode_6  {color: rgba(33,33,33,1.0);}
+.spCode_7  {color: rgba(33,33,33,1.0);}
+.spCode_8  {color: rgba(180,180,180,1.0);}
+.spCode_9  {color: rgba(100,100,100,1.0);}
+.spCode_10  {color: rgba(33,33,33,1.0);}
+</style></head><body>
+<div class='teagueduinoInfo'>
+  <div class='blockDiv'><span class='teagueduinoInfoSect'>Title:</span><div class='teagueduinoTitle'>Up/Down Counter</div></div>
+  <div class='blockDiv'><span class='teagueduinoInfoSect'>Description:</span><div class='teagueduinoDesc'>5-bit binary counter counts up when IN_2 is pressed; counts down when IN_3 is pressed. Out_E is lsb; Out_A is msb.
+
+Uses Var_9 to poll if either input is true.</div></div>
+  <div class='blockDiv'><span class='teagueduinoInfoSect'>Inputs:</span><br/>    &nbsp; &nbsp; In_1: <div class='teagueduinoInNote'></div><br/>
+    &nbsp; &nbsp; In_2: <div class='teagueduinoInNote'>count up</div><br/>
+    &nbsp; &nbsp; In_3: <div class='teagueduinoInNote'>count down</div><br/>
+    &nbsp; &nbsp; In_4: <div class='teagueduinoInNote'></div><br/>
+    &nbsp; &nbsp; In_5: <div class='teagueduinoInNote'></div><br/>
+  </div>  <div class='blockDiv'><span class='teagueduinoInfoSect'>Outputs:</span><br/>    &nbsp; &nbsp; Out_A: <div class='teagueduinoOutNote'>16's output</div><br/>
+    &nbsp; &nbsp; Out_B: <div class='teagueduinoOutNote'>8's output</div><br/>
+    &nbsp; &nbsp; Out_C: <div class='teagueduinoOutNote'>4's output</div><br/>
+    &nbsp; &nbsp; Out_D: <div class='teagueduinoOutNote'>2's output</div><br/>
+    &nbsp; &nbsp; Out_E: <div class='teagueduinoOutNote'>1's output</div><br/>
+  </div>  <div class='blockDiv'><span class='teagueduinoInfoSect'>Credits:</span><div class='teagueduinoBy'>Christopher Vickery</div></div>
+  <div class='blockDiv'><span class='teagueduinoInfoSect'>Category:</span><div class='teagueduinoCategory'>Tutorial</div></div>
+  <div class='blockDiv'><span class='teagueduinoInfoSect'>Board:</span><div class='teagueduinoVersion'>Firmware v4</div></div>
+</div>
+<div style='position: absolute; left: 52px; top: 20px;'>Teagueduino Project</div>
+<div class='allHexData'>
+  <div class='hexVersion'>
+    04
+  </div>
+  <div class='hexNotes'>
+    55702F446F776E20436F756E7465720000000000000000000000000000000000
+    000000000000000000000000000000004368726973746F70686572205669636B
+    6572790000000000000000000000000000000000000000000000000000000000
+    352D6269742062696E61727920636F756E74657220636F756E74732075702077
+    68656E20494E5F3220697320707265737365643B20636F756E747320646F776E
+    207768656E20494E5F3320697320707265737365642E204F75745F4520697320
+    6C73623B204F75745F41206973206D73622E0A0A55736573205661725F392074
+    6F20706F6C6C2069662065697468657220696E70757420697320747275652E00
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000002
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    636F756E74207570000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    636F756E7420646F776E00000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    31362773206F7574707574000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    382773206F757470757400000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    342773206F757470757400000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    322773206F757470757400000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    312773206F757470757400000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+
+  </div>
+  <div class='hexCode'>
+    8030D800E000D8008031D800E000D8008032D800E000D8008033D800E000D800
+    8034D800E000D8008000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8038D800E000D8008060A001E001D97A8060A002E001D97A8070C008E001DB74
+    8038A001E000A0028012A000E000D8018030D801E001C0008010A001E003DD6E
+    8010C000E000D8008031D801E001C0018010C001E000D8008032D801E001C002
+    8010C002E000D8008033D801E001C0038010C003E000D8008034D801E001C004
+    8012A000E000D8018012A000E000D8018012A000E000D8018012A000E000D801
+    8012A000E000D8018010A002E003DD6E8010C000E000D8018031D801E001C001
+    8010C001E000D8018032D801E001C0028010C002E000D8018033D801E001C003
+    8010C003E000D8018034D801E001C0048012A000E000D8018012A000E000D801
+    8012A000E000D8018012A000E000D8018012A000E000D8018020C004E001D801
+    8021C003E001D8018022C002E001D8018023C001E001D8018024C000E001D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+    8000A000E000D8018000A000E000D8018000A000E000D8018000A000E000D801
+
+  </div>
+</div>
+<div class='teagueduinoCode'>
+  SETUP <div class='codeBlock' id='codeBlock_Setup'>
+    <div class='codeLine'>
+      <span class='spCode_4'>Var_1 = </span><span class='spCode_5'>0 </span><span class='spCode_6'> + </span><span class='spCode_5'>0 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_4'>Var_2 = </span><span class='spCode_5'>0 </span><span class='spCode_6'> + </span><span class='spCode_5'>0 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_4'>Var_3 = </span><span class='spCode_5'>0 </span><span class='spCode_6'> + </span><span class='spCode_5'>0 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_4'>Var_4 = </span><span class='spCode_5'>0 </span><span class='spCode_6'> + </span><span class='spCode_5'>0 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_4'>Var_5 = </span><span class='spCode_5'>0 </span><span class='spCode_6'> + </span><span class='spCode_5'>0 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+  </div>  MAIN PROGRAM <div class='codeBlock' id='codeBlock_Main'>
+    <div class='codeLine'>
+      <span class='spCode_4'>Var_9 = </span><span class='spCode_5'>0 </span><span class='spCode_6'> + </span><span class='spCode_5'>0 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>waituntil ( </span><span class='spCode_2'>In_2 </span><span class='spCode_6'> < </span><span class='spCode_5'>250 </span><span class='spCode_7'> );</span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>waituntil ( </span><span class='spCode_2'>In_3 </span><span class='spCode_6'> < </span><span class='spCode_5'>250 </span><span class='spCode_7'> );</span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>while ( </span><span class='spCode_4'>Var_9 </span><span class='spCode_6'> < </span><span class='spCode_5'>500 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_4'>Var_9 = </span><span class='spCode_2'>In_2 </span><span class='spCode_6'> + </span><span class='spCode_2'>In_3 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_4'>Var_1 = </span><span class='spCode_5'>1 </span><span class='spCode_6'> - </span><span class='spCode_4'>Var_1 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>If ( </span><span class='spCode_2'>In_2 </span><span class='spCode_6'> > </span><span class='spCode_5'>750 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>If ( </span><span class='spCode_4'>Var_1 </span><span class='spCode_6'> == </span><span class='spCode_5'>0 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_4'>Var_2 = </span><span class='spCode_5'>1 </span><span class='spCode_6'> - </span><span class='spCode_4'>Var_2 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>If ( </span><span class='spCode_4'>Var_2 </span><span class='spCode_6'> == </span><span class='spCode_5'>0 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_4'>Var_3 = </span><span class='spCode_5'>1 </span><span class='spCode_6'> - </span><span class='spCode_4'>Var_3 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>If ( </span><span class='spCode_4'>Var_3 </span><span class='spCode_6'> == </span><span class='spCode_5'>0 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_4'>Var_4 = </span><span class='spCode_5'>1 </span><span class='spCode_6'> - </span><span class='spCode_4'>Var_4 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>If ( </span><span class='spCode_4'>Var_4 </span><span class='spCode_6'> == </span><span class='spCode_5'>0 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_4'>Var_5 = </span><span class='spCode_5'>1 </span><span class='spCode_6'> - </span><span class='spCode_4'>Var_5 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>If ( </span><span class='spCode_2'>In_3 </span><span class='spCode_6'> > </span><span class='spCode_5'>750 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>If ( </span><span class='spCode_4'>Var_1 </span><span class='spCode_6'> == </span><span class='spCode_5'>1 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_4'>Var_2 = </span><span class='spCode_5'>1 </span><span class='spCode_6'> - </span><span class='spCode_4'>Var_2 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>If ( </span><span class='spCode_4'>Var_2 </span><span class='spCode_6'> == </span><span class='spCode_5'>1 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_4'>Var_3 = </span><span class='spCode_5'>1 </span><span class='spCode_6'> - </span><span class='spCode_4'>Var_3 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>If ( </span><span class='spCode_4'>Var_3 </span><span class='spCode_6'> == </span><span class='spCode_5'>1 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_4'>Var_4 = </span><span class='spCode_5'>1 </span><span class='spCode_6'> - </span><span class='spCode_4'>Var_4 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>If ( </span><span class='spCode_4'>Var_4 </span><span class='spCode_6'> == </span><span class='spCode_5'>1 </span><span class='spCode_7'> ) {</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_4'>Var_5 = </span><span class='spCode_5'>1 </span><span class='spCode_6'> - </span><span class='spCode_4'>Var_5 </span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <div class='spCode_Indent'>&nbsp;&nbsp;</div><span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>}    </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_3'>Out_A = </span><span class='spCode_4'>Var_5 </span><span class='spCode_9'> as </span><span class='spCode_6'>DIG</span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_3'>Out_B = </span><span class='spCode_4'>Var_4 </span><span class='spCode_9'> as </span><span class='spCode_6'>DIG</span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_3'>Out_C = </span><span class='spCode_4'>Var_3 </span><span class='spCode_9'> as </span><span class='spCode_6'>DIG</span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_3'>Out_D = </span><span class='spCode_4'>Var_2 </span><span class='spCode_9'> as </span><span class='spCode_6'>DIG</span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_3'>Out_E = </span><span class='spCode_4'>Var_1 </span><span class='spCode_9'> as </span><span class='spCode_6'>DIG</span><span class='spCode_7'> ;</span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+    <div class='codeLine'>
+      <span class='spCode_1'>                          </span><span class='spCode_7'></span></div>
+  </div></div>
+<br/><div style='position: relative; left: 20px;'>Learn how to make this and browse other projects at <a href='http://teagueduino.org'>Teagueduino.org</a><br/><br/></div></body>
+</html>

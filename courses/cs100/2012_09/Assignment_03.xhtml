@@ -1,0 +1,120 @@
+<?php
+  $mime_type = "text/html";
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $mime_type = "application/xhtml+xml";
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: $mime_type");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+    <title>CSCI 100 Assignment 3</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/assignments-print.css"
+    />
+  </head>
+  <body>
+    <h1>CSCI 100 Assignment 3</h1>
+    <h2>Binary Numbers and the Trick Die</h2>
+    <div>
+    	<p>
+        You may submit this assignment either on paper or by email.
+      </p>
+      <h3>Binary Numbers</h3>
+      <ol>
+        <li>
+          Convert the following decimal numbers to binary: 1, 5, 25, 123
+        </li>
+        <li>
+          Convert the following octal numbers to binary: 1, 5, 25, 123
+        </li>
+        <li>
+          Convert the following hexadecimal numbers to binary: 1, 5, 25, 123
+        </li>
+        <li>
+          Convert 11010.011 from binary to decimal.
+        </li>
+        <li>
+          Complete the following table:
+          <table>
+            <tr><th>Number</th><th>Decimal Value</th><th>Value in Binary</th></tr>
+            <tr><th>2<sup>0</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>1</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>2</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>3</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>4</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>5</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>6</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>7</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>8</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>9</sup></th><td> </td><td> </td></tr>
+            <tr><th>2<sup>10</sup></th><td> </td><td> </td></tr>
+          </table>
+        </li>
+      </ol>
+      <h3>Trick Die</h3>
+      <div>
+        <p>
+        	This question is based on the trick die I demonstrated in class on September 6. You 
+          will need to consult with someone in the class if you weren’t there.
+        </p>
+        <ul>
+          <li>
+            <em>log</em><sub>2</sub>(4) = 2.00000
+          </li>
+          <li>
+            <em>log</em><sub>2</sub>(5) = 2.32193
+          </li>
+          <li>
+            <em>log</em><sub>2</sub>(6) = 2.58496
+          </li>
+          <li>
+            <em>log</em><sub>2</sub>(7) = 2.80735
+          </li>
+          <li>
+            <em>log</em><sub>2</sub>(8) = 3.00000
+          </li>
+        </ul>
+        <p>
+          On average, how many binary <em>questions</em> should it take to figure out
+          which die face is “up” if it’s a fair (perfectly cubical) die?
+        </p>
+        <p>
+          How many binary questions does it actually take? (If I don’t mess up!)
+        </p>
+        <p>
+          Explain the trick, and explain how some of the values in the above list relate
+          to it.
+        </p>
+      </div>
+    </div>
+    <footer>
+      <a href='.'>Course Schedule</a>
+      <a target='_blank' href="http://validator.w3.org/check?uri=referer">Validate XHTML</a>
+      <a target='_blank' href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">
+      Validate CSS</a>
+    </footer>
+  </body>
+</html>

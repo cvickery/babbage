@@ -1,0 +1,116 @@
+<?php
+  $mime_type = "text/html";
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $mime_type = "application/xhtml+xml";
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: $mime_type");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+    <title>CSCI 100 Assignment 7</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/assignments-print.css"
+    />
+  </head>
+  <body>
+    <h1>CSCI 100 Assignment 7</h1>
+    <h2>Human Human Chapters 0-3</h2>
+    <div>
+      <h3>Video Assignment</h3>
+      <p>
+        <a href='http://www.ted.com/talks/leah_buechley_how_to_sketch_with_electronics.html'>
+          How to sketch with electronics.
+        </a></p>
+      <h3>Reading Assignment</h3>
+      <p>
+        Read chapters 0-3 of the Christian book.
+      </p>
+      <h3>Questions</h3>
+      <div>
+        <p>
+          Write a well-structured paragraph to answer each of the following questions.
+        </p>
+        <ol>
+          <li>
+            Describe what you would build if you had access to one of the kits shown in the
+            video. Tell what it would do and how it would work.
+          </li>
+          <li>
+            Claude Shannon married a computer. Explain.
+          </li>
+          <li>
+            Ivana was a robot. Explain.
+          </li>
+          <li>
+            Make gramatically correct version of “the sentence” using the idea of a
+            “featherless biped” in the second part. Does this seem like a good definition?
+          </li>
+          <li>
+            “... the Turing test is, at the bottom, about the act of communication." (p13)
+            How did Shannon's development of information theory also deal with “the act of
+            communication?”
+          </li>
+          <li>
+            Describe the Turing test and what it attempts to determine.
+          </li>
+          <li>
+            Why is the Turing test like speed dating?
+          </li>
+          <li>
+            Google uses Artificial Intelligence to figure out the best answers for
+            queries, in part, by keeping track of which links people click on when given
+            search results. They use a similar technique for doing translating among
+            languages, see <a href='http://translate.google.com/about/'>How does it
+            work?</a> Explain how this relates to the description of how Cleverbot works.
+          </li>
+          <li>
+            Does Brian Christian think the Google approach would be good for translating a
+            novel?
+          </li>
+          <li>
+            The section on “Statefulness” explains the concept of a state-less
+            conversation. State is also an essential component in the design of the
+            Teagueduino binary counter. Explain how the concepts of “state” and “next”
+            apply to the binary counter.
+          </li>
+          <li>
+            What claim did Desartes make about the pineal gland?
+          </li>
+          <li>
+            If you were a judge in a Turing test contest, how would you find out if there
+            is a soul at the other end of the line?
+          </li>
+        </ol>
+      </div>
+    </div>
+    <footer>
+      <a href='.'>Course Schedule</a>
+      <a target='_blank' href="http://validator.w3.org/check?uri=referer">Validate XHTML</a>
+      <a target='_blank' href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">
+      Validate CSS</a>
+    </footer>
+  </body>
+</html>

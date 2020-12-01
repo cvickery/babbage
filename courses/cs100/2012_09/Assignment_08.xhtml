@@ -1,0 +1,171 @@
+<?php
+  $mime_type = "text/html";
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $mime_type = "application/xhtml+xml";
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: $mime_type");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+    <title>CSCI 100 Assignment 8</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/assignments-print.css"
+    />
+    <style>
+      td:last-child { text-align: center; }
+    </style>
+  </head>
+  <body>
+    <h1>CSCI 100 Assignment 8</h1>
+    <h2>Galton Board</h2>
+    <div>
+      <h3>Video/Web Assignments</h3>
+      <div>
+        <p>
+          There is a lot of information about the Galton Board on the web. Here are two,
+          but feel free to explore. (Don’t forget to come back here!)
+        </p>
+        <ul>
+          <li>
+            <a href='http://ptrow.com/articles/Galton_June_07.htm'>Galton Board explanation</a>
+          </li>
+          <li>
+            <a href='https://www.youtube.com/watch?v=AUSKTk9ENzg'>Galton Board video</a>
+          </li>
+        </ul>
+      </div>
+      <h3>Reading Assignment</h3>
+      <div>
+        <p>Read chapters 0-5 of the Christian book.</p>
+        <p>
+          You should already have read chapters 0-3, so this is just to make sure
+          you got it all.
+        </p>
+      </div>
+      <h3>Questions</h3>
+      <div>
+        <ol>
+            <li>Why is the machine in the video named “Frances?”</li>
+            <li>Look at a few of the other Galton Boards on YouTube. Many of them are not
+            very “good.” How would you decide whether a board is “good” or not? Why do you
+            think it's hard to build a good one?
+            </li>
+            <li>
+              How many bins would there be in a Galton Board with 7 rows of pins?
+            </li>
+            <li>
+              A Galton Board is not a binary tree. How many bins would there be in a
+              binary tree with seven rows?
+            </li>
+            <li>Draw a Galton board with 5 rows and a binary tree with 5 rows.</li>
+            <li>
+              Number the bins of a 5-row Galton board left-to-right, starting at 0. For
+              each bin list all the sequences of left (indicated by “0”) and right
+              (indicated by “1”) moves a ball could take to reach that bin. The best way
+              to do this is to complete the following table, and then to copy out the
+              sequences that lead to each bin.
+              <table>
+                <tr><th colspan='5'>Pin Row No.</th><th rowspan='2'>Bin No.</th></tr>
+                <tr>
+                  <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th>
+                </tr>
+                <tr> <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td> </tr>
+                <tr> <td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td> </tr>
+                <tr> <td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td> </tr>
+                <tr> <td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>2</td> </tr>
+                <tr> <td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td> </tr>
+                <tr> <td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>2</td> </tr>
+                <tr> <td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>2</td> </tr>
+                <tr> <td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>3</td> </tr>
+                <tr> <td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td> </tr>
+                <tr>
+                  <td colspan='6'>- 23 more table rows -</td>
+                </tr>
+                <tr> <td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>5</td> </tr>
+              </table>
+              <p>
+                In this table, the rows of pins are numbered from top to bottom, starting
+                at zero. For our purposes, starting the row numbers with 0 instead of 1 is
+                just a convention that we will follow for “no particular reason.” So the
+                top row of the table represents a ball that goes left at Row 0, then
+                goes left again at Row 1, left again at Row 2, left again at Row 3, left
+                again at the bottom row (Row 4), and ends up in the leftmost bin, Bin #0. 
+              </p>
+              <p>
+                Note how the Bin No. relates to the number of right bounces a ball takes as
+                it goes down the rows of pins.
+              </p>
+              <p>
+                So, your answer to this question is to complete a table like the
+                following:
+              </p>
+              <table>
+                <tr><th>Bin No.</th><th>Sequences</th><th>Number<br/>of Sequences</th></tr>
+                <tr><th>0</th><td>00000</td><td>1</td></tr>
+                <tr><th>1</th><td>00001, 00010, 00100, 01000, 10000</td><td>5</td></tr>
+                <tr><th>2</th><td>00011, 00101, 00110, ...</td><td></td></tr>
+                <tr><th>3</th><td></td><td></td></tr>
+                <tr><th>4</th><td></td><td></td></tr>
+                <tr><th>5</th><td></td><td></td></tr>
+              </table>
+            </li>
+            <li>
+              The <em>probability</em> that a ball will end up in a particular bin is
+              the percentage of balls that end up in that bin, divided by 100. For
+              example, if 75% of the balls end up in Bin 1, the probability is 0.75.
+              <p>
+                Since all the balls end up in some one of the bins, the sum of the
+                percentages for all the bins is 100%, and the sum of the probabilities is
+                thus 1.0.
+              </p>
+              <p>
+                Add a column to the six-row table you built in Question 6 and fill in the
+                probability a ball will end up in each bin. Check your work: the sum of the
+                probabilities has to be 1.0. (Take the answers to 5 decimal places and
+                    there will be no rounding errors.)
+              </p>
+            </li>
+            <li>
+              Draw a bar graph that shows the probability of a ball falling into each bin.
+              Be sure to label each axis and to include the proper scale values. The Y
+              axis should be drawn so the heights of the bars match the probabilities for
+              each bin. This sort of graph is called a <em>probability mass
+              function</em>.
+              <p>
+                Does it look like a “bell curve” to you?
+              </p>
+            </li>
+        </ol>
+      </div>
+    </div>
+    <footer>
+      <a href='.'>Course Schedule</a>
+      <a target='_blank' href="http://validator.w3.org/check?uri=referer">Validate XHTML</a>
+      <a target='_blank' href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">
+      Validate CSS</a>
+    </footer>
+  </body>
+</html>

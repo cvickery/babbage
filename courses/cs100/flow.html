@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Students Come and Go</title>
+  <meta charset="utf-8"/>
+  <style>
+    html {background-color:white;}
+    body {
+      max-width: 1000px;
+      background-color:#999;
+      color: white;
+      padding:1em;
+      font-family:sans-serif;
+      border: 1px solid #ccc;
+      border-radius:0.5em;
+    }
+    a {color:black;}
+    #sankey_multiple {
+      width: 900px;
+      height: 300px;
+      margin:auto;
+      background-color:white;
+      padding:1em;
+    }
+    #males, #females {
+      margin: 1em auto;
+      padding: 1em;
+      background-color:white;
+    }
+  </style>
+</head>
+<body>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <h1>Information and Intelligence Student Flow</h1>
+  <p>
+    Based on sample <a href="https://developers.google.com/chart/interactive/docs/gallery/sankey">
+    google charts</a> code.
+  </p>
+  <p>
+    Sorry, this looks like a failed experiment to me. My idea was to generate the two Sankeys for
+    males and females separately, overlay them on top of one another, and to give a slider to
+    control the relative opacities from all-female to all-male. But Google charts, at least at this
+    time, won’t give the necessary control over the node placments. They need to be in the same
+    order from top to bottom; the horizontal spacing needs to be spread out to fill the width of
+    of the chart; the labels shouldn’t overlap; and what’s with the y2-male-gone node being over in
+    the fourth column instead of the third?
+  </p>
+  <p>
+    To be continued &hellip;
+  </p>
+  <svg width="325" height="325" xmlns="http://www.w3.org/2000/svg">
+    <path d="M80 80
+             A 45 45, 0, 0, 0, 125 125
+             L 125 80 Z" fill="green"/>
+    <path d="M230 80
+             A 45 45, 0, 1, 0, 275 125
+             L 275 80 Z" fill="red"/>
+    <path d="M80 230
+             A 45 45, 0, 0, 1, 125 275
+             L 125 230 Z" fill="purple"/>
+    <path d="M230 230
+             A 45 45, 0, 1, 1, 275 275
+             L 275 230 Z" fill="blue"/>
+  </svg>
+  <svg width="300" height="200">
+
+    <rect width="100%" height="100%" fill="red" />
+
+    <circle cx="150" cy="100" r="80" fill="green" />
+
+    <text x="150" y="125" font-size="60" text-anchor="middle" fill="white">SVG</text>
+
+  </svg>
+  <div id="males" style="width: 800px; height: 300px;"></div>
+  <div id="females" style="width: 800px; height: 300px;"></div>
+
+<script type="text/javascript">
+  google.charts.load('current', {packages:['sankey']});
+  google.charts.setOnLoadCallback(drawChart);
+   function drawChart()
+   {
+    var male_data = new google.visualization.DataTable();
+    male_data.addColumn('string', 'From');
+    male_data.addColumn('string', 'To');
+    male_data.addColumn('number', 'Weight');
+    male_data.addRows(
+      [
+        // Initial Population
+        // ['CS-100-M', 'y0-cs-male', 20],
+
+        //  First Year
+        ['y0-male', 'y1-undeclared-male', 7],
+        ['y0-male', 'y1-cs-male', 9],
+        ['y0-male', 'y1-lcd-male', 2],
+        ['y0-male', 'y1-male-gone', 2],
+
+        //  Second Year
+        ['y1-undeclared-male', 'y2-undeclared-male', 2],
+        ['y1-undeclared-male', 'y2-cs-male', 2],
+        ['y1-undeclared-male', 'y2-lcd-male', 2],
+        ['y1-undeclared-male', 'y2-male-gone', 1],
+
+        ['y1-cs-male', 'y2-undeclared-male', 0],
+        ['y1-cs-male', 'y2-cs-male', 8],
+        ['y1-cs-male', 'y2-lcd-male', 1],
+        ['y1-cs-male', 'y2-male-gone', 0],
+
+        ['y1-lcd-male', 'y2-undeclared-male', 0],
+        ['y1-lcd-male', 'y2-cs-male', 1],
+        ['y1-lcd-male', 'y2-lcd-male', 1],
+        ['y1-lcd-male', 'y2-male-gone', 0],
+
+        //  Third Year
+        ['y2-undeclared-male', 'y3-undeclared-male', 1],
+        ['y2-undeclared-male', 'y3-cs-male', 0],
+        ['y2-undeclared-male', 'y3-lcd-male', 0],
+        ['y2-undeclared-male', 'y3-male-gone', 1],
+
+        ['y2-cs-male', 'y3-undeclared-male', 0],
+        ['y2-cs-male', 'y3-cs-male', 10],
+        ['y2-cs-male', 'y3-lcd-male', 1],
+        ['y2-cs-male', 'y3-male-gone', 0],
+
+        ['y2-lcd-male', 'y3-undeclared-male', 0],
+        ['y2-lcd-male', 'y3-cs-male', 1],
+        ['y2-lcd-male', 'y3-lcd-male', 2],
+        ['y2-lcd-male', 'y3-male-gone', 1]
+      ]);
+
+    var female_data = new google.visualization.DataTable();
+    female_data.addColumn('string', 'From');
+    female_data.addColumn('string', 'To');
+    female_data.addColumn('number', 'Weight');
+    female_data.addRows(
+      [
+        // Initial Population
+        // ['CS-100-M', 'y0-cs-female', 20],
+
+        //  First Year
+        ['y0-female', 'y1-undeclared-female', 7],
+        ['y0-female', 'y1-cs-female', 4],
+        ['y0-female', 'y1-lcd-female', 7],
+        ['y0-female', 'y1-female-gone', 2],
+
+        //  Second Year
+        ['y1-undeclared-female', 'y2-undeclared-female', 4],
+        ['y1-undeclared-female', 'y2-cs-female', 1],
+        ['y1-undeclared-female', 'y2-lcd-female', 2],
+        ['y1-undeclared-female', 'y2-female-gone', 0],
+
+        ['y1-cs-female', 'y2-undeclared-female', 2],
+        ['y1-cs-female', 'y2-cs-female', 1],
+        ['y1-cs-female', 'y2-lcd-female', 1],
+        ['y1-cs-female', 'y2-female-gone', 0],
+
+        ['y1-lcd-female', 'y2-undeclared-female', 2],
+        ['y1-lcd-female', 'y2-cs-female', 1],
+        ['y1-lcd-female', 'y2-lcd-female', 4],
+        ['y1-lcd-female', 'y2-female-gone', 0],
+
+        //  Third Year
+        ['y2-undeclared-female', 'y3-undeclared-female', 1],
+        ['y2-undeclared-female', 'y3-cs-female', 2],
+        ['y2-undeclared-female', 'y3-lcd-female', 4],
+        ['y2-undeclared-female', 'y3-female-gone', 1],
+
+        ['y2-cs-female', 'y3-undeclared-female', 0],
+        ['y2-cs-female', 'y3-cs-female', 2],
+        ['y2-cs-female', 'y3-lcd-female', 1],
+        ['y2-cs-female', 'y3-female-gone', 0],
+
+        ['y2-lcd-female', 'y3-undeclared-female', 0],
+        ['y2-lcd-female', 'y3-cs-female', 6],
+        ['y2-lcd-female', 'y3-lcd-female', 1],
+        ['y2-lcd-female', 'y3-female-gone', 0]
+      ]);
+
+    // Set chart options
+    var options = {
+      width: 600,
+      sankey: { node: {nodePadding: 5} }
+    };
+
+    // Instantiate and draw charts.
+    var male_chart = new google.visualization.Sankey(document.getElementById('males'));
+    male_chart.draw(male_data, options);
+
+    var female_chart = new google.visualization.Sankey(document.getElementById('females'));
+    female_chart.draw(female_data, options);
+   }
+</script>
+</body>
+</html>
