@@ -1,0 +1,30 @@
+/* view_waveforms.hcc
+ *
+ *
+ * Author: Sora Choi
+ *
+ * DKSync.dll: a plugin which we need to defines the clock period 
+ *             for the simulation using Waveform Analyzer.
+ *
+ * DKConnect.dll: a plugin to connect the port ob1.out to the terminal t(3).
+ *
+ * The period of the output waveform is 400.
+ * The variable x has three bits which means it can have 8 different values.
+ * Each interval was 50 nanoseconds. So every 400 (8 x 50) nanoseconds the waveform
+ * gets the same value which makes one period.    
+ *            
+ */
+
+
+set clock = external "P1"
+with {extlib = "DKSync.dll", extinst = "50", extfunc = "DKSyncGetSet"};
+
+unsigned 3 x = 0;
+
+interface bus_out() ob1(unsigned 3 out = x)
+  with {extlib = "DKConnect.dll", extinst = "t(3)", extfunc = "DKConnectGetSet"};
+
+void main(void)
+{
+  while(1) x++;
+  }

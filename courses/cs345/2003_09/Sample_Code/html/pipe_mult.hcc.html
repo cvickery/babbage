@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>pipe_mult.hcc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         solid;
+      }
+  </style>
+</head>
+<center><h1>pipe_mult.hcc</h1></center>
+<hr>
+<pre>
+//  pipe_mult.hcc
+
+/*  Pipelined multiplier, adapted from Handel-C Reference Manual,
+ *  pp 146-147 and 229-230.  This version generates a full-width
+ *  product.
+ *
+ *    The simulation version can be single-stepped in the DK
+ *    simulator so the behavior can be traced.  The evaluation
+ *    version fakes I/O through the expansion header so the
+ *    performance can be compared to a multiplier that uses the
+ *    multiplication operator.
+ *
+ *    Author: C. Vickery
+ *    Fall 2003
+ */
+
+#ifdef USE_SIM
+#define PAL_TARGET_CLOCK_RATE 1000000
+#endif
+#if (defined USE_RC200 || USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 50000000
+#include &lt;pal_rc200.hch&gt;
+#endif
+#include &lt;pal_master.hch&gt;
+#include &lt;stdlib.hch&gt;
+
+//  Parameters
+macro expr multiplicand_width = 4;
+macro expr multiplier_width   = 4;
+macro expr product_width      = multiplier_width + multiplicand_width;
+macro expr pipeline_depth     = multiplier_width;
+
+//  Pipeline registers
+unsigned product_width        a[pipeline_depth];
+unsigned multiplier_width     b[pipeline_depth];
+unsigned product_width        sum[pipeline_depth];
+
+//  stage()
+//  ------------------------------------------------------------------
+/*
+ *    Each stage of the pipeline.  Implements basic add-shift
+ *    multiplication algorithm.
+ */
+  macro proc stage( level )
+  {
+    par
+    {
+      sum[level] = 
+        sum[level - 1] + ((b[level][0] == 0) ? 0 : 0@a[level]);
+      a[level] = a[level - 1] &lt;&lt; 1;
+      b[level] = b[level - 1] &gt;&gt; 1;
+    }
+  }
+
+
+//  Simulation Version
+//  ==================================================================
+#ifdef USE_SIM
+chanin input_a with { infile = "input_a.dat" };
+chanin input_b with { infile = "input_b.dat" };
+chanout output with { outfile = "output.dat" };
+
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *    Do an endless stream of multiplicatins
+ */
+  void main( void )
+  {
+    par
+    {
+      //  Get A values
+      while ( TRUE )
+      {
+        input_a ? a[0];
+      }
+      
+      //  Get B values
+      while ( TRUE )
+      {
+        input_b ? b[0];
+      }
+
+      //  Output products until end of simulated input files
+      do
+      {
+        output ! sum[pipeline_depth - 1];
+      } while ( (a[0] != 0) || (b[0] != 0) );
+
+      //  The pipeline
+      while ( TRUE )
+      {
+        par
+        {
+          sum[0] = ((b[0][0] == 0) ? 0 : 0@a[0]);
+          par (i = 1; i &lt; pipeline_depth; i++ )
+          {
+            stage( i );
+          }
+        }
+      }
+    }
+  }
+#endif
+
+
+//  Evaluation Version
+//  ==================================================================
+#if (defined USE_RC200 || USE_RC200E)
+
+//  Set up I/O through FPGA pins connected to RC200 expansion header
+
+  interface  bus_in( unsigned multiplicand_width input_a ) ina()
+    with
+    {
+      //  ATA IO0 - IO3
+      data = { "N1", "M2", "M1", "R2" },
+    };
+  interface  bus_in( unsigned multiplier_width input_b ) inb()
+    with
+    {
+      //  ATA IO4 - IO7
+      data = { "M3", "P2", "P1", "N2" },
+    };
+  interface  bus_out() out( unsigned product_width out_c = sum[pipeline_depth - 1] )
+    with
+    {
+      //  ATA IO8 - IO15
+      data = { "T2", "R4", "R3", "P3", "P4", "N4", "N3", "M4" },
+    };
+
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *    Do an endless stream of multiplicatins
+ */
+  void main( void )
+  {
+    par
+    {
+      //  Get A values
+      while ( TRUE )
+      {
+        a[0] = 0@ina.input_a;
+      }
+      
+      //  Get B values
+      while ( TRUE )
+      {
+        b[0] = inb.input_b;
+      }
+
+      //  The pipeline
+      while ( TRUE )
+      {
+        par
+        {
+          sum[0] = ((b[0][0] == 0) ? 0 : a[0]);
+          par (i = 1; i &lt; pipeline_depth; i++ )
+          {
+            stage( i );
+          }
+        }
+      }
+    }
+  }
+</pre><hr></body></html>

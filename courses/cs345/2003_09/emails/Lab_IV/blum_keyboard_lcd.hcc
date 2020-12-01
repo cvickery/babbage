@@ -1,0 +1,331 @@
+/*author: eli blum,marc kahn
+  project: keyboard_lcd
+  purpose: light up lcd with seven seg displays with hex values of char typed in
+*/
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+#define lcd_handle PalVideoOutOptimalCT( PAL_ACTUAL_CLOCK_RATE )
+
+
+#include "pal_master.hch"
+//#include "pal_rc200.hch"
+#include "stdlib.hch"
+#include "pal_keyboard.hch"
+
+static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+
+static macro expr RED=0b111111110000000000000000;
+static macro expr BLUE=0b000000000000000011111111;
+
+macro proc seg11(x){//top left
+               if ( (PalVideoOutGetX( lcd_handle )) >175 && (PalVideoOutGetX( lcd_handle )) <200 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >150 && (PalVideoOutGetY( lcd_handle )) <225 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x );
+              } 
+			            			  			  			  
+}
+
+macro proc seg12(x){//top right
+               if ( (PalVideoOutGetX( lcd_handle )) >250 && (PalVideoOutGetX( lcd_handle )) <275 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >150 && (PalVideoOutGetY( lcd_handle )) <225 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x );
+              }              			  			 			  
+}
+
+macro proc seg13(x){//top center
+               if ( (PalVideoOutGetX( lcd_handle )) >=200 && (PalVideoOutGetX( lcd_handle )) <=250  &&
+        	   		(PalVideoOutGetY( lcd_handle )) >150 && (PalVideoOutGetY( lcd_handle )) <=175 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                               x );
+              }			  
+}			  
+
+macro proc seg14(x){//center
+               if ( (PalVideoOutGetX( lcd_handle )) >=200 && (PalVideoOutGetX( lcd_handle )) <=250 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >=213 && (PalVideoOutGetY( lcd_handle )) <=238 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                  x );
+              }			  
+}
+
+macro proc seg15(x){//bottom right
+               if ( (PalVideoOutGetX( lcd_handle )) >175 && (PalVideoOutGetX( lcd_handle )) <200 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >=225 && (PalVideoOutGetY( lcd_handle )) <300 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                  x );
+              }
+}
+
+macro proc seg16(x){//bottom left
+               if ( (PalVideoOutGetX( lcd_handle )) >250 && (PalVideoOutGetX( lcd_handle )) <275 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >=225 && (PalVideoOutGetY( lcd_handle )) <300 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                  x );
+              }
+}              
+
+macro proc seg17(x){//bottom center
+               if ( (PalVideoOutGetX( lcd_handle )) >=200 && (PalVideoOutGetX( lcd_handle )) <=250 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >275 && (PalVideoOutGetY( lcd_handle )) <300 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x);
+              }
+}
+
+//segment two
+macro proc seg21(x){//top left
+               if ( (PalVideoOutGetX( lcd_handle )) >375 && (PalVideoOutGetX( lcd_handle )) <400 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >150 && (PalVideoOutGetY( lcd_handle )) <225 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x );
+              }             			  			  			  
+}
+
+macro proc seg22(x){//top right
+               if ( (PalVideoOutGetX( lcd_handle )) >450 && (PalVideoOutGetX( lcd_handle )) <475 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >150 && (PalVideoOutGetY( lcd_handle )) <225 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x );
+              }             			  			 			  
+}
+
+macro proc seg23(x){//top center
+               if ( (PalVideoOutGetX( lcd_handle )) >=400 && (PalVideoOutGetX( lcd_handle )) <=450 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >150 && (PalVideoOutGetY( lcd_handle )) <=175 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x );
+              }			  
+}			  
+
+macro proc seg24(x){//center
+               if ( (PalVideoOutGetX( lcd_handle )) >=400 && (PalVideoOutGetX( lcd_handle )) <=450 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >=213 && (PalVideoOutGetY( lcd_handle )) <=238 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x );
+              }			  
+}
+
+macro proc seg25(x){//bottom right
+               if ( (PalVideoOutGetX( lcd_handle )) >375 && (PalVideoOutGetX( lcd_handle )) <400 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >=225 && (PalVideoOutGetY( lcd_handle )) <300 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x );
+              }
+}
+
+macro proc seg26(x){//bottom left
+               if ( (PalVideoOutGetX( lcd_handle )) >450 && (PalVideoOutGetX( lcd_handle )) <475 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >=225 && (PalVideoOutGetY( lcd_handle )) <300 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x );
+              }
+}              
+
+macro proc seg27(x){//bottom center
+               if ( (PalVideoOutGetX( lcd_handle )) >=400 && (PalVideoOutGetX( lcd_handle )) <=450 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >275 && (PalVideoOutGetY( lcd_handle )) <300 )
+			   
+			   		  			  
+			  {
+                PalVideoOutWrite( lcd_handle, 
+                                  x );
+              }
+}
+
+macro proc writeOut(){//writes backgroud
+	  if ((PalVideoOutGetX( lcd_handle )) <= 175 || (PalVideoOutGetX( lcd_handle )) >=475 ||   //sides
+	       (PalVideoOutGetX( lcd_handle )) >= 275 && (PalVideoOutGetX( lcd_handle )) <=375 ||  //top&bottom
+		   (PalVideoOutGetY( lcd_handle )) <= 150 || (PalVideoOutGetY( lcd_handle )) >= 300 ||
+		    
+			( (PalVideoOutGetX( lcd_handle )) >=200 && (PalVideoOutGetX( lcd_handle )) <=250 &&   //boxes
+        	   		(PalVideoOutGetY( lcd_handle )) >175 && (PalVideoOutGetY( lcd_handle )) <213) ||
+			 
+			 ( (PalVideoOutGetX( lcd_handle )) >=200 && (PalVideoOutGetX( lcd_handle )) <=250 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >238 && (PalVideoOutGetY( lcd_handle )) <275) ||
+			   
+			 ( (PalVideoOutGetX( lcd_handle )) >=400 && (PalVideoOutGetX( lcd_handle )) <=450 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >175 && (PalVideoOutGetY( lcd_handle )) <213 )||
+			   
+			  ( (PalVideoOutGetX( lcd_handle )) >=400 && (PalVideoOutGetX( lcd_handle )) <=450 &&
+        	   		(PalVideoOutGetY( lcd_handle )) >238 && (PalVideoOutGetY( lcd_handle )) <275 ) 
+				
+			   
+			   		 		  		  
+			   		  
+		       ) {
+			   
+			   		  			  
+			  
+                PalVideoOutWrite( lcd_handle, 
+                                  BLUE );
+              }else{}
+
+}
+
+//*****************************************************
+//*****************************************************
+void main( void ){
+//****************************************************
+//****************************************************
+          PalKeyboard *key; //pointer
+	      unsigned  c;//char typed in 
+          unsigned 4 a;
+		  unsigned 4 b;
+          a=7;
+		  b=5;
+		  par
+          {
+            PalKeyboardRun(&key,PalPS2PortCT (1), PAL_ACTUAL_CLOCK_RATE);
+	        seq{//delay needed to avoid unavailable pointer
+	          PalKeyboardEnable(key);
+			  do{
+				a=c \\ 4;
+				b=c <- 4;			  
+                PalKeyboardReadASCII(key,&c);//read key
+		      }while(1);
+		    }//end seq
+		    PalVideoOutRun( lcd_handle, PAL_ACTUAL_CLOCK_RATE );
+		    seq{
+		   	    PalVideoOutEnable( lcd_handle );
+			    delay;
+				do{
+	              par{
+				    writeOut();
+					
+					if(a==4||a==5||a==6||a==8||a==9||a==10||a==11||a==12||a==14||a==15||a==0){
+					   seg11(RED);
+                    }
+					else{
+					   seg11(BLUE);
+					}
+					if(a==1||a==2||a==3||a==4||a==7||a==8||a==9||a==10||a==13||a==0){
+					   seg12(RED);
+                    }
+					else{
+					   seg12(BLUE);
+					}
+					if(a==2||a==3||a==5||a==6||a==7||a==8||a==9||a==10||a==12||a==14||a==15||a==0){
+					   seg13(RED);
+                    }
+					else{
+					   seg13(BLUE);
+					}
+					if(a==2||a==3||a==4||a==5||a==6||a==8||a==9||a==10||a==11||a==13||a==14||a==15){
+					   seg14(RED);
+                    }
+					else{
+					   seg14(BLUE);
+					}
+					if(a==2||a==6||a==8||a==10||a==11||a==12||a==13||a==14||a==15||a==0){
+					   seg15(RED);
+                    }
+					else{
+					   seg15(BLUE);
+					}
+					if(a==1||a==3||a==4||a==5||a==6||a==7||a==8||a==9||a==10||a==11||a==0){
+					   seg16(RED);
+                    }
+					else if(a==13){
+		       			   seg16(RED);
+                        }
+					else{
+					   seg16(BLUE);
+					}
+					if(a==2||a==3||a==5||a==6||a==8||a==11||a==12||a==13||a==14||a==0){
+					   seg17(RED);
+                    }
+					else{
+					   seg17(BLUE);
+					}
+				//start second segment
+					if(b==4||b==5||b==6||b==8||b==9||b==10||b==11||b==12||b==14||b==15||b==0){
+					   seg21(RED);
+                    }
+					else{
+					   seg21(BLUE);
+					}
+					if(b==1||b==2||b==3||b==4||b==7||b==8||b==9||b==10||b==13||b==0){
+					   seg22(RED);
+                    }
+					else{
+					   seg22(BLUE);
+					}
+					if(b==2||b==3||b==5||b==6||b==7||b==8||b==9||b==10||b==12||b==14||b==15||b==0){
+					   seg23(RED);
+                    }
+					else{
+					   seg23(BLUE);
+					}
+					if(b==2||b==3||b==4||b==5||b==6||b==8||b==9||b==10||b==11||b==13||b==14||b==15){
+					   seg24(RED);
+                    }
+					else{
+					   seg24(BLUE);
+					}
+					if(b==2||b==6||b==8||b==10||b==11||b==12||b==13||b==14||b==15||b==0){
+					   seg25(RED);
+                    }
+					else{
+					   seg25(BLUE);
+					}
+					if(b==1||b==3||b==4||b==5||b==6||b==7||b==8||b==9||b==10||b==11||b==0){
+					   seg26(RED);
+                    }
+			     		else if(b==13){
+		       			   seg26(RED);
+                        }
+					else{
+					   seg26(BLUE);
+					}
+					if(b==2||b==3||b==5||b==6||b==8||b==11||b==12||b==13||b==14||b==0){
+					   seg27(RED);
+                    }
+					else{
+					   seg27(BLUE);
+					}
+				   }//end par
+				 }while(1);  	      
+		    }//end seq
+          }//end par  
+}//main

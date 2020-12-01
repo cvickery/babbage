@@ -1,0 +1,74 @@
+franklam@hotmail.com        1098  Lam         Frank
+hwong2@forbin.qc.edu        1745  Wong        Huen
+
+  This is your grading report for Laboratory II.
+  Dr. Vickery
+
+  Team members: Huen Wong & Frank Lam
+
+  (4.5/5 points)  Report:  Did you use styles to structure the document
+  properly?  Was the material placed in the correct sections of the
+  report?  Was the report written using standard English usage,
+  including correct grammar and spelling?
+
+    Styles and formatting are fine.
+
+    Method section is pretty good.  It is inconsitent in its use of
+    fonts for steps, keywords, and general emphasis.
+
+    The Method section says you blanked the hex displays whenever the
+    display value is zero.  That would be unwise.  How would you
+    display a valid sum that had a value of zero?  The code should
+    blank the displays when the pipeline hasn't filled up yet.
+
+    There is no English word, "putted," except to refer to the past
+    tense of a golf stroke.
+
+    The Results section should be limited to telling the results of
+    your projects.  The rest of it belongs in a Discussion section.
+    This section, even if it were called "Discussion" is much too
+    verbose without being informative.  It's okay to discuss the
+    significance of what you observed and to draw general conclusions.
+    It is not appropriate to discuss what you learned.
+
+
+  (1.4/2 points)  Laboratory Setup:  Was the workspace set up correctly,
+  and were the projects properly configured?
+
+    Unable to build the pipeline project for simulation.  Many errors
+    about "unable to infer width."  See me if you don't know how to
+    fix this.
+
+    There were errors in the pipeline project build for RC200E you
+    should not have ignored:
+
+      pipeline.hcc Ln 98-102: Breaking combinational cycle (if with no
+      else) - may alter timing
+
+      Specified part name 'XC2V1000-4FG456' not found in
+      XilinxVirtexII device family
+
+
+  (2.6/3 points)  Code:  Was the code formatted and documented according
+  to the coding guidelines for the course?  Did it do what it was
+  supposed to do?  Did it use the Handel-C language effectively?
+
+    You don't have to mimic the elaborate formatting of the Celoxica
+    comment block at the beginning of your files.  It's okay, but not
+    needed.
+
+    counters.hcc uses 1,1,1 as test data, which is a poorly chosen set
+    of values.  Use big values, little values, negative values, etc.
+    to be sure you code works as expected for any data that it might
+    have to deal with.
+
+    counters.hcc has comments at the end, like "par loop" that convey
+    no information.  Even I can see that the next statement is a par
+    loop.  Likewise for the comments about ifselect.
+
+    Still poor test data for ROM contents in pipeline.hcc.
+
+    Blinking LED feature present in the pipeline.hcc code, but seemed
+    to have no effect (??)
+    
+  Assignment Grade is 8.5

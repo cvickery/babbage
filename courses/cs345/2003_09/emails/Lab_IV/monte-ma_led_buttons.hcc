@@ -1,0 +1,50 @@
+/****************************************************************
+*                                                               *
+*  CS345 -  HARDWARE LABORATORY                                 *
+*                                                               *
+*****************************************************************
+*                                                               *
+* Project   :   Laboratory 4                                    *
+* Date      :   01 OCT 2003                                     *
+* File      :   led_buttons.hcc                                 *
+* Authors   :   Nelson Montesdeoca & Dennis Ma                  *
+*                                                               *
+* Description:                                                  *
+*                                                               *
+*                                                               *
+****************************************************************/
+
+
+/*
+ * We need to define the following symbol when
+ * compiling a program that include "pal_master.hch"
+ */
+
+#ifdef USE_RC200
+#define PAL_TARGET_CLOCK_RATE 50000000
+#else
+#define PAL_TARGET_CLOCK_RATE 50000000
+#endif
+
+#include "pal_rc200.hch"
+#include "pal_master.hch"
+#include "stdlib.hch"
+
+
+void main (void)
+{
+  unsigned 1 SwitchData[2];         //Variable to store switch data
+
+  PalVersionRequire (1, 2); 
+  PalLEDRequire (2);
+  PalSwitchRequire (2);
+
+  while (1)
+  {
+      PalSwitchRead (PalSwitchCT (0), &SwitchData[0]);
+      PalSwitchRead (PalSwitchCT (1), &SwitchData[1]);
+      PalLEDWrite (PalLEDCT(0), SwitchData[0]);
+      PalLEDWrite (PalLEDCT(1), SwitchData[1]);
+  }
+}
+

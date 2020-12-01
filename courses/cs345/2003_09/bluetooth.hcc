@@ -1,0 +1,83 @@
+/****************************************************************
+*                                                               *
+* Copyright (C) 1991-2003 Celoxica Ltd. All rights reserved.    *
+*                                                               *
+*****************************************************************
+*                                                               *
+* Project   :   PAL                                             *
+* Date      :   31 JAN 2003                                     *
+* File      :   bluetooth.hcc                                   *
+* Author    :   Matthew Aubury (MA)                             *
+* Contributors:                                                 *
+*                                                               *
+* Description:                                                  *
+*    Connect Bluetooth device to RS232 port.                    *
+*                                                               *
+* Date         Version  Author  Reason for change               *
+*                                                               *
+* 29 OCT 2002    1.00    MA     Created                         *
+*                                                               *
+****************************************************************/
+
+#define PAL_TARGET_CLOCK_RATE 50000000
+#include "pal_master.hch"
+
+/*
+ * Forward declarations
+ */
+static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+
+/*
+ * Main program
+ */
+void main (void)
+{
+    macro expr RS232Port = PalRS232PortCT (0);
+    
+    /*
+     * Check we've got everything we need
+     */
+    PalVersionRequire   (1, 0);
+    PalRS232PortRequire (1);
+    
+    /*
+     * Run
+     */
+    par
+    {
+        PalDataPortRun (RS232Port, ClockRate);
+        RC200BluetoothRun (ClockRate);
+        
+        seq
+        {
+            par
+            {
+                PalDataPortEnable (RS232Port);
+                RC200BluetoothReset ();
+            }
+
+            par
+            {
+                /*
+                 * Bluetooth -> RS232
+                 */
+                while (1)
+                {
+                    unsigned 8 Byte;
+                    RC200BluetoothRead (&Byte);
+                    PalDataPortWrite (RS232Port, Byte);
+                }
+
+                /*
+                 * RS232 -> Bluetooth
+                 */
+                while (1)
+                {
+                    unsigned 8 Byte;
+                    PalDataPortRead (RS232Port, &Byte);
+                    RC200BluetoothWrite (Byte);
+                }
+            }
+        }
+    }
+}

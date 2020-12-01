@@ -1,0 +1,381 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Configuring DK</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Configuring DK</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>There are several steps involved in setting up Celoxica&rsquo;s
+        <span class="programName">DK GUI</span> for doing projects in the
+        lab.  Some of them need to be done just once, while others need to
+        be done for each project -- but many of the per-project settings can
+        be copied over from other projects, saving some overhead.</p>
+
+        <p>The purpose of this web page is to run through the settings you
+        will need to manage, hopefully in a form so they will be easy to
+        refer back to as necessary.</p>
+
+      </div>
+
+      <div class="whitebox">
+
+        <h3>Directory and Workspace Setup</h3>
+        <div class="whitebox">
+
+          <p>When we set up your account we put a directory named <span
+          class="directoryName">My Projects</span> under your <span
+          class="directoryName">My Documents</span> directory.  You will
+          need to create one DK <span class="techTerm">workspace</span> for
+          the semester, and you will be doing several <span
+          class="techTerm">projects</span> during the semester.  You will
+          tell DK to create the workspace in your <span
+          class="directoryName">My Projects</span> directory, and then will
+          create each project there.</p>
+
+          <p>Start <span class="programName">DK</span>, and click the <span
+          class="menuItem">File->New</span> menu, and click on the <span
+          class="variableName">Workspace</span> tab.  Set the Location to
+          your <span class="directoryName">My Documents</span> folder (you
+          can browse to it using the &ldquo;...&rdquo; button), and type
+          <span class="codeSnippet">My Projects</span> as the Workspace
+          name.  If you were to exit DK now, you would see that DK creates
+          two files in your <span class="directoryName">My Projects</span>
+          directory: <span class="fileName">My Projects.hw</span> and <span
+          class="fileName">My Projects.pref</span>  The .hw file where DK
+          keeps information about the workspace, basically just a text list
+          of the projects in the workspace.  The other file is where it will
+          record the preferences, some of which you will need to adjust.</p>
+
+          <p>Before making the preference changes you need, create your
+          first project.  Bring up the <span class="menuItem">New</span>
+          panel again, and this time, click on the <span
+          class="variableName">Project</span> tab.  On the left side, click
+          on Library (the fifth icon down), and in the <span
+          class="variableName">Project Name</span> text box, put <span
+          class="directoryName">DelayProcs</span>.  I suggest not putting
+          spaces in project names to make things easier later.  Be sure the
+          &ldquo;Add to current workspace&rdquo; radio button is checked. If
+          it is grayed out, you need to go back and make sure the workspace
+          you set up above is open.</p>
+
+          <p>Now create a source code file for your <span
+          class="programName">DelayProcs</span> project.  Open the <span
+          class="menuItem">New</span> panel again, and this time select
+          <span class="variableName">Source File</span>, select
+          &ldquo;Handel-C Source File,&rdquo; and enter <span
+          class="fileName">msec_delay</span> as the File Name.  When you
+          click OK, an editor window will open up: type a comment line with
+          the file name at the beginning:</p>
+
+          <p class="codeBlock">// msec_delay.hcc</p>
+
+          <p>Save your source code file (Control-S) and exit <span
+          class="programName">DK</span>.  Verify that the .hp and .pref
+          files mentioned above are in your <span class="directoryName">My
+          Projects</span> directory, and that there is now a subdirectory
+          named <span class="directoryName">DelayProcs</span>.  In the <span
+          class="directoryName">DelayProcs</span> directory there should be
+          two files: <span class="fileName">DelayProcs.hp</span> holds the
+          housekeeping information DK needs for the project, and <span
+          class="fileName">msec_delay.hcc</span> is your source code file. 
+          Like the .hw file, .hp files are just text files that you could
+          look at with a program editor if you wanted to.</p>
+
+          <p class="standoutBox"><strong>Be sure your workspace and first
+          project are set up as described here before proceeding!</strong>
+          If they are not, delete everything under your <span
+          class="directoryName">My Projects</span> directory and repeat the
+          above steps.</p>
+
+          <p>Start <span class="programName">DK</span> and open your
+          workspace again.</p>
+
+          <p>Go to <span class="menuItem">Build->Configurations</span> and
+          Remove all the build configurations for this project except
+          &ldquo;Generic.&rdquo;</p>
+
+          <p>Add the code for <span class="keyword">macro proc</span> <span
+          class="functionName">msecDelay()</span> to <span
+          class="fileName">msec_delay.hcc</span>.  Be sure the Active Build
+          Configuration at the top of the screen says &ldquo;Generic&rdquo;
+          rather than &ldquo;Debug&rdquo; (or anything else) and build the
+          project.  There should be no warnings or errors.  If you look at
+          your project directory (<span
+          class="directoryName">DelayProcs</span>) you should see a
+          subdirectory named <span class="directoryName">Generic</span>, and
+          inside that you should see an object file named <span
+          class="fileName">msec_delay.hco</span> and a library file named
+          <span class="fileName">DelayProcs.hcl</span>.</p>
+
+        </div>
+
+        <h3>Set Default Preferences</h3>
+        <div class="whitebox">
+
+        <p>Click on <span class="menuItem">Tools->Options</span> to bring up
+        a big panels for setting options.  Once you set these up, you
+        won&rsquo;t have to change them again.</p>
+
+        <ul>
+
+          <li>On the <span class="variableName">Tabs</span> tab, set the tab
+          size to either 2 (the value I personally like) or 4 (another
+          popular value), but make sure it is not anything larger than 4 to
+          avoid code that gets so wide it can&rsquo;t be read without
+          horizontal scrolling.<br /> Click the &ldquo;Insert spaces&rdquo;
+          radio button: tab characters in your code lead to mixed up
+          indendation (or even none at all) depending how particular
+          programs or printers interpret tab characters. What your code
+          looks like matters in this course!.</li>
+
+          <li>On the <span class="variableName">Format</span> tab, change
+          the font for the Output Window category to a fixed-width font,
+          such as <span class="variableName">Monaco</span>.</li>
+
+          <li>On the <span class="variableName">Directories</span> tab,
+          select &ldquo;Show directories for <span
+          class="variableName">Include files</span>,&rdquo; and add your
+          <span class="directoryName">DelayProcs</span> directory to the
+          list.  You will be putting a header file here shortly.  Select
+          &ldquo;Show directories for <span class="variableName">Library
+          files</span>&rdquo; and add the pathname to the <span
+          class="directoryName">Generic</span> you created for your library
+          file above.</li>
+
+        </ul>
+
+        </div>
+
+
+        <h3>Create and Configure a Simple Project</h3>
+        <div class="whitebox">
+
+        <p>To complete the setup process, you will need to configure your
+        first application.  We will use an application that turns a LED on
+        and off once a second as an example.</p>
+
+        <ol>
+          <li>
+
+            <h5>Add a header file to DelayProcs</h5> <p class="runin">First,
+            construct a header file that guarantees that the definitions of
+            the macro procs in your <span
+            class="programName">DelayProcs</span> library agree with your
+            use of these procedures in your applications.  To do this, add
+            the following Handel-C header file to your <span
+            class="programName">DelayProcs</span> project:</p>
+
+            <p class="codeBlock">
+//  delayProcs.hch
+#ifndef __DELAY_PROCS_HCH__
+#define __DELAY_PROCS_HCH__
+  extern macro proc msecDelay(clock_rate, msec);
+#endif
+            </p>
+
+            <p>The preprocessor directives are a conventional mechanism for
+            making sure that <span class="programName">cpp</span>
+            doesn&rsquo;t accidentally get put into an endless loop
+            inserting one header file that includes another one that
+            includes the first one again.  (Current versions of <span
+            class="programName">cpp</span> check for this and won&rsquo;t
+            actually loop, but the convention of testing for and defining a
+            preprocessor symbol based on the file name remains.)</p>
+
+            <p>Add this directive to your <span
+            class="fileName">msec_delay.hcc</span> and make sure you can
+            re-build the library without warnings or errors:</p>
+
+            <p class="codeBlock">
+#include &lt;delayProcs.hch&gt;
+            </p>
+
+            <p>By enclosing the header file name in angle brackets (&lt;
+            &gt;) instead of quotes, you are telling the preprocessor to
+            look for it in one of its &ldquo;standard places,&rdquo; namely
+            the directory you added to the <span
+            class="menuItem">Tools->Options->Directories</span> tab
+            above.</p>
+
+          </li>
+
+          <li>
+
+            <h5>Add a project to the workspace.</h5> <p class="runin">Create
+            a new project called <span
+            class="directoryName">Flash_A_LED.</span> Be sure DK adds it to
+            your workspace.  Note that the name follows the convention of
+            not having any spaces in the project name.</p>
+
+            <p>You will configure the project for two target platforms:
+            Simulation (Debug) and FPGA implementation (EDIF).  To avoid
+            accidentally using some other configuration, remove all but
+            these two configurations from the project using the <span
+            class="menuItem">Build->Configurations</span> menu item.</p>
+
+            <p>There are several settings you need to set up for each
+            project.  The good news is that once you set them up for one
+            project, you can copy many of them over to new projects somewhat
+            mindlessly.  You get to the settings panel from the <span
+            class="menuItem">Project->Settings</span> menu item.</p>
+
+            <p class="standoutBox">There is a <a
+            href="configuration_summary.xhtml">table of configuration
+            settings</a> for various platforms for you to refer to for the
+            values you will need to enter.</p>
+
+            <p>Enter all the values for the Debug and EDIF settings for this
+            project.</p>
+
+          </li>
+
+          <li>
+
+            <h5>Write the code and build the two configuration.</h5> <p
+            class="runin">Add a Handel-C source file named <span
+            class="fileName">flash_a_led.hcc</span> to the project, and
+            enter the following code:</p>
+
+<div class="codeBlock">//  flash_a_led.hcc
+
+/*  Turns a LED on and off once per second.
+ */
+
+#include &lt;stdlib.hch&gt;
+#include &lt;pal_master.hch&gt;
+#include &lt;delay_procs.hch&gt;
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *    Turns a LED on, waits half a second, turns it off, and waits
+ *    another half a second.  Repeats forever.
+ */
+  void main(void)
+  {
+    while (1)
+    {
+      PalLEDWrite(PalLEDCT(0), 1);
+      msecDelay(PAL_ACTUAL_CLOCK_RATE, 500);
+      PalLEDWrite(PalLEDCT(0), 0);
+      msecDelay(PAL_ACTUAL_CLOCK_RATE, 500);
+    }
+  }
+</div>
+
+            <p>Note that including the same <span
+            class="fileName">delay_procs.hch</span> header here as you used
+            in <span class="fileName">msec_delay.hcc</span> makes the
+            compiler check that you use the same number of parameters when
+            invoking the macro as you used when you defined it.  However,
+            because <span class="functionName">msecDelay()</span> is a macro
+            rather than a function, there is no checking of the parameter
+            types.</p>
+
+            <p>Use the &ldquo;Active Build Configuration&rdquo; box at the
+            top of the DK window to select the Debug configuration, and
+            build the simulation using the <span class="tagName">F7</span>
+            key or by clicking on the blue toolbar button that is supposed
+            to look like a building (but doesn&rsquo;t really).  Do the same
+            for the EDIF configuration.  Be sure there are no errors, and be
+            sure the EDIF process goes all the way through the
+            &ldquo;Bitstream generation complete&rdquo; stage
+            successfully.</p>
+
+            </li>
+
+            <li>
+
+              <h5>Test both project configurations.</h5> <p
+              class="runin">With Debug selected as the active configuration,
+              press <span class="tagName">F5</span> to start simulation. 
+              Two windows should come up: a black Command Line window from
+              Windows and a &ldquo;Pal Virtual Console Window.&rdquo;  There
+              should be a flashing LED on the Pal Virtual Console.  The
+              exact rate at which the LED flashes will depend on the
+              PC&rsquo;s clock speed and the target clock rate you chose in
+              the project settings. To stop the simulation you can either
+              close the Windows Command Line window or click the DK toolbar
+              button with a red X in it.</p>
+
+              <p>To test the FPGA configuration, launch one of the <span
+              class="programName">File Transfer Utility</span> programs
+              provided by Celoxica: FTU2 for the RC200E (parallel port), or
+              FTU3 for the RC10 or RC300 (USB port).  Make sure the FTU
+              detects the kit you have attached to the PC, browse to and
+              select the bit file, <span
+              class="fileName">flash_a_led.bit</span> in your <span
+              class="directoryName">Flash_A_LED/EDIF</span> directory, and
+              then click the Configure button or just double-click on the
+              file name in the FTU&rsquo;s list to download the bitfile to
+              the FPGA.  A LED should flash exactly once per second.</p>
+
+            </li>
+
+          </ol>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

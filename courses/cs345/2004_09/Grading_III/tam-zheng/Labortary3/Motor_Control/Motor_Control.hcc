@@ -1,0 +1,113 @@
+#if (defined USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 50000000
+#else 
+  #define PAL_ACTUAL_CLOCK_RATE 1000000
+  set clock = external "P1"
+  with
+  {
+    extlib = "DKSync.dll",
+    extinst = "1000",
+    extfunc = "DKSyncGetSet"
+    
+  };
+#endif
+
+
+//  Simulation uses switches 8 and 9 so they can be "pressed"
+//  simultaneously with the mouse.  Also, a slower clock rate
+//  to approximate real time.
+#ifdef USE_SIM
+macro expr oneButtonNumber   = 8;
+macro expr oneHalfButtonNumber = 9;
+
+#else
+macro expr oneButtonNumber   = 0;
+macro expr oneHalfButtonNumber  = 1;
+
+#endif
+
+#include <stdlib.hch>
+#include <pal_master.hch>
+
+
+macro expr oneButton   = PalSwitchCT(oneButtonNumber);
+macro expr oneHalfButton = PalSwitchCT(oneHalfButtonNumber);
+unsigned 1 x;
+unsigned 1 onePressed;
+unsigned 1 oneHalfPressed;
+chan channel;
+  
+interface bus_out() ob1(unsigned 1 out = x)
+  with
+    {
+      #if (defined USE_RC200E)
+        data = {"M2"}
+      #else
+        extlib = "DKConnect.dll",
+        extinst = "t(1)",
+        extfunc = "DKConnectGetSet"
+      #endif
+    };
+
+macro proc microsec_delay(Milliseconds)
+
+{
+    macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * Milliseconds)/1000000;
+    unsigned (log2ceil (Cycles)) Count;
+
+    Count = 0;
+    do
+    {
+        Count++;
+    }
+    while (Count != Cycles - 1);
+}
+
+
+void main(void)
+{
+  
+  
+  par
+    {
+      while(1)
+      {
+        microsec_delay(20000); // There is a delay of 20ms between each pulse
+        channel ! x; // Write to channel    
+      }
+
+ 
+    }
+}
+
+
+void main(void)
+{
+   PalVersionRequire(1, 0);
+   
+    PalSwitchRequire(2);
+    
+  
+  while(1)
+  {
+    par
+    {
+          PalSwitchRead(oneButton,    &onePressed); // Read the button state
+          PalSwitchRead(oneHalfButton,  &oneHalfPressed); // Read the button state
+         
+    }
+      channel ? x; // Read from channel 
+      x = 1; // Turn on the output
+switch(onePressed @ oneHalfPressed)
+{
+  case 0b00: microsec_delay(1500); break; // If none is pressed, the pulse would stay for 1.5ms
+
+  case 0b01: microsec_delay(1000); break; // If either one is pressed, 
+  case 0b10: microsec_delay(2000); break; // the pulse would stay for 1ms or 2ms depending on which is pressed 
+
+  case 0b11: microsec_delay(1500); break; // If both are pressed, the pulse would stay for 1.5ms
+}
+
+x=0; //Turn off the output
+}
+}

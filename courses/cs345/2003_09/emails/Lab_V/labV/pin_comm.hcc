@@ -1,0 +1,155 @@
+/****************************************************************
+*                                                               *
+* PIN COMMUNICATION                                        .    *
+*                                                               *
+*****************************************************************
+*                                                               *
+* Project   :   LAB V                                           *
+* Date      :   Oct 16 2003                                     *
+* File      :   pin_comm,hcc                                    *
+* Author    :   Yuri Fukuda                                     *
+*                                                               *
+* Description:                                                  *
+*    Send to pin a particular frequency                         *
+*    It will change frequency to send out according to the      *
+*    pattern of button pressing. When 1st button is pressed,    *
+*    generates 1ms, the second one generates 2.0 m sec, and     *
+*    otherwise it generates                                     *
+*	1.5 msec. value is updated every 20 msec.                 *
+*                                                               *
+*                                                               *
+****************************************************************/
+
+/*
+ * For simulation, use a pretend clock rate close to real time; 1MHz
+ */
+
+unsigned 1 x;
+ 
+
+#ifdef USE_SIM
+#define PAL_TARGET_CLOCK_RATE 1000000
+#else
+//#define PAL_TARGET_CLOCK_RATE  20000000
+#define PAL_TARGET_CLOCK_RATE  25175000
+
+#endif
+
+
+
+
+
+#ifdef USE_RC200E
+
+interface bus_out() OutBus(unsigned 1 out = x )
+ with{ data = {"M2"}};
+
+//#elif   USE_SIM
+//#define PAL_TARGET_CLOCK_RATE 1000000
+
+#endif
+
+
+
+#include "pal_master.hch"
+#include "stdlib.hch"
+
+
+
+
+
+
+
+/*
+ * Forward declarations
+ */
+
+static macro proc micro_sec_delay (microsecond);
+chan 1 c;
+unsigned 1 val=0;
+
+
+/*
+ * Main program
+ */
+
+void main (void)
+{
+    while(1)
+    {
+        c ! val;
+        micro_sec_delay (20000);
+    }
+
+}
+void main (void)
+{
+
+     
+    /*
+     * Check we've got everything we need
+     */
+
+	 unsigned 1 iValue1, iValue2;
+     PalVersionRequire (1, 0);
+
+	  // -- catching switches
+	  //  switch 1 is monitored
+
+      iValue1 = 1;
+      iValue2 = 0;
+	  
+	  while(1)
+	  {			
+        c ? val;
+
+        seq
+        {
+	      par
+		  {
+       		PalSwitchRead(PalSwitch (0), &iValue1); //read on/off of each switch
+       		PalSwitchRead(PalSwitch (1), &iValue2); //read on/off of each switch
+            x=1; // 1
+           }
+
+		   if(  iValue1 > iValue2 )  // first button is pressed
+		   {
+               micro_sec_delay( 1000 );
+                x=0; // 0
+    	   }
+            else if ( iValue1 < iValue2 )
+		   {
+		       micro_sec_delay(2000);
+               x=0; // 0
+		   }
+           else
+           {
+               micro_sec_delay( 1500 );
+               x=0; // 0
+           }
+        }
+ 	  }
+
+
+}
+
+/*
+ * Sleep for "n" milliseconds
+ */
+static macro proc micro_sec_delay (microseconds)
+{
+    macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * microseconds)/1000000;
+    unsigned (log2ceil (Cycles)) Count;
+    Count = 0;
+    do
+    {
+        Count++;
+    }
+    while (Count != Cycles - 1);
+}
+
+
+
+
+
+

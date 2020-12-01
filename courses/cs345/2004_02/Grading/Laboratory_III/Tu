@@ -1,0 +1,61 @@
+
+  This is your grading report for Laboratory III.
+
+  Dr. Vickery
+
+
+  4.5/5.0 How well did your report adhere to the Laboratory Report
+  Guidelines for the course?
+
+    Use "Heading 2" for the headings and use "Heading 1" just for the
+    title.
+
+    There is a mix of fonts and font sizes in the bodies of your
+    paragraphs.  Paragraph bodies should all be uniformly formatted,
+    such as Times New Roman 12 point.
+
+    In the introduction, you talk about "0 or 1 pulses," and I really
+    don't know what you mean.  A pulse is a transition from 0 to 1 to 0.
+        
+    The Method section doesn't tell all the things you did, such as
+    doing the Waveform Analyzer example, Generating 1 msec pulses, using
+    the oscilloscope, etc.  This section should document everything you
+    did and should include references to the code you wrote for each
+    step.  (Reference the code listings in the appendices.)
+
+    Use past tense for everything.  The report tells what you did in the
+    past.  Use active voice rather than passive:  "I used the
+    oscilloscope ..." rather than "An oscilloscope was used ...".
+    
+    I suggest you make a brief outline giving the logical structure of
+    your report before you actually write it out.  The logical sequence
+    of the laboratory got lost in your report.
+
+    Note the new report guidelines, which call for each code listing to
+    start on a new page and for you to include workspace and project
+    files in the future.
+
+  4.0/5.0 How well did your code adhere to the Coding Guidelines for the
+  course?
+
+    Code is not commented!
+    Code is full of tabs!
+
+    "motor_pin++" does indeed toggle a 1-bit varible, but it's makes the
+    code unclear, and leads to the possibility that things could get out
+    of sync.  Better is to assign values of 0 or 1 in the appropriate
+    places.
+    
+    Delaying for the complement of the 20 msec interval in order to
+    generate your pulses is not wise.  With this technique, the receiver
+    will finish generating a pulse exactly at the same time as the
+    sender finishes its 20 msec delay.  Since sender and receiver
+    synchronize at this point, there is a real possibility that the
+    receiver will be one clock tick late finishing its pulse and the
+    sender's 20 msec period will gradually drift over time.  Better
+    would have been for the receiver to immediately start a pulse, wait
+    the relatively short interval of one pulse width, and then to wait
+    however long it takes when it tries to receive the next signal from
+    the sender.
+
+  8.5/10.0  Your grade for the assignment.

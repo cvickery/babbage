@@ -1,0 +1,214 @@
+/****************************************************************
+* keyboard_lcd                                                  
+* Adrian Cimpeanu
+* 
+* This program displays hexadecimal characters on the LCD 
+* as they are typed by the user on the keyboard.
+* Cooperate with Andrew Waldvogel 
+****************************************************************/
+
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+#define lcd_handle PalVideoOutOptimalCT( PAL_ACTUAL_CLOCK_RATE )
+#include "pal_master.hch"
+
+#include "stdlib.hch"
+#include "pal_keyboard.hch"
+
+
+/*
+ * Forward declarations
+ */
+
+ 
+  static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+ 
+
+/*
+ * Main program
+ */
+void main (void)
+{
+ 
+    PalKeyboard *KeyboardPtr;
+    unsigned 4 digit1;
+    unsigned 4 digit2;
+    unsigned 4 FirstDigit;
+    unsigned 4 SecondDigit;
+    unsigned 8 Char;
+    FirstDigit = 0;
+    SecondDigit = 0;
+  
+
+    /*
+     * Check we've got everything we need
+     */
+      PalVersionRequire (1, 0);
+      PalVideoOutRequire (1);
+      PalPS2PortRequire (2);
+
+      
+      par
+   {
+
+      PalSevenSegEnable (PalSevenSegCT (0));
+      PalSevenSegEnable (PalSevenSegCT (1));
+      PalKeyboardRun(&KeyboardPtr, PalPS2PortCT (1), ClockRate);
+      PalKeyboardEnable (KeyboardPtr);
+    
+
+    par {
+        
+       do {
+         
+        seq {
+          
+           PalKeyboardReadASCII(KeyboardPtr, &Char);
+       
+           SecondDigit = Char <- 4;
+           FirstDigit =  Char \\ 4;
+             
+           }//end_seq
+             PalSevenSegWriteDigit (PalSevenSegCT (0), FirstDigit, 0);
+             PalSevenSegWriteDigit (PalSevenSegCT (1), SecondDigit, 0);
+          
+      
+       }while(1);  
+  }//end_par
+   PalVideoOutRun( lcd_handle, PAL_ACTUAL_CLOCK_RATE );
+   PalVideoOutEnable ( lcd_handle  );
+         
+ /*****************************************************************************
+  *         1           2                                                     *
+  *       ------       -------                                                *
+  *      |      |      |     |
+  *     3|   7  |4    5|  8  | 6
+  *      |------|       ------
+  *     9|      |10  11|     |12
+  *      |______|      |_____|
+  *         13           14
+  *   
+  *    Check  each pixel( x,y coordinates) if you are in the region
+  *    of the two seven segment display and if so  check if
+  *    the corresponding segment(see above diagram), is to be displayed the 
+  *    FirstDigit or SecondDigit and change the color of the corresponding
+  *    pixel, otherwise(if the pixel is not the one in the region of the
+  *    two segments) then output the background ( blue with redstripes every
+  *    three pixels). 
+  *                                                                            *
+  *****************************************************************************/
+
+        
+      do {
+       
+        //display the hexadecimal value of the keyboard button pressed
+         delay;
+
+     seq {
+        //check if you are in the segment 1
+        if( (PalVideoOutGetX( lcd_handle ) > 400 &&  PalVideoOutGetX( lcd_handle ) < 450 &&
+            PalVideoOutGetY( lcd_handle ) > 10 &&  PalVideoOutGetY( lcd_handle ) < 25 )   &&
+            ( FirstDigit != 1 && FirstDigit != 4 )) {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+        //check if you are in the segment 2
+        else if( (PalVideoOutGetX( lcd_handle ) > 500 &&  PalVideoOutGetX( lcd_handle ) < 550 &&
+            PalVideoOutGetY( lcd_handle ) > 10 &&  PalVideoOutGetY( lcd_handle ) < 25 ) && 
+            (SecondDigit != 1 && SecondDigit != 4 && SecondDigit != 11 && SecondDigit != 13)){
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+
+        ////check if you are in the segment 3
+        else if( (PalVideoOutGetX( lcd_handle ) > 385 &&  PalVideoOutGetX( lcd_handle ) < 400 &&
+            PalVideoOutGetY( lcd_handle ) > 10 &&  PalVideoOutGetY( lcd_handle ) < 60 ) && 
+            ( FirstDigit != 1 && FirstDigit != 2 && FirstDigit != 3 && FirstDigit != 7) ) {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+       ////check if you are in the segment 4
+       else if( (PalVideoOutGetX( lcd_handle ) > 450 &&  PalVideoOutGetX( lcd_handle ) < 465 &&
+            PalVideoOutGetY( lcd_handle ) > 10 &&  PalVideoOutGetY( lcd_handle ) < 60 ) &&
+            ( FirstDigit != 5 && FirstDigit != 6)){
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+        ////check if you are in the segment 5
+         else if( (PalVideoOutGetX( lcd_handle ) > 485 &&  PalVideoOutGetX( lcd_handle ) < 500 &&
+            PalVideoOutGetY( lcd_handle ) > 10 &&  PalVideoOutGetY( lcd_handle ) < 60 ) &&
+            (SecondDigit != 1 && SecondDigit != 2 && SecondDigit != 3  && SecondDigit != 7 && SecondDigit != 13)){
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+        //check if you are in the segment 6
+         else if( (PalVideoOutGetX( lcd_handle ) > 550 &&  PalVideoOutGetX( lcd_handle ) < 565 &&
+            PalVideoOutGetY( lcd_handle ) > 10 &&  PalVideoOutGetY( lcd_handle ) < 60 )  &&
+            (SecondDigit != 5 && SecondDigit != 6 && SecondDigit != 11  && SecondDigit != 12 &&
+             SecondDigit != 14 && SecondDigit != 15)){
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+          //check if you are in the segment 7    
+         else if( (PalVideoOutGetX( lcd_handle ) > 400 &&  PalVideoOutGetX( lcd_handle ) < 450 &&
+            PalVideoOutGetY( lcd_handle ) > 55 &&  PalVideoOutGetY( lcd_handle ) < 70 ) && 
+            ( FirstDigit != 0 && FirstDigit != 1 && FirstDigit != 7 )) {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+        //check if you are in the segment 8
+          else if( (PalVideoOutGetX( lcd_handle ) > 500 &&  PalVideoOutGetX( lcd_handle ) < 550 &&
+            PalVideoOutGetY( lcd_handle ) > 55 &&  PalVideoOutGetY( lcd_handle ) < 70 ) &&
+            (SecondDigit != 0 && SecondDigit != 1 && SecondDigit != 7  && SecondDigit != 12)) 
+            {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+        //check if you are in the segment 9
+          else if( ( PalVideoOutGetX( lcd_handle ) > 385 &&  PalVideoOutGetX( lcd_handle ) < 400 &&
+            PalVideoOutGetY( lcd_handle ) > 61 &&  PalVideoOutGetY( lcd_handle ) < 110 ) && 
+            ( FirstDigit != 1 && FirstDigit != 3 && FirstDigit != 4 && FirstDigit != 5 && FirstDigit != 7 )) {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+        //check if you are in the segment 10
+          else if( (PalVideoOutGetX( lcd_handle ) > 450 &&  PalVideoOutGetX( lcd_handle ) < 465 &&
+            PalVideoOutGetY( lcd_handle ) > 61 &&  PalVideoOutGetY( lcd_handle ) < 110 ) && 
+            ( FirstDigit != 2  )){
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+         //check if you are in the segment 11
+          else if( (PalVideoOutGetX( lcd_handle ) > 485 &&  PalVideoOutGetX( lcd_handle ) < 500 &&
+            PalVideoOutGetY( lcd_handle ) > 61 &&  PalVideoOutGetY( lcd_handle ) < 110 ) &&
+            ( SecondDigit != 1 && SecondDigit != 3 && SecondDigit != 4  && SecondDigit != 5 &&
+              SecondDigit != 7 && SecondDigit != 9 ))  {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+          //check if you are in the segment 12   
+         else if( (PalVideoOutGetX( lcd_handle ) > 550 &&  PalVideoOutGetX( lcd_handle ) < 565 &&
+            PalVideoOutGetY( lcd_handle ) > 61 &&  PalVideoOutGetY( lcd_handle ) < 110 ) &&
+             ( SecondDigit != 2 && SecondDigit != 12 && SecondDigit != 15  )) {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+         //check if you are in the segment 13
+         else if( (PalVideoOutGetX( lcd_handle ) > 400 &&  PalVideoOutGetX( lcd_handle ) < 450 &&
+            PalVideoOutGetY( lcd_handle ) > 95 &&  PalVideoOutGetY( lcd_handle ) < 110 ) &&
+            ( FirstDigit != 1 && FirstDigit != 4 && FirstDigit != 7  )){
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            }
+        //check if you are in the segment 14
+          else if( ( PalVideoOutGetX( lcd_handle ) > 500 &&  PalVideoOutGetX( lcd_handle ) < 550 &&
+            PalVideoOutGetY( lcd_handle ) > 95 &&  PalVideoOutGetY( lcd_handle ) < 110 ) &&
+            ( SecondDigit != 1 && SecondDigit != 4 && SecondDigit != 7  && SecondDigit != 10 &&
+              SecondDigit != 15 ))  {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );
+            } 
+         //  }//end_ifcheckifinregion   
+        else {
+        if( ( PalVideoOutGetX( lcd_handle ) <- 4)  < 3) {
+          PalVideoOutWrite( lcd_handle, 0b111111110000000000000000 );
+          }
+        else {
+         PalVideoOutWrite( lcd_handle, 0b000000000000000011111111 );
+              }
+      
+              }//end_else 
+       }//end_seq
+       
+        }while(1); 
+     //}//seq
+    }//end_par
+
+
+   }//end_main

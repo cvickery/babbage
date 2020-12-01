@@ -1,0 +1,51 @@
+
+CS-345 Laboratory I
+Fall 2005
+
+Here is how I evaluated your first Laboratory assignment.
+Dr. Vickery
+---------------------------------------------------------
+
+Project and Workspace Setup
+
+  Looks fine, and you included your own library with its
+  corresponding header file correctly.
+
+Use of Handel C
+
+  Blink LEDs does not build for me, and I'm not sure why.
+  But looking at the code, I can see that (1) it gives a warning
+  about a combinatorial cycle that you need to fix and (2) the
+  code cannot work.  You have two if tests to see if variables
+  have a value of 1.  They are initialized to zero so there is no
+  way for their values to change.  And even if they changed once,
+  they could never change value again.  The EDIF configuration
+  builds and confirms that no LEDs blink and the hex displays are
+  stuck at 00.
+
+  Before trying the "interesting" things, be sure you can do
+  the basics.
+
+  You named the source file for the second project
+  parallel_threads.c -- always use the .hcc extension for your
+  Handel-C programs so you indicate accurately what language you
+  are using, and so Vim will syntax color the source file
+  correctly.
+
+Report
+
+  Use a word processor for your reports, and format them so they
+  are easy to read.
+
+  1.  Much more detail than required -- but very good.  Except
+  you failed to notice that edifmake_rc200e.bat is a Celoxica
+  file, not a Xilinx file.  And how did you see that netgen is
+  being run ??
+
+  3.  Both projects should use the same part number.
+
+  Thorough job.  Layout to make it easier to read would help.
+
+  
+Grade:  9.5/10.0
+

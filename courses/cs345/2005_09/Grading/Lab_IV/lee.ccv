@@ -1,0 +1,40 @@
+
+CS-345 Laboratory IV
+Fall 2005
+
+Here is my evaluation of your fourth Laboratory assignment.
+Dr. Vickery
+---------------------------------------------------------
+
+Projects:
+
+  Draw an Image Using PAL Macros for Synchronization
+
+    Gradient background is a nice touch.  All segments are always
+    drawn in either background or foreground color as the character
+    data changes.
+  
+  Display VideoOut Parameter Values
+ 
+    Uses comic font.  Shows current coordinates when button 0 is
+    pressed. (I didn't know you could do that.)
+  
+  Draw a Test Pattern by Synchronizing with HBlank
+  
+    Looks fine.
+
+  Draw an Image From a Framebuffer
+
+    Simulates fine, but misses right edge on the RC200E.
+    Using PalVideoOutGet[XY] defeats the whole idea of the pipeline.
+    All timing should be done off HBlank and VBlank, and once you get
+    your location in the refresh cycle set up, you can just let the
+    code update the screen once per clock cycle.
+
+Report:
+
+    English usage is a problem.  The report is not clear because of
+    nonstandard wording.  
+
+Grade:  9.7/10.0
+

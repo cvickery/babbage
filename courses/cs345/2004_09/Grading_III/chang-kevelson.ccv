@@ -1,0 +1,63 @@
+
+  This is your grading report for Laboratory III.
+  Dr. Vickery
+
+  --------------------------------------------------------------
+
+  Team Members: Yung Yi Chang and Reena Kevelson
+
+  (4.8/5 points)  Laboratory Report
+
+    Was the report properly formatted and did it make proper use
+    of styles?
+      It looks nice, but doesn't use styles.  Whoever heard of a CS
+      major who can't use a word processor?!
+
+    Did each section contain the proper type of information?
+      Yes
+
+    Was the report well written?
+      Yes, except for the repetition of wording -- you can do better
+      than that.
+
+  (2/2 points) Workspace Setup
+  
+    Was the workspace zip file structured correctly?
+      yes
+    Was the workspace "clean"?
+      yes (you cleaned out the build subdirectories before creating
+      the zip file)
+    Did each project build properly, producing no warnings or
+    errors that should have been spotted and corrected?
+      yes
+    
+  (2.7/3 points) Projects
+
+    Did each project run as expected?
+      yes
+
+    Was the code written and documented according to the coding
+    guidelines for the course?
+      No!  Read the coding guidelines for the course, and comment your
+      code appropriately!!
+      
+    Did the code make effective use of Handel-C and the hardware
+    resources of the FPGA?
+      ok ... see below
+    Was the timing implemented using a channel as specified in
+    the Laboratory web page?
+      The code used channels, but there are misconceptions showing.
+      First, your generate_pulses code produces a delay of 20 msec
+      from the end of one pulse to the start of the next one, not from
+      the start of one to the start of the next.  This arises from not
+      understanding the synchronization mechanism of channels, I
+      think.  Second, although channels _can_ be used to transmit
+      data from one thread to another, writing a 1 to the channel and
+      then writing a 0 in the next statement is "weird" Handel-C,
+      especially since (a) the value is not needed, and (b) the
+      delay between these two statements is not obvious: it depends on
+      the logic of the receiving thread.  While it is simply a weird
+      artifact in the motor control project, it is what causes the
+      error in the generate pulses project.
+
+  Assignment Grade is 9.5

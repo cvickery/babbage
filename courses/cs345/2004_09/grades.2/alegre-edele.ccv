@@ -1,0 +1,116 @@
+
+  This is your grading report for Laboratory II.
+  Dr. Vickery
+
+  Team members:  Priscilla Alegre & Robert Edele
+
+  (4.5/5.0 points)  Report:  Did you use styles to structure the
+  document properly?  Was the material placed in the correct sections
+  of the report?  Was the report written using standard English usage,
+  including correct grammar and spelling?
+
+    Structure is fine, although your table of contents is incomplete.
+
+    There is a copy of the body of the Method section before the
+    Introduction.  Proofread!  Oh, I see -- you put the body of the
+    method section in the table of contents instead of just the page
+    number.  Proofread!!
+
+    "Then being able to add a project and develop a Handle-C program."
+    is not a sentence; it has no verb.
+
+    The name of the language is Handel-C, not Handle-C.
+
+    Turn on your grammar checker and fix your misuse of "which" in
+    several places.
+
+    "An important lesson learned is ..." belongs in the Discussion,
+    not the Method.
+
+    "... are in use ..."  Use past tense in Method and Results
+    sections.
+
+    "... cooldown variable stores the amount of clock cycles ..."
+    should be
+    "... cooldown variable stored the number of clock cycles ..."
+
+    Despite all the notes above, the report is basically very good.
+
+
+  (1.7/2 points)  Laboratory Setup:  Was the workspace set up correctly,
+  and were the projects properly configured?
+
+    The part number you used for Pipeline/RC200e, xc2v1000fg456, does
+    not include the speed grade for our chip (-4).  As a result, you
+    had these two warnings from the compiler:
+
+      Specified part name 'xc2v1000fg456' not found in XilinxVirtexII
+      device family
+
+      Retiming does not support part 'xc2v1000fg456'
+
+    Worse, the mapper reported:
+
+      Speed grade not specified.  Using default "-6".
+      Using target part "2v1000fg456-6".
+
+    This means that the Xilinx tools would erroneously tell you that
+    your design met all timing constraints when in fact it might not
+    have.  This can lead to impossible-to-debug problems.
+
+  (2.5/3 points)  Code:  Was the code formatted and documented according
+  to the coding guidelines for the course?  Did it do what it was
+  supposed to do?  Did it use the Handel-C language effectively?
+
+    File Pipeline/pipeline.hcc contains 1 tab character.
+    File Pipeline/pipeline.hcc contains 1 line longer than 72 characters.
+
+    pipeline.hcc is basically undocumented.
+
+    I'm pretty sure the ROM in pipeline.hcc got optimized away and you
+    might as well have written "sum += -8;" for all the code in that
+    project.  And one-element "arrays," of which you have two, never
+    make any sense.
+
+    If you actually did need to do a computation like the one in
+    pipeline.hcc, format the code to show what you are doing:
+
+      sum += adjs( (adjs(x[0] & 0b000000000011111 >>  0, 5) + 
+                    adjs(x[0] & 0b000001111100000 >>  5, 5) + 
+                    adjs(x[0] & 0b111110000000000 >> 10, 5)
+                 ), 8);
+    and let the compiler optimize away the unneeded >> in the first
+    one and the unneeded & in the third one.  Of course, a comment
+    could have accomplished pretty much the same thing.  Or you could
+    format it so the code lines up, but just leave the ">>   0"
+    out of the first one and similarly for the third one.
+
+    While writing super-efficient code is not a particular goal in
+    this course, you need to avoid writing extra code.  The goal is to
+    write code that is "correct by inspection."  That is, you want it
+    to be written so that even a professor can see that is correct
+    without looking at it very hard.  In this regard, your code needs
+    much work.  Not only were there problems with your doing "tricky
+    stuff" that probably got optimized away as noted above, there are
+    lots more variables than you really need to get the work done.
+    Not only do they make your code more difficult to read, they make
+    it more likely that there are mistakes in your code.  And the
+    comments you put in to explain the roles of all those variables
+    just lead to extra effort on your part putting them in and extra
+    effort on my part to wade through them.  The goal is to make the
+    process of writing and reading the code as efficient as possible
+    for all parties involved.
+
+    Converting two's complement numbers to sign-magnitude and
+    displaying a decimal point for the sign seems like a poor design
+    choice.  Leaving the information in its native format saves us
+    both the trouble of figuring out whether or not you did the
+    conversion correctly.
+
+      if (display[7:7])
+    isn't as clear as
+      if (display[7])
+    or
+      if (display[7] == 1)
+
+  Assignment Grade is 8.7

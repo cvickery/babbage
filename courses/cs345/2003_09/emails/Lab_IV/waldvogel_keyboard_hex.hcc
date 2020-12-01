@@ -1,0 +1,59 @@
+/*********************************************
+*  Andrew Waldvogel 
+*  Lab IV - keyboard_hex.hcc
+*  This program reads in an ASCII value from the keyboard
+*  and translates it into a hexadecimal value and prints
+*  it on the seven segment displays.
+**********************************************/
+
+
+
+#ifdef USE_RC200E
+#define PAL_TARGET_CLOCK_RATE 50000000
+#endif
+
+#include "pal_master.hch"
+#include "pal_rc200.hch"
+#include "stdlib.hch"
+#include "pal_keyboard.hch"
+
+
+void main(void)
+{
+  PalKeyboard *KeyPtr;
+  unsigned 8 ASCII; // Value read from keybord
+  unsigned 4 digitOne; // higher order (left) hexadecimal value
+  unsigned 4 digitTwo; // lower order (right) hexadecimal value
+
+  PalVersionRequire (1, 0);
+  // Seven Segment displays will be used
+  PalSevenSegRequire (1);
+  // PS2 port will be used
+  PalPS2PortRequire (2);
+
+  
+   
+  // fire up the seven segment displays, 0 and 1
+  PalSevenSegEnable (PalSevenSegCT (0));
+  PalSevenSegEnable (PalSevenSegCT (1));
+
+  
+  par{
+    // fire up the keyboard through the PS2 port
+    PalKeyboardRun(&KeyPtr, PalPS2PortCT(1), PAL_ACTUAL_CLOCK_RATE);
+    PalKeyboardEnable(KeyPtr);
+    while(1)
+    {
+      // read in the ASCII character and parse it to the 2 hex values
+      PalKeyboardReadASCII(KeyPtr, &ASCII);
+      digitOne = ASCII \\ 4;
+      digitTwo = ASCII <- 4;
+
+      // write the hexadecimal values to the seven seg displays
+      PalSevenSegWriteDigit (PalSevenSegCT (0), digitOne, 0);
+      PalSevenSegWriteDigit (PalSevenSegCT (1), digitTwo, 0);
+
+    } // while()
+  } // par
+
+} // main()

@@ -1,0 +1,508 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+  <head>
+    <title>
+      build.log
+    </title>
+<style type="text/css" media="print">
+  body, html { font-size: 10pt;
+ font-family:Monaco, Courier, monospace;
+ }
+</style>
+  </head>
+  <body>
+    <pre>
+--------------------Configuration: keybd2video - EDIF--------------------
+
+-keybd2video.hcc
+Handel-C Compiler "-c" "-g" "-W" "-N+piperam" "-S-parfunc"
+"-S-parchan" "-S-parmem" "-O+rewrite" "-O+high" "-O+cse" "-O+pcse"
+"-O+rcse" "-O+cr" "-O-rcr" "-O+balance" "-lutpack" "-edif" "-DNDEBUG"
+"-D__EDIF__" "-DUSE_RC200E" "-retime" "-I" "f:\program
+files\celoxica\pdk\hardware\include" "-I" "f:\my documents\my
+projects\up3_psl" "-o" "F:\My Projects\cs345\2006_09\CV
+Workspace\keybd2video\EDIF\keybd2video.hco" "-Rx" "F:\My
+Projects\cs345\2006_09\CV
+Workspace\keybd2video\EDIF\Reports\keybd2video_compile.xml" "-xc"
+"F:\My Projects\cs345\2006_09\CV
+Workspace\keybd2video\keybd2video.hcc"
+  Warning: (W0008) Macro 'thick' expanded 200 times. Possible infinite
+  recursion
+  Warning: (W0008) Macro 'ClockRate' expanded 200 times. Possible
+  infinite recursion
+  Warning: (W0008) Macro 'video' expanded 200 times. Possible infinite
+  recursion
+      0 errors, 3 warnings
+
+-keybd2video
+Linker "-g" "-W" "-N+piperam" "-S-parfunc" "-S-parchan" "-S-parmem"
+"-O+rewrite" "-O+high" "-O+cse" "-O+pcse" "-O+rcse" "-O+cr" "-O-rcr"
+"-O+balance" "-lutpack" "-edif" "-syn" "ActiveHDL" "-N+speed" "-p"
+"XC2V1000FG456-4" "-N-alumap" "stdlib.hcl" "pal_keyboard.hcl"
+"pal_rc200e.hcl" "rc200e.hcl" "..\delayprocs\generic\delayprocs.hcl"
+"-f" "XilinxVirtexII" "-retime" "-L" "f:\program
+files\celoxica\pdk\hardware\lib" "-o" "F:\My Projects\cs345\2006_09\CV
+Workspace\keybd2video\EDIF\keybd2video.edf" "-Rx" "F:\My
+Projects\cs345\2006_09\CV
+Workspace\keybd2video\EDIF\Reports\keybd2video_link.xml"
+"EDIF\keybd2video.hco"
+  NAND gates after compilation  : 140249 (1515 FFs, 2384 memory bits)
+  NAND gates after optimisation : 49931 (1206 FFs, 2384 memory bits)
+  NAND gates after expansion    : 96191 (1254 FFs, 18768 memory bits)
+  NAND gates after optimisation : 62703 (832 FFs, 18768 memory bits)
+  LUTs after mapping            : 2401 (832 FFs, 18768 memory bits)
+  Retime: clock defined in rc200.hch, Ln 147 has delay 31.46 ns
+  Retime: clock defined in rc200.hch, Ln 147 requested 39.72 ns and
+  achieved 27.85 ns after delay driven retiming
+  Retime: clock defined in rc200.hch, Ln 147 achieved 31.46 ns after
+  area driven retiming 
+  LUTs after retiming           : 2396 (898 FFs, 18768 memory bits)
+  LUTs after post-optimisation  : 2417 (855 FFs, 18768 memory bits)
+      0 errors, 0 warnings
+
+-keybd2video
+Custom build steps:
+cd EDIF
+edifmake_rc200 keybd2video
+
+Custom build output:
+------------------------------- NGDBUILD ---------------------------------
+Command Line: ngdbuild -intstyle xflow -dd . keybd2video.edf
+keybd2video.ngd 
+Executing edif2ngd -quiet "keybd2video.edf" "keybd2video.ngo"
+Release 8.1.02i - edif2ngd I.26
+Copyright (c) 1995-2005 Xilinx, Inc.  All rights reserved.
+Reading NGO file 'F:/My Projects/cs345/2006_09/CV
+Workspace/Keybd2Video/EDIF/keybd2video.ngo' ...
+Checking timing specifications ...
+Checking expanded design ...
+NGDBUILD Design Results Summary:
+  Number of errors:     0
+  Number of warnings:   0
+Writing NGD file "keybd2video.ngd" ...
+Writing NGDBUILD log file "keybd2video.bld"...
+NGDBUILD done.
+---------------------------------- MAP -----------------------------------
+Using target part "2v1000fg456-4".
+Mapping design into LUTs...
+Running directed packing...
+Running delay-based LUT packing...
+Running related packing...
+Design Summary:
+Number of errors:      0
+Number of warnings:    4
+Logic Utilization:
+  Number of Slice Flip Flops:         833 out of  10,240    8%
+  Number of 4 input LUTs:           2,369 out of  10,240   23%
+Logic Distribution:
+  Number of occupied Slices:        1,989 out of   5,120   38%
+  Number of Slices containing only related logic:   1,989 out of   1,989  100%
+  Number of Slices containing unrelated logic:          0 out of   1,989    0%
+        *See NOTES below for an explanation of the effects of unrelated logic
+Total Number 4 input LUTs:          3,109 out of  10,240   30%
+  Number used as logic:             2,369
+  Number used as a route-thru:        698
+  Number used as 16x1 ROMs:            21
+  Number used as Shift registers:      21
+  Number of bonded IOBs:               64 out of     324   19%
+    IOB Flip Flops:                    54
+  Number of Block RAMs:                 1 out of      40    2%
+  Number of GCLKs:                      1 out of      16    6%
+Total equivalent gate count for design:  94,721
+Additional JTAG gate count for IOBs:  3,072
+Peak Memory Usage:  169 MB
+NOTES:
+   Related logic is defined as being logic that shares connectivity - e.g. two
+   LUTs are "related" if they share common inputs.  When assembling slices,
+   Map gives priority to combine logic that is related.  Doing so results in
+   the best timing performance.
+   Unrelated logic shares no connectivity.  Map will only begin packing
+   unrelated logic into a slice once 99% of the slices are occupied through
+   related logic packing.
+   Note that once logic distribution reaches the 99% level through related
+   logic packing, this does not mean the device is completely utilized.
+   Unrelated logic packing will then begin, continuing until all usable LUTs
+   and FFs are occupied.  Depending on your timing budget, increased levels of
+   unrelated logic packing may adversely affect the overall timing performance
+   of your design.
+Mapping completed.
+See MAP report file "keybd2video.mrp" for details.
+---------------------------------- PAR -----------------------------------
+Constraints file: keybd2video.pcf.
+Loading device for application Rf_Device from file '2v1000.nph' in
+environment F:\Xilinx.
+   "keybd2video" is an NCD, version 3.1, device xc2v1000, package
+   fg456, speed -4
+This design is using the default stepping level (major silicon
+revision) for this device (0). Unless your design is targeted at
+devices of this stepping level, it is recommended that you explicitly
+specify the stepping level of the parts you will be using. This will
+allow the tools to take advantage of any available performance and
+functional enhancements for this device. The latest stepping level for
+this device is '1'. Additional information on "stepping level" is
+available at support.xilinx.com.
+Initializing temperature to 85.000 Celsius. (default - Range: 0.000 to 85.000 Celsius)
+Initializing voltage to 1.425 Volts. (default - Range: 1.425 to 1.575 Volts)
+
+WARNING:Timing:3223 - Timing constraint
+TS_FFS_OUT_TG_rc200e_hcl_main_CS4202BitClkBus_Param0 = MAXDELAY FROM
+TIMEGRP "FFS" TO TIMEGRP "TG_rc200e_hcl_main_CS4202BitClkBus_Param0"
+20 ns; ignored during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_OUT_TG_rc200e_hcl_main_CS4202BitClkBus_Param0 = MAXDELAY FROM
+TIMEGRP "PADS" TO TIMEGRP "TG_rc200e_hcl_main_CS4202BitClkBus_Param0"
+20 ns; ignored during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_FFS_OUT_TG_rc200e_hcl_main_CS4202NotResetBus_Param0 = MAXDELAY FROM
+TIMEGRP "FFS" TO TIMEGRP "TG_rc200e_hcl_main_CS4202NotResetBus_Param0"
+40 ns; ignored during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_OUT_TG_rc200e_hcl_main_CS4202NotResetBus_Param0 = MAXDELAY
+FROM TIMEGRP "PADS" TO TIMEGRP
+"TG_rc200e_hcl_main_CS4202NotResetBus_Param0" 40 ns; ignored during
+timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_FFS_OUT_TG_rc200e_hcl_main_CS4202SDataOutBus_Param0 = MAXDELAY FROM
+TIMEGRP "FFS" TO TIMEGRP "TG_rc200e_hcl_main_CS4202SDataOutBus_Param0"
+40 ns; ignored during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_OUT_TG_rc200e_hcl_main_CS4202SDataOutBus_Param0 = MAXDELAY
+FROM TIMEGRP "PADS" TO TIMEGRP
+"TG_rc200e_hcl_main_CS4202SDataOutBus_Param0" 40 ns; ignored during
+timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_FFS_OUT_TG_rc200e_hcl_main_CS4202SyncBus_Param0 = MAXDELAY FROM
+TIMEGRP "FFS" TO TIMEGRP "TG_rc200e_hcl_main_CS4202SyncBus_Param0" 40
+ns; ignored during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_OUT_TG_rc200e_hcl_main_CS4202SyncBus_Param0 = MAXDELAY FROM
+TIMEGRP "PADS" TO TIMEGRP "TG_rc200e_hcl_main_CS4202SyncBus_Param0" 40
+ns; ignored during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_FFS_OUT_TG_rc200e_hcl_main_ClockOut_Param0 = MAXDELAY FROM TIMEGRP
+"FFS" TO TIMEGRP "TG_rc200e_hcl_main_ClockOut_Param0" 39 ns; ignored
+during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_IN_TG_rc200e_hcl_main_Clock_Output_In = MAXDELAY FROM TIMEGRP
+"TG_rc200e_hcl_main_Clock_Output_In" TO TIMEGRP "PADS" 19 ns; ignored
+during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_IN_TG_rc200e_hcl_main_Data_Output_In = MAXDELAY FROM TIMEGRP
+"TG_rc200e_hcl_main_Data_Output_In" TO TIMEGRP "PADS" 19 ns; ignored
+during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_OUT_TG_rc200e_hcl_main_HSyncOut_Param0 = MAXDELAY FROM TIMEGRP
+"PADS" TO TIMEGRP "TG_rc200e_hcl_main_HSyncOut_Param0" 39 ns; ignored
+during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_OUT_TG_rc200e_hcl_main_LCDDataEnableOut_Param0 = MAXDELAY FROM
+TIMEGRP "PADS" TO TIMEGRP "TG_rc200e_hcl_main_LCDDataEnableOut_Param0"
+39 ns; ignored during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_OUT_TG_rc200e_hcl_main_NotBlankOut_Param0 = MAXDELAY FROM
+TIMEGRP "PADS" TO TIMEGRP "TG_rc200e_hcl_main_NotBlankOut_Param0" 39
+ns; ignored during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_FFS_OUT_TG_rc200e_hcl_main_RC200Clock25175000InOut_Param0_in =
+MAXDELAY FROM TIMEGRP "FFS" TO TIMEGRP
+"TG_rc200e_hcl_main_RC200Clock25175000InOut_Param0_in" 10 ns; ignored
+during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_FFS_OUT_TG_rc200e_hcl_main_SyncOut_Param0 = MAXDELAY FROM TIMEGRP
+"FFS" TO TIMEGRP "TG_rc200e_hcl_main_SyncOut_Param0" 39 ns; ignored
+during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_OUT_TG_rc200e_hcl_main_SyncOut_Param0 = MAXDELAY FROM TIMEGRP
+"PADS" TO TIMEGRP "TG_rc200e_hcl_main_SyncOut_Param0" 39 ns; ignored
+during timing analysis.
+
+WARNING:Timing:3223 - Timing constraint
+TS_PADS_OUT_TG_rc200e_hcl_main_VSyncOut_Param0 = MAXDELAY FROM TIMEGRP
+"PADS" TO TIMEGRP "TG_rc200e_hcl_main_VSyncOut_Param0" 39 ns; ignored
+during timing analysis.
+
+Device speed data version:  "PRODUCTION 1.121 2005-11-04".
+Device Utilization Summary:
+   Number of BUFGMUXs                  1 out of 16      6%
+   Number of External IOBs            64 out of 324    19%
+      Number of LOCed IOBs            64 out of 64    100%
+   Number of RAMB16s                   1 out of 40      2%
+   Number of SLICEs                 1989 out of 5120   38%
+Overall effort level (-ol):   High 
+Placer effort level (-pl):    High 
+Placer cost table entry (-t): 1
+Router effort level (-rl):    High 
+Starting initial Timing Analysis.  REAL time: 6 secs 
+Finished initial Timing Analysis.  REAL time: 6 secs 
+Starting Placer
+Phase 1.1
+Phase 1.1 (Checksum:98e5a1) REAL time: 7 secs 
+Phase 2.31
+Phase 2.31 (Checksum:1312cfe) REAL time: 7 secs 
+WARNING:Place:414 - The input design contains local clock signal(s).
+To get a better result, we recommend users run map with the "-timing"
+option set before starting the placement.
+Phase 3.2
+.
+Phase 3.2 (Checksum:1c9c37d) REAL time: 15 secs 
+Phase 4.30
+Phase 4.30 (Checksum:26259fc) REAL time: 15 secs 
+Phase 5.3
+Phase 5.3 (Checksum:2faf07b) REAL time: 15 secs 
+Phase 6.5
+Phase 6.5 (Checksum:39386fa) REAL time: 15 secs 
+Phase 7.8
+................................................
+...
+.........
+...
+...
+...
+Phase 7.8 (Checksum:c7aa87) REAL time: 36 secs 
+Phase 8.5
+Phase 8.5 (Checksum:4c4b3f8) REAL time: 36 secs 
+Phase 9.18
+Phase 9.18 (Checksum:55d4a77) REAL time: 48 secs 
+Phase 10.5
+Phase 10.5 (Checksum:5f5e0f6) REAL time: 48 secs 
+Phase 11.27
+Phase 11.27 (Checksum:68e7775) REAL time: 49 secs 
+Phase 12.24
+Phase 12.24 (Checksum:7270df4) REAL time: 49 secs 
+Writing design to file keybd2video.ncd
+Total REAL time to Placer completion: 51 secs 
+Total CPU time to Placer completion: 51 secs 
+Starting Router
+Phase 1: 10642 unrouted;       REAL time: 55 secs 
+Phase 2: 9772 unrouted;       REAL time: 1 mins 14 secs 
+Phase 3: 1940 unrouted;       REAL time: 1 mins 17 secs 
+Phase 4: 1940 unrouted; (0)      REAL time: 1 mins 17 secs 
+Phase 5: 1940 unrouted; (0)      REAL time: 1 mins 17 secs 
+Phase 6: 1940 unrouted; (0)      REAL time: 1 mins 18 secs 
+Phase 7: 0 unrouted; (0)      REAL time: 1 mins 22 secs 
+Phase 8: 0 unrouted; (0)      REAL time: 1 mins 24 secs 
+WARNING:Route:447 - CLK Net:WG2_rc200_hch_148_ClockInput_O may have
+excessive skew because 2 NON-CLK pins failed to route using a CLK
+template.
+Total REAL time to Router completion: 1 mins 27 secs 
+Total CPU time to Router completion: 1 mins 25 secs 
+Generating "PAR" statistics.
+**************************
+Generating Clock Report
+**************************
++---------------------+--------------+------+------+------------+-------------+
+|        Clock Net    |   Resource   |Locked|Fanout|Net Skew(ns)|Max Delay(ns)|
++---------------------+--------------+------+------+------------+-------------+
+|WG2_rc200_hch_148_Cl |              |      |      |            |             |
+|          ockInput_O |     BUFGMUX6S| No   |  715 |  0.193     |  1.187      |
++---------------------+--------------+------+------+------------+-------------+
+|W326_rc200e_hcl_main |              |      |      |            |             |
+|                  _O |         Local|      |   32 |  0.308     |  2.248      |
++---------------------+--------------+------+------+------------+-------------+
+* Net Skew is the difference between the minimum and maximum routing
+only delays for the net. Note this is different from Clock Skew which
+is reported in TRCE timing report. Clock Skew is the difference between
+the minimum and maximum path delays which includes logic delays.
+Timing Score: 0
+Number of Timing Constraints that were not applied: 18
+Asterisk (*) preceding a constraint indicates it was not met.
+   This may be due to a setup or hold violation.
+------------------------------------------------------------------------------------------------------
+  Constraint                                | Requested  | Actual     | Logic  | Absolute   |Number of  
+                                            |            |            | Levels | Slack      |errors     
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_RC200Clock | 10.000ns   | 5.897ns    | 3      | 4.103ns    | 0         
+  25175000InOut_Param0_in = MAXDELAY        |            |            |        |            |           
+    FROM TIMEGRP "PADS" TO TIMEGRP          |            |            |        |            |           
+  "TG_rc200e_hcl_main_RC200Clock25175000InO |            |            |        |            |           
+  ut_Param0_in" 10 ns                       |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  NET "WG2_rc200_hch_148_ClockInput_O" PERI | 39.721ns   | 29.470ns   | 17     | 10.251ns   | 0         
+  OD = 39.7219 ns HIGH 50%                  |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_IN_TG_rc200e_hcl_main_Data_Output_ | 19.000ns   | 4.096ns    | 0      | 14.904ns   | 0         
+  In = MAXDELAY FROM TIMEGRP         "TG_rc |            |            |        |            |           
+  200e_hcl_main_Data_Output_In" TO TIMEGRP  |            |            |        |            |           
+  "FFS" 19 ns                               |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_IN_TG_rc200e_hcl_main_Clock_Output | 19.000ns   | 4.096ns    | 0      | 14.904ns   | 0         
+  _In = MAXDELAY FROM TIMEGRP         "TG_r |            |            |        |            |           
+  c200e_hcl_main_Clock_Output_In" TO TIMEGR |            |            |        |            |           
+  P "FFS" 19 ns                             |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_NotBlankOut | 39.000ns   | 7.122ns    | 2      | 31.878ns   | 0         
+  _Param0 = MAXDELAY FROM TIMEGRP "FFS"     |            |            |        |            |           
+       TO TIMEGRP "TG_rc200e_hcl_main_NotBl |            |            |        |            |           
+  ankOut_Param0" 39 ns                      |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_ClockOut_P | 39.000ns   | 6.733ns    | 3      | 32.267ns   | 0         
+  aram0 = MAXDELAY FROM TIMEGRP "PADS"      |            |            |        |            |           
+      TO TIMEGRP "TG_rc200e_hcl_main_ClockO |            |            |        |            |           
+  ut_Param0" 39 ns                          |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_LCDDataEnab | 39.000ns   | 6.721ns    | 2      | 32.279ns   | 0         
+  leOut_Param0 = MAXDELAY FROM TIMEGRP      |            |            |        |            |           
+      "FFS" TO TIMEGRP "TG_rc200e_hcl_main_ |            |            |        |            |           
+  LCDDataEnableOut_Param0" 39 ns            |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_VSyncOut_Pa | 39.000ns   | 2.144ns    | 0      | 36.856ns   | 0         
+  ram0 = MAXDELAY FROM TIMEGRP "FFS" TO     |            |            |        |            |           
+       TIMEGRP "TG_rc200e_hcl_main_VSyncOut |            |            |        |            |           
+  _Param0" 39 ns                            |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_HSyncOut_Pa | 39.000ns   | 2.144ns    | 0      | 36.856ns   | 0         
+  ram0 = MAXDELAY FROM TIMEGRP "FFS" TO     |            |            |        |            |           
+       TIMEGRP "TG_rc200e_hcl_main_HSyncOut |            |            |        |            |           
+  _Param0" 39 ns                            |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_VSyncOut_P | N/A        | N/A        | N/A    | N/A        | N/A       
+  aram0 = MAXDELAY FROM TIMEGRP "PADS"      |            |            |        |            |           
+      TO TIMEGRP "TG_rc200e_hcl_main_VSyncO |            |            |        |            |           
+  ut_Param0" 39 ns                          |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_SyncOut_Pa | N/A        | N/A        | N/A    | N/A        | N/A       
+  ram0 = MAXDELAY FROM TIMEGRP "PADS"       |            |            |        |            |           
+     TO TIMEGRP "TG_rc200e_hcl_main_SyncOut |            |            |        |            |           
+  _Param0" 39 ns                            |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_SyncOut_Par | N/A        | N/A        | N/A    | N/A        | N/A       
+  am0 = MAXDELAY FROM TIMEGRP "FFS" TO      |            |            |        |            |           
+      TIMEGRP "TG_rc200e_hcl_main_SyncOut_P |            |            |        |            |           
+  aram0" 39 ns                              |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_CS4202BitCl | N/A        | N/A        | N/A    | N/A        | N/A       
+  kBus_Param0 = MAXDELAY FROM TIMEGRP       |            |            |        |            |           
+     "FFS" TO TIMEGRP "TG_rc200e_hcl_main_C |            |            |        |            |           
+  S4202BitClkBus_Param0" 20 ns              |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_RC200Clock2 | N/A        | N/A        | N/A    | N/A        | N/A       
+  5175000InOut_Param0_in = MAXDELAY         |            |            |        |            |           
+   FROM TIMEGRP "FFS" TO TIMEGRP         "T |            |            |        |            |           
+  G_rc200e_hcl_main_RC200Clock25175000InOut |            |            |        |            |           
+  _Param0_in" 10 ns                         |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_NotBlankOu | N/A        | N/A        | N/A    | N/A        | N/A       
+  t_Param0 = MAXDELAY FROM TIMEGRP          |            |            |        |            |           
+  "PADS" TO TIMEGRP "TG_rc200e_hcl_main_Not |            |            |        |            |           
+  BlankOut_Param0" 39 ns                    |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_LCDDataEna | N/A        | N/A        | N/A    | N/A        | N/A       
+  bleOut_Param0 = MAXDELAY FROM TIMEGRP     |            |            |        |            |           
+       "PADS" TO TIMEGRP "TG_rc200e_hcl_mai |            |            |        |            |           
+  n_LCDDataEnableOut_Param0" 39 ns          |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_HSyncOut_P | N/A        | N/A        | N/A    | N/A        | N/A       
+  aram0 = MAXDELAY FROM TIMEGRP "PADS"      |            |            |        |            |           
+      TO TIMEGRP "TG_rc200e_hcl_main_HSyncO |            |            |        |            |           
+  ut_Param0" 39 ns                          |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_IN_TG_rc200e_hcl_main_Data_Output | N/A        | N/A        | N/A    | N/A        | N/A       
+  _In = MAXDELAY FROM TIMEGRP         "TG_r |            |            |        |            |           
+  c200e_hcl_main_Data_Output_In" TO TIMEGRP |            |            |        |            |           
+   "PADS" 19 ns                             |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_CS4202BitC | N/A        | N/A        | N/A    | N/A        | N/A       
+  lkBus_Param0 = MAXDELAY FROM TIMEGRP      |            |            |        |            |           
+      "PADS" TO TIMEGRP "TG_rc200e_hcl_main |            |            |        |            |           
+  _CS4202BitClkBus_Param0" 20 ns            |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_IN_TG_rc200e_hcl_main_Clock_Outpu | N/A        | N/A        | N/A    | N/A        | N/A       
+  t_In = MAXDELAY FROM TIMEGRP         "TG_ |            |            |        |            |           
+  rc200e_hcl_main_Clock_Output_In" TO TIMEG |            |            |        |            |           
+  RP "PADS" 19 ns                           |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_CS4202NotRe | N/A        | N/A        | N/A    | N/A        | N/A       
+  setBus_Param0 = MAXDELAY FROM TIMEGRP     |            |            |        |            |           
+       "FFS" TO TIMEGRP "TG_rc200e_hcl_main |            |            |        |            |           
+  _CS4202NotResetBus_Param0" 40 ns          |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_ClockOut_Pa | N/A        | N/A        | N/A    | N/A        | N/A       
+  ram0 = MAXDELAY FROM TIMEGRP "FFS" TO     |            |            |        |            |           
+       TIMEGRP "TG_rc200e_hcl_main_ClockOut |            |            |        |            |           
+  _Param0" 39 ns                            |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_CS4202Sync | N/A        | N/A        | N/A    | N/A        | N/A       
+  Bus_Param0 = MAXDELAY FROM TIMEGRP        |            |            |        |            |           
+    "PADS" TO TIMEGRP "TG_rc200e_hcl_main_C |            |            |        |            |           
+  S4202SyncBus_Param0" 40 ns                |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_CS4202SyncB | N/A        | N/A        | N/A    | N/A        | N/A       
+  us_Param0 = MAXDELAY FROM TIMEGRP         |            |            |        |            |           
+   "FFS" TO TIMEGRP "TG_rc200e_hcl_main_CS4 |            |            |        |            |           
+  202SyncBus_Param0" 40 ns                  |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_CS4202SDat | N/A        | N/A        | N/A    | N/A        | N/A       
+  aOutBus_Param0 = MAXDELAY FROM         TI |            |            |        |            |           
+  MEGRP "PADS" TO TIMEGRP         "TG_rc200 |            |            |        |            |           
+  e_hcl_main_CS4202SDataOutBus_Param0" 40 n |            |            |        |            |           
+  s                                         |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_hcl_main_CS4202SData | N/A        | N/A        | N/A    | N/A        | N/A       
+  OutBus_Param0 = MAXDELAY FROM TIMEGRP     |            |            |        |            |           
+       "FFS" TO TIMEGRP "TG_rc200e_hcl_main |            |            |        |            |           
+  _CS4202SDataOutBus_Param0" 40 ns          |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_hcl_main_CS4202NotR | N/A        | N/A        | N/A    | N/A        | N/A       
+  esetBus_Param0 = MAXDELAY FROM         TI |            |            |        |            |           
+  MEGRP "PADS" TO TIMEGRP         "TG_rc200 |            |            |        |            |           
+  e_hcl_main_CS4202NotResetBus_Param0" 40 n |            |            |        |            |           
+  s                                         |            |            |        |            |           
+------------------------------------------------------------------------------------------------------
+All constraints were met.
+INFO:Timing:2761 - N/A entries in the Constraints list may indicate that the
+   constraint does not cover any paths or that it has no requested value.
+All signals are completely routed.
+Total REAL time to PAR completion: 1 mins 30 secs 
+Total CPU time to PAR completion: 1 mins 28 secs 
+Peak Memory Usage:  187 MB
+Placement: Completed - No errors found.
+Routing: Completed - No errors found.
+Timing: Completed - No errors found.
+Number of error messages: 0
+Number of warning messages: 20
+Number of info messages: 0
+Writing design to file keybd2video.ncd
+PAR done!
+--------------------------------- BITGEN ---------------------------------
+Release 8.1.02i - Bitgen I.26
+Copyright (c) 1995-2005 Xilinx, Inc.  All rights reserved.
+Loading device for application Rf_Device from file '2v1000.nph' in environment
+F:\Xilinx.
+   "keybd2video" is an NCD, version 3.1, device xc2v1000, package
+   fg456, speed -4
+This design is using the default stepping level (major silicon
+revision) for this device (0). Unless your design is targeted at
+devices of this stepping level, it is recommended that you explicitly
+specify the stepping level of the parts you will be using. This will
+allow the tools to take advantage of any available performance and
+functional enhancements for this device. The latest stepping level for
+this device is '1'. Additional information on "stepping level" is
+available at support.xilinx.com.
+Opened constraints file keybd2video.pcf.
+Sun Oct 22 11:22:27 2006
+Creating bit map...
+Saving bit stream in "keybd2video.bit".
+Bitstream generation is complete.
+---------------------------------- DONE ----------------------------------
+
+Custom build stage complete
+</pre>
+
+  </body>
+</html>

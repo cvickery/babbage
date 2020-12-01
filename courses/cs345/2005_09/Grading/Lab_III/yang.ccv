@@ -1,0 +1,67 @@
+
+CS-345 Laboratory III
+Fall 2005
+
+Here is my evaluation of your third Laboratory assignment.
+Dr. Vickery
+---------------------------------------------------------
+
+Project and Workspace Setup
+
+  Fine.
+
+Use of Handel C
+
+  Be careful formatting your code and comments: too many lines are
+  wider than the normal window width of about 80 characters.
+
+  Use present tense for comments.  That tell what the code does, not
+  what it will do.  (Even though you should write the comments before
+  you write the code!)
+
+  Use meaningful project names instead of 1, 2, and 3.  Likewise for
+  the source code file names.
+
+  In the third project, there is a diagnostic message about breaking
+  a combinatorial cycle (if with no else).  You have to fix this sort
+  of thing to avoid buggy code.  Every if has to have an else, even if
+  the else just contains a single delay statement.  That is, you
+  can't have a clock cycle in which there is nothing for a thread to
+  do.  If the condition being tested is false, what is the thread
+  supposed to do?  If the answer is "nothing," put in a delay
+  statement so it has something to do when it has nothing to do.
+  (Hope that makes sense!)
+
+  Instead of two separate while loops to monitor the two switches, I
+  suggest putting both reads in a par block inside one while loop:
+  there is less for the reader to keep track of that way.  I don't
+  know whether that would use more or less hardware, but I think any
+  difference would be trivial.
+
+  I can get a character to display on the screen after clearing it by
+  pressing the "redraw" button, even without typing another character.
+
+  Both your comments and your report don't express directionality in
+  standard ways:  Read _from_ the keyboard, write _to_ RAM.  Read
+  _from_ RAM, write _to_ the console.  "...displays the data in the
+  RAM" isn't wrong, it just would be clearer to talk about the
+  direction of data flow.
+
+  In general, there should be no need to mention variable names in
+  comments.  Let the comments guide the reader to the algorithmic
+  steps being implemented and let well-written code (including
+  meaningful variable names) tell the reader how the algorithm is
+  actually being implemented.
+
+Report
+
+  Use styles for the title and for the section headings.  Put in section
+  headings for the Method, Results, and Discussion sections.  Use
+  subheading styles for the different projects in the Method section.
+  Use past tense for the method and results sections.  Leave out
+  references to file, variable, and function (proc) names in general.
+  Remember, the reader of the report is assumed to have access to the
+  actual code too.
+
+Grade:  9.0/10.0
+

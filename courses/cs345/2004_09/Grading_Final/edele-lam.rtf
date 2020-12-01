@@ -1,0 +1,80 @@
+{\rtf1\ansi\ansicpg1252\deff0{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+{\colortbl ;\red0\green0\blue0;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\qc\cf1\lang1033\i\f0\fs32 CS-345 Final Project\par
+Title: Whack a mole\par
+\i0\fs24\par
+\ul Author: Robert Edele & Frank Lam\par
+\pard\par
+\ulnone Introduction...........................................................................................................1\par
+Method...............................................................................................................1,2\par
+Result.................................................................................................................2,3\par
+Discussion............................................................................................................3\par
+\pard\qc\ul\fs32\par
+\pard\ulnone\par
+\ul Introduction:\par
+\par
+\ulnone\fs20 In this final project, we created a game called  "whack a mole". We wrote all the handel C code and implemented the game on the FPGA with touch screen function. The mole pops up on the screen and the player hits it using the touch screen display.\par
+\par
+\par
+\par
+\ul\fs32 Method: \par
+\par
+\ulnone\fs20 Our project was divided into three parts: the graphics routines, the mole routines, and the I/O routines. We used the Celoxica RC200E FPGA platform. We used alpha blending to create smooth edges. We used the two PL1 RAMs to implement double buffering. Double buffering is where one buffer accumulates data for the next frame while the other buffer holds the current frame being drawn to the display.\par
+\par
+The graphic routines provided helper functions to aid in drawing the graphics. These consisted of the pixel level function putpixel(), the primitive level functions do_line(), do_segmented_line(), rectfill(), and do_polygon(), and the object level functions do_explosion(), do_mole(), and do_bashed_mole(). \par
+\par
+Putpixel supports alpha blending and, like its name suggests, puts a single pixel in the frame buffer. The do_ line() was used to draw an arbitrary line and was used to simplify higher level functions. The do_polygon() and do_segmented_line() were very similar and were used to draw the facial features of our moles and the star that shows where the user touched the display. In do_segmented_line(), the first and the last coordinates are not connected but they are connected in the do_polygon(). The do_explosion() was used to draw a five point star. For do_mole(), it was used to draw a mole and do_bashed_mole() was used to draw a mole when it's head was bashed. Finally, the rectfill() was used to draw a filled rectangle, with position 1 in the upper left corner of the rectangle and position 2 in the lower right corner of the rectangle.\par
+\par
+In graphic rountines, do_mole() could call the rectfill() and do_segmented_line(). The do_bashed_mole() could also call the do_segmented_line(). Besides, the do_explosion() could call the do_polygon(). Also, the do_segmented_line() and the do_polygon() could call the do_line(). Finally the do_line() call the putpixel().\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+The mole routines provided helper functions to aid updating and initializing  the mole. At the beginning we set up a random number generator for random numbers. Then we declared the mole and the black hole structure. Function update_moles() cleared the background, determined the state of the mole and decided to call either do_mole() or do_bashed_ mole(). The update_moles() is called every time a frame was done.\par
+\par
+\par
+The whack_a_mole routines provided helper functions to aid handling the output. The clear_frame_buffer() was used to clear the whole frame buffer. For the first main() , it was used to handle video output and the second one was used to handle the mole and the touch screen. In the second main(), it handled the mole by calling  the update_moles() in the mole routines. It also handled the touch screen by calling the do_explosion() in the graphics rountines.\par
+   \par
+\par
+\ul\fs32\par
+Result:\par
+\ulnone\fs20\par
+We finished our game, but not before encountering many bugs and errors.\par
+\par
+Our first major problem was related to how PL1 RAM works, and it manifested itself many times throughout our project. We did not realize that PL1 RAM must be written to or read once a request is made and it must be read or written exactly 1 clock cycle later. Not doing so resulted in many bizzare errors of a mostly graphical nature, although sometimes the program would freeze.\par
+\par
+Another problem was that division is an extremely expensive operation in hardware and we wanted a 16 bit divider. This took too long and generated timing errors. We were able to solve this problem by using an 8 bit divider for our alpha blending and accepting having only 4 bits of alpha and 4 bits of intensity precision. While still an expensive operation, 8 bits do barely fit within the timing constraints.\par
+\par
+Our alpha blending function was also the source of many problems. We originally tried to make it a macro, but being a very expensive operation having 3 16-bit multiplies, we made it into a normal function. Because of truncation error, blending 0xFF with a color (which should return the original color) returned one less than the inputted color, which interfered with our dirty rectangle clearing code. In combination with draw_id, it meant that our stars left 'mouse droppings' on the screen because the clear color was not exactly the original background color. We fixed this by adding 0x00FF to the 16 bit color before truncating but after blending, which does not cause overflow and makes 0xFF the identity blending element for all color values.\par
+\par
+Do line caused us worry, but it worked surprisingly well. It was copied from the Allegro Game Programming Library, which is a PC library for graphics and other game related support. Since it was written with a serial processor in mind, we feared that the code would be excessively slow on our FPGA. Luckily the code was extremely efficiently written and we were able to parallelize certain parts of it. We also had to change data types to Handel-C data types, but this worked surprisingly well. In particular, we had to replace references to Allegro's BITMAP structure to our frame buffer.\par
+\par
+Frame buffers gave us troubles related to PL1 RAM. When we switched buffers upon starting the next frame, we had trouble keeping the frame buffer macros pointing to the right frame buffer, and this caused PL1 access errors. We solved it by looking ahead and preparing to read from the other frame buffer on the last pixel of a frame, to be ready when we switch buffers.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+Underflow and overflow proved to be recurrent problems. We solved them by a variety of means including bound checking, expanding the size of variables, and heuristics (unsigned numbers larger than a certain size are likely the result of underflow and are unlikely to be an intentional large positive number).\par
+\ul\fs32\par
+\par
+\par
+Discussion:\par
+\par
+\ulnone\fs20 We are very satisfied with how our program works now, despite encountering and fixing many bugs to get it where it is. Our largest obstacle were long build times. By the time we finished, a build was taking half an hour. This meant that we had to be very careful to minimize silly errors and to try to fix as many bugs as possible per build and we still spent over half of our time waiting and trying to pass the time.\par
+\par
+The hardware limitations proved to be cumbersome, but not fatal. For the most part, after some reworking, we were able to implement the game as we imagined and planned it. The touch screen works great and was very easy to get working, despite limited documentation and it being a non-standard part of the RC200E. We were able to make good use having 2 PL1 RAM chips with our double buffering system. One chip would be drawing a frame to the display while the other chip would be written to by the graphics code. This arrangement allowed us the entire frame to prepare the next frame and allowed us to simplify our frame buffer code by drawing a pixel every single clock cycle and not having to resynchronize after the game starts.\par
+\par
+Alpha blending proved very expensive in terms of gates and complexity, but for a game with cartoon-style graphics like ours, aliasing is a major issue, and even though we did not explicitly need transparency, using thin regions of transparency on our edges allowed us to reduce aliasing. The blending also gave objects softer edges. One issue we did not solve involves the non-linear response of the LCD display. We believe that this is why the edges are darker than they should be and why we have more aliasing than we expected on our holes.\par
+\par
+The random number generator works surprisingly well considering that we invented the algorithm. It is random enough that a user cannot pick up patterns and know what will pop up. The only issue is that once the game is reset, it will follow the same order every time as it is a deterministic random number generator that always gets the same seed. Perhaps getting random data from the user before the game starts could eliminate this drawback, but we did not have time for such luxuries.\par
+\par
+In terms of fun factor, we're quite pleased. The game is fast paced, is very responsive, and looks nice, so we're happy.\par
+}
+
+

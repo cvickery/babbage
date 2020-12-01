@@ -1,0 +1,174 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Laboratory I</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-345/780 Laboratory I</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>The goal of this laboratory session is to familiarize you with the
+        laboratory, using your account, and managing projects.  It uses the
+        pipelined multiplier handed out in class on September 13 as the
+        project to work with.</p>
+      </div>
+      
+      <h2>Procedure</h2>
+      <div class="whitebox">
+        <ol>
+        
+          <li>
+          
+            <h5>Log into your account and set up a workspace and a
+            project.</h5>  <p class="inline">Log into any one of the
+            computers in A-227 using your account name for this course,
+            which consists of the first letter of your first name, your last
+            name, and the digits &ldquo;345&rdquo; or &ldquo;780&rdquo;all
+            as a single lower-case string.  That is, if you are an
+            undergraduate and your name is "Always A. Good Student", your
+            account name is <em>astudent345</em>.  Use the password given to
+            you in class, and remember that you will be required to change
+            it to something secure the first time you log in.</p>
+
+            <p>The names of the computers are:</p>
+            
+            <table  summary="Lists of computer names in A-205 and A-227."
+                    id="computers">
+            
+              <tr><th>A-205</th><th>A-227</th></tr>
+              <tr><td>birch</td><td>apple</td></tr>
+              <tr><td>cherry</td><td>fir</td></tr>
+              <tr><td>chestnut</td><td>juniper</td></tr>
+              <tr><td>elm</td><td>mimosa</td></tr>
+              <tr><td>ginkgo</td><td>peach</td></tr>
+              <tr><td>hemlock</td><td>pine</td></tr>
+              <tr><td>hickory</td><td>plum</td></tr>
+              <tr><td>&nbsp;</td><td>spruce</td></tr>
+              <tr><td>&nbsp;</td><td>sycamore</td></tr>
+              <tr><td>&nbsp;</td><td>walnut</td></tr>
+            
+            </table>
+            
+            <p>Room 205 is an &ldquo;open lab,&rdquo; which means you can
+            use the computers there any time you want.  The secretaries in
+            the CS Department Office (A-202) will open the lab for you if it
+            is closed.  Room 227 is a closed lab, available only during
+            class times.  However, all of the computers are accessible from
+            the Internet.  If you have access to a computer running Windows
+            XP with a broadband connection, you can use <span
+            class="programName">Remote Desktop </span> to log in.  From the
+            Start button, go to Programs, to  Accessories, to
+            Communications, and you will find it.  When it asks you what
+            computer you want to connect to, pick one of the names above and
+            add the domain name &ldquo;.cs.qc.edu&rdquo; to the computer
+            name.  For example, you would log into <em>ginkgo</em> by
+            entering <em>ginkgo.cs.qc.edu</em>.</p>
+
+              <p class="standoutBlock">When you use Remote Desktop,
+              select one of the computers in A-227 so that students
+              who are on campus will be able to use the computers in
+              A-205.  The exception, of course, is when our class uses
+              room A-227 between 5:00 and 6:15 pm on Tuesdays and
+              Thursdays.</p>
+
+            <p>Use <em>Windows Explorer</em> to verify that your &ldquo;My
+            Documents&rdquo; directory contains a directory named &ldquo;My
+            Projects.&rdquo;</p>
+            
+            <p>Start the DK GUI and create a new workspace.  Use your <span
+            class="fileName">My Projects</span> directory as the path to the
+            workspace.  Use cs345 or cs780 as the workspace name.  This
+            should immediately create an empty directory named <span
+            class="fileName">cs345</span> in your My Projects directory.</p>
+            
+            <p>Add a project named <span class="fileName">Multiplier</span>
+            to your workspace.  Select "core" as the type of project.  Exit
+            DK.</p>
+
+            <p>Verify that you have created a file named <span
+            class="fileName">cs345.hw</span> in your My Projects\cs345
+            directory.  [From here on, substitute &ldquo;780&rdquo; as
+            necessary in these instructions.]  Make sure there is a
+            subdirectory named <span class="fileName">Multiplier</span>, and
+            that there is a Multiplier.hp file in the project directory.</p>
+
+            <h5>Log off the computer you used and log into another
+            one.</h5>  <p class="inline">On the second computer, verify that
+            your workspace and project directories and their files appear on
+            the second computer, indicating that your &ldquo;profile&rdquo;
+            (settings) were successfully copied to the domain server (<span
+            class="computerName">maple</span>) when you logged off the first
+            computer and that they were then copied to the second computer
+            when you logged into it.  If you have any problems with this
+            step, contact Dr. Vickery for help before proceeding with the
+            remainder of the assignment.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Add the multiplier.hcc file to the project, edit the
+            multiplier code, and simulate it.</h5>
+
+          </li>
+        
+        </ol>
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

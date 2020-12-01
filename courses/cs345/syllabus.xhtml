@@ -1,0 +1,116 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Hardware Lab Syllabus</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Hardware Lab Syllabus</h1>
+    </div>
+
+    <div id="content">
+      <h2>Reading Material</h2>
+      <div class="whitebox">
+        <p>There is no textbook for this course.  Rather, your reading and
+        study assignments come from three sources:</p>
+        <dl>
+          <dt><a href="./Manuals">Reference Manuals</a></dt>
+          <dd>There are several manuals available online that you will need
+          to consult as you work on the laboratory assignments for the
+          course.</dd>
+          <dt>Laboratory Assignments</dt>
+          <dd>There will be links to the laboratory assignments for the
+          course on this semester&rsquo;s course schedule as they become
+          available.</dd>
+          <dt>Web Modules</dt>
+          <dd>There are some Java programs that are referenced from the
+          laboratory assignments.  Some illustrate concepts, and some
+          provide tools to help you do the assignments.</dd>
+        </dl>
+      </div>
+      <h2>Course Structure</h2>
+      <div class="whitebox">
+
+        <p>The syllabus for the course consists of a series of laboratory
+        assignments designed to provide you with a basic mastery of hardware
+        design using Field Programmable Logic Arrays (FPGAs).  The structure
+        varies from semester to semester, but there are typically five
+        assignments, with each assignment normally consisting of more than
+        one project.  Assignment grades are based on coding style, coding
+        efficiency, and documentation.  The assignments will make up
+        approximately 20% of your course grade.  You are expected to work
+        with a partner on the assignments, and you are encouraged to seek
+        help from and to give help to other people in the course when
+        working on the assignments.  However, each team is to submit its own
+        version of each assignment.</p>
+
+        <p>At the beginning of the semester and occasionally later in the
+        semester as well, there will be lectures.  Normally, however, you
+        will be spending your class time in the laboratory in Room A-227. 
+        The software in the lab requires a license to run, but you can
+        access the lab computers, as well as some additional ones that are
+        in Room A-205, from off campus provided you have a broadband
+        Internet connection.  In addition, you can get a key to the lab from
+        the department office when it is open, or from the campus main gate
+        on weekends.  You need to work in the lab itself in order to test
+        your projects on the laboratory kits.</p>
+
+        <p>There will be a midterm and a final exam, which will be based on
+        material covered in lectures and on both the principles and the
+        techniques learned by doing the laboratory assignments.  The exams
+        will count 40% of your course grade each.</p>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="../../">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

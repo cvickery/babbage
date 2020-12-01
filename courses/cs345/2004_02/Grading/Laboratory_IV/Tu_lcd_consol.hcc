@@ -1,0 +1,69 @@
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+#include "pal_master.hch"
+#include "pal_console.hch"
+#include "pal_keyboard.hch"
+/*
+* Forward declarations
+*/
+static macro proc RunTest (ConsolePtr, KeyboardPtr);
+static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+rom unsigned 8 hexTab[]="0123456789ABCDEF";
+
+
+void main (void)
+{
+    PalConsole *ConsolePtr;
+    PalKeyboard *KeyboardPtr;
+
+    /*
+     * Check we've got everything we need
+     */
+    PalVersionRequire  (1, 0);
+    PalVideoOutRequire (1);
+    PalPS2PortRequire  (2);
+
+    /*
+     * Run
+     */
+    par
+    {
+        PalConsoleRun (&ConsolePtr, PAL_CONSOLE_FONT_NORMAL,
+                       PalVideoOutOptimalCT (ClockRate), ClockRate);
+        PalKeyboardRun (&KeyboardPtr, PalPS2PortCT (1), ClockRate);
+
+        seq
+        {
+            par
+            {
+                PalConsoleEnable (ConsolePtr);
+                PalKeyboardEnable (KeyboardPtr);
+            }
+            RunTest (ConsolePtr, KeyboardPtr);
+        }
+    }
+}
+
+/*
+* Simple keyboard test
+*/
+static macro proc RunTest (ConsolePtr, KeyboardPtr)
+{
+    unsigned Char;
+
+    /*
+     * Dump characters from the keyboard to the console
+     */
+    do
+    {
+        PalKeyboardReadASCII (KeyboardPtr, &Char);
+		PalConsolePutChar (ConsolePtr, Char);
+		PalConsolePutChar (ConsolePtr, ' ');
+		PalConsolePutChar (ConsolePtr, '(');
+		PalConsolePutChar (ConsolePtr, hexTab[Char[7:4]]);
+    	PalConsolePutChar (ConsolePtr, hexTab[Char[3:0]]);
+		PalConsolePutChar (ConsolePtr, ')');
+	}
+    while (1);
+}
+

@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>motor_control.hcc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         solid;
+      }
+  </style>
+</head>
+<center><h1>motor_control.hcc</h1></center>
+<hr>
+<pre>
+//  motor_control.hcc
+
+/*
+ *    Generate pulses to control a modified Futaba S3003 servo
+ *    motor.  If one button is pressed, generate a 1 msec pulse
+ *    every 20 msec.  If the other button is pressed, generate a
+ *    2 msec pulse every 20 msec.  If neither button is pressed,
+ *    generate a 1.5 msec pulse.
+ *
+ *    Use FPGA pin M2, which is connected to expansion header pin
+ *    3, for output.
+ *
+ *    Provide code to interface with the Waveform Analyzer during
+ *    simulation.
+ *
+ *    Illustrates use of two main() functions.
+ *    Illustrates use of a chan for synchronization between threads.
+ *
+ *    Author: C. Vickery
+ *    Fall 2003
+ *
+ */
+
+#if (defined USE_RC200 || USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 50000000
+#else
+#define PAL_ACTUAL_CLOCK_RATE 1000000
+set clock = external "P1"
+  with
+  {
+    extlib  = "DKSync.dll",
+    extinst = "1000",         // Period of 1MHz simulated clock
+    extfunc = "DKSyncGetSet"
+  };
+#endif
+
+#include &lt;pal_master.hch&gt;
+#include &lt;stdlib.hch&gt;
+
+unsigned 1 motor_pin = 0;   //  The output value
+
+interface bus_out() motor( unsigned 1 out = motor_pin )
+  with
+  {
+#if (defined USE_RC200 || USE_RC200E)
+    data  = { "M2" }
+#else
+    extlib  = "DKConnect.dll",
+    extinst = "t(1)",
+    extfunc = "DKConnectGetSet"
+#endif
+  };
+
+
+//  microsec_delay()
+//  ------------------------------------------------------------------
+macro proc microsec_delay( microsec )
+{
+  macro expr count = PAL_ACTUAL_CLOCK_RATE / 1000000 * microsec;
+  unsigned (log2ceil( count )) counter;
+  counter = count - 1;
+  while ( counter != 0 ) counter--;
+}
+
+chan unsigned 1 sync;
+
+
+//  First main()
+//  ------------------------------------------------------------------
+/*
+ *    Generate a synchronizing event every 20 msec.
+ */
+  void main( void )
+  {
+    while ( TRUE )
+    {
+      microsec_delay( 20000 );
+      sync ! 1;
+    }
+  }
+
+
+//  Second main()
+//  ------------------------------------------------------------------
+/*
+ *    Generate a 1.0, 1.5, or 2.0 msec pulse every 20 msec, depending
+ *    on the states of the two pushbuttons.
+ *
+ *    This version generates no pulses when both buttons are pressed,
+ *    which also stops the motor like a 1.5 msec pulse.  You have to
+ *    keep sending pulses to get the motor to keep moving.
+ *
+ */
+  void main( void )
+  {
+    unsigned 1 sync_bit, switch_0, switch_1;
+
+
+    PalVersionRequire( 1, 2 );
+    PalSwitchRequire( 2 );
+
+    while ( TRUE )
+    {
+      sync ? sync_bit;
+      par
+      {
+        PalSwitchRead( PalSwitchCT( 0 ), &amp;switch_0 );
+        PalSwitchRead( PalSwitchCT( 1 ), &amp;switch_1 );
+      }
+      switch ( switch_1 @ switch_0 )
+      {
+
+        case 0b00:
+          motor_pin = 1;
+          microsec_delay( 1500 );
+          motor_pin = 0;
+          break;
+
+        case 0b01:
+          motor_pin = 1;
+          microsec_delay( 1000 );
+          motor_pin = 0;
+          break;
+
+        case 0b10:
+          motor_pin = 1;
+          microsec_delay( 2000 );
+          motor_pin = 0;
+          break;
+
+        case 0b11:
+          break;
+
+      }
+    }
+  }
+</pre><hr></body></html>

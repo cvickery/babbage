@@ -1,0 +1,82 @@
+
+  This is your grading report for Laboratory II.
+  Dr. Vickery
+
+  Team members:  Theodore Karoutsos, Dilmi Karunaratne, Jae Woo
+
+    NOTE:  The zip file you submitted included a full directory
+    hierarchy from "Documents and Settings" all the way down to your
+    workspace for this assignment.  It should start at the workspace
+    directory.
+
+  (4.5/5 points)  Report:  Did you use styles to structure the document
+  properly?  Was the material placed in the correct sections of the
+  report?  Was the report written using standard English usage,
+  including correct grammar and spelling?
+
+    Formatting is fine.
+
+    Use active voice, past tense.  Instead of "The sum which would be
+    in the display variable would also be shown on the LCD display."
+    you should write, "The LCD display showed the sum that was in the
+    display variable."  (Actually, it was the hex display, not the LCD
+    display, but that's a different issue.)
+
+    The Method section should describe the procedures you followed for
+    the two projects that constituted this assignment, but it doesn't
+    even mention that there were two projects.
+
+    You didn't explain the debouncing logic.  Neither does the code.
+
+
+  (2/2 points)  Laboratory Setup:  Was the workspace set up correctly,
+  and were the projects properly configured?
+
+    Yes
+
+  (2.5/3 points)  Code:  Was the code formatted and documented according
+  to the coding guidelines for the course?  Did it do what it was
+  supposed to do?  Did it use the Handel-C language effectively?
+
+    File counters.hcc contains 7 tab characters.
+    File counters.hcc contains 1 line longer than 72 characters.
+    File Pipeline.hcc contains 9 tab characters.
+    File Pipeline.hcc contains 6 lines longer than 72 characters.
+
+    counters.hcc is virtually undocumented and contains commented-out
+    debugging code.
+    counters.hcc contains an unused variable, x.
+    The par block in counters.hcc is not properly indented.
+
+    Pipeline.hcc does not leave the displays dark while the pipeline
+    is being primed as specified in the project handout ... it
+    displays 0x00.
+
+    Pipeline.hcc is not documented according to the coding guidelines
+    for the course.
+
+    Pipeline.hcc does not display the correct values in the LEDs.  The
+    assignment was to show the binary numbers 00, 01, 10, and 11 for
+    "0, 1, 2, and 3 or more" stages.  Your code displays 01 when the
+    add button has been pressed twice, so it's best described as "0/1,
+    2, 3, and 4 or more."  Follow directions carfully when they are
+    fully specified.  Make your own decisions when they are not fully
+    specified.
+
+    Pipeline.hcc has an empty do/while loop on lines 129-130, which
+    leads to a warning message about a "combinational cycle" that you
+    must not ignore.  Put a delay statement in the body of the loop.
+
+    Including an ifselect for every case in the par loop defeats the
+    purpose of the par loop itself.  Only the two ends of the pipeline
+    need special handling.  All the middle elements (no matter how
+    many there are) can be handled by assigning pipeline[index] =
+    pipeline[index-1].
+
+    There is no reason to zero out the pipeline array each time the
+    reset button is pressed because, if coded properly, the contents
+    will be ignored until a full set of valid sums have been shifted
+    into it.  That's why the specs said to blank the hex displays
+    until the pipeline is primed.
+
+  Assignment Grade is 9.0

@@ -1,0 +1,27 @@
+/* author: ELI BLUM,marc khan
+   name: led_buttons.hcc
+   purpose: push a button, LED lights up.
+*/
+
+
+
+
+#define PAL_TARGET_CLOCK_RATE 50000000
+
+
+#include "pal_master.hch"
+#include "pal_rc200.hch"
+#include "stdlib.hch"
+
+void main(void){
+	unsigned 1 sw0;//hold first button
+	unsigned 1 sw1;//hold second button
+	
+	while(1){
+	  	
+		PalSwitchRead(PalSwitchCT(1),&sw1);
+		PalSwitchRead(PalSwitchCT(0),&sw0);
+		PalLEDWrite(PalLEDCT(1),sw0);
+	    PalLEDWrite(PalLEDCT(0),sw1);
+	}   
+}

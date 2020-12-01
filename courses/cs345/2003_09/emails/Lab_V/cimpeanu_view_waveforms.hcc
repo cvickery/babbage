@@ -1,0 +1,32 @@
+/****************************************************
+ * view_waveforms.hcc     Adrian Cimpeanu           *
+ * This is one of the examples found in the         *
+ * WaveForm Analyzer manual. This program keeps     *
+ * generating pulses.                               *
+ ***************************************************/
+
+//specifying a clock to be used for simulation
+set clock = external "P1"
+/* make use of the dynamic link library
+ * so so we can use WaveForm Analyzer
+ * to simulate the pulses. Any Handel-C 
+ * simulation that connects the WaveForm
+ * analyzer uses DKSync plugin with the
+ * clock period specified in the extinst 
+ */
+
+with {extlib = "DKSync.dll", extinst = "60", extfunc = "DKSyncGetSet"};
+//declare a 3 bit variable and assign value 0 to it.
+unsigned 3 x = 0;
+
+//output  bus to pin; connected using and DKConnect.dll and DKConnectGetSet 
+interface bus_out() ob1(unsigned 3 out = x)
+with {extlib = "DKConnect.dll", extinst = "t(3)", extfunc =
+"DKConnectGetSet"};
+
+void main(void)
+{
+while(1) x++;
+}
+
+

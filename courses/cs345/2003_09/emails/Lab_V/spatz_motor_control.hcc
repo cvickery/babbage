@@ -1,0 +1,139 @@
+/*
+    motor_control.hcc
+    Kurt Humes
+    Justin Spatz
+*/
+
+
+/*
+    set up macros based on whether the progam is being
+    built for the RC200 or for simulation with the
+    wave form analyzer
+*/
+#if (defined USE_RC200 || USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 50000000
+#define SWITCH0 PalRC200Button0
+#define SWITCH1 PalRC200Button1
+#define NUM_SWITCHES 2
+#else
+#define PAL_ACTUAL_CLOCK_RATE 1000000
+set clock = external "P1"
+with
+{
+extlib  = "DKSync.dll",
+extinst = "1000",       // Period of 1MHz simulated clock
+extfunc = "DKSyncGetSet"
+};
+#define SWITCH0 PalSwitch(8)
+#define SWITCH1 PalSwitch(9)
+#define NUM_SWITCHES 10
+#endif
+
+
+
+#include<pal_master.hch>
+#include<stdlib.hch>
+
+unsigned 1 pulseOut = 0; //used to write to pin 3 on expansion header
+
+//sets up a bus_out interface that writes to pin M2 on the FPGA
+//which is connected to pin 3 on the expansion header of the 
+//RC200
+//or if being built for simulation with waveform analyzer
+//writes to virtual terminal t(1)
+interface bus_out() MotorOut(unsigned 1 out = pulseOut)
+with
+{
+#if (defined USE_RC200 || USE_RC200E)
+data  = { "M2" }
+#else
+extlib  = "DKConnect.dll",
+extinst = "t(1)",
+extfunc = "DKConnectGetSet"
+#endif
+};
+
+//channel used for communication between
+//infinite loops
+chan unsigned 1 comm;
+unsigned 1 RXSignal; //reads from the channel
+unsigned 1 b1reader; //state of button0
+unsigned 1 b2reader; //state of button1
+
+//defines different periods of delay and pulse time
+#define TEN 1000
+#define FIFTEEN 1500
+#define TWENTY 2000
+#define CHANNEL_DELAY 20000
+#define PULSE 1000
+#define EVER ;;
+
+//delays for a given amount of microseconds
+macro proc microsecond_delay ( microseconds );
+
+void main(void)
+{
+
+    PalVersionRequire (1, 0);
+
+    //execute two infinite loops in parallel
+    par
+    {
+        for(EVER)
+        {
+            //send a signal every 20 milliseconds
+            microsecond_delay(CHANNEL_DELAY);
+            comm ! 1;
+        }
+        
+        for(EVER)
+        {
+            //when signal is read 20 ms delay is over
+            comm ? RXSignal;
+
+            //read the button states
+            PalSwitchRead(SWITCH0,&b1reader);
+            PalSwitchRead(SWITCH1,&b2reader);
+          
+            //operate motor according to button states
+            switch(b2reader@b1reader)
+            {
+            //both buttons are pressed
+            //send 1.5 ms delay so that the motor
+            //does nothing
+            case 0b11 : pulseOut=1;
+                        microsecond_delay(FIFTEEN);
+                        pulseOut=0;
+                        break;
+            //button 0 is pressed
+            //send 1 ms pulse to rotate clockwise
+            case 0b01 : pulseOut=1;
+                        microsecond_delay(TEN);
+                        pulseOut=0;
+                        break; 
+            //button 1 is pressed
+            //send 2 ms pulse to rotate counter clockwise
+            case 0b10 : pulseOut=1;
+                        microsecond_delay(TWENTY);
+                        pulseOut=0;
+                        break;
+            //neither buttons are pressed
+            //do nothing
+            case 0b00 : pulseOut=0;
+                        break;
+            }
+            
+        }        
+    }
+}
+
+
+
+macro proc microsecond_delay ( microseconds )
+{
+   macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * microseconds) / 1000000; 
+   unsigned (log2ceil (Cycles)) count;
+   count=Cycles;
+   while(count>0)
+   {count--;} 
+}

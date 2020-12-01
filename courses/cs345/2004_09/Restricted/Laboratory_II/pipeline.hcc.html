@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>pipeline.hcc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         solid;
+        border-width:   1px;
+        padding:        0.5em;
+      }
+  </style>
+</head>
+<center><h1>pipeline.hcc</h1></center>
+<hr>
+<pre>
+// pipeline.hcc
+
+/*
+ *  Builds on the Counters project: One switch causes a new sum to be
+ *  computed and pushed into the pipeline.  Another switch clears the
+ *  pipeline.  Two LEDs indicate how many pipeline stages are in use
+ *  at any time:
+ *    00 None
+ *    01 One
+ *    10 Two
+ *    11 Three or more
+ *  Also, whenever the display variable contains one of the sums, the
+ *  value gets displayed in the seven segment displays.
+ *
+ *  C. Vickery
+ *  CS-345
+ */
+
+//  Simulation uses switches 8 and 9 so they can be "pressed"
+//  simultaneously with the mouse.  Also, a slower clock rate
+//  to approximate real time.
+#ifdef USE_SIM
+macro expr addButtonNumber    = 8;
+macro expr resetButtonNumber  = 9;
+#define PAL_TARGET_CLOCK_RATE  1000000
+#else
+macro expr addButtonNumber    = 0;
+macro expr resetButtonNumber  = 1;
+#define PAL_TARGET_CLOCK_RATE 50000000
+#endif
+
+#include &lt;pal_master.hch&gt;
+
+#include &lt;stdlib.hch&gt;
+
+//  The values to be summed
+signed rom 5 dataValues[3] = { 5, -2, 15 };
+
+//  The fifo
+signed 8 pipeline[4] = { -1, -1, -1, -1 };
+
+//  The two ends of the fifo
+signed    8 sum = 0;
+unsigned  8 displayValue = 0xFF;
+unsigned  1 displayValid = 0;
+
+//  Inputs
+macro expr addButton   = PalSwitchCT(addButtonNumber);
+macro expr resetButton = PalSwitchCT(resetButtonNumber);
+
+unsigned 1 addPressed, resetPressed;
+
+//  Outputs
+macro expr lsb  = 1;  //  Which LED for least significant bit
+macro expr msb  = 0;  //  Which LED for most significant bit
+macro expr led0 = PalLEDCT(lsb);
+macro expr led1 = PalLEDCT(msb);
+macro expr leftDisplay = PalSevenSegCT(0);
+macro expr rightDisplay = PalSevenSegCT(1);
+
+//  Shape for blanking a seven-segment display.
+macro expr blankDisplay = (unsigned 8) 0;
+
+
+//  msecDelay()
+//  ------------------------------------------------------------------
+/*
+ *    Millisecond delay macroproc.  Does nothing for the specified
+ *    number of milliseconds.
+ */
+  macro expr ticksPerMsec = PAL_ACTUAL_CLOCK_RATE / 1000;
+  macro proc msecDelay( msec )
+  {
+    macro expr numTicks = msec * ticksPerMsec;
+    unsigned (log2ceil(numTicks)) tickCount;
+    tickCount = numTicks - 1;
+    while (tickCount != 0)
+    {
+      tickCount--;
+    }
+  }
+
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *  Implements the complete application.  Requres 5 clock cycles to
+ *  produce each new display value.  Produces one new sum for each
+ *  press of the "Add" button.
+ */
+  void main( void )
+  {
+    //  Locals
+    unsigned 2 sumIndex;
+    unsigned 2 numActiveStages;
+
+    //  Check PAL Resources
+    PalVersionRequire(1, 0);
+    PalLEDRequire(2);
+    PalSwitchRequire(2);
+    PalSevenSegRequire(2);
+
+    //  Enable Seven Segment displays.
+    PalSevenSegEnable(leftDisplay);
+    PalSevenSegEnable(rightDisplay);
+
+    numActiveStages = 0;
+
+    //  The I/O and datapath blocks
+    //  --------------------------------------------------------------
+    par
+    {
+      //  Monitor the states of the two buttons and display the states
+      //  of the two LEDs.  Handle resets.
+      //  ------------------------------------------------------------
+      while (1)
+      {
+        par
+        {
+          PalSwitchRead(addButton,    &amp;addPressed);
+          PalSwitchRead(resetButton,  &amp;resetPressed);
+          PalLEDWrite(led0, numActiveStages[0]);
+          PalLEDWrite(led1, numActiveStages[1]);
+        }
+        //  Reset always works
+        if (resetPressed)
+        {
+          par
+          {
+            numActiveStages = 0;
+            displayValid    = 0;
+            sum             = 0;
+            PalSevenSegWriteShape(leftDisplay,  blankDisplay);
+            PalSevenSegWriteShape(rightDisplay, blankDisplay);
+          }
+        }
+        else
+        {
+          delay;
+        }
+      }
+
+
+      //  Main Loop
+      //  ------------------------------------------------------------
+      /*
+       *    Debounce Add button, and perform add-shift one time per
+       *    press.
+       */
+      while (1)
+      {
+        while (addPressed == 0)
+        {
+          delay;
+        }
+        //  Debounce
+        msecDelay(10);
+
+        //  Sum the elements of the ROM                        Clock #
+        sumIndex = 0;                                          //    1
+        do
+        {
+          par
+          {
+            sum += adjs(dataValues[sumIndex], width(sum));    //   2-4
+            sumIndex++;
+          }
+        } while ( sumIndex != 3 );
+
+        //  Push the ROM sum into the pipeline fifo.
+        par ( pipeIndex = 0; pipeIndex &lt; 4; pipeIndex++ )     //     5
+        {
+          ifselect ( pipeIndex == 0 )
+          {
+            pipeline[pipeIndex] = sum;
+          }
+          else
+          {
+            pipeline[pipeIndex] = pipeline[pipeIndex - 1];
+          }
+          displayValue = (unsigned)pipeline[3];
+        }
+
+        //  Update count of number of active stages.
+        if (numActiveStages == 3)
+        {
+          if (displayValid == 1)
+          {
+            par
+            {
+              //  Show the newly available sum
+              PalSevenSegWriteDigit(leftDisplay,  displayValue[7:4], 0);
+              PalSevenSegWriteDigit(rightDisplay, displayValue[3:0], 0);
+            }
+          }
+          else
+          { //  Three active stages but not valid yet
+            displayValid = 1;  // Turn on displays next time
+          }
+        }
+        else
+        {
+          //  Pipeline not fully primed yet
+          numActiveStages++;
+        }
+
+        //  Detect negative edge and debounce it
+        while (addPressed)
+        {
+          delay;
+        }
+        msecDelay(10);
+      }
+    }
+  }
+
+</pre><hr></body></html>

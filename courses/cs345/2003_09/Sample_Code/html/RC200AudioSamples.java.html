@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>RC200AudioSamples.java</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         solid;
+      }
+  </style>
+</head>
+<center><h1>RC200AudioSamples.java</h1></center>
+<hr>
+<pre>
+/* RC200AudioSamples.java
+ * 
+ *  Created on: Nov 8, 2003
+ *  Author:     C. Vickery
+ *
+ *  $Log$
+ * 
+ */
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
+
+//  Class RC200AudioSamples
+//  ------------------------------------------------------------------
+/**
+ * 
+ *  Generate Samples, like class GenerateSamples, except with
+ *  generated file name and parameters for use with RC200 PSL.
+ *
+ *  @author vickery
+ *
+ *
+ */
+  public class RC200AudioSamples
+  {
+    static int sampling_rate  = 8000;
+    static int sound_frequency     = 440;
+    static int bitsPerSample  = 20;
+    static int numSamples     = 0;
+
+    static final double twoPi = Math.PI + Math.PI;
+    static final double log2  = Math.log( 2 );
+
+
+  //  decize()
+  //  --------------------------------------------------------------
+  /**
+   *    Generate the n-digit decimal representation of an int.
+   *    Assumes the int is positive.
+   */
+    static String decize( int val, int numDigits )
+    {
+      StringBuffer sb =
+                        new StringBuffer( Integer.toString( val ) );
+      while ( sb.length() &lt; numDigits )
+      {
+        sb.insert(0, ' ' );
+      }
+      return new String( sb );
+    }
+
+  //  hexadize()
+  //  --------------------------------------------------------------
+  /**
+   *    Generate the n-digit hexadecimal representation of an int.
+   */
+    static String hexadize( int val, int numDigits )
+    {
+      StringBuffer sb = 
+                     new StringBuffer( Integer.toHexString( val ) );
+      while (sb.length() &lt; numDigits )
+      {
+        sb.insert(0, '0' );
+      }
+      if ( sb.length() &gt; numDigits )
+      {
+        sb.delete( 0,  (sb.length() - numDigits) );
+      }
+      for (int i = 0; i &lt; numDigits; i++ )
+      {
+        char c = Character.toUpperCase( sb.charAt( i ) );
+        sb.setCharAt( i, c );
+      }
+      sb.insert(0, "0x" );
+      return new String( sb );
+    }
+
+
+  //  main()
+  //  ----------------------------------------------------------------
+  /**
+   *    
+   */
+    public static void main(String[] args)
+    {
+      for (int i = 0; i &lt; args.length; i++ )
+      {
+        try
+        {
+          if ( "-r".equals( args[i] ) )
+          {
+            sampling_rate = Integer.decode( args[ ++i] ).intValue();
+            if (  (sampling_rate !=  8000) &amp;&amp;
+                  (sampling_rate != 16000) &amp;&amp;
+                  (sampling_rate != 32000) &amp;&amp;
+                  (sampling_rate != 48000) &amp;&amp;
+                  (sampling_rate != 11025) &amp;&amp;
+                  (sampling_rate != 22050) &amp;&amp;
+                  (sampling_rate != 44100) )
+            {
+              System.err.println( args[i] + " is not a valid audio" +
+              " sampling rate for the RC200" );
+              System.exit( 1 );
+            }
+            continue;
+          }
+
+          if ( "-f".equals( args[i] ) )
+          {
+            sound_frequency = Integer.decode( args[++i] ).intValue();
+            continue;
+          }
+        }
+        catch (NumberFormatException e)
+        {
+          System.err.println( e + " is not a valid number." );
+          System.exit( 1 );
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+          System.err.println( "Missing option value. ");
+          System.exit( 1 );
+        }
+        System.err.println( args[i] + " is not a valid option." );
+        System.exit( 1 );
+      }
+
+      //  Output file is named "samples_xxx_yyy.hch" where
+      //    xxx is sound frequency
+      //    yyy is sampling rate
+      PrintWriter pout = null;
+      try
+      {
+        pout = new PrintWriter( 
+          new FileWriter( "samples_" + sound_frequency + "_" +
+                                           sampling_rate + ".hch" ) );
+      }
+      catch (IOException e)
+      {
+        System.err.println( e );
+        System.exit( 1 );
+      }
+
+      //  Calculate actual number of samples.
+      numSamples = 1 + (sampling_rate / sound_frequency);
+
+      //  Generate double values of the samples but print integer
+      //  approximations.
+      DecimalFormat df5 = new DecimalFormat( " 0.00000;-0.00000" );
+
+      int scaleFactor         = 1 &lt;&lt; (bitsPerSample - 1);
+      int mask                = scaleFactor - 1; // Mersenne
+      int numHexDigits        = (bitsPerSample + 3) /4;
+
+      double secondsPerSample = 1.0 / sampling_rate;
+      double secondsPerCycle  = 1.0 / sound_frequency;
+      double timeNow          = 0.0;  //  sampling time
+      double radiansNow       = 0.0;  //  cycle time
+
+      pout.println( "  {" );
+      pout.println(
+            "//   Value\tSample#       Time   radians     Value" );
+
+      for ( int i=0; i&lt; numSamples; i++ )
+      {
+        //  Get value between -1.0 and +1.0
+        double realSampleValue = Math.sin( radiansNow );
+        //  Convert to signed int between -2^n and +2^n-1
+        int intSampleValue =
+                        (int)(realSampleValue * scaleFactor);
+        //  Display values in format suitable for generating
+        //  Handel-C code.
+        pout.println( "    " 
+          + hexadize( intSampleValue, numHexDigits ) + ", /* "
+          + decize( i, 4 ) + ":  "
+          + df5.format( timeNow )  + "  "
+          + df5.format( radiansNow ) + "  "
+          + df5.format( realSampleValue ) + "  */" );
+
+        timeNow += secondsPerSample;
+
+        if ( timeNow &gt; secondsPerCycle )
+          timeNow -= secondsPerCycle;
+
+        radiansNow = twoPi * timeNow/secondsPerCycle;
+      }
+      //  End of initialization list
+      pout.println( "  };" );
+        
+    //  Need to tell compiler integer values for parameters
+    double khz_rate = sampling_rate / 1000.0;
+    pout.println( "// Number of samples for a " + sound_frequency  +
+                   "Hz tone sampled at a " + khz_rate + "KHz rate " );
+    pout.println( "// with " +  bitsPerSample + " bits per sample." );
+    int sampleInterval = (int)(1E9 * 1.0 / sampling_rate );
+    pout.println( "macro expr numSamples_" + sound_frequency + "_" +
+                           sampling_rate + " = " + numSamples + ";" );
+    pout.close();
+    }
+  }
+</pre><hr></body></html>

@@ -1,0 +1,310 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Two Digit Timer</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-345/780 Two Digit Timer</h1>
+    </div>
+
+    <div id="content">
+      <h2>Summary</h2>
+      <div class="whitebox">
+
+        <p>Create four modules: <span class="functionName">main</span>, a
+        <span class="functionName">button manager</span>, a <span
+        class="functionName">display manager</span>, and a <span
+        class="functionName">timer manager</span>.  The main
+        module sets the clock speed, defines global variables, and runs the
+        three manager modules in parallel. </p>
+
+        <p>The job of the button manager is to maintain the states of two
+        one-bit global variables named button1 and button2.  These buttons
+        have to be &ldquo;debounced.&rdquo;</p>
+
+        <p>The display manager copies the states of the two buttons to two
+        LEDs and the states of two 4-bit unsigned integers named tens
+        and units to two seven segment displays.</p>
+        
+        <p>The timer manager uses button1 as its Run button and button2 as
+        its Fast button.  It waits for Run to go true, then it resets the
+        tens and units global variables to 00, and while Run remains true it:
+        waits either 0.1 or 1.0 second depending on the state of Fast, then
+        simultaneously updates the global variables tens and units to work
+        as a modulo 60 counter.</p>
+
+      </div>
+      
+      <h2>Details</h2>
+      <div class="whitebox">
+
+        <p>This assignment is an exercise in project management and an
+        introduction to working with true parallelism.  In software you can
+        create apparently parallel threads of execution, but the degree of
+        parallelism is limited by the number of CPU cores available to your
+        application, typically 1-2.  In hardware the parallelism is real and
+        limited only by the amount of logic you can cram into an FPGA.  If
+        the number of CPU cores increases dramatically over the next few
+        years as expected, your experience in parallel coding in projects
+        like this should carry over nicely into your software development
+        work too.</p>
+        
+        <ol>
+        
+          <li>Start by creating a new project in your course workspace using
+          any meaningful name for the project you like as long as I will
+          recognize it as your Two Digit Timer project.  Eliminate all the
+          build configurations except EDIF and Debug.  For reasons that will
+          hopefully become clear, do not specify PAL_TARGET_CLOCK_RATE in
+          the Preprocessor tab of the project settings.  You will still need
+          the USE_SIM and USE_RC200E settings, however.</li>
+          
+          <li>Create a Handel-C source file for the main module.  Use a
+          meaningful name, such as the name of the projct, for this .hcc
+          file.  The names <span class="fileName">main.hcc</span> and <span
+          class="fileName">top_level.hcc</span> also qualify as
+          &ldquo;meaningful.&rdquo; You will need to include the same three
+          header files as you used before (stdlib.hch, pal_master.hch, and
+          delay_procs.hch), but somewhere before you include pal_master, add
+          the following processor directives to set the clock speeds.  You
+          are doing this here because the other modules in the project will
+          manage the clock setting differently.
+
+          <div class="codeBlock">
+#ifdef USE_SIM
+#define PAL_TARGET_CLOCK_RATE 1000
+#else
+#define PAL_TARGET_CLOCK_RATE 50000000
+#endif
+          </div>
+
+          Declare the global variables for the project here: two one-bit
+          unsigned integers to hold the states of the two pushbuttons, and
+          two four-bit unsigned integers to hold the
+          values of the two counters.   You can also define the <span
+          class="functionName">main()</span> function here too, but for now
+          there is nothing for it to do:
+
+          <div class="codeBlock">
+void main( void }
+{
+  while (1)
+  {
+    delay;
+  }
+}
+          </div>
+
+          Make sure you can build the project using both build
+          configurations, but since it doesn&rsquo;t do anything yet, there
+          is no need to test it.</li>
+
+          <li>Create the button manager module.  The real problem that we
+          have to deal with is that the pushbuttons are mechanical devices
+          that operate by moving a spring-loaded piece of metal to open and
+          close an electrical circuit, and that piece of metal literally
+          bounces on and off its contact several times for several
+          milliseconds each time it is pressed or released.  The button
+          manager&rsquo;s job is to filter out the spurious activity that
+          follows button presses and releases.  There are a few ways to do
+          this, all of which realistically need two independent threads of
+          execution, one for each button.  (You can&rsquo;t have one button
+          be ignored because the other one is bouncing.)
+
+          <p>Set the button manager up as a macro proc with an endless loop
+          in it.  Inside the loop, set up three threads:</p>
+          <div class="codeBlock">
+macro proc buttonManagerRun(ClockRate)
+{
+  par
+  {
+    while (1)
+    {
+      delay;
+    }
+    while (1)
+    {
+      delay;
+    }
+    while (1)
+    {
+      delay;
+    }
+  }
+}
+          </div>
+
+          <p>Of course those <span class="keyWord">delay</span> statements
+          are just placeholders for now.</p>
+
+          <p>We are going to use the following algorithm to debounce each  
+          switch:</p>
+          <div class="codeBlock">
+Do Forever:
+
+  Keep reading the switch until it becomes a 1
+  Update the global variable for this switch to show that the button was pressed
+  Wait ten milliseconds
+  Keep reading the switch until it becomes 0
+  Update the global variable for this switch to show that the switch was released
+  Wait ten milliseconds
+  
+          </div>
+
+          <p>Just to make the point that concurrency is real and free, use
+          the first thread to read from both switches on every clock
+          cycle.  Implement the above algorithm in the other two threads.</p>
+          
+          <p class="standoutBox">You need to make one button, the fast/slow
+          control level-sensitive.  That is, your will change the state of
+          the global variable to 1 when the button is pressed and change it
+          to zero when the button is released.  But the run/stop button acts
+          as a toggle: When the button is pressed the global variable
+          changes to the opposite of whatever state it was in. (If it was on
+          turn it off; if it was off turn it on.  In Handel-C this would be
+          something like <span class="codeSnippet">var = ~var</span>.)  In
+          this case, the global variable does not change when the button is
+          released.</p>
+
+          <p>Now comes the clock management part.  To compile the above code
+          you need the standard three header files.  But if
+          PAL_TARGET_CLOCK_RATE is defined when this file is compiled, <span
+          class="fileName">pal_master.hch</span> will determine the actual
+          clock rate for the platform and generate a <span
+          class="keyword">set clock</span> statement to activate that
+          clock.  In the end, your project will end up with multiple clocks
+          defined, all of which are actually for the same clock signal.  The
+          project will probably build okay, but there will be all sorts of
+          warnings that would be better not to have to deal with. 
+          Here&rsquo;s the trick:  in this file, define
+          PAL_ACTUAL_CLOCK_RATE &mdash; you don&rsquo;t even have to give it
+          a value &mdash; before you include <span
+          class="fileName">pal_master.hch</span>.  In this situation, <span
+          class="fileName">pal_master.hch</span> will not generate a <span
+          class="keyword">set clock</span> statement and the project should compile and link without
+          problems.</p>
+          
+          <p>Do you see why the buttonManagerRun macro proc takes a
+          parameter named <span class="variableName">ClockRate</span> as an
+          argument?  You need to specify the clock rate when you call
+          <span class="functionName">msecDelay()</span>.</p>
+
+          <p>Update the main module so that it invokes <span
+          class="functionName">buttonManagerRun()</span>  Test that you can
+          compile and build the project.  But is still does not do anything,
+          so you still cannot be sure it is doing anything.</p>
+
+          </li>
+
+          <li>Implement the display magager module.  The display manger is
+          very similar in structure as the button manager.  The difference
+          is that on every clock cycle it writes the values of the global
+          variables (the two button values) and the two 4-bit variables to
+          two LEDs and two seven segment displays.  Update your main module
+          so that it runs buttonManagerRun() and displayManagerRun() in
+          parallel.  Note that the main module does not call these run macro
+          procs more than once.  Once started, they run forever.  (See
+          sample code below.)
+
+            <p>When you simulate the project at this point, you should be
+            able to verify that the two buttons control two LEDs in
+            different ways: one LED just matches the state (clicked or not)
+            of its button, while the other one turns on and off on alternate
+            clicks.</p>
+
+          </li>
+
+          <li>The last module is the timer module.  The algorithm is given
+          in the introduction.  This is to be a macro proc that runs in
+          parallel with the other two.  Code it so it does everything
+          possible in each clock cycle.  That is, both the tens and units
+          global variables get updated on each clock cycle provided the
+          device is in the running state.
+          </li>
+
+
+        </ol>
+
+        <p>The way the design of the project has worked out, the only job
+        the <span class="functionName">main()</span> function has is to
+        start the three macro procs running.  There is no need for it to
+        loop, but it must run the three macro procs in parallel because they
+        never complete:</p>
+        
+        <div class="codeBlock">
+void main( void )
+{
+  par
+  {
+    displayManagerRun(ClockRate);
+    buttonManagerRun(ClockRate);
+    timerManagerRun(ClockRate);
+  }
+}
+        </div>
+        <p>Note that the order of the three statements inside the <span
+        class="keyword">par</span> block does not matter: they all run
+        simultaneously.</p>
+        
+        <p>Finally, make a header file for the project.  Put <span
+        class="codeSnippet">extern macro proc xxxManagerRun(c);</span> in
+        the header file for each of the three macros, and include this
+        header file in all four source code files to make sure the macro
+        proc definitions and referneces all agree with each other.</p>
+
+      </div>
+      
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

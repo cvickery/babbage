@@ -1,0 +1,146 @@
+<html><head><title>Final Project Guidelines</title>
+<style type="text/css">
+  p { margin-left: 1em; margin-right: 2em; }
+  div.whitebox {background:white;border:solid; margin:1em; padding:1em;}
+</style>
+<style type="text/css" media="screen">
+  body { font-family: sans-serif }
+</style>
+</head><body bgcolor="#ffffcc">
+<center>
+<h1>CS-345 Final Project Guidelines</h1>
+</center>
+<h2>Introduction</h2>
+<div class="whitebox">
+
+  <p>Once you have completed the structured laboratory assignments for
+  the course, you are to use your experience with the laboratory
+  environment to design and build your own final project for the
+  course.  The project doesn't have to be big and complex.  After all,
+  there are only a few weeks available for completing it.  But it
+  should take the experience you've developed in the structured
+  laboratories to "the next level" in some way.  Perhaps you would like
+  to elaborate on one of the structured labs in an interesting way, or
+  perhaps you'd like to work with one of the interfaces not covered in
+  the structured labs.  The choice is up to you.</p>
+  
+  <p>This guideline gives you some ideas of the parameters and
+  requirements for doing your project.</p>
+
+</div>
+
+<h2>Requirements</h2>
+<div class="whitebox">
+
+  <p>You may work in a group or individually, as you prefer.  But if you
+  are going to work in a group, make sure everyone in the group is
+  seriously "signed on to the project."  It's just not fair to others if
+  you say you are going to work on a project and then don't pull your
+  weight.  It would be better to take on a small project of your own
+  than to agree to help out on a group project and then to let the team
+  down by not contributing fully.  Despite that last sentence, there is
+  no requirement that group projects be "big" to justify having multiple
+  people working on them.  Grades will not depend on group size.</p>
+  
+  <p>There will be a final report for the project, written according to
+  the <a href="./Lab_Report_Guidelines.pdf">Lab Report Guidelines</a>
+  for the course.  All code is to be structured and documented in
+  accordance with the <a href="./Coding_Guidelines.php">Coding
+  Guidelines</a> for the course.</p>
+  
+  <p>Instead of a final exam for the course, the class will meet at the
+  scheduled time for the final exam in SB A-205, for presentations of
+  the projects.  There will be about 15 minutes for each project and
+  part of the project grade will depend on the quality of the
+  presentation.  The presentation consists essentially of the contents
+  of the Laboratory Report:  Introduce the rationale for the project,
+  describe the Methodology used to implement the project, tell the
+  Results obtained, and finally, Discuss the project's significance,
+  successes, and/or failures.  Provide a live demonstration of the
+  project during the Results part of the presentation.  A projector will
+  be available for showing the RC-200E LCD display and/or
+  PowerPoint-type slides.</p>
+  
+  <p>You <i>must</i> submit a description of your project to me by email
+  and receive my approval for it before starting to work on it.  If you
+  are not sure exactly what you want to do, just give me an idea of the
+  general thoughts you have, and we'll pin it down iteratively.  The
+  idea is to make sure your idea is appropriate for the RC200E and can
+  realistically be done in the time available.</p>
+  
+  <p>As you think about your project, remember that the RC200E is a
+  student laboratory platform designed to provide you with a chance to
+  learn how build interfaces between logic functions and various
+  peripheral devices.  If you try to build a radio controlled airplane
+  using the RC-200E, it probably won't fly.  But if you wanted to mimic
+  the functionality of an airplane controller using the touchscreen to
+  control servomotors, you could do it.</p>
+  
+  <p>Remember, there is no CPU on the RC-200E, only (a lot of) gates and
+  flip-flops.  So if you try a project that is software intensive you
+  will have less chance of success than if you tackle something that
+  concentrates on hardware interfaces.  File I/O, for example, is going
+  to be a problem.  Despite the graphical features of the
+  touchscreen/LCD, an interactive drawing program is going to be a
+  problem.  On the other hand, it's perfectly all right to have a
+  software component of the project that runs on the PC and communicates
+  with the RC-200 through the serial or Ethernet ports.</p>
+
+  <p>Finally, here are some project ideas, along with comments about
+  what people have done in the past:</p>
+  
+  <ol>
+      <li>Bluetooth!  Nobody's gotten this to work yet.  The Bluetooth
+      protocol stack is very deep and complex.  On the other hand, there
+      is more documentation available now than previously, and it's
+      <i>possible</i> somebody could pull it off.</li>
+      
+      <li>SmartMedia!  Another device that's caused more problems than
+      one might expect.  It's not easy to read and write this device. 
+      It can be done, but be aware that if you want to work with a file
+      that was prepared on a PC, it's a piece of work to get it onto a
+      SmartMedia card and from there into the RC-200E.</li>
+      
+      <li>Ethernet.  There have been several projects that were
+      successful in getting Ethernet communcation going, even to the
+      point of transmitting audio and/or video from one device to the
+      other.  But it's a challenge.</li>
+      
+      <li>Audio.  There are numerous options here, both for input
+      (microphone or line in) and output (headphones or speakers). 
+      Voice over Ethernet has worked, and there are a number of
+      interesting "digital signal processing" (dsp) algorithms that
+      could be developed.  If you know what an FFT is, you might be
+      interested in something along those lines.</li>
+      
+      <li>Video.  Surprisingly difficult to get "right," but possible
+      nonetheless.  Students have been able to transmit video over the
+      Ethernet at about 15 frames per second.  Can you do better?</li>
+      
+      <li>Stepper motor controller.  If you have any electronics
+      background, this could be interesting.  Unlike a servomotor, a
+      stepper motor moves a fixed amount each time it receives a pulse,
+      making it ideal for robots, plotters, and other devices that need
+      precise control over the amount of movement.  We have some motors,
+      but have not yet built the electronic interface between them and
+      the FPGA pins.</li>
+      
+      <li>Games.  People have successfully built classic video games,
+      like "Snakes" and others like tic-tac-toe using the
+      touchscreen/LCD.  But make sure there's not too much video
+      processing involved.</li>
+      
+      <li>Piano keyboard.  One project in the past made a nice piano
+      interface, but was limited by the fact that the touchscreen will
+      register only one point at a time.  Try to play a chord, and you
+      get the average position on the screen of all points touched
+      simultaneously.  Take this into consideration for any sort of
+      touchscreen application.</li>
+      
+      <li>Novel ideas welcome!</li>
+  
+  </ol>
+
+</div>
+
+<hr></body></html>

@@ -1,0 +1,82 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) && 
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+
+  <title>CSCI 345/780 - Hardware Laboratory</title>
+
+  <link rel="shortcut icon" href="./favicon.ico" />
+  <link rel="stylesheet" type="text/css" media="all"
+        href="../css/style-all.css" />
+  <link rel="stylesheet" type="text/css" media="screen"
+        href="../css/style-screen.css" />
+  <link rel="stylesheet" type="text/css" media="print"
+        href="../css/style-print.css" />        
+
+</head>
+<body>
+
+<div id="head">
+<h1>CSCI 345/780 - Hardware Laboratory</h1>
+</div>
+
+<div id="body">
+
+  <h2>Introduction</h2>
+
+    <p>The current version of our Hardware Laboratory Course, an
+    introduction to FPGA design using the Handel-C language, was first
+    offered during the Fall 2003 semester.  Initial funding for the
+    laboratory came from an NSF Grant to Professors Seymour Goodman
+    and Christopher Vickery of the Computer Science Department.  Key
+    software packages used in the laboratory were donated by the <a
+    href="http://www.celoxica.com">Celoxica</a>, <a
+    href="http://www.xilinx.com">Xilinx</a>, and <a
+    href="http://www.altera.com">Altera</a> corporations.</p>
+    <p>Celoxica was acquired by another company late in 2008. With
+    no further support available for the logic kits we were using,
+    and no further development of the Handel-C programming language,
+    we stopped offering this course. At least until an alternative
+    for the Celoxica infrastructure comes along...</p>
+  <h2>Links</h2>
+
+    <ul>
+
+      <li><a href="./Announcement.html">Original Course
+      Announcement</a></li>
+      <li><a href="./RC200E_pix/">Pictures of the Celoxica RC200E
+      Development Kit</a></li>
+      <li><a href="./2007_02/">Course Material for Spring 2007</a></li>
+      <li><a href="./2006_09/">Course Material for Fall 2006</a></li>
+      <li><a href="./2005_09/">Course Material for Fall 2005</a></li>
+      <li><a href="./2004_09/">Course Material for Fall 2004</a></li>
+      <li><a href="./2004_02/">Course Material for Spring 2004</a></li>
+      <li><a href="./2003_09/">Course Material for Fall 2003</a></li>
+      <li><a href="Tutorials">Tutorial documents from Celoxica</a></li>
+    </ul>
+
+</div>
+
+<div id="footer">
+  <hr />
+  <p> <a href="../../">Vickery Home</a>&nbsp;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;<a 
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+  </p>
+  <p>Last modified <?php echo gmdate("Y-m-d",
+                             filemtime($_SERVER["SCRIPT_FILENAME"])); ?>
+  </p>
+</div>
+</body></html>

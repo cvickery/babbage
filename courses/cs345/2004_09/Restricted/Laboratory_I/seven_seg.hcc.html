@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>seven_seg.hcc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         solid;
+        border-width:   1px;
+        padding:        0.5em;
+      }
+  </style>
+</head>
+<center><h1>seven_seg.hcc</h1></center>
+<hr>
+<pre>
+/****************************************************************
+*                                                               *
+* Copyright (C) 1991-2003 Celoxica Ltd. All rights reserved.    *
+*                                                               *
+*****************************************************************
+*                                                               *
+* Project   :   PAL                                             *
+* Date      :   30 OCT 2002                                     *
+* File      :   seven_seg.hcc                                   *
+* Author    :   Matthew Aubury (MA)                             *
+*               Christopher Vickery (CV)                        *
+* Contributors:                                                 *
+*                                                               *
+* Description:                                                  *
+*    Simple 7-Segment demo for PAL.                             *
+*                                                               *
+* Date         Version  Author  Reason for change               *
+*                                                               *
+* 30 OCT 2002    1.00    MA     Created.                        *
+* 09 SEP 2004            CV     Modified for Laboratory I       *
+*                                                               *
+****************************************************************/
+
+/*
+ * For simulation, use a pretend clock rate close to real time, 1MHz.
+ * And use Pal switches 8 and 9 to allow simulating pressing both
+ * buttons at once.
+ */
+#ifdef USE_SIM
+#define PAL_TARGET_CLOCK_RATE 1000000
+#define Switch_0 8
+#define Switch_1 9
+#else
+#define PAL_TARGET_CLOCK_RATE 20000000
+#define Switch_0 0 
+#define Switch_1 1 
+#endif
+
+#include "pal_master.hch"
+#include "stdlib.hch"
+
+/*
+ * Forward declarations
+ */
+static macro proc Sleep (Milliseconds);
+
+/*
+ * Main program
+ */
+void main (void)
+{
+    unsigned 8 Count;
+    unsigned 1 left_switch, right_switch;
+
+    /*
+     * Check we've got everything we need
+     */
+    PalVersionRequire (1, 0);
+    PalSevenSegRequire (2);
+
+    /*
+     * Enable displays and switches
+     */
+    PalSevenSegEnable (PalSevenSegCT (0));
+    PalSevenSegEnable (PalSevenSegCT (1));
+    PalSwitchRequire( Switch_1+1 );
+
+    /*
+     * Display value of Count, then increment it if left switch is
+     * pressed, or decrement it if right switch is pressed.  Do
+     * nothing if both switches are pressed or if neither is pressed.
+     */
+    while (1)
+    {
+      //  Display Count for 500 msec
+      PalSevenSegWriteDigit (PalSevenSegCT (0), Count[7:4], 0);
+      PalSevenSegWriteDigit (PalSevenSegCT (1), Count[3:0], 0);
+      Sleep (500);
+
+      //  Increment or decerement depending on state of switches.
+      PalSwitchRead( PalSwitchCT(Switch_0), &amp;left_switch);
+      PalSwitchRead( PalSwitchCT(Switch_1), &amp;right_switch);
+      switch ( left_switch@right_switch )
+      {
+        case 0b00:
+          delay;
+          break;
+        case 0b01:
+          Count--;
+          break;
+        case 0b10:
+          Count++;
+          break;
+        case 0b11:
+          delay;
+          break;
+      }
+  }
+}
+
+/*
+ * Sleep for "n" milliseconds
+ */
+static macro proc Sleep (Milliseconds)
+{
+    macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * Milliseconds) / 1000;
+    unsigned (log2ceil (Cycles)) Count;
+
+    Count = 0;
+    do
+    {
+        Count++;
+    }
+    while (Count != Cycles - 1);
+}
+</pre><hr></body></html>

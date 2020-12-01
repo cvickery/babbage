@@ -1,0 +1,274 @@
+/****************************************************************
+*                                                               *
+* Project   :   Laboratory IV - UART                            *
+* Date      :   08 MAR 2004                                     *
+* File      :   lcd_console.hcc                                 *
+* Author    :   Shi Lai Zheng & Hok Tam                         *
+* Description:     UART                                         *
+****************************************************************/
+#if (defined USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 25175000
+#define BAUD_RATE 2400
+#define Switch_0 0
+#define Switch_1 1
+#else 
+#define PAL_ACTUAL_CLOCK_RATE 1000000
+#define Switch_0 8
+#define Switch_1 9
+  set clock = external "P1"
+  with
+  {
+    extlib = "DKSync.dll",
+    extinst = "1000",
+    extfunc = "DKSyncGetSet"
+    
+  };
+#endif
+
+#include "pal_master.hch"
+#include "pal_console.hch"
+#include "pal_keyboard.hch"
+#include "stdlib.hch"
+
+unsigned 1 TxD= 0;
+unsigned 1 RxD =0;
+
+unsigned 1 DO = 0;
+unsigned 1 FE = 0;
+unsigned 1 RF = 0;
+unsigned 1 DOreset;
+unsigned 1 FEreset;
+
+unsigned 4 i; 
+
+interface bus_out() transmit(unsigned 1 data_out = TxD) 
+  with{
+          #if(defined USE_RC200E)
+            data ={"V20"}
+          #else
+            {
+              extlib = "DKConnect.dll", 
+              extinst = "t(1)", 
+              extfunc = "DKConnectGetSet"
+            }
+          #endif
+      }; 
+interface bus_in(unsigned 1 data_in) receive() 
+    with {data = {"U20"}};
+
+
+static macro proc driver (ConsolePtr, KeyboardPtr);
+static macro proc transmitter();
+static macro proc receiver();
+
+static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+static macro expr DO_LED = PalLEDCT(0);
+static macro expr FE_LED = PalLEDCT(1);
+static macro expr Datawidth = 8;
+chan unsigned 8 THR;
+chan unsigned 8 RBR;
+unsigned 8 Char;
+unsigned 8 Char2;
+unsigned 1 led0, led1;
+rom unsigned 8 hexTab[] = "0123456789ABCDEF";
+
+/*
+ * Main program
+ */
+  void main (void)
+  {
+    PalConsole *ConsolePtr;
+    PalKeyboard *KeyboardPtr;
+
+    /*
+     * Check we've got everything we need
+     */
+    PalVersionRequire  (1, 0);
+    PalVideoOutRequire (1);
+    PalPS2PortRequire  (2);
+    PalVersionRequire (1, 0);
+    PalLEDRequire     (1);
+
+    /*
+     * Run
+     */
+    par
+    {
+      PalConsoleRun (&ConsolePtr, PAL_CONSOLE_FONT_NORMAL, 
+                     PalVideoOutOptimalCT (ClockRate), ClockRate);
+      PalKeyboardRun (&KeyboardPtr, PalPS2PortCT (1), ClockRate);
+      seq
+      {
+        par
+        {
+          PalConsoleEnable (ConsolePtr);
+          PalKeyboardEnable (KeyboardPtr);
+        }
+       
+        par
+        {
+          driver (ConsolePtr, KeyboardPtr);  //driver
+          transmitter();  //transmiter
+          receiver();     //receiver
+        }
+      }
+    }
+  }
+
+
+
+//driver()
+//--------------------------------------------------------------------
+
+/*
+ * This method is to get a character from keyboard and writer to
+ * channel then transmitter coould read it from channel. This method
+ * also read a character from channel RBR and output character to
+ * console.
+ */
+  static macro proc driver (ConsolePtr, KeyboardPtr)
+  {
+    par
+    {
+      while(1)
+      {    
+        PalKeyboardReadASCII (KeyboardPtr, &Char);
+        THR ! Char;
+      }
+      while(1)
+      {
+        RBR ? Char2;
+        PalConsolePutChar (ConsolePtr, Char2);
+      }          
+    }
+  }
+
+  //Half bit delay()
+  //------------------------------------------------------------------
+  /*
+   * This method is to delay half bit time.
+   */
+    macro proc halfbit_delay(NoOfHalfbit)
+    {  
+      macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * NoOfHalfbit / BAUD_RATE) / 2;
+      unsigned  (log2ceil (Cycles)) Count;//20 Count
+
+      Count = 0;
+      do
+      {
+        Count++;
+      }
+      while (Count != Cycles - 1);
+    }
+
+
+  //transmiter()
+  //------------------------------------------------------------------
+  /*
+   *  This method is to read a character from channel THR; and assign
+   *  every bit of character to TxD one at time. So pin "V20" can
+   *  receive the TxD bit data.
+   */
+    macro proc transmitter()
+    {
+      do
+      {
+        THR ? Char;                         //read from channel THR
+        TxD = 0;                            //start bit
+        halfbit_delay(2);                   //delay 1 bit time
+ 
+        for (i = 0; i < 8; i++) 
+        {
+          TxD = Char[0];
+          Char >>= 1;
+          halfbit_delay (2);
+        }
+
+        TxD = 1;
+        halfbit_delay(2);
+      } while(1);
+    }
+
+//  receiver()
+//  ------------------------------------------------------------------
+/*
+ *
+ */
+  macro proc receiver()
+  {
+    unsigned 8 input;
+    unsigned 4 rxCounter;
+    par
+    {
+      while (1)
+      {
+        par
+        {
+          RxD = receive.data_in;
+          PalLEDWrite( FE_LED, FE );
+          PalLEDWrite( DO_LED, DO );
+        }
+      }
+ 
+   
+      while (1)
+      {
+        while (RxD == 1)
+        {
+          delay;
+        }
+        halfbit_delay(1);
+        if(RxD == 0)
+        {
+          for (rxCounter=0; rxCounter < 8; rxCounter++)
+          { 
+            halfbit_delay(2);
+            input = RxD@input[7:1];
+          }
+      
+          halfbit_delay(2);
+
+          if ( RxD == 1 )
+          {
+            RBR ! input; //write to channel
+          }
+          else
+          {
+            FE = 1;
+          }
+        } //end nested if statement
+        else
+        {
+          delay;
+        }
+      }
+    }
+  } //end of receiver
+
+// void main(void)
+//--------------------------------------------------------------------
+/*
+ * reads pushbuttons
+ *
+ */
+  void main(void)
+  {
+     while (1) 
+     {
+        PalSwitchRead(PalSwitchCT(Switch_0), &DOreset);//read the switch
+        PalSwitchRead(PalSwitchCT(Switch_1), &FEreset);//read the switch
+      
+      if (DOreset) 
+      {
+           DO = 0;
+           PalLEDWrite(PalLEDCT (0), 0);
+      } //end if
+
+      if (FEreset) 
+      {
+         FE = 0;
+         PalLEDWrite(PalLEDCT (1), 0);
+      } //end if
+    }
+  }
+

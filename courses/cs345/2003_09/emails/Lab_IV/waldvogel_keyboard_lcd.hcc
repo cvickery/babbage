@@ -1,0 +1,244 @@
+/*********************************************
+* Andrew Waldvogel
+* Lab IV - keyboard_lcd.hcc
+* 
+* This file reads a character from the keyboard
+* and prints its hexadeciaml value to the LCD.
+* 
+* 
+**********************************************/
+
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+
+// use lcd_handle to reference the current LCD pixle 
+#define lcd_handle PalVideoOutOptimalCT( PAL_ACTUAL_CLOCK_RATE )
+
+#include "pal_master.hch"
+#include "stdlib.hch"
+#include "pal_keyboard.hch"
+
+
+
+
+void main(void)
+{
+
+  PalKeyboard *KeyPtr;  // Set up a pointer for the PalKeyboard macros
+  unsigned 8 ASCII;     // This is the number read into the keyboard
+  unsigned 4 digitOne;  // This is the left hex number (stored as int)
+  unsigned 4 digitTwo;  // This is the right hex number (stored as int)
+ 
+
+
+  PalVersionRequire (1, 0);
+  // set up for input from PS2 port (keyboard)
+  PalPS2PortRequire (2);
+  // set up for output on the SevenSeg displays (for testing)
+  PalSevenSegRequire (2);
+  
+  // intitialize the output numbers to 00
+  digitOne = 0;
+  digitTwo = 0;
+  
+ 
+  par{ 
+   
+    // fire up the keyboard port 
+    PalKeyboardRun(&KeyPtr, PalPS2PortCT(1), PAL_ACTUAL_CLOCK_RATE);
+    PalKeyboardEnable(KeyPtr);
+    par{
+   
+      // read in input from the keyboard      
+      while(1)
+      {
+      delay;
+        seq{
+          PalKeyboardReadASCII(KeyPtr, &ASCII);
+          digitOne = ASCII \\ 4;
+          digitTwo = ASCII <- 4;
+        } // seq
+      } // while()
+    } // par
+
+  
+    par{
+     // fire up the touchscreen
+     PalVideoOutRun( lcd_handle, PAL_ACTUAL_CLOCK_RATE );
+      PalVideoOutEnable( lcd_handle );
+  
+      do {
+        delay;
+    
+        /*
+        *  The following if-else block is responsible for displaying
+        *  the numbers on the LCD in the following order:
+        *
+        *     1        8
+        *
+        *   2   3    9   10
+        *
+        *     4        11
+        *
+        *   5   6    12  13
+        *
+        *     7        14
+        *
+        *  lcd_handle is in an endless loop going through the LCD pixles.
+        *  At each pixle it checks if it is in the range of one of the 14
+        *  segments.  
+        *  If it is in the range of a segment, it checks to see if that 
+        *  segment should be displayed. (This is accomplished by checking
+        *  the negation.  This is done to simplify code since most numbers
+        *  use > 50% of the segments.) 
+        *  If the segment is "active" it will write a green pixle.  
+        *  If not, it will enter the final else (the background) and
+        *  print a blue or red background pixle.
+        */
+        seq {
+        // First number
+        // 1
+        if ( (PalVideoOutGetX(lcd_handle) > 50) && (PalVideoOutGetX(lcd_handle) < 150)
+             && PalVideoOutGetY(lcd_handle) > 10 && (PalVideoOutGetY(lcd_handle) < 30)
+             && (digitOne != 1)  && (digitOne != 4) )
+        {
+                 PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+           
+        // 2
+        else if ( PalVideoOutGetX(lcd_handle) > 50 && PalVideoOutGetX(lcd_handle) < 70
+             && PalVideoOutGetY(lcd_handle) > 30 && PalVideoOutGetY(lcd_handle) < 80 
+             && digitOne != 1 && digitOne != 2 && digitOne != 3 && digitOne != 7)  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        } 
+  
+        // 3
+        else if ( PalVideoOutGetX(lcd_handle) > 130 && PalVideoOutGetX(lcd_handle) < 150
+             && PalVideoOutGetY(lcd_handle) > 30 && PalVideoOutGetY(lcd_handle) < 80 
+             && digitOne != 5 && digitOne != 6 )  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+  
+  
+        // 4
+        else if ( PalVideoOutGetX(lcd_handle) > 50 && PalVideoOutGetX(lcd_handle) < 150
+             && PalVideoOutGetY(lcd_handle) > 80 && PalVideoOutGetY(lcd_handle) < 100 
+             && digitOne != 0 && digitOne != 1 && digitOne != 7)  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+  
+        // 5
+        else if ( PalVideoOutGetX(lcd_handle) > 50 && PalVideoOutGetX(lcd_handle) < 70
+             && PalVideoOutGetY(lcd_handle) > 100 && PalVideoOutGetY(lcd_handle) < 150 
+             && digitOne != 1 && digitOne != 3 && digitOne != 4 && digitOne != 5
+             && digitOne != 7 )  
+        { 
+           PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+
+        // 6
+        else if ( PalVideoOutGetX(lcd_handle) > 130 && PalVideoOutGetX(lcd_handle) < 150
+             && PalVideoOutGetY(lcd_handle) > 100 && PalVideoOutGetY(lcd_handle) < 150 
+             && digitOne != 2 )  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+  
+        // 7
+        else if ( PalVideoOutGetX(lcd_handle) > 50 && PalVideoOutGetX(lcd_handle) < 150
+             && PalVideoOutGetY(lcd_handle) > 150 && PalVideoOutGetY(lcd_handle) < 170 
+             && digitOne != 1 && digitOne != 4 && digitOne != 7)  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+  
+  
+        // Second Number
+        // 8
+        else if ( PalVideoOutGetX(lcd_handle) > 170 && PalVideoOutGetX(lcd_handle) < 270
+             && PalVideoOutGetY(lcd_handle) > 10 && PalVideoOutGetY(lcd_handle) < 30 
+             && digitTwo != 1 && digitTwo != 4 && digitTwo != 11 && digitTwo != 13)  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+  
+        // 9
+        else if ( PalVideoOutGetX(lcd_handle) > 170 && PalVideoOutGetX(lcd_handle) < 190
+             && PalVideoOutGetY(lcd_handle) > 30 && PalVideoOutGetY(lcd_handle) < 80 
+             && digitTwo != 1 && digitTwo != 2 && digitTwo != 3 && digitTwo != 7 
+             && digitTwo != 13)  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+  
+        // 10
+        else if ( PalVideoOutGetX(lcd_handle) > 250 && PalVideoOutGetX(lcd_handle) < 270
+             && PalVideoOutGetY(lcd_handle) > 30 && PalVideoOutGetY(lcd_handle) < 80 
+             && digitTwo != 5 && digitTwo != 6 && digitTwo != 11 && digitTwo != 12
+             && digitTwo != 14 && digitTwo != 15 )  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+       }
+
+        // 11
+        else if ( PalVideoOutGetX(lcd_handle) > 170 && PalVideoOutGetX(lcd_handle) < 270
+             && PalVideoOutGetY(lcd_handle) > 80 && PalVideoOutGetY(lcd_handle) < 100 
+             && digitTwo != 0  && digitTwo != 1 && digitTwo != 7 && digitTwo != 12 )  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+  
+
+        // 12
+        else if ( PalVideoOutGetX(lcd_handle) > 170 && PalVideoOutGetX(lcd_handle) < 190
+             && PalVideoOutGetY(lcd_handle) > 100 && PalVideoOutGetY(lcd_handle) < 150 
+             && digitTwo != 1 && digitTwo != 3 && digitTwo != 4 && digitTwo != 5 
+             && digitTwo != 7 && digitTwo != 9 )  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+  
+        // 13
+        else if ( PalVideoOutGetX(lcd_handle) > 250 && PalVideoOutGetX(lcd_handle) < 270
+             && PalVideoOutGetY(lcd_handle) > 100 && PalVideoOutGetY(lcd_handle) < 150 
+             && digitTwo != 2 && digitTwo != 12 && digitTwo != 15)  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+
+       // 14
+        else if ( PalVideoOutGetX(lcd_handle) > 170 && PalVideoOutGetX(lcd_handle) < 270
+             && PalVideoOutGetY(lcd_handle) > 150 && PalVideoOutGetY(lcd_handle) < 170 
+             && digitTwo != 1 && digitTwo != 4 && digitTwo != 7 && digitTwo != 10 
+             && digitTwo != 15 )  
+        { 
+            PalVideoOutWrite( lcd_handle, 0b000000001111111100000000 );
+        }
+  
+  
+        /* 
+        *  This prints the background - Everything not in a currently "active" segment.
+        *  In essence, this code divides the screen horizontally into segments of 32
+        *  pixels (2^5) and prints the first 3 (0,1,2) in red and the next 29 in blue.
+        *  Then again, you wrote this code so you don't need me to tell you what it
+        *  does!
+        */
+        else
+        {
+          if ( (PalVideoOutGetX(lcd_handle) <- 5) < 3)
+            { PalVideoOutWrite( lcd_handle, 0b111111110000000000000000 );
+            } // if
+          else
+            { PalVideoOutWrite( lcd_handle, 0b000000000000000011111111 );
+            } // else
+        } // else
+         
+       } // seq
+       } while (1); // do
+    } // par
+  } // par
+} // main()
+

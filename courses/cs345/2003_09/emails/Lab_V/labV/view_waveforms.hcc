@@ -1,0 +1,12 @@
+
+set clock = external "P1"
+ with {extlib = "DKSync.dll", extinst ="50", extfunc="DKSyncGetSet"};
+unsigned 3 x = 0;
+
+interface bus_out() ob1(unsigned 3 out =x )
+ with{ extlib= "DKConnect.dll", extinst = "t(3)", extfunc="DKConnectGetSet"};
+
+void main(void)
+{
+	while(1) x++;
+}

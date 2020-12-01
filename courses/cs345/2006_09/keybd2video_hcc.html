@@ -1,0 +1,559 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+                          "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>keybd2video.hcc</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body {
+        background-color: #ffc;
+        font-family:      sans-serif;
+        color:            #661;
+        margin:           2em;
+        }
+      h1 {
+        text-align:       center;
+        }
+      pre {
+        background-color: #fff;
+        color:            #111;
+        margin:           1em;
+        border:           1px solid red;
+        }
+      #footer {
+        text-align:       center;
+        font-size:        0.7em;
+        }
+  </style>
+</head>
+<h1>keybd2video.hcc</h1>
+<hr>
+<pre>
+//  keybd2video.hcc
+
+/*  Displays the hexadecimal representation of the ASCII code of
+ *  characters typed on a keyboard on two seven segment displays
+ *  connect to the FPGA and two seven segment displays drawn on
+ *  a video output device.  Sized and positioned for a 640x480
+ *  pixel display.  Features lozenge shapes for the segments.
+ *
+ *  When a keyboard key is typed, it's ASCII code is displayed on
+ *  the video output device, and then fades away.  Pushbutton 0
+ *  swaps the foreground and background colors; button 1 cycles
+ *  through a set of foreground and background pairs.
+ *
+ *  C. Vickery
+ *  October, 2006
+ */
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+#include &lt;stdlib.hch&gt;
+#include &lt;pal_master.hch&gt;
+#include &lt;pal_keyboard.hch&gt;
+
+#include "../delayProcs/delayProcs.hch"
+
+//  Clock and I/O handles
+macro expr  ClockRate = PAL_ACTUAL_CLOCK_RATE;
+macro expr  video = PalVideoOutOptimalCT(ClockRate);
+PalKeyboard *keybd;
+
+macro expr currX = PalVideoOutGetX(video);
+macro expr currY = PalVideoOutGetY(video);
+
+//  Hexadecimal to seven-segment lookup table
+static unsigned rom 7 hex2seven[16] =
+{
+  0b1111110, 0b0110000, 0b1101101, 0b1111001,
+  0b0110011, 0b1011011, 0b1011111, 0b1110000,
+  0b1111111, 0b1111011, 0b1110111, 0b0011111,
+  0b1001110, 0b0111101, 0b1001111, 0b1000111,
+};
+
+
+//  Which seven-segment display segments to display.
+//  Updated from keyboard data.
+static unsigned 7 leftShape =0x7F, rightShape= 0x7F;
+
+//  Drawing parameters: positions
+macro expr leftLeft     = 150;
+macro expr leftTop      = 125;
+macro expr rightLeft    = 350;
+macro expr rightTop     = leftTop;
+//  Drawing parameters: sizes
+macro expr thick        = 20;
+macro expr wide         = 150;
+macro expr high         = (wide-thick);
+
+//  hSeg()
+//  ------------------------------------------------------------------
+/*  Evaluates to true if (currX, currY) is inside a horizontal segment
+ *  with origin at (x,y), width == wide, and thickness == thick.
+ */
+  macro expr hSeg(x, y) =
+  ((y &lt; currY) &amp;&amp; (currY &lt; (y+thick)))
+  &amp;&amp;
+  (   // center bar
+    (((x+thick) &lt; currX) &amp;&amp; (currX &lt; (x+wide-thick)))
+    ||
+    ( //  left end
+      ((x+(thick/2)) &lt; currX) &amp;&amp; (currX &lt; (x+thick+1))
+      &amp;&amp;
+      (
+        ( //  top triangle
+          (currY &lt; (y+(thick/2)))
+          &amp;&amp;
+          (
+            (currX - (x+(thick/2))) &gt; (y+(thick/2) - currY)
+          )
+        )
+        ||
+        ( //  bottom triangle
+          (currY &gt; (y-1+(thick/2)))
+          &amp;&amp;
+          (
+            (currX - (x+(thick/2))) &gt; (currY - (y-1+(thick/2)))
+          )
+        )
+      )
+    )
+    ||
+    ( //  right end
+      (currX &gt; (x+wide-thick-1)) &amp;&amp; (currX &lt; (x+wide-(thick/2)))
+      &amp;&amp;
+      (
+        ( //  top triangle
+          (currY &lt; (y+(thick/2)))
+          &amp;&amp;
+          (
+            (currX - (x+wide-thick-1)) &lt; (currY - y)
+          )
+        )
+        ||
+        ( //  bottom triangle
+          (currY &gt; (y-1+(thick/2)))
+          &amp;&amp;
+          (
+            (currX - (x+wide-thick)) &lt; ((y-1+thick) - currY)
+          )
+        )
+      )
+    )
+  );
+
+
+//  vSeg()
+//  ------------------------------------------------------------------
+/*  Evaluates to true if (currX, currY) is inside a vertical segment
+ *  with origin at (x,y), height == high, and thickness == thick.
+ */
+  macro expr vSeg(x, y) =
+  ((x &lt; currX) &amp;&amp; (currX &lt; (x+thick)))
+  &amp;&amp;
+  (
+    (y &lt; currY) &amp;&amp; (currY &lt; (y+high))
+    &amp;&amp;
+    (
+      ( //  center bar
+        ((y+thick) &lt; currY) &amp;&amp; (currY &lt; (y+high-thick))
+      )
+      ||
+      ( //  top end
+        (y+(thick/2) &lt; currY) &amp;&amp; (currY &lt; (y+1+thick))
+        &amp;&amp;
+        (
+          ( //  left triangle
+            (currY - (y+1+(thick/2))) &gt; (x+(thick/2) - currX)
+          )
+          ||
+          ( // right triangle
+            (currY - (y+1+(thick/2))) &gt; (currX - (x+(thick/2)))
+          )
+        )
+      )
+      ||
+      ( //  bottom end
+        (y-1+high-thick &lt; currY) &amp;&amp; (currY &lt; (y+high-(thick/2)))
+        &amp;&amp;
+        (
+          ( // left triangle
+            (currX &lt; (x+1+(thick/2)))
+            &amp;&amp;
+            ((currX - x) &gt; (currY - (y-1+high-thick)))
+          )
+          ||
+          ( //  right triangle
+            (currX &gt; (x+(thick/2)))
+            &amp;&amp;
+            (((x+thick) - currX) &gt; (currY - (y-1+high-thick)))
+          )
+        )
+      )
+    )
+  );
+
+
+//  isForeground
+//  ------------------------------------------------------------------
+/*  Evaluates to true if current position is inside any segment that
+ *  is currently on.
+ */
+  macro expr isForeground =
+  (
+    leftShape[6] &amp;&amp;
+    hSeg(leftLeft, leftTop)                         //  Left A
+  ||
+    leftShape[5] &amp;&amp;
+    vSeg(leftLeft+wide-thick, leftTop)              //  Left B
+  ||
+    leftShape[4] &amp;&amp;
+    vSeg(leftLeft+wide-thick, leftTop+high-thick)   //  Left C
+  ||
+    leftShape[3] &amp;&amp;
+    hSeg(leftLeft, leftTop+high-thick+high-thick)   //  Left D
+  ||
+    leftShape[2] &amp;&amp;
+    vSeg(leftLeft, leftTop+high-thick)              //  Left E
+  ||
+    leftShape[1] &amp;&amp;
+    vSeg(leftLeft, leftTop)                         //  Left F
+  ||
+    leftShape[0] &amp;&amp;
+    hSeg(leftLeft, leftTop+high-thick)              //  Left G
+
+  ||
+
+    rightShape[6] &amp;&amp;
+    hSeg(rightLeft, rightTop)                       //  Right A
+  ||
+    rightShape[5] &amp;&amp;
+    vSeg(rightLeft+wide-thick, rightTop)            //  Right B
+  ||
+    rightShape[4] &amp;&amp;
+    vSeg(rightLeft+wide-thick, rightTop+high-thick) //  Right C
+  ||
+    rightShape[3] &amp;&amp;
+    hSeg(rightLeft, rightTop+high-thick+high-thick) //  Right D
+  ||
+    rightShape[2] &amp;&amp;
+    vSeg(rightLeft, rightTop+high-thick)            //  Right E
+  ||
+    rightShape[1] &amp;&amp;
+    vSeg(rightLeft, rightTop)                       //  Right F
+  ||
+    rightShape[0] &amp;&amp;
+    hSeg(rightLeft, rightTop+high-thick)            //  Right G
+);
+
+
+//  isBorder
+//  -------------------------------------------------------------------
+/*  Evaluates to true if current position is within 2 pixels of any
+ *  edge of the screen.
+ */
+  macro expr isBorder =
+  (currX &lt; 3) || (currX &gt; 637) || (currY &lt; 3) || (currY &gt; 477);
+
+
+//  Color Information
+//  ------------------------------------------------------------------
+//  Parameters affecting the fade effect
+macro expr msecPerFadeStep  = 32;
+macro expr fadeSteps        = 65;      //  Demonstrate a bad choice.
+/*  When the number of fade steps is slightly over a power of two,
+ *  almost all of the second half of the fade cycle gets lost and the
+ *  image snaps to the background color after the specified number of
+ *  steps. This may or may not be the desired visual effect. */
+
+//  Derived parameters for color representation.
+macro expr numFractionBits = (log2ceil(fadeSteps));
+static unsigned (numFractionBits) frameCount;
+
+//  Color structure: 8 bits per color channel.
+struct color {
+  unsigned 8 red;
+  unsigned 8 green;
+  unsigned 8 blue;
+  };
+
+//  Palette of foreground and background pairs.
+/*  Values chosen to test combinations where Fg intensity is
+ *  &gt;, &lt;, and == Bg, and with leftmost bit of pairs having
+ *  all four combinations of {0,1}.  Includes end of range values
+ *  0 and 255.
+ */
+struct palette_s {
+  struct color fg;
+  struct color bg;
+  } palette[4] = {
+    //  Foreground            Background
+    //  Red   Green Blue      Red   Green Blue
+    { { 0xFF, 0xFF, 0x10 }, { 0x10, 0x10, 0xFF } }, // yellow|blue
+    { { 0x00, 0x00, 0x00 }, { 0xFF, 0xFF, 0xFF } }, // black|white
+    { { 0xFF, 0x7F, 0x00 }, { 0x00, 0x7F, 0xFF } }, // yellow|cyan
+    { { 0xFF, 0xFF, 0x01 }, { 0x80, 0x80, 0x7F } }, // yellow|gray
+    };
+unsigned 2 paletteIndex = 0;
+
+//  Color channels with fraction bits for calculating intensities
+//  incrementally.
+macro expr colorWithFraction = (numFractionBits + 8);
+typedef unsigned (colorWithFraction) fullColor;
+struct colorCalc {
+  fullColor red;
+  fullColor green;
+  fullColor blue;
+  } fgCurrent = {0, 0, 0}, deltas;
+
+
+//  Color management utilities
+//  --------------------------
+//  Assign current foreground a known value.
+macro proc setForeground(red, green, blue)
+{
+  unsigned (numFractionBits) zeros;
+  zeros = 0;
+  par
+  {
+    fgCurrent.red    = red@zeros;
+    fgCurrent.green  = green@zeros;
+    fgCurrent.blue   = blue@zeros;
+  }
+}
+//  Calculates new foreground at each fade step
+macro proc updateForeground()
+{
+  par
+  {
+    fgCurrent.red   += deltas.red;
+    fgCurrent.green += deltas.green;
+    fgCurrent.blue  += deltas.blue;
+  }
+}
+//  Converts current fg fixed point channel values into a
+//  video out pixel value.
+macro expr currentFgRGB() = (fgCurrent.red   \\ numFractionBits)@
+                            (fgCurrent.green \\ numFractionBits)@
+                            (fgCurrent.blue  \\ numFractionBits);
+
+//  Colors: foreground, background, border
+//  --------------------------------------
+//  When key is pressed fgCurrent will be set to fg value from current
+//  palette and then fade to bg value in fadeSteps increments.
+macro expr          fgColor = currentFgRGB();
+macro expr          bgColor = palette[paletteIndex].bg.red @
+                              palette[paletteIndex].bg.green @
+                              palette[paletteIndex].bg.blue;
+static unsigned 24  boColor = 0xFF0000;
+
+//  calcDeltas()
+//  -------------------------------------------------------------------
+/*
+ *    Calculates the RGB deltas for fading foreground to background.
+ *    Each 8-bit color channel is converted to a 9-bit unsigned value,
+ *    and the 9-bit difference is sign extended to the width of a
+ *    full-width color increment.
+ */
+  macro proc calcDeltas()
+  {
+    unsigned 9 fgR, fgG, fgB, bgR, bgG, bgB;
+    unsigned 9 deltaR, deltaG, deltaB;
+
+    par
+    { //  Generate 9-bit channel values.
+      fgR = 0@palette[paletteIndex].fg.red;
+      bgR = 0@palette[paletteIndex].bg.red;
+      fgG = 0@palette[paletteIndex].fg.green;
+      bgG = 0@palette[paletteIndex].bg.green;
+      fgB = 0@palette[paletteIndex].fg.blue;
+      bgB = 0@palette[paletteIndex].bg.blue;
+    }
+    par
+    { //  Unsigned subtraction produces signed differences.
+      deltaR  = (bgR - fgR);
+      deltaG  = (bgG - fgG);
+      deltaB  = (bgB - fgB);
+    }
+    par
+    { //  Sign extend to full color channel width.
+      deltas.red   = copy(deltaR[8],(numFractionBits-1))@deltaR;
+      deltas.green = copy(deltaG[8],(numFractionBits-1))@deltaG;
+      deltas.blue  = copy(deltaB[8],(numFractionBits-1))@deltaB;
+    }
+  }
+
+
+//  main()
+//  -------------------------------------------------------------------
+/*
+ *    Reads from keyboard and draws seven segment displays showing
+ *    ASCII codes of characters typed.  Seven segment displays fade out
+ *    after they are drawn.
+ */
+  void main(void)
+  {
+    unsigned 8      inChar;
+    chan unsigned 0 gotChar;
+    unsigned 0      sync;
+
+    PalPS2PortRequire(2);
+    PalSevenSegRequire(2);
+		PalVideoOutRequire(1);
+
+    //  Initialize current foreground color
+    setForeground(palette[0].fg.red,
+                  palette[0].fg.green,
+                  palette[0].fg.blue);
+
+    //  Initialize fade increments
+    calcDeltas();
+
+    //  Runtime processing
+    //  ------------------
+    par
+    {
+			PalVideoOutRun(video, ClockRate);
+      PalKeyboardRun(&amp;keybd, PalPS2PortCT(1), ClockRate);
+      seq
+      {
+        PalKeyboardEnable(keybd);
+        PalSevenSegEnable(PalSevenSegCT(0));
+        PalSevenSegEnable(PalSevenSegCT(1));
+        PalVideoOutEnable(video);
+        par
+        {
+
+          while (1)
+          { //  Keyboard Loop
+            PalKeyboardReadASCII(keybd, &amp;inChar);
+            gotChar ! 0;
+            PalSevenSegWriteDigit(PalSevenSegCT(0), inChar \\ 4, 0);
+            PalSevenSegWriteDigit(PalSevenSegCT(1), inChar &lt;- 4, 0);
+            leftShape = hex2seven[inChar \\ 4];
+            rightShape = hex2seven[inChar &lt;- 4];
+          }
+
+          while (1)
+          { //  Drawing Loop
+            if ( isForeground )
+  					  PalVideoOutWrite(video, fgColor);
+            else if ( isBorder )
+              PalVideoOutWrite(video, boColor);
+            else
+              PalVideoOutWrite(video, bgColor);
+          }
+
+          while (1)
+          { //  Fade Loop
+            gotChar ? sync;
+            setForeground(palette[paletteIndex].fg.red,
+                          palette[paletteIndex].fg.green,
+                          palette[paletteIndex].fg.blue);
+            frameCount = fadeSteps - 1;
+            while (frameCount != 0)
+            {
+              msecDelay(msecPerFadeStep, ClockRate);
+              par
+              {
+                updateForeground();
+                frameCount--;
+              }
+            }
+            setForeground(palette[paletteIndex].bg.red,
+                          palette[paletteIndex].bg.green,
+                          palette[paletteIndex].bg.blue);
+          }
+        }
+      }
+    }
+  }
+
+
+//  main() -- buttons
+//  -------------------------------------------------------------------
+/*
+ *    Use buttons to change color schemes:
+ *      Button 0: Swap current background and foreground colors.
+ *      Button 1: Cycle through the set of fg/bg color palettes.
+ */
+  void main(void)
+  {
+    macro expr debounceMsec = 32;
+    unsigned 1 button_0, button_1;
+
+    par
+    {
+      while (1)
+      {
+        //  Update the states of the switches on every clock
+        par
+        {
+          PalSwitchRead(PalSwitchCT(0), &amp;button_0);
+          PalSwitchRead(PalSwitchCT(1), &amp;button_1);
+        }
+      }
+      while (1)
+      {
+        //  Monitor Button 0
+        //  ----------------
+
+        //  Wait for press and debounce
+        while (!button_0)
+          delay;
+        msecDelay(debounceMsec, ClockRate);
+
+        //  Cycle fg/bg pair
+        paletteIndex++;
+        setForeground(palette[paletteIndex].fg.red,
+                      palette[paletteIndex].fg.green,
+                      palette[paletteIndex].fg.blue);
+        calcDeltas();
+
+        //  Wait for release and debounce
+        while (button_0)
+          delay;
+        msecDelay(debounceMsec, ClockRate);
+      }
+
+      while (1)
+      {
+        //  Monitor Button 1
+        //  ----------------
+
+        //  Wait for press and debounce
+        while (!button_1)
+          delay;
+        msecDelay(debounceMsec, ClockRate);
+
+        //  Swap bg/fg
+        par
+        {
+          palette[paletteIndex].fg = palette[paletteIndex].bg;
+          palette[paletteIndex].bg = palette[paletteIndex].fg;
+        }
+        setForeground(palette[paletteIndex].fg.red,
+                      palette[paletteIndex].fg.green,
+                      palette[paletteIndex].fg.blue);
+        calcDeltas();
+
+        //  Wait for release and debounce
+        while (button_1)
+          delay;
+        msecDelay(debounceMsec, ClockRate);
+      }
+    }
+  }
+</pre>
+<div id="footer">
+
+  <p>This web page was generated by <cite><a
+    href="http://babbage.cs.qc.edu/Projects/">mkhtml</a></cite> on
+    2006-10-31<br />
+    Copyright &copy; 2006 by Christopher Vickery<br />
+    Licensed under a <a rel="license"
+    href="http://creativecommons.org/licenses/by-sa/2.5/">Creative
+    Commons Attribution-ShareAlike 2.5 License</a><br />
+    <a href="http://validator.w3.org/check?uri=referer">HTML</a> -
+    <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+  </p>
+</div>
+</body></html>

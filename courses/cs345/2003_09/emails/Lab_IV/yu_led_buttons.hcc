@@ -1,0 +1,24 @@
+/*
+ * Laboratory IV
+ * led_buttons.hcc
+ */
+
+#define PAL_TARGET_CLOCK_RATE 50000000
+
+#include "pal_master.hch"
+#include "pal_rc200.hch"
+#include "stdlib.hch"
+
+void main (void)
+{
+ unsigned 2 state;
+ state = 0;
+  
+  while (1)
+  {
+    state = RC200ButtonReadMask ();
+    
+    RC200LEDWriteMask (state);
+      
+  } 
+}

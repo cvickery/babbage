@@ -1,0 +1,121 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\f0\fs20                                                     \b\fs32 Laboratory lll\b0\par
+                               \b CS-345, Fall 2004\b0\par
+                     \par
+                              \i Author: \ul Frank Lam \ulnone\par
+\i0\fs20\par
+                                                            \par
+\par
+                                                           \b\fs24 Contents\par
+\b0\fs20\par
+Introduction.......................................................................................................................1\par
+Method.............................................................................................................................1\par
+Results.............................................................................................................................2\par
+Discussion........................................................................................................................2\par
+\par
+\par
+\par
+\ul\b\fs28 Introduction:\par
+\ulnone\b0\fs20\par
+The purpose of this lab was to become familiar with how to write code to generate pulses in \par
+different situations and used the waveform analyzer, oscilloscope and the servomotor controller \par
+to observe the results.\par
+\par
+Activities included work through a waveform analyzer example, then wrote a program to a pin \par
+and verified this program using the waveform analyzer and an oscilloscope. Finally wrote \par
+a program to control a servomotor, sure we had to verfiy this too by using a waveform analyzer, \par
+an oscilloscope and a servomotor.\par
+\par
+\par
+\ul\b\fs28 Methods\b0\fs20 :\par
+\ulnone\par
+The \b\i first\b0\i0  part was to work on the Waveform Analyzer Example. we created a workspace \par
+named "\b Laboratory lll\b0 " and added a project named "\b View Waveform\b0 " to this workspace. \par
+Then we added the source file named "\b view_waveforms.hcc\b0 " to the project. After that we\par
+copied the code from the waveform analyzer manual, executed the program and viewed\par
+the results using the waveform analyzer software.\par
+\par
+For the \b\i second \b0\i0 part we added a project named "\b Generate Pulses\b0 " to the \par
+"Laboratory lll" workspace. Then we configured it for Simulation and RC200E and \par
+eliminated all other unused configurations. We needed to add a macro procedure named \par
+\b microsec_delay() \b0 that delayed the program for the number of microseconds passed \par
+as a parameter. We connected a variable in our program to an output pin using \par
+a \b bus_out() interface\b0 . We set up two main methods, one for generating a one \par
+millisecond pulse every 20 milliseconds. The other for reading pulses through the \par
+channel. We then verified the result using thewaveform analyzer and an oscilloscope.   \par
+\par
+In the \b\i third \b0\i0 part, we created a project named "\b Motor Control\b0 " in the "Laboratory lll"\par
+workspace. Configured it for EDIF and Simulation. Then we set up two main methods \par
+to execute an endless loop that read a value from the channel, read the two pushbuttons \par
+and turned on the output pin. Finally we verified the result using the waveform analyzer, \par
+oscilloscope and a servomotor.  \par
+\par
+\par
+\par
+\b\fs28\par
+\par
+\ul Results:\par
+\ulnone\fs20\par
+\b0\par
+In the \b\i first\b0\i0  part, after we had entered the code from the manual, we noticed 2 plugins.\par
+The \b DKSync.dll \b0 and the \b DKConnect.dll\b0 . The DKSync plugin was used with the clock \par
+period for the simulation specified in an extinst string. The DKConnect plugin was used to\par
+connect the port "\b ob1.out" \b0 to the terminal. For measurement, we used cursors and \par
+we found out the period of the output waveform was 400 ns.\par
+\par
+\par
+In the \b\i second \b0\i0 part, we did make sure the FPGA pin was connected to \b pin #3 \b0 of the RC200E \par
+expansion header. When we verified the program using the waveform analyzer, we found out \par
+no matter what \b number/data \b0 we had set to generate a 1 millisecond pulse within 20 \par
+milliseconds, we still couldn't prevent the 20 milliseconds intervals from drifting very \par
+slowly even though the difference was not obvious. \par
+When we used the oscilloscope to verify, we followed all the steps from manual to set up \par
+the oscilloscope and the output wave did successfully showed up on the screen. We pressed \par
+the \b A/B \b0 button under the Auto Set button to make sure the \b B\b0  channel went away too.\par
+\par
+\par
+For the \b\i third\b0\i0  part, when we verifed the program by using the waveform analyzer, by swtiching \par
+the delayed time in our program, for instance 1000, 1500, and 2000 microseconds, we could \par
+then change the period of the pulse. \par
+When we verified this using the oscilloscope, we did get the same wave pattern we \par
+expected as we did from the waveform analyzer everytime we changed the delayed time.\par
+\par
+Finally we verified this program using the servomotor, we noticed that when we had set the \par
+pulse to be 1 millsecond long and one of the button is pressed, the motor moved in a \par
+clockwise direction, when we had set the pulse to 2 milliseconds long and another \par
+button is pressed, the motor moved in an anti-clockwise direction. When no button was \par
+pressed or when both buttons were pushed together, the motor stopped moving and so\par
+we believed that we had sucessfully completed this lab.\par
+\par
+\par
+\par
+\par
+\ul\b\fs28 Discussion:\par
+\ulnone\b0\fs20\par
+\par
+When we generated a 1 millisecond pulse within 20 milliseconds, we couldn't \par
+prevent the 20 millisecond intervals from drifting very slowly even though the difference \par
+was not obvious. The problem should be caused by the setting up of variable like \b sum\b0  \par
+which took up some clock cycles. When we had followed and translated Dr.Vickery's \par
+pseudocode into Handel-C code, same thing happened that the 20 millisecond intervals \par
+drifted very very slowly even though the difference was not obvious. According to\par
+Dr.Vickery, very minor drifting caused by setting up variable which took up some cycles \par
+could not be prevented, unless it's not obvious, it's ok.\par
+\par
+\b\fs28\par
+ \par
+  \b0\fs20\par
+\par
+ \b\fs28\par
+\par
+ \b0\fs20\par
+\par
+\par
+ \par
+\par
+\par
+\par
+   \par
+\par
+}
+

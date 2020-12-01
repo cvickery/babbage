@@ -1,0 +1,277 @@
+//  test_pattern.cc
+
+/*  Connect to a serial port and read/write characters.  Designed for
+ *  testing a UART connected to the other end of the port.
+ *
+ *  Command line options:
+ *
+ *    Name                  Meaning                   Default Value
+ *    -------------------   -----------------------   -------------
+ *    p port_name           Serial port name          /dev/ttys0
+ *    b baud_rate           Baud rate                 9600
+ *    d data_value          Numeric data code         0x5A ('Z')
+ *    s seconds_per_cycle   Reading/writing interval  1 second
+ *
+ *  You can change the data value being written while the program is
+ *  running by typing characters.  (Note: you supply the numeric value
+ *  of the data value on the command line, but type characters while
+ *  the program is running.)  Seconds per cycle specifies the time in
+ *  seconds to wait between attempts to read/write the port and
+ *  console.
+ *
+ *  NOTE: Under Windows, the names "com1" and "com2" may normally be
+ *  used to specify the port, but in these cases, it is not possible
+ *  to change the baud rate from within the program.  Using
+ *  "/dev/ttys0" and "/dev/ttys1" instead does allow the program to
+ *  change the baud rate or to switch to character at a time input
+ *  mode.  The reason for this behavior apparently has to do with
+ *  "com[12]" being treated as pseudo-filenames and thus appearing not
+ *  to be terminal devices to the code.  Trying to use "com[12]" will
+ *  cause the program to abort with a "not a typewriter" error.
+ *
+ *  On Linux, use /dev/tty0 and /dev/tty1 for the two standard "com"
+ *  ports.
+ *
+ *    Christopher Vickery
+ *    January 2004
+ *
+ */
+
+#include <errno.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
+
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+#include <getopt.h>
+
+//  err_check()
+//  ------------------------------------------------------------------
+/*
+ *    Checks for failed system calls.  Restores stdin properties
+ *    before exiting if they have been saved when an error is
+ *    detected.
+ */
+static struct termios saved_stdin_tio;
+static bool           savedStdin = false;
+#define err_check( msg )  \
+  if (errno)              \
+  {                       \
+    perror( msg );        \
+    if ( savedStdin )     \
+    {                     \
+      tcsetattr( stdin_fd, TCSANOW, &saved_stdin_tio ); \
+    }                     \
+    exit( 1 );            \
+  }
+
+//  Baud rate table ... a sampling of possible values.
+struct
+{
+  int   rate;
+  int   code;
+} rates[] =
+{
+  { 110,    B110    },
+  { 9600,   B9600   },
+  { 38400,  B38400  },
+  { 115200, B115200 },
+};
+const int num_rates = sizeof( rates ) / sizeof( rates[0] );
+
+char        cmd_name[256];
+
+//  usage_err()
+//  ------------------------------------------------------------------
+/*
+ *    Prints usage message and exits
+ */
+  void
+  usage_err()
+  {
+    fprintf(  stderr, 
+                 "Usage: %s [-p <serial port name>] [-b <baud rate>]"
+                       " [-d <data value>] [-s <seconds per cycle>\n",
+                                                           cmd_name );
+    exit( 1 );
+  }
+
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *    Process command line arguments, then write data chars to port,
+ *    display received chars from port on stdout, and accept new data
+ *    chars from stdin for writing to the port.
+ */
+  int
+  main( int argc, char *argv[], char *envp[] )
+  {
+    strncpy( cmd_name, argv[0], sizeof(cmd_name) - 1 );
+
+    //  Default values for options
+    unsigned char data_value  = 0x5A;
+    int           rw_interval = 1;
+    int           baud_rate   = 9600;
+    int           baud_code   = B9600;
+    char          port_name[256];
+      strncpy( port_name, "/dev/ttys0", sizeof(port_name) - 1 );
+
+    //  Process command line options
+    struct option options[] =
+    {
+      { "port_name",          required_argument,  0, 'p' },
+      { "baud_rate",          required_argument,  0, 'b' },
+      { "data_value",         required_argument,  0, 'd' },
+      { "seconds_per_cycle",  required_argument,  0, 's' },
+      { 0,              0,                  0,  0  },
+    };
+
+    int opt_char;
+    while ( -1 != 
+          (opt_char = getopt_long( argc, argv, "p:b:d:s:",
+                                                       options, 0) ) )
+    {
+      switch ( opt_char )
+      {
+        case 'p': strncpy( port_name, optarg, sizeof(port_name) - 1);
+                  if ( (0 == strcasecmp( port_name, "com1" ) ) ||
+                       (0 == strcasecmp( port_name, "com2" ) ) )
+                  {
+                    fprintf( stderr,
+                              "Use \"/dev/ttys0\" or \"/dev/sttys1\" "
+                               "instead of \"com1\" or \"com2\".\n" );
+                    exit( 1 );
+                  }
+                  break;
+        case 'b': baud_rate  = strtoul( optarg, 0, 0 );
+                  break;
+        case 'd': data_value = (strtoul( optarg, 0, 0 ) & 0x000000FF);
+                  break;
+        case 's': rw_interval = strtoul( optarg, 0, 0 );
+                  if ( rw_interval < 0 )
+                  {
+                    fprintf(  stderr, 
+                         "Invalid (negative) seconds per cycle: %d\n",
+                                                        rw_interval );
+                    exit( 1 );
+                  }
+                  break;
+        default:
+                  if ( opt_char != '?' )
+                  {
+                    fprintf( stderr, "Invalid option: %c\n", 
+                                                           opt_char );
+                  }
+                  usage_err();
+      }
+    }
+    if ( optind < argc )
+    {
+      usage_err();
+    }
+
+    //  Convert baud rate to proper constant for cfset[io]speed()
+    bool found = false;
+    for (int i = 0; i < num_rates; i++)
+    {
+      if ( baud_rate == rates[i].rate )
+      {
+        baud_code = rates[i].code;
+        found = true;
+        break;
+      }
+    }
+    if ( !found )
+    {
+      fprintf( stderr, "Unknown baud rate: %d\n  Known rates are:\n",
+                                                          baud_rate );
+      for (int i = 0; i < num_rates; i++)
+      {
+        fprintf( stderr, "    %d\n", rates[i].rate );
+      }
+      exit( 1 );
+    }
+ 
+    //  Modify stdin to read single characters as they are typed.
+    //  This is done by opening a connection with the O_NDELAY flag,
+    //  turning off "canonical mode," setting the minimum number of
+    //  characters to 0, and the timeout interval to 0 too.  If no
+    //  character has been typed, the call to read() returns zero and
+    //  the buffer is not changed.  (Result of experiment: the
+    //  O_NDELAY flag is necessary, and setting VMIN and VTIME seem
+    //  not to be needed.)
+    struct termios stdin_tio;
+
+    int stdin_fd  = open( "/dev/tty", O_RDONLY | O_NDELAY );
+    err_check( "/dev/tty" );
+
+    tcgetattr( stdin_fd, &stdin_tio );
+    err_check( "/dev/tty" );
+    saved_stdin_tio = stdin_tio;
+    savedStdin = true;
+    stdin_tio.c_lflag    &= ~(ICANON | ECHO);
+    stdin_tio.c_cc[VMIN]  = 0;
+    stdin_tio.c_cc[VTIME] = 0;
+    tcsetattr( stdin_fd, TCSANOW, &stdin_tio );
+    err_check( "/dev/tty" );
+
+    //  Modify the serial port: Set baud rate, and set up byte at a
+    //  time input mode.
+    struct termios port_tio;
+
+    int port_fd   = open( port_name, O_RDWR | O_NDELAY );
+    err_check( port_name );
+
+    tcgetattr( port_fd, &port_tio );
+    err_check( port_name );
+    int old_baud_code = cfgetospeed( &port_tio );
+    if ( old_baud_code != baud_code )
+    {
+      fprintf( stderr, 
+                     "Changing baud rate code for %s from %d to %d\n",
+                                port_name, old_baud_code, baud_code );
+    }
+
+    cfsetospeed( &port_tio, baud_code );
+    cfsetispeed( &port_tio, baud_code );
+    port_tio.c_lflag    &= ~(ICANON | ECHO);
+    port_tio.c_cc[VMIN]  = 0;
+    port_tio.c_cc[VTIME] = 0;
+    tcsetattr( port_fd, TCSANOW, &port_tio );
+    err_check( port_name );
+
+  //  The I/O processing loop
+  fprintf(  stderr, "Writing '%c' (0x%2X) to %s at %d baud ...\n",
+                       data_value, data_value, port_name, baud_rate );
+  int   n = 0;
+  char  port_buffer[8192];
+  while ( 1 )
+    {
+      // Display input that has arrived from the port
+      n = read( port_fd, &port_buffer, sizeof( port_buffer ) - 1 ); 
+      if ( n > 0 )
+      {
+        port_buffer[n] = '\0';
+        fprintf( stderr, "%s", port_buffer );
+      }
+
+      //  Check if user changed the data value to write
+      if ( 1 == read( stdin_fd, &data_value, 1 ) )
+      {
+        fprintf(  stderr, 
+                  "\nNow writing '%c' (0x%2X) to %s ...\n",
+                                   data_value, data_value, port_name);
+      }
+
+      //  Write a byte to the port
+      write( port_fd, &data_value, 1 );
+      sleep( rw_interval );
+    }
+  }
+

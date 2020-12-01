@@ -1,0 +1,114 @@
+//motorc.hcc
+
+#if (defined USE_RC200E)
+  #define PAL_TARGET_CLOCK_RATE 50000000
+#else
+  #define PAL_ACTUAL_CLOCK_RATE 1000000
+  set clock = external "P1"
+    with {
+      extlib = "DKSync.dll", 
+      extinst = "1000", // one millionsecond
+      extfunc = "DKSyncGetSet"
+    }; 
+#endif
+
+
+#ifdef USE_SIM
+  #define switch_0 8
+  #define switch_1 9
+#else
+  #define switch_0 0
+  #define switch_1 1
+#endif 
+
+
+#include <stdlib.hch>
+#include <pal_master.hch>
+
+unsigned 1 pulse = 0; 
+chan output;
+
+interface bus_out() ob1(unsigned 1 out = pulse) 
+  with {
+#if (defined USE_RC200E)
+  data={"M2"} //pin 3 of extended header
+#else 
+  extlib = "DKConnect.dll", 
+  extinst = "t(1)", 
+  extfunc = "DKConnectGetSet"
+  
+#endif  
+  };//with
+
+// delays the program for the # of microseconds
+// passed as a parameter
+macro proc microsec_delay(Milliseconds){
+  macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * Milliseconds) / 1000000;
+  unsigned (log2ceil (Cycles)) Count;
+
+  Count = 0;
+  do
+  {
+      Count++;
+  }
+  while (Count != Cycles - 1);
+
+}//microsec_delay
+//________________________________________________________________
+  
+// writes a value to channel every 20 sec
+//We use the channel to sycronize both mains together
+void main(void) {   
+  while(1){
+    microsec_delay(20000);
+    output ! 1;
+    output ! 0;
+  }
+}//main
+//________________________________________________________________
+
+
+#if (defined USE_RC200E)
+  #define PAL_TARGET_CLOCK_RATE 50000000
+#else
+  #define PAL_TARGET_CLOCK_RATE 1000000
+#endif
+
+// endless loop that reads a value from the channel 
+// reads the two push buttons and turns on out put pin
+void main(void){
+  unsigned int 1 clockwise;
+  unsigned int 1 counterclockwise;
+  unsigned int 2 pulseT;
+  clockwise=0;
+  counterclockwise=0;
+  pulseT = 3;
+   PalVersionRequire (1, 0);
+  while(1){  
+      output ? pulse;
+      PalSwitchRead(PalSwitchCT(switch_0), &clockwise);
+      PalSwitchRead(PalSwitchCT(switch_1), &counterclockwise);      
+
+      if(!( (clockwise & counterclockwise) ||  (!clockwise & !counterclockwise))){
+        if(clockwise)
+         pulseT=1;
+        else
+          pulseT=2;
+      }
+      else
+        pulseT=3;
+
+//rotates rotates depending on what msec pulse it recieves
+
+    if(pulseT==1)
+      microsec_delay(1000);
+    else if(pulseT==2)
+      microsec_delay(2000);
+    else
+      microsec_delay(1500);
+    
+    output ? pulse;
+  }
+
+}//main
+//________________________________________________________________

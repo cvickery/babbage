@@ -1,0 +1,145 @@
+<?php
+  if (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>CSCI-345/780 Coding Guidelines</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="all" href="/courses/css/style-all.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="/courses/css/style-screen.css" />
+<link rel="stylesheet" type="text/css" media="print" href="/courses/css/style-print.css" />
+</head>
+<body>
+<div id="header">
+  <h1>CSCI-345/780 Coding Guidelines</h1>
+</div>
+<div id="content">
+  <h2>Introduction</h2>
+  <div class="whitebox">
+    <p>All code that you submit for this course must be easy
+    for me to read!  That means it must be laid out on the
+    page so I can see the structure of the code easily,
+    don't have to scroll horizontally to read anything, and
+    that there are comments to help me find the significant
+    parts of the code in each file.</p>
+
+    <p>It also means that your comments should be "just
+    enough, not too much."  That is, you do not need to
+    document the obvious and should assume that your reader
+    knows the Handel-C language.  Nor do you need to
+    demonstrate to me that you know what you are doing.  I
+    will be able to tell that by how clean your code is and
+    how well it runs.</p>
+
+   <p>Think of documentation as what professionals do when
+   they write code so that others can maintain it after they
+   have moved on, and you will have the right idea for
+   dealing with this issue for this course.</p>
+
+  </div>
+  <h2>Guidelines</h2>
+  <div class="whitebox">
+
+    <p>Here are some rules for how to document your code.
+    They are not hard and fast, but they should give you
+    some ideas of how to achieve the goals outlined
+    above.</p>
+  
+    <ul>
+  
+      <li>Set your editor to substitute spaces for tab
+      characters. In DK, you do this from Tools -&gt;
+      Options -&gt; Tabs.  Doing this makes sure that your
+      code indentation will look right no matter what
+      program settings I use when I read it.</li>
+        
+      <li>No line of code, including comments, may extend
+      beyond column 80.  This is not always practical, but
+      it is a good general rule for preventing horizontal
+      scrolling.  I have a program that tells me exactly how
+      many tab characters and long lines there are in your
+      source files, so watch out!</li>
+
+      <li>Put the name of each source file in a comment in
+      the first line of the file.  Sure, the file name is
+      normally in a title bar somewhere, but putting it at
+      the beginning of a file helps the reader keep track of
+      what he or she is looking at.</li>
+
+      <li>Put a comment block at the beginning of each
+      source file telling what the program does, who the
+      author(s) is(are), and when the program was written.
+      This is a matter of professionalism.  But it helps
+      readers navigate through projects with multiple
+      modules more easily, so it serves a very practical
+      purpose too.</li>
+        
+      <li>Put a comment block before each function, macro
+      proc definition, and endless loop. Make sure this
+      comment block stands out on the page. For example, put
+      a horizontal line below the name of the function or
+      macro proc name, such as the following:
+        
+      <fieldset><legend>Sample comment block for a function or macro proc</legend>
+      <pre><code>
+    //  main()
+    //  -------------------------------------------------------------
+    /*
+     *    Description of what the function does goes here.
+     */
+      void main(void) ...
+      </code></pre>
+      </fieldset>
+
+        This is another case of helping the reader navigate
+        through the source code efficiently.
+      
+      </li>
+
+      <li>Be sure there is at least one space between
+      comment leaders and the text that follows.
+      (&ldquo;Comment leaders&rdquo; are // for single line
+      comments, or /* or
+      * for comment blocks.) Format the comments so they are
+      easy to read and document the logical structure of the
+      code.</li>
+
+      <li>Put spaces around operators to make the code
+      easier to read. &ldquo;x += 3;&rdquo; is easier to
+      read than &ldquo;x+=3;&rdquo;</li>
+        
+      <li>Be sure all code compiles and builds with no
+      errors or warnings for both Debug and EDIF
+      configurations. The only exceptions are the Pal macro
+      expansion warnings (&ldquo;possible infinite
+      expansion&rdquo;) that do not indicate a
+      problem.</li>
+
+      <li>Be sure the Xilinx tools report no problems, such
+      as an inability to meet timing constraints</li>
+
+    </ul>
+  </div>
+</div>
+<div id="footer">
+  <hr />
+  <p class="links">
+		<a href="/">Vickery Home</a>&nbsp;-
+		<a href=".">CS-345/780 Home</a>&nbsp;-
+		<a href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-
+		<a href="http://jigsaw.w3.org/css-validator/check/referer"> CSS</a><br />
+  <i>Last updated <?php echo date("c", filemtime("index.php")); ?>.</i>
+	</p>
+</div>
+</body>
+</html>

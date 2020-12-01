@@ -1,0 +1,241 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Laboratory IV</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+    <style type="text/css" media="all">
+      .imageBox { width: 90%; margin: auto; text-align: center;}
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-345/780 Laboratory IV</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>This is a continuation of Laboratory III in which you will use
+        some addtional features of Handel-C to add a visual effect to your
+        seven segment display of ASCII codes.  The visual effect is to have
+        each character code fade away after it is first displayed.  The
+        Handel-C features you are to use are <span
+        class="functionName">channels</span>, <span
+        class="functionName">macro procs</span>, and <span
+        class="functionName">libraries</span>.</p>
+
+
+      </div>
+      
+      <h2>Procedure</h2>
+      <div class="whitebox">
+        <ol>
+        
+          <li>
+          
+            <h5>Configure a new library project.</h5> <p
+            class="inline">Start DK, and re-open the workspace you created
+            in Laboratory I.  Create a new project in that workspace named
+            delayProcs.  Select <span class="functionName">Library</span> as
+            the project type.</p>
+
+            <p>Delete all the configurations for this project except
+            Generic.  You do not have to set any configuration options for
+            this project.</p>
+            
+          </li>
+
+          <li>
+          
+            <h5>Write a millisecond delay macro proc.</h5>
+            <p class="inline">You can control time intervals in Handel-C if
+            you know the speed of the clock you are working with, how long
+            an interval you want, and the fact that each assignment
+            statement takes exactly one clock cycle.</p>
+
+            <p>Write a macro proc named <span
+            class="functionName">msecDelay</span> that takes two parameters:
+            a number of milliseconds and the speed of the clock.  The macro
+            is to take exactly the specified number of milliseconds to
+            execute.  There are several ways to accomplish this, but here is
+            the &ldquo;standard&rdquo; approach:  The number of clock pulses per
+            millisecond is the number of clock pulses per second (the clock
+            rate passed as the second paramter) divided by 1,000.  Multiply
+            pulses per milliseconds by the desired number of milliseconds
+            (the first parameter), and you have the number of pulses to use
+            up.  This value should be determined at compile time, so use a
+            <span class="functionName">macro expr</span> to compute it.  Set
+            up a register with enough bits to hold this value, using the
+            <span class="functionName">log2ceil()</span> from the standard
+            library to establish its width.  Initialize the register with
+            a count of the number of pulses you need, and use a while loop
+            to decrement the register until it reaches zero.  Think about
+            how to get exactly the correct number of statements executed by
+            the macro &mdash; not that anyone will actually know if you are
+            off by a one or two clock pulses.</p>
+            
+            <p>When you build this project, you will get a library file
+            named <span class="fileName">delayProcs.hcl</span> in the <span
+            class="directoryName">Generic</span> subdirectory of the
+            project.  Later on you can add other procs to this library, for
+            example to delay for a number of microseconds instead of
+            milliseconds.</p>
+            
+            <p>To guarantee, as much as possible, that the code that uses
+            your macro proc calls it correctly, you need to supply a
+            function prototype for it that both the definition and the
+            references both use.  Add a Handel-C header file named
+            <span class="fileName">delayProcs.hch</span> to the
+            <span class="functionName">delayProcs</span> project, and put
+            the following code in it:</p>
+            <p class="codeBlock">
+//  delayProcs.hch
+
+#ifndef __DELAY_PROCS__
+#define __DELAY_PROCS__
+
+extern macro proc msecDelay(msec, clockRate);
+
+#endif
+            </p>
+            
+            <p>Use a <span class="functionName">#include</span> directive to
+            include this header file in <span
+            class="fileName">msecDelay.hcc</span>.  It seems strange to
+            declare the procedure external in the file in which it is
+            defined, but that&rsquo;s the standard way to manage
+            prototypes.  Because this header file is not in a standard
+            place, you have to put the file name in quotes rather than angle
+            brackets.</p>
+
+          </li>
+          <li>
+          
+            <h5>Test your delay procedure</h5> <p class="runin"> Modify your
+            <span class="fileName">keybd2video.hcc</span> from the
+            Laboratory III project so that it includes the header file for
+            your library, and add the library to the list of library modules
+            for both the Debug and EDIF build configurations.</p>
+
+            <p>Add a third endless loop to this project that reads from a
+            channel, sets the foreground color to its default value, uses
+            <span class="functionName">msecDelay()</span> to execute for one
+            second, and then sets the foreground color to match the
+            background color.  Add a line to the endless loop that reads
+            from the keyboard so that it writes to the channel every time a
+            character is typed.  The value written to the channel and read
+            from it is irrelevant for this project; I suggest you declare
+            the channel&rsquo;s data type as <span
+            class="variableName">unsigned 1</span>, and simply write either
+            a 0 or a 1 to it, whichever you prefer.</p>
+            
+            <p>The effect should be that typing a character causes its ASCII
+            code to display for one second and then disappear.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Add the fade effect.</h5> <p class="runin">Modify the loop
+            you just added to the project so that instead of simply changing
+            the foreground color in a single step at the end of one second,
+            it changes the foreground color gradually, in at least 64 steps,
+            spanning one or two seconds. To get a smooth transition, you
+            will have to adjust the red, green, and blue components
+            individually.  Your algorthm must work independently of the
+            actual foreground and background colors in effect, forcing you
+            deal with the possibility that you will have to work with
+            fractional intensity values, using simple fixed point numbers as
+            described in class.</p>
+
+          </li>
+        
+        </ol>
+      </div>
+
+      <h2>Submit Laboratories I through IV</h2>
+      <div class="whitebox">
+
+        <p>If you have not already done so, be sure all the code you have
+        written so far is &ldquo;clean.&rdquo;  Things to check for are:
+        proper indentation to show the logical structure with no tab
+        charcters in the code, all lines of code narrow enough to display in
+        a normal panel without wrapping (80 columns), and comments to show
+        the logical structure of the code.  Set off each macro proc and
+        function defintion with some sort of horizontal line; likewise for
+        each endless loop:</p>
+        
+        <p class="codeBlock">
+//  main()
+//  --------------------------------------------------------
+/*
+ *    Meaningful comments.
+ */
+  void main(void) { ... }
+        </p>
+        
+        <p>When your laboratories are ready for me to look at, send me an
+        email message with &ldquo;CS-345 First Laboratories&rdquo; or
+        &ldquo;CS-780 First Laboratories&rdquo; as the subject.  Be sure to
+        put at least your name inside your message.  If you worked with
+        someone else, be sure to list everyone&rsquo;s name and to tell me
+        which account has the code.  (If a graduate student and
+        undergraduate student worked together, the subject line can be
+        either of the ones listed, or a mix.)</p>
+
+      </div>
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

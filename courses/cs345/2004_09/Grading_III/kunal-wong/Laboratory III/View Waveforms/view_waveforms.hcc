@@ -1,0 +1,59 @@
+//	view_waveforms.hcc
+
+/****************************************************************
+*                                                               *
+* Copyright (C) 2004 Queens COllege. All rights reserved.    	  *
+*                                                               *
+*****************************************************************
+*                                                               *
+* Project   :   view waveforms                                  *
+*                                                               *
+* Copied from Waveform Analyzer Manual: repeatedly increase     *
+* the value of a variable x by one and have x connected to the  *
+* ob1.out port.                                                 *
+*                                                               *
+* Date      :   8 OCT 2004                                      *
+* File      :   view_waveforms.hcc                              *
+* Author    :   Huen Wong (HW) & Aroj Kunal (AK)                *
+*                                                               *  
+*                                                               *
+* Contributors:                                                 *
+*                                                               *
+* Description:                                                  *
+*    Laboratory III - Servomotor Controller                     *
+*                                                               *
+* Date         Version  Author  Reason for change               *
+*                                                               *
+* 18 SEPT 2004    1.00    HW & AK     Created.                  *
+*                                                               *
+****************************************************************/
+
+
+
+
+
+set clock = external "P1"
+    with {extlib = "DKSync.dll",
+    extinst = "50", 
+    extfunc = "DKSyncGetSet"};
+    
+unsigned 3 x = 0;
+
+interface bus_out() ob1(unsigned 3 out = x)
+    with {extlib = "DKConnect.dll", extinst = "t(3)",
+    extfunc = "DKConnectGetSet"};
+
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *  Endlessly incrementing x by 1 while x is connected to port ob1.out
+ */
+
+    
+void main(void)
+{
+    //  Endlessly incrementing x by 1
+    //  ------------------------------------------------------------
+    while(1) x++;
+}

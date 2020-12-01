@@ -1,0 +1,70 @@
+tamhokbong@hotmail.com      1457  Tam         Hok
+kingzheng2003@yahoo.com     7099  Zheng       Shi Lai
+
+  This is your grading report for Laboratory V.
+  Dr. Vickery
+
+  ---------------------------------------------------------
+
+  Team Members:   Hok Bong Tam, Shi Lai Zheng
+
+  REPORT:
+
+    "We had created ..." is not past tense (it's called pluperfect or
+    past perfect) ... just use, "We created...")
+
+    "We [had] created two thread ..." ==> "We created two threads ..."
+    (Watch your plurals.)
+
+    Use active voice instead of passive: "The handle-c file,
+    framebuffer.hcc was created." should be "We created the Handel-C
+    file, framebuffer.hcc.  (Note also the spelling and capitalization
+    of the language name.)
+
+    This sentence from the end of your Results section makes no sense,
+    neither grammatically not mathematically: "The width of each bar
+    was five pixels wide, which matched the fourth bit we had chosen
+    to measure."  You didn't measure a bit, you (presumably) changed
+    it based on the column position.  And if you did that, the width
+    of the bars would be a power of two -- 4 or 8 -- rather than 5.
+
+    The content of the different sections is good, but you really need
+    to practice your writing skills a lot!
+
+
+  PROJECT:
+
+  The SevenSeg_Display project directory did not contain the
+  sevenseg.hcc source file, so I couldn't look at it (and certainly
+  couldn't test it). The error message I got was "DK design suite could not build your project: f:\My Documents\Courses\cs345\2004_09\Grading_V\tam-zheng\Assignment5\Laboratory V\sevenseg_display\..\..\..\..\desktop\sevenseg.hcc: could not find or build this file"
+  So I think the problem was that it was in some other directory
+  separate from the project directory.  Fix this and resubmit the
+  project directory.  You may correct other errors noted below, but I
+  won't re-grade the report.
+
+  There are formatting errors in your code:
+File Framebuffer/framebuffer.hcc contains 8 lines longer than 72 characters.
+File TestPattern/test_pattern.hcc contains 1 line longer than 72 characters.
+File VideoOut_Parameters/parameters.hcc contains 2 lines longer than 72 characters.
+(And there was one long line in sevenseg.hcc.)
+
+  It is not safe to ignore any warnings from the compiler except for
+  the ones about "possible infinite recursion."  For example, your
+  framebuffer compilation says:
+framebuffer.hcc Ln 103, Col 15-21: Breaking combinational cycle (if with no else) - may alter timing
+  Always clean these up before trying to debug.  I don't know what
+  your problem with the remote desktop connection simulation giving
+  different results from when you were in the lab, but this is the
+  sort of thing I would look for before trying to track it down.  (I
+  looked at test_pattern.hcc and saw there were no warnings that would
+  explain your problem with remote desktop, but the principle remains
+  valid!)
+
+  In sevenseg.hcc: you need to use meaningful variable names.  For
+  example, "left0" should be something like "isInsideLeft0," etc.
+
+  Each "while (1)" loop needs a comment to tell what its function is at
+  the beginning.
+
+  GRADE:  9.0/10.0
+

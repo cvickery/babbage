@@ -1,0 +1,108 @@
+#ifdef USE_SIM
+#define PAL_TARGET_CLOCK_RATE 1000000
+#else
+#define PAL_TARGET_CLOCK_RATE 20000000
+#endif
+
+#ifdef USE_SIM
+#define Add 8
+#define Reset 9
+#else
+#define Add 0
+#define Reset 1
+#endif
+
+#include "stdlib.hch"
+#include "pal_master.hch"
+
+
+
+unsigned int 3 x;
+
+signed int 4 y;
+
+unsigned int 4 z[2];
+
+signed rom int 5 a[]= {-12, 1, 12};
+
+signed int 8 sum;
+
+unsigned int 3 i;
+
+signed int 8 pipeline[4];
+
+unsigned int 8 display;
+
+signed int 8 total;
+
+//static macro proc Sleep (Milliseconds);
+
+void main(void)
+{
+
+
+	unsigned 8 Mask;
+	unsigned 1 X;
+	unsigned 1 Y;
+
+
+    PalSevenSegRequire (1);
+
+    PalVersionRequire (1, 0);
+    PalLEDRequire     (1);
+    PalSevenSegEnable (PalSevenSegCT (1));
+	PalSevenSegEnable (PalSevenSegCT (0));
+
+	for(i=0; i<3 ; i++)
+	{
+		total+=adjs(a[i],8);
+	}
+
+
+	 while (1)
+	    {
+
+	       		PalLEDWrite (PalLEDCT (0), 0);
+	            PalSwitchRead(PalSwitchCT(Add), &X);
+				PalSwitchRead(PalSwitchCT(Reset), &Y);
+
+
+
+				if(X==1)
+				{
+						sum=total;
+
+						par(i=0; i<3; i++)
+						{
+							pipeline[3]+=sum;
+							pipeline[i]=pipeline[i+1];
+
+						}
+						display=(unsigned 8) pipeline[3];
+
+
+					PalLEDWrite (PalLEDCT (0), 1);
+					PalSevenSegWriteDigit (PalSevenSegCT (1), display[3:0], display[0]);
+					PalSevenSegWriteDigit (PalSevenSegCT (0), display[7:4], display[0]);
+					while(X)
+					{
+						PalSwitchRead(PalSwitchCT(Add), &X);
+
+					}
+				}
+
+				if(Y==1)
+				{
+					pipeline[0]=0; pipeline[1]=0; pipeline[2]=0; pipeline[3]=0;
+					sum=0;
+					display=0;
+					PalSevenSegWriteShape (PalSevenSegCT (0), Mask);
+					PalSevenSegWriteShape (PalSevenSegCT (1), Mask);
+
+	        	}
+
+
+
+	    }
+
+}

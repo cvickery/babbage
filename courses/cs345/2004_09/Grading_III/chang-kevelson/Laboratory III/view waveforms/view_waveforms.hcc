@@ -1,0 +1,29 @@
+//view_waveforms.hcc
+
+/* DKSync.dll and DKConnect.dll are libraries that we need
+ * to include in order to use the Waveform Analyzer to catch
+ * the output signals from the program. DKSync.dll will set the 
+ * clock of the program and DKConnect.dll will get output from
+ * bus_out()
+ */
+
+set clock = external "P1"
+  with {
+    extlib = "DKSync.dll", 
+    extinst = "50", 
+    extfunc = "DKSyncGetSet"
+  }; 
+
+unsigned 3 x = 0; 
+
+interface bus_out() ob1(unsigned 3 out = x) 
+  with {
+    extlib = "DKConnect.dll", 
+    extinst = "t(3)", 
+    extfunc = "DKConnectGetSet"
+  }; 
+
+void main(void) { 
+  while(1) 
+    x++;
+}

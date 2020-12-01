@@ -1,0 +1,63 @@
+
+CS-345 Laboratory III
+Fall 2005
+
+Here is my evaluation of your third Laboratory assignment.
+Dr. Vickery
+---------------------------------------------------------
+
+Project and Workspace Setup
+
+  Okay.
+
+Use of Handel C
+
+  Use meaningful variable names: "UserCode" and "UserCode2" are not
+  meaningful.  But your commenting is good.
+
+  keyboard_to_ram:  The code for monitoring the buttons should be done
+  as two parallel endless loops instead of one with a sequence of if
+  statements in it.  You won't really see the effect in operating the
+  program, but if you think about it, the response to the second
+  button isn't handled until 20 msec after the first one, which makes
+  no sense.  It works, but it's unnecessarily confusing to the reader.
+  And the delay statements in there make no sense either -- the 20
+  msec delays that follow immediately take care of all the delays that
+  are needed.
+
+  It's silly to pass global variables, such as KeyboardPtr and
+  ConsolePtr, to the UserCode procs, which can access them directly.
+  The seq block in UserCode is superfluous.
+
+  Note that the sevenseg displays show 00 unless a key is held down;
+  that's because the keyboard zeros out Char while waiting for a key
+  to be typed.  You should update the seven segment displays only when
+  KeyboardReadASCII actually returns a new char.  So your code goes
+  too far in its parallelism!
+
+  The code is very hard to read because the parts are not laid out in
+  a logical structure.  There's stuff for the keyboard, console, ram,
+  and sevensegs referring to each other from the bottom of the file to
+  the top.  I'd recommend getting rid of the usercode procs
+  altogether.  They are only used one time each, and the code could
+  just be put in place so the flow could be followed in a more orderly
+  fashion.
+
+  The last project should show the characters on the console as they
+  are being typed.
+
+Report
+
+  Please leave a copy of the report in the project directory so I can
+  grab everything at the same time.  Thanks.
+
+  Divide the report into Method, Results, and Discussion sections.
+  Write the first two sections in the past tense.  Give enough
+  information so that the reader (who is assumed to know Handel-C and
+  what an RC-200E are) can tell what you did.  But you don't have to
+  tell exactly how you did it because you can assume that the reader
+  has the source code available.
+  
+
+Grade:  9.0/10.0
+

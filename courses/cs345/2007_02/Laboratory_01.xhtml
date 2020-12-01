@@ -1,0 +1,133 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Laboratory 1</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-345/780 Laboratory 1</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <ol>
+      
+        <li>
+
+          <h5>Log into your account and verify that it is working
+          correctly.</h5> <p class="runin">Log into any one of the computers
+          in A-205 or A-227 using your account name for this course, which
+          consists of  your last name and the digits &ldquo;345&rdquo; or
+          &ldquo;780&rdquo; depending on which course you are registered
+          for.  Use the password given to you in class, and remember that
+          you will be required to change it to something secure the first
+          time you log in.</p>
+
+          <p>The names of the computers are:</p>
+
+          <table  summary="Lists of computer names in A-205 and A-227."
+                  id="computers">
+
+            <tr><th>A-205</th><th>A-227</th></tr>
+            <tr><td>birch</td><td>apple</td></tr>
+            <tr><td>cherry</td><td>fir</td></tr>
+            <tr><td>chestnut</td><td>juniper</td></tr>
+            <tr><td>elm</td><td>mimosa</td></tr>
+            <tr><td>ginkgo</td><td>peach</td></tr>
+            <tr><td>hemlock</td><td>pine</td></tr>
+            <tr><td>hickory</td><td>plum</td></tr>
+            <tr><td>&nbsp;</td><td>spruce</td></tr>
+            <tr><td>&nbsp;</td><td>sycamore</td></tr>
+            <tr><td>&nbsp;</td><td>walnut</td></tr>
+
+          </table>
+
+          <p>If you are on campus, you can access the computers in room
+          A-205 any time the department office is open; a secretary in the
+          office will open the room for you if necessary.  If you want to
+          work from off campus and have a broadband Internet connection,
+          you can access any of the computers by using the <span
+          class="programName">Remote Desktop Connection</span> tool
+          provided by Microsoft for both Windows and Macintosh computers. 
+          On Windows XP, it is located under <span
+          class="menuItem">Start-&gt;Applications-&gt;Communication</span>. 
+          On Macintosh OSX is is under <span
+          class="menuItem">Applications</span>.  Add <span
+          class="codeSnippet">.cs.qc.edu</span> to one of the computer
+          names listed above when prompted for the computer to connect
+          to.</p>
+
+          <p>If you log in from off campus, you should use one of the
+          computers in room A-227 so that people who are on campus can use
+          the machines in A-205.  (Only one person can be logged into a
+          computer at a time.)</p>
+
+          <p>Once logged in, use <em>Windows Explorer</em> to verify that
+          your &rsquo;My Documents&rsquo; directory contains a directory
+          named &rsquo;My Projects.&rsquo;</p>
+
+        </li>
+
+        <li>
+
+          <h5>Set up DK for projects in this course.</h5> <p
+          class="runin">Follow the directions on the <a
+          href="../configuring_dk.xhtml">Configuring DK Web Page</a> for
+          setting up your first project for the course.</p>
+
+        </li>
+
+      </ol>      
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

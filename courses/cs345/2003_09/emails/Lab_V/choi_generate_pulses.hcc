@@ -1,0 +1,78 @@
+/* generate_pulses.hcc
+ *
+ * Author: Sora Choi
+ *
+ * This program generates a 1 msec pulse every 20 msec.
+ *
+ */
+
+
+#ifdef USE_SIM
+#define PAL_ACTUAL_CLOCK_RATE 1000000
+set clock =external "P1"
+  with
+  {
+   extlib = "DKSync.dll",
+   extinst ="1000",
+   extfunc ="DKSyncGetSet"
+   };
+#define SW0 8
+#define SW1 9
+#define NUM_SWITCHES 10
+#else
+#define PAL_TARGET_CLOCK_RATE 50000000
+#define SW0 0
+#define SW1 1
+#define NUM_SWITCHES 2
+#endif
+
+#include "pal_master.hch"
+#include "stdlib.hch"
+
+unsigned 1 motor_pin = 0;
+
+interface bus_out() motor(unsigned 1 out = motor_pin)
+  with {
+#ifdef USE_SIM
+  extlib ="DKConnect.dll",
+  extinst ="t(1)",
+  extfunc ="DKConnectGetSet"
+#else 
+  data = {"M2"}
+#endif
+ };
+
+static macro proc microsec_delay(microsec);
+
+void main ( void )
+{
+  while(1)
+  {
+    motor_pin++;
+    microsec_delay(1000);
+    motor_pin++;
+    microsec_delay(19000);
+  } 
+ 
+}
+
+
+
+static macro proc microsec_delay(microsec)
+{
+#ifdef USE_SIM
+  macro expr cycles=(PAL_ACTUAL_CLOCK_RATE * microsec)/1000000;
+#else
+  macro expr cycles=(PAL_TARGET_CLOCK_RATE * microsec)/1000000;
+#endif
+
+  unsigned (log2ceil(cycles)) count;
+  
+  count=cycles-2;
+
+  while( count != 0) 
+  {
+    count--;
+  }
+  
+}  

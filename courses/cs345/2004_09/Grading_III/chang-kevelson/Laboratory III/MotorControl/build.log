@@ -1,0 +1,263 @@
+--------------------Configuration: motorcontrol - RC200E--------------------
+
+¬motorc.hcc
+Handel-C Compiler "-c" "-g" "-W" "-N+piperam" "-S-parfunc" "-S-parchan" "-S-parmem" "-O+rewrite" "-O+high" "-O+cse" "-O+pcse" "-O+rcse" "-O+cr" "-O-rcr" "-edif" "-DNDEBUG" "-D__EDIF__" "-DUSE_RC200E" "-lutpack" "-retime" "-I" "C:\Program Files\Celoxica\PDK\Hardware\Include" "-o" "C:\Documents and Settings\vickery\My Documents\Courses\cs345\2004_09\Grading_III\chang-kevelson\Laboratory III\motorcontrol\RC200E\motorc.hco" "-xc" "C:\Documents and Settings\vickery\My Documents\Courses\cs345\2004_09\Grading_III\chang-kevelson\Laboratory III\motorcontrol\motorc.hcc"
+      0 errors, 0 warnings
+
+¬motorcontrol
+Linker "-g" "-W" "-N+piperam" "-S-parfunc" "-S-parchan" "-S-parmem" "-O+rewrite" "-O+high" "-O+cse" "-O+pcse" "-O+rcse" "-O+cr" "-O-rcr" "-edif" "-syn" "ActiveHDL" "-N+speed" "-N-alumap" "-p" "xc2v1000fg456-4" "stdlib.hcl" "pal_rc200e.hcl" "rc200e.hcl" "-f" "XilinxVirtexII" "-lutpack" "-retime" "-L" "C:\Program Files\Celoxica\PDK\Hardware\Lib" "-o" "C:\Documents and Settings\vickery\My Documents\Courses\cs345\2004_09\Grading_III\chang-kevelson\Laboratory III\motorcontrol\RC200E\motorcontrol.edf" "RC200E\motorc.hco"
+  NAND gates after compilation  : 10265 (429 FFs, 33 memory bits)
+  NAND gates after optimisation : 9917 (395 FFs, 33 memory bits)
+  NAND gates after expansion    : 11910 (410 FFs, 528 memory bits)
+  NAND gates after optimisation : 1714 (98 FFs, 0 memory bits)
+  LUTs after mapping : 134 (98 FFs, 0 memory bits)
+  Retime: clock defined in rc200e.hcl has delay 13.27 ns
+  Retime: clock defined in rc200e.hcl requested 20 ns and achieved 13.27 ns after delay driven retiming
+  Retime: clock defined in rc200e.hcl achieved 13.27 ns after area driven retiming 
+  LUTs after retiming : 134 (98 FFs, 0 memory bits)
+  LUTs after post-optimisation : 135 (97 FFs, 0 memory bits)
+      0 errors, 0 warnings
+
+¬motorcontrol
+Custom build steps:
+cd RC200E
+call edifmake_rc200 MotorControl
+beep
+
+Custom build output:
+------------------------------- NGDBUILD ---------------------------------
+Command Line: ngdbuild -intstyle xflow -sd .. -sd
+C:\PROGRA~1\Celoxica\PDK/Lib/EDIF -dd . MotorControl.edf MotorControl.ngd 
+Launcher: Executing edif2ngd -quiet "MotorControl.edf" "MotorControl.ngo"
+Reading NGO file "C:/Documents and Settings/vickery/My
+Documents/Courses/cs345/2004_09/Grading_III/chang-kevelson/Laboratory
+III/MotorControl/RC200E/MotorControl.ngo" ...
+Reading component libraries for design expansion...
+Checking timing specifications ...
+Checking expanded design ...
+WARNING:NgdBuild:454 - logical net 'ClockInput_rc200e_W3' has no load
+WARNING:NgdBuild:478 - clock net 'ClockInput_rc200e_W3' drives no clock pins
+WARNING:NgdBuild:454 - logical net 'ClockInput_rc200e_W7' has no load
+WARNING:NgdBuild:478 - clock net 'ClockInput_rc200e_W7' drives no clock pins
+NGDBUILD Design Results Summary:
+  Number of errors:     0
+  Number of warnings:   4
+Total memory usage is 38256 kilobytes
+Writing NGD file "MotorControl.ngd" ...
+Writing NGDBUILD log file "MotorControl.bld"...
+NGDBUILD done.
+---------------------------------- MAP -----------------------------------
+Using target part "2v1000fg456-4".
+Removing unused or disabled logic...
+Running cover...
+Running directed packing...
+Running delay-based LUT packing...
+Running related packing...
+Design Summary:
+Number of errors:      0
+Number of warnings:    0
+Logic Utilization:
+  Number of Slice Flip Flops:          94 out of  10,240    1%
+  Number of 4 input LUTs:             133 out of  10,240    1%
+Logic Distribution:
+  Number of occupied Slices:          113 out of   5,120    2%
+  Number of Slices containing only related logic:     113 out of     113  100%
+  Number of Slices containing unrelated logic:          0 out of     113    0%
+        *See NOTES below for an explanation of the effects of unrelated logic
+Total Number 4 input LUTs:            196 out of  10,240    1%
+  Number used as logic:               133
+  Number used as a route-thru:         62
+  Number used as Shift registers:       1
+  Number of bonded IOBs:                8 out of     324    2%
+    IOB Flip Flops:                     3
+  Number of GCLKs:                      1 out of      16    6%
+Total equivalent gate count for design:  2,025
+Additional JTAG gate count for IOBs:  384
+Peak Memory Usage:  81 MB
+NOTES:
+   Related logic is defined as being logic that shares connectivity -
+   e.g. two LUTs are "related" if they share common inputs.
+   When assembling slices, Map gives priority to combine logic that
+   is related.  Doing so results in the best timing performance.
+   Unrelated logic shares no connectivity.  Map will only begin
+   packing unrelated logic into a slice once 99% of the slices are
+   occupied through related logic packing.
+   Note that once logic distribution reaches the 99% level through
+   related logic packing, this does not mean the device is completely
+   utilized.  Unrelated logic packing will then begin, continuing until
+   all usable LUTs and FFs are occupied.  Depending on your timing
+   budget, increased levels of unrelated logic packing may adversely
+   affect the overall timing performance of your design.
+Mapping completed.
+See MAP report file "MotorControl.mrp" for details.
+---------------------------------- PAR -----------------------------------
+Constraints file: MotorControl.pcf
+Loading device database for application Par from file "MotorControl.ncd".
+   "motorcontrol" is an NCD, version 2.38, device xc2v1000, package fg456, speed
+-4
+Loading device for application Par from file '2v1000.nph' in environment
+C:/Xilinx.
+The STEPPING level for this design is 0.
+Device speed data version:  PRODUCTION 1.117 2003-12-13.
+Resolving physical constraints.
+Finished resolving physical constraints.
+Device utilization summary:
+   Number of External IOBs             8 out of 324     2%
+      Number of LOCed External IOBs    8 out of 8     100%
+   Number of SLICEs                  113 out of 5120    2%
+   Number of BUFGMUXs                  1 out of 16      6%
+Overall effort level (-ol):   Standard (default)
+Placer effort level (-pl):    Standard (default)
+Placer cost table entry (-t): 1
+Router effort level (-rl):    Standard (default)
+Starting initial Timing Analysis.  REAL time: 0 secs 
+WARNING:Timing:2666 - Constraint ignored:
+   TS_FFS_OUT_TG_rc200e_main_2_CS4202BitClkBus_Param0 = MAXDELAY FROM TIMEGRP
+   "FFS"
+    TO TIMEGRP "TG_rc200e_main_2_CS4202BitClkBus_Param0" 20 nS ;
+WARNING:Timing:2666 - Constraint ignored:
+   TS_PADS_OUT_TG_rc200e_main_2_CS4202BitClkBus_Param0 = MAXDELAY FROM TIMEGRP 
+   "PADS" TO TIMEGRP "TG_rc200e_main_2_CS4202BitClkBus_Param0" 20 nS ;
+WARNING:Timing:2666 - Constraint ignored:
+   TS_FFS_OUT_TG_rc200e_main_2_CS4202NotResetBus_Param0 = MAXDELAY FROM TIMEGRP 
+   "FFS" TO TIMEGRP "TG_rc200e_main_2_CS4202NotResetBus_Param0" 40 nS ;
+WARNING:Timing:2666 - Constraint ignored:
+   TS_PADS_OUT_TG_rc200e_main_2_CS4202NotResetBus_Param0 = MAXDELAY FROM TIMEGRP
+   "PADS" TO TIMEGRP "TG_rc200e_main_2_CS4202NotResetBus_Param0" 40 nS ;
+WARNING:Timing:2666 - Constraint ignored:
+   TS_FFS_OUT_TG_rc200e_main_2_CS4202SDataOutBus_Param0 = MAXDELAY FROM TIMEGRP 
+   "FFS" TO TIMEGRP "TG_rc200e_main_2_CS4202SDataOutBus_Param0" 40 nS ;
+WARNING:Timing:2666 - Constraint ignored:
+   TS_PADS_OUT_TG_rc200e_main_2_CS4202SDataOutBus_Param0 = MAXDELAY FROM TIMEGRP
+   "PADS" TO TIMEGRP "TG_rc200e_main_2_CS4202SDataOutBus_Param0" 40 nS ;
+WARNING:Timing:2666 - Constraint ignored:
+   TS_FFS_OUT_TG_rc200e_main_2_CS4202SyncBus_Param0 = MAXDELAY FROM TIMEGRP
+   "FFS" 
+   TO TIMEGRP "TG_rc200e_main_2_CS4202SyncBus_Param0" 40 nS ;
+WARNING:Timing:2666 - Constraint ignored:
+   TS_PADS_OUT_TG_rc200e_main_2_CS4202SyncBus_Param0 = MAXDELAY FROM TIMEGRP
+   "PADS"
+    TO TIMEGRP "TG_rc200e_main_2_CS4202SyncBus_Param0" 40 nS ;
+Finished initial Timing Analysis.  REAL time: 0 secs 
+Phase 1.1
+Phase 1.1 (Checksum:98984b) REAL time: 0 secs 
+Phase 2.2
+.
+Phase 2.2 (Checksum:1312cfe) REAL time: 7 secs 
+Phase 3.3
+Phase 3.3 (Checksum:1c9c37d) REAL time: 7 secs 
+Phase 4.5
+Phase 4.5 (Checksum:26259fc) REAL time: 7 secs 
+Phase 5.8
+......................
+..
+Phase 5.8 (Checksum:9aaad2) REAL time: 7 secs 
+Phase 6.5
+Phase 6.5 (Checksum:39386fa) REAL time: 7 secs 
+Phase 7.18
+Phase 7.18 (Checksum:42c1d79) REAL time: 7 secs 
+Phase 8.24
+Phase 8.24 (Checksum:4c4b3f8) REAL time: 7 secs 
+Phase 9.27
+Phase 9.27 (Checksum:55d4a77) REAL time: 7 secs 
+Writing design to file MotorControl.ncd.
+Total REAL time to Placer completion: 8 secs 
+Total CPU time to Placer completion: 7 secs 
+Phase 1: 787 unrouted;       REAL time: 8 secs 
+Phase 2: 709 unrouted;       REAL time: 11 secs 
+Phase 3: 126 unrouted;       REAL time: 11 secs 
+Phase 4: 126 unrouted; (0)      REAL time: 11 secs 
+Phase 5: 126 unrouted; (0)      REAL time: 11 secs 
+Phase 6: 126 unrouted; (0)      REAL time: 11 secs 
+Phase 7: 0 unrouted; (0)      REAL time: 11 secs 
+Total REAL time to Router completion: 11 secs 
+Total CPU time to Router completion: 10 secs 
+Generating "par" statistics.
+**************************
+Generating Clock Report
+**************************
++-------------------------+----------+------+------+------------+-------------+
+|        Clock Net        | Resource |Locked|Fanout|Net Skew(ns)|Max Delay(ns)|
++-------------------------+----------+------+------+------------+-------------+
+|       WG17_rc200e       | BUFGMUX1P| No   |   62 |  0.172     |  1.187      |
++-------------------------+----------+------+------+------------+-------------+
+Timing Score: 0
+Asterisk (*) preceding a constraint indicates it was not met.
+   This may be due to a setup or hold violation.
+--------------------------------------------------------------------------------
+  Constraint                                | Requested  | Actual     | Logic 
+                                            |            |            | Levels
+--------------------------------------------------------------------------------
+  NET "WG17_rc200e" PERIOD =  20 nS   HIGH  | 20.000ns   | 11.250ns   | 6    
+  50.000000 %                               |            |            |      
+--------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_main_2_CS4202BitClkB | N/A        | N/A        | N/A  
+  us_Param0 = MAXDELAY FROM TIMEGRP "FFS"   |            |            |      
+  TO TIMEGRP "TG_rc200e_main_2_CS4202BitClk |            |            |      
+  Bus_Param0" 20 nS                         |            |            |      
+--------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_main_2_CS4202BitClk | N/A        | N/A        | N/A  
+  Bus_Param0 = MAXDELAY FROM TIMEGRP  "PADS |            |            |      
+  " TO TIMEGRP "TG_rc200e_main_2_CS4202BitC |            |            |      
+  lkBus_Param0" 20 nS                       |            |            |      
+--------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_main_2_CS4202NotRese | N/A        | N/A        | N/A  
+  tBus_Param0 = MAXDELAY FROM TIMEGRP  "FFS |            |            |      
+  " TO TIMEGRP "TG_rc200e_main_2_CS4202NotR |            |            |      
+  esetBus_Param0" 40 nS                     |            |            |      
+--------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_main_2_CS4202NotRes | N/A        | N/A        | N/A  
+  etBus_Param0 = MAXDELAY FROM TIMEGRP  "PA |            |            |      
+  DS" TO TIMEGRP "TG_rc200e_main_2_CS4202No |            |            |      
+  tResetBus_Param0" 40 nS                   |            |            |      
+--------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_main_2_CS4202SDataOu | N/A        | N/A        | N/A  
+  tBus_Param0 = MAXDELAY FROM TIMEGRP  "FFS |            |            |      
+  " TO TIMEGRP "TG_rc200e_main_2_CS4202SDat |            |            |      
+  aOutBus_Param0" 40 nS                     |            |            |      
+--------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_main_2_CS4202SDataO | N/A        | N/A        | N/A  
+  utBus_Param0 = MAXDELAY FROM TIMEGRP  "PA |            |            |      
+  DS" TO TIMEGRP "TG_rc200e_main_2_CS4202SD |            |            |      
+  ataOutBus_Param0" 40 nS                   |            |            |      
+--------------------------------------------------------------------------------
+  TS_FFS_OUT_TG_rc200e_main_2_CS4202SyncBus | N/A        | N/A        | N/A  
+  _Param0 = MAXDELAY FROM TIMEGRP "FFS"  TO |            |            |      
+   TIMEGRP "TG_rc200e_main_2_CS4202SyncBus_ |            |            |      
+  Param0" 40 nS                             |            |            |      
+--------------------------------------------------------------------------------
+  TS_PADS_OUT_TG_rc200e_main_2_CS4202SyncBu | N/A        | N/A        | N/A  
+  s_Param0 = MAXDELAY FROM TIMEGRP "PADS"   |            |            |      
+  TO TIMEGRP "TG_rc200e_main_2_CS4202SyncBu |            |            |      
+  s_Param0" 40 nS                           |            |            |      
+--------------------------------------------------------------------------------
+All constraints were met.
+INFO:Timing:2761 - N/A entries in the Constraints list may indicate that the
+   constraint does not cover any paths or that it has no requested value.
+All signals are completely routed.
+Total REAL time to PAR completion: 12 secs 
+Total CPU time to PAR completion: 10 secs 
+Peak Memory Usage:  107 MB
+Placement: Completed - No errors found.
+Routing: Completed - No errors found.
+Timing: Completed - No errors found.
+Writing design to file MotorControl.ncd.
+PAR done.
+--------------------------------- BITGEN ---------------------------------
+Release 6.2i - Bitgen G.28
+Copyright (c) 1995-2004 Xilinx, Inc.  All rights reserved.
+Loading device database for application Bitgen from file "MotorControl.ncd".
+   "motorcontrol" is an NCD, version 2.38, device xc2v1000, package fg456, speed
+-4
+Loading device for application Bitgen from file '2v1000.nph' in environment
+C:/Xilinx.
+The STEPPING level for this design is 0.
+Opened constraints file MotorControl.pcf.
+Tue Oct 26 12:16:40 2004
+Creating bit map...
+Saving bit stream in "motorcontrol.bit".
+Bitstream generation is complete.
+---------------------------------- DONE ----------------------------------
+
+Custom build stage complete
+

@@ -1,0 +1,207 @@
+/****************************************************************
+/****************************************************************
+* keyboard_lcd                                                  
+* Adrian Cimpeanu
+* This program displas ASCII characters on the LCDas they are typed 
+* by the user on the keyboard.
+*
+****************************************************************/
+
+
+ #define PAL_TARGET_CLOCK_RATE 25175000 
+ #define lcd_handle PalVideoOutOptimalCT( PAL_ACTUAL_CLOCK_RATE )
+ #include "pal_master.hch"
+ #include "stdlib.hch"
+ #include "pal_keyboard.hch"
+
+
+/*
+*Forward declarations
+*/
+
+static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+static macro proc display( digit, Xcoordinate1, Ycoordinate1 );
+
+//declare global variables
+ unsigned 12 Xcoordinate1;
+ unsigned 12 Ycoordinate1;
+ unsigned 1 InRegion;
+ unsigned 4 FirstDigit;
+ unsigned 4 SecondDigit;
+
+/*
+ * Main program
+ */
+void main (void)
+{
+  
+   
+
+    PalKeyboard *KeyboardPtr;
+
+    unsigned 8 Char;
+    unsigned 1 isInRegion;
+    FirstDigit = 0;
+    SecondDigit = 0;
+    Xcoordinate1 = 400;
+    Ycoordinate1 = 10;
+
+    /*
+     * Check we've got everything we need
+     */
+      PalVersionRequire (1, 0);
+      PalVideoOutRequire (1);
+      PalPS2PortRequire (2);
+      PalSevenSegRequire (1);
+
+      
+      par
+   {
+
+      PalSevenSegEnable (PalSevenSegCT (0));
+      PalSevenSegEnable (PalSevenSegCT (1));
+      PalKeyboardRun(&KeyboardPtr, PalPS2PortCT (1), ClockRate);
+      PalKeyboardEnable (KeyboardPtr);
+    
+
+    par {
+        
+       do {
+         
+        seq {
+          
+           PalKeyboardReadASCII(KeyboardPtr, &Char);
+           FirstDigit =  Char \\ 4;
+           SecondDigit = Char <- 4;
+            
+          
+              
+           }//end_seq
+          // display (SecondDigit);
+             
+     
+       }while(1);  
+  }//end_par
+   PalVideoOutRun( lcd_handle, PAL_ACTUAL_CLOCK_RATE );
+   PalVideoOutEnable ( lcd_handle  );
+         
+     
+   
+       
+      
+           
+      do {
+         //display the hexadecimal value of the keyboard button pressed
+         delay;
+         InRegion = 0;
+               display (FirstDigit, Xcoordinate1 , Ycoordinate1);
+               display (SecondDigit, Xcoordinate1 + 100, Ycoordinate1);
+               PalSevenSegWriteDigit (PalSevenSegCT (0), FirstDigit, 0);
+           PalSevenSegWriteDigit (PalSevenSegCT (1), SecondDigit, 0);
+       if( !InRegion ){ 
+          PalVideoOutWrite( lcd_handle, 0b111111110000000000000000 );
+        }
+          
+        }while(1); 
+     //}//seq
+    }//end_par
+
+
+   }//end_main
+
+  static macro proc display (digit, Xcoordinate1, Ycoordinate1)
+{
+
+
+
+  par {
+     //1      
+       
+             
+        if( PalVideoOutGetX( lcd_handle ) > Xcoordinate1 &&  PalVideoOutGetX( lcd_handle ) < (Xcoordinate1 + 50 ) &&
+            PalVideoOutGetY( lcd_handle ) > Ycoordinate1 &&  PalVideoOutGetY( lcd_handle ) < (Ycoordinate1 + 15) ) 
+        {
+           if( digit != 1 && digit != 4  && digit != 11  && digit != 13 ) 
+           { 
+               PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );  
+               InRegion  = 1;
+          
+            }
+
+        }
+
+     //2     
+   
+       if( PalVideoOutGetX( lcd_handle ) > (Xcoordinate1 - 15 ) &&  PalVideoOutGetX( lcd_handle ) < Xcoordinate1 &&
+            PalVideoOutGetY( lcd_handle ) > Ycoordinate1 &&  PalVideoOutGetY( lcd_handle ) <  (Ycoordinate1 + 50) ) {
+             if( digit != 1 && digit != 2 && digit != 3  && digit != 7  && digit != 13  )  
+         {
+             PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );  
+               InRegion  = 1;
+          
+            }
+
+        }
+     //3
+     
+       if( PalVideoOutGetX( lcd_handle ) > (Xcoordinate1 + 50 ) &&  PalVideoOutGetX( lcd_handle ) < (Xcoordinate1 + 65 ) &&
+            PalVideoOutGetY( lcd_handle ) > Ycoordinate1 &&  PalVideoOutGetY( lcd_handle ) < (Ycoordinate1 + 50) ) {
+          if( digit != 5 && digit != 6 && digit != 11 && digit != 12 && digit !=14  && digit != 15 ) { 
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );  
+               InRegion  = 1;
+          
+            }
+
+        }
+
+    //4
+   
+     if( !(digit == 0) && (digit != 1) &&  (digit != 7) && (digit != 12 ) ) { 
+      if( PalVideoOutGetX( lcd_handle ) > Xcoordinate1 &&  PalVideoOutGetX( lcd_handle ) < (Xcoordinate1 + 50) &&
+            PalVideoOutGetY( lcd_handle ) > (Ycoordinate1 + 45) &&  PalVideoOutGetY( lcd_handle ) < (Ycoordinate1 + 60) ) {
+            
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );  
+               InRegion  = 1;
+          
+            }
+
+        }
+ 
+    //5
+   
+      if( PalVideoOutGetX( lcd_handle ) > (Xcoordinate1 - 15 ) &&  PalVideoOutGetX( lcd_handle ) < Xcoordinate1 &&
+            PalVideoOutGetY( lcd_handle ) > Ycoordinate1 + 51  &&  PalVideoOutGetY( lcd_handle ) <  (Ycoordinate1 + 110) ) {
+             if( digit != 1  && digit != 3  && digit != 4 && digit != 5 && digit != 7 && digit != 9   ) { 
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );  
+               InRegion  = 1;
+          
+            }
+
+        }
+
+     //6
+     
+         if( PalVideoOutGetX( lcd_handle ) > (Xcoordinate1 +  50 ) &&  PalVideoOutGetX( lcd_handle ) < Xcoordinate1 + 65  &&
+            PalVideoOutGetY( lcd_handle ) > Ycoordinate1 + 51 &&  PalVideoOutGetY( lcd_handle ) <  (Ycoordinate1 + 110) ) {
+         if( digit != 2 && digit != 12 && digit !=15 ) {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );  
+               InRegion  = 1;
+          
+            }
+
+        }
+     //7
+      
+         if( PalVideoOutGetX( lcd_handle ) > (Xcoordinate1  ) &&  PalVideoOutGetX( lcd_handle ) < Xcoordinate1 +  50  &&
+            PalVideoOutGetY( lcd_handle ) > Ycoordinate1 + 95 &&  PalVideoOutGetY( lcd_handle ) <  (Ycoordinate1 + 110) ) {
+            if( (digit != 1) && (digit != 4) && (digit != 7) && (digit != 10) && (digit != 15)) {
+            PalVideoOutWrite( lcd_handle, 0b111111111111111100000000 );  
+               InRegion  = 1;
+          
+            }
+
+        }
+        }//end_par
+         
+      
+}

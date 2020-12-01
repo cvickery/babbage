@@ -1,0 +1,34 @@
+/*author: eli blum,marc khan
+  project: keyboard_hex
+  purpose: light up seven seg displays with hex values of char typed in
+*/
+#ifdef USE_SIM
+#define PAL_TARGET_CLOCK_RATE 2000000
+#else
+#define PAL_TARGET_CLOCK_RATE 50000000
+#endif
+
+#include "pal_master.hch"
+//#include "pal_rc200.hch"
+#include "stdlib.hch"
+#include "pal_keyboard.hch"
+
+void main(void){
+	PalKeyboard *key; //pointer
+	unsigned  c;//char typed in
+	PalSevenSegEnable(PalSevenSegCT(1));	
+	PalSevenSegEnable(PalSevenSegCT(0));
+	par{
+	   
+	    PalKeyboardRun(&key,PalPS2PortCT (1), PAL_ACTUAL_CLOCK_RATE);
+	    seq{//delay needed to avoid unavailable pointer
+		PalKeyboardEnable(key);
+		while(1){
+		//delay;
+		   PalKeyboardReadASCII(key,&c);//read key
+		   PalSevenSegWriteDigit(PalSevenSegCT(0),c \\ 4, 0);//write  first digit
+		   PalSevenSegWriteDigit(PalSevenSegCT(1),c <- 4, 0);//write second digit
+		}
+	    }
+	}
+}

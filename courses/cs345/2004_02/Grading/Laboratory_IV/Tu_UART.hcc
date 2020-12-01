@@ -1,0 +1,174 @@
+
+
+
+#define baud_rate 2400
+#define PAL_TARGET_CLOCK_RATE 25175000
+#include "pal_master.hch"
+#include "pal_console.hch"
+#include "pal_keyboard.hch"
+#include "stdlib.hch"
+
+
+static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+
+
+chan unsigned 8 THR;
+unsigned 8 getchar;
+unsigned 8 Char;
+unsigned 1 voltage;
+unsigned 4 n=8;
+
+chan unsigned 8 pass;
+unsigned 8 RBR; //receiver buffer register
+unsigned 1 DO;
+unsigned 1 FE;
+unsigned 1 RF;
+unsigned 8 temp;
+unsigned 4 counter;
+unsigned 4 index=0;
+unsigned 1 start=0;
+unsigned 1 stop=1;
+static macro proc Sleep (Microseconds);
+
+interface bus_out() expansion_out(unsigned int 1 data=voltage)
+    with
+    {
+        data={"V20"}
+     };
+
+interface bus_in( unsigned int 1 RXD)busin()
+    with
+    {
+        data={"U20"}
+    };
+//driver in main method
+void main (void)
+{
+    PalConsole *ConsolePtr;
+    PalKeyboard *KeyboardPtr;
+
+    /*
+     * Check we've got everything we need
+     */
+    PalVersionRequire  (1, 0);
+    PalVideoOutRequire (1);
+    PalPS2PortRequire  (2);
+
+
+    par
+    {
+        PalConsoleRun (&ConsolePtr, PAL_CONSOLE_FONT_NORMAL,
+                       PalVideoOutOptimalCT (ClockRate), ClockRate);
+        PalKeyboardRun (&KeyboardPtr, PalPS2PortCT (1), ClockRate);
+
+        seq
+        {
+            par
+            {
+                PalConsoleEnable (ConsolePtr);
+                PalKeyboardEnable (KeyboardPtr);
+
+                              }
+
+            while(1)    //  driver sends out the character
+            {
+                   PalKeyboardReadASCII (KeyboardPtr, &Char);
+                   THR ! Char;
+            }
+
+
+            do          //  driver displays the the character
+            {
+
+                pass ? getchar;
+                PalConsolePutChar (ConsolePtr, getchar);
+
+            }
+            while (1);
+
+
+       }
+   }
+}
+
+//transmitter in main method
+void main(void)
+{
+
+        while(1)
+    {
+        THR ? getchar;
+        voltage=0;
+        Sleep(1000000/2400);
+        while(n>=1)
+            {
+                    voltage = getchar[0];
+
+                    n--;
+                    Sleep(1000000/2400);
+                    getchar=getchar>>1;
+
+        }
+        voltage=1;
+        Sleep(1000000/2400);
+        n=8;
+     }
+
+}
+
+
+//receiever main method
+void main(void)
+{
+   while(1){
+
+   while(busin.RXD==1) delay;   // in the resting state
+
+   Sleep(500000/2400);  // half bit
+   if(busin.RXD==1) continue;    // check if there is a glich for a start 
+bit
+   else
+   {
+   Sleep(1000000/2400);     // whole bit delay
+   RBR=adju(busin.RXD,8);   //pass the first bit of the character to RBR 
+buffer
+   counter=0;
+   while(counter <=7)           //storing bits in RBR buffer
+   {
+        index=counter;
+        Sleep(1000000/2400);    // whole bit delay
+        while(index>0)
+        {
+
+            temp=adju(busin.RXD,8);
+            temp=temp<<1;
+            index--;
+        }
+    RBR+=temp;              //save each bit of the character in RBR buffer
+    temp=0;
+    counter++;
+   }
+    pass ! RBR;
+    RBR=0;          //reset RBR for new character;
+  }
+  }
+
+}
+
+
+
+static macro proc Sleep (Microseconds)
+{
+    macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * Microseconds) / 1000000;
+    unsigned (log2ceil (Cycles)) Count;
+
+    Count = 0;
+    do
+    {
+        Count++;
+    }
+    while (Count != Cycles - 1);
+}
+
+
+

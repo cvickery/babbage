@@ -1,0 +1,44 @@
+Final Project Report
+Mikhail Veyler
+CS-345, Spring 2004
+
+Report
+
+  The overall structure of the report is fine, although the contents
+  of each section are developed and structured poorly.  The document
+  suffers from poor grammar: punctuation, sentence structure, and
+  spelling are all weak.
+
+  The section labelled "8/32-bit structure" is particularly unclear.
+  It seems to be talking about how the project interprets the byte
+  stream it receives from the attached computer, but why one would
+  relate this to a "real 32-bit machine" is not at all clear.
+
+  While the idea of the command language used does indeed seem to look
+  like "a pleasure for masochists," as stated in the Discussion
+  section, exactly how these characters are used is really not made
+  clear in the Method section.  Do you really use the binary values of
+  ASCII characters as numbers telling how long to run a motor in a
+  particular direction?  Converting numeric character strings to
+  numbers really isn't that hard to do.  Although it could be done in
+  hardware, a better design choice would have been to write a small
+  program on the PC to read command lines from the user and to output
+  a directly-interpretable byte stream to the RC-200E.
+
+Code
+
+  The code does not come close to adhering to the coding guidelines
+  for the course.  The layout is haphazard, comments are next to nil,
+  the variable names are obscure, the important sections of the code
+  are not introduced by documentation that helps the reader, etc.,
+  etc.
+
+  There are warnings issued that should not be ignored.  In
+  particular, the motor interfaces are to declared to be 3 bits wide,
+  but only one pin is assigned to each motor, leading to wasted time
+  and effort as the built tools deal with such anomalies.
+
+  The code does not run in simulation mode.
+
+Project Grade:  C
+Course Grade:   C

@@ -1,0 +1,47 @@
+// led_buttons.hcc
+
+/* This program lights up LED if a user push buttons.
+ *
+ * Author : Sora Choi
+ */
+
+#define PAL_TARGET_CLOCK_RATE 50000000
+
+#include "pal_master.hch"
+#include "stdlib.hch"
+
+static macro proc msec_delay(msec);
+
+void main(void)
+{
+  unsigned 3 counter;
+  unsigned 1 sw0;
+  unsigned 1 sw1;
+  unsigned 1 prev_sw0;
+  unsigned 1 prev_sw1;
+  unsigned 1 sw0_on;
+  unsigned 1 sw1_on;
+  
+  PalLEDRequire(2);
+  PalSwitchRequire(2);
+
+  while(1)
+  {
+    // Get a signal from Switch
+    par
+    {  
+     PalSwitchRead(PalSwitchCT (0), &sw0);
+     PalSwitchRead(PalSwitchCT (1), &sw1);
+    }
+
+    // Lid LED according to the switch value
+    par
+    {
+    PalLEDWrite(PalLEDCT(0), sw0);
+    PalLEDWrite(PalLEDCT(1), sw1);
+  }
+   
+  } 
+
+}
+

@@ -1,0 +1,61 @@
+
+  This is your grading report for Laboratory II.
+  Dr. Vickery
+
+  Team members: Yung Yi Chang and Reena Kevelson
+
+  (4.7/5 points)  Report:  Did you use styles to structure the document
+  properly?  Was the material placed in the correct sections of the
+  report?  Was the report written using standard English usage,
+  including correct grammar and spelling?
+
+    No use of styles, everything is "Normal" with character formatting
+    added.  Structure your document using styles.
+
+    The name of the language is Handel-C, not Handle-C.
+
+    Leave out obvious statements like, "We began coding."
+
+    Use past tense, not "increments."
+
+    "Using this code we were able to increment the elements in the ROM
+    array as fast as possible (7 clock cycles)."  But if you had
+    incremented the loop index in parallel with the assignment
+    statement, you could have done it in 4 clocks.
+
+    Use active voice: "These modifications included that the contents
+    of the display variable was displayed, in hexadecimal, on the two
+    seven-segment displays." should be something like, "We modified
+    the code to display the contents of the display variable in
+    hexadecimal on the two seven-segment displays."
+
+    Results should summarize what you got: the values displayed, the
+    number of clock cycles required (for this assignment where the
+    point was to count them), etc.  Then in the Discussion, you could
+    say something about the implications of the results for designing
+    projects targeted for FPGA implementation.
+
+  (2/2 points)  Laboratory Setup:  Was the workspace set up correctly,
+  and were the projects properly configured?
+
+    Everything was fine.
+
+  (2.6/3 points)  Code:  Was the code formatted and documented according
+  to the coding guidelines for the course?  Did it do what it was
+  supposed to do?  Did it use the Handel-C language effectively?
+
+    No need for the elaborate celoxica-style comment blocks at the
+    beginning of each file, and they are hard to maintain in the face
+    of changes.  Especially the asterisks along the right-hand edge.
+
+    On the other hand, you do need to include comments that set off
+    each main() and each endless while() (i.e. each major thread) as
+    described in the coding guidelines for the course.
+
+    There is a big misunderstanding in your code.  A macro proc is not
+    a function.  Rather it gets expanded in place everywhere it is
+    referenced.  That is, it's a macro.  So there is no need to
+    replicated it to avoid concurrent accesses to "the" counter
+    variable.
+
+  Assignment Grade is 9.3

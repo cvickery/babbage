@@ -1,0 +1,193 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>DK Configuration Summary</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/style-all.css"
+    />
+    <script type="text/javascript" src="scripts/delete_col.js">
+    </script>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>DK Configuration Summary</h1>
+    </div>
+
+    <div id="content">
+      <h2>Overview</h2>
+      <div class="whitebox">
+
+        <p>This page summarizes the values you will need to specify when
+        setting up various kinds of projects using the DK GUI.</p>
+
+        <p>The clock rates given are the maxima available for the hardware
+        platforms, and a reasonable value for the simulation platform.  The
+        clock rate has to be 25175000 for projects that do video output to a
+        VGA adapter or a touchscreen.</p>
+
+        <p>In addition to the required libraries listed, many projects need
+        to link to additional libraries:</p>
+
+        <ul>
+          <li><span class="fileName">pal_keyboard.hcl</span></li>
+          <li><span class="fileName">pal_mouse.hcl</span></li>
+          <li><span class="fileName">pal_console.hcl</span></li>
+          <li><span class="fileName">pal_framebuffer.hcl</span></li>
+          <li><span class="fileName">pal_framebuffer8.hcl</span></li>
+          <li><span class="fileName">pal_framebuffer16.hcl</span></li>
+        </ul>
+
+        <p>There is also a top-level <span class="programName">Pixel
+        Streams</span> library, <span class="fileName">pxs.hcl</span>, for
+        all Pixel Streams projects, and an additional platform-specific
+        Pixel Streams library for each platform: <span
+        class="fileName">pxs_rc10.hcl</span>, <span
+        class="fileName">pxs_rc200e.hcl</span>, and <span
+        class="fileName">pxs_rc300.hcl</span>.</p>
+
+      </div>
+      <div id="tooltip">
+        Click on heading to remove column<!--[if IE]>.
+          <br />Then resize your browser window to clean up the mess caused by
+          Internet Explorer!
+        <![endif]-->
+      </div>
+      <div id="tableDiv">
+        <table summary="Configuration Settings for DK GUI Projects">
+          <caption>Configuration Settings</caption>
+          <tr>
+            <th rowspan="2" valign="top">
+            </th>
+            <th colspan="5">Platform</th>
+          </tr>
+          <tr>
+           <th class="lib" title="Click to Remove Column">Library</th>
+           <th class="sim" title="Click to Remove Column">Simulation (Debug)</th>
+           <th class="rc10" title="Click to Remove Column">RC-10</th>
+           <th class="rc200e" title="Click to Remove Column">RC-200E</th>
+           <th class="rc300" title="Click to Remove Column">RC-300</th>
+          </tr>
+          <tr>
+            <th scope="row">FPGA Family:</th>
+            <td class="lib">Library</td>
+            <td class="sim"></td>
+            <td class="rc10">Xilinx Spartan-3/3L</td>
+            <td class="rc200e">Xilinx Virtex-II</td>
+            <td class="rc300">Xilinx Virtex-II</td>
+          </tr>
+          <tr>
+            <th scope="row">FPGA Part Number:</th>
+            <td class="lib"></td>
+            <td class="sim"></td>
+            <td class="rc10">XC3S1500LFG320-4</td>
+            <td class="rc200e">XC2V1000FG456-4</td>
+            <td class="rc300">XC2V6000FF1152-4</td>
+          </tr>
+          <tr>
+            <th scope="row">Preprocessor:</th>
+            <td class="lib"></td> <!-- Library -->
+            <td class="sim">USE_SIM,<br />PAL_TARGET_CLOCK_RATE=1000000</td> <!-- Simulation -->
+            <td class="rc10">USE_RC10,<br />PAL_TARGET_CLOCK_RATE=48000000</td> <!-- RC-10 -->
+            <td class="rc200e">USE_RC200E,<br />PAL_TARGET_CLOCK_RATE=50000000</td> <!-- RC-200E -->
+            <td class="rc300">USE_RC300,<br />PAL_TARGET_CLOCK_RATE=125000000</td> <!-- RC-300 -->
+          </tr>
+          <tr>
+            <th scope="row">Linker: Required<br />Object/Library&nbsp;Modules:</th>
+            <td class="lib"></td> <!-- Library -->
+            <td class="sim">stdlib.hcl,pal_sim.hcl,sim.hcl</td> <!-- Simulation -->
+            <td class="rc10">stdlib.hcl,pal_rc10.hcl,rc10.hcl</td> <!-- RC-10 -->
+            <td class="rc200e">stdlib.hcl,pal_rc200e.hcl,rc200e.hcl</td> <!-- RC-200E -->
+            <td class="rc300">stdlib.hcl,pal_rc300.hcl,rc300.hcl</td> <!-- RC-300 -->
+          </tr>
+          <tr>
+            <th scope="row">Linker<br />C/C++&nbsp;Modules:</th>
+            <td class="lib"></td> <!-- Library -->
+            <td class="sim">C:\Program&nbsp;Files\Celoxica\<br /> <!-- Simulation -->
+                PDK\Software\Lib\PalSim.lib
+            </td>
+            <td class="rc10"></td> <!-- RC-10 -->
+            <td class="rc200e"></td> <!-- RC-200E -->
+            <td class="rc300"></td> <!-- RC-300 -->
+          </tr>
+          <tr>
+            <th scope="row">Build Commands<br />Commands:</th>
+            <td class="lib"></td> <!-- Library -->
+            <td class="sim"></td> <!-- Simulation -->
+            <td class="rc10">cd EDIF<br /> <!-- RC-10 -->
+                edifmake_rc10&nbsp;&ldquo;project name&rdquo;<br />
+                beep
+            </td>
+            <td class="rc200e">cd EDIF<br /> <!-- RC-200E -->
+                edifmake_rc200&nbsp;&ldquo;project name&rdquo;<br />
+                beep
+            </td>
+            <td class="rc300">cd EDIF<br /> <!-- RC-300 -->
+                edifmake_rc300&nbsp;&ldquo;project name&rdquo;<br />
+                beep
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Build&nbsp;Commands<br />Outputs:</th>
+            <td class="lib"></td> <!-- Library -->
+            <td class="sim"></td> <!-- Simulation -->
+            <td class="rc10">EDIF</td> <!-- RC-10 -->
+            <td class="rc200e">EDIF</td> <!-- RC-200E -->
+            <td class="rc300">EDIF</td> <!-- RC-300 -->
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div id="footer">
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

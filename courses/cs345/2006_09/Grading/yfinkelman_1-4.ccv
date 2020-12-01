@@ -1,0 +1,67 @@
+Yuval Finkelman and Hadas Cohen
+===============================
+
+Comments on Laboratories I-IV
+-----------------------------
+
+  Workspace and Project Management:
+
+    The workspace in your cs780 directory contained only two projects:
+    multiplier and keybd2sevenseg.  The other two projects, delayProcs
+    and keybd2video were in the proper directories, but I had to
+    insert them into the workspace manually.
+
+    DelayProcs has six irrelevant build configurations in the project.
+    There is an #include with a long explicit pathname in quotes to
+    get to the header file.  It should appear as
+      #include <delayProcs.hch>
+    No quotes, no pathname.  Likewise in the other .hcc files that
+    reference that header file.  That is, you did not set up the
+    additional include directories and additional Library Path
+    settings that are needed.
+
+  Coding Structure and Style:         OK
+
+
+  Code Documentation:
+
+    See comment about #include for delayprocs.hch: comment line for
+    that statement refers to pathname and needs to be fixed (or
+    deleted).
+
+    Comments mention about simulation in several places, but all code
+    except the multiplier are configurable for both simulation and for
+    actual hardware implementation.
+
+    Comments in delayProcs.hcc reference a 1/64 second delay -- but
+    the msecDelay proc can delay for any number of milliseconds.
+    Comments about "find the maximum bits" in that file don't make
+    sense.  It's true that you use a macro proc to determine the
+    _minimum_ number of bits needed for the width of the variable, but
+    the variable, pulsePerMillisec is what should be documented, not
+    how its width was determined.  The next comment refers to
+    "clockrate of the video used" which makes no sense.  The macro
+    proc code has nothing to do with video; it is general-purpose
+    code.
+
+    Comments in keybd2video.hcc are much too wordy.  The purpose of
+    code documentation is to guide the reader to points of interest,
+    with tips on parts of the code that might not be immediately
+    obvious to someone who knows the programming language well.  You
+    don't need to (and should not) burden the reader with lots of
+    comments to read, just useful comments that introduce logical
+    sections of the file.  In general, line-by-line comments are not
+    needed and just get in the way.  The exception to that is in the
+    data section, where your commenting style can be helpful.  But
+    even there, comments like "channel tool" are not helpful.  But
+    telling what that channel is used for in this file would be
+    helpful.
+
+    keybd2sevenseg.hcc is essentially undocumented.
+
+
+
+  Other Comments:                     None
+
+  Grade:                              8/10
+

@@ -1,0 +1,39 @@
+
+  This mini-lecture is on the par loop.  It's explained
+  in the Celoxica tutorial and the Handel-C manual
+  well, but I want to add my own comments here.
+
+    A par block: par { ... }
+    A par loop:  par ( i=0; i<n; i++ ) { ... }
+
+  In both the block and the loop, the statements inside
+  the braces are executed in parallel.  So a par loop
+  isn't really a loop at all.  Rather it tells the
+  compiler what statements to put inside the braces at
+  compile time for simultaneous execution at run time.
+  There a couple of implications:  One is that the
+  value of n has to be known at compile time.  It can't
+  be a variable.  It could be a #define'd constant or,
+  when we learn about them, a reference to a macro
+  expr.  Or a numeric literal.
+
+  The big concept is that the index, i in this case,
+  isn't really a variable either.  It doesn't exist
+  when the program runs.  It would waste resources if
+  you declared a variable named i, although it would
+  probably get optimized away because it never got
+  used.
+
+  Page 3 of the lab assignment mentions using
+  "selectif" statements, which is a typo; use
+  "ifselect" statements.
+
+  See the "Replicated pipeline example" on Page 90 of
+  your Handel-C manual for an example of using ifselect
+  with a par loop.  When the length of the pipeline is
+  only a few elements, the par loop and ifselect is a
+  bother, but for longer pipelines, like the example in
+  the manual, it saves writing a lot of repeated code.
+
+  Dr. Vickery
+

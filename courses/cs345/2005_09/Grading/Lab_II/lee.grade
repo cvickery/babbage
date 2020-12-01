@@ -1,0 +1,115 @@
+skynare@gmail.com                       8503 Lee      Samuel
+
+CS-345 Laboratory II
+Fall 2005
+
+Here is how I evaluated your second Laboratory assignment.
+Dr. Vickery
+---------------------------------------------------------
+
+Project and Workspace Setup
+
+  You didn't supply mylib.hch so I copied the one you submitted in the
+  previous lab, but then the compiler complained about missing
+  log2ceil.
+
+Use of Handel C
+
+  Good use of conditional compilation.
+  Code is easy to read and undestand.  Starting with next lab, you
+  need to comment it well too.
+
+  Logic is not always as simple as it should be.  For example, I would
+  code the "switch thread" as follows:
+
+  while (1)
+  {
+    //  Wait for press
+    while (!button_press)
+    {
+      PalSwitchRead(...)
+    }
+    //  Signal the press and wait for contact bounce
+    button_sync ! 0;
+    sleep(10)
+    //  Wait for release
+    while (button_press)
+    {
+      PalSwitchRead(...)
+    }
+    //  Wait for contact bounce
+    sleep(10)
+  }
+
+  So I've got two invocations to sleep() and two invocations of
+  PalSwitchRead compare to one each of yours.  BUT nobody has to try
+  to figure out what the state of the switch is at any point in the
+  code or analyze what the if-else and par blocks are doing.  And
+  there's no need to figure out whether previous is being assigned the
+  correct value or not because there is no "previous" variable,
+  compared to three assignments to previous to keep track of in your
+  code.
+
+  I tried plugging my code into yours, and built for Debug (not EDIF);
+  the number of NAND gates increased 17%, and the number of flip-flops
+  increased 3%.  But unless this code is (a) easier to understand and
+  maintain and (b) can't possibly introduce combinational delays that
+  might require a slower clock in a time-critical design.
+
+  Only when you find to have to optimize the code to make the design
+  meet either space (number of gates/ffs) or time (clock speed) should
+  you try to optimize your code.  It's more productive to make it
+  simple and "obviously" correct to get it working and then to resort
+  to unclear but possibly faster/smaller designs only if you actually
+  need to.
+
+  Let's say your design doesn't fit and you want to do it your way to
+  get rid of the extra calls to PalSwitchRead and to sleep:
+
+  static unsigned 1 current_state = 0;
+  while (1)
+  {
+    //  Wait for button to change state
+    while (button_press == current_state)
+    {
+      PalSwitchRead(...);
+    }
+    if (button_press)
+    {
+      // Button press detected
+      button_sync ! 0;
+    }
+    //  Wait for contact bounce
+    sleep(10);
+    //  Update button state
+    current_state = button_press;
+  }
+
+  This code is virtually identical in size to yours (34 fewer NAND
+  gates and 3 fewer flip-flops).  But now the logic (I think) is
+  clearer: the first while loop waits for the button to change
+  state, and the if statement clearly sends the sync signal when the
+  is pressed.
+
+Report
+
+  Time for you to learn word processing!  Use a variable width font.
+  Use heading styles for the headings.  Use line breaks to separate
+  paragraphs, not to terminate lines, etc.
+
+  Describe the procedure you followed in the past tense.  Yours jumps
+  between past and present.  Use active voice and first person: "I
+  declared global variables ..." instead of "Variables used in the
+  code are declared globally ..."
+
+  Data on the experiments need to be summarized, not given in such
+  detail.  For example, just the number of slices consumed for the
+  three experiments would probably have been enough information to
+  make a meaningful comparison.
+
+  Grammar needs some work.  For example, "Especially dividing by a
+  large odd number." is not a sentence.  (And since when is 5 a large
+  number?)
+
+Grade:  9.5/10.0
+

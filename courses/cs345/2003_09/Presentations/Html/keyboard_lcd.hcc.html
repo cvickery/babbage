@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>keyboard_lcd.hcc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #606010;
+        margin:           1em;
+      }
+  </style>
+  <style type="text/css">
+        p.block
+        {
+          background:     #c0ff80;
+          margin-left:    2em;
+          margin-right:   2em;
+          padding:        1em;
+          font-weight:    bold;
+          color:          #000000;
+        }
+  </style>
+</head>
+<center><h1>keyboard_lcd.hcc</h1></center>
+<hr>
+<pre>
+      //  keyboard_lcd.hcc
+      
+      /*  Version II
+       *
+       *    Generate an image on the LCD using PAL macros.
+       */
+      
+      #define PAL_TARGET_CLOCK_RATE 25175000
+      #define lcd_handle PalVideoOutOptimalCT( PAL_ACTUAL_CLOCK_RATE )
+      
+      #include &lt;stdlib.hch&gt;
+      #include &lt;pal_master.hch&gt;
+      
+      
+      //  main()
+      //  -------------------------------------------------------
+        void main( void )
+        {
+          par
+          {
+            PalVideoOutRun( lcd_handle, PAL_ACTUAL_CLOCK_RATE );
+            PalVideoOutEnable( lcd_handle );
+            do
+            {
+              delay;  //  Only needed the first time, to let
+                      //  VideoOutEnable complete before first call
+                      //  to getX.
+
+              //  Draw a 3 red pixels alternating with 5 blue ones
+              if ( (PalVideoOutGetX( lcd_handle ) &lt;- 3) &lt; 3 )
+              {
+                PalVideoOutWrite( lcd_handle, 
+                                  0b111111110000000000000000 );
+              }
+              else
+              {
+                PalVideoOutWrite( lcd_handle, 
+                                  0b000000000000000011111111 );
+              }
+            } while ( TRUE );
+          }
+        }
+      
+</pre><hr></body></html>

@@ -1,0 +1,53 @@
+P. Chen and D. Pokrywa
+Comments on Laboratory VI
+-------------------------
+
+  Coding Style and Documentation:
+
+    OK, but there should be a comment block for each thread; there is
+    none for the audio out loop.
+
+  User Interface
+
+    A bit primitive, but okay.
+
+  Other Comments:
+
+    Tones are buzzy, and blending is uneven.  I cleaned it up by
+    reordering your code like this:
+          while(1)
+          {
+            if(Touched == 1)
+            {
+              if(touch440Region)
+                Left = SampledValues_440[index];
+              else if(touch880Region)
+                Left = SampledValues_880[index];
+              else if(touch1760Region)
+                Left = SampledValues_1760[index];
+              else if(touch440plus880Region)
+                Left = ((SampledValues_440[index]/2)
+                       + (SampledValues_880[index]/2));
+              else if (touch440plus1760Region)
+                Left = ((SampledValues_440[index]/2)
+                       + (SampledValues_1760[index]/2));
+              else if (touch880plus1760Region)
+                Left = ((SampledValues_880[index]/2)
+                       + (SampledValues_1760[index]/2));
+              else if (touch440plus880plus1760Region)
+                Left = ((SampledValues_440[index]/3)
+                       + (SampledValues_880[index]/3)
+                       + (SampledValues_1760[index]/3));
+              PalAudioOutWrite(AudioOut, Left, Left);
+            	index = (index == numSamples_440) ? 0 : index++;
+            }
+            else
+            {
+              delay;
+            }
+          }
+
+    Uses a separate header file to define the screen regions; nice
+    feature.
+
+  Grade:  9.5/10

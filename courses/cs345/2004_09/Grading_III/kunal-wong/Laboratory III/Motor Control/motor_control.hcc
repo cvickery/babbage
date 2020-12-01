@@ -1,0 +1,187 @@
+//	motor_control.hcc
+
+/****************************************************************
+*                                                               *
+* Copyright (C) 2004 Queens COllege. All rights reserved.    	  *
+*                                                               *
+*****************************************************************
+*                                                               *
+* Project   :   motor control                                   *
+*                                                               *
+* Builds on generate pulses project: endlessly and repeatedly   *
+* generate a pulse every 20 msec.  The duration of the pulse    *
+* depends on which button on the RC200E device is pressed.      *
+* When one button is pressed, the duration of the pulse is      *
+* 1000 milliseconds, causing the servomotor to turn clockwise   *
+* When the other button is pressed, the duration of the pulse   *
+* is 2000 milliseconds, causing the servomotor to turn          *
+* counter-clockwise. When no button or both buttons are pressed *
+* The duration of the pulse is 1500 milliseconds, causing the   *
+* servomotor to stop.                                           *
+* The pulse is represented by the variable pulse and connected  *
+* to pin 3 of 3.16 ATA / Expansion Header on the RC200E device. *
+*                                                               *
+* Using two main functions with an endless loop in each one,    *
+* we basically created two threads tha runs continuously and    *
+* endlessly.  The communication of the two threads is done      *
+* through a channel variable.  The first main function writes   *
+* to the channel and delay for 20 msec.  The second function    *
+* must wait for the 20-msec. delay caused by the first main     *
+* function to finish before running again.  Thus, the two       *
+* threads are synchronized and the drifting is mostly           *
+* eliminated.                                                   *
+*                                                               *
+* Date      :   8 OCT 2004                                      *
+* File      :   motor_control.hcc                               *
+* Author    :   Huen Wong (HW) & Aroj Kunal (AK)                *
+*                                                               *  
+*                                                               *
+* Contributors:                                                 *
+*                                                               *
+* Description:                                                  *
+*    Laboratory III - Servomotor Controller                     *
+*                                                               *
+* Date         Version  Author  Reason for change               *
+*                                                               *
+* 18 SEPT 2004    1.00    HW & AK     Created.                  *
+*                                                               *
+****************************************************************/
+
+#if (defined USE_RC200 || USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 50000000
+#define SW0 0
+#define SW1 1
+#define NUM_SWITCHES 2
+#else
+#define PAL_ACTUAL_CLOCK_RATE 1000000
+set clock = external "P1"
+  with
+  {
+    extlib  = "DKSync.dll",
+    extinst = "1000",       // Period of 1MHz simulated clock
+    extfunc = "DKSyncGetSet"
+  };
+#define SW0 8
+#define SW1 9
+#define NUM_SWITCHES 10
+#endif
+
+#include "stdlib.hch"
+#include <pal_master.hch>
+
+/*
+ * Forward declarations
+ */
+static macro proc microsec_delay (Microseconds);
+
+unsigned 1 pulse;
+unsigned 0 dummyVar;
+chan myChannel;
+
+interface bus_out() motor( unsigned 1 out = pulse )
+    with
+    {
+      #if (defined USE_RC200 || USE_RC200E)
+        data  = { "M2" }  //  3.16 ATA / Expansion Header
+      #else
+        extlib  = "DKConnect.dll",
+        extinst = "t(1)",
+        extfunc = "DKConnectGetSet"
+      #endif
+    };
+
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *  Endlessly and repeatedly write to myChannel the value of dummyVar,
+ *  a 0-bit variable.  Then delay for 20000 microseconds
+ *
+ */
+
+void main(void){
+    
+    //  Write to myChannel the value of dummyVar and delay for 20000
+    //  microseconds. This is done repeatedly and endlessly.
+    //  ------------------------------------------------------------
+
+    while(1) 
+    {
+      myChannel ! dummyVar;
+      microsec_delay(20000);
+    }
+
+}
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *  Implements the complete application.  Endlessly and repeatedly 
+ *  read from myChannel the value of dummyVar, a 0-bit variable.  
+ *  Then set pulse to 1, delay for 1000, 1500, or 2000 microseconds
+ *  depending on which button(s) is pressed.  Finally, set pulse to
+ *  zero to turn off the pin. This is done repeatedly and endlessly.
+ */
+ 
+void main(void)
+{
+    unsigned 1 first_b, sec_b;  
+    PalVersionRequire (1, 3);
+    PalSwitchRequire (2);
+    
+    //  Read from myChannel the value of dummyVar, set pulse to 1.
+    //  Then read from the two buttons on the RC200E device.
+    //  delay for 1000, 1500, or 2000 microseconds depending on
+    //  which button(s) is pressed.  This is done repeatedly and 
+    //  endlessly.
+    //  ------------------------------------------------------------
+      
+    while(1)
+    {
+      myChannel ? dummyVar;
+
+      pulse = 1;
+
+      PalSwitchRead(PalSwitchCT(SW0), &first_b);
+		  PalSwitchRead(PalSwitchCT(SW1), &sec_b);
+
+		  switch ( first_b@sec_b )
+		  {
+          case 0b00:
+            microsec_delay(1500);
+				  break;
+          
+          case 0b01:
+            microsec_delay(2000); // motor turns counter-clockwise
+          break;
+          
+          case 0b10:
+            microsec_delay(1000); // motor turns clockwise
+				  break;
+          
+          case 0b11:
+            microsec_delay(1500);
+          break;
+      }
+      pulse = 0;  // turns off output pin
+   } // while
+}
+
+//  microsec_delay()
+//  ------------------------------------------------------------------
+/*
+ *    Microsecond delay macroproc.  Does nothing for the specified
+ *    number of microseconds.
+ */
+
+static macro proc microsec_delay (Microseconds)
+{
+    macro expr Cycles=(PAL_ACTUAL_CLOCK_RATE * Microseconds)/1000000;
+    unsigned (log2ceil (Cycles)) sum;
+    sum = 0;
+    do
+    {
+        sum++;
+    }
+    while (sum != Cycles - 1);
+}

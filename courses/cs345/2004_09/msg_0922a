@@ -1,0 +1,111 @@
+
+  I'm going to try to do with the email what would
+  normally require some lecture time in class.
+
+  The second laboratory includes the requirement that
+  pressing one of the buttons should cause the rom to
+  be summed and pushed into the pipeline one time no
+  matter how long the button is held.  There are two
+  issues I wanted you to think about and solve in this
+  requirement: (1) How to respond to just the "edge" of
+  a button press, and (2) Contact bounce.
+
+  First a clarification/correction:  In the first lab I
+  told you to use switches 8 and 9 for simulation and 0
+  and 1 for the FPGA itself.  That was correct, but the
+  explanation in the handout was wrong.  During
+  simulation, you can click and hold a button just like
+  on the RC200E; the handout says something implying
+  that the simulated button responds only to the mouse
+  click (like our edge detection problem in this lab),
+  but that's not true.  The simulator handles mouse
+  presses and releases just like button presses and
+  releases.  The reason for using the simulated
+  switches is that it allows you to simulate holding
+  both buttons in at the same time, which you can do
+  with checkboxes but not with simulated buttons and a
+  single mouse for clicking on them.
+
+  OK, now on to issue 1, responding to transisions.
+  (One of the students in the course pointed out that
+  he'd rather figure out how to do things on his own
+  than to copy code; it's a much better learning
+  experience.  But this is an attempt to make that
+  learning experience a little more efficient for you.)
+  There are two approaches you could try.  One is to
+  use an auxiary bit to remember what the state of the
+  switch was between readings, leading to an algorithm
+  like this:
+  
+    do forever
+      read switch
+      if previous reading was 0 and this reading is 1
+        add and shift
+      else delay
+      save this reading as previous reading
+
+  And here is another approach:
+  
+    do forever
+      read switch
+    do forever
+      while switch is 0
+        delay
+      add and shift
+      while switch is 1
+        delay
+
+  I think the first algorithm is more clear to
+  "software types."  But I think the second approach
+  has a certain appeal in terms of its hardware
+  orientation.  I can't explain it very well, but it
+  would be a good idea for you to be sure you
+  understand what it is doing.  Note in particular that
+  the hardware that reads the switch is kept separate
+  from the logic that tests it.  And instead of
+  comparing two bits, all the testing is done on the
+  value of just one.
+
+  On to the contact bounce issue.  If you imnplement
+  either of the above algorithms, your code will
+  simulate fine, but will seem to "jump around" when
+  you download it to the RC200E.  This is because of
+  the difference between the simulated buttons, which
+  work "perfectly" compared to real-world mechanical
+  buttons that "bounce" for a few milliseconds when the
+  are pressed and/or released.  Different switches
+  bounce for different amounts of time before they come
+  to rest in their closed or open position, but they
+  all settle down within a "few" milliseconds.  (You
+  could use an oscilloscope ... that brown instrument
+  at each lab station ... to measure the contact bounce
+  time for the RC200E switches, which would be a good
+  exercise for you to do after we learn to use the
+  oscilloscope in Lab IV.)
+
+  The important thing to remember about contact bounce
+  is that you can get a few apparent switch closures
+  (transitions from 0 to 1) over the course of a few
+  milliseconds.  Since you are using a 50 MHz clock to
+  drive the FPGA, you are executing Handel-C statements
+  at 20 nanosecond intervals.  (Be sure you understand
+  that last sentence!)  That is, you are reading the
+  switch 50,000 times per millisecond.  Your program
+  will see each of those contact bounces as a separate
+  button press, and will do the add and shift operation
+  several times each time the person operating the
+  device presses the button "once."
+
+  The only solution is to "debounce" the switch in your
+  program.  Once you detect an edge (either positive or
+  negative), don't look for an edge again for a few
+  milliseconds.  How you define "a few" is up to you.
+  But remember that a human is pressing the button, and
+  they would be hard-pressed (pardon the pun) to push
+  the button more than 5-20 times a second.
+
+  Stay tuned for a mini-lecture on another topic, to
+  follow.
+
+  Dr. Vickery
+

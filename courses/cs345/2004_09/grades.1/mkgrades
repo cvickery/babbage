@@ -1,0 +1,31 @@
+#! /bin/bash
+
+#   Generates .grade files from .ccv files.
+
+#   Used for CS-340 fall 2004, where I put the grading
+#   reports for each student name in a text file named
+#   <name1>-<name2>.ccv.  This script extracts the two
+#   names (or one if there is only one), and puts lines
+#   at the beginning of a .grade file, followed by the
+#   contents of the report.  The resulting .grade files
+#   can be emailed using the send_grades script.
+
+#   Must be executed from the directory below the one
+#   containing the course roster.
+
+for f in *.ccv
+do name_1=${f%-*}
+   name_2=${f%.*}
+   name_2=${name_2#*-}
+   if [[ $name_1 != *.ccv && $name_1 != temp* ]]
+   then echo $name_1
+   grep -i $name_1 ../roster > ${f/ccv/grade}
+   fi
+   if [[ $name_2 != temp* ]]
+   then 
+      echo $name_2
+      grep -i $name_2 ../roster >> ${f/ccv/grade}
+   fi
+   cat $f >> ${f/ccv/grade}
+done
+

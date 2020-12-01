@@ -1,0 +1,82 @@
+robertyamins@optonline.net              3122 Yamins   Robert
+
+CS-345 Laboratory III
+Fall 2005
+
+Here is my evaluation of your third Laboratory assignment.
+Dr. Vickery
+---------------------------------------------------------
+
+Project and Workspace Setup
+
+  Fine.  
+
+Use of Handel C
+
+  Try to tighen up your comments.  As mentioned below, the idea is to
+  guide the reader, not to provide instruction.  (See similar comment
+  on the report style below.)  For example:
+
+    // Console MUST be the first "PalXEnable()" call - otherwise
+    // we'll have a VGA error in simulation:
+    PalConsoleEnable (ConsolePtr);
+
+    // Enable the keyboard:
+    PalKeyboardEnable (KeyboardPtr);
+
+    while (1)
+    { ...
+
+  might better be:
+
+    //  Read from keyboard, write to console.
+    //    NOTE: Console must be enabled before keyboard!
+    PalConsoleEnable(...
+    PalKeyboardEnable(...
+    while (1)
+    { ...
+
+  Since you don't know why there is a "VGA Error in simulation," the
+  best you can do is alert the next person that the following two lines
+  contain dragons.  And the first comment line documents the endless
+  while, which you failed to do in the version submitted.
+
+  On the other hand, the comment block at the beginning of
+  keyboard_to_RAM.hcc is great, except for the need for a left
+  whitespace margin.  It tells the reader what the program does in a
+  reasonably concise way, is nicely formatted except for that missing
+  margin, and doesn't get in the way of someone who needs to jump down
+  into the code and work on it.  On the other hand, the comments in
+  the body of the code need to be tightened up to serve more as
+  guideposts than as running narrative.
+
+  On the other other hand, your comment about clock speed made me
+  notice that you left it with a speed of 30,000,000 Hz, which slows
+  the simulation down more than necessary: 25,175,000 Hz would have
+  sufficed to give a full display.
+
+  Your dump code (a) is the only one that implements the assignment as
+  stated in the handout so far (??!?) and (b) should treat carriage
+  returns and linefeeds as non-printing characters so the display
+  doesn't get messed up.  But I'll forgive you the failure to truncate
+  the last line when the content goes beyond a multiple of 16 bytes.
+
+
+Report
+
+  Still too long and detailed.  Remember: (1) The reader has access to
+  the source code if s/he wants the nitty-gritty, and (2) this is a
+  report to a reader who is already assumed to be reasonably familiar
+  with the RC-200E, Handel-C, etc. You wrote it more as a tutorial
+  for someone who doesn't know how to do the project.  That is, think
+  of this as a report that tells the reader "here is what I did"
+  rather than a tutorial that says "here is how it works."
+
+  It's 30 MHz, not 30 MGz.  And I still don't know why you went above
+  25.175; you can resize the Pal simulation window to see the whole
+  thing ... ??
+
+Grade:  9.5/10.0
+Extra:  0.5
+Final:  10.0
+

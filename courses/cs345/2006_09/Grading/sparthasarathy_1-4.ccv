@@ -1,0 +1,38 @@
+Sangeetha Parthasarathy and Giancarlo Alarcon
+=============================================
+
+Comments on Laboratories I-IV
+-----------------------------
+
+  Workspace and Project Management:
+
+    All references to delayProcs.hch should be inside angle brackets,
+    not quotes.
+
+    Two projects for keybd2video, but no documentation telling which
+    one to use.
+
+  Coding Structure and Style:
+
+    No need to calculate the r, g, and b differences each time the
+    user types a key; they could be pre-computed at the beginning
+    because their values never change.  That said, they are computed
+    incorrectly.  Despite being unsigned values, they must be computed
+    as two's complement values to be sure the transitions are smooth
+    whether any one channel is increasing or decreasing.  That is, you
+    need to compute unsigned values that act like negative values for
+    channels where the endpoint is smaller than the starting point.
+
+  Code Documentation:
+
+    The comment block at the beginning of each file should include the
+    authors' names and a brief overview of what is in the file.
+
+    There are several lines of code that are too wide to fit in a
+    normal window without scrolling horizontally.  Reformat code so
+    all lines, including comments, are 80 characters wide or less.
+
+  Other Comments:                     None
+
+  Grade:                              9/10
+

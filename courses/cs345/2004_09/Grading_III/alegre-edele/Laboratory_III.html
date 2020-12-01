@@ -1,0 +1,35 @@
+<HTML>
+  <HEAD>
+    <TITLE>Lab Report III</TITLE>
+  </HEAD>
+  <BODY>
+    <CENTER>
+      <H1>Title: Writing a Servomotor Controller<BR></H1>
+      Author: Robert Edele and Priscilla Allegre<BR>
+      Affiliation: CS 345 Logic Design - Queens College - Fall 2004<BR>
+    </CENTER></H1><BR>
+    <BR>
+    <H2>Introduction:</H2>
+    The goal of this lab is to control a servomotor so that it can go in reverse, forward, or idle. A servomotor is a motor that responds to pulses and can be finely adjusted by a computer whereas an ordinary motor would either run at a speed dictated by power supply and the load.<BR>
+    <BR>
+    The lab was split into two parts. In the first part, we wrote code to generate a 1 ms pulse once every 20 ms. In the second part, we seperate the code into two parallel main() methods connected by a channel. The first main() signals the second once every 20 ms over a channel. Once the second receives the pulse, it generates a 1, 1.5, or 2 ms pulse depending on the state the motor is in (reverse, idle, or forward respectively).<BR>
+    <BR>
+    <H2>Method:</H2>
+    Before writing any code to control the motor, it is important to test the waveforms generated. To that end, the first step is to learn how to use the waveform analyzer. The manual for using the waveform analyzer is available from the course website at <A HREF="http://babbage.cs.qc.edu/courses/cs345/2004_09/">http://babbage.cs.qc.edu/courses/cs345/2004_09/</A>.<BR>
+    <BR>
+    Now we shall write Handel C code to generate a 1 ms pulse once every 20 ms. This is done using an output pin, connected by the bus_out() interface to pin three of the ATA parallel interface, and a delay loop. If implemented serially, the delay loop waits 19 ms, then a 1 (+3.3V) is output to pin three. After another 1 ms delay, a 0 (0V) is outputted to pin three. This can alternatively be done in parallel by using a polling-driven delay and a par block, as we did in our code. Now we shall test the code by compiling it and running it on the RC200E. Once it is debugged and running fine, we can proceed to the next step.<BR>
+    <BR>
+    The next step is to split the code into 2 main() functions. The first should contain the 20 ms delay code, and the second the interface code and the 1 ms delay code. Add a channel to connect the two main methods. There are two ways to set up the channel, polling and blocking. In the polling method, every clock cycle the first main() sends a signal and the second main() reads a signal. When a pulse is to be generated, the first main sends a 1 for a single clock cycle, else it sends a 0. The second main() will only begin a pulse when it receives a 1 over the channel. Do implement the blocking method, the first main() sends an arbitrary signal after waiting 20 ms. Once the signal goes through, it starts waiting another 20 ms. The receiver waits for a signal. Once it gets a signal, it generates a pulse and starts waiting again. The blocking code is simpler, but the polling code is more responsive (less likely to lose a quick button push) and more flexible.<BR>
+    <BR>
+    Now we shall add code to handle the 3 different states the motor can be in (reverse, idle, and forward). Add code that sets the pulse length to 1 ms if button_1 is pressed, 2 ms if button_2 is pressed, and 1.5 ms if both or neither buttons are pressed. If a polling-style channel is used, the new motor state should be stored until it is safe to switch states, as switching in the middle of a pulse can cause errors. It is safe to switch states in between pulses. If all is well, run the code and the motor should be controllable by the two push buttons.<BR>
+    <BR>
+    <H2>Results:</H2>
+    The waveform analyzer worked accurately, showing the proper square wave pulses of 1 ms duration once every 20 ms. We had a lot of trouble hooking up pin 3, but after checking the course website we finally got it to generate a good waveform as seen on the oscilloscope. The motor turned out to have a broken wire, so we had to have Dr. Vickery fix the wire before we were able to sucessfully run the motor.<BR>
+    <BR>
+    The second part, where we split the main() into 2 parts, went fairly smoothly, and we were able to successfully control the servomotor.<BR><BR>
+    <H2>Discussion:</H2>
+    We met all the goals of the assignment. Although all the goals were met as specified in the assignment, we added more complexity than was needed by using a poll-driven timer and a poll-driven channel interface. Using polling on the RC200E is both efficient and leads to very flexible code, but neither of these were issues in this project. Polling added complexity both from the polling calls themselves and because button inputs had to be treated carefully to avoid disrupting the timers by having the motor switch state in mid-pulse. On the plus side, the polling code is accurate to the clock cycle, meaning that both the pulse spacing and pulse duration were precise to +/- 20 ns. At the very least we got a lot of practise at parallelism on the RC200E.<BR>
+    <BR>
+    It would have been nice if instructions on connecting the Handel-C code with pin 3 were part of the lab assignment, instead of only posted on the web site. I have a habit of not reading the website, and we didn't find out that the waveform analyzer manual code was only for connecting to the simulator for quite some time.
+  </BODY>
+</HTML>

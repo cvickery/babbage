@@ -1,0 +1,91 @@
+/****************************************************************
+*                                                               *
+*  CS345 -  HARDWARE LABORATORY                                 *
+*                                                               *
+*****************************************************************
+*                                                               *
+* Project   :   Laboratory 4                                    *
+* Date      :   01 OCT 2003                                     *
+* File      :   keyboard_hex.hcc                                *
+* Authors   :   Nelson Montesdeoca & Dennis Ma                  *
+*                                                               *
+* Description:  This module reads characters codes from the     *
+*               keyboard and display its ascii code in the two  *
+*               seven segment display                           *
+*                                                               *
+****************************************************************/
+
+
+/*
+ * We need to define the following symbol when
+ * compiling a program that include "pal_master.hch"
+ */
+
+#ifdef USE_RC200
+#define PAL_TARGET_CLOCK_RATE 50000000
+#else
+#define PAL_TARGET_CLOCK_RATE 50000000
+#endif
+
+#include "pal_master.hch"
+//#include "pal_rc200.hch"
+#include "pal_keyboard.hch"
+#include "stdlib.hch"
+
+/*
+ * Forward declarations
+ */
+static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+
+void main (void)
+{
+  unsigned 8 Char; 
+  PalKeyboard *KeyboardPtr;
+
+
+  PalVersionRequire (1, 2); 
+  PalSevenSegRequire (2);
+  PalPS2PortRequire  (2);
+
+  PalSevenSegEnable (PalSevenSegCT (0));
+  PalSevenSegEnable (PalSevenSegCT (1));
+  
+  par
+ {
+    PalKeyboardRun (&KeyboardPtr, PalPS2PortCT (1), ClockRate);
+    seq
+    {
+      PalKeyboardEnable (KeyboardPtr);
+      while (1)
+      {
+        PalSevenSegWriteDigit (PalSevenSegCT (0), (Char \\ 4), 0);
+        PalSevenSegWriteDigit (PalSevenSegCT (1), (Char <- 4), 0);
+        PalKeyboardReadASCII (KeyboardPtr, &Char);
+      } //end of while
+    } //end of seq
+  } //end of par
+} //end of main
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+/*
+    view_waveforms.hcc
+    Kurt Humes
+    Justin Spatz
+*/
+
+//DKSync.dll is a plugin that synchronizes Handel-C simulations
+//so that they run at the correct rate relative to one another
+//extinst="50" sets the clock period
+set clock = external "P1"
+with {extlib = "DKSync.dll", extinst = "50", extfunc = "DKSyncGetSet"};
+
+unsigned 3 x = 0;
+
+//DKConnect.dll connects simulation ports together so that data can be
+//exchanged between simulations
+//data from this program is sent through the port ob1.out
+//to the t(3) virtual terminal instance of DKConnect.dll
+//so the waveform analyzer can capture the trace of the program
+//from virtual terminal t(3)
+interface bus_out() ob1(unsigned 3 out = x)
+with {extlib = "DKConnect.dll", extinst = "t(3)", extfunc =
+    "DKConnectGetSet"};
+
+//capturing this program in the waveform analyzer shows the period
+//to be 50 with the value of x incrementing each step, looping back 
+//around to 0 after 7
+//the first three clock cycles the value of x is 0
+void main(void)
+{
+    while(1) x++;
+}

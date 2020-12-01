@@ -1,0 +1,64 @@
+yungyichang@hotmail.com     1444  Chang       Yung Yi
+Reena113@aol.com            8500  Kevelson    Reena
+
+  This is your grading report for Laboratory V.
+  Dr. Vickery
+
+  ---------------------------------------------------------
+
+  Team Members: 
+
+  REPORT:
+
+    Your own screen shots would have made a nice addition to your
+    results section.
+
+    The last sentence of the Discussion isn't English.  Somehow, I
+    think I know what you were trying to say, but it doesn't come
+    across.
+
+  PROJECT:
+
+File Framebuffer/framebuffer.hcc contains 1 line longer than 72 characters.
+
+    You still aren't documenting your code at all well.  Examples from
+    parameters.hcc:
+
+  /*
+   * Clear the screen
+   */
+  PalConsoleClear (ConsolePtr);
+
+    Well, duh ... three lines of comments to tell me that
+    PalConsoleClear() clears the screen?  Followed by:
+
+  /*
+   * Print a string
+   */
+   followed by a dozen (uncommented) code blocks, each of which starts
+   with "PalConsolePutString()."  Not at all useful.  In addition, the
+   clear screen operation is preceeded by a block of 16 assignment
+   statements that are not documented in any way.  And you should
+   have learned to use meaningful variable names in kindergarten: s5,
+   ss5, etc. just don't help the reader at all.
+
+    And there is nothing at the beginning of the file to give the
+    reader any idea about whether this is the code s/he wants to read
+    or not.
+
+    And that's just for videoout_parameters.hcc.  I found the comment,
+    "prints pixels inside the segments and outside the segments"
+    particularly interesting, making me wonder about all those other
+    pixels that might or might not be "printed."
+
+    Documentation isn't just some silly academic exercise; your career
+    depends on it.  (Well, not if your career doesn't involve software
+    development, but otherwise it does.)  See Code Complete 2nd Ed. by
+    Steve McConnell, published this year by Microsoft Press.
+
+    It appears that the framebuffer is not synchronized correctly on
+    the first refresh cycle (white lines down the middle); not a big
+    deal because it cleans up on the second cycle and thereafter.
+
+  GRADE:  9.2/10.0
+

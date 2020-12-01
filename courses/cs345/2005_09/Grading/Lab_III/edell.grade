@@ -1,0 +1,58 @@
+david@empireofgames.com                 7612 Edell    David
+
+CS-345 Laboratory III
+Fall 2005
+
+Here is my evaluation of your third Laboratory assignment.
+Dr. Vickery
+---------------------------------------------------------
+
+Project and Workspace Setup
+
+  Fine.
+
+Use of Handel C
+
+  Keyboard_7seg.hcc Says it output scan codes to the sevenseg display,
+  which is incorrect: it shows ascii codes.
+  
+  key-console-mem: There is debugging code commented out.  Clean up
+  your code before submitting it.  The program doesn't echo characters
+  to the console as they are typed, only when the button is pressed.
+  One main has a comment block ahead of it.  The other two have inline
+  comments next to them and they get lost on the screen.  Use comment
+  blocks before all mains and all endless loops to set them off
+  visually.
+
+Report
+
+  Method Section:  Use past tense throughout.  Write so that someone
+  who knows Handel-C but not what the assignment was would know what
+  you were talking about.  Mention that you connected a keyboard to
+  one of the PS/2 ports on an RC-200E, for example.  Notice the tense
+  shift from one sentence to the next:
+
+    This was a relatively straight forward function to implement,
+    taking advantage of the PalKeyboard macros.  The ASCII value from
+    the keyboard is stored in a Char variable, which is then outputted
+    to the SevenSeg display as an integer.
+
+  Even without the standard that you should use the past tense when
+  talking about what you did, this is non-standard English usage.
+
+  Don't be afraid to consult the documentation provided to you.  This
+  is from the PAL Cores manual:
+
+    3.1.5 PAL Console Core: PalConsoleClear
+      macro proc PalConsoleClear (ConsolePtr);
+      Arguments
+        ConsolePtr  Pointer to a PalConsole structure.
+      Timing
+        More than one clock cycle.
+      Description
+        Clears the PAL Console output screen. Should not be called in
+        parallel with other macros or functions which write to the
+        console.
+
+Grade:  9.0/10.0
+

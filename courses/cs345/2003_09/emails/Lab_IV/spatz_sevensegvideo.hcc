@@ -1,0 +1,321 @@
+#define PAL_TARGET_CLOCK_RATE 25175000
+#define lcd_handle PalVideoOutOptimalCT( PAL_ACTUAL_CLOCK_RATE )
+
+#include <stdlib.hch>
+#include <pal_master.hch>
+#include <pal_keyboard.hch>
+#include "sevenseglib.hch"
+
+
+static macro expr clkrate = PAL_ACTUAL_CLOCK_RATE;
+
+// These macros paint the seven segments in either the 
+// the first or second sevenseg display depending on the 
+// displayNum passed.
+macro proc drawSeg0 ( displayNum );
+macro proc drawSeg1 ( displayNum );
+macro proc drawSeg2 ( displayNum );
+macro proc drawSeg3 ( displayNum );
+macro proc drawSeg4 ( displayNum );
+macro proc drawSeg5 ( displayNum );
+macro proc drawSeg6 ( displayNum );
+
+macro proc drawHex ( left4 , right4, hexDisplay0 , hexDisplay1 );
+
+
+void main(void)
+{   
+   // Initialization
+    unsigned 1 display0;
+    unsigned 1 display1;
+    unsigned 8 number;
+
+    unsigned 8 reader;
+	PalKeyboard * kbptr;
+    
+    unsigned 8 hex1;
+    unsigned 8 hex2;
+    
+	PalVersionRequire(1,2);
+    PalPS2PortRequire(2);
+    PalVideoOutRequire(1);
+
+    number=0b01101010;
+    display0=0;  
+    display1=1;
+    
+   
+	par
+	{
+	  // Initialization of keyboard read.	
+        PalKeyboardRun (&kbptr, PalRC200PS2KeyboardPort, clkrate);
+		seq
+        {
+            PalKeyboardEnable(kbptr);
+            while(1)
+            {
+             // read ascii value
+			  PalKeyboardReadASCII(kbptr,&reader);
+            } 
+         }       
+         // Initialization of video.	
+         PalVideoOutRun( lcd_handle , PAL_ACTUAL_CLOCK_RATE);
+		 
+         seq
+         {      
+            PalVideoOutEnable( lcd_handle );
+                      
+            while(1)
+            {   
+                // Draw ascii value to video display
+				drawHex(reader[7:4],reader[3:0],display0,display1);
+            }
+            
+         }  
+       }
+	
+}
+
+
+macro proc drawSeg0 ( displayNum )
+{    
+    par{
+     if(displayNum==0)
+     {
+     if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG0_SEG0_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG0_SEG0_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG0_SEG0_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG0_SEG0_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);
+     }
+     if(displayNum==1)
+     {          
+      if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG1_SEG0_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG1_SEG0_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG1_SEG0_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG1_SEG0_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);        
+     }
+    }
+}
+
+macro proc drawSeg1 ( displayNum )
+{    
+    par{
+     if(displayNum==0)
+     {
+     if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG0_SEG1_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG0_SEG1_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG0_SEG1_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG0_SEG1_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);
+     }
+     if(displayNum==1)
+     {          
+      if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG1_SEG1_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG1_SEG1_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG1_SEG1_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG1_SEG1_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);        
+     }
+    }
+}
+
+macro proc drawSeg2 ( displayNum )
+{    
+    par{
+     if(displayNum==0)
+     {
+     if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG0_SEG2_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG0_SEG2_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG0_SEG2_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG0_SEG2_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);
+     }
+     if(displayNum==1)
+     {          
+      if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG1_SEG2_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG1_SEG2_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG1_SEG2_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG1_SEG2_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);        
+     }
+    }
+}
+
+macro proc drawSeg3 ( displayNum )
+{    
+    par{
+     if(displayNum==0)
+     {
+     if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG0_SEG3_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG0_SEG3_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG0_SEG3_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG0_SEG3_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);
+     }
+     if(displayNum==1)
+     {          
+      if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG1_SEG3_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG1_SEG3_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG1_SEG3_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG1_SEG3_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);        
+     }
+    }
+}
+
+macro proc drawSeg4 ( displayNum )
+{    
+    par{
+     if(displayNum==0)
+     {
+     if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG0_SEG4_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG0_SEG4_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG0_SEG4_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG0_SEG4_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);
+     }
+     if(displayNum==1)
+     {          
+      if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG1_SEG4_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG1_SEG4_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG1_SEG4_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG1_SEG4_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);        
+     }
+    }
+}
+
+macro proc drawSeg5 ( displayNum )
+{    
+    par{
+     if(displayNum==0)
+     {
+     if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG0_SEG5_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG0_SEG5_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG0_SEG5_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG0_SEG5_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);
+     }
+     if(displayNum==1)
+     {          
+      if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG1_SEG5_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG1_SEG5_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG1_SEG5_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG1_SEG5_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);        
+     }
+    }
+}
+
+macro proc drawSeg6 ( displayNum )
+{    
+    par{
+     if(displayNum==0)
+     {
+     if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG0_SEG6_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG0_SEG6_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG0_SEG6_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG0_SEG6_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);
+     }
+     if(displayNum==1)
+     {          
+      if(((PalVideoOutGetX(lcd_handle)>=SEVENSEG1_SEG6_START_X) && 
+                (PalVideoOutGetX(lcd_handle)<=SEVENSEG1_SEG6_END_X))
+                && ((PalVideoOutGetY(lcd_handle)>=SEVENSEG1_SEG6_START_Y) &&
+                (PalVideoOutGetY(lcd_handle)<=SEVENSEG1_SEG6_END_Y)))
+                    PalVideoOutWrite(lcd_handle,SEGCOLOR);
+             else
+                PalVideoOutWrite(lcd_handle,BGCOLOR);        
+     }
+    }
+}
+
+
+macro proc drawHex ( left4 , right4, hexDisplay0, hexDisplay1 )
+{   par{
+    if(left4==0 || left4==2 || left4==3 || left4==5 || left4==7 || left4==8
+        || left4==9 || left4==10 || left4==11 || left4==12 || left4==13
+        || left4==14 || left4==15)
+            drawSeg0(hexDisplay0);
+    if(left4==0 || left4==1 || left4==2 || left4==3 || left4==4
+        || left4==7 || left4==8 || left4==9 || left4==10 || left4==11
+        || left4==13)
+            drawSeg1(hexDisplay0);
+    if(left4==0 || left4==1 || left4==3 || left4==4 || left4==5
+        || left4==6 || left4==7 || left4==8 || left4==9 || left4==10
+        || left4==11 || left4==13)
+            drawSeg2(hexDisplay0);
+    if(left4==0 || left4==2 || left4==3 || left4==5 || left4==6
+        || left4==8 || left4==11 || left4==12 || left4==13 || left4==14)
+            drawSeg3(hexDisplay0);
+    if(left4==0 || left4==2 || left4==6 || left4==8 || left4==10
+        || left4==11 || left4==12 || left4==13 || left4==14 || left4==15)
+            drawSeg4(hexDisplay0);
+    if(left4==0 || left4==4 || left4==5 || left4==6 || left4==8
+        || left4==9 || left4==10 || left4==11 || left4==12 || left4==13
+        || left4==14 || left4==15)
+            drawSeg5(hexDisplay0);
+    if(left4==2 || left4==3 || left4==4 || left4==5 || left4==6
+        || left4==8 || left4==9 || left4==10 || left4==11 || left4==12
+        || left4==14 || left4==15)
+            drawSeg6(hexDisplay0);
+
+    if(right4==0 || right4==2 || right4==3 || right4==5 || right4==7 || right4==8
+        || right4==9 || right4==10 || right4==11 || right4==12 || right4==13
+        || right4==14 || right4==15)
+            drawSeg0(hexDisplay1);
+    if(right4==0 || right4==1 || right4==2 || right4==3 || right4==4
+        || right4==7 || right4==8 || right4==9 || right4==10 || right4==11
+        || right4==13)
+            drawSeg1(hexDisplay1);
+    if(right4==0 || right4==1 || right4==3 || right4==4 || right4==5
+        || right4==6 || right4==7 || right4==8 || right4==9 || right4==10
+        || right4==11 || right4==13)
+            drawSeg2(hexDisplay1);
+    if(right4==0 || right4==2 || right4==3 || right4==5 || right4==6
+        || right4==8 || right4==11 || right4==12 || right4==13 || right4==14)
+            drawSeg3(hexDisplay1);
+    if(right4==0 || right4==2 || right4==6 || right4==8 || right4==10
+        || right4==11 || right4==12 || right4==13 || right4==14 || right4==15)
+            drawSeg4(hexDisplay1);
+    if(right4==0 || right4==4 || right4==5 || right4==6 || right4==8
+        || right4==9 || right4==10 || right4==11 || right4==12 || right4==13
+        || right4==14 || right4==15)
+            drawSeg5(hexDisplay1);
+    if(right4==2 || right4==3 || right4==4 || right4==5 || right4==6
+        || right4==8 || right4==9 || right4==10 || right4==11 || right4==12
+        || right4==14 || right4==15)
+            drawSeg6(hexDisplay1);
+    }
+}
+
+

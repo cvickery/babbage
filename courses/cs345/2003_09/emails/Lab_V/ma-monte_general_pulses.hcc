@@ -1,0 +1,99 @@
+/****************************************************************
+*                                                               *
+*  CS345 -  HARDWARE LABORATORY                                 *
+*                                                               *
+*****************************************************************
+*                                                               *
+* Project   :   Laboratory V                                    *
+* Date      :   22 OCT 2003                                     *
+* File      :   generate_pulses.hcc                             *
+* Authors   :   Nelson Montesdeoca & Dennis Ma                  *
+*                                                               *
+* Description:                                                  *
+*                                                               *
+*    This module generate delays using input of switch 1 and 2  *
+*    to make a motor rotate left or right                       *
+*                                                               *
+*    Module just checks whether sw(1) or sw(2) is pressed to    *
+*    apply delay in order to make motor rotate in a desired     *
+*    direction                                                  *
+*                                                               *
+****************************************************************/
+
+#if (defined USE_RC200 || USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 50000000
+#define SW0 0
+#define SW1 1
+#define NUM_SWITCHES 2
+#else
+#define PAL_ACTUAL_CLOCK_RATE 1000000
+set clock = external "P1"
+  with
+  {
+    extlib  = "DKSync.dll",
+    extinst = "1000",       // Period of 1MHz simulated clock
+    extfunc = "DKSyncGetSet"  
+  };
+#define SW0 1
+#define SW1 2
+#define NUM_SWITCHES 10
+#endif
+
+unsigned 1 motor_pin = 0;
+
+interface bus_out() motor( unsigned 1 out = motor_pin )
+  with
+  {
+    #if (defined USE_RC200 || USE_RC200E)
+        data  = { "M2" }
+    #else
+        extlib  = "DKConnect.dll",
+        extinst = "t(1)",
+        extfunc = "DKConnectGetSet"
+    #endif
+  };
+
+
+#include "pal_master.hch"
+#include "stdlib.hch"
+
+static macro proc msec_delay (msec) 
+{
+  macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * msec) / 1000;
+  unsigned (log2ceil (Cycles)) Count;
+  Count = 0;
+  do
+  {
+      Count++;
+  }
+  while (Count != Cycles - 1);
+}
+
+void main (void)
+{
+
+  unsigned 1 SwitchData[2];         //Variable to store switch data
+
+  PalVersionRequire (1, 2); 
+  PalSwitchRequire (2);
+
+  do
+  {
+    //read switches
+    PalSwitchRead (PalSwitchCT (SW0), &SwitchData[0]);
+    PalSwitchRead (PalSwitchCT (SW1), &SwitchData[1]);
+    if ((SwitchData[0] == 1) && (SwitchData[1] == 0))
+    {
+      motor_pin = 1;
+		  msec_delay (1);               //Delay to make motor rotate left
+    }
+    else if ((SwitchData[0] == 0) && (SwitchData[1] == 1))
+    {
+      motor_pin = 1;
+		  msec_delay (2);               //Delay to make motor rotate right
+    }
+    //else do nothing do not rotate
+    motor_pin = 0;
+    msec_delay (20);
+  } while (1);
+}

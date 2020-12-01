@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>keyboard_lcd.hcc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         solid;
+      }
+  </style>
+</head>
+<center><h1>keyboard_lcd.hcc</h1></center>
+<hr>
+<pre>
+//  keyboard_lcd.hcc
+
+/*  Version IV
+ *
+ *    Generate images of seven segment displays on the LCD to
+ *    show ASCII codes of characters typed on keyboard.
+ *
+ *    Author: C. Vickery
+ *    Fall 2003
+ */
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+#include &lt;stdlib.hch&gt;
+#include &lt;pal_master.hch&gt;
+#include &lt;pal_keyboard.hch&gt;
+
+#define lcd_handle PalVideoOutOptimalCT( PAL_ACTUAL_CLOCK_RATE )
+
+PalKeyboard *kbd;
+
+static macro expr RED   = 0xFF0000;
+static macro expr BLUE  = 0x0000FF;
+static macro expr WHITE = 0xFFFFFF;
+
+static macro expr currX = PalVideoOutGetX( lcd_handle );
+static macro expr currY = PalVideoOutGetY( lcd_handle );
+
+static unsigned 8 inChar     = 0x88;
+static unsigned 7 leftSegs   = 0;
+static unsigned 7 rightSegs  = 0;
+
+static unsigned 7 hexDigits[16] =
+                        {
+                          0b0111111, 0b0000110, 0b1011011, 0b1001111,
+                          0b1100110, 0b1101101, 0b1111101, 0b0000111,
+                          0b1111111, 0b1101111, 0b1110111, 0b1111100,
+                          0b0111001, 0b1011110, 0b1111001, 0b1110001
+                        };
+
+
+//  testInside()
+//  ------------------------------------------------------------------
+/*
+ *      Draw red or blue pixel, depending on whether current position
+ *      is inside a segment or not.
+ */
+static macro proc testInside()
+{
+  if
+  (
+    ( leftSegs[0]  &amp;&amp; ( currX &gt;= 100 &amp;&amp; currX &lt;= 163 )
+                   &amp;&amp; ( currY &gt;= 100 &amp;&amp; currY &lt;= 107 ) ) ||
+    ( rightSegs[0] &amp;&amp; ( currX &gt;= 200 &amp;&amp; currX &lt;= 263 )
+                   &amp;&amp; ( currY &gt;= 100 &amp;&amp; currY &lt;= 107 ) ) ||
+
+    ( leftSegs[1]  &amp;&amp; ( currX &gt;= 156 &amp;&amp; currX &lt;= 163 )
+                   &amp;&amp; ( currY &gt;= 100 &amp;&amp; currY &lt;= 163 ) ) ||
+    ( rightSegs[1] &amp;&amp; ( currX &gt;= 256 &amp;&amp; currX &lt;= 263 )
+                   &amp;&amp; ( currY &gt;= 100 &amp;&amp; currY &lt;= 163 ) ) ||
+
+    ( leftSegs[2]  &amp;&amp; ( currX &gt;= 156 &amp;&amp; currX &lt;= 163 )
+                   &amp;&amp; ( currY &gt;= 164 &amp;&amp; currY &lt;= 227 ) ) ||
+    ( rightSegs[2] &amp;&amp; ( currX &gt;= 256 &amp;&amp; currX &lt;= 263 )
+                   &amp;&amp; ( currY &gt;= 164 &amp;&amp; currY &lt;= 227 ) ) ||
+
+    ( leftSegs[3]  &amp;&amp; ( currX &gt;= 100 &amp;&amp; currX &lt;= 163 )
+                   &amp;&amp; ( currY &gt;= 220 &amp;&amp; currY &lt;= 227 ) ) ||
+    ( rightSegs[3] &amp;&amp; ( currX &gt;= 200 &amp;&amp; currX &lt;= 263 )
+                   &amp;&amp; ( currY &gt;= 220 &amp;&amp; currY &lt;= 227 ) ) ||
+
+    ( leftSegs[4]  &amp;&amp; ( currX &gt;= 100 &amp;&amp; currX &lt;= 107 )
+                   &amp;&amp; ( currY &gt;= 164 &amp;&amp; currY &lt;= 227 ) ) ||
+    ( rightSegs[4] &amp;&amp; ( currX &gt;= 200 &amp;&amp; currX &lt;= 207 )
+                   &amp;&amp; ( currY &gt;= 164 &amp;&amp; currY &lt;= 227 ) ) ||
+
+    ( leftSegs[5]  &amp;&amp; ( currX &gt;= 100 &amp;&amp; currX &lt;= 107 )
+                   &amp;&amp; ( currY &gt;= 100 &amp;&amp; currY &lt;= 163 ) ) ||
+    ( rightSegs[5] &amp;&amp; ( currX &gt;= 200 &amp;&amp; currX &lt;= 207 )
+                   &amp;&amp; ( currY &gt;= 100 &amp;&amp; currY &lt;= 163 ) ) ||
+
+    ( leftSegs[6]  &amp;&amp; ( currX &gt;= 100 &amp;&amp; currX &lt;= 163 )
+                   &amp;&amp; ( currY &gt;= 160 &amp;&amp; currY &lt;= 167 ) ) ||
+    ( rightSegs[6] &amp;&amp; ( currX &gt;= 200 &amp;&amp; currX &lt;= 263 )
+                   &amp;&amp; ( currY &gt;= 160 &amp;&amp; currY &lt;= 167 ) ) 
+
+  )
+  {
+     PalVideoOutWrite( lcd_handle, RED );
+  }
+  else
+  {
+     PalVideoOutWrite( lcd_handle, BLUE );
+  }
+
+}
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *    Read from Keyboard and draw hexadecimal representation of ASCII
+ *    codes on the LCD.  Display count of characters read on actual
+ *    seven segment displays.
+ */
+  void main( void )
+  {
+    unsigned PalVideoOutGetMaxXWidthCT maxX;
+    unsigned PalVideoOutGetMaxYWidthCT maxY;
+
+    unsigned 9 charCount;
+
+    PalVersionRequire( 1, 2 );
+    PalPS2PortRequire( 2 );
+    PalSevenSegRequire( 2 );
+    PalSevenSegEnable( PalSevenSegCT( 0 ) );
+    PalSevenSegEnable( PalSevenSegCT( 1 ) );
+
+    par
+    {
+      charCount = 0;
+      maxX = PalVideoOutGetVisibleX( lcd_handle, 
+                                              PAL_ACTUAL_CLOCK_RATE );
+      maxY = PalVideoOutGetVisibleY( lcd_handle );
+    }
+
+    par
+    {
+
+      //  Keyboard Input Processing
+      //  -------------------------
+      PalKeyboardRun( &amp;kbd, PalPS2PortCT( 1 ),
+                                              PAL_ACTUAL_CLOCK_RATE );
+      seq
+      {
+        PalKeyboardEnable( kbd );
+        while ( TRUE )
+        {
+          par
+          {
+            // Update info for LCD processing
+            leftSegs =  hexDigits[ inChar[7:4] ];
+            rightSegs = hexDigits[ inChar[3:0] ];
+
+            //  Update char counter on actual seven segment displays
+            PalSevenSegWriteDigit( PalSevenSegCT(0), 
+                                                  charCount[7:4], 0 );
+            PalSevenSegWriteDigit( PalSevenSegCT(1),
+                                                  charCount[3:0], 0 );
+          }
+          //  Wait for user to type something
+          PalKeyboardReadASCII( kbd, &amp;inChar );
+          charCount++;
+        }
+      }
+
+
+      //  LCD Refresh Processing
+      //  ----------------------
+      PalVideoOutRun( lcd_handle, PAL_ACTUAL_CLOCK_RATE );
+      seq
+      {
+        PalVideoOutEnable( lcd_handle );
+        while (TRUE )
+        {
+
+          //  Display a white border arount the edges
+          if ( (currX &lt; 8)          || (currY &lt; 8)       ||
+               (currX &gt; (maxX - 8)) || (currY &gt; (maxY - 8))
+             )
+          {
+            PalVideoOutWrite( lcd_handle, WHITE );
+          }
+          else
+          {
+            //  Display lighted segment pixels in red and background
+            //  pixels in blue.
+            testInside();
+          }
+        }
+      }
+    }
+  }
+
+</pre><hr></body></html>

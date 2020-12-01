@@ -1,0 +1,65 @@
+#include "stdlib.hch"
+
+set clock = external "P1";
+unsigned int 3 x;
+signed int 4 y;
+unsigned int 4 z[2];
+signed rom int 5 a[]= {-12, 13, 12};
+signed int 8 sum;
+unsigned int 3 i;
+signed int 8 pipeline[4];
+signed int 8 display;
+unsigned int 3 count;
+void main(void)
+{
+
+	for(i=0; i<3 ; i++)
+	{
+		sum+=adjs(a[i],width(sum));
+	}
+
+
+
+	for(count=1; count<=4; count++)
+	{
+		par(i=0; i<3; i++)
+		{
+		pipeline[3]+=sum;
+		pipeline[i]=pipeline[i+1];
+
+		}
+		count++;
+	}
+
+
+
+		display=pipeline[3];
+
+	par
+	{
+		while(1)
+		{
+			delay;
+			x++;
+		}
+
+		while(1)
+		{
+			y++;
+		}
+
+		while(1)
+		{
+			z[0]++;
+		}
+
+		while(1)
+		{
+			z[1]++;
+		}
+
+	}
+
+
+
+}

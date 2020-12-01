@@ -1,0 +1,93 @@
+/************************************************************
+ * generate_pulses.hcc                                       *
+ * Adrian Cimpeanu  Date: Oct. 17h 2003                      *
+ * This program generates a pulse of 1 msec every 20 msec    *
+ ************************************************************/    
+
+
+/*
+ * set the clock rate accordingly 
+ *( for RC200 or RC200E or for Simulation)
+ */
+#if (defined USE_RC200 || USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 50000000
+#else
+#define PAL_ACTUAL_CLOCK_RATE 1000000
+set clock = external "P1"
+  with
+  {
+     /* make use of the dynamic link library
+     * so so we can use WaveForm Analyzer
+     * to simulate the pulses. Any Handel-C 
+     * simulation that connects the WaveForm
+     * analyzer uses DKSync plugin with the
+     * clock speriod specified in the extinst 
+     */
+
+    extlib = "DKSync.dll",
+    extinst= "1000",  //Period of 1MHz simulated clock
+    extfunc = "DKSyncGetSet"
+   };
+#endif
+
+// include the libraries needed
+#include "pal_master.hch"
+#include "stdlib.hch"
+
+unsigned 1 pulse_pin = 0;
+/*
+ * declare the bus_out interface; this will output
+ * a pulse to pin 'M2' on the Rc200 and it will use
+ * DKConnect.dll 
+ */
+
+interface bus_out() pulse( unsigned 1 out = pulse_pin )
+  with
+  {
+   #if (defined USE_RC200 || USE_RC200E)
+       data = { "M2" }
+   #else
+       extlib = "DKConnect.dll",
+       extinst = "t(1)",
+       extfunc = "DKConnectGetSet"
+   #endif
+   };
+
+
+// this macro procedures implements the delay
+static macro proc microsec_delay( msec );
+
+macro proc microsec_delay( microsec )  {
+
+ 
+  unsigned (log2ceil(((PAL_ACTUAL_CLOCK_RATE * microsec)/1000000))) count;
+  macro expr cycles = ((PAL_ACTUAL_CLOCK_RATE * microsec)/1000000);
+  
+  count = cycles;
+   
+
+    while( count > 0) {count--;}
+
+    }//end_macro_msec_delay
+
+/*
+ * this main method 
+ */
+
+void main(void)
+{
+  //check we have the correct version
+  PalVersionRequire (1, 2);
+  
+  while(1)
+  {
+
+       pulse_pin++;
+      //if we have a pulse delay for 1 msec
+      //otherwise delay for 20 msec.
+      if(pulse_pin)
+      microsec_delay( 1000 );
+      else microsec_delay( 19000 );
+   }//end_while
+
+}//end_main 

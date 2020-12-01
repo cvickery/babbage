@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Wave Analyzer Help</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!--  Screen-only styles  -->
+  <style type="text/css" media="screen">
+      body
+      {
+        background:       #ffffcc;
+        font-family:      sans-serif;
+        color:            #000;
+        margin:           1em;
+      }
+  </style>
+
+  <!--  Media-independent styles  -->
+  <style type="text/css">
+    p { margin-left: 1em; margin-right: 1em; }
+    p.indent { margin-left: 2em; margin-right: 2em; }
+    div.ans { font-weight: bolder; background: #ccffcc; margin:1em; }
+    div.white
+    {
+      background:   white;
+      border:       solid;
+      border-width: 1px;
+      padding:      0.5em;
+    }
+  </style>
+
+</head>
+
+<body>
+<center>
+
+<h1>Wave Analyzer Addendum</h1>
+
+</center>
+
+<h2>Introduction</h2>
+
+<div class="white">
+
+  <p>The <a href="./Manuals/WaveAnalyze.pdf">Celoxica Waveform
+  Analyzer</a> can be a valuable simulation tool for verifying the
+  correctness of code that outputs waveforms to directly to the pins of
+  an FPGA.  This handout shows you how you can set up your Handel-C
+  code so you can test that it generates proper pulses to control a
+  synchromotor.  The synchromotors used in our lab, the Futuba 3003,
+  requires a 50Hz pulse stream, with the duration of each pulse (1.0,
+  1.5, or 2.0 msec) determining the direction of rotation.  This
+  handout assumes you use a (macro) procedure called
+  <i>microsecond_delay()</i> to time the widths of the pulses.</p>
+</div>
+
+<h2>Project Setup</h2>
+<div class="white">
+  <p>You need to configure the project for both Simulation (Debug) and
+  EDIF (RC200E) in the usual way.  This document assumes you define the
+  preprocessor symbols USE_SIM and USE_RC200E for compatibility with
+  the PAL.</p>
+</div>
+
+<h2>Conditional Source Code</h2>
+<div class="white">
+  <p>You need to make several changes to your source code to accommodate
+  the differences between simulation and EDIF configurations: Clock
+  specification, PAL switch numbers, and the output interface.</p>
+
+  <h3>Clock Specification</h3>
+  
+    <p>You can use any one of the three RC200E hardware clocks as the
+    PAL_TARGET_CLOCK_RATE rate when generating EDIF, but you can save run
+    time by specifying a slower value when simulating.  However,
+    because of the <i>microsecond_delay()</i> macro proc, the slowest
+    value you can use meaningfully is 1MHz so that the expression
+    PAL_ACTUAL_CLOCK_RATE&nbsp;/&nbsp;1000000 doesn't go to zero.</p>
+    
+    <p>The Waveform Analyzer is a separate program (Start -&gt;
+    Celoxcia -&gt; DK -&gt; Waveform Analyzer) that you run at the same
+    time as you run a simulation from the DK IDE.  An issue when
+    simulating for use with the Waveform Analyzer is that the
+    (simulated) clock must be output to the Analyzer so it can
+    synchronize with the Handel-C program as the simulation runs.  As
+    seen in the example from the Waveform Analyzer Manual, the
+    simulator and Analyzer clocks can be synchronized by including a
+    <i>set clock</i> statement in the Handel-C program, and by adding
+    tags to the statement using a <i>with</i> block.  (See page 245 of
+    the DK4 Handel-C Reference Manual for a discussion of where <i>with</i>
+    blocks are used.)  But you can't have both a set clock statement
+    and a definition of PAL_TARGET_CLOCK_RATE in effect when you
+    #include pal_master.hch.  The trick here is to specify the
+    PAL_ACTUAL_CLOCK_RATE when simulating.</p>
+
+    <p>The reason for including pal_master.hch is so we can use the
+    simulated switches of the PAL Virtual Console while testing the
+    program, but the PAL Virtual Console's switches number 8 and 9 are
+    more appropriate for the way we are using the buttons.  All
+    together, we end up with initial code that looks something like
+    this:</p>
+    
+    <fieldset>
+    <legend>Clock and Button Numbers</legend>
+    <pre>
+    #if (defined USE_RC200 || USE_RC200E)
+    #define PAL_TARGET_CLOCK_RATE 50000000
+    #define SW0 0
+    #define SW1 1
+    #define NUM_SWITCHES 2
+    #else
+    #define PAL_ACTUAL_CLOCK_RATE 1000000
+    set clock = external "P1"
+      with
+      {
+        extlib  = "DKSync.dll",
+        extinst = "1000",       // Period of 1MHz simulated clock
+        extfunc = "DKSyncGetSet"
+      };
+    #define SW0 8
+    #define SW1 9
+    #define NUM_SWITCHES 10
+    #endif
+    #include &lt;pal_master.hch&gt;
+    </pre>
+    </fieldset>
+
+    <h3>Connecting the Output</h3>
+    
+    <p>We have cables that connect the control input to a servomotor
+    from pin 3 of the RC200E expansion header.  Thus, the output of the
+    program is to be connected to pin 3 of the expansion header when
+    generating EDIF, but has to be connected to a "terminal" in order
+    to monitor it with the Waveform Analyzer.  The following
+    conditional code takes care of that:</p>
+
+    <fieldset>
+    <legend>Pin Output</legend>
+    <pre>
+    unsigned 1 motor_pin = 0;
+    interface bus_out() motor( unsigned 1 out = motor_pin )
+      with
+      {
+    #if (defined USE_RC200 || USE_RC200E)
+        data  = { "M2" }
+    #else
+        extlib  = "DKConnect.dll",
+        extinst = "t(1)",
+        extfunc = "DKConnectGetSet"
+    #endif
+      };
+    </pre>
+    </fieldset>
+</div>
+
+<h2>Setting Up the Waveform Analyzer</h2>
+<div class="white">
+  <p>The trick here is to get the Waveform Analyzer to give you
+  meaningful time intervals.  Since the Handel-C simulation is using a
+  1MHz clock, specify 1000 for the Waveform Analyzer's clock period,
+  the same value used for the extinst parameter of the set clock's
+  <i>with</i> block.  The number is specified in nanoseconds, as
+  mentioned on page 6 of the Waveform Analyzer Manual.  You can take as
+  many samples with the Waveform Analyzer as you wish.  If you collect
+  20,000, your trace will show 20,000 * 1,000 nanoseconds of simulated
+  time (20,000,000 nsec = 20 msec, the interval between pulses that
+  your code is to generate).  If you collect 40,000 samples, you should
+  see two pulses at a time in the Waveform Analyzer's trace window;
+  collect 10,000, and you will see one pulse on every other sweep (by
+  the dashed red line) of the trace window.  If you make the number of
+  samples a multiple of 20,000, the pulses you see will appear to be
+  stationary in the trace window, but if you make the number of samples
+  not be a multiple of 20,000, the pulses will move around in the trace
+  window on successive sweeps, making it hard to validate that your
+  code is working correctly.</p>
+
+  <p>With everything set up correctly, you should be able to start your
+  simulation in the usual way from the DK IDE GUI, and you should be
+  able to operate switches 8 and 9 in the PAL console.  At any time,
+  you can start the Waveform Analyzer, and it will link to the
+  DKConnect dynamic link library and display the motor output as the
+  simulated value changes.  You can use Waveform Analyzer cursors to
+  mark the beginning and ends of the pulses to verify that they are of
+  the correct width as you operate the virtual switches.</p>
+
+  <p>The following screen shot shows the Waveform Analyzer with cursors
+  set to the beginning of the pulses and lined up with where the pulses
+  ended when different combinations of input switches were on.  I've
+  zoomed in on the pulse so there is enough room to read the time
+  intervals between the cursors.  Note that these intervals are not
+  perfectly accurate because the screen resolution prevents placing the
+  cursors in perfect alignment with the edges of the pulses.</p>
+  
+  <p align="center"><img src="./trace.png" alt="Waveform Analyzer
+  Window"></p>
+</div>
+
+<hr>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>counters.hcc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         solid;
+        border-width:   1px;
+        padding:        0.5em;
+      }
+  </style>
+</head>
+<center><h1>counters.hcc</h1></center>
+<hr>
+<pre>
+// counters.hcc
+
+/*
+ *  Sums the contents of a ROM and pushes the sum into a
+ *  fifo array.  Elements removed from the fifo are
+ *  captured in a display register.  The intention is to
+ *  illustrate how the fifo array could be used to manage
+ *  a pipelined computation.
+ *
+ *  C. Vickery
+ *  CS-345
+ */
+
+#include &lt;stdlib.hch&gt;
+
+//  The values to be summed
+signed rom 5 dataValues[3] = { 5, -3, 15 };
+
+//  The fifo
+signed 8 pipeline[4] = { -1, -1, -1, -1 };
+
+//  The two ends of the fifo
+signed 8 sum = 0, display = -1;
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *  Implements the complete application.  Requres 5 clock cycles to
+ *  produce each new display value.
+ */
+  set clock = external;
+  void main( void )
+  {
+    //  Locals
+    unsigned 2 sumIndex;
+
+    //  Main Loop
+    while (1)
+    {
+      //  Sum the elements of the ROM                          Clock #
+      sumIndex = 0;                                            //    1
+      do
+      {
+        par
+        {
+          sum += adjs(dataValues[sumIndex], width(sum));      //   2-4
+          sumIndex++;
+        }
+      } while ( sumIndex != 3 );
+
+      //  Push the ROM into the pipeline fifo.
+      par ( pipeIndex = 0; pipeIndex &lt; 4; pipeIndex++ )       //     5
+      {
+        ifselect ( pipeIndex == 0 )
+        {
+          pipeline[pipeIndex] = sum;
+        }
+        else
+        {
+          pipeline[pipeIndex] = pipeline[pipeIndex - 1];
+        }
+        display = pipeline[3];
+      }
+    }
+  }
+</pre><hr></body></html>

@@ -1,0 +1,173 @@
+//  pipeline.hcc
+
+/*    CS-345 Laboratory II
+ *    Spring 2004
+ *    C. Vickery
+ *
+ *    Implements a pipeline.  When the user presses the "Add" button,
+ *    the contents of a rom are added to an accumulator, and the
+ *    accumulator is pushed into a 4 stage "pipeline" queue.  As
+ *    values emerge from the pipeline, their values are displayed on
+ *    two seven segment displays.  Two LEDs show, in binary, how many
+ *    stages of the pipeline are active (0, 1, 2, and 3 or more). A
+ *    reset button clears the accumulator and pipeline.
+ */
+
+//  Standard Library
+#include <stdlib.hch>
+
+
+//  Set up clock
+//  ------------------------------------------------------------------
+#define PAL_TARGET_CLOCK_RATE 50000000
+#include <pal_master.hch>
+#define ClockRate PAL_ACTUAL_CLOCK_RATE
+
+//  Delay Macro
+//  ------------------------------------------------------------------
+macro proc msec_delay( msec )
+{
+  macro expr ticks = msec * ClockRate / 1000;
+  unsigned (log2ceil( ticks )) Count;
+  Count = ticks - 1;
+#ifndef USE_SIM
+  while ( Count ) Count--;
+#endif
+}
+
+
+//  Use switches 8 and 9 when simulating; use pushbuttons 0 and 1
+//  when targeting FPGA.
+#ifdef USE_SIM
+macro expr  resetSwitch = PalSwitchCT(8);
+macro expr  addSwitch   = PalSwitchCT(9);
+macro expr  numSwitches = 10;
+#else
+macro expr  resetSwitch = PalSwitchCT(0);
+macro expr  addSwitch   = PalSwitchCT(1);
+macro expr  numSwitches = 2;
+#endif
+
+//  Constants
+unsigned 8 allSegsOff = 0;
+
+//  ROM Data to be summed.
+#define rom_size  5
+signed rom  romArray[rom_size] = { 1, 2, 3, 4, -5 };
+
+//  Variables
+unsigned  1 Add, Reset      = 0;  //  Buttons
+unsigned  2 numStages       = 0;  //  How many pipeline stages active
+signed    8 accumulator     = 0;  //  Accumulates ROM data
+signed    8 display         = 0;  //  Pipeline output
+unsigned  1 displayIsValid  = 0;  //  Is pipeline producing?
+signed    8 pipeline[4];          //  Do-nothing pipeline
+
+
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *    Monitor the status of the two switches and maintain the states
+ *    of the LEDs.
+ *    Perform reset whenever Reset is pressed.
+ *    Perform sum operation once when Sum is pressed.
+ */
+  void main( void )
+  {
+    //  Loop control
+    unsigned i;
+
+    //  Pal Setup
+    PalVersionRequire( 1, 0 );
+    PalLEDRequire( 2 );
+    PalSwitchRequire( numSwitches );
+    PalSevenSegRequire( 2 );
+    PalSevenSegEnable( PalSevenSegCT( 0 ) );
+    PalSevenSegEnable( PalSevenSegCT( 1 ) );
+
+    //  Event Processors
+    par
+    {
+
+      //  Monitor states of the switches
+      while ( 1 )
+      {
+        par
+        {
+          PalSwitchRead( addSwitch,   &Add );
+          PalSwitchRead( resetSwitch, &Reset );
+          PalLEDWrite( PalLEDCT( 0 ), numStages[1] );
+          PalLEDWrite( PalLEDCT( 1 ), numStages[0] );
+        }
+      }
+
+      //  Perform reset whenever Reset is pressed
+      while ( 1 )
+      {
+        if ( Reset )
+        {
+          par
+          {
+            numStages       = 0;
+            accumulator     = 0;
+            displayIsValid  = 0;
+            PalSevenSegWriteShape( PalSevenSegCT( 0 ), allSegsOff );
+            PalSevenSegWriteShape( PalSevenSegCT( 1 ), allSegsOff );
+          }
+        }
+        else
+        {
+          delay;
+        }
+      }
+
+      //  Monitor Add button, and respond to positive edges
+      while ( 1 )
+      {
+        //  Wait for button to be pressed
+        while ( !Add ) delay;
+
+        //  Update accumulator
+        i = 0;
+        do
+        {
+          par
+          {
+            i++;
+            accumulator += romArray[i];
+          }
+        } while ( i < 4 );
+
+        //  Push accumulator into the pipeline
+        par ( i = 0; i < 4; i++ )
+        {
+          display = pipeline[0];
+          ifselect( i == 3 )
+            pipeline[ i ] = accumulator;
+          else
+            pipeline[ i ] = pipeline[ i + 1 ];
+        }
+
+        //  Update display of the sum if pipeline is full
+        if ( displayIsValid )
+        {
+          par
+          {
+            PalSevenSegWriteDigit( PalSevenSegCT( 1 ),
+                                         (unsigned) display[3:0], 0 );
+            PalSevenSegWriteDigit( PalSevenSegCT( 0 ),
+                                          (unsigned) display[7:4], 0 );
+          }
+        }
+
+        //  Increment stage counter (max value is 3)
+        if ( numStages == 3 ) displayIsValid = 1;
+        if ( numStages < 3 )  numStages++;
+
+        //  Wait for Add button to be released
+        msec_delay( 10 ); //  Debounce time
+        while ( Add ) delay;
+        msec_delay( 10 ); //  Debounce time
+      }
+    }
+  }

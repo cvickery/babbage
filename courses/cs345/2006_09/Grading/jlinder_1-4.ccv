@@ -1,0 +1,44 @@
+Jeremy Linder and Leo Ponomarev
+===============================
+
+Comments on Laboratories I-IV
+-----------------------------
+
+  Workspace and Project Management:
+
+    I used the workspace in Linder's account because it was more
+    complete than the one in Ponomarev's account.  Rather than submit
+    a zip file, just tell me which account to access.
+
+    The multiplier and delayProcs projects include extraneous build
+    configurations.
+
+    delayProcs.hch should always be in angle brackets, not quotes.
+
+    I was unable to build Keybd2Video for simulation; see below.
+
+  Coding Structure and Style:
+
+    Multiplier.hcc is full of tab characters; Keybd2Video.hcc has 11
+    lines that are too wide to fit in a normal editing/viewing window
+    without horizontal scrolling.
+
+    In Keybd2Video, macro proc segDisplay generates numerous warnings
+    about "Breaking combinatorial cycle" -- which should not occur.
+    The problem is that you have multiple parallel if statements, each
+    of which has the potential to call PalVideoOutWrite.  Logically,
+    no more than one could possibly be true, but the compiler doesn't
+    know that, so it has to deal with the possibility that there will
+    be attempts to write different colors to the same pixel.  But the
+    warnings are because you don't tell the compiler what to do on a
+    clock cycle in which any particular if statement tests false.
+
+  Code Documentation:
+
+    All code is totally undocumented, except multiplier.hcc, which
+    includes comments like, "//kjgf".
+
+  Other Comments:
+
+  Grade:                              8/10
+

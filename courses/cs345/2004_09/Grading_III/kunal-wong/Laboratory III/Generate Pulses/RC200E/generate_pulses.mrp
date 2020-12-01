@@ -1,0 +1,215 @@
+Release 6.1.03i Map G.26
+Xilinx Mapping Report File for Design 'Generate_Pulses'
+
+Design Information
+------------------
+Command Line   : map -intstyle xflow -pr b generate_pulses.ngd 
+Target Device  : 2v1000
+Target Package : fg456
+Target Speed   : -4
+Mapper Version : virtex2 -- $Revision: 1.16 $
+Mapped Date    : Thu Oct 14 19:02:04 2004
+
+Design Summary
+--------------
+Number of errors:      0
+Number of warnings:    0
+Logic Utilization:
+  Number of Slice Flip Flops:          46 out of  10,240    1%
+  Number of 4 input LUTs:              66 out of  10,240    1%
+Logic Distribution:
+  Number of occupied Slices:           54 out of   5,120    1%
+  Number of Slices containing only related logic:      54 out of      54  100%
+  Number of Slices containing unrelated logic:          0 out of      54    0%
+        *See NOTES below for an explanation of the effects of unrelated logic
+Total Number 4 input LUTs:             99 out of  10,240    1%
+  Number used as logic:                66
+  Number used as a route-thru:         32
+  Number used as Shift registers:       1
+
+  Number of bonded IOBs:                6 out of     324    1%
+    IOB Flip Flops:                     1
+  Number of GCLKs:                      1 out of      16    6%
+
+Total equivalent gate count for design:  1,037
+Additional JTAG gate count for IOBs:  288
+Peak Memory Usage:  81 MB
+
+NOTES:
+
+   Related logic is defined as being logic that shares connectivity -
+   e.g. two LUTs are "related" if they share common inputs.
+   When assembling slices, Map gives priority to combine logic that
+   is related.  Doing so results in the best timing performance.
+
+   Unrelated logic shares no connectivity.  Map will only begin
+   packing unrelated logic into a slice once 99% of the slices are
+   occupied through related logic packing.
+
+   Note that once logic distribution reaches the 99% level through
+   related logic packing, this does not mean the device is completely
+   utilized.  Unrelated logic packing will then begin, continuing until
+   all usable LUTs and FFs are occupied.  Depending on your timing
+   budget, increased levels of unrelated logic packing may adversely
+   affect the overall timing performance of your design.
+
+
+Table of Contents
+-----------------
+Section 1 - Errors
+Section 2 - Warnings
+Section 3 - Informational
+Section 4 - Removed Logic Summary
+Section 5 - Removed Logic
+Section 6 - IOB Properties
+Section 7 - RPMs
+Section 8 - Guide Report
+Section 9 - Area Group Summary
+Section 10 - Modular Design Summary
+Section 11 - Timing Report
+Section 12 - Configuration String Information
+Section 13 - Additional Device Resource Counts
+
+Section 1 - Errors
+------------------
+
+Section 2 - Warnings
+--------------------
+
+Section 3 - Informational
+-------------------------
+INFO:MapLib:562 - No environment variables are currently set.
+INFO:MapLib:535 - The following Virtex BUFG(s) is/are being retargetted to
+   Virtex2 BUFGMUX(s) with input tied to I0 and Select pin tied to constant 0:
+   BUFG symbol "B2_rc200e_CLKBUF" (output signal=ClockInput_rc200e_W3),
+   BUFG symbol "B5_rc200e_CLKBUF" (output signal=ClockInput_rc200e_W7),
+   BUFG symbol "B9_rc200e_RC200Clock50000000BUFG" (output signal=WG11_rc200e)
+
+Section 4 - Removed Logic Summary
+---------------------------------
+   6 block(s) removed
+   2 block(s) optimized away
+   6 signal(s) removed
+
+Section 5 - Removed Logic
+-------------------------
+
+The trimmed logic report below shows the logic removed from your design due to
+sourceless or loadless signals, and VCC or ground connections.  If the removal
+of a signal or symbol results in the subsequent removal of an additional signal
+or symbol, the message explaining that second removal will be indented.  This
+indentation will be repeated as a chain of related logic is removed.
+
+To quickly locate the original cause for the removal of a chain of logic, look
+above the place where that logic is listed in the trimming report, then locate
+the lines that are least indented (begin at the leftmost edge).
+
+The signal "ClockInput_rc200e_W3" is loadless and has been removed.
+ Loadless block "B2_rc200e_CLKBUF" (CKBUF) removed.
+  The signal "W4_rc200e" is loadless and has been removed.
+   Loadless block "B3_rc200e_CLKBUF" (CKBUF) removed.
+    The signal "PADIN_ClockInPin_0_rc200e_W1" is loadless and has been removed.
+     Loadless block "AB12" (PAD) removed.
+The signal "ClockInput_rc200e_W7" is loadless and has been removed.
+ Loadless block "B5_rc200e_CLKBUF" (CKBUF) removed.
+  The signal "W8_rc200e" is loadless and has been removed.
+   Loadless block "B6_rc200e_CLKBUF" (CKBUF) removed.
+    The signal "PADIN_ClockInPin_0_rc200e_W5" is loadless and has been removed.
+     Loadless block "B11" (PAD) removed.
+
+Optimized Block(s):
+TYPE 		BLOCK
+GND 		BGT1_Ground
+VCC 		BPT1_Power
+
+Section 6 - IOB Properties
+--------------------------
+
++------------------------------------------------------------------------------------------------------------------------+
+| IOB Name                           | Type    | Direction | IO Standard | Drive    | Slew | Reg (s)  | Resistor | IOB   |
+|                                    |         |           |             | Strength | Rate |          |          | Delay |
++------------------------------------------------------------------------------------------------------------------------+
+| PADIN_RC200Clock50000000Bus_in_0   | IOB     | INPUT     | LVTTL       |          |      |          |          |       |
+| PADOUT_CS4202BitClkBus_Param0_0    | IOB     | OUTPUT    | LVTTL       | 12       | FAST |          |          |       |
+| PADOUT_CS4202NotResetBus_Param0_0  | IOB     | OUTPUT    | LVTTL       | 12       | FAST |          |          |       |
+| PADOUT_CS4202SDataOutBus_Param0_0  | IOB     | OUTPUT    | LVTTL       | 12       | FAST |          |          |       |
+| PADOUT_CS4202SyncBus_Param0_0      | IOB     | OUTPUT    | LVTTL       | 12       | FAST |          |          |       |
+| PADOUT_motor_out_0                 | IOB     | OUTPUT    | LVTTL       | 12       | FAST | OFF1     |          |       |
++------------------------------------------------------------------------------------------------------------------------+
+
+Section 7 - RPMs
+----------------
+
+Section 8 - Guide Report
+------------------------
+Guide not run on this design.
+
+Section 9 - Area Group Summary
+------------------------------
+No area groups were found in this design.
+
+Section 10 - Modular Design Summary
+-----------------------------------
+Modular Design not used for this design.
+
+Section 11 - Timing Report
+--------------------------
+This design was not run using timing mode.
+
+Section 12 - Configuration String Details
+-----------------------------------------
+Use the "-detail" map option to print out Configuration Strings
+
+Section 13 - Additional Device Resource Counts
+----------------------------------------------
+Number of JTAG Gates for IOBs = 6
+Number of Equivalent Gates for Design = 1,037
+Number of RPM Macros = 0
+Number of Hard Macros = 0
+CAPTUREs = 0
+BSCANs = 0
+STARTUPs = 0
+PCILOGICs = 0
+DCMs = 0
+GCLKs = 1
+ICAPs = 0
+18X18 Multipliers = 0
+Block RAMs = 0
+TBUFs = 0
+Total Registers (Flops & Latches in Slices & IOBs) not driven by LUTs = 1
+IOB Dual-Rate Flops not driven by LUTs = 0
+IOB Dual-Rate Flops = 0
+IOB Slave Pads = 0
+IOB Master Pads = 0
+IOB Latches not driven by LUTs = 0
+IOB Latches = 0
+IOB Flip Flops not driven by LUTs = 1
+IOB Flip Flops = 1
+Unbonded IOBs = 0
+Bonded IOBs = 6
+Total Shift Registers = 1
+Static Shift Registers = 1
+Dynamic Shift Registers = 0
+16x1 ROMs = 0
+16x1 RAMs = 0
+32x1 RAMs = 0
+Dual Port RAMs = 0
+MUXFs = 0
+MULT_ANDs = 0
+4 input LUTs used as Route-Thrus = 32
+4 input LUTs = 66
+Slice Latches not driven by LUTs = 0
+Slice Latches = 0
+Slice Flip Flops not driven by LUTs = 0
+Slice Flip Flops = 46
+Slices = 54
+Number of LUT signals with 4 loads = 0
+Number of LUT signals with 3 loads = 1
+Number of LUT signals with 2 loads = 6
+Number of LUT signals with 1 load = 55
+NGM Average fanout of LUT = 2.24
+NGM Maximum fanout of LUT = 22
+NGM Average fanin for LUT = 3.6818
+Number of LUT symbols = 66
+Number of IPAD symbols = 1
+Number of IBUF symbols = 1

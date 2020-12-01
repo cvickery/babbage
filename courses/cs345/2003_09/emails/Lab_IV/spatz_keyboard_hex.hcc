@@ -1,0 +1,55 @@
+
+
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+
+
+
+#include "pal_master.hch"
+#include "rc200.hch"
+#include "stdlib.hch"
+#include "pal_rc200.hch"
+#include "pal_keyboard.hch"
+
+#define ever ;;
+
+static macro expr clkrate = PAL_ACTUAL_CLOCK_RATE;
+
+void main(void)
+{
+    unsigned 8 reader;
+	PalKeyboard * kbptr;
+
+	PalVersionRequire(1,2);
+	PalLEDRequire(1);
+    PalPS2PortRequire(2);
+    PalSevenSegRequire(2);
+    PalSevenSegEnable(PalRC200SevenSeg0);
+    PalSevenSegEnable(PalRC200SevenSeg1);		
+
+
+    par
+    {
+       
+        PalKeyboardRun (&kbptr, PalRC200PS2KeyboardPort, clkrate);
+                
+        seq
+        {
+            par
+            {  
+                PalKeyboardEnable (kbptr);
+            }
+            for(ever)
+            {
+                PalKeyboardReadASCII (kbptr, &reader);
+                PalSevenSegWriteDigit(PalRC200SevenSeg0,reader[7:4],0);
+                PalSevenSegWriteDigit(PalRC200SevenSeg1,reader[3:0],0);
+            }
+            
+        }
+    }
+
+
+}
+
+

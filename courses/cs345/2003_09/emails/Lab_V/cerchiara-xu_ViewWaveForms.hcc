@@ -1,0 +1,30 @@
+set clock = external "P1"
+
+
+
+
+/************************************************* 
+ This program uses the DKSync plugin used here to
+ syncronize with the clock period set in 
+ the terminal.
+**************************************************/
+with {extlib = "DKSync.dll", extinst = "50", extfunc = "DKSyncGetSet"};
+
+
+unsigned 3 x = 0;
+interface bus_out() ob1(unsigned 3 out = x)
+
+
+/************************************************* 
+ This program uses the DKConnect plugin used here 
+ to connect the port ob1 to the terminal t(3).
+**************************************************/
+with {extlib = "DKConnect.dll", extinst = "t(3)", extfunc ="DKConnectGetSet"};
+
+
+
+
+void main(void)
+{
+while(1) x++;
+}

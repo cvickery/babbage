@@ -1,0 +1,98 @@
+yartrebo@earthlink.net      9452  Edele       Robert
+
+  This is your grading report for Laboratory III.
+  Dr. Vickery
+
+  --------------------------------------------------------------
+
+  Team Members: Priscilla Alegre (dropped course) and Robert Edele
+
+  (4.5/5 points)  Laboratory Report
+
+    Was the report properly formatted and did it make proper use
+    of styles?
+
+      Use a word processor, not an HTML editor.  For one thing, it
+      would catch spelling errors, like "seperate" and (possibly) your
+      lab partner's name.
+
+      Use past tense throughout, not "Now we will ..."  A possible
+      exception would be in the Discussion section where you might
+      have something to say about the present and/or future.
+
+    Did each section contain the proper type of information?
+
+      Reading the Method section, I can't tell what you actually did
+      (which is what you are supposed to be reporting here) vs what
+      you might have done.
+      
+      Discussion is okay.
+
+    Was the report well written?
+
+      Tenses and spelling are the main problems.
+
+  (1.5/2 points) Workspace Setup
+
+    Was the workspace zip file structured correctly?
+
+      In addition to the Laboratory workspace directory, the zip file
+      contained an extraneous tree from /home/yatrebo/...
+      
+    Was the workspace "clean"?
+
+      No, all the intermediate files were there.  The zip file was
+      over a megabyte in size.
+
+    Did each project build properly, producing no warnings or
+    errors that should have been spotted and corrected?
+
+      The View Waveforms project had several unused build
+      configurations.
+    
+  (2.5/3 points) Projects
+
+    Was the code written and documented according to the coding
+    guidelines for the course?
+
+File generate_pulses.hcc contains 14 lines longer than 72 characters.
+File view_waveforms.hcc contains 1 line longer than 72 characters.
+File motor_control.hcc contains 2 lines longer than 72 characters.
+
+      Only view_waveforms has block comments at the beginning of the
+      file.  The other two don't.
+
+    Did the code make effective use of Handel-C and the hardware
+    resources of the FPGA?
+
+      The code is both unnecessarily complex and unnecessarily
+      restrictive at the same time.  (The two are related.)
+
+      If you haven't already, learn how to do timing loops in the
+      standard way.  They make optimally efficient use of the hardware
+      by using just one register for the counter, and using log2ceil()
+      to make it exactly as wide as necessary, and avoid the necessity
+      for the expensive < comparison by using the much more efficient
+      comparison against zero.  (I normally code it as "while (counter
+      > 0) {counter--;}" but for unsigned variables that's the same as
+      "while (counter) {counter--;}"
+
+      The need for so many comments is indicative of how obscure your
+      coding style is.  "This is a safe time to take care of button
+      presses." is a classic example of something that needs to be
+      obvious by looking at the structure of the code, not something
+      that the reader has to be told, and then to take on faith that
+      you've gotten it figured out correctly.  Imagine someone else
+      having to debug your code.  Or just imagine me trying to read
+      it!
+
+    Was the timing implemented using a channel as specified in
+    the Laboratory web page?
+
+      Only in a very complicated sense.  Look at the pseudocode in the
+      current version of the Lab III handout to see how simple it
+      should be.
+
+      Simple code is more robust.
+
+  Assignment Grade is 8.5

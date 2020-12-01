@@ -1,0 +1,98 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Final Exam Topics</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Final Exam Topics</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>Study Guide</h2>
+
+        <p>Several people have asked for a study guide for the final exam. 
+        It is understandable that you would be nervous about the exam
+        because it counts so much compared to the projects, which have taken
+        up all your time for this course.  The first piece of guidance is
+        that if you have done the projects and understand their designs and
+        inmplementations, you should already be prepared for the exam. 
+        Study the assignment web pages and the code you wrote, and you
+        should do fine.</p>
+        
+        <p>The exam will be based on material covered since the midterm, but
+        the nature of the course is that you will need to remember the
+        earlier material in order to work with the newer material.</p>
+        
+        <p>The format will be similar to the midterm: short-answer
+        questions.</p>
+        
+        <p>I intend for the exam to be short and easy, but that assumes you
+        do understand the concepts we worked with in the labs.</p>
+        
+        <p>A random selection of possible topics, not at all guaranteed to
+        be complete:</p>
+        
+        <ul>
+          <li>Handel-C bit operations</li>
+          <li>Timing constraints for video and audio</li>
+          <li>Touchscreen concepts</li>
+          <li>Color concepts</li>
+          <li>The geometry of seven-segment displays, including
+          triangles.</li>
+          <li>&hellip; ?</li>
+        </ul>
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

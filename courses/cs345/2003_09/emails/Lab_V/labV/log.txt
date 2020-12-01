@@ -1,0 +1,59 @@
+
+project 5-1 (pin_communication)
+
+Questions:
+
+1. what are DSSync.dll  : used by Waveform Analyzer
+                          to synchronize the clock
+2. DKConnect.dll?
+    wave analyzer uses DKCOnnect plubin to connect to
+    the port ob1.out to the terminal(3)
+
+since we connect out to unsigned 3 x vriable, compiling 
+the code and run, it was observed that the wave   being 
+incremented every 1 cycle up to 6 and goes down. 
+
+
+project 5-2 (pin_communication)
+
+The FPGA expansion header for pin#3 had name M2.
+And how we define it was described on the Handel C manual.
+M2 was assiegned as Data at the definition, and output(out)
+was assgined to value x. In the code. In there, only 
+assignment variable x allowed was unsigned 1 to the, because 
+actual pin only takes one or zero, or you could add more 
+pins to have more width. The code was to send out the frequency
+from pin3 every 20 msec. After compiling the code, and downloading
+it, frequency was shown in the oscilloscope alternatined dotted 
+holizontal lines alternatining each other.
+
+project 5-3 (pin_communication)
+
+(*)Since I started last weekend, I have to excuse myself that 
+I have different file name (pin_comm.hcc) and project name
+(pin_communication). I'm sorry for the inconvinience that may
+cause. 
+  Coding to read the two button input, the last assignent was
+changing frequency to send out according to the pattern of
+button pressing. When 1st button is pressed, generates 1ms,
+the second one generates 2.0 m sec, and otherwise it generates
+1.5 msec. value is updated every 20 msec. and pulse was changing 
+every 20 msec. Sleep time calculation can't be done by "cut and paste"
+this time. Since little modification from microsecond from millisecond
+had to be done. Having done that, in one while loop,
+keep changing the pase value every 20msec which was modified by 
+reading button press. And another while loop was to alternate x's value
+and sleep the palse time.
+ Combining two reading keyboard and sending signal macro proc made
+signal clearer. Also channnel synchronization was implemented to
+wait 20mSec in one main and send signal inside another main 
+whenever chanel value is written.
+
+
+
+
+Key point that I learned from this project the best is to simplify,
+you can't have simplyfied code which deligate into smaller macro procs,
+but you have to put effort to include all the code into one macro proc.
+
+

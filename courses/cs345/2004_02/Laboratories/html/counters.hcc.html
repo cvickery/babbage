@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>counters.hcc</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body
+      {
+        background:     #ffffcc;
+        font-family:    sans-serif;
+        color:          #606010;
+        margin:         2em;
+      }
+      pre
+      {
+        background:     #ffffff;
+        margin:         1em;
+        border:         solid;
+      }
+  </style>
+</head>
+<center><h1>counters.hcc</h1></center>
+<hr>
+<pre>
+//  counters.hcc
+
+/*  Simultion-only program to explore some features of the Handel-C
+ *  language and the stdlib library.
+ *
+ *  CS-345 Laboratory II
+ *  Spring 2004
+ *  C. Vickery
+ */
+
+#include &lt;stdlib.hch&gt;
+
+set clock = external "P1";
+
+//  Macros
+macro expr numElements = 4;
+
+//  Global variables
+unsigned      3 x   = 0;
+signed        4 y   = 0;
+unsigned      4 array[ numElements ] = { 0 };
+signed    rom 5 constants[ numElements ] = { 1, -5, 10, 7 };
+signed        8 sum = 0;
+signed        8 pipeline[ numElements ];
+signed        8 display = 0;
+//  main()
+//  ------------------------------------------------------------------
+/*
+ *    Uses the Handel-C language in various ways.
+ */
+  void main( void )
+  {
+    unsigned  3 j;
+    par
+    {
+      //  Increment the unsigned variable on alternate clock cycles.
+      while ( 1 )
+      {
+        x++;
+        delay;
+      }
+
+      //  Increment the signed variable on each clock cycle.
+      while ( 1 )
+      {
+        y++;
+      }
+
+      //  Increment all the elements of the array on each clock cycle.
+      while ( 1 )
+      {
+        par ( i = 0; i &lt; numElements; i++ )
+        {
+          array[i]++;
+        }
+      }
+
+      //  Sum all the elements of the rom as fast as possible, and
+      //  push the sum into a pipeline.
+      while ( 1 )
+      {
+      /*  This statement compiles and links, but gives an error *
+       *  when you try to simulate it:                          *
+       *  par ( i = 0; i &lt; numElements; i++ )                   */
+        seq
+        {
+          //  Compute the sum sequentially.
+          j = 0;
+          do
+          {
+            par
+            {
+              sum += adjs( constants[ j&lt;-2 ], width( sum ) );
+              j++;
+            }
+          } while ( j &lt; numElements );
+
+          //  Push the sum into the pipeline (one clock)
+          par (k = 0; k &lt; numElements; k++ )
+          {
+            ifselect  ( k == numElements -1 )
+              pipeline[k] = sum;
+            else
+              pipeline[k] = pipeline[k + 1];
+            display = pipeline[0];
+          }
+        }
+      }
+    }
+  }
+</pre><hr></body></html>

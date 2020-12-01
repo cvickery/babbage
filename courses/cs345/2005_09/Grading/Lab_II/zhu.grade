@@ -1,0 +1,73 @@
+xiaoyuer7890@hotmail.com                6979 Zhu      Yu
+
+CS-345 Laboratory II
+Fall 2005
+
+Here is how I evaluated your second Laboratory assignment.
+Dr. Vickery
+---------------------------------------------------------
+
+Project and Workspace Setup
+
+  Fine.  
+
+Use of Handel C
+
+  Indentation is terrible.  First, be consistent.  Second, use
+  indentation --to the right-- to show depth of structure:
+         {
+       pipeline[m]=dp_block.rom_block[j];
+         }
+  should be:
+     {
+       pipeline[m]=dp_block.rom_block[j];
+     }
+
+  Put the calls to PalSevenSegWrite inside the par loop so iteration
+  will complete in one cycle.
+
+  The variables i and j always have the same value; eliminate one.
+
+  There is no need to test if a 4 bit variable has reached 15; adding
+  one to it will make it wrap around to zero automatically because
+  there are only 4 bits to hold the value.
+
+  Put spaces on each side of operators to make the code easier to
+  read. "while (a_bit == 0)" instad of "while(a_bit==0)"  And there is
+  a convention to put a space to the left of ( unless it is part of a
+  function (or macro) definition or reference.
+
+  Putting the whole computation inside a par loop that has m as an
+  index but where most of the statements don't have anything to do
+  with m is unusual.  Not really wrong (it works), but confusing to
+  read because the loop form implies that m is somehow important
+  throughout the block, not just for the first statements.  Having the
+  braces not lined up right makes it all the more confusing.
+
+Report
+
+  No need to retype the questions; just give the answers.  The goal is
+  to make the lab reports look like research reports (even though they
+  aren't, really).  So Question 1 should have a heading, "Method,"
+  Question 2 should have a heading, "Results," and Question 3 should
+  have a heading, "Discussion."
+
+  Watch your English.  Make the Method section all first person
+  singular, past tense:  "Now changes the code ..." should be "I
+  changed the code ..." for example.
+
+  Don't put details in the Method section that are available directly
+  in the code itself.  For example, you can say what sort of values
+  you put in your rom block, but you don't need to list the actual
+  values.  You certainly don't need to mention variable names in the
+  report.
+
+  The Results section (Question 2) doesn't say anything about the
+  actual results.  How many gates and flip=flops were used for the
+  various forms of the program?
+
+  In the Discussion (Question 3) try to explain principles learned
+  rather than details about how the code works.
+
+Grade:  9.0/10.0
+

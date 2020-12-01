@@ -1,0 +1,217 @@
+{\rtf1\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Times New Roman;}{\f1\fmodern\fprq1\fcharset0 Courier New;}{\f2\fnil\fcharset2 Symbol;}}
+\viewkind4\uc1\pard\nowidctlpar\sl240\slmult1\qc\lang1033\kerning28\f0\fs24 Handel C Concept and The DK Environment\par
+Kingsley Nwoke\par
+Logic Design Lab, Queens College (C.U.N.Y)\par
+\pard\nowidctlpar\sl240\slmult1\par
+\b Introduction\par
+\b0\tab The aim of this lab is to familiarize us with the Handel C language and concepts and the DK development environment (e.g. some of the debugging facilities available to us).\par
+\par
+\b Method\par
+\pard{\pntext\f2\'B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent360{\pntxtb\'B7}}\nowidctlpar\fi-360\li360\sl240\slmult1\b0 Create a workspace, Laboratory II, for the projects of Laboratory II.\par
+{\pntext\f2\'B7\tab}Create a project called counters for the first project of the lab.\par
+{\pntext\f2\'B7\tab}Setup the configurations and their setting so that we can build the project for simulation and the RC200E.\par
+{\pntext\f2\'B7\tab}The counters project requires running to loop in parallel and incrementing a different variable in each loop then modifying it to increment the variables at different rates. The latter functionality was achieved by using the \ldblquote delay\rdblquote  statement.\par
+{\pntext\f2\'B7\tab}Too view the changes in the variables we used the single step to the program allowing us to observe changes on after each statement.\par
+{\pntext\f2\'B7\tab}Using the parallel features on the language we wrote code to modify array elements in simultaneously.\par
+{\pntext\f2\'B7\tab}Next we attempted to compute the sum of elements in a rom as fast as possible. A rom unlike an rom only allows one access in a clock cycle necessitating a loop (sequential execution) to compute the sum.\par
+{\pntext\f2\'B7\tab}Combining the two previous step we implement a pipeline into which we pushed the multiples of the sum of the rom. The is done in two parts computing the next multiple (sequentially) and shifting the pipeline (using parallelism).\par
+{\pntext\f2\'B7\tab}All results were examined using the ability to single step through the program.\par
+{\pntext\f2\'B7\tab}Create a project, pipeline, which takes the ideas developed in counters and builds on it. In this projects the multiples of the sum would be computed and pushed into the pipeline only when a button is pressed. In addition the whole system is reset and the pipeline cleared at the push of a different button.\par
+{\pntext\f2\'B7\tab}The computation and shifting were as in the preceding project. This two operations were sandwiched in two loop used to detect edges of the clock so that only one sum is computed per clock cycle. In order to deal to hardware flaws (temporarily bouncing of the button after being press of released) sleeping for some period (in msec) to allow the switch to settle sufficed.\par
+{\pntext\f2\'B7\tab}In the event the both buttons were pressed at the same at time the edge detection loops have a condition that causes them to disregard the transition if it resulted in both buttons pressed and continue to delay and wait for the next edge transition. These loops in pipeline.hcc are commented as \ldblquote waiting for button x press\rdblquote .\par
+{\pntext\f2\'B7\tab}In addition there other processes running in parallel. They are used to control the display (seven segment and led) and reading the button states\par
+{\pntext\f2\'B7\tab}The project was simulated as well as run on th RC200E.\par
+\pard\nowidctlpar\sl240\slmult1\par
+\b Results\par
+\tab\b0 The results of the project matched the parameters set for the lab. The bouncing of the switch was observed if the msec delay is preceding and succeeding the second edge (falling edge detection) is omitted. The observed effect is multiple computations when the button is pressed once although it does not always occurs. The only problems of note were the result of improper setup of the configurations and were easily rectified.\par
+\par
+\b Appendix\par
+\b0\f1 //counters.hcc\par
+#include <stdlib.hch>\par
+\par
+set clock = external "P1";\par
+\par
+  signed rom 5 s_int_rom[] = \{1,3,-5,-2,5,6,-1,-9\};\par
+  signed 8 pipeline[4] = \{0,0,0,0\};\par
+  signed 8 display = 0;\par
+  signed 8 sum = 0;\par
+\par
+void main(void)\{\par
+    unsigned 5 l;\par
+    for(l=0;l<4;l++)\{\par
+      par\{\par
+        unsigned 4 i;\par
+        for(i=0;i<8;i++)\par
+          sum += adjs(s_int_rom[i],8);\par
+      \par
+        seq\{//seqblock\par
+          unsigned 3 j;\par
+          unsigned 4 k;\par
+\par
+          for(k=0;k<8;k++)\par
+            delay;\par
+\par
+          par\{\par
+            display = pipeline[0];\par
+            pipeline[3] = sum;\par
+            pipeline[0] = pipeline[1];\par
+            pipeline[1] = pipeline[2];\par
+            pipeline[2] = pipeline[3];\par
+          \}//par\par
+        \}//seqblock\par
+      \}//par\par
+    \}//while\par
+    delay;\par
+\}//main\par
+\par
+//pipeline.hcc\par
+#ifdef USE_SIM\par
+#define PAL_TARGET_CLOCK_RATE 50000000\par
+#define SWITCH_0 8\par
+#define SWITCH_1 9\par
+#else\par
+#define PAL_TARGET_CLOCK_RATE 20000000\par
+#define SWITCH_0 0\par
+#define SWITCH_1 1\par
+#endif\par
+\par
+#include "stdlib.hch"\par
+#include "pal_master.hch"\par
+\par
+macro expr ticks_per_msec = PAL_ACTUAL_CLOCK_RATE/1000;\par
+\par
+macro proc msec_delay(msec)\{\par
+  macro expr ticks = ticks_per_msec * msec - 1;\par
+  unsigned (log2ceil(ticks)) counter;\par
+  counter = ticks;\par
+  while(counter!=0)\par
+    counter--;\par
+\}//msec_delay\par
+\par
+  signed rom 5 s_int_rom[7] = \{1,-3,5,-2,5,-6,-1\};\par
+  unsigned 8 pipeline[4] = \{0,0,0,0\};\par
+  unsigned 8 display = 0;\par
+  signed 8 sum = 0;\par
+  unsigned 1 add;\par
+  unsigned 1 res;\par
+  unsigned 3 pipelineUse = 0;\par
+  unsigned 3 displayValid = 0;\par
+  unsigned 8 zero = 0;\par
+\par
+void main(void)\{\par
+  unsigned 4 i;\par
+  PalVersionRequire(1,0);\par
+  PalSevenSegRequire(2);\par
+  PalSwitchRequire(2);\par
+\par
+  /*\par
+   * Enable Seven Segment Displays\par
+   */\par
+  PalSevenSegEnable(PalSevenSegCT(0));\par
+  PalSevenSegEnable(PalSevenSegCT(1));\par
+\par
+  par\{\par
+    //Read State Of Switch 0\par
+    while(1)\par
+      PalSwitchRead(PalSwitchCT(SWITCH_0),&add);\par
+\par
+    //Read State Of Switch 1\par
+    while(1)\par
+      PalSwitchRead(PalSwitchCT(SWITCH_1),&res);\par
+\par
+    //Write Value Of Display To Seven Seg Display\par
+    while(1)\{\par
+      if(displayValid==5)\{          \par
+        par\{\par
+          PalSevenSegWriteDigit(PalSevenSegCT(0),display[7:4],0);\par
+          PalSevenSegWriteDigit(PalSevenSegCT(1),display[3:0],0);\par
+        \}//par\par
+      \}//if\par
+      else\{\par
+        par\{\par
+          PalSevenSegWriteShape(PalSevenSegCT(0),zero);\par
+          PalSevenSegWriteShape(PalSevenSegCT(1),zero);\par
+        \}//par\par
+      \}//else\par
+    \}//while\par
+\par
+    /*\par
+     * Process State Of Button 0\par
+     * When button 0 is pressed compute the sum\par
+     * and push through pipeline.\par
+     * If button 1 is depressed during change do not compute sum.\par
+     */\par
+    while(1)\{\par
+      //wait for button 0 press\par
+      while((!add | (add&res)))\par
+        delay;\par
+\par
+      //calculate sum\par
+      for(i=0;i<8;i++)\par
+        sum += adjs(s_int_rom[i[2:0]],width(sum));\par
+\par
+      //shift sum into pipeline\par
+      par(j=0;j<7;j++)\{\par
+        ifselect(j==0)\par
+          display = pipeline[0];\par
+        else ifselect(j==1)\par
+          pipeline[3] = (unsigned)sum;\par
+        else  ifselect(j==2 || j==3 || j==4)\par
+          pipeline[j-2] = pipeline[j-1]; \par
+        else  ifselect(j==5)\{\par
+                if(pipelineUse<3)\par
+                  pipelineUse++;\par
+              \}//ifselect\par
+        else  ifselect(j==6)\{\par
+                if(displayValid<5)\par
+                  displayValid++;\par
+              \}//ifselect\par
+      \}//par\par
+      \par
+      //wait for button 0 release\par
+      msec_delay(25);\par
+      while(add)\par
+        delay;\par
+      msec_delay(25);\par
+    \}//while\par
+\par
+\par
+    /*\par
+     * Process State Of Button 1\par
+     * When button 1 changes is reset system\par
+     * If button 0 is pressed during change do nothing.\par
+     */\par
+    while(1)\{\par
+      //wait for buttton 1 press\par
+      while(!res | (add&res))\par
+        delay;\par
+      \par
+      //clear pipeline,sum and other data\par
+      par(j=0;j<8;j++)\{\par
+        ifselect(j==4)\par
+          sum = 0;\par
+        else ifselect(j==5)\par
+          display = 0;\par
+        else ifselect(j==6)\par
+          pipelineUse = 0;\par
+        else ifselect(j==7)\par
+          displayValid = 0;\par
+        else\par
+          pipeline[j] = 0; \par
+      \}//par\par
+\par
+      //wait for button 1 release\par
+      msec_delay(25);\par
+      while(res)\par
+        delay;\par
+      msec_delay(25);\par
+    \}//while\par
+\par
+    //Display number of stages being used in pipeline\par
+    while(1)\{\par
+      PalLEDWrite(PalLEDCT(0),pipelineUse[1:1]);\par
+      PalLEDWrite(PalLEDCT(1),pipelineUse[0:0]);\par
+    \}//while\par
+  \}//par\par
+\}//main\par
+}

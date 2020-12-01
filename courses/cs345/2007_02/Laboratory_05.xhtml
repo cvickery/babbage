@@ -1,0 +1,275 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Laboratory 5</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    <style type="text/css">
+      img { height: 5em; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-345/780 Laboratory 5</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>Overview</h2>
+      <div class="whitebox">
+        <p>For this assignment, you are to build a musical chord generator
+        using the RC200E touchscreen and audio output facilities.  The user
+        will see a pattern something like this:</p>
+
+        <p><img src="../images/chord_generator.png" alt="Illustration
+            showing chord generator geometry" /></p>
+
+        <p>When the user presses the area marked &ldquo;A&rdquo; in the
+        diagram, a tone of a certain frequency will play; pressing the
+        &ldquo;B&rdquo; zone plays another tone, and pressing the
+        &ldquo;C&rdquo; zone plays a third tone.  Pressing the area between
+        the A and B zones plays a mixture of the A and B tones; pressing the
+        area between the A and C zones plays a mixture of the the A and C
+        tones, pressing the area between the B and C zones plays a mix of
+        those two tones, and pressing the area in the center plays a mix of
+        all three tones.  By picking appropriate values for the frequencies
+        of the three tones, you can play various musical intervals and
+        chords.</p>
+
+      </div>
+
+      <h2>Procedure</h2>
+      <div class="whitebox">
+
+        <ol>
+
+          <li>
+
+            <h5>Draw the image.</h5>
+            <p class="runin">Pick seven colors to use for the display.  Make
+            zones A, B, and C be a set of primary colors, such as red, green
+            and blue, and make the colors in between be mixtures of those
+            colors.  Draw the pattern shown using the same technique you
+            used for the seven-segment display image in Laboratory 4.  Look
+            at the next step before you pick your colors.</p>
+
+          </li>
+
+          <li>
+
+            <h5>Respond to touchscreen input.</h5>
+            <p class="runin">Use the Pal Touchscreen API to detect when and
+            where the user presses the touchscreen.  Highlight the zone
+            where the user touches the screen either by making it darker or
+            lighter than it was before.  (If you started with high-intensity
+            color components, you could halve each color channel&rsquo;s
+            intensity, for example.)</p>
+
+          </li>
+
+          <li>
+
+            <h5>Study Digital Audio</h5>
+
+            <p class="runin">Study my <a href="../../Audio_Sampling">Audio
+            Sampling Laboratory</a> to become familiar with the concepts of
+            sound frequencies, sampling rate, and bits per sample.  Also,
+            look at my <a href="../../Fourier_Synthesis">Fourier
+            Synthesis</a> program to help understand the issues involved in
+            mixing audio signals.</p>
+
+          </li>
+
+          <li>
+
+            <h5>Generate Tones</h5>
+
+            <p class="runin">Study the Pal <span
+            class="functionName">AudioOut</span> API to see how to generate
+            audio output. You need to provide a sequence of intensity levels
+            at the correct rate in order to produce a sound.  Note that once
+            you set the sampling rate, you can call <span
+            class="functionName">PalAudioOutWrite()</span> every clock
+            cycle, and it will block until the right time for emitting the
+            next sample arrives.</p>
+
+            <p>You will work with combinations of pure tone sine waves for
+            this project.  Since you cannot reasonably do trigonometric
+            calculations on the FPGA, you will have to generate the sine
+            waves using lookup tables that you can generate using a program
+            that is available for this purpose: <a
+            href="../GenerateAudioSamples/">Generate Audio Samples</a>.
+            Note that this is a command-line program at this point.  You
+            have to open a console window to run it, and the program&rsquo;s
+            output has to be captured in a file, which you can then <span
+            class="codeSnippet">#include</span> into your Handel-C
+            project.</p>
+
+          </li>
+
+        </ol>
+
+      </div>
+
+      <h2>More Information</h2>
+      <div class="whitebox">
+        <div>
+          <h5>Picking Colors.</h5>
+          <p class="runin">There is <a
+          href="../../cs081/Color_Schemes/index-en.html">a program you can
+          use</a> to look at various combinations of colors, and see their
+          hexadecimal RGB values.  The program is intended for people doing
+          Web Design, and is probably overkill for this project.  But you
+          can use it to see what colors are clearly different from one
+          another and to get their hexadecimal encodings.</p>
+        </div>
+        <div>
+          <h5>Picking Tone Frequencies.</h5>
+          <p class="runin">Like the colors, the tones you use can be
+          anything so long as they are clearly distinguishable from each
+          other.  But you can pick tones that bear a musical relationship to
+          each other to make things a little more pleasant to listen to.
+          For example, you could pick a low note for zone A that corresponds
+          to a note on the scale, and then pick a note that is three musical
+          &ldquo;steps&rdquo; above that for zone B, and one that is five
+          steps above it for zone C.  For example, middle C for zone A (261
+          Hz), G above that for zone B (392 Hz), and F above that for zone C
+          (349 Hz).  You can find the frequecies for notes on the web at <a
+          href="http://www.phy.mtu.edu/~suits/notefreqs.html">the Michigan
+          Tech Physics Department web site</a>, among other places.</p>
+        </div>
+        <div>
+
+          <h5>Working With Lookup Tables</h5>
+          <p class="runin">You are going to pick a sampling rate for the
+          tones, probably 48 KHz because that is the default value for the
+          Pal <span class="functionName">AudioOut</span> macros.  Every
+          1/48,000 of a second, you have to write a new intensity value
+          using <span class="functionName">PalAudioOutWrite()</span>.  For
+          monophonic sound, you can just write the same value to both the
+          left and right channels each time.</p>
+
+          <p>Here is an example showing how to run <span
+          class="programName">Generate_Audio_Samples</span>:</p>
+
+          <div class="codeBlock">
+java -jar Generate_Audio_Samples.jar -f 261 > samples_261.hch
+          </div>
+
+          <p>The <span class="variableName">-f</span> option specifies
+          the frequency of the tone you want to generate, in this case 261
+          Hz (middle C).  You can use other options to change the
+          sampling rate and other parameters, but by default, the program
+          assumes a sampling rate of 48 KHz and 20 bits per sample, the
+          default settings for the RC200E kits.</p>
+
+          <p>The command above saves the program&rsquo;s output in a file,
+          which can be added to your project and <span
+          class="codeSnippet">#include</span>d in your Handel-C program.  For
+          example, here is a program that uses the file generated above to
+          play a 261 Hz tone continuously:</p>
+
+          <div class="codeBlock">
+#include &lt;stdlib.hch&gt;
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+#include &lt;pal_master.hch&gt;
+
+macro expr Clock    = PAL_ACTUAL_CLOCK_RATE;
+macro expr audioOut = PalAudioOutCT(0);
+
+#include "samples_261.hch"
+
+void main(void)
+{
+  par
+  {
+    PalAudioOutRun(audioOut, Clock);
+    seq
+    {
+      PalAudioOutEnable(audioOut);
+      while (1)
+      {
+        PalAudioOutWrite(audioOut, samples_261[index_261], samples_261[index_261]);
+        index_261 = (index_261 == (numSamples_261-1)) ? 0 : (index_261 + 1);
+      }
+    }
+  }
+}
+          </div>
+
+          <p>You will need to study the file generated by <span
+          class="programName">Generate_Audio_Samples</span> to understand
+          fully how to use it.</p>
+
+          <p>When you generate intervals and chords, you will need to pay
+          attention to:</p>
+          <ul>
+            <li>the number of bits per sample</li>
+            <li>the fact that you are working with signed values</li>
+            <li> that the number of bits needed to represent the correct sum of intensities is
+            greater than the number of bits per sample in the audio system</li>
+            <li>that the sound intensity should remain constant when combining multiple tones</li>
+          </ul>
+          <p>For example, when you add two 20-bit intensities, you will get a
+          21-bit sum that can be twice as large as the values you want to
+          work with: divide the sum in half by dropping the rightmost bit to
+          correct the value.  When combining three tones, you will need to
+          be creative to generate mixed intensities that have the correct
+          level while avoiding division by three.  Consult the <a
+          href="../divideby3.xhtml">How To Divide By Three</a> web page for
+          more information.</p>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

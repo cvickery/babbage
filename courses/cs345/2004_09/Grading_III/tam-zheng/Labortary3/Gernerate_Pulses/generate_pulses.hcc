@@ -1,0 +1,76 @@
+#if (defined USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 50000000
+#else 
+  #define PAL_ACTUAL_CLOCK_RATE 1000000
+  set clock = external "P1"
+  with
+  {
+    extlib = "DKSync.dll",
+    extinst = "1000",
+    extfunc = "DKSyncGetSet"
+    
+  };
+#endif
+
+#include <stdlib.hch>
+#include <pal_master.hch>
+
+unsigned 1 x;
+
+interface bus_out() ob1(unsigned 1 out = x)
+  with
+    {
+      #if (defined USE_RC200E)
+        data = {"M2"}
+      #else
+        extlib = "DKConnect.dll",
+        extinst = "t(1)",
+        extfunc = "DKConnectGetSet"
+      #endif
+    };
+
+macro proc microsec_delay(Milliseconds)
+
+{
+    macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * Milliseconds)/1000000; // Count the number of cycles needed to delay the pulses
+    unsigned (log2ceil (Cycles)) Count; // Number of bit needed to store the value of count
+
+    Count = 0;
+    do
+    {
+        Count++; // Take one clock cycle = 1 micro second
+    }
+    while (Count != Cycles - 1);
+}
+
+
+void main(void)
+{
+  
+  chan output;
+  
+  par
+    {
+      while(1)
+      {
+        microsec_delay(20000); // Delay 20ms between pulses
+        output ! 1; // Write to channel and turn on the output
+        microsec_delay(1000); // Each pulse stays for 1ms 
+
+        output ! 0; // Write to channel and turn off the output
+      }
+
+      while(1)
+      {
+
+        output ? x; // Read from channel
+
+
+        
+      }
+    }
+}
+
+
+
+

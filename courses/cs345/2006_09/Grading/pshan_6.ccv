@@ -1,0 +1,31 @@
+P. Shan
+Comments on Laboratory VI (Ethernet Project)
+--------------------------------------------
+
+  Coding Style and Documentation:
+
+    Good
+
+  User Interface:
+
+    Nice drawing program for testing the whiteboard!
+
+  Other Comments:
+
+    This is an ambitious project, carried to a mostly successful
+    implementation.  The only issue is why the transfers should be so
+    slow, undoubtedly caused by a bottleneck in getting the pixel
+    values out of the framebuffer.  The first thing to consider would
+    be to use PalFrameBuffer16ReadPair instead of
+    PalFrameBuffer16Read, thereby cutting the cycles required in half.
+    Another approach would be to store information about what pixel
+    blocks are non-background colors in a separate memory, possibly
+    even on-chip.  Since there are only 8 different colors involved, you
+    would need to store only 3 bits per pixel, and could pack 12
+    pixels' worth of information into each word of a RAM array.
+    Reading from this array, even off-chip, could make the transfers
+    pretty much instantaneous.
+
+    Still, the project is great -- lots accomplished here.
+
+  Grade:  10/10

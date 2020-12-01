@@ -1,0 +1,427 @@
+// uart.hcc 
+/****************************************************************
+* Project   :    RS232 Communication                            *
+* Date      :    20 Mar 2004                                    *
+* File      :    uart.hcc                                       *
+* Author    :    Sergey Averchenkov                             *
+*****************************************************************
+* Desc      :    This project provides a serial connection      *
+*           :    between the FPGA and a PC through the RS-232   *
+*           :    connector on the RC200E and one of the COM     *
+*           :    ports on a PC. Characters received on the COM  *
+*           :    port on the RC200E are displayed on the LCD    *
+*           :    screen of the RC200E. At the same time,        *
+*           :    characters typed on a keyboard attached to the *
+*           :    PS/2 keyboard port of the RC200 are displayed  *
+*           :    on the screen of the PC.                       *
+****************************************************************/
+
+#define MARK 1
+#define SPACE 0
+
+#if (defined USE_RC200 || USE_RC200E)
+  #define PAL_TARGET_CLOCK_RATE 25175000
+  #define SW0 0
+  #define SW1 1
+  #define NUM_SWITCHES 2
+#else
+  // Use 1Mhz clock for wave analyzer simulation. 
+  #define PAL_ACTUAL_CLOCK_RATE 25175000
+  //#define PAL_ACTUAL_CLOCK_RATE 1000000
+  set clock = external "P1"
+    with
+    {
+      extlib  = "DKSync.dll",
+      extinst = "1000",       // Period of 1MHz simulated clock
+      extfunc = "DKSyncGetSet"
+    };
+  #define SW0 8
+  #define SW1 9
+  #define NUM_SWITCHES 10
+#endif
+
+#include <pal_master.hch>
+#include <pal_console.hch>
+#include <pal_keyboard.hch>
+#include <stdlib.hch>
+
+unsigned 1 TxD = 1; // Set transmit to MARK
+
+interface bus_in(unsigned 1 RxD) InBus()
+    with
+    {
+  #if (defined USE_RC200 || USE_RC200E)
+      data  = { "U20" }
+  #else
+      extlib  = "DKConnect.dll",
+      extinst = "RxD(1)",
+      extfunc = "DKConnectGetSet"
+  #endif
+    };
+
+interface bus_out() OutBus(unsigned 1 out = TxD)
+    with
+    {
+  #if (defined USE_RC200 || USE_RC200E)
+      data  = { "V20" }
+  #else
+      extlib  = "DKConnect.dll",
+      extinst = "TxD(1)",
+      extfunc = "DKConnectGetSet"
+  #endif
+    };
+
+static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+static macro proc microsec_delay(msec);
+macro proc delay_FullPulse();
+macro proc delay_HalfPulse();
+macro proc KeyboardRun(KeyboardPtr);
+macro proc ConsoleRun(ConsolePtr);
+macro proc DOMonitorRun();
+macro proc FEMonitorRun();
+macro proc RxRun();
+macro proc TxRun();
+
+macro expr BIT_RATE = 9600;
+macro expr DATA_BITS = 8;
+
+unsigned (DATA_BITS) RBR = 0;
+unsigned (DATA_BITS) THR = 0;
+
+unsigned 1 DO = 0;
+unsigned 1 FE = 0;
+unsigned 1 rbrFull = 0;
+unsigned 1 thrFull = 0;
+
+// main()
+// -------------------------------------------------------------
+/*
+ *    Main entry of the program. Runs all threads.
+ */
+void main (void)
+{
+  PalConsole *ConsolePtr;
+  PalKeyboard *KeyboardPtr;
+
+  PalVersionRequire(1, 0);
+  PalVideoOutRequire(1);
+  PalPS2PortRequire(2);
+
+  par
+  {
+    PalConsoleRun(&ConsolePtr, PAL_CONSOLE_FONT_NORMAL, 
+      PalVideoOutOptimalCT (ClockRate), ClockRate);
+    PalKeyboardRun(&KeyboardPtr, PalPS2PortCT(1), ClockRate);
+    seq
+    {
+      par
+      {
+        PalConsoleEnable(ConsolePtr);
+        PalKeyboardEnable(KeyboardPtr);
+      }
+      par
+      {
+        TxRun();
+        RxRun();
+        DOMonitorRun();
+        FEMonitorRun();
+        KeyboardRun(KeyboardPtr);
+        ConsoleRun(ConsolePtr);
+      }
+    }
+  }
+}
+// -------------------------------------------------------------
+
+
+// -------------------------------------------------------------
+// TxRun()
+// -------------------------------------------------------------
+/*
+ *    This thread monitors the InBus.RxD interface according to 
+ *    RS232 serial communcation protocol. It reads the value 
+ *    from the interface and updates the RHR buffer.
+ *    
+ *    Exceptions: 
+ *      - DO is set to TRUE if Data Overrun occurs.
+ *         Data Overrun occurs when the receiver tries to 
+ *         update the buffer that is full. 
+ *         RHR buffer is not updated while DO is TRUE
+ *    
+ *      - FE is set to TRUE if Framing Error occurs.
+ *         Framing Error occurs when the stopping bit is not in 
+ *         the MARK position during bit transfer.
+ *         RHR buffer is not updated while FE is TRUE
+ *    
+ */
+macro proc RxRun()
+{
+  unsigned (DATA_BITS) RxBuffer;
+  unsigned 4 i;
+
+  while(1)
+  {
+    // Started in SPACE. Cable not connected?
+    while(InBus.RxD == SPACE) { delay; }
+    // MARK is default. Waiting for a start bit. 
+    while(InBus.RxD == MARK) { delay; } 
+
+    // Move in the middle of the pulse
+    delay_HalfPulse();
+
+    // Glitch on the line? Expected: SPACE in the 
+    // middle of the start bit.
+    // Restart from the beginning.
+    if(InBus.RxD != SPACE) { continue; } 
+
+    delay_FullPulse();
+
+    // Reset the buffer. Ready for receiving bits.
+    RxBuffer = 0;
+    for(i=0; i < DATA_BITS; i++)
+    {
+      // Receive each bit and store it int he appropriate 
+      // pisition in the buffer
+      RxBuffer >>= 1;
+      RxBuffer = (InBus.RxD @ RxBuffer<-7);
+      delay_FullPulse();
+    }
+    
+    // Stopping bit.
+    if(FE || (InBus.RxD != MARK)) // Framing error?
+    {
+      FE = TRUE;
+    }
+    else if(DO || rbrFull)
+    {
+      DO = TRUE;
+    }
+    else // neither Data Overrun (DO) nor 
+         // Framing Errors (FE) have occured.
+    {
+      RBR = RxBuffer; // Copy the buffer
+      rbrFull = TRUE; 
+    }
+    // Shift back into the beginning of the pulse
+    delay_HalfPulse(); 
+  }
+}
+// -------------------------------------------------------------
+
+
+// -------------------------------------------------------------
+// TxRun()
+// -------------------------------------------------------------
+/*
+ *    This thread monitors the THR buffer and transmits the 
+ *    value of the buffer on TxD interface if the buffer is full. 
+ *    The value is transmitted bit by bit low-order bits first.
+ *    This method does not return.
+ */
+macro proc TxRun()
+{
+  unsigned (DATA_BITS) TxBuffer;
+  unsigned 4 i;
+
+  while(1)
+  {
+    // Wait for the signal. Data ready to be sent?
+    while(!thrFull) { delay; }
+    par
+    {
+      // Make a local copy of the buffer.
+      TxBuffer = THR;
+      thrFull = 0;
+    }
+    // TxD rests at MARK voltage when no data
+    // is being transfered. Move to SPACE to indicate
+    // the beginning of the start bit.
+    TxD = SPACE;
+    delay_FullPulse();
+
+    // Send in the bits. Low order bits go in first.
+    for(i=0; i < DATA_BITS; i++)
+    {
+      par
+      {
+        TxD = TxBuffer[0];
+        TxBuffer >>= 1;
+      }
+      delay_FullPulse();
+    }
+    // Move the voltage back to MARK for the stopping bit.
+    TxD = MARK;
+    // Delay for the period of the stopping bit.
+    delay_FullPulse();
+  }
+}
+// -------------------------------------------------------------
+
+
+// -------------------------------------------------------------
+// FEMonitorRun()
+// -------------------------------------------------------------
+/*
+ *    This thread monitors the state of one of the switches,
+ *    resets the value of the FE variable if the switch was
+ *    pressed, and lits the LED if FE is true.
+ *    This method does not return.
+ */
+macro proc FEMonitorRun()
+{
+  unsigned 1 switchOnePressed;
+  while(1)
+  {
+    // Read the state of the switch and update the LED
+    // based on the value of the FE variable.
+    par
+    {
+      PalSwitchRead(PalSwitchCT(SW1), &switchOnePressed);
+      PalLEDWrite(PalLEDCT(1), FE);
+    }
+    
+    // Reset FE to zero if switch was pressed.
+    if(switchOnePressed) 
+    {
+      FE = 0;
+    }
+  }
+}
+// -------------------------------------------------------------
+
+
+// -------------------------------------------------------------
+// DOMonitorRun()
+// -------------------------------------------------------------
+/*
+ *    This thread monitors the state of one of the switches,
+ *    resets the value of the DO variable if the switch was
+ *    pressed, and lits the LED if DO is true.
+ *    This method does not return.
+ */
+macro proc DOMonitorRun()
+{
+  unsigned 1 switchZeroPressed;
+  while(1)
+  {
+    // Read the state of the switch and update the LED
+    // based on the value of the DO variable.
+    par
+    {
+      PalSwitchRead(PalSwitchCT(SW0), &switchZeroPressed);
+      PalLEDWrite(PalLEDCT(0), DO);
+    }
+
+    // Reset DO to zero if switch was pressed
+    if(switchZeroPressed)
+    {
+      DO = 0;
+    }
+  }
+}
+// -------------------------------------------------------------
+
+
+// -------------------------------------------------------------
+// ConsoleRun()
+// -------------------------------------------------------------
+/*
+ *    This thread outputs the value of the RBR buffer to the
+ *    LCD screen if the buffer is full. This method does not 
+ *    return.
+ */
+macro proc ConsoleRun(ConsolePtr)
+{
+  static rom unsigned 8 hexTab[] = "0123456789ABCDEF";
+  while(1)
+  {
+    // Wait for the signal. New data ready to be displayed?
+    while(!rbrFull) { delay; }
+   
+    // Output the value to the screen in the 
+    // form: "X 0x##"
+    PalConsolePutChar(ConsolePtr, RBR);
+    PalConsolePutChar(ConsolePtr, ' ');
+    PalConsolePutChar(ConsolePtr, '0');
+    PalConsolePutChar(ConsolePtr, 'x');
+    PalConsolePutChar(ConsolePtr, hexTab[RBR[7:4]]);
+    PalConsolePutChar(ConsolePtr, hexTab[RBR[3:0]]);
+    PalConsolePutChar(ConsolePtr, '\n');
+    // Value was output to the console. 
+    // Notify the receiver that new data may be sent.
+    rbrFull = 0;
+  }
+}
+// -------------------------------------------------------------
+
+
+// -------------------------------------------------------------
+// KeyboardRun()
+// -------------------------------------------------------------
+/*
+ *    This thread reads the keyboard and updates the THR buffer
+ *    if the buffer is empty. This method does not return.
+ */
+macro proc KeyboardRun(KeyboardPtr)
+{
+  while(1)
+  {
+    // Wait for the signal. Is buffer empty?
+    while(thrFull) { delay; }
+    par
+    {
+      PalKeyboardReadASCII(KeyboardPtr, &THR);
+      thrFull = 1;
+    }
+  }
+}
+// -------------------------------------------------------------
+
+
+// -------------------------------------------------------------
+// delay_HalfPulse()
+// -------------------------------------------------------------
+/*
+ *    Pauses the execution for one half of a pulse based on the
+ *    current bit rate.
+ */
+macro proc delay_HalfPulse() 
+{
+  microsec_delay(1000000 / (BIT_RATE * 2));
+}
+// -------------------------------------------------------------
+
+
+// -------------------------------------------------------------
+// delay_FullPulse()
+// -------------------------------------------------------------
+/*
+ *    Pauses the execution for one full pulse based on the 
+ *    current bit rate.
+ */
+macro proc delay_FullPulse() 
+{
+  microsec_delay(1000000 / BIT_RATE);
+}
+// -------------------------------------------------------------
+
+
+// -------------------------------------------------------------
+// microsec_delay()
+// -------------------------------------------------------------
+/*
+ *    Pauses the execution for msec microseconds.
+ */
+static macro proc microsec_delay(msec)
+{
+  macro expr cycles = (PAL_ACTUAL_CLOCK_RATE * msec) / 1000000;
+  unsigned (log2ceil(cycles)) count;
+
+  count = 0;
+  do
+  {
+    count++;
+  }
+  while(count != cycles - 1);
+}
+// -------------------------------------------------------------

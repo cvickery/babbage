@@ -1,0 +1,54 @@
+/*
+    generate_pulses.hcc
+    Kurt Humes
+    Justin Spatz
+*/
+
+#include<stdlib.hch>
+
+
+#define PAL_TARGET_CLOCK_RATE 50000000
+
+#include<pal_master.hch>
+
+
+
+//used to write to pin 3 on expansion header
+//pin M2 on FPGA
+unsigned 1 x = 0;
+
+//set up interface to write to pins
+interface bus_out() pinout(unsigned 1 out = x)
+with {data = {"M2"}};
+
+//define delay and pulse time in ms
+#define DELAY 19000
+#define PULSE 1000
+
+//delays for a given number of microseconds
+macro proc microsecond_delay ( microseconds );
+
+void main(void)
+{
+    //send pulses for ever
+    while(1)
+    {
+      //wait 19 ms
+      microsecond_delay(DELAY);
+      //send a 1 ms pulse on the 20th ms
+      x=1;
+      microsecond_delay(PULSE);
+      x=0; //turn pulse off
+    }
+}
+
+
+
+macro proc microsecond_delay ( microseconds )
+{
+   macro expr Cycles = (PAL_ACTUAL_CLOCK_RATE * microseconds) / 1000000; 
+   unsigned (log2ceil (Cycles)) count;
+   count=Cycles;
+   while(count>0)
+   {count--;} 
+}

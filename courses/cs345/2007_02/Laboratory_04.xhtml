@@ -1,0 +1,286 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Laboratory IV</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    <style type="text/css">
+      .picture { width: 550px; margin: 1em auto; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-345/780 Laboratory IV</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+        <p>This laboratory consists of three projects which, together, will
+        lead you through some aspects of Handel-C&rsquo;s bit manipulation
+        operators and carry you on to one of the forms of video output
+        possible on the RC200E.</p>
+      </div>
+      
+      <h2>Keyboard to SevenSegment Displays</h2>
+      <div class="whitebox">
+      
+        <p>Create a project named <span
+        class="fileName">Keyboard2SevenSegment</span>, and set up both Debug
+        and EDIF build configurations in the usual way with one exception:
+        you will need to include a library for using a keyboard for input. 
+        The library name is <span class="fileName">pal_keyboard.hcl</span>,
+        and the corresponding header file is <span
+        class="fileName">pal_keyboard.hch</span>.  The procedures available
+        in this library are documented in the <span class="programName">Pal
+        Cores</span> manual in the Celoxica/Documentation/PDK directory. 
+        (Also available in the online manuals you can access from the course
+        web page.)</p>
+        
+        <p>This project is very simple: continually read from the keyboard
+        input and write the 8-bit character codes the user types as two
+        hexadecimal digits on two seven-segment displays.  Use the Handel-C
+        take (<span class="keyword">&lt;-</span>) and drop (<span
+        class="keyword">\\</span>) operators to extract the two 4-bit values
+        you need from the 8-bit characters received from the keyboard.</p>
+
+        <p>When you simulate this project, the Pal Virtual console will
+        include a &ldquo;Keyboard Port&rdquo; panel where you have to type
+        in keyboard scan codes to simulate keyboard input to the FPGA. 
+        There is documentation on scan codes in a PDF file you can access
+        from the <a href="../Manuals#scan_codes">Manuals</a> web page.  You
+        type the scan codes as decimal numbers in the lowest part of the
+        left side of the Keyboard Port panel.  You may have to type 3-4
+        arbitrary values to initialize the keyboard before it will respond
+        to your inputs as keypresses.</p>
+        
+        <p>You can test your ASCII and scancode skills: use the Pal Virtual
+        Console to make the hex displays shows the values 41, then 61, and
+        then 41 again.</p>
+        
+        <p>When you test your project on the RC200E, watch out for
+        &ldquo;overengineering&rdquo; the code.  If you run the keyboard
+        input code in parallel with the seven segment displays you
+        won&rsquo;t get the behavior you want.  As soon as you call <span
+        class="functionNam">PalKeyboardReadASCII()</span>, the register that
+        receives the ASCII code will get set to 0x00 and will stay at that
+        value until a key is pressed.  Simply update the seven segment
+        displays only when <span
+        class="functionNam">PalKeyboardReadASCII()</span> returns and you
+        will be okay.</p>
+
+      </div>
+      
+      <h2>Keyboard to Console</h2>
+      <div class="whitebox">
+        <p>Maybe you noticed the Pal Console API when you were looking up
+        the Pal Keyboard.  If not, go back and read the fine manual!</p>
+        
+        <p>This project is separate from the previous one, but you will
+        probably want to copy the code from that one to start this one. 
+        Call this project <span
+        class="variableName">Keyboard2Console</span>, and call your source
+        file <span class="fileName">keyboard2console.hcc</span>.  Add to it
+        the feature of writing on the touchscreen both the ASCII and
+        hexadecimal representation of each character the user types, each on
+        a new line.  The output should look like this after typing
+        &ldquo;AaA&rdquo;:</p>
+
+        <div class="codeBlock">
+ A (41)
+ a (61)
+ A (41)
+        </div>
+        
+        <p>When writing to the touchscreen, the clock rate must match the
+        VGA clock rate used for drawing pixels: 25.175 MHz.  You should use
+        this clock rate for both Debug and EDIF.</p>
+
+        <p>For the Debug build configuration, the Pal Virtual Console will
+        now have two tabs on the right side: the KeyboardPort tab and a new
+        one marked &ldquo;VGA 480@60Hz.&rdquo;  The new tab lets you type
+        characters directly into the simulator without having to enter scan
+        codes.  Watch the status line at the bottom of the console to see
+        which scan line is being updated.  It takes several seconds to
+        simulate a complete screen refresh cycle, which takes just 1/60" in
+        real time.</p>
+
+      </div>
+      
+      <h2>Keyboard to VideoOut</h2>
+      <div class="whitebox">
+        <p>Start another project, named <span
+        class="variableName">Keyboard2Video</span>.  This one will still use
+        the Pal Keyboard API, but will not use the Pal Console.  Instead,
+        you are to draw a picture of the seven segment displays on the
+        screen:</p>
+
+        <div class="picture"><img src="SevenSeg.jpg" alt="Picture of seven
+        segment displays drawn on a RC200E touchscreen." /></div>
+
+        <p>Look up the PalVideoOut functions, and set up your project so you
+        can use <span class="functionName">PalVideoOutGetX()</span>, <span
+        class="functionName">PalVideoOutGetY()</span>, and <span
+        class="functionName">PalVideoOutWrite()</span>.  Note that you will
+        not be able to use the Pal Console macros when you are using the Pal
+        Video Out macros.  The main loop of your program will write one of
+        two colors on each clock cycle, using code such as the following:</p>
+        
+        <p class="codeBlock">
+  while (1)
+  {
+    if (isForeground())
+      PalVideoOutWrite(videoOut, foregroundColor);
+    else
+      PalVideoOutWrite(videoOut, backgroundColor);
+  }
+        </p>
+
+        <p>The challenge is to define <span
+        class="functionName">isForeground()</span> as a macro expression
+        (combinational logic only) rather than as a macro procedure or
+        function (sequential logic).  Using combinational logic, you have to
+        decide whether the current (x,y) coordinates of the video output
+        controller are within a segment that is supposed to be displayed or
+        not.</p>
+
+        <p>Set up a 16-bit global variable, with each bit corresponding to
+        the decimal point and the seven segments in the two seven segment
+        displays you are to draw.  (You will not need to display decimal
+        points for this project.)  You can use two 8-bit variables if you
+        prefer.  If a bit is on, the corresponding segment is visible, but
+        if it is off, the corresponding segment is part of the background. 
+        As ASCII characters arrive from the keyboard, update the bits to
+        indicate which segments are to be displayed.  For example, if the
+        leftmost 4 bits of an ASCII character are 0110<span
+        class="subscript">2</span>, the character '6' should be displayed in
+        the left seven segment display, which corresponds to segments A, C,
+        D, E, F, and G, so the leftmost eight bits of the 16-bit global
+        variable should have six ones and two zeros like this: 01111101<span
+        class="subscript">2</span>.  Use a 16 &times; 7 Handel-C <span
+        class="keyword">rom</span> as a lookup table to do the translation
+        from hexadecimal digits to &ldquo;shape masks,&rdquo; and check that
+        your code is working so far by displaying the ASCII codes on the
+        real seven segment displays using the <span
+        class="functionName">PalSevenSegmentWriteShape()</span> macro
+        procedure.  You have to map the segments to the bit positions in the
+        same way as that macro requires: '.GFEDCBA'</p>
+
+        <p>To make your code easy to adjust, define two global parameters,
+        <span class="variableName">length</span> and <span
+        class="variableName">thickness</span>, corresponding to the length
+        and thickness of the main bar of each segment.  Design the code that
+        follows so you can change the shapes of the segments just by
+        altering these parameters.</p>
+        
+        <p>Organize your code as a hierarchy of macro expressions.  <span
+        class="functionName">isForeground</span> instantiates two
+        instances of the top-level expression, <span
+        class="functionName">insideHexDigit(shape, ulX, ulY)</span>, where the
+        parameters give the shape mask for the hex digit to draw and
+        coordinates of the upper left corner of each digit on the 640 &times;
+        480 screen.  (Note that Y coordinates start with zero at the
+        <em>top</em> of the screen.)  The <span
+        class="functionName">insideHexDigit()</span> macro expression then
+        instantiates two other macro expressions, <span
+        class="functionName">horizontalSegment()</span> and <span
+        class="functionName">verticalSegment()</span>.  These expressions
+        are passed the coordinates of their upper-left corners also, which
+        are expressed using the coordinates passed to <span
+        class="functionName">drawHexDigit()</span> combined with the values
+        of the <span class="variableName">length</span> and <span
+        class="variableName">thickness</span> parameters.</p>
+
+        <p>Here is some pseudo-code for segments F and G to make the above
+        more concrete:</p>
+
+        <p class="codeBlock">
+  shape[5] &amp;&amp; verticalSegment(ulX, ulY)                     //  Segment F
+  ||
+  shape[6] &amp;&amp; horizontalSegment(ulX, ulY+length+thickness)  //  Segment G
+        </p>
+
+        <p>That is, segment F is a vertical segment with its upper left
+        corner in the upper left corner of the digit, and segment G (the
+        middle bar) is a horizontal segment with its upper left corner at
+        the left side of the digit, but offset from the top by the length
+        plus thickness of a segment.  You should draw a sketch of seven
+        segment digits to make sure this is what you want.</p>
+        
+        <p>Inside the <span class="functionName">verticalSegment()</span>
+        and <span class="functionName">horizontalSegment()</span> macros,
+        you will have to test whether the current values of
+        <span class="functionName">PalVideoOutGetX()</span> and
+        <span class="functionName">PalVideoOutGetY()</span> are inside the
+        visible parts of that segment.  Start by getting the rectangle in
+        the middle of each segment to work, then add the code to test for
+        the triangles at the ends.</p>
+        
+        <div class="picture">
+          <img src="a_segment.png" alt="anatomy of a segment" />
+        </div>
+
+        <p>Note that you can tell which side of a 45&deg; line a point is
+        located on by comparing two values: <span
+        class="variableName">delta&nbsp;X</span> and <span
+        class="variableName">delta&nbsp;Y</span>.  For example, the shaded
+        areas of the diagrams below corresponds to points where <span
+        class="variableName">delta&nbsp;X</span> is greater than
+        <span class="variableName">delta&nbsp;Y</span>:</p>
+        
+        <div class="picture">
+          <img src="diagonals.png" alt="Points relative to diagonals." />
+        </div>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

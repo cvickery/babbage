@@ -1,0 +1,98 @@
+{\rtf1\ansi\ansicpg1252\deff0{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+{\colortbl ;\red0\green0\blue0;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\cf1\lang1033\f0\fs20                                                                 \par
+\pard\qc\b\fs28 Laboratory lV\b0\par
+\b\fs20 CS-345, Fall 2004\par
+Christopher Vickery\par
+\ul Author:  Robert Edele  &  Frank Lam\ulnone\b0\par
+\fs24                                                                  \par
+\pard\fs20\par
+                                                                 \b Contents\b0\fs24\par
+\fs20\par
+\b Introduction\b0 ......................................................................................................................\b 1\b0\fs24\par
+\b\fs20 Method\b0 .............................................................................................................................\b 1,2\b0\fs24\par
+\b\fs20 Results\b0 ..............................................................................................................................\b 2,3\b0\fs24\par
+\b\fs20 Discussion\b0 .........................................................................................................................\b 3 \b0\fs24\par
+\fs20\par
+\par
+\ul\b\par
+Introduction:\par
+\ulnone\b0\par
+The purpose of this lab was to become familiar with the typical use of an UART as a device \par
+controller that acts as an interface between a CPU and serial devices such as keyboard and mice. We needed to provide a serial connection between the FPGA  and a PC through the RS-232 connector on the RC200E and the COM1 port on a PC. By writing characters to the COM port on the PC was to cause them to display on the LCD screen of the RC200E. At the same time, typing characters on a keyboard attached to the PS/2 keyboard port of the RC200E was to \fs24\par
+\fs20 cause them to display on the screen on the PC.\par
+\par
+We had three parts to this lab. In part 1, we read keystrokes from a keyboard and wrote them to the RC200E's touch screen. In the second part, we read keystrokes from that same keyboard and sent them out over the UART and to the PC. In the third and final part, we sent data from the PC to the UART and finally to the RC200E's touch screen.\fs24\par
+\fs20\par
+\par
+\ul\b\par
+Method:\par
+\ulnone\b0\par
+In the \b first step\b0 , we created a workspace named \b "Laboratory V" \b0 and added a project named \fs24\par
+\b\fs20 "LCD_console" \b0 to this workspace. Then we added a source file named \b "lcd_console.hcc" \b0 to\fs24\par
+\fs20 this project and configured the simulation and RC200E as usual. We included the \b pal_console.hch \b0 and \b pal_keyboard.hch \b0 header files in our source code. Then we constructed \fs24\par
+\fs20 a Handel-C program such that it read characters from the keyboard and displayed them on \par
+the console. The character should be displayed in the form \b "c(0xXX),". \b0 We set the clock rate \fs24\par
+\fs20 to 25.175 Mhz, which was needed to synchronize with the touch screen, and we used a ROM memory containing the ASCll codes for all 16 possible hex digits to generate the hexadecimal part of the output.\par
+\par
+\par
+In the \b second step\b0 , we created and added a second project named \b "UART" \b0 to the current\fs24\par
+\fs20 workspace and added a source file named \b "uart.hcc" \b0 to it. We needed to read characters from\fs24\par
+\fs20 the PS/2 keyboard and wrote it to the RS-232 port and this was equivalent to implement the \par
+transmitter and it's interactions with the driver. We used 8 data bits, no parity, no flow control,\par
+one stop bit and a baud rate to write the code. We treated the transmitter as a finite state\par
+automata and set up several states like \b idle, start, transfer and stop \b0 for it and each of them\fs24\par
+\fs20 were in a par loop. Also we set up a timer for this transmitter part. \par
+\par
+\par
+\par
+\par
+\par
+\par
+In the \b third step\b0 , we read data from the RS-232 port and wrote to the console and this was \fs24\par
+\fs20 equivalent to implementing the receiver and its interactions with the driver. We treated the \fs24\par
+\fs20 receiver as a finite state automata and used the states \b idle, start, transfer, stop, \b0\fs24\par
+\b\fs20 data_overrun, and framing_error \b0 for it. The receiver was to read characters serially from the \fs24\par
+\fs20 RxD pin and put them in the unsigned 8 variable named RBR. Each time the receiver \fs24\par
+\fs20 put a new character in the RBR, the driver displayed it on the LCD console. Also we set up a \fs24\par
+\fs20 timer for this receiver part. \par
+\par
+\par
+When the receiver had a character to put in the read buffer and found that the \b RF\b0  bit is true, a \fs24\par
+\b\fs20 data overrun \b0 had occurred. The receiver then made the \b DO\b0  bit true. and it stopped updating \fs24\par
+\fs20 the Read buffer or the RF bit until the DO bit was turned off by pressing a push button. Also, when the stop bit checked fails, a\b  framing error \b0 had occurred. The receiver turned on the \b FE\b0  bit and stopped updating the Read buffer and the RF bit until it was cleared by pushing another push button. Therefore we needed a separate thread which monitored the state of the DO bit and turned on one of the LEDs whenever it was true, and turned the LED off otherwise and another thread monitored the state of one of the pushbutton \b (button 0) \b0 and forced DO to be false whenever button 0 was pressed. Same idea applied to turn off the FE bit but we used \b button 1 \b0 for that.\fs24\par
+\fs20\par
+\par
+\ul\b Results:\par
+\par
+\ulnone\b0 In the\b  first step\b0 , when we read from the keyboard and wrote to the console. We did see two \fs24\par
+\fs20 tabs on the virtual console. The first one showed us the scan codes for the characters emitted \par
+by the keyboard and the other tabs we noticed gave us a place to type in keyboard characters. \par
+The virtual console showed us the scan line number (0-479) in the status bar as the display\par
+was updated. Characters we typed in did show in the form "c(0xXX)," though the \fs24\par
+\fs20 simulation was not fast. However, the program ran smoothly and no errors were detected.\par
+\par
+\par
+In the \b second step\b0 , we created a finite state automata with the \b idle, start, transfer and stop states\b0 , representing\b  \b0 the main functions for the transmitter. In the \b idle \b0 state, the output bit was always 1 and it then went to the start state taking a character ready signal as its input. In the \b start\b0  state, the output bit was 0 and it went to the transfer state via a lambda transition. In the transfer state, if 8 bits have been outputted, then it would go to the stop state, else the output bit was the i-th bit of the send buffer, where i was how many cycles had been spent in the transfer state. The input was also the i-th bit of the send buffer. In the stop state, the output bit was 1 and it went back to the idle state via a lambda transition. The program ran smoothly and no errors were detected.\fs24\par
+\fs20\par
+\ul\b\par
+\ulnone\b0 In the\b  third step\b0 , we set up another finite state automata using the states \b idle, start, transfer, stop, data_overrun, and framing_error \b0 to implement the the main functions for the receiver. From the \b idle\b0  state, we went to the transfer state upon receiving a 1. In the start state, when the input was 0, it went to the transfer state or when the input was 1, it went back to the idle state since this indicated a glitch on the line. In the transfer state, when 8 bits had been read in current char transmission, it went to the stop state. In the stop state, when the input was 1, it went back to the idle state or if there was a framing error, indicated by a 0, it went to the framing error state. If there was a data overrun, indicated by the read buffer being full, it went to the data overrun state. In the framing error state, if button 1 was pressed, that means the \b RE\b0  bit was cleared, it then went to the idle state.\par
+\par
+\par
+ \par
+\par
+\par
+In the data overrun state, when the button 0 was pressed, that means the \b DO\b0  bit was cleared and so it went back to the idle state. The program ran smoothly and no errors were detected.\fs24\par
+\fs20\par
+\ul\b\par
+Discussion:\par
+\ulnone\b0\par
+We're very pleased at the quality of our UART. Not only did it met all the requirements for the lab, which were for it to operate at at least 9600 baud, correctly received and transmited data to a PC, and implemented data overrun and framing error checking, but it implemented them well and, at least on paper, our UART was capable of operating as fast as once a clock cycle (25,175,000 baud), as the state machine can update as fast as once a cycle and the timers are capable of signaling, resetting, and decrementing in a single clock cycle and had cycle-perfect accuracy. On paper, it could operate at arbitrary baud rates up to about 1 mega baud, and above that only periods that were multiples of the clock period would reliably work. We couldn't test any of this because the PC maxes out under 1 megabuad.\fs24\par
+\par
+\fs20 The only drawback was code complexity. Since the receiver, transmitter, and all associated functions like data overrun and framing error ran in parallel in a huge par block, every single function must execute in a single cycle, which required the use of polling timers (recycled from Robert's previous lab) and a finite state machine to work. This led to having a lot of code, though from a performance standpoint this doesn't matter, as it all ran once a cycle.\fs24\par
+\fs20\par
+Our main troubles came from the PC<-->RC200E interface. The PC outputted an improper signal, causing us much confusion and lost time trying to interpret it. Even our professor couldn't figure out what the PC was up to. Luckily there still was a usable signal and doing nothing seemed to work fine. As it turned out, we had a problem with our interface code, and reading the website more carefully would have solved it much faster.\par
+\par
+Also troublesome was the initialization of the touch screen. We didn't realize that one of the initialization functions was a blocking function and never returns.\par
+}
+

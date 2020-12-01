@@ -1,0 +1,37 @@
+/*****************************************************
+* Andrew Waldvogel
+* led_buttons.hcc
+*
+* This program takes input from the push buttons 0 and 1
+* and lights up the corresponding LEDs 0 and 1.  
+*
+******************************************************/
+
+#ifdef USE_RC200E
+#define PAL_TARGET_CLOCK_RATE 50000000
+#endif
+
+#include "pal_master.hch"
+#include "pal_rc200.hch"
+#include "stdlib.hch"
+
+void main(void)
+{
+
+  // this acts like a boolean for the 2 buttons and 2 LEDs
+  // The first bit references the first button/LED and the 
+  // second bit references the second button/LED
+  unsigned 2 buttonsPressed;
+
+  while(1)
+  {
+    par{
+      // when a button(s) is pressed, set the appropriate bit(s) to 1
+      buttonsPressed = RC200ButtonReadMask();
+      // when a bit(s) is set to 1, light up the appropriate LED(s)
+      RC200LEDWriteMask(buttonsPressed);
+
+    } // par
+
+  } // while()
+} // main()

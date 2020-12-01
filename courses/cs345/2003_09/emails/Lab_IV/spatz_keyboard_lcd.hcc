@@ -1,0 +1,62 @@
+
+
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+
+
+
+#include "pal_master.hch"
+#include "rc200.hch"
+#include "stdlib.hch"
+#include "pal_rc200.hch"
+#include "pal_keyboard.hch"
+#include "pal_console.hch"
+
+#define ever ;;
+
+static macro expr clkrate = PAL_ACTUAL_CLOCK_RATE;
+
+void main(void)
+{
+    unsigned 8 reader;
+	PalKeyboard * kbptr;
+    PalConsole * consptr;
+    unsigned 8 hex1;
+    unsigned 8 hex2;
+    
+	PalVersionRequire(1,2);
+    PalPS2PortRequire(2);
+    PalVideoOutRequire(1);
+		
+    par
+    {
+        PalConsoleRun (&consptr, PAL_CONSOLE_FONT_NORMAL, 
+                       PalVideoOutOptimalCT (clkrate), clkrate);
+        PalKeyboardRun (&kbptr, PalRC200PS2KeyboardPort, clkrate);
+                
+        seq
+        {
+            par
+            {  
+                PalConsoleEnable (consptr);
+                PalKeyboardEnable (kbptr);
+            }
+            for(ever)
+            {
+                PalKeyboardReadASCII (kbptr,&reader);
+                //these two statements need to be fixed
+                hex1=(0000@reader[7:4]);
+                hex2=(0000@reader[3:0]);
+
+                if(hex1<10)hex1+=48;
+                else hex1+=55;
+                if(hex2<10)hex2+=48;
+                else hex2+=55;
+                
+                PalConsolePutChar (consptr,hex1);
+                PalConsolePutChar (consptr,hex2);
+            }
+            
+        }
+    }
+}

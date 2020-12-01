@@ -1,0 +1,236 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Laboratory III</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+    <style type="text/css" media="all">
+      .imageBox { width: 90%; margin: auto; text-align: center;}
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-345/780 Laboratory III</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>This laboratory introduces you to the touchscreen/video panel on
+        the RC200E.  The project is to draw the ASCII codes for characters
+        typed on the keyboard as graphical seven-segment displays on the
+        screen.  The following image gives an idea of what your output might
+        look like after typing the character 'a'.  Your colors may vary, and
+        the lozenge shape for the individual segments is optional: simple
+        rectangles will suffice!</p>
+
+        <div class="imageBox">
+          <img src="Lab_03-Fig_01.jpg" alt="screen image showing seven segment
+          displays" />
+        </div>
+        
+        <p>There are several ways of generating video images on the screen,
+        but this lab investigates just one of them.  And it&rsquo;s a
+        technique that will require you to design code that will be
+        radically different from a software solution to the problem.</p>
+        
+
+      </div>
+      
+      <h2>Procedure</h2>
+      <div class="whitebox">
+        <ol>
+        
+          <li>
+          
+            <h5>Configure a new project for both Debug and EDIF design
+            flows.</h5>
+            <p class="inline">Start DK, and re-open the workspace you
+            created in Laboratory I.  Create a new project in that workspace
+            named Keybd2Video.  Be sure you select Xilinx Virtex II Chip as
+            the project type.</p>
+
+            <p>Delete all the configurations for this project except Debug
+            and EDIF.</p>
+
+            <h5>Set the Debug Configuration options.</h5> <p
+            class="runin">Use the same settings, including libraries, as you
+            used for Laboratory II</p>
+            
+          </li>
+
+          <li>
+          
+            <h5>Write a first version of the program and simulate it.</h5>
+            <p class="inline">Use the program from Laboratory 2 as a model,
+            and look up the documentation on PalVideoOut in the <a
+            href="../Manuals/PAL%20Manual.pdf">PAL Reference Manual</a>. 
+            The macros you will need are <span
+            class="functionName">PalVideoOutGetX()</span>, <span
+            class="functionName">PalVideoOutGetY()</span>, and <span
+            class="functionName">PalVideoOutWrite()</span>.  You will also
+            need to initialize the VideoOut system in the usual way:</p>
+            
+            <div class="codeBlock">
+  par
+  {
+    PalVideoOutRun(PalVideoOutOptimalCT(ClockRate), ClockRate);
+    seq
+    {
+      PalVideoOutEnable(PalVideoOutOptimalCT(ClockRate));
+      while (1)
+      {
+        PalVideoOutWrite(PalVideoOutOptimalCT(ClockRate), pixel);
+      }
+    }
+  }
+            </div>
+
+            <h5>Notes</h5> <p class="runin"> (1) The PAL Reference Manual
+            erroneously omits the second argument to <span
+            class="functionName">PalVideoOutRun</span>.  (2) You can save
+            some typing by defining a <span class="functionName">macro
+            expr</span> for <span
+            class="variableName">PalVideOutOptimalCT(ClockRate)</span>.</p>
+
+            <p>The structure of the program should be as follows: Have one
+            endless loop read from the keyboard.  Each time it gets a
+            character, no matter what character it is, toggle the value of a
+            global variable between two contrasting RGB color values.  A
+            second endless loop simply writes the value of this color value
+            to the screen on every clock cycle.</p>
+            
+            <p>For this code to work, your program must use a clock rate
+            that matches the video clock of the touchscreen display: 25.175
+            MHz.  The effect should be that the entire display changes color
+            each time you type a character.</p>
+            
+            <p>Note that the PAL Virtual Platform changes when you add video
+            output to the design.  Instead of the panel for keyboard input,
+            there is now a tab for a second panel that shows the video
+            output, and this panel is where you now type in the simulated
+            keyboard characters. (Look where it says, &ldquo;Keyboard
+            Input&rdquo;.)  And there&rsquo;s good news!  No more scan
+            codes; just type characters on the PC keyboard.  Observe the
+            speed with which the simulated screen is updated during
+            simulation.  You can see the progress of the refresh cycle in
+            the status bar at the bottom of the Virtual Platform window.  If
+            you move your mouse over the video panel, the coordinates of the
+            mouse and the color at that position are also shown in the
+            status bar.</p>
+
+          </li>
+        
+          <li>
+          
+            <h5>Test the first version of the program on the RC200.</h5>
+            <p>The visual effect should be the same as for the simulated
+            version, but it should take just 1/60 sec to do a complete
+            screen update.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Draw a pattern based on the coordinates of each pixel.</h5>
+            <p class="runin">The <span
+            class="functionName">PalVideoOutGetX()</span> and <span
+            class="functionName">PalVideoOutGetY()</span> macro expressions
+            will give you the current position in the touchscreen
+            display&rsquo;s refresh cycle.  You can use the coordinate
+            information to select what color to draw at that position
+            provided you execute the <span
+            class="functionName">PalVideoOutWrite()</span> operation in the
+            same clock cycle.  Alter your existing program (do not create a
+            new project) so it draws a one-pixel wide border around the
+            touchscreen using one of your two favorite colors;  fill the
+            remainder of the screen with your other favorite color.  You can
+            use PAL macros, <span
+            class="functionName">PalVideoOutGetVisibleX()</span> and <span
+            class="functionName">PalVideoOutGetVisibleY()</span>to get the
+            dimensions of the touchscreen (good for making your code
+            portable to other LCD displays), or you can use the known
+            dimensions for the RC200E: 640x480.  Typing a key should switch
+            the fill and border colors with each other.</p>
+
+            <p>Simulate your code and verify that the border is exactly one
+            pixel wide and that it is at the outside edges of the screen. 
+            Note there is a problem with the virtual platform: if you make
+            it big enough so you don&rsquo;t have to scroll to see the
+            entire display, there is no way to see the right and bottom
+            edges.  So you have to keep the size small enough to force the
+            scrollbars to appear.</p>
+            
+            <p>Once the simulation is right, test it on the real device.</p>
+
+          </li>
+          <li>
+          
+            <h5>Draw two seven segment displays on the screen.</h5>
+            <p class="runin">If the current position in the refresh cycle is
+            inside one of 14 rectangles, write the foreground color. 
+            Otherwise, draw the background color.  Test both by simulation
+            and on an RC200.</p>
+            
+          </li>
+          <li>
+            <h5>Draw the hexadecimal representation of the ASCII code of the
+            most recently typed charager using the seven segment displays
+            on the touchscreen</h5><p class="runin"></p>
+          </li>
+        
+        </ol>
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

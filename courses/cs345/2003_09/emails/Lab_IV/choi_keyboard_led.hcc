@@ -1,0 +1,109 @@
+// keyboard_led.hcc
+
+/* This program read from a keyboard and displays a hex representation
+ * of the ascii number on the LCD.
+ *
+ * Author: Sora Choi
+ */
+
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+
+#include "pal_master.hch"
+#include "pal_keyboard.hch"
+#include "stdlib.hch"
+
+
+static macro expr ClockRate =PAL_TARGET_CLOCK_RATE;
+macro expr VideoOut = PalVideoOutOptimalCT ( ClockRate );
+
+macro expr Black = 0x000000;
+macro expr Red   = 0xFF0000;
+macro expr ScanX = PalVideoOutGetX(VideoOut);
+macro expr ScanY = PalVideoOutGetY(VideoOut);
+
+void main(void)
+{
+  unsigned  Char;
+  unsigned 4 hex0;
+  unsigned 4 hex1;
+  PalKeyboard  *KeyboardPtr;
+  
+  
+  PalVersionRequire (1,0);
+  PalVideoOutRequire(1);
+  PalPS2PortRequire(2);
+  PalKeyboardEnable (KeyboardPtr);
+
+  par
+  {
+  
+    PalVideoOutRun (VideoOut, ClockRate );
+    PalKeyboardRun ( &KeyboardPtr, PalPS2PortCT(1),ClockRate );                   
+    PalVideoOutEnable ( VideoOut );
+ 
+    // Get input from the keyboard.
+    while(1)
+    {
+      PalKeyboardReadASCII (KeyboardPtr, &Char);
+      hex1=Char[7:4];
+      hex0=Char[3:0];      
+    }
+
+    /*  Display to the LCD
+     *
+     *     1
+     *    ____
+     *  6|    | 2
+     *   |_7__|
+     *  5|    | 3
+     *   |____|
+     *     4
+     */    
+    do
+    {
+      delay;
+
+      if(((hex1!=1)&&(hex1!=4)&&(hex1!=11)&&(hex1!=13)&& 
+          (ScanY>100)&&(ScanY<110)&&(ScanX>150)&&(ScanX<260))||// Dig1seg1
+         ((hex1!=5)&&(hex1!=6)&&(hex1!=11)&&(hex1!=12)&&(hex1!=14)&&(hex1!=15)&&
+          (ScanY>100)&&(ScanY<200)&&(ScanX>250)&&(ScanX<260))||// Dig1seg2
+         ((hex1!=2)&&(hex1!=12)&&(hex1!=14)&&(hex1!=15)&&
+          (ScanY>200)&&(ScanY<310)&&(ScanX>250)&&(ScanX<260))||// Dig1seg3
+         ((hex1!=1)&&(hex1!=4)&&(hex1!=7)&&(hex1!=9)&&(hex1!=10)&&(hex1!=15)&&
+          (ScanY>300)&&(ScanY<310)&&(ScanX>150)&&(ScanX<260))||// Dig1seg4
+         ((hex1!=1)&&(hex1!=3)&&(hex1!=4)&&(hex1!=5)&&(hex1!=7)&&(hex1!=9)&&
+          (ScanY>200)&&(ScanY<310)&&(ScanX>150)&&(ScanX<160))||// Dig1seg5
+         ((hex1!=1)&&(hex1!=2)&&(hex1!=3)&&(hex1!=7)&&(hex1!=13)&&
+          (ScanY>100)&&(ScanY<200)&&(ScanX>150)&&(ScanX<160))||// Dig1seg6
+         ((hex1!=0)&&(hex1!=1)&&(hex1!=7)&&(hex1!=12)&&
+          (ScanY>200)&&(ScanY<210)&&(ScanX>150)&&(ScanX<260))||// Dig1seg7
+         ((hex0!=1)&&(hex0!=4)&&(hex0!=11)&&(hex0!=13)&&
+          (ScanY>100)&&(ScanY<110)&&(ScanX>350)&&(ScanX<460))||// Dig0seg1
+         ((hex0!=5)&&(hex0!=6)&&(hex0!=11)&&(hex0!=12)&&(hex0!=14)&&(hex0!=15)&&
+          (ScanY>100)&&(ScanY<210)&&(ScanX>450)&&(ScanX<460))||// Dig0seg2
+         ((hex0!=2)&&(hex0!=12)&&(hex0!=14)&&(hex0!=15)&&
+          (ScanY>200)&&(ScanY<310)&&(ScanX>450)&&(ScanX<460))||// Dig0seg3
+         ((hex0!=1)&&(hex0!=4)&&(hex0!=7)&&(hex0!=9)&&(hex0!=10)&&(hex0!=15)&&
+          (ScanY>300)&&(ScanY<310)&&(ScanX>350)&&(ScanX<460))||// Dig0seg4
+         ((hex0!=1)&&(hex0!=3)&&(hex0!=4)&&(hex0!=5)&&(hex0!=7)&&(hex0!=9)&&
+          (ScanY>200)&&(ScanY<310)&&(ScanX>350)&&(ScanX<360))||// Dig0seg5
+         ((hex0!=1)&&(hex0!=2)&&(hex0!=3)&&(hex0!=7)&&(hex0!=13)&&
+          (ScanY>100)&&(ScanY<210)&&(ScanX>350)&&(ScanX<360))||// Dig0seg6
+         ((hex0!=0)&&(hex0!=1)&&(hex0!=7)&&(hex0!=12)&&
+          (ScanY>200)&&(ScanY<210)&&(ScanX>350)&&(ScanX<460))) // Dig0seg7
+         {
+           PalVideoOutWrite (VideoOut, Red);
+           
+         } 
+         else // background
+         {
+           PalVideoOutWrite (VideoOut, Black);
+         }
+       }while(1);
+
+     }
+ 
+}
+
+

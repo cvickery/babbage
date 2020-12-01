@@ -1,0 +1,45 @@
+
+
+
+#define PAL_TARGET_CLOCK_RATE 50000000
+
+
+
+#include "pal_master.hch"
+#include "rc200.hch"
+#include "stdlib.hch"
+#include "pal_rc200.hch"
+
+#define ever ;;
+
+void main(void)
+{
+	unsigned 1 b0;
+	unsigned 1 b1;
+	unsigned 1 off;
+
+	PalVersionRequire(1,2);
+	PalLEDRequire(1);
+
+	off=0;
+	for(ever)
+	{	
+		
+   		par
+		{
+			PalSwitchRead(PalRC200Button0,&b0);
+			PalSwitchRead(PalRC200Button1,&b1);
+		}
+		if(b0)
+			PalLEDWrite(PalRC200LED0,b0);
+		else PalLEDWrite(PalRC200LED0,off);
+		if(b1)
+			PalLEDWrite(PalRC200LED1,b1);
+		else PalLEDWrite(PalRC200LED1,off);
+			
+ 	}
+ //PalRC200LED0
+ //PalRC200LED1
+ //PalRC200Button0
+ //PalRC200Button1
+}

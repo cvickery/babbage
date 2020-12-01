@@ -1,0 +1,90 @@
+/*******************************************************
+ * keyboard_hex.hcc                                    *
+ * Adrian Cimpeanu  Date: Oct. 4th 2003                *
+ * This program displays the hexadecimal value on      *
+ * the two seven segment displa of the character typed *
+ * by the user on the keyboard.                        *
+ *****************************************************/    
+
+
+
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+#define PAL_ACTUAL_CLOCK_RATE
+
+// include the libraries needed
+#include "pal_master.hch"
+#include "pal_console.hch"
+#include "stdlib.hch"
+#include "pal_keyboard.hch"
+
+
+
+ static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+ 
+
+  
+void main(void)
+{
+   
+   //define the variables
+  
+   unsigned 4 FirstDigit;
+   unsigned 4 SecondDigit;
+   unsigned 8 Char;
+   PalConsole *ConsolePtr;
+   PalKeyboard *KeyboardPtr;
+   
+  
+   
+
+  //get the resources needed
+  PalVersionRequire (1, 0);
+  PalSevenSegRequire (1);
+  PalVideoOutRequire (1);
+  PalPS2PortRequire (2);
+
+  /*
+   * Enable display
+   */
+    PalSevenSegEnable (PalSevenSegCT (0));
+    PalSevenSegEnable (PalSevenSegCT (1));
+  
+  /*
+   *Run 
+   */
+
+   par
+   {
+  
+   PalKeyboardRun(&KeyboardPtr, PalPS2PortCT (1), ClockRate);
+
+     seq
+     {
+       par
+            {
+              
+                PalKeyboardEnable (KeyboardPtr);
+            }//end_par
+     
+
+      do {
+        //this macro puts the ascii value of the
+        //character typed into the variabl Char
+        PalKeyboardReadASCII(KeyboardPtr, &Char);
+        
+        SecondDigit = Char <- 4;
+        FirstDigit =  Char \\ 4;
+       
+        //display the hexadecimal value of the keyboard button pressed
+        PalSevenSegWriteDigit (PalSevenSegCT (0), FirstDigit, 0);
+        PalSevenSegWriteDigit (PalSevenSegCT (1), SecondDigit, 0);
+     
+       
+      
+        }while(1); 
+     }//seq
+    }//end_par
+}//end_main
+
+

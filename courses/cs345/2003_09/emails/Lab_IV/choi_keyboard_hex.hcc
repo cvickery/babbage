@@ -1,0 +1,70 @@
+// keyboard_hex.hcc
+
+/* This program reads a keyboard input character
+ * and displays a hex representation on Seven Segment Disply.
+ *
+ */
+
+#define PAL_TARGET_CLOCK_RATE 50000000
+
+#include "pal_master.hch"
+#include "pal_keyboard.hch"
+#include "stdlib.hch"
+
+static macro proc RunTest (KeyboardPtr);
+static macro expr ClockRate =PAL_TARGET_CLOCK_RATE;
+
+void main(void)
+{
+
+  PalKeyboard  *KeyboardPtr;
+  
+  PalVersionRequire (1,0);
+  PalPS2PortRequire(2);
+  PalSevenSegRequire (2);
+
+    /*
+     * Enable display on Hex Display
+     */
+    PalSevenSegEnable (PalSevenSegCT (0));
+    PalSevenSegEnable (PalSevenSegCT (1));
+
+
+  par
+  {
+    PalKeyboardRun ( &KeyboardPtr, PalPS2PortCT(1), 
+                     ClockRate );
+
+    seq
+    {
+       PalKeyboardEnable (KeyboardPtr);
+       RunTest (KeyboardPtr);
+
+    }
+
+  }
+ 
+}
+
+
+/*
+ * Simple Keyboard test
+ */
+static macro proc RunTest ( KeyboardPtr)
+{
+  unsigned  Char;
+  unsigned 4 up_hex_char;
+  unsigned 4 down_hex_char;
+  /*
+   * Dump characters from the keyboard to the console
+   */
+   do
+   {
+      
+      PalKeyboardReadASCII (KeyboardPtr, &Char);
+
+      PalSevenSegWriteDigit (PalSevenSegCT (1), Char[3:0], 0);          
+      PalSevenSegWriteDigit (PalSevenSegCT (0), Char[7:4], 0);          
+   }
+   while(1);
+}

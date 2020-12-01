@@ -1,0 +1,204 @@
+/************************************************************
+ * motor_control.hcc                                         *
+ * Adrian Cimpeanu  Date: Oct. 19th 2003                     *
+ * The purpose of this program is to control the servomotor  *
+ * to move either right or left or stop depending on the     *
+ * pulse duration. This is done by as follows:               *
+ * This program generates a pulse every 20 msec. If right    *
+ * button is pressed, the pulse is to be 1.0 msec, if the    *
+ * other button is pressed the pulse is 2.0 msec . If no     *
+ * buttons is pressed or both buttons are pressed the        *
+ * pulse is to be 1.5 msec.                                  *
+ * by the user on the keyboard.                              *
+ ************************************************************/    
+
+
+/***************************************************** 
+ * In case we are using RC200 or RC200E set up the   *
+ * clock rate,  assign values to the two             *
+ * button(button 1 and button 2), those are          *
+ * the RC200 switches                                *
+ * In case we are simulating the code                *
+ * set up the clock rate accordingly                 *
+ * and and assign the two values to the              *
+ * buttons( button 8 and button 9 which are          *
+ * the Pal Virtual buttons(switches)                 *
+ ****************************************************/
+#if (defined USE_RC200 || USE_RC200E)
+#define PAL_TARGET_CLOCK_RATE 50000000
+#define SW0 0
+#define SW1 1
+/*
+ * define another constant NUM_SWITCHES
+ 8/
+#define NUM_SWITCHES 2
+#else
+#define PAL_ACTUAL_CLOCK_RATE 1000000
+set clock = external "P1"
+  with
+  {
+    /* make use of the dynamic link library
+     * so so we can use WaveForm Analyzer
+     * to simulate the pulses. Any Handel-C 
+     * simulation that connects the WaveForm
+     * analyzer uses DKSync plugin with the
+     * clock speriod specified in the extinst 
+     */
+    extlib = "DKSync.dll",
+    extinst= "1000",  //Period of 1MHz simulated clock
+    extfunc = "DKSyncGetSet"
+   };
+
+#define SW0 8
+#define SW1 9
+#define NUM_SWITCHES 10
+#endif
+
+// include the libraries needed
+#include "pal_master.hch"
+#include "stdlib.hch"
+
+unsigned 1 pulse_pin = 0;
+/*
+ * declare the bus_out interface; this will output
+ * a pulse to pin 'M2' on the Rc200 and it will use
+ * DKConnect.dll 
+ */
+interface bus_out() pulse( unsigned 1 out = pulse_pin )
+  with
+  {
+   #if (defined USE_RC200 || USE_RC200E)
+       data = { "M2" }
+   #else
+       extlib = "DKConnect.dll",
+       extinst = "t(1)",
+       extfunc = "DKConnectGetSet" //using external function 
+   #endif
+   };
+
+// declare channel link1
+chan unsigned 1 link1;
+
+// this macro procedure implements the delay
+static macro proc microsec_delay( msec );
+
+macro proc microsec_delay( msec )  {
+
+ 
+  unsigned (log2ceil(((PAL_ACTUAL_CLOCK_RATE * msec)/1000000))) count;
+  macro expr cycles = ((PAL_ACTUAL_CLOCK_RATE * msec)/1000000);
+  
+  count = cycles;
+   
+
+    while( count > 0) {count--;}
+
+    }//end_macro_msec_delay
+
+/*
+ * first main method in which in an infinite while loop
+ * it writes a 1 to channel link1, and delays for 20 msec
+ */
+void main(void)
+{
+  while( 1 ) {
+   
+    link1 ! 1;
+    microsec_delay( 20000 );
+   }
+}
+
+/*
+ * Read from channel link1 and write to pulse_pin and
+ * depending on what buttons user presses will set
+ * up the pulse to 1.0, 1.5 or 2.0 msec.
+ * 
+ */
+void main(void)
+{
+
+  // declare 2 variables that keeps track whether the
+  // switches are pressed or not 
+  unsigned 1 OneMsec;
+  unsigned 1 TwoMsec;
+  /*
+    *  create 4 states (finite-state-machine)
+    */
+    enum state { no_button_pressed , first_button , second_button , both_buttons_pressed  };
+    // creates an alias called state_time
+    typedef enum state state_time;
+    state_time current_state ;
+    // assign the initial current state to no_button_pressed ( state 0 )
+    current_state = (unsigned 2)no_button_pressed;
+   
+  //check we have everything that we need
+  PalVersionRequire (1, 0);
+  PalSwitchRequire (1);
+    
+  while(1)
+  {
+    
+       par {
+           /*
+            * read from the channel and store the value
+            * in pulse_pin 
+            */
+           link1 ? pulse_pin;
+          seq {
+         /*
+          * get the current state from the external inputs (checkboxes
+          * on the simulation, and push-buttons on the RC200)
+          */
+         PalSwitchRead (PalSwitch (SW0), &OneMsec);
+         PalSwitchRead (PalSwitch (SW1), &TwoMsec);
+         //set up current state
+         current_state = OneMsec @ TwoMsec;
+         
+         }//end_seq 
+        
+  seq {  
+  
+  /*
+  * depending on the current state set up the pulse 
+  * are manipulated accordingly.
+  */  
+  switch( current_state ) {
+
+  // current state 0 - do nothing or both_buttons_pressed
+  case  no_button_pressed :
+  case  both_buttons_pressed :
+                     
+          if( pulse_pin ) 
+            microsec_delay( 1500 );
+            pulse_pin = 0;                 
+      break;
+
+  // current state 2 
+  case second_button  :
+        //pulse will be 2 msec
+
+          if( pulse_pin ) 
+            microsec_delay( 2000 );
+            pulse_pin = 0;
+            
+           
+        break;
+  // current state 1 
+     case first_button :
+          /*  pulse will be 1 msec
+           */ 
+           if( pulse_pin )
+            microsec_delay( 1000 );
+            pulse_pin = 0;
+         
+           break;
+
+  default : break;
+        }//end_switch
+    } // end_seq
+    } // end_par   
+      
+     
+   }//end_while
+
+}//end_main 

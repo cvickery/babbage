@@ -1,0 +1,163 @@
+/****************************************************************
+*                                                               *
+*  CS345 -  HARDWARE LABORATORY                                 *
+*                                                               *
+*****************************************************************
+*                                                               *
+* Project   :   Laboratory 4                                    *
+* Date      :   01 OCT 2003                                     *
+* File      :   keyboard_hex.hcc                                *
+* Authors   :   Nelson Montesdeoca & Dennis Ma                  *
+*                                                               *
+* Description:  This module reads characters codes from the     *
+*               keyboard and display its ascii code in a two    *
+*               simulated seven segment display on the screen   *
+*               The digit positions, segment width and length   *
+*               are calculated from an given original position  *
+*                                                               *
+*       NOTE:   The segment display will reset to 00 whenever   *
+*               the pressed key is released                     *
+****************************************************************/
+
+#define PAL_TARGET_CLOCK_RATE 25175000
+#include "pal_master.hch"
+#include "pal_keyboard.hch"
+#include "stdlib.hch"   
+         
+/*
+ * Forward declarations
+ */
+static void inline DisplaySegs (unsigned, unsigned);
+static macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+static macro expr Green = 0x00FF00;                        //segment's color display
+static macro expr Black = 0x000000;
+static macro expr VideoOut = PalVideoOutOptimalCT (ClockRate);
+static macro expr X = PalVideoOutGetX (VideoOut);
+static macro expr Y = PalVideoOutGetY (VideoOut);
+static macro expr XWidth = PalVideoOutGetXWidthCT (VideoOut);
+static macro expr YWidth = PalVideoOutGetYWidthCT (VideoOut);
+unsigned XWidth XPos = 100;                               //initial original position of
+unsigned XWidth X1Pos = 170;
+unsigned YWidth YPos = 100;                               //first seven digit display
+static macro expr SegWidth = 10;                          //segment width
+static macro expr SegLength = 40;                         //segment length
+
+
+/*
+ * Main program
+ */
+void main (void)
+{
+  unsigned 8 Char; 
+  PalKeyboard *KeyboardPtr;
+
+  PalVersionRequire (1, 2); 
+  PalVideoOutRequire (1);
+  PalPS2PortRequire  (2);
+
+
+  par
+ {
+    PalKeyboardRun (&KeyboardPtr, PalPS2PortCT (1), ClockRate);
+    seq
+    {
+      PalKeyboardEnable (KeyboardPtr);
+      while (1)
+      {
+        delay;
+        PalKeyboardReadASCII (KeyboardPtr, &Char);
+      } //end of while
+    } //end of seq
+    PalVideoOutRun (VideoOut, ClockRate );
+    seq
+    {
+      PalVideoOutEnable (VideoOut);
+      while (1)
+      {
+        DisplaySegs ((Char \\ 4), (Char <- 4));
+      } //end of while
+    } //end of seq
+  } //end of par
+} //end of main
+
+/*
+ * Do video display of segments 
+ */ 
+void inline DisplaySegs (unsigned 4 lbit, unsigned 4 rbit)
+{
+  par
+  {
+    // Segment 0 display
+    if (((X > XPos) && (X < (XPos + SegLength)) &&
+         (Y > YPos) && (Y < (YPos + SegWidth)) &&
+         (lbit != 1) && (lbit != 4)) ||
+        ((X > X1Pos) && (X < (X1Pos + SegLength)) &&
+         (Y > YPos) && (Y < (YPos + SegWidth)) &&
+         (rbit != 1) && (rbit != 4)))
+      PalVideoOutWrite (VideoOut, Green);
+    else
+      PalVideoOutWrite( VideoOut, Black );
+    // Segment 1 display
+    if (((X > (XPos + SegLength)) && (X < ((XPos + SegLength) + SegWidth)) &&
+        (Y > YPos) && (Y < (YPos + SegLength)) &&
+        (lbit != 5) && (lbit != 6) && (lbit != 12) && (lbit != 14) && (lbit != 15)) ||
+        ((X > (X1Pos + SegLength)) && (X < ((X1Pos + SegLength) + SegWidth)) &&
+        (Y > YPos) && (Y < (YPos + SegLength)) &&
+        (rbit != 5) && (rbit != 6) && (rbit != 12) && (rbit != 14) && (rbit != 15)))
+      PalVideoOutWrite (VideoOut, Green);
+    else
+      PalVideoOutWrite( VideoOut, Black );
+    // Segment 2 display
+    if (((X > (XPos + SegLength)) && (X < ((XPos + SegLength) + SegWidth)) &&
+        (Y > (YPos + SegLength)) && (Y < (YPos + (SegLength*2))) &&
+        (lbit != 2) && (lbit != 12) && (lbit != 14) && (lbit != 15)) ||
+        ((X > (X1Pos + SegLength)) && (X < ((X1Pos + SegLength) + SegWidth)) &&
+        (Y > (YPos + SegLength)) && (Y < (YPos + (SegLength*2))) &&
+        (rbit != 2) && (rbit != 12) && (rbit != 14) && (rbit != 15)))
+      PalVideoOutWrite (VideoOut, Green);
+    else
+      PalVideoOutWrite( VideoOut, Black );
+    // Segment 3 display
+    if (((X > XPos) && (X < (XPos + SegLength)) &&
+        (Y > (YPos + ((SegLength*2) - SegWidth))) && (Y < (YPos + (SegLength*2))) &&
+        (lbit != 1) && (lbit != 4) && (lbit != 7) && (lbit != 10) && (lbit != 15)) ||
+        ((X > X1Pos) && (X < (X1Pos + SegLength)) &&
+        (Y > (YPos + ((SegLength*2) - SegWidth))) && (Y < (YPos + (SegLength*2))) &&
+        (rbit != 1) && (rbit != 4) && (rbit != 7) && (rbit != 10) && (rbit != 15)))
+      PalVideoOutWrite (VideoOut, Green);
+    else
+      PalVideoOutWrite( VideoOut, Black );
+    // Segment 4 display
+    if (((X > (XPos - SegWidth)) && (X < XPos) &&
+        (Y > (YPos + SegLength)) && (Y < (YPos + (SegLength*2))) &&
+        (lbit != 1) && (lbit != 3) && (lbit != 4) && (lbit != 5) && (lbit != 7) && (lbit != 9)) ||
+        ((X > (X1Pos - SegWidth)) && (X < X1Pos) &&
+        (Y > (YPos + SegLength)) && (Y < (YPos + (SegLength*2))) &&
+        (rbit != 1) && (rbit != 3) && (rbit != 4) && (rbit != 5) && (rbit != 7) && (rbit != 9)))
+      PalVideoOutWrite (VideoOut, Green);
+    else
+      PalVideoOutWrite( VideoOut, Black );
+    // Segment 5 display
+    if (((X > (XPos - SegWidth)) && (X < XPos) &&
+        (Y > YPos) && (Y < (YPos + SegLength)) &&
+        (lbit != 1) && (lbit != 2) && (lbit != 3) && (lbit != 7)) ||
+        ((X > (X1Pos - SegWidth)) && (X < X1Pos) &&
+        (Y > YPos) && (Y < (YPos + SegLength)) &&
+        (rbit != 1) && (rbit != 2) && (rbit != 3) && (rbit != 7)))
+      PalVideoOutWrite (VideoOut, Green);
+    else
+      PalVideoOutWrite( VideoOut, Black );
+    // Segment 6 display
+    if (((X > XPos) && (X < (XPos + SegLength)) &&
+        (Y > ((YPos + SegLength) - (SegWidth/2))) && (Y < ((YPos + SegLength) + (SegWidth/2))) &&
+        (lbit != 0) && (lbit != 1) && (lbit != 7) && (lbit != 12) && (lbit != 13)) ||
+        ((X > X1Pos) && (X < (X1Pos + SegLength)) &&
+        (Y > ((YPos + SegLength) - (SegWidth/2))) && (Y < ((YPos + SegLength) + (SegWidth/2))) &&
+        (rbit != 0) && (rbit != 1) && (rbit != 7) && (rbit != 12) && (rbit != 13)))
+      PalVideoOutWrite (VideoOut, Green);
+    else
+      PalVideoOutWrite( VideoOut, Black );
+  } //end of par
+} //end of function
+
+

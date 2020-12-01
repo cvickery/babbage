@@ -1,0 +1,376 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Laboratory 2 Post Mortem</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    <style type="text/css">
+      .stateName { font-weight: bold; color: blue; backround: white; }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Laboratory 2 Post Mortem</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>There were a number of issues related to the <a
+        href="Laboratory_02.xhtml">Two Digit Timer</a> project that need to
+        be reviewd.  Some of the issues relate to the differences between
+        writing code for hardware compared to writing software, and some
+        have to do with problems caused by how I told you to structure the
+        code.</p>
+
+      </div>
+
+      <h2>Clock Management</h2>
+      <div class="whitebox">
+
+        <p>In the past I have designed projects for this course so they
+        would be implemented as monolithic pieces of code, with the use of a
+        library for the delay procedures being a new feature in the course
+        last semester.  For this project, I had you divide the application
+        into four modules, with a main program that does nothing other than
+        to start the other three modules running.  I wanted to make the
+        three manager modules work somewhat like generic library code and in
+        that spirit I had you pass the clock rate as a parameter to each
+        module&rsquo;s <span class="functionName">run</span> routine, much
+        as we did when implementing the <span
+        class="functionName">msecDelay()</span> procedure.</p>
+
+        <p>The problem (<em>I think!</em>) is that I didn&rsquo;t understand
+        Handel-C&rsquo;s scoping rules for macro expressions.  The clock
+        rate gets set as a value for the preprocessor symbol <span
+        class="variableName">PAL_ACTUAL_CLOCK_RATE</span>, which in turn got
+        passed either literally or using a <span class"keyWord">macro expr</span>
+        to the manager macro procedures and from there to the
+        <span class="functionName">msecDelay()</span> macro procedure.  Most
+        of the time this approach works just fine.  But in certain cases it
+        reliably causes the compiler to emit an error message and to stop
+        compilation.  From what the error message says (a constant, always
+        one less than the clock rate) is too big to fit in the counter
+        variable defined in <span class="functionName">msecDelay()</span>.
+        On the surface, it looks like a bug in the compiler, but it is
+        arguably just a poorly worded error message that is generated when
+        the clock rate variable (preprocessor symbol or macro expression)
+        gets defined in multiple places in the code.  Whether it is a
+        compiler bug or not, we need a way to work around the problem.</p>
+
+        <p>My workaround is to include the following header file (and no
+        others) in each of the four modules:</p>
+
+        <div class="codeBlock">
+#ifndef __TWO_DIGIT_CLOCK__
+#define __TWO_DIGIT_CLOCK__
+
+#include &lt;stdlib.hch&gt;
+#include &lt;pal_master.hch&gt;
+#include &lt;delay_procs.hch&gt;
+
+extern unsigned 1 button1, button2;
+extern unsigned 4 tens, units;
+
+extern macro expr run;
+extern macro expr fast;
+extern macro expr ClockRate;
+
+#endif
+        </div>
+
+        <p>The key item at this point is the second to last line, which
+        declares <span class="variableName">ClockRate</span> as an external
+        macro proc.  Then in the main module I put:</p>
+
+        <div class="codeBlock">
+#ifdef USE_SIM
+#define PAL_TARGET_CLOCK_RATE 10000
+#else
+#define PAL_TARGET_CLOCK_RATE 50000000
+#endif
+#include "two_digit_clock.hch"
+
+macro expr ClockRate = PAL_ACTUAL_CLOCK_RATE;
+
+unsigned 1 button1, button2;
+unsigned 4 tens = 0, units = 0;
+
+macro expr run  = button1;
+macro expr fast = button2;
+        </div>
+
+        <p>If you are not familiar with traditional C language rules it
+        might look strange to declare variables and macros to be <span
+        class="keyWord">extern</span> in the header file and then to
+        immediately define them.  In C a symbol may be external in any
+        number of modules but must be defined in exactly one.  The language
+        specifically allows a symbol to be declared both <span
+        class="keyWord">extern</span> and to be defined in the same module
+        just so the same header file can be included in all modules.</p>
+
+        <p>The next step in the workaround was to eliminate the parameter
+        being passed to each manager&rsquo;s <span
+        class="functionName">run</span> procedure.  Each module is now
+        sharing the single global definition of <span
+        class="variableName">ClockRate</span> given in the main module.
+        They can all pass <span class="variableName">ClockRate</span> as the
+        first argument for all their calls to <span
+        class="functionName">msecDelay()</span> and neither the compiler nor
+        the linker ever complains.</p>
+
+        <h3>The Workaround Is Now Perfect!</h3>
+
+        <h5>Updated</h5><p class="runin">A previous version of this web page
+        reported a problem with multiple clocks being defined, requiring you
+        to &ldquo;select one to follow&rdquo; when starting a simulation
+        run.  With a student&rsquo;s help (<em>thank you!</em>) I found that
+        it is necessary <span class="underline">not</span> to #define
+        <em>either</em> PAL_TARGET_CLOCK_RATE <em>or</em>
+        PAL_TARGET_CLOCK_RATE anywhere except in the main module.  So you
+        can think of it as the main module sets up the clock (once) and
+        makes it available to the other modules as a global macro
+        expression, <span class="variableName">ClockRate</span>.  (All
+        global variables must be defined exactly once, and we are using the
+        main module as the place for defining this global macro expression
+        as well as the other four variables that are declared <span
+        class="keyWord">extern</span> in the header file.)</p>
+
+        <p>An arguable inelegance remains: <span
+        class="fileName">two_digit_clock.hch</span> has a #include for <span
+        class="fileName">pal_master.hch</span>, which is not actually needed
+        in the Timer Module and a #include for <span
+        class="fileName">delay_procs.hch</span>, which is not actually
+        needed in either the main module or in the display manager module. 
+        The argument would be that it would somehow be more proper to
+        include only those header files in <span
+        class="fileName">two_digit_clock.hch</span> that <em>all</em> the
+        <span class="fileName">.hcc</span> files in the project actually
+        need, and to have the individual <span class="fileName">.hcc</span>
+        files include any additional header files they need. But this
+        inelegance is offset by the fact that it saves us having to write a
+        separate lines to include <span
+        class="fileName">pal_master.hch</span> in three out of four files in
+        the project, and to write lines that include <span
+        class="fileName">delay_procs.hch</span> in the two files that need
+        it.  This design choice does not effect what actually gets produced
+        when the project is built, but it does add some (small) amount to
+        the time it takes to do a build because the C preprocessor is
+        sometimes processing files that are not actually needed. But it
+        makes the overall structure of the project less delicate: all
+        modules get all the &ldquo;standard&rdquo; header files for the
+        project and there is no need to think about exactly which one is
+        needed in each module.</p>
+
+      </div>
+
+      <h2>Coding Issues</h2>
+      <div class="whitebox">
+
+        <p>This is a good chance to point out some common coding issues that
+        arise as a result of not yet fully understanding how Handel-C and
+        FPGA hardware work.</p>
+
+        <ul>
+
+          <li>
+
+            <h5>There is no loop in the main module.</h5> <p
+            class="runin">The three manager modules are coded as endless
+            loops, so you have to launch them all in parallel in order to
+            get each one started.  But since none of them ever return to
+            <span class="functionName">main()</span> there is no point in
+            coding a <span class="keyWord">while</span> around them; it will
+            never get to the second iteration.  The following code works
+            fine:</p>
+
+            <div class="codeBlock">
+extern macro proc buttonManagerRun();
+extern macro proc displayManagerRun();
+extern macro proc timerManagerRun();
+
+void main(void)
+{
+  par
+  {
+    displayManagerRun();
+    buttonManagerRun();
+    timerManagerRun();
+  }
+}
+            </div>
+
+          </li>
+
+          <li>
+
+            <h5>Do not repeat functionality across modules.</h5> <p
+            class="runin">The Button Manager should maintain the states of
+            the two global variables, and nothing else.  Think of this
+            manager as having one thread for updating the states of both
+            switches in local variables on every clock cycle and two <span
+            class="techTerm" title="Finite State Machine">FSM</span>
+            threads for managing the global variables.  The first thread is
+            simply there to avoid the need for scattering calls to <span
+            class="functionName">PalSwitchRead()</span> throughout the two
+            FSM threads.</p>
+
+            <p>For both buttons there are four states: (1) Waiting for the
+            switch to close, (2) Waiting for the switch to bounce, (3)
+            Waiting for the switch to open, and (4) Waiting for the switch
+            to bounce (again).  The state of each global variable is updated
+            when going from State 1 to State 2 and, for the <span
+            class="variableName">fast</span> button only, when going from
+            State 3 to State 4.  Here is code for the <span
+            class="variableName">run</span> button:</p>
+
+            <div class="codeBlock">
+while (1)
+{
+  do
+  {
+    delay;
+  } while (b0 == 0);        <span class="stateName">State 1</span>
+  run = ~run;
+  msecDelay(ClockRate, 10); <span class="stateName">State 2</span>
+  do
+  {
+    delay;
+  } while (b0 == 1);        <span class="stateName">State 3</span>
+  msecDelay(ClockRate, 10); <span class="stateName">State 4</span>
+}
+            </div>
+
+            <p>The Display Manager and the Timer Manager modules should not
+            do switch debouncing: that would be redundant.</p>
+
+            <p>The Display Manager should do nothing but update the visual
+            outputs: the LEDs and seven segment displays.  The seven segment
+            display logic is complicated a little bit by the fact that you
+            want stop updating them as soon as <span
+            class="variableName">run</span> goes off even though the timer
+            manager will be somewhere in the midst of a timing delay when
+            the user clicks the button:</p>
+
+            <div class="codeBlock">
+while (1)
+{
+  if (run)
+  {
+    par
+    {
+      PalSevenSegWriteDigit(PalSevenSegCT(0), tens, 0);
+      PalSevenSegWriteDigit(PalSevenSegCT(1), units, 0);
+    }
+  }
+  else
+  {
+    delay;
+  }
+}
+            </div>
+            
+            <p>Note the use of a <span class="keyWord">delay</span>
+            statement in the <span class="keyWord">else</span> clause of the
+            <span class="keyWord">if</span> statement.  Every Handel-C
+            statement must take exactly one clock cycle to execute, but
+            without the <span class="keyWord">else</span> clause, the <span
+            class="keyWord">if</span> statement has only combinational logic
+            (testing whether <span class="variableName">run</span> is true
+            or false) and nothing to execute when the combinational logic
+            evaluates to false.  The compiler will complain about
+            &ldquo;breaking a combinatorial cycle&rdquo; if you omit the
+            <span class="keyWord">delay</span> statement that gives the
+            hardware something to do when there is nothing to be done.</p>
+
+          </li>
+
+          <li>
+          
+            <h5>Think Parallel.</h5> <p class="runin">For example, in the
+            Timer Module, you have to increment the <span
+            class="variableName">units</span> and <span
+            class="variableName">tens</span> variables at the end of each
+            time interval.  For the same amount of hardware as would be
+            needed using a sequence of <span class="keyWord">if</span>
+            statements, updating the value modulo 60 can be done entirely in
+            one clock cycle.  Like C, C++, and Java (among other languages),
+            Handel-C provides the triadic <span class="keyWord">?:</span>
+            operator for situations like this.  If you are not already
+            familiar with this operator, the following example should show
+            how it works:</p>
+
+            <div class="codeBlock">
+par
+{
+  units = ((units == 9) ? 0 : (units + 1));
+  tens  = ((units == 9) ? ((tens == 5) ? 0 : (tens + 1)) : tens);
+}
+            </div>
+
+            <p>Remember, the two assignment statements could have been
+            written in the opposite order without changing anything because
+            they are inside a <span class="keyWord">par</span> block.  That
+            is, the references to <span class="variableName">units</span> on
+            the righthand side of both statements refer to the same value:
+            the value of <span class="variableName">units</span> before the
+            single clock pulse that executes both assignments.</p>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,188 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Manuals</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="/courses/css/style-print.css" />        
+
+  </head>
+
+  <body>
+
+  <div id="header">
+    <h1>CS-345/780 Manuals</h1>
+
+  </div>
+
+  <div id="content">
+    <div class="whitebox">
+      <p>The Celoxica manuals are divided into Essential and Less
+      Essential groups.  All of them are always available under the
+      C:\Program Files\DK\Documentation\ or C:\Program
+      Files\PDK\Documentation directories in the lab.  The two Xilinx
+      manuals were downloaded from the <a
+      href="http://xilinx.com">Xilinx website</a>.</p>
+    </div>
+
+    <h2>Fundamentals</h2>
+      <div class="whitebox">
+
+
+        <ul>
+          <li><a href="HandelC.pdf">Handel-C Language</a>
+          (<?php echo sprintf("%0.1f", 
+                              filesize("HandelC.pdf")/(1024*1024)); ?> MB)
+          <p>This is the Bible for the language you will be using in this
+          course.</p>
+          </li>
+
+          <li><a href="Standard%20Library%20Manual.pdf">Standard
+          Library</a>
+          (<?php echo sprintf("%0.1f", 
+                   filesize("Standard Library Manual.pdf")/(1024)); ?> KB)
+          <p>The macros available to you when you #include
+          &lt;stdlib.hch&gt;</p></li>
+
+          <li><a href="PAL%20Manual.pdf">PAL Manual</a>
+          (<?php echo sprintf("%0.1f", 
+                                filesize("PAL Manual.pdf")/(1024)); ?> KB)
+          <p>Basic reference material on the PAL (Platform Abstraction
+          Layer) API. The first three chapters are introductory.  The
+          reference material starts in chapter 4.</p></li>
+
+          <li><a href="Fixed%20Point%20Library%20Manual.pdf">Fixed Point
+          Library</a>
+          (<?php echo sprintf("%0.1f", 
+                filesize("Fixed Point Library Manual.pdf")/(1024)); ?> KB)
+          <p>How to manage fractional values efficiently.</p></li>
+
+          <li><a href="PAL%20Cores%20Manual.pdf">PAL Cores</a>
+          (<?php echo sprintf("%0.1f", 
+                          filesize("PAL Cores Manual.pdf")/(1024)); ?> KB)
+          <p>Documentation for the keyboard, mouse, console, and
+          framebuffer PAL libraries.</p></li>
+
+          <li><a href="WaveAnalyze.pdf">Waveform Analyzer</a>
+          (<?php echo sprintf("%0.1f", 
+                               filesize("WaveAnalyze.pdf")/(1024)); ?> KB)
+          <p>How to use the DK Waveform Analyzer to simulate the operation
+          of an oscilloscope or signal generator during
+          simulation.</p></li>
+        </ul>
+      </div>
+
+    <h2>Less Essential</h2>
+
+      <div class="whitebox">
+        <ul>
+
+          <li><a href="DKUser.pdf">DK User Guide</a>
+          (<?php echo sprintf("%0.1f", 
+                               filesize("DKUser.pdf")/(1024*1024)); ?> MB)
+          <p>How to use the DK GUI.</p></li>
+
+          <li><a href="FTU2%20User%20Manual.pdf">FTU2 User Guide</a>
+          (<?php echo sprintf("%0.1f", 
+                          filesize("FTU2 User Manual.pdf")/(1024)); ?> KB)
+          <p>How to use the FTU2 program to download bit files to the
+          RC200E.</p></li>
+
+          <li><a href="DKLibraries.pdf">DK Libraries</a>
+          (<?php echo sprintf("%0.1f", 
+                               filesize("DKLibraries.pdf")/(1024)); ?> KB)
+          <p>Somewhat obscure library functions not generally used in
+          this course.</p></li>
+
+          <li><a href="Floating%20Point%20Library%20Manual.pdf">Floating
+          Point Library</a>
+          (<?php echo sprintf("%0.1f", 
+             filesize("Floating Point Library Manual.pdf")/(1024)); ?> KB)
+          <p>How to manage fractional values inefficiently!</p></li>
+
+          <li><a href="RC200_203%20Manual.pdf">RC200 and RC203</a>
+          (<?php echo sprintf("%0.1f", 
+                     filesize("RC200_203 Manual.pdf")/(1024*1024)); ?> MB)
+          <p>Describes the RC200(E) platform, and documents the RC200(E)
+          PSL (Platform Support Library).  Needed only to access RC200
+          features not supported by the PAL libraries.</p></li>
+
+          <li><a href="PixelStreams%20Manual.pdf">Pixel
+          Streams Library</a>.  Celoxica provides this
+          library for generating image processing pipelines.
+          Modules that act as filters can be &ldquo;snapped
+          together&rdquo; to process image data using
+          filters provided by Celoxica and/or your own.
+          PixelStreams is an easy way to capture camera data
+          and do things with it.</li>
+
+
+        </ul>
+      </div>
+
+    <h2>Xilinx Manuals</h2>
+      <div class="whitebox">
+        <ul>
+          <li><a href="Virtex-II_Data_Sheet.pdf">Virtex-II_Data_Sheet</a>
+          (<?php echo sprintf("%0.1f", 
+                 filesize("Virtex-II_Data_Sheet.pdf")/(1024*1024)); ?> MB)
+          </li>
+          <li><a href="Virtex-II_User_Guide.pdf">Virtex-II_User_Guide</a>
+          (<?php echo sprintf("%0.1f", 
+                 filesize("Virtex-II_User_Guide.pdf")/(1024*1024)); ?> MB)
+          <p>These two manuals provide you with more information than you
+          care to know about the internal workings of the FPGA on the
+          RC200E platform. But there are some basic explanations in there
+          too.</p></li>
+        </ul>
+      </div>
+      
+    <h2>Other</h2>
+    <div class="whitebox">
+      <ul>
+        <li id="scan_codes"><a href="ms_scancode.pdf">Microsoft Scan Code
+          Documentation</a> <p>Tells what scan codes correspond to what keys
+          on a standard PC keyboard.  Needed only when simulating <span
+          class="programName">pal_keyboard</span> projects.  Use the values
+          in the &ldquo;scan 2 make&rdquo; column of the table that starts
+          on page 16 of the document.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="footer">
+  <hr />
+    <p> <a href="/">Vickery Home</a>&nbsp;
+        <a href="../">Course Home</a>&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+    </p>
+    <p>Last Modified <?php echo gmdate("Y-m-d", 
+                               filemtime($_SERVER["SCRIPT_FILENAME"])); ?>
+    </p>
+  </div>
+  </body>
+</html>

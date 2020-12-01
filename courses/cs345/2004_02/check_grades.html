@@ -1,0 +1,57 @@
+<HTML><HEAD><TITLE>Check My Grades</TITLE>
+<style type="text/css" media="screen">
+    body
+    {
+      background:       #ffffcc;
+      font-family:      sans-serif;
+      color:            #808020;
+    }
+</style>
+</HEAD>
+<BODY>
+<center>
+<h1>Check CS-345 Grades</h1>
+<script language="JavaScript">
+
+  // Strip all non-digits; check there are 9 digits remaining,
+  // and insert dashes in the proper places.
+  function fixDashes( f )
+  {
+    before = f.ssNo.value;
+    after="";
+    for (var i=0; i< before.length; i++)
+    {
+      if ( before.charAt(i) >= '0' && before.charAt(i) <= '9' )
+        after = after + before.charAt(i);
+    }
+    if ( after.length != 9 )
+    {
+      alert ( before + " is not a valid ID number" );
+      return false;
+    }
+    fixed="";
+    for (var i=0; i<=2; i++) fixed = fixed + after.charAt(i);
+    fixed = fixed + '-';
+    for (var i=3; i<=4; i++) fixed = fixed + after.charAt(i);
+    fixed = fixed + '-';
+    for (var i=5; i<=8; i++) fixed = fixed + after.charAt(i);
+    f.ssNo.value = fixed;
+
+    return true;
+  }
+
+</script>
+
+<p><form method="get"
+      action="http://babbage.cs.qc.edu/cgi-bin/gen_grades-txt">
+  Enter your 4-digit student ID: <input type="text" name="ssNo" width="4"></p>
+  <p><input type="submit" value="Show Me My Grades for CS-345">
+  <input type="hidden" name="file" value="345-2004_02">
+</form></p>
+
+</center>
+
+<hr>
+
+</body></html>
+

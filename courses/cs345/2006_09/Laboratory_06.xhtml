@@ -1,0 +1,148 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Laboratory VI</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css" />
+  </head>
+
+  <body>
+
+  <div id="header">
+    <h1>CS-345/780 Laboratory VI</h1>
+    <h2>Touchscreen Chord Generator</h2>
+  </div>
+  <div id="content">
+    <h2>Introduction</h2>
+    <div class="whitebox">
+      <p>For this project, you are to build a machine that plays musical
+      chords in response to user presses on the LCD touchscreen.  You will
+      need to become familiar with the touchscreen and sound systems of the
+      RC200E, and will need to work with table lookup techniques for
+      generating the audio waveforms.</p>
+    </div>
+
+    <h2>Project Description</h2>
+    <div class="whitebox">
+      <p>The project is divided into three stages, each of which is to be
+      implemented as a separate DK project in your course workspace. </p>
+      <p>The first project is to familiarize you with the operation of the
+      touchscreen.  In it, you will write a program that displays the
+      coordinates of the points the user touches on the screen and develop a
+      strategy for getting &ldquo;clean&rdquo; input data.  For this
+      project, you will use the PalConsole API documented in the <a
+      href="http://babbage.cs.qc.edu/courses/cs345/Manuals/PAL%20Cores%20Manual.pdf">Pal
+      Cores</a> manual.  The PalConsole API provides a somewhat primitive
+      way of writing text strings on the LCD.</p>
+      <p>The second stage is to introduce you to the audio output
+      functions provided by PalAudioOut, which require you to provide sound
+      intensity values at a defined <span class="tech-term">sampling
+      rate</span>.  You might want to work with my <a
+      href="/courses/Audio_Sampling">Audio Sampling Laboratory</a> before
+      starting this part of the assignment.  You will need to build a sine
+      lookup table to work with for this part of the project, which is most
+      easily done by writing a standalone program that generates the source
+      code for a Handel-C array of intensity values.</p>
+      <p>In the third stage, you will create a Handel-C application that
+      combines the functionality of the first two stages: when the user
+      presses various points on the screen, the device will generate sounds
+      that are various mixtures of three basic frequencies to produce
+      various chords.</p>
+    </div>
+
+    <h2>Procedure</h2>
+    <div class="whitebox">
+      <ol>
+
+        <li>
+
+          <h5>Create a touchscreen input project.</h5>
+          <p class="runin">Create a new project named Touch2Console in your
+          course workspace.  Output to the console a line of text that tells
+          the coordinates where the user is touching whenever the user is
+          touching the touchscreen.  Read from the touchscreen on every
+          clock cycle, output the value of the <span
+          class="variableName">touch</span> variable to an expansion header
+          pin, and use an oscilloscope to observe the value of this variable
+          in real time to determine the rate at which touches repeat when
+          the screen is pressed continuously.  Observe any patterns you can
+          about what coordinates are reported when touches begin and end,
+          and devise a way to manage the touch data cleanly.</p>
+ 
+        </li>
+
+        <li>
+
+          <h5>Create an audio output project.</h5>
+          <p class="runin">The Nyquist sampling theorem says you need to
+          sample a waveform at twice the rate of the maximum frequency
+          component to in order to reproduce the waveform accurately.  Write
+          a program that generates a 10KHz sine wave with the sampling rate
+          determined by a compile time constant.  Try sampling rates of 2,
+          5, 10, and 20 KHz and see if you can hear the difference.</p>
+          
+          <p><a
+          href="Generate_PAL_Samples.java">Generate_PAL_Samples.java</a></p>
+
+        </li>
+
+        <li>
+
+          <h5>Build the chord generator</h5>
+          <p class="runin">Lay out the touchscreen so there are three zones
+          where touches will generate tones with frequencies in a ratio of
+          4:5:6.  You can use any base frequency you want: 440Hz is a common
+          starting point.  Touching three other places generates pairs of
+          tones from the above set, and touching another zone generates the
+          full chord of all three tones mixed together.</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+
+  </div>
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="/">Vickery Home</a>&nbsp;-&nbsp;<a href=".">This
+      term</a>&nbsp;-&nbsp;<a href="..">Course Home</a><br />
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>    </p>
+    <p><em>Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>    </p>
+</div>
+  </body>
+</html>

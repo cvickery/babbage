@@ -1,0 +1,173 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-345/780 Laboratory II</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-345/780 Laboratory II</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        <p>This laboratory session introduces two major items: (1) using the
+        Platform Abstraction Layer (PAL) libraries to accomplish I/O tasks,
+        and (2) using the EDIF design flow to generate &ldquo;bit&rdquo;
+        files and downloading them to an RC200E kit for testing.</p>
+
+        <p>The applications itself is simple: use two seven segment displays
+        to show the hexadecimal representation of the ASCII codes for
+        characters typed on a keyboard.</p>
+
+      </div>
+      
+      <h2>Procedure</h2>
+      <div class="whitebox">
+        <ol>
+        
+          <li>
+          
+            <h5>Configure a new project for both Debug and EDIF design
+            flows.</h5>
+            <p class="inline">Start DK, and re-open the workspace you
+            created in Laboratory I.  Create a new project in that workspace
+            named Keybd2SevenSeg.  How you spell the project name
+            doesn&rsquo;t matter much, but you can make things easier if you
+            don&rsquo;t put any spaces in the project name.  In the New
+            Project dialog box, select &ldquo;Xilinx Virtex-II Chip,&rdquo;
+            which is the type of FPGA on the RC-200 kits.</p>
+            
+            <p>This step is optional, but it might make it easier to manage
+            the project if you do it.  From the Build menu, select
+            Configurations, and delete all the configurations for this
+            project except Debug and EDIF.  (You will be deleting Release,
+            VHDL, Verilog, SystemC, and Generic.)</p>
+            
+            <p>At this point it&rsquo;s time to do some one-time setting up
+            of DK itself.  Under the Tools menu select Options, and make the
+            following changes: go to the Tabs panel and click the indent
+            spaces radio button, set the tab size to 2, and make sure
+            auto-indent is checked.  On the Format panel, select the output
+            Category and change the font to Monaco, Courier, or Fixedsys. 
+            (Some of the output messages are tables that don&rsquo;t line up
+            right if you use a proportional font.)</p>
+            
+            <h5>Set the Debug Configuration options.</h5> <p
+            class="runin">Be sure your new project is the active project. Go
+            to Project -&gt; Settings, select the Debug choice from the
+            drop-down list, go to the Preprocessor tab, and add <span
+            class="nodeName">USE_SIM</span> to the comma separated list of
+            preprocessor defintions.  Go to the Linker tab and add the
+            following libraries as a comma separated list in the
+            Object/library modules box: <span
+            class="fileName">stdlib.hcl</span>, <span
+            class="fileName">pal_sim.hcl</span>, <span
+            class="fileName">sim.hcl</span>, and <span
+            class="fileName">pal_keyboard.hcl</span></p>
+            
+            <p>In the &ldquo;Additional C/C++ Modules&rdquo; box
+            of the Linker
+            tab, enter the following pathname: <span
+            class="filename">C:\Program
+            Files\Celoxica\PDK\Software\Lib\PalSim.lib</span></p>
+            
+            <p>Other projects for this course will use the same settings for
+            simulation except that <span
+            class="fileName">pal_keyboard.hcl</span> will only be used for
+            keyboard projects, and other libraries may occasionally be added
+            to the first list.</p>
+
+          </li>
+
+          <li>
+          
+            <h5>Type in the program and simulate it.</h5> <p
+            class="inline">Be sure it works!  Type in different scan codes
+            and be sure they display the correct ASCII values.  There is a
+            chart with the scan codes in <a
+            href="../ms_scancodes.pdf">ms_scancodes.pdf</a>.</p>
+
+          </li>
+        
+          <li>
+          
+            <h5>Set up the EDIF design flow and test the hardware.</h5> <p
+            class="runin">Select the EDIF build configuration, and enter
+            the following values: add <span
+            class="nodeName">USE_RC200E</span> to the list of preprocessor
+            defintions; on the Chip panel, enter XC2V1000FG456-4 as the
+            Part; on the linker tab, use <span
+            class="fileName">stdlib.hcl</span>, <span
+            class="fileName">pal_rc200e.hcl</span>, <span
+            class="fileName">rc200e.hcl</span>, and <span
+            class="fileName">pal_keyboard.hcl</span> as the libraries
+            list.  Finally, on the Build commands panel, view Commands and
+            enter the following two lines: &ldquo;cd EDIF&rdquo; (no quotes)
+            and &ldquo;edifmake_rc200 Keybd2SevenSeg&rdquo; again with no
+            quotes, but if your project name has any spaces in it you have
+            to put quotes around its name.  Switch the view to Outputs, and
+            enter the single line: EDIF.</p>
+            
+            <p>Build the project, making sure there are no errors or
+            warnings, and use the <span class="programName">FTU2</span>
+            program to download and test your bit file.</p>
+
+          </li>
+        
+        </ol>
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

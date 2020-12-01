@@ -1,0 +1,102 @@
+xiaoyuer7890@hotmail.com                6979 Zhu      Yu
+
+CS-345 Laboratory III
+Fall 2005
+
+Here is my evaluation of your third Laboratory assignment.
+Dr. Vickery
+---------------------------------------------------------
+
+Project and Workspace Setup
+
+  Okay
+
+Use of Handel C
+
+  You didn't comment the code for the first two projects!
+
+  In the third project, there is a diagnostic message about "breaking
+  combinatorial cycle", which you must fix to get reliable results.
+  I'm not sure why you didn't get it for both "while ( [ab]_bit ==1 )"
+  loops, though.  The idea is that you mustn't have a thread with
+  possibly nothing to do at any time.  Your code should look more like
+  this:
+
+    while (1)
+    {
+      if (a_bit == 1)
+      {
+        // clear the console, etc
+      }
+      else
+      {
+        delay
+      }
+    }
+
+  Although this code works okay, it looks dangerous: what if both
+  buttons are pressed at the same time?  What if the user presses a
+  button while typing?  You will get conflicts with different threads
+  trying to change the console at the same time.  At the least, you
+  should debounce the switch and do the clear/redraw operations only
+  once per button press.
+
+  Use a simpler commenting style.  Instead of "It is ...", just say
+  what the code does.  For example:
+
+    /* It is another part loop when the user presses the other button
+     * which clears the console display and clears the RAM
+     */
+
+   say:
+
+    /* Clear the console display and the RAM when the user presses the
+     * other button.
+     */
+
+  [Some people start the comment with "Clears ..." rather than "Clear
+  ...".  The former says what the code does, the latter acts more like
+  a declaration of what the code tells the device to do.  I'm
+  comfortable with either of those two styles; just be consistent
+  about which one you use.]
+
+Report
+
+  Format the document using heading styles for the Method, Results,
+  and Discussion sections.  And use a title style for the title.  Use
+  subheadings for each project in the method and results sections.
+
+  Use past tense throughout the document (with the possible exception
+  of the discussion).  Instead of "Firstly, I should create ..." say
+  something like, "I created ..."
+
+  Use complete sentences througout.  Lists are not appropriate in this
+  sort of writing.  You don't actually need to list the project names,
+  you could just have three subheadings that are the project names:
+
+H2  Method
+H3    Keyboard to Seven Segment Display
+        Describe method for first project here
+H3    Keyboard to Console
+        Describe method for second project here
+H3    Keyboard to RAM and Back
+        Describe method for third project here
+H2  Results
+H3    Keyboard to Seven Segment Display 
+        Give results for first project here
+H3    Keyboard to Console
+        Give results for second project here
+H3    Keyboard to RAM and Back
+        Give results for third project here
+
+  Where H2 means "Use Word's 'Heading 2' paragraph style" etc.
+
+  And your method section should describe the algorithms you used at a
+  higher level than you do.  Don't mention variables, function/proc
+  names, file names, etc.  Assume the reader has the source code
+  available for getting that sort of information.
+
+  There is no English word, "putted."  The past tense of put is put.
+
+Grade:  8.5/10.0
+

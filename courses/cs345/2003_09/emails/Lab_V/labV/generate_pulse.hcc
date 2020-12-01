@@ -1,0 +1,40 @@
+
+
+#define PAL_TARGET_CLOCK_RATE  25175000
+#define RC200_TARGET_CLOCK_RATE  50000000
+#include "pal_rc200.hch"
+#include "stdlib.hch"
+
+static macro proc micro_sec_delay (Milliseconds);
+unsigned 1 x;
+
+interface bus_out() OutBus(unsigned 1 out = x )
+ with{ data = {"M2"}};
+
+void main(void)
+{
+	while(1)
+	{
+	  x++;
+      micro_sec_delay(1);
+      x++;
+	  micro_sec_delay(20);
+	}
+}
+
+
+
+/*
+ * Sleep for "n" milliseconds
+ */
+static macro proc micro_sec_delay (Milliseconds)
+{
+    macro expr Cycles = (RC200_TARGET_CLOCK_RATE * Milliseconds) / 1000;
+    static unsigned (log2ceil (Cycles)) Count = 0 ;
+    do
+    {
+        Count++;
+    }
+    while (Count != Cycles - 1);
+}
+
