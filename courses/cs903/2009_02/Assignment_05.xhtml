@@ -1,0 +1,126 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-90.3 Assignment 5</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-90. Assignment 5<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+        <div>
+          <p>
+            This assignment is to use PHP to make your login script connect to a database.
+          </p>
+          <p>
+            I have set up a database on babbage for each of you. The PHP statement to connect to your database takes the
+            following form:
+          </p>
+          <p class="code-block">
+  $conn = pg_connect( "user=$user host=$host password=$password dbname=$user" );
+          </p>
+          <p>
+            Your code must initialize the <span class="variable-name">$user</span>, <span
+            class="variable-name">$host</span>, and <span class="variable-name">$password</span> variables before
+            exectuting this statement. The user name and database name are the same: your lab account name without the
+            numbers; your password is just the numbers from your course account name, and the host is
+            babbage.cs.qc.cuny.edu.
+          </p>
+          <p>
+            If the connection is made successfully, <span class="variable-name">$conn</span> will be set to a small
+            integer representing a &ldquo;resource&rdquo; (which works like true in <span class="key-word">if</span>
+            statements). If the connection attempt fails, the value of <span class="variable-name">$conn</span> will be
+            <span class="key-word">null</span> (which works like false in <span class="key-word">if</span> statements).
+          </p>
+          <p class="standout-block">
+            The databases can only be accessed from computers on campus.
+          </p>
+        </div>
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+          If you have not done so already, update your login.php script so that it displays a message containing the
+          user’s email address, based on the value of the corresponding field on the form. Take out all 
+          <span class="function-name">alert()</span> statements from your JavaScript code.
+        </p>
+        <p>
+          Update your login.php script so that it displays a message indicating whether it is able to connect to your
+          database successfully or not. Test it using the wrong password (or user name or database name or host name) to
+          be sure it handles failures as well as successes.
+        </p>
+
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          When your assignment is working, log out and be sure your profile is copied back to the server. Send me an
+          email message telling me that you have completed the assignment, and I will get a copy of it from your account
+          on Oak for testing. If your roaming profile does not work, mention that in your email, and I will copy your
+          <span class="directoryName">My Website</span> directory from your home directory instead of your profile
+          directory on Oak.
+        </p>
+        <ol>
+            <li>Be sure to put your name in your email message!</li>
+            <li>
+              The Subject line must be <span class="code-snippet">CS-90.3 Assignment 5</span> to avoid my spam filters.
+            </li>
+            <li>
+              Send your email to either Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu or
+              vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu &mdash; but not to both.
+            </li>
+            <li>
+              See <a href="../syllabus.xhtml">the course syllabus</a> for grading and late homework policies.
+            </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs090.3">CS-90.3 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

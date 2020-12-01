@@ -1,0 +1,399 @@
+<?php
+  $this_dir = opendir('.');
+  $this_link = "";
+  $this_year = "";
+  $this_term = "";
+  while ($dir_entry = readdir($this_dir))
+  {
+    if (is_dir($dir_entry) && preg_match('/(\d{4})_(\d{2})/', $dir_entry, $year_term))
+    {
+      $this_year = $year_term[1];
+      $this_term = ($year_term[2] === '02') ? 'Spring' : 'Fall';
+      $this_link = $dir_entry;
+    }
+  }
+
+  header("Vary: Accept");
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+  stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+  stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+  )
+  {
+      header("Content-type: application/xhtml+xml");
+      header("Last-Modified: "
+      .gmdate('r', filemtime($_SERVER['SCRIPT_FILENAME'])));
+      print ("<?xml version=\"1.0\" encoding=\"utf-8\"
+  ?>
+  \n");
+  }
+  else
+  {
+  header("Content-type: text/html; charset=utf-8");
+  }
+?>  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CSCI-903 Syllabus</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../css/style-print.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/syllabus.css" />
+  </head>
+  <body id='urn:uuid:00BF2508-347F-4D1E-ABD9-E5D49D13685C'>
+      <h1>CSCI-903: Script Programming for the Web<br/>Syllabus</h1>
+      <?php
+        echo <<<EOT
+        <p id='current-semester-link'>
+          [<a href='$this_link'>Schedule and Assignments for $this_term $this_year</a>]
+        </p>
+EOT;
+       ?>
+      <div class="standout-block">
+        This syllabus gives the intended structure and requirements for this course, but
+        the actual topics and amount of time spent on each topic varies from semester to
+        semester.  The course schedule for this semester, including exam dates and
+        assignments to be handed in, is on <a href="<?php echo $this_link;?>">this
+        semester’s schedule page</a>.
+      </div>
+      <h2>Course Objectives</h2>
+      <div>
+        <p>
+          The target for application development has evolved from the mainframe, to the
+          desktop, to the web, and to mobile devices. Even with the advent of massively
+          parallel computing systems, the basic principle that threads of execution
+          implement algorithmic processes remains consistently applicable regardless of
+          the target environment.
+        </p>
+        <p>
+          This course is designed as a first course in algorithmic computing for
+          non-computer science majors. Although the course is open to computer science
+          majors, the only prerequisite is familiarity with code development for basic web
+          technologies: XHTML and CSS.
+        </p>
+        <p>
+          Although the ‘L’ in XHTML stands for “language,” neither XHTML nor CSS is an
+          algorithmic programming language.  Rather, they are declarative languages: they
+          tell what content to display and what the content should look like. With the
+          exception of some important pseudo-classes in CSS (<code>:hover</code>,
+              <code>:checked</code>, etc.) they do not provide a way to specify the
+          dynamic behavior of web pages, and they certainly do not provide a way to
+          specify the procedural richness needed to create dynamic web applications.
+        </p>
+        <p>
+          The course introduces students to algorithmic programming using two scripting
+          languages widely used for web applications: PHP and JavaScript. Because web
+          applications typically draw parts of their content from online databases, the
+          course will introduce students to PHP’s facilities for interacting with database
+          systems.
+        </p>
+        <p>
+          Students who complete this course successfully will be able to:
+        </p>
+        <ul id="rubrics">
+          <li>
+            Explain the structure of the HTTP protocol for exchanging messages over the
+            Internet
+          </li>
+          <li>
+            Identify the features of web servers needed to support PHP and a local
+            database
+          </li>
+          <li>
+            Tell how the Unix shell allows users to implement sequential algorithms using
+            pipelines constructed from a set of filter programs
+          </li>
+          <li>
+            Define the terms <em>standard input</em>, <em>standard output</em>,
+            <em>read</em>, and <em>write</em> in the context of Unix filter programs
+          </li>
+          <ul>
+            <li>
+              Use PHP and JavaScript language constructs: variables, functions, objects,
+              control structures, and data types.
+            </li>
+          </ul>
+          <li>
+            Use PHP to query and update a database using SQL
+          </li>
+          <li>
+            Implement event-driven algorithms in JavaScript
+          </li>
+          <li>
+            Use JSON and XMLHttpRequest objects to exchange information between PHP and
+            JavaScript code
+          </li>
+          <li>
+            To use PHP to generate DOM elements and JavaScript to manage DOM elements of a
+            web page
+          </li>
+        </ul>
+      </div>
+      <h2>Instructor</h2>
+      <div>
+        The instructor for the course is Dr. Christopher Vickery. See <a
+        href="../../contact_info.xhtml">Dr. Vickery’s Contact Information and Office
+        Hours</a> for that information.
+      </div>
+      <h2 id='assessment'>Course Structure and Assessment</h2>
+      <div>
+        <p>
+          There are two 75 minute class meetings per week. Attendance will not be taken
+          (except at the beginning of the semester to verify your registration for the
+           course), but students who often miss class will probably fail the course. The
+          reading assignments for the course are listed below, and will be broken down
+          further in the course schedule page for the semester.
+        </p>
+        <h3>Assignments</h3>
+        <p>
+          The course is based on a series of programming assignments, which may be coded
+          and tested in the Computer Science Department’s <a
+          href="../TREE_Lab/index.xhtml">TREE Lab</a> <a
+          href="../cs081/using_dreamweaver.xhtml">using Dreamweaver</a> and other
+          development tools available in the lab to manage the web site used for your
+          projects.
+        </p>
+        <p>
+          If you prefer, you may do your coding assignments outside the lab, provided you
+          write the code according to the specifications given in the assignments.
+        </p>
+        <p>
+          In addition to your laboratory account, you will use a limited “shell account”
+          on babbage.cs.qc.cuny.edu that you will use for testing and remote sites for
+          your assignments.  You will submit assignments for the course by uploading your
+          code to a public server on babbage.
+        </p>
+        <p>
+          Assignments vary in complexity: simple assignments receive a full-credit grade
+          of “ok” provided they are simply submitted on time and meet standard
+          requirements for the assignment. Assignments receive half credit if they are
+          submitted within one calendar week of the due date (“late”)‚ or if they are
+          deficient in some way (“not ok”). A grade of “good” (extra credit) is possible,
+          as are the grades of “late not ok” (quarter credit) and “too late” (no credit,
+          but instructor feedback provided).
+        </p>
+        <p>
+          More complicated assignments are graded on a ten-point scale. The relative
+          weights of the small and larger assignments vary from term to term. Assignments
+          count 40% of the course grade.
+        </p>
+        <div class="standout-block">
+          <p>
+          All code submitted must use valid XHTML5 and CSS3, as verified by the W3C
+          validators, in order to receive full credit. Certain warnings from the
+          validators are acceptable; these exceptions vary from semester to semester,
+          depending on the status of the validators themselves.
+          </p>
+          <p>
+            Each web page you submit for this course <em>must</em> contain the following
+            code as the last element in the <code>body</code> element:
+          </p>
+          <code class='block'>
+    &lt;footer&gt;
+      &lt;a href="http://validator.w3.org/check?uri=referer"&gt;XHTML&lt;/a&gt; —
+      &lt;a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3"&gt;CSS&lt;/a&gt;
+    &lt;/footer&gt;
+          </code>
+        </div>
+        <h3>Exams</h3>
+        <p>
+          There will be two exams, a midterm and a final, which will each count 30% of
+          your course average.
+        </p>
+        <h3>Grading</h3>
+        <p>
+          Grades are posted on the web as soon as they are available.
+        </p>
+        <p class="standout-block">
+          Exam and assignment grades become permanent one week after they have been
+          posted, even if there has been a scoring error.  Be sure to check that your exam
+          was scored correctly and that the correct grade has been recorded (using the
+          “Check My Grades” form on the course schedule page) as soon as
+          exams are returned.
+        </p>
+        <p>
+          The College has a standard policy for converting course averages into letter
+          grades, which I follow mechanically, with two exceptions: (a) I compute
+          fractional course averages and round to the nearest integer, which gives you
+          half a point of automatic grade inflation. For example, the college policy
+          specifies a grade of B+ for course averages between 87 and 90: because of
+          rounding, that means that any score between 86.5 and 89.5 is a B+. (b) Because a
+          grade of C- (or less) cannot be counted towards the computer science major, I
+          let my personal judgment (based primarily on class attendance and participation)
+          influence how to handle course grades that are just below 71.5. But I do not
+          automatically raise C&ndash; grades to C.
+        </p>
+      </div>
+      <h2>Reference Material</h2>
+      <div>
+        <p>
+          There is no textbook for this course, but there are numerous excellent resources
+          available that deal with the topics covered, including both print and web
+          media.
+        </p>
+        <h5>For the PHP language</h5>,
+        <p>
+          the <a href="http://php.net/manual/en">online manual at php.net</a> provides
+          well-organized and authoritative information, with additional annotations and
+          examples from practitioners in the field.
+        </p>
+        <p>
+          There are many PHP books available, several of which include material on SQL
+          access to databases from within PHP scripts. Many of these books are based on
+          the “case study” method of exposition, which can be terrific if you are trying
+          to learn the material on your own. However this course has it’s own set of case
+          studies (assignments), and it can be difficult to use these books in conjunction
+          with the course. Some books to consider, in no particular order, include:
+        </p>
+        <ul>
+          <li>
+            <cite>Build Your Own Database Driven Web Site Using PHP &amp; MySQL</cite> by
+            Kevin Yank, available from <a
+            href="http://www.sitepoint.com/books/phpmysql4/">Sitepoint</a>.
+          </li>
+          <li>
+            <cite>PHP/MySQL</cite> by Joel Murach and Ray Harris, available from <a
+            href="http://www.murach.com/books/phps/index.htm">Murach’s</a>.
+          </li>
+          <li>
+            <cite>PHP Solutions</cite> by David Powers, available from <a
+            href="http://www.friendsofed.com/book.html?isbn=9781430232490">Friends of
+            Ed</a>.
+          </li>
+          <li>
+            <cite>Learning PHP, MySQL, and JavaScript</cite> by Robin Nixon, available
+            from <a href="http://oreilly.com/catalog/9780596157135/">O’Reilly</a>
+          </li>
+        </ul>
+        <p>
+          Each of these publishers is highly regarded, and it is well worth while looking
+          at their other offerings in the field.
+        </p>
+        <h5>For the JavaScript language</h5>,
+        <p>you might want to consider these:</p>
+        <ul>
+          <li>
+            <cite>JavaScript and jQuery</cite> by Zak Ruvalcaba and Mike Murach. Excellent
+            range of topics; starts at the beginning.
+            (<a href='www.murach.com/books/qury/'>Murach’s</a>)
+          </li>
+          <li>
+            <cite>Secrets of the JavaScript Ninja</cite> by John Resig (developer of the
+            jQuery library) and Bear Bibeault. More advanced than the Murach book, but
+            “the” place to go to become a highly effective JavaScript developer.  (<a
+            href='http://www.manning.com/resig/'>Manning Publications</a>)
+          </li>
+          <li>
+            <cite>JavaScript: The Good Parts</cite> by Douglas Crockford.
+            Highly authoritative author.
+            (<a href="http://oreilly.com/catalog/9780596517748/">O’Reilly</a>)
+          </li>
+          <li>
+            <cite>DOM Scripting</cite> by Jeremy Keith.
+            (<a href="http://www.friendsofed.com/book.html?isbn=1590595335">Friends of Ed</a>)
+          </li>
+          <li>
+            <cite>JavaScript and DOM Scripting</cite> by Ray Harris.
+            (<a href="http://www.murach.com/books/mdom/index.htm">Murach’s</a>)
+          </li>
+          <li>
+            <cite>Simply JavaScript</cite> by Kevin Yank and Cameron Adams.
+            (<a href="http://www.sitepoint.com/books/javascript1/">SitePoint</a>)
+          </li>
+        </ul>
+      </div>
+      <h2>Topics</h2>
+      <div>
+        <p>
+          Here is an idealized schedule of topics and assignments for the course. The actual
+          assignments <a href="<?php echo $this_link; ?>">vary from semester to semester</a>.
+        </p>
+        <table>
+          <tr>
+            <th>Classes</th><th>Topics</th><th>Assignments</th>
+          </tr>
+          <tr>
+            <th>1-2</th>
+            <td>Web Structures and the UNIX programming model</td>
+            <td>Verify lab account; set up web site for the course</td>
+          </tr>
+          <tr>
+            <th>3-4</th>
+            <td>Browsers, Servers, Databases, and the HTTP Protocol</td>
+            <td>The PHP programming model: headers and generated content</td>
+          </tr>
+          <tr>
+            <th>5-7</th>
+            <td>PHP Programing: Syntax and Debugging</td>
+            <td>Display PHP data types; calculate values</td>
+          </tr>
+          <tr>
+            <th>8-9</th>
+            <td>PHP Programming: Strings, Arrays, and Form Data</td>
+            <td>Respond to form submission</td>
+          </tr>
+          <tr>
+            <th>10</th>
+            <td>PHP Programming: Session Management</td>
+            <td>User login without database</td>
+          </tr>
+          <tr>
+            <th>11</th>
+            <td>PHP Programming: Regular Expressions</td>
+            <td>Parse user input</td>
+          </tr>
+          <tr>
+            <th>12-13</th>
+            <td>PHP Programming: Database CRUD and SQL Injection Attacks</td>
+            <td>User registration and login</td>
+          </tr>
+          <tr>
+            <th>14</th>
+            <td colspan="2" class='no-assignment'>Midterm Exam</td>
+          </tr>
+          <tr>
+            <th>15-16</th>
+            <td>JavaScript Programming: Syntax and Debugging</td>
+            <td>Display variable types</td>
+          </tr>
+          <tr>
+            <th>17-18</th>
+            <td>JavaScript Programming: The DOM</td>
+            <td>Change the class of DOM elements</td>
+          </tr>
+          <tr>
+            <th>19-20</th>
+            <td>JavaScript Programming: Event Handling</td>
+            <td>Respond to clicks and keystrokes</td>
+          </tr>
+          <tr>
+            <th>21-22</th>
+            <td>JavaScript Programming: Form Enhancement</td>
+            <td>Validate form submission</td>
+          </tr>
+          <tr>
+            <th>23-24</th>
+            <td>AJAX: Using XMLHttpRequests and JSON</td>
+            <td>Validate input against selection list</td>
+          </tr>
+          <tr>
+            <th>25-28</th>
+            <td>Final Project Design and Implementation</td>
+            <td>Final Project</td>
+          </tr>
+          <tr>
+            <th></th>
+            <td colspan="2" class='no-assignment'>Final Exam</td>
+          </tr>
+        </table>
+      </div>
+
+    <div id="footer">
+      <a  href="../../">Vickery&nbsp;Home</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,169 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 3</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style>
+      img {border:1px solid red;}
+    </style>
+  </head>
+  <body id='urn:uuid:A8E90EF9-41A9-4DCC-93A7-142D26E53359'>
+    <h1>CS-90.3 Assignment 3<br/>
+    Due March 31</h1>
+    <div id="content">
+      <h2>Reading Assignment</h2>
+      <ul>
+        <li>
+        	As usual, refer to the documentation on the PHP web site and/or whatever book you are using to
+          learn PHP. In particular, examine the online PHP documentation for the <em>setcookie()</em>
+          function and the <code>$_COOKIE</code> “superglobal” variable.
+        </li>
+      </ul>
+      <h2>Assignment To Submit</h2>
+      <div>
+        <p>
+          Modify your code for Assignment 2 so that the color the user entered on the form is “pre-entered”
+          in the form if the user returns to the page any time in the next year. You can pre-enter a value 
+          in a text input element by assigning a value to the value attribute. (“Assign a value to the value
+          attribute?” Well, yes.
+          The following code assigns the value “red” to the value attribute of a text input element:
+        </p>
+<div class="code-block">
+&lt;php
+  $color = "red";
+  echo &lt;&lt;&lt;EOT
+  &lt;input type="text" id="color" name="color" value="$color" />
+EOT;
+</div>
+        <p>
+          In your code for the index page, set <code>$color</code> to the value of a cookie named
+          <code>color</code> if it is set; otherwise, let it be the empty string. This code should have
+          no effect on your web page ... yet. Make sure both web pages continue to work as they did before.
+        </p>
+        <p>
+          The point of this assignment is for you to understand cookies, not just to get the code to work, so
+          rather than just tell you what to do, see if you can figure it out by answering the following
+          questions:
+        </p>
+        <ol>
+          <li>
+            <h5>Where do you set the cookie: in the index page or the script page?</h5>
+            <p>
+              If we were doing JavaScript, the answer could be different. But in this case, the only possible
+              place to set the cookie is when you know what the user typed into the form.
+            </p>
+          </li>
+          <li>
+            <h5>How are you going to set the cookie before any part of the HTTP message body gets sent?</h5>
+            <p>
+              You may well have to restructure your code from Assignment 2 to get this to work. (I had to for
+              mine.) For example, the first part of my files looks like this:
+            </p>
+<div class="code-block">
+&lt;php
+  header("Content-Type application/xhtml+xml";
+  echo "&lt;?xml version='1.0' encoding='utf-8'?>\n";
+?>
+</div>
+          <p>
+            The echo statement generates text that is part of the HTTP message body, so the call to
+            <em>setcookie()</em> has to be executed before that echo statement is executed.
+          </p>
+          </li>
+          <li>
+            <h5>What name are you going to use for your cookie?</h5>
+          </li>
+          <li>
+            <h5>What value are you going to use for your cookie?</h5>
+          </li>
+          <li>
+            <h5>Under what circumstances should the cookie not be be set?</h5> 
+          </li>
+          <li>
+            <h5>What if the user enters an invalid color name or hex code?</h5>
+            <p>
+              Hint: the assignment is to pre-fill the form with whatever the user entered previously, whether
+              it was a valid color name/hex code or not.
+            </p>
+          </li>
+        </ol>
+        <p>
+          The hardest part of the assignment will probably be to get the cookie set before generating any
+          page content, and without breaking the functionality of the site. The better you understand how
+          the HTTP protocol works, the easier time you will have debugging your code.
+        </p>
+        <h3>Questions</h3>
+        <p>
+          Include answers to the following questions in the body of your email message when you submit the
+          assignment.
+        </p>
+        <ol>
+          <li>Test your code using two different browsers. Try using two different colors in the two browsers.
+          Do browsers share cookies?</li>
+          <li>
+            Where are cookies stored, on the server or on the user’s computer?
+          </li>
+          <li>
+            Given the (correct) answer to the previous question, does it make sense that you could use
+            JavaScript, which runs in the browser on a user’s computer, to set and get cookies?
+          </li>
+          <li>
+            If the answer to the previous question is “yes,” what information would have to be included in a
+            JavaScript equivalent of <em>setcookie()</em>? If your answer to the previous question is “no,” 
+            try to come up with some explanation for why it doesn’t make sense. Try to make your explanation 
+            sound plausible even though it’s wrong.
+          </li>
+          <li>
+            List the order of cookie-related events as a user visits your web site and submits the form the 
+            first time, and does the same thing another
+            time less than one year later. By "cookie-related events," I mean telling what the browser sends
+            to the server, what the PHP code on the server does, and what the server sends back to the browser.
+            <p>
+              Your answer should start like this: 
+            </p>
+            <ol>
+              <li>“The browser sends a request message to the server for the
+              index page; the header of the request message contains no cookie-related information because
+              the user has never visited the site before.”</li>
+              <li>“The PHP code in the index page ...”</li>
+            </ol>
+          </li>
+        </ol>
+        <h3>Submission</h3>
+        <p>
+          Validate and test your code carefully before submitting it. Be sure to include your written answers to
+          the questions <em>in the body of</em> your email message, along with your name.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </div>
+  </body>
+</html>

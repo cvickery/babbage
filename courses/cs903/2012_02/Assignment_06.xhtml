@@ -1,0 +1,151 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CSCI 903 Assignment 6</title>
+    <link rel="shortcut icon" href="../../cs903/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <style type="text/css">
+      td {text-align:center;}
+			iframe {margin:auto;}
+    </style>
+    <!--
+    <script src="Teagueduino_Counter/scripts/prototype.js" type="text/javascript"></script>
+    <script src="Teagueduino_Counter/scripts/qtp_poster.js" type="text/javascript"></script>
+    <link href="Teagueduino_Counter/stylesheets/qtp_poster.css" rel="StyleSheet" type="text/css" />
+    -->
+  </head>
+  <body>
+  <h1>CSCI-903 Assignment 6</h1>
+    <h2>Preparation</h2>
+    <div>
+      <ul>
+        <li>There will be an unannounced quiz on Teagueduino inputs and outputs.</li>
+        <li>
+          Write out answers to the following questions, using class notes and/or the Internet to
+          look up the answers you don’t know.
+          <ol>
+            <li>Write a list of all the combinations of 4 bits in numerical order
+              (<code>0000</code> through <code>1111</code>), along with their corresponding
+              decimal and hexadecimal values. The following table shows the list with the first two
+              and last two rows filled in for you:
+              <table>
+                <tr><th>Binary</th><th>Decimal</th><th>Hexadecimal</th></tr>
+                <tr><td>0000</td><td>0</td><th>0</th></tr>
+                <tr><td>0001</td><td>1</td><th>1</th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td></td><td></td><th></th></tr>
+                <tr><td>1110</td><td>14</td><th>E</th></tr>
+                <tr><td>1111</td><td>15</td><th>F</th></tr>
+              </table>
+            </li>
+            <li>
+              What does ASCII stand for?
+            </li>
+            <li>How many bits are used for each ASCII code point?</li>
+            <li>
+              How many ASCII code points are there?
+            </li>
+            <li>
+              What are the ASCII codes for the characters '3', 'C', 'S', 'c', and 's'?
+              Answer in both binary and hexadecimal.
+            </li>
+            <li>
+              How many bits are used for each ISO-Latin-1 code point?
+            </li>
+            <li>
+              How many ISO-Latin-1 code points are there?
+            </li>
+            <li>
+              What are the ISO-Latin-1 codes for the characters 'Ã', 'Ó', 'ã', and 'ó'?
+              Answer in both binary and hexadecimal. (The A’s have tildes over them; the O’s have
+              accents acute over them.)
+            </li>
+            <li>
+              What is the relationship between ISO-Latin-1 and ISO-8859-1?
+            </li>
+            <li>
+              How are the binary code points for ASCII and ISO-Latin-1 related to each other?
+            </li>
+            <li>
+              How are the binary code points for ASCII, ISO-Latin-1, and Unicode related to each other?
+            </li>
+            <li>
+              Define the terms, <em>font</em>, <em>glyph</em>, and <em>character</em>. Relate the
+              three terms to one another.
+            </li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+    <h2>Next Assignment</h2>
+    <div>
+      <p>
+        Your first Teagueduino assignment will be to code your Teagueduino so that the 5 output LEDs
+        count in binary, one step each time you press and release a button connected to input 1.
+      </p>
+      <!--
+      <a href="Teagueduino_Counter/Teagueduino_Counter.mov" rel="qtposter">
+        <img  src="Teagueduino_Counter/Teagueduino_Counter.jpg" 
+              width="853" height="496" alt="Teagueduino_Counter"/>
+      </a>
+      -->
+      <iframe width="640" height="480" 
+              src="http://www.youtube.com/embed/8xKou2Ig_z8"
+              frameborder="0" allowfullscreen="allowfullscreen">
+      </iframe>
+    </div>
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

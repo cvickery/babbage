@@ -1,0 +1,97 @@
+<?php
+  $mime_type = "text/html";
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $mime_type = "application/xhtml+xml";
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: $mime_type");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+
+    <title>CSCI 903 Assignment 1</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='../feed.xml' />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/assignments.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+  </head>
+  <body>
+    <h1>CSCI 903 Assignment 1</h1>
+    <h2>Overview</h2>
+    <section>
+      <p>
+        Your first assignment is to create a web page that meets the requirements common
+        to all assignments for the course: it must use the XHTML serialized version of
+        HTML 5, it must use CSS-3 to manage the appearance of the page, and it must
+        include links at the bottom of the page which, when clicked, verifiy that the page
+        passes W3C validation for both XHTML and CSS-3 with no errors, and only the
+        unavoidable warning that the XHTML validator itself is experimental.
+      </p>
+      <p>
+        Your page is to consist of an <code>h1</code> element followed by 10-20 paragraphs
+        filled with dummy Latin text. There are a number of sites on line that will
+        generate dummy Latin text for you to use: one is <a
+        href='http://www.lipsum.com/'>Lipsum.com</a>.
+      </p>
+      <p>
+        Here is the code to use for linking to the W3C validators (copied from the code at
+        the bottom of this page!):
+      </p>
+      <code class='block'>
+&lt;footer&gt;
+  &lt;a href="http://validator.w3.org/check?uri=referer"&gt;XHTML&lt;/a&gt; —
+  &lt;a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3"&gt;CSS&lt;/a&gt;
+&lt;/footer&gt;
+      </code>
+      <h3>Style Sheet</h3>
+      <p>
+        Set up a separate style sheet for your web page. You may format the heading and
+        paragraphs any way you like (or not at all), but you must include CSS code that
+        makes the text in each paragraph change to red when the user’s mouse hovers over
+        it, except for the fourth paragraph, which must change to blue. Your HTML code may
+        contain no <code>class</code> or <code>id</code> attributes and no embedded CSS
+        code.
+      </p>
+      <p>
+        We will go over more details on how to complete the assignment in class on January
+        31.
+      </p>
+      <p>
+        The assignment is due by midnight on February 5. To submit this assignment, email
+        me a zip file containing your HTML and CSS documents.
+      </p>
+      <p>
+        <em>Do not submit the assignment until you have tested it to be sure the
+        validation links work successfully and the mouse behavior operates as
+        specified.</em>
+      </p>
+    </section>
+    <footer>
+      <a href='.'>Class Schedule</a> —
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> —
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </footer>
+  </body>
+</html>

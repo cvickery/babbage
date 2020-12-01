@@ -1,0 +1,84 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS 90.3 Final Project</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../../css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../../css/style-print.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="css/final.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS 90.3 Final Project</h1>
+    </div>
+
+    <div id="content">
+    <form method="post" action="#">
+    	<p>If you have previously registered with the site, enter your email address and
+      password below. If you have not previously registered, enter your email address, the password you would like
+      to use, and your name; then click the &ldquo;<span class="buttonReference">Register Me</span>&rdquo; button.</p>
+    	<fieldset>
+      	<legend>Login or Register</legend>
+        <dl>
+        	<dt><label for="email">Email:</label></dt>
+            <dd><input id="email" type="text" /></dd>
+          <dt><label for="passwd">Password:</label></dt>
+            <dd><input id="passwd" type="password" /></dd>
+          <dt><label for="personName">Name:</label></dt>
+          	<dd><input id="personName" type="text" /></dd>
+        </dl>
+        <input id="submit" type="submit" value="Register Me"/>
+      </fieldset>
+    </form>
+    <p id="needJS">
+    	Your browser does not support JavaScript, or you have disabled it. You will have to supply your email
+      address, password, and name each time you visit this site.
+    </p>
+    </div>
+
+    <div id="footer">
+      <p class="links">
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+    <script type="text/javascript" src="scripts/core.js"></script>
+    <script type="text/javascript" src="scripts/json2.js"></script>
+    <script type="text/javascript" src="scripts/final.js"></script>
+  </body>
+</html>

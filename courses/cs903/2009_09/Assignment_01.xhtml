@@ -1,0 +1,180 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-90.3 Assignment 1</title>
+    <meta http-equiv="Content-Type" content="charset=UTF-8" />
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:0C3962F6-929F-40FB-A1FF-6D7191842346'>
+    <h1>CS-90.3 Assignment 1</h1>
+    <h2>Introduction</h2>
+    <div>
+      For this assignment, you are to set up your course web site in the course laboratory and verify that you can run
+      JavaScript code
+      successfully
+    </div>
+    <h2>The Assignment</h2>
+    <div>
+      <ol>
+        <li>
+          <h5>Log into your account and verify the roaming profile feature is working.</h5>
+          <p class="run-in">
+            Refer to the <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a> web page for information on
+            logging into your account in the lab.  Be sure to change your password to something secure: Press
+            Ctrl-Alt-Delete after your are logged in, and click on the &ldquo;Change Password&rdquo; button.
+          </p>
+          <p>
+            Download the <a href="../template.zip">template file</a> for the course to your desktop, and extract its
+            contents (a single file named <span class="filename">template.xhtml</span>) to the <span
+            class="directory-name">My Website</span> directory under your <span class="directory-name">My
+            Documents</span> directory. Log off, which should cause your &ldquo;roaming profile&rdquo; to be copied to
+            the server computer (<span class="computer-name">oak</span>). Now log into a different computer, and verify
+            that the zip file appears on your desktop there and that <span class="filename">template.xhtml</span> is in
+            your <span class="directory-name">My Website</span> directory, implying that the work you did on the first
+            computer was successfully transferred to the server when you logged off, and then was transferred from the
+            server to the second computer when you logged into it.
+          </p>
+          <p class="standout-box">
+            If you have any problem with this procedure, let me know right away so it can be fixed. Do not do any of the
+            next steps until this one is working correctly.
+          </p>
+        </li>
+        <li>
+          <h5>Set up a Dreamweaver site for your course assignments.</h5>
+          <p class="run-in">
+            The <a href="../../cs081/using_dreamweaver.xhtml">Dreamweaver Setup</a> web page tells how to set up a
+            Dreamweaver site for the course, and it was demonstrated in class on September 10th. Set up your site, and
+            then use Dreamweaver to open the template file for editing. Remove all the comments from the file, and close
+            it.
+          </p>
+          <p>
+            Duplicate the template file and change the name of the copy from &ldquo;Copy of template.xhtml&rdquo; to
+            &ldquo;index.xhtml&rdquo;. Open <span class="filename">index.xhtml</span> in the Dreamweaver code editor,
+            and change the content of the <span class="tag-name">title</span> element to something meaningful.
+          </p>
+          <p>
+            Edit the contents of the <span class="tag-name">h1</span> element to be something meaningful. It can be the
+            same as the contents of the <span class="tag-name">title</span> element. View your web page using a
+            &ldquo;tilde-notation&rdquo; URL: <span
+            class="code-snippet">http://<em>sometree</em>.cs.qc.cuny.edu/~<em>youraccountname</em></span>. Substitute
+            the name of the computer you are working on for &ldquo;sometree&rdquo;, and substitute your lab account name
+            for <em>youaccountname</em>.
+          </p>
+          <p class="standout-block">
+            If you put an apostrophe in the text of the <span class="tagName">h1</span>, be sure to make it
+            typographically correct. If you just type the &ldquo;apostrophe&rdquo; character on the right side of your
+            keyboard, you will get a straight &ldquo;prime&rdquo; character ( ' ), not an apostrophe ( &rsquo; ).
+            Instead, type <strong>&amp;rsquo;</strong>, which will  give you a  &ldquo;right single quote&rdquo; symbol,
+            which will be curved the way an apostrophe should be curved. Throughout the semester, make sure all
+            quotation marks in textual content are typographically correct. (<strong>&amp;ldquo;</strong> = left double
+            quote; <strong>&amp;rdquo;</strong> = right double quote; <strong>&amp;lsquo;</strong> = left single quote.)
+          </p>
+        </li>
+        <li>
+          <h5>Add a simple JavaScript program to your site</h5>
+          <p class="run-in">
+            Put a <span class="tagName">script</span> element in the head of your index page, with the <span
+            class="attributeName">src</span> attribute pointing to <span class="filename">scripts/sample.js</span>.
+            Actually, this element should already be there because it is part of the <span
+            class="filename">template.xhtml</span> file for this course.
+          </p>
+          <p>
+            Use Dreamweaver to create a directory named <span class="directory-name">scripts</span> under your <span
+            class="directory-name">My Website</span> directory, as demonstrated in class. Then use Dreamweaver to create
+            a new code file in that directory: rename it from <span class="filename">untitled.xhtml</span> to <span
+            class="filename">sample.js</span>. Add the following line to the file:
+          </p>
+          <p class="code-block">
+  alert("Your message goes here");
+          </p>
+          <p>
+            You can make the message anything you want, and you can use single quotes instead of double quotes if you
+            prefer.
+          </p>
+          <p>
+            Now reload your web page and verify that the <span class="functionName">alert</span> dialog-box shows up
+            before the rest of the page is rendered. Note that simply reloading the page will not let you see this
+            timing if the reloaded page looks exactly like the newly-loaded page. Figure out a way to observe this
+            effect.
+          </p>
+        </li>
+        <li>
+          <h5>Validate your site.</h5>
+          <p class="run-in">
+            Make sure the green "OK" icon <img src="images/ok.png" alt="" /> shows in the lower right corner of the
+            browswer window when you are viewing your page. Then click on the XHTML link at the bottom of the page to be
+            sure you get the corresponding verification from the W3C online validator. If either check fails, you have
+            to figure out what is wrong with your code and fix it before submitting the assignment.
+          </p>
+          <p>
+            Note that there is no style sheet for the web page yet, so there is no need to validate any CSS.
+          </p>
+        </li>
+
+      </ol>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+        When you have tested your web site and verified that everything validates and runs correctly, log out so your
+        site will be copied back to the server. Then send me an email to let me know your assignment is ready for
+        grading: I will copy your site from the lab server to babbage to verify that it is correct.
+      </p>
+      <p>
+        Send your email to vickery<span class="at" title="Change the word 'at' to the symbol
+        '@'">at</span>babbage.cs.qc.cuny.edu with <span class="code-snippet">CS-90.3 Assignment 1</span>, spelled and
+        capitalized just like that. Be sure to put your email address inside the message you send.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../../cs090.3">Course Home Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,197 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-90.3 Assignment 4</title>
+    <meta http-equiv="Content-Type" content="charset=UTF-8" />
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:9EEE89A9-57D0-47D6-B1B2-9C7D86DE7D24'>
+    <h1>CS-90.3 Assignment 4</h1>
+    <h2>Summary</h2>
+    <div>
+      Use one copy of the skeleton code for JavaScript applications to set up two event listeners that
+      will respond to mouseover and mouseout events. Work with <span class="attribute-name">class</span>
+      attributes to make visible changes when the events occur.
+    </div>
+    <h2>The Assignment</h2>
+    <div>
+      <ol>
+        <li>
+          <h5>Augment the index page for your web site with some content and a stylesheet.</h5>
+          <p>
+            Add six paragraphs of Latin text to the index page for your web site. You can get this
+            text from <a href="http://www.lipsum.com">lipsum.com</a>. Change the form at the bottom of
+            the page to get six paragraphs rather than the default (5). Copy the paragraphs from the
+            result page into your page after the <span class="tag-name">h1</span> element. Wrap each
+            paragraph in <span class="tag-name">p</span> elements so they do not all run together.
+          </p>
+          <p>
+            Add the class <span class="attribute-value">hover-target</span> to paragraphs 2, 3, and 5.
+            Add the class <span class="attribute-value">important</span> to paragraphs 3 and 6.
+          </p>
+          <p>
+            If your site does not have a <span class="directory-name">css</span> directory yet, add it
+            now. Be careful to capitalize it like that: mis-capitalization will lead to a site that
+            works when you test it, but not when I copy it to babbage. You can add it from within
+            Dreamweaver by right-clicking on the Site folder, choosing
+            <span class="menu-item">New Folder</span>, and typing the proper name over the default
+            (&ldquo;untitled&rdquo;). Right-click on the <span class="directory-name">css</span>
+            directory, and select <span class="menu-item">New File</span>, and rename that to
+            <span class="file-name">assignment_04.css</span>
+          </p>
+          <p>
+            Put a <span class="tag-name">link</span> to the stylesheet in the head of your index page:
+          </p>
+          <p class="code-block">
+  &lt;link rel="stylesheet" type="text/css" href="css/assignment_04.css" /&gt;
+          </p>
+          <p>
+            Be sure to put in both the <span class="attribute-name">rel</span> and
+            <span class="attribute-name">type</span> attributes so your code validates.
+          </p>
+          <p>
+            Now add some rules to your stylesheet: make the background color of the entire page a light
+            color (light gray is okay) and the text a dark color (black is okay). Test your web page to
+            be sure the paragraphs show up, and that the page is displayed with dark text on a light
+            background. Click both the XHTML and CSS links at the bottom to be sure everything validates
+            with no errors or warnings.
+          </p>
+        </li>
+        <li>
+          <h5>Add distinctive appearances for elements with the <span class="attribute-value">important</span>
+          and <span class="attribute-value">active</span> classes.</h5>
+          <p>
+            That&rsquo;s not a typo: you are to make elements with the
+            <span class="attribute-value">active</span> class have a distinct appearance even nothing
+            in your web page has that class (yet!). And do not make the elements with the
+            <span class="attribute-value">hover-target</span> class look any different from the other
+            paragraphs (yet!!).
+          </p>
+          <p>
+            Make the important paragraphs display in italics
+            (<span class="code-snippet">font-style:italic;</span>), and make the active paragraphs display
+            in reverse video (light text on a dark background). Reload the page and verify that paragraphs
+            3 and 6 are displayed in italics.
+          </p>
+        </li>
+        <li>
+          <h5>Add a JavaScript application to create the action.</h5>
+          <p>
+            Use the JavaScript skeleton code to create a script file named
+            <span class="file-name">assignment_04.js</span> in your
+            <span class="directory-name">scripts</span> directory, and update your index page so it has links
+            to just <span class="file-name">core.js</span> and this file.
+          </p>
+          <p>
+            In the <span class="function-name">init()</span>, get a list of all the elements in the document,
+            and then loop all these elements. Use <span class="function-name">Core.hasClass()</span> function
+            to test each element to see if it has the class <span class="attribute-value">hover-target</span>,
+            and if it does, add two event listeners to it:
+            <span class="function-name">mouseoverListener</span>, and
+            <span class="function-name">mouseoutListener</span>.
+          </p>
+          <p>
+            Add the two event listener functions to the anonymous self-executing function. This assignment
+            makes no use of the event object passed to event listeners, but as an exercise, set it up properly
+            as shown in class on October 15. For example:
+          </p>
+          <p class="code-block">
+  Core.start
+  (
+    ( function()
+      {
+        function mouseoverListener(evt)
+        {
+          evt = evt ? evt : window.event;
+          <em>etc.</em>
+          </p>
+          <p>
+          	Simply have <span class="function-name">mouseoverListener()</span> add the class
+            <span class="attribute-value">active</span> to the element that caused the mouseover
+            event (<span class="variable-name">this</span>), and have
+            <span class="function-name">mouseoutListener</span> remove the class.
+          </p>
+          <p>
+          	Test your code carefully to be sure it works properly with no JavaScript errors (the Firebug
+            icon in the browser status bar will change to a red circle with an X if there is an error:
+            <img src="images/assignment_04-2.png" alt="screenshot of red x" />.
+          </p>
+          <p>
+          	Make sure your page still passes both the XHTML and CSS external validators with no errors or
+            warnings.
+          </p>
+          <p>
+          	Add margins and padding to your page so the layout looks &ldquo;good.&rdquo; When finished, you
+            should end up with something like this (note the cursor hovering over the second paragraph):
+          </p>
+          <div>
+          	<img src="images/assignment_04-1.png" alt="screenshot of complete application" />
+          </div>
+        </li>
+      </ol>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+        When you have tested your web site and verified that everything validates and runs correctly, log out so your
+        site will be copied back to the server. Then send me an email to let me know your assignment is ready for
+        grading: I will copy your site from the lab server to babbage to verify that it is correct.
+      </p>
+      <p>
+        Send your email to vickery<span class="at" title="Change the word 'at' to the symbol
+        '@'">at</span>babbage.cs.qc.cuny.edu with <span class="code-snippet">CS-90.3 Assignment 4</span>, spelled and
+        capitalized just like that. Be sure to put your email address inside the message you send.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../../cs090.3">Course Home Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

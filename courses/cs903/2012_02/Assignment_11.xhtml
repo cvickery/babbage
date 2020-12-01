@@ -1,0 +1,165 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CSCI 903 Assignment 11</title>
+    <link rel="shortcut icon" href="../../cs903/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <style type="text/css">
+      h3 {display:inline; font-size:1.0em;}
+      h3 + * {border:none;}
+      ol>li {list-style-type:upper-roman; font-size:1.1em; font-weight:bold;}
+      ol>li * {font-size:1em; font-weight:normal; border:none; margin:0; padding:0;}
+      ol>li p {margin:0.5em 1.5em;}
+      ol>li>ul li {padding:0.2em 2.0em;}
+    </style>
+  </head>
+  <body>
+  <h1>CSCI-903 Final Project</h1>
+    <h2>Assignment</h2>
+    <div>
+      <p>
+        Your final project is to design and implement an “intelligent agent.” There are three
+        components:
+      </p>
+      <ol>
+        <li>
+          <h3>Design and Implement Your Agent</h3>
+          <div>
+            <p>
+              Ideally, you would build a robot that
+              <a target='_blank' href='http://www.youtube.com/watch?v=mBCVprX0WnY'>climbs
+              mountains</a> or <a target="_blank"
+              href='http://www.youtube.com/watch?v=oWtBTKpWVXk'>solves Rubic’s Cube in
+              3 seconds</a>.
+            </p>
+            <p>
+              But if you do that in two weeks, it might make the people who made those other robots
+              feel bad, so we will scale back the scope of our project a little bit.
+            </p>
+            <p>
+              At this point, you have an idea of the sorts of things Teagueduino (and Arduino)
+              controllers can do, you have a sense of what information theory is, you have a sense
+              of what artificial intelligence is, and you have some idea of how information theory,
+              probability theory, and artificial intelligence relate to one another.
+            </p>
+            <p>
+              Drawing on what you have learned in this class, your assignment is to design a device
+              that uses the Teagueduino board to perform some sort of control function that involves
+              decision making. The design is to include both the mechanical structure of the device,
+              the arrangement of inputs and output devices connected to the Teagueduino, and the
+              rules the controller is to follow in order to make its decisions.
+            </p>
+            <p>
+              As we saw in class, it’s not practical to make a truly mobile device because of the
+              need to connect to a power source, at least if motors are involved. (A battery can
+              be used if the device doesn’t need to operate motors. The mechanical design could be
+              based on craft supplies (carboard, tape, glue, pipe cleaners, popsicle sticks, etc.),
+              or could involve machining or woodworking, like the two-wheel device used in
+              class.
+            </p>
+            <p>
+              This part of the assignment will be evaluated based on how well the design reflects
+              the topics of the course, creativity, “implementability,” and how much of it you
+              actually complete, in decreasing order.
+            </p>
+          </div>
+        </li>
+        <li>
+          <h3>Write a Report on Your Agent</h3>
+          <p>
+            Your written report should be as long as necessary (1,000 to 10,000 words) to address
+            the questions in the following list clearly. You can use the questions as headings,
+            but you will receive more credit for this part of the assignment if you (a) put the
+            questions into a logical order other than the one given here, and (b) create a
+            coherent piece of writing rather than a sequence of answers to questions.
+          </p>
+          <ul>
+            <li>The nature of the intelligent agent you have designed. (What does it do?)</li>
+            <li>How is (or would) your agent be implmented?</li>
+            <li>
+              How is your device similar to and different from other devices you might know of?
+            </li>
+            <li>
+              What are the inputs and outputs of your agent?
+            </li>
+            <li>
+              What is it about this device that makes it an “intelligent agent?”
+            </li>
+            <li>
+              What role does information theory and encoding play in the design of the device?
+            </li>
+            <li>
+              What decisions and choices did you have to make during the design process?
+            </li>
+            <li>
+              How much of the project did you actually complete?
+            </li>
+          </ul>
+          <p>
+            Attach the code that you wrote for the project as an appendix to your paper. You must
+            include working code for at least some subset of the project.
+          </p>
+        </li>
+        <li>
+          <h3>Present Your Project in Class</h3>
+          <p>
+            Prepare a presentation/demonstration of your agent, to be delivered to the class during
+            the time scheduled for the final exam: May 22 from 1:45 to 3:45 pm. The presentation
+            may be from 5 to 10 minutes long, and may consist of any combination of demonstration,
+            explanation, and prognostication. PowerPoint allowed, but deprecated.
+          </p>
+        </li>
+      </ol>
+    </div>
+    <h2>Grading</h2>
+    <div>
+      <p>
+        TBD
+      </p>
+    </div>
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>&mdash;<a
+         href=".">Course Schedule</a>
+    </div>
+  </body>
+</html>

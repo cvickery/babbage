@@ -1,0 +1,229 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-90.3 Assignment 7</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-90. Assignment 7<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        For this assignment you are to create an AJAX exchange between the client and server using JSON for
+        information encoding.
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            Create new versions of <span class="file-name">login.php</span> and <span class="file-name">form_handler.js</span>
+            to use for this assignment. You can make copies of the current versions, and then edit them to fit this assignment.
+            <p>
+              Edit <span class="file-name">login.php</span> so that it is no longer a web page, just straight PHP code. Take out
+              the code at the beginning of the course template; take out the DOCTYPE, and take out all XHTML, text, and all PHP
+              <span class="function-name">echo</span> statements. Add one <span class="function-name">echo</span> statement at the
+              end that outputs the result of calling <span class="function-name">json_encode()</span> with the result of the call
+              to <span class="function-name">new Person()</span> as the argument.
+            </p>
+            <p>
+              You should end up
+              with just one block of pure PHP code; be sure it is surrounded by the <span class="code-snippet">&lt;?php</span>
+              and <span class="code-snippet">?&gt;</span> delimiters.
+            </p>
+          </li>
+          <li>
+            To get started with the JavaScript side, change your submit listener so that it always calls
+            <span class="function-name">Core.preventDefault()</span>, whether the form data is valid or not.
+            <p>
+              The goal is to simulate submitting the form data using an XMLHttpRequest object. You could
+                use either the GET or the POST method; since the URL will never be seen by the user anyway,
+                I’ll describe using the POST method. The procedure is outlined in chapter 8 of the <cite>Simply
+                JavaScript</cite> text, but the code on page 311 needs some amendments.
+              The correct sequence is:
+            </p>
+            <ol>
+              <li>
+                Create an application-global variable for the XMLHttpRequest object.
+              </li>
+              <li>
+                Once the submit listener has determined that the form data is valid, assign a reference to a new XMLHttpRequest object
+                to the variable you created in the previous step. Note that the code on pages 307-308 shows how to do this in a way that
+                will work for both Internet Explorer and all other browsers. If both <span class="keyword">try</span> blocks fail,
+                display an <span class="function-name">alert()</span>, and return from the submit listener without going any further.
+              </li>
+              <li>
+                <p class="standout-block">
+                  The three statements on page 311 (first blue panel) must all be present despite the text saying the first one is needed
+                  only for Opera. More importantly, the call to <span class="function-name">open()</span> must be made <em>before</em>
+                  the call to <span class="function-name">setRequestHeader()</span>, rather than after it.
+                </p>
+								<p>
+                	You will need to set up an event handler for the asynchronous events that occur after the code calls 
+                  <span class="function-name">send()</span>, as shown on page 312. I recommend making the assignment to
+                  the request object’s <span class="function-name">onreadystatechange</span> property right after the call
+                  to <span class="function-name">open()</span>.
+                </p>
+                <p>
+                	The string passed to <span class="function-name">send()</span> must be the same as the part of the URL following
+                  the question mark that the browser would generate when submitting the form using the GET method. That is, you need
+                  to set up name=value pairs separated by ampersands for the various fields of the form that you want to pass to
+                  <span class="filename">login.php</span>. By using the POST method in the <span class="function-name">open()</span>
+                  call, you are setting it up so that these variables will be accessible to PHP in its 
+                  <span class="variable-name">$_POST</span> superglobal array.
+                  It’s not necessary to do so, but you might find it convenient to
+                  create the string to be passed to <span class="function-name">send()</span> in a separate statement:
+                </p>
+                <div class="code-block">
+  var msg = "email=" + emailInput.value + "&amp;password=" + passwordInput.value;
+  requestObject.send(msg);
+                </div>
+                <p>
+                	Once <span class="function-name">send()</span> has been called, the submit listener function should do nothing else
+                  (assuming <span class="function-name">Core.preventDefault()</span> has already been called).
+                </p>
+              </li>
+              <li>
+              	So far, there has been to way to test the code you have written, which is unfortunate: you are going to be simultaneously
+                debugging <span class="file-name">login.php</span> and two different parts of 
+                <span class="file-name">form_handler.js</span>&mdash;it would be much more efficient if you could code and test each
+                part independently. But it can’t be done, so there is no choice but to plunge ahead and add the code for the
+                <span class="variable-name">readystatechange</span> event handler. Note that this function is an event handler, not
+                an event listener (because there cannot possibly be another JavaScript program that has access to the XMLHttpRequest
+                object that your program created).
+                <p>
+                	The event handler will be called each time the state of the XMLHttpRequest object changes: put in a 
+                  <span class="function-name">console.log()</span> call to display the value of the request object’s
+                  <span class="variable-name">readyState</span> property each time it is called. At this point, you can
+                  submit your form, and you should get a set of console messages showing the 
+                  <span class="variable-name">readyState</span> values 1, 2, 3, and 4. Debug until you get this part working
+                  before going on to the next steps.
+                </p>
+              </li>
+              <li>
+              	Add code to the <span class="variable-name">readystatechange</span> event handler to test the value of
+                <span class="variable-name">readyState</span>, and when it reaches 4, log the following values to the
+                console: <span class="variable-name">status</span>, <span class="variable-name">statusText</span>, and 
+                <span class="variable-name">responseText</span>. If you supply one of the email addresses that is in your
+                database, you should see the information from the database for that person in the 
+                <span class="variable-name">responseText</span>; if the email address is not it the database, the fields
+                should all be null.
+              </li>
+              <li>
+              	Download the JSON library, <a href="../json2.min.js" title="Minified JSON library">json2.min.js</a>; if you
+                are interested in looking at the source code you can get the un-minified version, 
+                <a href="../json2.js" title="Un-minified JSON library">json2.js</a>. Put it in your 
+                <span class="directory-name">scripts</span> directory, and link to it from your 
+                <span class="file-name">index.xhtml</span> page. Be sure to put the new <span class="tag-name">script</span>
+                tag before the one for your own code.
+                <p>
+                	Create a JavaScript object from the <span class="variable-name">responseText</span> string using 
+                  <span class="function-name">JSON.parse()</span>:
+                </p>
+                <div class="code-block">
+	var responseObject = JSON.parse(requestObject.responseText);
+								</div>
+								<p>
+                  Now test that you can process information in the responseObject by logging messages to the console:
+                </p>
+                <div class="code-block">
+  var msg = "Not in database";
+  if (responseObject.id)
+  {
+    msg = responseObject.first_name + " " + responseObject.last_name + " is ";
+    msg += (responseObject.is_registered ? "" : "not ") + "registered.";
+  }
+  console.log(msg);
+								</div>
+              </li>
+              <li>
+              	The final part of the assignment is to replace the calls to console.log() with DOM manipulation operations so the
+                user is notified of their status with respect to the database. The technique I demonstrated was to add a 
+                <span class="tag-name">div</span>
+                element after the <span class="tag-name">form</span>, and to adjust the text in it by assigning
+                different strings to the its <span class="variable-name">firstChild.nodeValue</span> property. Note that the
+                the element must contain some initial text or it will have no firstChild whose value you can change: even a single
+                space will suffice.
+                <p>
+                	Be sure there are no calls to <span class="function-name">console.log()</span> (or any alerts other than genuine
+                  error messages) in you code, and test it in various browsers.
+                </p>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          When your assignment is working, log out and be sure your profile is copied back to the server. Send me an
+          email message telling me that you have completed the assignment, and I will get a copy of it from your account
+          on Oak for testing. If your roaming profile does not work, mention that in your email, and I will copy your
+          <span class="directoryName">My Website</span> directory from your home directory instead of your profile
+          directory on Oak.
+        </p>
+        <ol>
+            <li>Be sure to put your name in your email message!</li>
+            <li>
+              The Subject line must be <span class="code-snippet">CS-90.3 Assignment 7</span> to avoid my spam filters.
+            </li>
+            <li>
+              Send your email to either Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu or
+              vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu &mdash; but not to both.
+            </li>
+            <li>
+              See <a href="../syllabus.xhtml">the course syllabus</a> for grading and late homework policies.
+            </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs090.3">CS-90.3 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

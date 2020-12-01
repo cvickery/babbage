@@ -1,0 +1,165 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-90.3 Assignment 6</title>
+    <meta http-equiv="Content-Type" content="charset=UTF-8" />
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:0DDEE893-878A-4593-8B1B-FFC6B9F9425B'>
+    <h1>CS-90.3 Assignment 6</h1>
+    <h2>Summary</h2>
+    <div>
+    	The is the second half of the JavaScript form management assignment.
+    </div>
+    <h2>The Assignment</h2>
+    <div>
+    	<p>
+      	Construct this assignment by modifying the code from Assignment 5. You do not need any new
+        files for this assignment.
+      </p>
+    	<ol>
+      	<li>
+      		<h5>Set up form handlers for email <span class="variable-name">change</span> events and password 
+          <span class="variable-name">keyup</span> events.</h5>
+          <p>
+          	Use <span class="function-name">console.log()</span> to verify that the event listener for
+            email change events is being called each time you change the value of the email field and
+            each time you type (or erase) a character in the password field.
+          </p>
+          <p>
+          	Also, have your <span class="function-name">init()</span> function initialize application-global
+            variables with references to the two status messages.
+          </p>
+        </li>
+        <li>
+        	<h5>Set up CSS rules for the status messages.</h5>
+          <p>
+          	The email status message can be in one of three states: missing, invalid, or valid. The password status
+            message can be in one of four states: missing, weak, medium, or strong. 
+            Set up four CSS rules for
+            classes named missing, invalid, weak, medium, and good. Use different background colors and text colors to
+            make all four states easy to differentiate and meaningful. For example, missing might have a red background
+            and good might have a green background. Be sure to pick combinations of background color and text color so
+            that the text always is easy to read. You won&rsquo;t actually get to see the effects of these classes
+            yet, so you may have to go back and adjust them after you have completed the next step.
+          </p>
+        </li>
+        <li>
+        	<h5>Use JavaScript to change status messages based on the contents of the email field.</h5>
+          <p>
+          	When the email change listener is called, use a regular expression to test whether the value the user
+            has entered is a valid email address or not. You can use the email regular expression from the textbook,
+            but I will be looking at your code to see if you have implemented something more accurate. You do not need
+            a regular expression to test if the field is empty: just compare it to an empty string.
+          </p>
+          <p>
+          	Using nested <span class="keyword">if</span> statements to decide which state the email value is in (missing,
+            invalid, or invalid), use <span class="function-name">setAttribute()</span> function to set the class of the
+            email status message to &ldquo;missing,&rdquo; &ldquo;invalid,&rdquo; or good. With this working, you can
+            fine-tune your CSS rules to get good color (text) and background color values for those threee states.
+          </p>
+          <p>
+          	To change the word in the status message, the code is something like this (depending on what name you used
+            for the application-global variable that refers to the email status message):
+          </p>
+          <div class='code-block'>
+  email_status.firstChild.nodeValue = 'Missing';
+          </div>
+          <p>
+          	Be sure you can change to all three states from any other state by changing the value you type into the
+            email input field.
+          </p>
+        </li>
+        <li>
+        	<h5>Update the password status message as the user types.</h5>
+          <p>
+          	Code the event listener for keyup events so that it uses regular expressions to test for weak, medium,
+            or strong passwords. Again, you do not need a regular expression to test for a missing password. Sart with
+            simple tests: 1 to 3 characters is weak, 4 to 7 characters is medium, and 8 or more characters is strong.
+          </p>
+          <p>
+          	Change the class and text content of the password status message based on the results of the various tests
+            you perform on the value of the password field. Verify that the status message changes as enter and delete
+            characters in the password field.
+          </p>
+          <p class='standout-block'>
+          	<strong>Optional: </strong> Design a more stringent set of rules for password strength. For example, you
+            might require medium passwords to include one or more numbers as well as other characters, and you might
+            require strong passwords to include upper and lower case letters as well as at least one number and one
+            punctuation character. Just don&rsquo;t make it too hard for me to figure out what the rules are!
+          </p>
+        </li>
+        <li>
+        	<h5>Have the submit listener decide whether to submit the form or not.</h5>
+          <p>
+          	Code the form&rsquo;s submit listener so that it calls <span class="function-name">preventDefault()</span>
+            unless the password is strong and the email is valid.
+          </p>
+        </li>
+      </ol>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+        When you have tested your web site and verified that everything validates and runs correctly, log out so your
+        site will be copied back to the server. Then send me an email to let me know your assignment is ready for
+        grading: I will copy your site from the lab server to babbage to verify that it is correct.
+      </p>
+      <p>
+        Send your email to vickery<span class="at" title="Change the word 'at' to the symbol
+        '@'">at</span>babbage.cs.qc.cuny.edu with <span class="code-snippet">CS-90.3 Assignment 6</span>, spelled and
+        capitalized just like that. Be sure to put your email address inside the message you send.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../../cs090.3">Course Home Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,362 @@
+<?php
+  $mime_type = "text/html";
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $mime_type = "application/xhtml+xml";
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: $mime_type");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+    <title>CSCI 903 Assignment 4</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='../feed.xml' />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/assignments.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <style type="text/css">
+      li {margin:1em;}
+      ol {counter-reset:item;}
+      ol>li {display:block;}
+      ol>li:before {
+        content: "Step " counter(item, upper-latin) ": ";
+        counter-increment: item;
+        font-weight:bold;
+        }
+      h5 {display:inline}
+    </style>
+  </head>
+  <body>
+    <h1>CSCI 903 Assignment 4</h1>
+    <h2>Overview</h2>
+    <section>
+      <p>
+        This is a multipart assignment in which you will develop a secure login mechanism
+        for your web site.
+      </p>
+    </section>
+    <h2>Instructions</h2>
+    <section>
+      <ol>
+        <li>
+          <ul>
+            <li><h5>Set up the project directory.</h5>
+              Create a new directory for this assignment. Perfect Student called it
+              “Assignment_04,” but you may use a more descriptive name, like “Login,”
+              if you like. Create a subdirectory named <code>css</code> for the
+              stylesheet(s) for the project, and create an index page that will contain
+              the login form for the project.
+              <p>
+                You will need to decide whether the PHP code for processing the form data
+                will be in a separate file or embedded in the index page. Either approach
+                is all right, and you do not have to make that decision just yet.
+              </p>
+            </li>
+            <li>
+              <h5>Put a form element on the page</h5> that submits its form data to a
+              separate page called <code>display_form_data.php</code> in the project
+              directory. Use the POST method.  Include a text input element for the user’s
+              name and a password input element for the user’s password. Include a
+              fieldset with legend, labels for the two inputs, and a submit button that
+              says “Login.” Use the <code>tabindex</code> attribute on the input and
+              button elements so that the tab key takes users first to the password, then
+              to the username, and then to the submit button.
+              <p>
+                This is an academic exercise: the tab sequence is strange, and there are
+                questions about using legends and fieldsets, which can be mimicked using
+                CSS. The idea is to give you some experience with these features so you
+                can decide what role they will (or will not) play in your later career.
+              </p>
+            </li>
+            <li>
+              <h5>Create the <code>display_form_data.php</code> page.</h5> Set it up as a
+              regular XHTML5 page like all the others in this course. If the array of form
+              data is available, display a suitable page title and a table containing all
+              the form data submitted, using the <em>foreach</em> loop given in class on
+              April 16 to generate the table rows. If the <code>$_POST</code> array is not
+              available, display a page title saying there is no form data instead.
+            </li>
+            <li>
+              <h5>Add a file named README.md to the project directory.</h5> Enter a
+              description of the project there so that it shows up when the user visits
+              your site’s home page.
+            </li>
+            <li>
+              <h5>Use a stylesheet to make your index page look “good.”</h5> Put it in the css
+              subdirectory for the assignment.
+            </li>
+            <li>
+              <h5>Test your code</h5> with different patterns of input, including empty
+              values. Try accessing the page without submitting a form.
+            </li>
+            <li>
+              <h5>Be sure both validators continue to give your site a clean bill of
+              health.</h5>
+            </li>
+            <li>
+              <h5>Send me an email</h5> with “CSCI 903 Assignment 4A” as the subject, and
+              be sure to include you account name in the message body. The assignment is
+              due by midnight of the due date (April 18).
+            </li>
+          </ul>
+        </li>
+        <li id='second-part'>
+          <ul>
+            <li>
+              <h5>“Sanitize” all form data.</h5> Write a function named
+              <em>sanitize()</em> that will prevent SQL injection attacks by converting
+              apostrophe characters (') to “curly” quotes (‘ or ’), by converting double
+              dashes (--) into em dashes (—), and converting semicolons (;) into a
+              numeric HTML character entities (&amp;#x3B; or &amp;#59;). You can use
+              <em><a
+              href='http://php.net/manual/en/function.str-replace.php'>str_replace()</a></em>
+              to handle double dashes and semicolons, but you will need to use <em><a
+              href='http://php.net/manual/en/function.preg-replace.php'>preg_replace()</a></em>
+              to handle the quote characters, as shown in class.
+              <p>
+                For example, the first statement below replaces all double quote
+                characters that are at the beginning of a string (<code>^</code>) or
+                preceded by whitespace (<code>\s</code>) with left curly quotes. The
+                parentheses around <code>^|\s</code> captures that part of the matched
+                string so that it can be re=inserted before the <code>“</code> by using
+                <code>$1</code> in the replacement string. The second statement simply
+                replaces any remaining double quotes with right curly quotes. Just change
+                the double quotes to single quotes for this part of the assignment.
+              </p>
+<code class='block'>  $returnVal = preg_replace('/(^|\s)"/', '$1“', $returnVal);
+  $returnVal = str_replace('"', '”', $returnVal);
+</code>
+              <p>To paraphrase an old joke:</p>
+              <div style='text-align:center;font-style:italic'>“6 munce ago I kudnt even
+              spel reglur xpreshin and now i я one”</div>
+              <p>
+                Prevent cross-site scripting attacks by converting all ampersand (&amp;),
+                less-than (&lt;), and greater-than (&gt;) characters to XML character
+                entities (<code>&amp;amp;</code>, <code>&amp;lt;</code>, and
+                <code>&amp;gt;</code>, respectively).
+              </p>
+              <p>
+                While you’re at it, convert double apostrophes (") to curly quotes as well
+                (“ or ”).
+              </p>
+              <p>
+                Use your <em>sanitize()</em> function to convert all form data into “safe”
+                strings which, except for the conversion to curly quotes and substitution
+                of em dashes for double dashes, look just like what the user typed into
+                the form.
+              </p>
+            </li>
+            <li>
+                <h5>Test your form thoroughly</h5> and carefully. Don’t forget <a
+                href='http://xkcd.com/327/'>Little Bobby Tables</a>!
+            </li>
+            <li>
+              <h5>Be sure both validators continue to give your site a clean bill of
+              health.</h5>
+            </li>
+            <li>
+              <h5>Send me an email</h5> with “CSCI 903 Assignment 4B” as the subject, and
+              be sure to include you account name in the message body. The assignment is
+              due by midnight of the due date (April 25).
+            </li>
+          </ul>
+        </li>
+        <li id='third-part'>
+          Do not add this step to your web site until you have received your grade for the
+          previous step of the project.
+          <ul>
+            <li>
+              <h5>Encode passwords using <em>crypt()</em></h5> using the SHA-512 algorithm
+              with the date and time of the encryption (YYYY-MM-DD HH:MM) as the salt.
+              Verify that the encrypted password is being computed by displaying it in
+              place of the plain password in your <code>display_form_data.php</code> page.
+              You can’t completely test this code for correctness until you set up a database
+              to save user names and passwords.
+            </li>
+            <li>
+              <h5>Test your code.</h5> The password field should show a string that starts
+              with '$6$2013-05-01 13:57$...' but with the actual date and time in the
+              sixteen characters following the second dollar sign, and the encrypted
+              password in place of the '...' following the third dollar sign. Only in the
+              following step will you be able to test whether the encrypted password
+              “works” or not.
+            </li>
+            <li>
+              <h5>Be sure both validators continue to give your site a clean bill of
+              health.</h5>
+            </li>
+            <li>
+              <h5>Send me an email</h5> with “CSCI 903 Assignment 4C” as the subject, and
+              be sure to include you account name in the message body. The assignment is
+              due by midnight of the due date (May 2).
+            </li>
+          </ul>
+        </li>
+        <li id='fourth-part'>
+          Do not add this step to your web site until you have received your grade for the
+          previous step of the project.
+          <ul>
+            <li>
+              <h5>Set up your database and use it to save user names and passwords</h5>.
+              Look at the documentation for SQLite3 at <a
+              href='http://www.sqlite.org'>http://www.sqlite.org/</a> and the
+              documentation for the PHP SQLite3 interface in the <a
+              href='http://www.php.net/manual/en/book.sqlite3.php'>PHP Manual</a>.
+              <p>
+                I have written a <a href='./using_sqlite3.html'>mini-tutorial on using
+                SQLite3 with PHP</a> to help you get started.
+              </p>
+              <p>
+                I have set up an empty SQLite3 database that your code can read and write in
+                your home directory: it’s called <code>cs903.db</code>. Since your project
+                directory is two levels below your home directory, use
+                <code>../../cs903.db</code> to open it.
+             </p>
+            </li>
+            <li>
+              <h5>Modify <code>display_form_data.php</code></h5> to check whether the user
+              is in the database or not. If not, insert the username and encrypted
+              password, and display a message saying the user was successfully
+              registered before displaying the table with the form data.
+              <p>
+                If the user is already in the database, check that the password the user
+                supplied is correct. If it is, display a message greeting the user by name
+                before displaying the table with the form data. If not, display a
+                statement saying that the login failed before displaying the form data.
+              </p>
+            </li>
+            <li>
+              <h5>Send me an email</h5> with “CSCI 903 Assignment 4D” as the subject, and
+              be sure to include you account name in the message body. The assignment is
+              due by midnight of the due date (May 7).
+            </li>
+          </ul>
+        </li>
+        <li id='fifth-part'>
+          Do not add this step to your web site until you have received your grade for the
+          previous step of the project.
+          <p>
+            This is a somewhat open-ended part of the assignment, with a required portion
+            plus some ideas for extra features you may add to your project for extra
+            credit—if you have time.
+          </p>
+          <ul>
+            <li>
+              <h5>Use session variables to manage error conditions (Required).</h5>
+              If the user does not log in correctly (missing username or missing/wrong
+              password), redirect them to the index page for the assignment, and display
+              an error message above the login form there.
+              <p>
+                If you have not done so already, this step will require you to put
+                the code for checking the form data at the top of the display form data
+                page, before the HTTP headers get sent, because the <code>headers()</code>
+                function cannot be called once any part of the response message has been
+                output. [Actually, PHP provides a mechanism called “output buffering” that
+                could be used, but it’s not worth the trouble in this case.]
+              </p>
+              <p>
+                Code to save an error message in a session variable and redirect the user
+                to the index page:
+              </p>
+<code class='block'>
+  $_SESSION['error_msg'] = "This is a meaningful error message";
+  header('Location: index.php');
+  exit;
+</code>
+              <p>
+                As discussed in class, you will have to call the <a
+                href='http://php.net/manual/en/function.session-start.php'>session_start()</a>
+                function at the start of both the index page and the display form data
+                page in order to establish communication between them.
+              </p>
+              <p>
+                And you will need to modify the index page to display the error message if
+                there is one. Once an error message has been displayed, it should be
+                deleted: <code>unset($_SESSION['error_msg'])</code>, for example.
+              </p>
+            </li>
+            <li>
+              <h5>Require new users to enter the initial password twice (Required).</h5>
+              This step is required, but the next one is optional. Nonetheless, you should
+              set this step up in anticipation of the optional step.
+              <p>
+                Instead of just one password field, provide three: one for the current
+                password (to be used by current users), and two for a new password and a
+                repeated new password. New users have to enter the same password in both
+                the new and repeat-new boxes in order to register successfully. Existing
+                users have to enter their current password correctly in order to log in
+                successfully.
+              </p>
+            </li>
+            <li>
+              <h5>Allow users to change their password (Optional).</h5> Registered users
+              enter their current password and a new password (repeated) to change their
+              password. This will require use of an <code>UPDATE</code> SQL statement with
+              a <code>WHERE</code> clause to limit the update to just the one user.
+            </li>
+            <li>
+              <h5>Provide a “manage profile” page (Optional).</h5> Add columns to your
+              users table for additional information, such as email addresses, real name,
+              home address, phone number, favorite color, whether to receive spam, etc.
+              <p>
+                Provide a form on the display form data page that users can use to manage
+                their profile information.
+              </p>
+            </li>
+            <li>
+              <h5>Provide a “manage users” page (Optional).</h5> Create a list of
+              privileged users (administrators). This can be as simple as an extra boolean
+              column in the users table. Be sure user “vickery” with password “secret” is
+              included in this list.
+              <p>
+                Provide administrators with a table showing all the users and the
+                information about them. Allow administrators to delete users and/or to edit
+                any user’s profile.
+              </p>
+            </li>
+            <li>
+              <h5>Send me an email</h5> with “CSCI 903 Assignment 4E” as the subject, and
+              be sure to include you account name in the message body. The assignment is
+              due by midnight of the due date (May 21).
+              <p>
+                To receive credit for any optional parts of the assignment that you
+                complete, <em>you must include a message in your email telling me what to
+                look for.</em>
+              </p>
+              <p><strong>Note: May 21 is the absolute cutoff date for all assignments in
+              this course. Absolutely no credit will be given for work submitted after
+              that date.</strong>
+              </p>
+            </li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+    <footer>
+      <a href='.'>Class Schedule</a> —
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> —
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </footer>
+  </body>
+</html>

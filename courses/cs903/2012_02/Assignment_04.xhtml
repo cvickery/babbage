@@ -1,0 +1,147 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CSCI 903 Assignment 4</title>
+    <link rel="shortcut icon" href="../../cs903/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+  </head>
+
+  <body>
+  <h1>CSCI-903 Assignment 4</h1>
+    <h2>Phrases</h2>
+    <ul>
+      <li> Menippus in the Moon </li>
+      <li> Synchronize sympathetic needles </li>
+      <li> Morse Code is not a binary language </li>
+      <li> 12,000 E’s, but only 200 Z’s </li>
+      <li> Tone languages </li>
+      <li> Redundancy </li>
+    </ul>
+    <h2>Assignment</h2>
+    <div>
+      <h3>Requirements</h3>
+      <div>
+        <p>
+          As you read Chapter 1 of <em>The Information</em>, you will encounter the above phrases (or
+          approximations to them). Each deals with an aspect of encoding information:
+        </p>
+        <ul>
+          <li>Communicating information over distances</li>
+          <li>Time coordination between cummunicators</li>
+          <li>Efficient encoding schemes</li>
+        </ul>
+        <p>
+          Write an essay that takes two or more of the listed phrases as points of departure to
+          explain fundamental aspects of information theory. The essay should be 2-3 double-spaced
+          pages, or the equivalent amount of text in a web page.
+        </p>
+        <p>
+          Since this is an essay, not a report, an informal citation style is more appropriate than
+          either MLA or APA format. The first time you cite a work, reference it in-line: (“James
+          Gleick says in <em>The Information</em> that ...).
+          After that, you can refer to the book either by the author (“Gleick also says,
+          ...”) or by the title (“As the fourth chapter of <em>The Information</em> makes clear,
+          ...”).
+        </p>
+      </div>
+      <h3>
+        File Format
+      </h3>
+      <div>
+        <p>
+          You may submit either a web page or a word processing document for this assignment. If you 
+          submit a web page, you will need to substitute HTML terminology into the following guidelines.
+        </p>
+        <p>
+          Once you have decided what you are going to write about (see below), make an <em>outline</em>
+          of what you are going to say. Use the Heading1 style for the title of your essay, and use
+          Heading2 styles for each section of the essay. If you use a word processor, you can enter
+          the outline in “Outline View.” Even if you type the outline in Normal View, you will be able
+          to switch to outline view to look at the outline.
+        </p>
+        <p>
+          The reason for this part of the assignment is to get you accustomed to structuring information
+          (your essay) and using “markup” information to record that structure within the document.
+        </p>
+      </div>
+      <h3>Essay Contents</h3>
+      <div>
+        <p>
+          Begin by thinking what you want to write about and what you want to say about it. “Menippus
+          in the Moon” is a reference to transmitting information over a distance; "Synchronize
+          sympathetic needles” refers to a problem involved in synchronizing communication when sender
+          and receiver are physically distant;
+          “Morse Code is not a binary language” deals with encoding information (and raises an
+          apparently paradoxical question: if Morse Code is all dots and dashes, why isn’t it binary?);
+          “12,000 E’s but only 200 Z’s” refers to the design of efficient information codes; “Tone
+          languages” refers both to communicating information over distances and the need for redundancy
+          when using a limited information alphabet; “Redundancy” introduces the notion that effective
+          communication and efficient communication are not necessarily the same.
+        </p>
+        <p>
+          So, essentially, you are to write an essay about how the concepts of communicating and/or 
+          encoding information are embodied in such diverse real-world activities as travel (Menippus),
+          telegraphy, printing, African drumming, etc. Don’t let this make your head explode, but the
+          reason for writing an essay is to communicate information to your reader. Think about the
+          message you are going to send, and think about how to structure (encode) that message so that 
+          it is communicated both efficiently and effectively.
+        </p>
+        <p>
+          The page requirement is a way of saying how much information you are to communicate, not an
+          invitation to send redundant or extraneous information. (“Don’t pad!”)
+        </p>
+        <p>
+          Essays are not always explicitly divided into sections but, as a requirement, this one must 
+          be.
+          A generic outline might have sections called, <em>Introduction</em>, <em>Body</em>, and
+          <em>Conclusion</em>, and that outline would be a reasonable way to structure your essay.
+          But instead of using those generic terms, you are to tailor the headings to the content of 
+          your essay, and to create a meaningful title for it as well.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

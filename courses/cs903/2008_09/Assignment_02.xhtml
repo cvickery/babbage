@@ -1,0 +1,148 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 2</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 2</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+      	This exercise uses CSS to set up styles, and a JavaScript event listener to change the <span class="attributeName">class</span>
+        attribute of paragraphs when the user hovers over them, thereby triggering dynamic style changes.
+      </div>
+      
+      <h2>Description</h2>
+      <div>
+      	<p>
+        	Edit your web site&rsquo;s index page so it has five paragraphs of <a href="http://lipsum.com">Lorem Ipsum</a> text.
+        	Give the first two paragraphs a class attribute with the value <span class="codeSnippet">"important"</span>.
+        	Add <span class="tagName">script</span> tags to
+          the head of the document to <a href="../core.js">core.js</a> and to a new script file named <span class="fileName">assignment_02.js</span>.
+          Download <span class="fileName">core.js</span> into your <span class="directoryName">scripts</span> directory
+          and create a new file named
+          <span class="fileName">assignment_02.js</span> there. Note that the tag for <span class="fileName">core.js</span> must
+          be before the tag for <span class="fileName">assignment_02.js</span> because the latter uses
+          program elements that are defined in the former.
+        </p>
+        <p>
+        	Create a stylesheet named <span class="fileName">assignment_02.css</span> and add a link to it in the head of your index page. If you prefer,
+          you can change the name of <span class="fileName">assignment_01.css</span> to <span class="fileName">assignments.css</span> and just adjust
+          the link you already have.
+        </p>
+        <p>
+        	Edit your style sheet so paragraphs have different appearances depending on the combination of <span class="attributeName">class</span> values:
+          <span class="codeSnippet">important</span>, <span class="codeSnippet">selected</span>, or both:
+        </p>
+        <p class="code_block">
+  .important 	{ &hellip; }
+  .selected 	{ &hellip; }
+  [code~="important"][code~="selected"] { &hellip; }
+        </p>
+				<p>
+        	In your JavaScript code, create a global variable that references an object that contains a function named <span
+          class="functionName">init()</span>, and pass a reference to this object <span class="functionName">to Core.start()</span>:
+        </p>
+        <p class="code_block">
+  var CS903 = {
+    init: function() { &hellip; }
+    };
+  Core.start(CS903);
+        </p>
+        <p>
+        	Test your code by putting an <span class="functionName">alert()</span> or <span class="functionName">console.log()</span> call inside your
+          <span class="functionName">init()</span> function and viewing your web page.
+        </p>
+        <p>
+        	Remove the <span class="functionName">alert()</span> or <span class="functionName">console.log()</span> call from the code, and
+        	add two functions to your global object, one of which uses <span class="functionName">Core.addClass()</span> to add
+          <span class="codeSnippet">selected</span> to the <span class="attributeName">class</span> attribute of an element, and another that uses
+          <span class="functionName">Core.removeClass()</span> to remove it. Set these two functions up as event listeners for the <span
+          class="codeSnippet">mouseover</span> and <span class="codeSnippet">mouseout</span> events for every paragraph in the
+          <span class="variableName">content</span> <span class="tagName">div</span> of your document.
+        </p>
+        <p>
+        	Test your code to be sure that each paragraph changes its appearance when the mouse hovers
+        	  over it and that <span
+          class="variableName">important</span> paragraphs look different from regular paragraphs when
+        	  the mouse hovers over them.
+        </p>
+        <p>
+        	Test your code using Internet Explorer, Firefox, Safari, Opera, and (optionally) Chrome.
+        </p>
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have built and tested your web page, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;2</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a 
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs090.3">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

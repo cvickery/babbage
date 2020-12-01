@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Using SQLite3 with PHP</title>
+    <style type='text/css'>
+      html {
+        font-size:16px;
+        background-color: #666;
+        margin:0; padding: 1em;
+        }
+      body {
+        background-color: #eee;
+        color: #933;
+        max-width: 927px;
+        border-radius:0.25em;
+        margin:auto; padding:1em;
+        }
+    </style>
+  </head>
+  <body>
+<h1>Using SQLite3 with PHP</h1>
+
+<h2>Introduction</h2>
+
+<p>  SQLite3 is a <em>database management system</em> (DBMS) that provides a
+  “lightweight” mechanism for developing database applications. It is
+  not designed for a production environment, but is very well-suited for
+  student projects in the undergraduate course on script programming for
+  the web.</p>
+
+<p>  This document presents a working subset of the full SQLite3 package
+  available in PHP. For more details and information about other SQLite3
+  features available, consult the <a href="http://php.net/manual/en/book.sqlite3.php">PHP
+  Manual</a> and the SQLite3
+  documentation at <a href="http://www.sqlite.org/">SQLite.org</a>.</p>
+
+<p>  The PHP support for SQLite3 uses PHP’s <em>Object Oriented Programming</em>
+  (OOP) features, and you should consult <a href="http://www.php.net/manual/en/language.oop5.basic.php">that part of the PHP
+  manual</a> in order
+  to understand the syntax described here.</p>
+
+<h2>SQLite3</h2>
+
+<p>  The following functions should serve your needs for the projects in
+  this course:</p>
+
+<hr />
+
+<pre><code>$db_handle  = new SQLite3($filename);
+$db_handle-&gt;exec($query_string);
+$result     = $db_handle-&gt;query($query_string);
+$row        = $result-&gt;fetchArray();
+</code></pre>
+
+<hr />
+
+<p>  The <code>$filename</code> parameter is a string that points to your database
+  file. The file and the directory that contains it must both be
+  writeable by the web server. The <code>$db_handle</code> that is returned is
+  an object that serves much the same purpose as the <em>resource</em> returned
+  when you open a file or directory using <code>fopen()</code> or <code>opendir()</code>.</p>
+
+<p>  The <code>exec()</code> and <code>query()</code> functions both submit a string containing
+  an SQL statement (see below) to the database for processing. The
+  difference is that <code>exec()</code> doesn’t return a value, and thus is most
+  appropriate for SQL statements like <code>CREATE</code>, <code>INSERT</code>, <code>UPDATE</code>,
+  <code>DELETE</code> or <code>DROP</code>. But <code>query()</code> is used for <code>SELECT</code> statements,
+  which return values from the database. The <code>$result</code> value returned is
+  another type of PHP object, which you use for accessing the actual
+  data returned by the query.</p>
+
+<p>  The <code>fetchArray()</code> function returns one row from the results returned
+  by <code>query()</code>, or <code>false</code> if there are no (more) rows. The <code>$row</code> value
+  returned is an array with one element for each column in the row
+  returned. Use can index into that array using the name of a database
+  table column. See examples below.</p>
+
+<h2>SQL Statements</h2>
+
+<p>  Database design and the SQL language are big topics. What follows is
+  an annotated description of some statements that should serve to get
+  you started. <em>A little knowledge is a dangerous thing</em>, so please
+  don’t try to extrapolate from this little example to the real world
+  without doing some research on how to set up and use relational
+  databases effectively.</p>
+
+<p>  SQL statements consist of <em>keywords</em> and <em>arguments</em> along with some
+  syntax characters. Keywords are conventionally written in uppercase
+  letters for readability, but lowercase versions work just fine. Values
+  are enclosed in single quotes if they are strings, but not if
+  they are numbers. SQLite3 does not enforce data types the way most
+  database systems do. It’s more like PHP, where a cell in a table can
+  hold either a number or a string without complaint.</p>
+
+<p>  SQL comments start with a double-dash, and continue to the end of the
+  line. They are ignored by the database, but are used below to add some
+  commentary to the examples.</p>
+
+<p>  The semicolon at the end of an SQL statement is optional when
+  submitting a query string to <code>exec()</code> or <code>query()</code>.</p>
+
+<p>  If you were to install SQLite3 on your computer, you could run the
+  SQLite3 interpreter from the command line, and type the following
+  commands and see them execute interactively:</p>
+
+<hr />
+
+<pre><code>--  Create a table, if it does not aleady exist. It will consist of
+--  two columns, named `username` and `password`, both of which are
+--  strings. The `username` column is declared to be the _primary key_
+--  for the table, which means that each row in the table must have a
+--  unique value.
+CREATE TABLE IF NOT EXISTS users (
+    username STRING PRIMARY KEY,
+    password STRING);
+
+--  Add a user named _John_ to the users table
+INSERT INTO users VALUES ( 'John', 'secret' );
+
+--  Add another user named _Mary_ to the users table
+INSERT INTO users VALUES ( 'Mary', 'notsosecret' );
+
+--  And a third user...
+INSERT INTO users VALUES ( 'Chris', 'secret');
+
+--  Get all the data from all the users. This query will return
+--  three rows, with two columns in each row.
+SELECT * FROM users;
+--  Using the PHP code given above, after calling `fetchArray()`
+--  once, `$row['username']` will be _John_ and `$row['password']`
+--  will be _secret_.
+
+--  Lookup _Chris_. Note that the single equal sign is for
+--  comparison, not assignment.
+SELECT * FROM users WHERE username = 'Chris';
+
+--  Lookup everyone who has 'secret' as a password, no matter how
+--  it’s capitalized. This query will return two rows.
+SELECT * FROM users WHERE lower(password) = 'secret';
+
+--  Change Chris’ password
+UPDATE users
+   SET password = 'Very Secret'
+ WHERE username = 'Chris';
+
+--  Remove John by using his password. Would also delete Chris
+--  if his password was still `secret`.
+DELETE FROM users WHERE password = 'secret';
+</code></pre>
+
+<hr />
+
+<h2>PHP Example</h2>
+
+<p>  The following sequence of PHP statements illustrate the use of SQLite3
+  on a PHP web page that receives form data sent by the <em>post</em> method.
+  It is not intended as a real application, just a demonstration of
+  using the various constructs described above.</p>
+
+<hr />
+
+<pre><code>$db = new SQLite3('my_database') or die('Unable to open database');
+$query = &lt;&lt;&lt;EOD
+  CREATE TABLE IF NOT EXISTS users (
+    username STRING PRIMARY KEY,
+    password STRING)
+EOD;
+$db-&gt;exec($query) or die('Create db failed');
+$user = sanitize($_POST['username']);
+$pass = sanitize($_POST['password']);
+$query = &lt;&lt;&lt;EOD
+  INSERT INTO users VALUES ( '$user', '$pass' )
+EOD;
+$db-&gt;exec($query) or die("Unable to add user $user");
+$result = $db-&gt;query('SELECT * FROM users') or die('Query failed');
+while ($row = $result-&gt;fetchArray())
+{
+  echo "User: {$row['username']}\nPasswd: {$row['password']}\n";
+}
+</code></pre>
+
+<hr />
+</body></html>

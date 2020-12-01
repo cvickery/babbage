@@ -1,0 +1,241 @@
+<?php
+  $this_dir = opendir('.');
+  $this_link = "";
+  $this_year = "";
+  $this_term = "";
+  while ($dir_entry = readdir($this_dir))
+  {
+    if (is_dir($dir_entry) && preg_match('/(\d{4})_(\d{2})/', $dir_entry, $year_term))
+    {
+      $this_year = $year_term[1];
+      $this_term = ($year_term[2] === '02') ? 'Spring' : 'Fall';
+      $this_link = $dir_entry;
+    }
+  }
+
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Script Programming For The Web</title>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/syllabus.css" />
+  </head>
+
+  <body id='urn:uuid:9DF37043-2B5E-4C0E-AF51-AC532EECCEE7'>
+    <div id="header">
+      <h1>Script Programming For The Web<br /><a href="http://babbage.cs.qc.cuny.edu">Dr. Vickery</a></h1>
+    </div>
+
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          There are four elements of a typical web site that this course is designed to pull
+          together: content markup (XHTML), content presentation (CSS), user&mdash;browser
+          interaction (JavaScript) and content management (PHP/SQL). The prerequisite for this
+          course is <a href="http://babbage.cs.qc.cuny.edu/courses/cs081">Computer Science 081</a>
+          or the equivalent, which should have given you a firm grounding in XHTML and CSS.
+        </p>
+        <p>
+          JavaScript is a programming language that is available in all browsers as well as several
+          other applications, including Photoshop, OpenOffice, and Flash (where it is called
+          ActionScript). In all these environments, JavaScript is used to extend and customize the
+          behavior of the base application. In the case of browsers, JavaScript can be used to
+          validate information entered by users locally before submitting that information to a
+          remote server, as well as to provide many forms of user interaction that go beyond those
+          available using CSS.  JavaScript is the 'J' in <span title="Asynchronous JavaScript And
+          XML">AJAX</span>.
+        </p>
+        <p>
+          Content management refers to a combination of programs and a database that run on a remote
+          server, often the same server that delivers web pages when the user clicks on a link.
+          Server-side programs can be written in any programming language; in this course you will
+          work with PHP, a scripting language largely derived from an earlier scripting language,
+          Perl. PHP is the most widely used server-side scripting language in use today; other
+          popular languages (besides Perl) are Ruby, Python, and Java. (Java, by the way, has
+          nothing to do with JavaScript.)
+        </p>
+        <p>
+          There are several database systems that can be used for managing content: Oracle is widely
+          used on very large corporate and shopping web sites; MySQL, owned by Sun Microsystems, is
+          an extremely popular system that is available at no cost.  We will use PostgreSQL for our
+          databases. It is free and open source, and historically has had a better feature set than
+          MySQL. This course concentrates on JavaScript and PHP programming, so the choice of which
+          database system we use will have little impact on your work in the course.
+        </p>
+        <p>
+          There is a <a href="../TREE_Lab">laboratory in the Computer Science Department</a> where
+          we have Apache web servers with PHP support installed, access to PostgreSQL databases (one
+          for each student), and industry standard development tools like Dreamweaver. You use the
+          computers in the lab any time the college is open, and you can <a
+          href="../TREE_Lab/using_scp.xhtml">log into them remotely from off campus</a> anytime,
+          24/7. Alternatively, you can set up Apache/PHP/PostgreSQL on your own computer, do your
+          assignments there, and then upload your assignments to your account in the lab for final
+          testing and submission.
+        </p>
+
+      <h2>Topics</h2>
+      <p>
+        The following is a generic list of topics for the course. The actual schedule of assignments and
+        exams is given in <a href="<?php echo $this_link; ?>">this semester&rsquo;s course web
+        page.</a>
+      </p>
+
+      <table id='course-outline'>
+        <tr>
+          <th>Class Numbers</th><th>Topics</th>
+        </tr>
+        <tr>
+          <th scope="row">1</th>
+          <td>
+            <h4>Introduction to Scripting Languages</h4>
+            <ul>
+              <li>Compilers, Emulators, and Interpreters</li>
+              <li>Shell Scripting: Bash; Cmd.exe, &hellip;</li>
+              <li>CGI Scripting: Perl, &hellip;</li>
+              <li>Scripting Languages: JavaScript; PHP; Ruby; Python, &hellip;</li>
+              <li>Libraries and Frameworks</li>
+              <li>Scripting, Web Standards, and Accessibility</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>
+            <h4>Web Site Structure And Operations</h4>
+            <ul>
+              <li>Client-Server Model: Internet message passing; hosts; ports</li>
+              <li>The Apache Server: Configuration file; modules; log files</li>
+              <li>DocumentRoot</li>
+              <li>
+                Subdirectories: <span class="directoryName">css</span>, <span
+                class="directoryName">scripts</span>, <span
+                class="directoryName">images</span>
+              </li>
+              <li>Life-cycle of a web request from browser&rsquo;s perspective</li>
+              <li>Server request processing: server-side scripting</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">3-10</th>
+          <td>
+            <h4>Client-Side Scripting</h4>
+            <ul>
+              <li>
+                <span class="tagName">script</span> tags, <span
+                class="directoryName">scripts</span> directories, and <span
+                class="fileName">.js</span> script files. <span class="programName">jsmin</span>
+                and <span class="programName">jslint</span>.
+              </li>
+              <li>
+                Embedded JavaScript &mdash; Not!
+              </li>
+              <li>
+                Values: numbers; strings; references; booleans
+              </li>
+              <li>
+                Variables, Expressions, Statements, Functions, Arrays, and Objects
+              </li>
+              <li>
+                Events: handlers <span class="latin">vs</span> listeners; managing
+              </li>
+              <li>
+                Control Structures
+              </li>
+              <li>
+                DOM Interactions: Form verification; Dynamic Effects
+              </li>
+              <li>
+                Debugging/Optimizing with <span class="programName">FireBug</span>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr><th scope="row">11</th><th>Midterm Exam</th></tr>
+        <tr>
+          <th scope="row">12-20</th>
+          <td>
+            <h4>Server-Side Scripting</h4>
+            <ul>
+              <li>
+                Server Processing (Apache): embedding in XHTML documents; code scope; generating
+                response headers
+              </li>
+              <li>
+                Variables, Expressions, Functions, Arrays, Objects, Classes
+              </li>
+              <li>
+                Control Structures
+              </li>
+              <li>
+                Receiving and sanitizing form data.
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">21-28</th>
+          <td>
+            <h4>Client-Server Script Interactions</h4>
+            <ul>
+              <li><span class="functionName">XMLHTTPRequest</span> Processing</li>
+              <li>JSON Processing: JavaScript; PHP</li>
+              <li>XML Processing: Use as a database</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row"></th><th>Final Exam/Project</th>
+        </tr>
+      </table>
+      <h2>Projects and Grading</h2>
+      <div>
+        <p>
+          There will be an ongoing set of programming assignments during the semester. Small
+          assignments will be graded on an "OK"&mdash;"Not OK" basis, while larger assignments will
+          be graded on a 10&ndash;point scale. The number and sizes of the assignments varies from
+          semester to semester, but in aggregate you can expect them to count 30&ndash;40% of your
+          course grade. The midterm and final exams will count equally for the remainder of your
+          grade. Exams are based on concepts and programming techniques required for doing the
+          assignments.
+        </p>
+        <p>
+        	To receive full credit for programming assignments, they must be correct and submitted by
+          midnight of their announced due dates. Assignments submitted up to one week after they are
+          due will receive up to half credit. After one week, no credit will be given but
+          assignments may still be submitted for feedback. Assignments are typically cumulative, so
+          it is generally necessary to complete all assignments, even if their deadlines are missed.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../">Vickery Home</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.
+    </div>
+  </body>
+</html>

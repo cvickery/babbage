@@ -1,0 +1,125 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 4</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 4</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        This assignment is the first part of a multi-part project in which you will eventually construct a complete
+        web site that students and faculty can use to apply to serve on Academic Senate committees at Queens College.
+        In this first step of the project,
+        you will construct a page with a form that will eventually allow users to log into the system or to register to
+        use the
+        system if they have not done so previously. 
+      </div>
+
+      <h2>Project Description</h2>
+      <div>
+        <h3>Set Up The Assignment</h3>
+        <p>
+        	Create a directory for the entire project named <span class="directoryName">Senate_Application</span>
+          directly under your <span class="directoryName">My Website</span> directory. Use the <a
+          href="../template.zip" title="Zip file containing template.xhtml">template webpage</a> to create two web
+          pages, named <span class="fileName">index.xhtml</span> and <span
+          class="fileName">loginOrRegister.xhtml</span> in this directory.
+        </p>
+        <p>
+        	Add a form to <span class="fileName">index.xhtml</span> with <span class="tagName">input</span> elements, one
+          of type <span class="codeSnippet">text</span> and one of type <span class="codeSnippet">password</span> so the 
+          user can enter a Queens College email address and a password, 
+          and a Submit button. Set up the form
+          so that submitting it displays the loginOrRegister page using the GET method (for now). The loginOrRegister
+          page should have a message that shows the email address and password that the user entered on the form.
+        </p>
+        <p>
+          Now add <span class="tagName">script</span> links to the <a href="../core.js">Core library from the
+          textbook</a> and your own JavaScript file named senate_application.js. Both of these scripts go in the
+          <span class="directoryName">scripts</span> directory of your web site. I am providing a <a
+          href="../script_model.js">model script file</a> that you may use to get started. I have commented that file
+          to explain its structure: change the comments so they more meaningfully guide another programmer through the
+          code. 
+        </p>
+        <p>
+        	At this point, you should have a working web site, except that it really doesn&rsquo;t do anything meaningful
+          yet. The <a href="Assignment_05.xhtml">next step</a> will be to validate the user&rsquo;s input before
+          submitting the form.
+        </p>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have built and tested your web pages, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;4</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../courses">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs090.3">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

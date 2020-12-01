@@ -1,0 +1,106 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 7</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 7</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        For this assignment, you are to look up the user&rsquo;s email address and password in the database.
+      </div>
+
+      <h2>Project Description</h2>
+      <div>
+        <p>
+          Each student has his or her own database on <span class="computerName">maple</span>: the database name and the
+          user name for accessing it are both your own last name (uncapitalized). The password is the word
+          &ldquo;secret.&rdquo; If the user supplies a valid QC email address, connect to your database using the <span
+          class="functionName">pg_connect()</span> function. If your last name is Jones, your connection string would be
+          <span class="codeSnippet">host=maple.cs.qc.edu&nbsp;dbname=jones&nbsp;user=jones&nbsp;password=secret</span>.
+          Remember, you can access your database only from computers on campus (IP address of 149.4.xxx.xxx).
+        </p>
+        <p>
+          If the email address supplied by the user matches any email addresses in the <span
+          class="variableName">people</span> table of the database, list the <span
+          class="variableName">first_name</span> and <span class="variableName">last_name</span> fields for all matching
+          addresses. If the email address is not in the <span class="variableName">people</span> table, print a message
+          saying so.
+        </p>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have tested your web pages, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;7</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../courses">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs090.3">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS 90.3 Assignment 3</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS 90.3 Assignment 3</h1>
+    </div>
+
+    <div id="content">
+      <h2>Description</h2>
+      <div class="whitebox">
+        <p>
+        	Construct a web page that uses PHP to generate a link to each file in a directory.
+        </p>
+      </div>
+      <h2>Procedure</h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Set up the assignment.
+            </h5>
+            <p class="run_in">
+              Create a directory named <span class="directoryName">Assignment_03</span> under your <span
+              class="directoryName">My&nbsp;Website</span> directory, and in it create a web page named <span
+              class="fileName">index.xhtml</span>.
+            </p>
+            <p>
+              Create a subdirectory of <span class="directoryName">Assignment_03</span> named <span class="directoryName">target</span>;
+              populate that subdirectory with an arbitrary number of files. The files may be web pages, images, and/or PDF documents.
+            </p>
+          </li>
+          <li>
+          	<h5>Do the assignment</h5>
+            <p class="run_in">
+            	Code <span class="fileName">index.xhtml</span> so that it presents the user with a set of clickable links to the files
+              in <span class="directoryName">target</span>. Format and style the page so it is attractive. Changing the contents of
+              <span class="directoryName">target</span> and reloading the page must automatically update the set of links presented to
+              the user.
+            </p>
+          </li>
+        </ol>
+      </div>
+      <h2>Check Your Work And Submit The Assignment</h2>
+      <div class="whitebox">
+
+				<p><span class="runin-head">Test your project on various browsers.</span> Because of browser differences, it is time-consuming
+        to get the project to work exactly right on all browser/computers, so the only requirement is that you provide a working
+        version for Firefox running on Windows. (I will be checking your project using Firefox on a Macintosh, but that
+        shouldn&rsquo;t make a difference.) But check your code on the other browsers available in the lab: Internet Explorer,
+        Opera, and Safari. Your code should be functional on all platforms, just not necessarily perfect.</p>
+
+        <p><span class="runin-head">Perform a link check on your site.</span> If necessary, go to the Manage Sites panel and be
+        sure you have selected the &ldquo;case-sensitive link checking&rdquo; option. Then right-click on your <span
+        class="directoryName">Assignment_03</span> directory and select the <span class="menuItem">Check Links->Selected
+        Files</span> menu item from the context menu. Fix any errors you find there.  (There should be one broken link
+        that you will need to fix.)</p>
+        
+        <p>If necessary, copy your site from your development system to the lab as described above, and do a final check
+        of your project using the <span class="codeSnippet">~</span>&lt;accountname&gt; form of URL. Then send email to
+        me telling me the project is ready for me to grade.  I will copy the project from your account in the lab to
+        <span class="computerName">babbage </span> for testing.</p>
+        
+        <p class="standout_block">The Subject line of your email must say, <span class="codeSnippet">CS-90.3 Assignment
+        3</span>, just like that, in order to get through my spam filters. Within a day, you should receive an
+        &ldquo;OK, I&rsquo;ll check it out!&rdquo; message from me acknowledging that I received your email.</p>
+
+      </div>
+    </div>
+
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>      </p>
+    </div>
+  </body>
+</html>

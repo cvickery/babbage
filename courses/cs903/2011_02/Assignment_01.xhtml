@@ -1,0 +1,265 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 1</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style>
+      img {border:1px solid red;}
+    </style>
+  </head>
+  <body id='urn:uuid:1CDEB8B4-7998-48D3-B3A3-F14287A6FA53'>
+    <h1>CS-90.3 Assignment 1<br/>
+    Due February 17</h1>
+    <div id="content">
+      <h2>Reading Assignment</h2>
+      <ul>
+        <li>
+          You have a choice how you learn PHP. You will get only a small fraction of what you need
+          from lectures; you will learn a lot simply by writing code and debugging it; and you can
+          look everything up on the <a href="http://php.net/manual/en/">excellent PHP online
+          manual</a>. But having a book that structures the presentation for you can help.
+          <p>
+            I have not studied all the available books on PHP, but if you would like to have a
+            book to guide you, I can recommend David Powers’ <cite>PHP Solutions</cite>, published
+            by “Friends of Ed,” available from Amazon for $15.50. Read chapters 1-3 for this
+            assignment.
+          </p>
+          <p>
+            As you know, a student in the course has also recommended a JavaScript text from
+            Murach’s. They also publish <cite>Murach’s PHP and MySQL</cite> by Joel Murach and Ray
+            Harris, which is available for $34.34 in Amazon. Based only on the table of contents, I
+            cannot recommend this book for this course because it uses a case history approach, and
+            their case history is different from the assignments you will be doing in this course.
+            (It’s largely a matter of personal style whether the case history approach works for
+            you. It’s a technique primarily intended for self-study, not as a supplement for coursework.) 
+            I’m just saying that trying to relate their case history to the assignments in this
+            course is likely to be a frustrating endeavor.
+          </p>
+          <p>
+            But if you do decide to try this book, start now with chapters 1-2. (And let me know
+            what your experience is.)
+          </p>
+        </li>
+      </ul>
+      <h2>Assignment To Submit</h2>
+      <div>
+        <p>
+          The assignment is a simple one: make sure your lab account is working correctly; set up a web
+          site for the course, and publish your site on babbage.cs.qc.cuny.edu.
+        </p>
+        <p>
+          When you have finished the assignment, send me an email message, and I’ll check it out on babbage.
+        </p>
+          <ul class="standout-block">
+            <li>Be sure to sign your email so I know who sent it.</li>
+            <li>The Subject line of your message must be: <pre style="margin:0 2em;">CS-90.3 Assignment 1</pre>
+            </li>
+          </ul>
+        
+        <ol>
+          <li>
+            <h5>Make sure your lab account is working correctly.</h5>
+            <p>
+            	Use the information in the <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a>
+              web page to access your account for the course. To test that your roaming profile is working
+              correctly, log into one of the lab computers, and create a file someplace, either on your desktop
+              or under your <span class="directory-name">My Website</span> directory. Log out of that computer,
+              and then log into a <em>different</em> computer. If the file you created on the first computer
+              shows up on the second computer, everything is fine. But if it doesn’t, you will have to troubleshoot
+              the problem before doing any work for the course. See Dr. Vickery if you have a problem that you cannot
+              resolve yourself.
+             </p>
+          </li>
+          <li>
+            <h5>Set up a web site for the course.</h5>
+            <p>
+              Use Dreamweaver to set up a web site for this course as demonstrated in class and as described in
+              the <a href="../../cs081/using_dreamweaver.xhtml">Dreamweaver Setup</a> web page. For now, just set
+              up a local site using your <span class="directory-name">My Website</span> directory as the 
+              Document Root for your site.
+            </p>
+            <p>
+            	Create three directories in your web site: <span class="directory-name">images</span>, 
+              <span class="directory-name">scripts</span>, and <span class="directory-name">css</span>.
+            </p>
+            <p>
+            	Create a stylesheet in the <span class="directory-name">css</span> directory named
+              <span class="file-name">assignment_1.css</span>, and add a rule to it that gives a
+              color to the background of <span class="tag">body</span> elements. 
+            </p>
+            <p>
+              Create an XHTML5 document named <span class="file-name">index.xhtml</span> that links to your
+              stylesheet. Put this code in it:
+            </p>
+            <div class="code-block">
+&lt;?php
+  header("Content-Type: application/xhtml+xml");
+?>
+&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;!DOCTYPE html>
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  &lt;head>
+    &lt;title>My Web Site&lt;/title>
+    &lt;link rel="stylesheet" type="text/css" href="css/assignment_1.css" />
+  &lt;/head>
+  &lt;body>
+    [put something interesting here]
+    &lt;a href="http://validator.w3.org/check?uri=referer">XHTML5&lt;/a>
+    &lt;a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3&lt;/a>
+  &lt;/body>
+&lt;/html>
+            </div>
+            <p>
+              There are a few things to note about this code:
+            </p>
+            <ul>
+              <li>
+                It uses PHP to generate an HTTP header at the beginning of the reply message that is
+                sent from the server to the browser, something you cannot do using HTML/CSS alone. This
+                particular header tells the browser that the document is an XHTML or XML document rather than
+                a plain HTML document. In our case, it’s XHTML5. The &lt;?xml declaration tells the browser that
+                the document being sent is XML and uses the UTF-8 character set. Make sure Dreamweaver is in sync
+                with you
+                on this. The lower right corner of your Dreeamweaver editing window has to look something like this:
+                <img src="images/assignment_01-1.png" alt="Dreamweaver Screenshot" />
+              </li>
+              <li>
+                There are two links to the W3C validation service at the end of the document’s 
+                <span class="tag">body</span> element. They must both be present in all web pages that you
+                submit for this course, and clicking on them must generate a report that shows no errors and no
+                warnings except for one XHTML5 warning saying that HTML5 validation is experimental.
+                <p>But there are exceptions to this rule:</p>
+                <ul>
+                <li>
+                  I’m seeing an error where the CSS3 validator reports syntax errors for the border-radius
+                  property. I also see that it’s in their bug-reporting system, so this error is acceptable 
+                  until they fix their bug.
+                </li>
+                <li>
+                	It is also all right to use vendor-specific CSS properties, the ones that
+                  start with -moz-, -webkit-, etc. even though they will fail to validate. Note, however, that
+                  these validation errors might mask real problems in your code that can be hard to track down.
+                </li>
+                <li>
+                  The <span class="attribute-name">type</span> attribute for the <span class="tag">style</span>
+                  element is not actually needed for XHTML5 documents, but the CSS3 validator will not find your
+                  stylesheet without it, at least for now. When you get your results from the CSS3 validator,
+                  be sure to scroll down the page to make sure it actually found your stylesheet(s)!
+                </li>
+                </ul>
+                <p>
+                  Be sure your web page shows the background color you set up in your stylesheet, and be sure
+                  it validates.
+                </p>
+                <p>
+                  If you test your web page using an older version of Internet Explorer, you will probably see
+                  your code instead of your web page. Use a newer version of IE, or use a different browser.
+                </p>
+                <p class="standout-block">
+                  For those of you new to XHTML and PHP: Web pages that contain PHP code, like this one and
+                  all the others you will write for this course, <em>must</em> be delivered by a web server
+                  (<em>apache</em>) to avoid passing PHP code to the browser. Browsers understand HTML, CSS,
+                  and JavaScript. But not PHP.<br/>
+                  This means that to view your web page, you must type the URL into the address bar of your
+                  browser, and the URL that you type must start with the name of the computer that is hosting
+                  the page.
+                  Clicking directly on a file on your computer will bring the page up in your browser, but it
+                  won’t go through the web server, and the PHP code will be sent to the browser along with the
+                  XHTML &#x2026; and the browser will barf.
+                </p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <h5>Publish your web site on babbage.</h5>
+            <p>
+              As a new feature of this course, you have been given a “shell account” on 
+              babbage.cs.qc.cuny.edu (the Macintosh workstation in my office) for the semester. The account name
+              and password are the same as for your account in the lab, but the two accounts are independent: if
+              your change your password in the lab, it does not change it on babbage, and <em>vice versa</em>.
+            </p>
+            <p>
+              One key feature of this setup is that you can set up your Dreamweaver course web site so that it
+              uses babbage as your remote server. Submitting assignments becomes a simple matter of just saving
+              your work to the remote server and letting me know that it’s ready to be checked out. The truth is,
+              you don’t actually have to use Dreamweaver to use this feature, and it’s all right to use different
+              tools if you prefer not to use Dreamweaver. But you are on your own if you decide to do that: I’m
+              assuming you are using Dreamweaver from the lab.
+            </p>
+            <p>
+            	To illustrate the process of setting up your site, here is the procedure followed by a hypothetical
+              colleague of yours named Perfect Student, whose CUNY Id is 99999999.
+            </p>
+            <p>
+              First, our friend Perfect used the Manage Sites panel to set up a local site:
+            </p>
+            <img src="images/assignment_01-2.png" alt="Screenshot" />
+            <p>
+              Perfect decided to set the Web URL in the Local Info tab of the site setup panel, but could have
+              elected to do it later in the Servers tab. Here is the Local Info tab:
+            </p>
+            <img src="images/assignment_01-3.png" alt="Screenshot" />
+            <p>
+              Note that “Case-sensitive links checking” is not checked by default, but that Perfect Student
+              (just like you) has dutifully turned it on. Now tht you are on the road to becomming a real
+              programmer, you are firmly in the world where proper user of upper and lower case matters. The
+              Using Dreamweaver web page includes a section on 
+              <a href="../../cs081/using_dreamweaver.xhtml#checking-links">how to use the case-sensitive links
+              check feature</a>
+              to help track down problems that might show up when you deploy your code to babbage.
+            </p>
+            <p>
+              The next screenshot shows the Servers tab after everything is set up correctly and the Test button
+              has been pressed. Unfortunately, you can’t see what’s actually inside the Root Directory: box because
+              it is so long. For Perfect Student it is this:
+            </p>
+            <div class="code-block">
+/Volumes/Sensitive/Library/WebServer/Documents/babbage.cs.qc.cuny.edu/Grading/903/stpe9999
+            </div>
+            <img src="images/assignment_01-4.png" alt="Screenshot" />
+            <p>
+              You will have to replace <span class="code-snippet">stpe9999</span> with your own account name.
+            </p>
+            <p>
+              Finally, here is a view of Perfect Student’s site in Dreamweaver with Assignment 1 for the course
+              finished:
+            </p>
+            <img src="images/assignment_01-5.png" alt="Screenshot" />
+          </li>
+        </ol>
+      </div>
+      <div class="standout-block">Note: you can always see larger versions of screenshots used in this course by 
+      right clicking on them and displaying them in a new tab or browser window.
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </div>
+  </body>
+</html>

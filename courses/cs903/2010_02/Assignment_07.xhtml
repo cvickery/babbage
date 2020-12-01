@@ -1,0 +1,143 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 7</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+    	p img { display:block;margin:auto; }
+    </style>
+  </head>
+  <body id='urn:uuid:812421D4-141F-49AA-837F-70A2C9F22658'>
+
+    <h1>CS-90.3 Assignment 7</h1>
+
+    <div id="content">
+      <h2>Overview and Preparation</h2>
+      <div>
+        <p>
+          This is a small assignment to get your site set up for form processing. All you have to do is to add
+          code to your index page so that there is a simple login form between the heading and the first paragraph:
+        </p>
+        <p><img src="images/login_form.png" alt="Screenshot of the login form." /></p>
+        <p>
+        	When the user submits the form by clicking the “Login” button, another page should display that has
+          “Thank you for logging in.” as its <span class="tag-name">h1</span> element.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+          	<h5>Prepare the form</h5>
+             <p>
+               The form must meet the following requirements:
+             </p>
+             <ul>
+             	<li>It must use the “get” method.</li>
+              <li>
+              	The <span class="property-name">action</span> must reference a file named
+                <span class="file-name">process_form.php</span> in your site’s <span class="file-name">scripts</span>
+                directory.
+              </li>
+              <li>
+              	All the elements in the form must be enclosed in a <span class="tag-name">fieldset</span>, which must
+                have a <span class="tag-name">legend</span> that says “login.”
+              </li>
+              <li>
+              	The words “Username” and “Passwords” must be <span class="tag-name">label</span> elements for the
+                two <span class="tag-name">input</span> elements shown, the first of which must be of
+                <span class="attribute-name">type</span> “text” and the second of which must be of 
+                <span class="attribute-name">type</span>
+                “password.’
+              </li>
+              <li>
+              	The “Login” button may be either a <span class="tag-name">button</span> or an 
+                <span class="tag-name">input</span> element, as you prefer.
+              </li>
+              <li>
+              	Make the form look “nice” using only CSS. No <span class="tag-name">table</span> elements allowed.
+              </li>
+             </ul>
+             <p>
+             	Work on the form until you are satisifed with its appearance and there are no XHTML or CSS validation
+              errors or warnings.
+             </p>
+             <p class="standout-block">
+             	You are allowed to use vendor-specific CSS3 properties for styling your form, even though they will 
+              cause CSS validation errors. For example, the following code would be allowed:
+             </p>
+             <div class="code-block">
+fieldset {
+  -webkit-border-radius:1em;
+  -moz-border-radius:1em;
+  border-radius:1em;
+}
+             </div>
+          </li>
+          <li>
+          	<h5>Implement the PHP program for processing the form.</h5>
+            <p>
+            	Duplicate the template.xhtml file for the course, and move the copy to your 
+              <span class="file-name">scripts</span> folder. Rename it to <span class="file-name">process_form.php</span>.
+            </p>
+            <p>
+            	Edit the PHP file so that the content consists only of an <span class="tag-name">h1</span> element that says,
+              “Thank you for logging in.” Change the <span class="tag-name">title</span> element to something meaningful.
+            </p>
+            <p>
+            	Click the “Login” button on your index page, and verify that (a) the 
+              <span class="file-name">process_form.php</span> script loads correctly and (b) that the process_form
+              page has the correct MIME type.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you are sure your program does everything correctly, and that there are no errors are warnings from the
+          XHTML and CSS validators, nor from Firebug,
+          just send me an email message, and I’ll check it out in the usual way.
+        </p>
+        <p>
+          Send your email message to me at: vickery<span class="at" title="Change to @">at</span>babbage.cs.qc.cuny.edu
+          by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-90.3 Assignment 7.”
+        </p>
+        <p>
+          Don’t forget to put your name in your email message!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>
+

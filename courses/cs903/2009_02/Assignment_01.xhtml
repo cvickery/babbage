@@ -1,0 +1,111 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-90.3 Assignment 1</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-90. Assignment 1<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+      	<p>
+	      	This assignment is designed to be sure you know how to use your account to do projects for this course. See the 
+  	      <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a> web page to see how to log into your account and make sure it is working
+    	    correctly. That page also has a link to the <a href="../../TREE_Lab/using_scp.xhtml">Working From Off Campus</a> web page if you want to do
+      	  your work outside the lab.
+        </p>
+        <p>
+        	If you are not familiar with Dreamweaver, consult the <a href="../../cs081/using_dreamweaver.xhtml">Dreamweaver Setup</a> web page, and follow
+          the directions there for setting up a Dreamweaver site for this course.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div class="whitebox">
+      	<p>
+      		First, download the <span class="fileName">template.zip</span> file for the course from the course schedule page, and extract the
+        	<span class="fileName">template.xhtml</span> file into your <span class="directoryName">My Website</span> directory. Using Dreamweaver,
+          duplicate this file, and change the name from <span class="fileName">Copy of template.xhtml</span> to <span class="fileName">index.xhtml</span>.
+          Visit your website using Firefox, and verify that the index page displays properly. 
+        </p>
+        <p>
+        	Set up two additional directories under <span class="directoryName">My Website</span> (assuming you already set up one named
+          <span class="fioleName">images</span> when you set up your Dreamweaver site). Name them <span class="directoryName">css</span> (for your
+          stylesheets) and <span class="directoryName">scripts</span> (for your JavaScript and PHP script files). Create a file named 
+          <span class="fileName">assignment_01.js</span> in the <span class="directoryName">scripts</span> directory, and put an 
+          <span class="functionName">alert()</span> call in it. Link the script to your index page, and verify that the dialog box is displayed each
+          time you load the index page.
+        </p>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+      	<p>
+        	When your assignment is working, log out and be sure your profile is copied back to the server. Send me an email message telling me
+          that you have completed the assignment, and I will get a copy of it from your account on Oak for testing. If your roaming profile does
+          not work, mention that in your email, and I will copy your <span class="directoryName">My Website</span> directory from your home directory
+          instead of your profile directory on Oak.
+        </p>
+        <ol>
+            <li>Be sure to put your name in your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-90.3 Assignment 1</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to either Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu or
+              vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu &mdash; but not to both.
+            </li>
+          	<li>
+            	See <a href="../syllabus.xhtml">the course syllabus</a> for grading and late homework policies.
+            </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs090.3">CS-90.3 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,241 @@
+<?php
+  $mime_type = "text/html";
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $mime_type = "application/xhtml+xml";
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: $mime_type");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+
+    <title>CSCI 903 Assignment 3</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='../feed.xml' />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/assignments.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <style type="text/css">
+      ol {counter-reset:item;}
+      ol>li {display:block;}
+      ol>li:before {
+        content: "Step " counter(item, upper-latin) ": ";
+        counter-increment: item;
+        font-weight:bold;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>CSCI 903 Assignment 3</h1>
+    <h2>Overview</h2>
+    <section>
+      <p>
+        This is a multipart assignment in which your course web site’s home index page is to
+        provide a summary of projects done to date. Once this index page has been set up,
+        the site is to adjust automatically to show new projects, when projects were last
+        modified, and summary information about each project.
+      </p>
+    </section>
+    <h2>New Account For Course</h2>
+    <section>
+      <p>
+        With this project, we are also changing the “remote” server for your site from oak
+        to babbage: I was unable to get the user-specific document root directories on oak
+        to work as I had hoped I could. Your <code>H:</code> dive will continue to be
+        available as your home directory when you access your lab account, and you should
+        continue to use your lab account to write your code for the assignments. You can
+        continue to work from off-campus using RDC, and in that way you can continue to
+        use Dreamweaver in the lab. But, as explained in the <a
+        href="../../TREE_Lab/">TREE Lab Information</a> page, and the pages linked from it,
+        you are not required to use the TREE Lab if you have a different development
+        environment you are already comfortable with.
+      </p>
+      <p>
+        But now you have <em>another</em>, separate, account with the same user name and
+        password as your TREE Lab account. This one is on babbage.cs.qc.cuny.edu. The account
+        is set up with a directory named <code>htdocs</code> in your home directory, just
+        like (but separate from) the <code>htdocs</code> directory on your <code>H:</code>
+        drive in the lab. The URL is the same as the one you used on oak: a tilde (~)
+        followed by your account
+        name.
+      </p>
+      <p>
+        To copy your files to your <code>htdocs</code> directory from another computer,
+        using Dreamweaver’s <em>sites</em> feature, Aptana Studio, WinSCP, Fugu, or some
+        other program, you need to know the pathname to your home directory. For Perfect
+        Student with a student id of 99999999, it's:
+      </p>
+      <code class='block'>
+ /Volumes/Sensitive/Library/WebServer/Documents/babbage.cs.qc.cuny.edu/cs903/stpe9999/htdocs
+      </code>
+      <p>
+        Substitute your own account name for <code>stpe9999</code>.
+      </p>
+      <p>
+        Before you start work on this assignment, you need to make sure you can copy the code
+        you develop in the lab or off campus to your babbage account, and to access it
+        using a URL like
+        <a href='http://babbage.cs.qc.cuny.edu/~stpe9999'>
+          http://babbage.cs.qc.cuny.edu/~stpe9999
+        </a>.
+      </p>
+    </section>
+    <h2>Instructions</h2>
+    <section>
+      <ol>
+        <li>
+          For this step, you are to set up your <code>htdocs</code> directory so that
+          there are three subdirectories, one for each of the first three assignments.
+          Perfect Student used “<code>Assignment_01</code>,” “<code>Assignment_02</code>,”
+          and “<code>Assignment_03</code>” for the three directory names, but you can use
+          more descriptive names if you like. Just be sure there are <em>no spaces in the
+          directory names</em> because they will be used in URLs, where spaces sometimes
+          require extra effort to get them to work right.
+
+          <p>
+            The only thing that goes in the Assignment 3 subdirectory (for now) is the
+            stylesheet for assignment 3. The index page for this assignment is to be the
+            index page for the <code>htdocs</code> directory. Create that index page using
+            the PHP and &lt;footer&gt; element with validation links like the code in the
+            previous assignments to start.
+          </p>
+          <p>
+            Make the <code>title</code> and <code>h1</code> elements of the index page
+            tell what the web site is about. Perfect Student used the title, “Perfect
+            Student’s Assignments for CSCI 903,” but you can make yours anything you like.
+            If you use an apostrophe in your <code>h1</code> element as Perfect Student
+            did, it <em>must</em> be typographically correct (a right single “curly”
+                quote(’), not a prime symbol (').
+          </p>
+          <p>
+            Test your web site to make sure your new index page displays properly and that both
+            validation links give no errors and no warnings except for the one about HTML5 from
+            the XHTML validator.
+          </p>
+          <p>
+            Now add a PHP block between the <code>h1</code> and <code>footer</code>
+            elements. This block is to display an <code>h2</code> element for each file or
+            directory in your <code>htdocs</code> directory, with the name of the file or
+            directory as the contents of the heading.
+          </p>
+          <ul>
+            <li>
+              Use the PHP <em>opendir()</em> function to get a PHP “resource” that
+              represents the current directory. See the <a
+              href='http://php.net/manual/en/function.opendir.php'>PHP Manual</a> for more
+              information on this function.
+            </li>
+            <li>
+              Use a <em>while</em> loop to get the names of the files and directories by
+              calling <em>readdir()</em> repeatedly. Echo the names of the directories
+              inside <code>h2</code> elements; ignore the files. The first Example on the
+              <em>opendir()</em> page of the PHP Manual shows how to do this, except you
+              have to put the file or directory name inside an <code>h2</code> element and
+              you are not to display the file type. (It will always be “dir.” Lookup the
+              <em>is_dir()</em> function in the PHP Manual if you are not sure what it
+              does.
+            </li>
+          </ul>
+          <p>
+            Use a stylesheet to make your web page look “good.”
+          </p>
+          <p>
+            Test your code! Try adding and removing subdirectories to your
+            <code>htdocs</code> directory to make sure it displays them correctly. Be
+            sure both validators continue to give your site a clean bill of health.
+          </p>
+          <p>
+            Send me an email with “CSCI 903 Assignment 3A” as the subject, and be sure to
+            include you account name in the message body. The assignment is due by
+            midnight of the due date (March 5).
+          </p>
+        </li>
+        <li id='second-part'>
+          Do not include this step in your web site until you have received your grade for
+          the previous step of the project.
+          <p>
+            There are some directories in your <code>htdocs</code> directory that have
+            nothing to do with your assignments. If you use Dreamweaver, it will place a
+            <code>_notes</code> there; if you use Git, it will place a <code>.git</code>
+            directory there; all directories have two extra directory entries:
+            <code>.</code>, which always represents the current directory, and
+            <code>..</code>, which always represents the directory above the current
+            directory. In Unix-based systems (Linux; Apple OS X), file and directory names
+            that begin with a dot are hidden from normal directory listings, and you
+            should eliminate them from your list of <code>h2</code> elements. That is, you
+            need to examine the first character of each directory name to see if it is a
+            dot or an underscore (to handle Dreamweaver’s <code>_notes</code>
+            directories).
+          </p>
+          <p>
+            To do this filtering, you will have to start working with directory names
+            using PHP’s string manipulation features. You will also need to learn how to
+            manage the <em>while</em> loop so it skips the unwanted directories. Both of
+            these topics will be covered in class.
+          </p>
+          <p>
+            For this step you are also to turn your <code>h2</code> text into clickable
+            links to the appropriate assignment directories.
+          </p>
+          <p>
+            Finally, look inside each directory to see if there is a file named
+            <code>README</code>, <code>README.md</code>, or <code>README.txt</code> there.
+            If so, pass the contents of the file to the <em>Markdown()</em> function and
+            display the results in a <code>div</code> element right after the
+            <code>h2</code> element. If none of those files is there, display a paragrah
+            saying there is no project description available. Do <em>not</em> put such a
+            file in the directory for the first assignment, put one named
+            <code>README</code> in the second assignment directory, and put one named
+            <code>README.md</code> in the third assignment directory so you can test that
+            this requirement works correctly. (What’s <em>not</em> being tested?)
+          </p>
+          <p>
+            Test your code carefully, and send me email with
+            <code>CSCI 903 Assignment 3B</code> as the subject, and your account name
+            in the message body. The due date is midnight March 12.
+          </p>
+        </li>
+        <li id='third-part'>
+          Do not include this step until you have received your grade for the previous step.
+          <p>
+            For the last step in this project, you are to add the name and latest date at
+            which any file in that directory or any of its subdirectories was modified.
+            Also, add an empty <code>index.php</code> file to the directory for Assignment
+            3 so user will not be able to browse the directory from the web.
+          </p>
+          <p>
+            Test the entire project carefully, and send me an email with
+            <code>CSCI 903 Assignment 3C</code> as the subject and your account name in
+            the message body. The due date is midnight March 19.
+          </p>
+        </li>
+      </ol>
+    </section>
+    <footer>
+      <a href='.'>Class Schedule</a> —
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> —
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </footer>
+  </body>
+</html>

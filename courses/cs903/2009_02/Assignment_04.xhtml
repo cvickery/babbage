@@ -1,0 +1,108 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-90.3 Assignment 4</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-90. Assignment 4<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+        <div>
+          This is an exercise in using JavaScript regular expresssions and using JavaScript to alter the appearance of a web page in response to user input.
+        </div>
+      <h2>The Assignment</h2>
+      <div>
+      	Working from your existing project, update your submit listener so that it does the following:
+        <ul>
+        	<li>
+          	Prevent the form from submitting if the user-name is not a valid email address or if the password field is less than six characters long.
+          </li>
+          <li>
+          	If anything prevents the form from being submitted, highlight the offending input element(s) by making their backgrounds turn pink. Give the elements
+            with valid values a light green background. Use the Core library <span class="functionName">addClass()</span> and 
+            <span class="functionName">removeClass()</span> functions to implement this.
+          </li>
+          <li>
+          	If the eamil address is a valid Queens College student email account, display an alert box just before the form is actually submitted. The message
+            in the alert box is to say, &ldquo;Hello, "<em>I. Name</em>"&rdquo;, where <em>I</em> is the (capitalized) initial of the person&rsquo;s first name,
+            and <em>Name</em> is the person&rsquo;s last name, properly capitalized.
+          </li>
+          <li>
+          	In the XHTML document, add the class, &ldquo;required&rdquo; to the <span class="tagName">label</span> tags for the two 
+            <span class="tagName">input</span> elements, and
+            use CSS to append a red asterisk to all elements with the <span class="attributeValue">required</span> <span class="attributeName">class</span>.
+          </li>
+        </ul>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          When your assignment is working, log out and be sure your profile is copied back to the server. Send me an email message telling me
+          that you have completed the assignment, and I will get a copy of it from your account on Oak for testing. If your roaming profile does
+          not work, mention that in your email, and I will copy your <span class="directoryName">My Website</span> directory from your home directory
+          instead of your profile directory on Oak.
+        </p>
+        <ol>
+            <li>Be sure to put your name in your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-90.3 Assignment 4</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to either Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu or
+              vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu &mdash; but not to both.
+            </li>
+            <li>
+              See <a href="../syllabus.xhtml">the course syllabus</a> for grading and late homework policies.
+            </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs090.3">CS-90.3 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

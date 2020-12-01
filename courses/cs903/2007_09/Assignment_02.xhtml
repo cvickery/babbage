@@ -1,0 +1,280 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS 90.3 Assignment 2</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css" />
+    <style type="text/css">
+      #container {
+        position:					relative;
+        }
+      #container input {
+      	border: 1px solid green;
+        }
+      #suggestionPanel {
+      	margin:						0;
+        padding:					0 0.5em;
+        background-color: white;
+        color:            green;
+        font-size:				0.8em;
+        border:           1px solid green;
+        position:					absolute;
+        top:							100%;
+        left:							0;
+        display:          none;
+        }
+      th[scope="row"] {
+      	text-align:				right;
+        padding-right:		1em;
+        }
+      .runin-head {
+      	font-weight:			bold;
+        }
+    </style>      
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS 90.3 Assignment 2</h1>
+    </div>
+
+    <div id="content">
+      <h2>Description</h2>
+      <div class="whitebox">
+        <p>
+          For this assignment, you are to create a page that uses a <span class="variableName">text</span> <span
+          class="tagName">input</span> node for users to use to enter their state, as in a contact information form. If
+          the user has JavaScript enabled, they will get a suggestion list of state names and abbreviations based on
+          what they have typed. At any point, they can pick a
+          <span id="container"><input type="text" id="theTextBox" /><span id="suggestionPanel">
+            	I suggest you select New York<br/>
+            	(or New Jersey).</span></span> state
+          from the list, which shows only those state names that contain the sequence of characters the user has
+          typed so far. If they leave the field without selecting a valid state, the text field turns red. Otherwise,
+          the two-letter state code is entered in the field, and the field turns green.
+        </p>
+      </div>
+      <h2>Procedure</h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Set up the web page.
+            </h5>
+            <p class="run_in">
+              Create a directory named <span class="directoryName">Assignment_02</span> under your <span
+              class="directoryName">My&nbsp;Website</span> directory, and in it create a web page named <span
+              class="fileName">index.xhtml</span> with several paragraphs of <span class="programName">Lorem
+              Ipsum</span> text, and put an <span class="tagName">input</span> tag in the middle of one of them.
+              The idea is to have enough text on the page so that you can move the text box to various places in
+              the window by resizing it and/or changing the aspect ratio. Your dynamic prompt list has to display
+              correctly no matter what the window geometry is.
+            </p>
+            <p>
+              Be sure the XHTML and CSS for the page pass all validation tests with no errors or warnings.
+            </p>
+          </li>
+          <li>
+            <h5>Set up your JavaScript code.</h5>
+            <p class="runin">
+              Create an anonymous object with a closure for its private varables to use as the framework for this project:
+            </p>
+            <div class="code_block">
+function generate_state_suggestions() {
+  var a = "hello";
+  return {
+    init: function () {
+      alert(a);
+      }
+    };
+  }
+Core.start( generate_state_suggestions() );
+            </div>
+          </li>
+          <li>
+            <h5>Make the suggestion panel appear and disappear in the right place.</h5>
+            <p class="run_in">
+              Create a <span class="tagName">span</span> to act as your suggestion panel, and embed it right after your
+              <span class="tagName">input</span> element. Wrap both spans inside another <span class="tagName">span</span>
+              to act as a container for the two spans. Use CSS to remove the suggestion panel from the page.
+              This setup turns out to be messier than anticipated. For one thing, whitespace in your code matters, and you
+              will have best results if the three spans are run together on one line with no spaces between them:
+            </p>
+            <p class="codeBlock">
+&lt;span id="container"&gt;&lt;input type="text" id="theTextBox" /&gt;&lt;span id="suggestionPanel"&gt;
+  I suggest you select New York&lt;br/&gt;(or New Jersey)
+  &lt;/span&gt;&lt;/span&gt;
+            </p>
+            <p>
+              You can place the suggestion panel directly below the text box by using absolute positionioning, but that only works
+              if the container is positioned too. You can position the container without taking it out of the flow of the layout by
+              declaring its <span class="propertyName">position</span> as <span class="propertyValue">relative</span> but omitting
+              the top, left, etc properties. While you are at it, you can format the suggestion panel to give whatever visual effects
+              you like (padding, font-size, etc.): 
+            </p>
+            <p class="codeBlock">
+#container {
+  position:         relative;
+  }
+#suggestionPanel {
+  position:					absolute;
+  top:							100%;
+  left:							0;
+  display:          none;
+  }
+            </p>
+            <p class="standout_block"><strong>Extra Credit: </strong>Get this to work for <span class="programName">Opera</span>
+            the way it works in other browsers!</p>
+            <p>Use <span class="functionName">Core.addEventListener()</span> to set up <span class="variableName">focus</span>
+            and <span class="variableName">blur</span> event listeners for the text box. Use them to change the
+            <span class="propertyName">style.display</span> property of the suggestion panel to make it appear and disappear
+            appropriately.</p>
+          </li>
+          <li>
+            <h5>Set up an event listener for <span class="codeSnippet">keyup</span> events.</h5>
+            <p class="runin">
+              Set up an event handler for keyup events in the textbox. Create an array of state abbreviations and
+              names ("NY New York", "NJ New Jersey", etc." which you can build from data on the USPS.com web site.)
+              When the user types a character, update the contents of the suggestion panel so it displays just those
+              items in the array that match what the user has typed.
+            </p>
+            <p>
+            	For each keyup event, get the contents of the text box (<span class="codeSnippet">textBox.value</span>),
+              and use the <span class="functionName">String.indexOf()</span> function to find which elements of your
+              master array of state abbreviations/names contain that string; create a second array containing copies of
+              the matching strings. Write a function named <span class="functionName">generateHTML()</span> that creates
+              a single string from all the elements in the matching strings array separated by html <span
+              class="codeSnippet">&lt;br /&gt;</span> tags. Then use this string to replace the contents of the suggestion
+              panel: <span class="codeSnippet">suggestionPanel.innerHTML = generateHTML();</span>
+            </p>
+            <p>
+            	Logically, you could generate the html string without building the second array, but do it this way in
+              anticipation of the next part of the project.</p>
+          </li>
+          <li>
+            <h5>Process arrow and Enter keys and blur events so the user can select a state.</h5>
+            <p class="runin">
+              If a proper state is selected, put the two-letter abbreviation in the text box and color the background
+              light green.  If the user leaves the text box without making a proper selection, leave the text box empty
+              and color the background light red.
+            </p>
+            <p>
+            	This is a bother because of browser incompatibilities in the way arrow keys, for which there are no standard
+              character codes, are handled. After some web searching (<a href="http://unixpapa.com/js/key.html">UnixPapa.com</a> />)
+              and experimentation, we have the following:
+            </p>
+            <table>
+            	<tr>
+              	<th>Browser</th><th>Key Codes for Up/Down Arrows</th><th>Notes</th>
+              </tr>
+              <tr>
+              	<th scope="row">Gecko (Firefox, etc.) and Opera</th>
+                <td>38, 40</td>
+                <td>Use keypress events to capture auto-repeat behavior.</td>
+              </tr>
+              <tr>
+              	<th scope="row">Internet Explorer</th>
+                <td>38, 40</td>
+                <td>Does not generate any keypress events for arrow keys.</td>
+              </tr>
+              <tr>
+              	<th scope="row">Safari</th>
+                <td>63232 (0xF700), 63233 (0xF701)</td>
+                <td>Generates two keypress and two keyup events for each press-release.</td>
+              </tr>
+            </table>
+          </li>
+        </ol>
+      </div>
+      <h2>Check Your Work And Submit The Assignment</h2>
+      <div class="whitebox">
+
+				<p><span class="runin-head">Test your project on various browsers.</span> Because of browser differences, it is time-consuming
+        to get the project to work exactly right on all browser/computers, so the only requirement is that you provide a working
+        version for Firefox running on Windows. (I will be checking your project using Firefox on a Macintosh, but that
+        shouldn&rsquo;t make a difference.) But check your code on the other browsers available in the lab: Internet Explorer,
+        Opera, and Safari. Your code should be functional on all platforms, just not necessarily perfect.</p>
+
+        <p><span class="runin-head">Perform a link check on your site.</span> If necessary, go to the Manage Sites panel and be
+        sure you have selected the &ldquo;case-sensitive link checking&rdquo; option. Then right-click on your <span
+        class="directoryName">Assignment_02</span> directory and select the <span class="menuItem">Check Links->Selected
+        Files</span> menu item from the context menu. Fix any errors you find there.  (There should be one broken link
+        that you will need to fix.)</p>
+        
+        <p>If necessary, copy your site from your development system to the lab as described above, and do a final check
+        of your project using the <span class="codeSnippet">~</span>&lt;accountname&gt; form of URL. Then send email to
+        me telling me the project is ready for me to grade.  I will copy the project from your account in the lab to
+        <span class="computerName">babbage </span> for testing.</p>
+        
+        <p class="standout_block">The Subject line of your email must say, <span class="codeSnippet">CS-90.3 Assignment
+        2</span>, just like that, in order to get through my spam filters. Within a day, you should receive an
+        &ldquo;OK, I&rsquo;ll check it out!&rdquo; message from me acknowledging that I received your email.</p>
+
+      </div>
+    </div>
+
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>      </p>
+    </div>
+
+  <script type="text/javascript" src="scripts/core.js"></script>
+  <script type="text/javascript">
+function generate_state_suggestions() {
+  var theTextBox      = null;
+  var suggestionPanel = null;
+  function focusListener() {
+    suggestionPanel.style.display = "inline";
+    }
+  function blurListener() {
+    suggestionPanel.style.display = "none";
+    }
+  return {
+    init: function () {
+      theTextBox = document.getElementById('theTextBox');
+      suggestionPanel = document.getElementById('suggestionPanel');
+      Core.addEventListener(theTextBox, "focus", focusListener);
+      Core.addEventListener(theTextBox, "blur", blurListener);
+      }
+    };
+  }
+Core.start( generate_state_suggestions() );
+  </script>
+  </body>
+</html>

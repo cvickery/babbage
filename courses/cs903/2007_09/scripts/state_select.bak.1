@@ -1,0 +1,307 @@
+// Javascript Document
+var States = 
+{
+	maxPrompts:			 8,		//	Max number of matches to show
+  stateInput:      null,	//	The text box for selecting a state
+  statePrompt:     null,	//	The dynamic suggestion overlay
+	curMatches:      null,	//	Array of all states that match current type-in
+  curPositions:    null,  //  Parallel array of match positions for underlining
+	firstPrompt:		-1,		//	Index of first matched state to show, if any matches
+	lastPrompt:			-1,		//	Index of last matched state to show, if any matches
+  curMatches:      0,   //  curMatches.length
+  highlightIndex: -1,   //  Index of selected state, if any, in curMatches
+  curState:       -1,   //  Index of selected state, if any, in allStates[]
+  
+  init: function()
+  {
+    stateInput = document.getElementById('state-input');
+    statePrompt = document.getElementById('state-prompt');
+
+    statePrompt.style.backgroundColor = "#eee";
+    statePrompt.style.opacity = "0.8"; // do it here to avoid css hacks
+    stateInput.value = "";
+
+    Core.addEventListener(stateInput, "focus", States.showPrompt);
+    Core.addEventListener(stateInput, "keypress", States.keypressHandler);
+    Core.addEventListener(stateInput, "keyup", States.keyupHandler);
+    Core.addEventListener(stateInput, "blur", States.blurHandler);
+    Core.addEventListener(document, "size", States.setXY);
+    Core.addEventListener(document, "scroll", States.setXY);
+    States.setXY();
+  },
+
+  blurHandler: function(evt)
+  {
+//    console.log("blurHandler:");
+    States.hidePrompt();
+  },
+  
+//  keypressHandler()
+//  ----------------------------------------------------------------------------------
+/*  Process arrow keys, which must auto-repeat.
+ */
+  keypressHandler: function(evt)
+  {
+    console.log("keypressHandler: "+evt+": "+evt.keyCode);
+    evt = evt ? evt :document.event;
+
+    if (evt.keyCode == 40)
+    {
+      // Down Arrow
+      if (States.highlightIndex < (States.curMatches.length - 1)) States.highlightIndex++;
+			if (States.highlightIndex > States.maxPrompts)
+			{
+				States.highlightIndex--;
+				States.firstPrompt++;
+				States.lastPrmpt++;
+			}
+      States.showPrompt();
+      return;
+    }
+
+    if (evt.keyCode == 38)
+    {
+      //  Up Arrow
+			if (--States.highlightIndex < 0)
+			{
+				States.highlightIndex = 0;
+				if( States.firstPrompt > 0)
+				{
+					States.firstPrompt--;
+					States.lastPrompt--;
+				}
+			}
+      States.showPrompt();
+      return;
+    }
+  },
+
+//  keyupHandler()
+//  ----------------------------------------------------------------------------
+/*  Handles keyup events by updating the list of matches.
+ */
+  keyupHandler: function(evt)
+  {
+    evt = evt ? evt :document.event;
+    if  ( (evt.keyCode == 40) || (evt.keyCode == 38) ) return;
+    console.log("keyupHandler: "+evt+": "+evt.keyCode);
+
+    if (evt.keyCode == 13)
+    {
+      //  Enter: Kill prompt, but use current selection, if there is one.
+			if ((States.curMatches.length > 1) && (States.highlightIndex < 0))
+      {
+        States.curState = -1;
+      }
+      States.hidePrompt();
+      return;
+    }
+    if (evt.keyCode == 27)
+		{
+			//	Escape: Kill prompt and disregard current selection, even if there is one.
+      States.curState = -1;
+			States.hidePrompt();
+      return;
+		}
+    States.updateMatches();
+    States.showPrompt();
+  },
+
+//  updateMatches()
+//  ----------------------------------------------------------------------------
+/*    Update the filtered list.
+ */
+  updateMatches: function()
+  {
+    stateInput.style.backgroundColor = "#fff";
+    var str = stateInput.value.toLowerCase();
+		
+		States.curMatches = [ ];
+		States.curPositions = [ ];		// parallel array for underlining
+		for (var i = 0; i < States.allStates.length; i++)
+		{
+      var pos = States.allStates[i].toLowerCase().indexOf(str);
+			if ( pos >= 0 )
+			{
+				States.curMatches[States.curMatches.length] = i;
+				States.curPositions[States.curPositions.length] = pos;
+			}
+		}
+    if (States.curMatches.length > 0)
+    {
+      States.firstPrompt = 0;
+      States.lastPrompt = States.curMatches.length;
+    }
+    else
+    {
+      States.firstPrompt = States.lastPrompt = -1;
+    }
+  },
+
+//  generateHTML()
+//  ----------------------------------------------------------------------------
+/*  Generate paragraphs for the currently displayed currently matched states.
+ *  Underline current match string, and highlight selected one if there is one.
+ */
+  generateHTML: function()
+  {
+    console.log("generateHTML:");  
+    var returnVal = "";
+
+    for (var i = States.firstPrompt; i < States.lastPrompt; i++)
+    {
+      var pos = States.curPositions[i];
+      var str = States.allStates[States.curMatches[i]];
+      var len = stateInput.value.length;
+      var prefix = str.substr(0,pos);
+      var match = str.substr(pos, len);
+      var suffix = str.substr(pos + len);
+ 
+      if (len > 0) match = "<span class='underline'>" + match + "</span>";
+      //console.log(str+" ("+pos+"): |"+prefix+"|"+match+"|"+suffix+"|");
+ 
+      if ( i == States.highlightIndex)
+      {
+        returnVal += "<p class='highlight'>" + prefix + match + suffix + "</p>";
+        States.curState = i;
+      }
+      else
+      {
+        returnVal += "<p>" + prefix + match + suffix + "</p>";
+      }
+    }
+    if (States.curMatches.length == 0)
+    {
+      returnVal += "<p>No Match</p>";
+      States.curState = -1;
+    }
+    if (States.curMatches.length == 1) States.curState = States.curMatches[0];
+    console.log(returnVal);
+    return returnVal;
+  },
+
+//  setXY()
+//  ---------------------------------------------------------------
+/*  Position and size the prompt.
+ */
+  setXY: function()
+  {
+    x = stateInput.offsetLeft;
+    y = stateInput.offsetTop + stateInput.offsetHeight;
+    obj = statePrompt;
+    do
+    {
+      if (obj.scrollTop != undefined)   y -= obj.scrollTop;
+      if (obj.scrollLeft != undefined)  x -= obj.scrollLeft;
+      obj = obj.parentNode;
+    } while (obj);
+    statePrompt.style.left = x + "px";
+    statePrompt.style.top = y + "px";
+    statePrompt.style.width = stateInput.offsetWidth + "px";
+  },
+
+//  showPrompt()
+//  -------------------------------------------------------------------
+/*    Generate filtered list and display the prompt
+ */
+  showPrompt: function()
+  {
+    console.log("showPrompt:");
+    statePrompt.style.display = "none";
+    statePrompt.innerHTML = States.generateHTML();
+    statePrompt.style.display = "block";
+  },
+  
+//  hidePrompt()
+//  -------------------------------------------------------------------
+/*  On Enter or blur, update text box contents and hide the prompt.
+ */
+  hidePrompt: function()
+  {
+//    console.log("hidePrompt: "+((States.curState >= 0)?States.allStates[States.curState]:"no current state"));
+    if (States.curState >= 0)
+    {
+      stateInput.value = States.allStates[States.curState].substring(0, 2);
+      stateInput.style.backgroundColor = "#cfc";
+    }
+    else
+    {
+      stateInput.value = "";
+      stateInput.style.backgroundColor = "#fcc";
+    }
+    statePrompt.style.display = "none";
+    States.highlightIndex = -1;
+  },
+
+  allStates: [
+    "AL Alabama",
+    "AK Alaska",
+    "AS American Samoa",
+    "AZ Arizona",
+    "AR Arkansas",
+    "CA California",
+    "CO Colorado",
+    "CT Connecticut",
+    "DE Delaware",
+    "DC District Of Columbia",
+    "FM Federated States Of Micronesia",
+    "FL Florida",
+    "GA Georgia",
+    "GU Guam",
+    "HI Hawaii",
+    "ID Idaho",
+    "IL Illinois",
+    "IN Indiana",
+    "IA Iowa",
+    "KS Kansas",
+    "KY Kentucky",
+    "LA Louisiana",
+    "ME Maine",
+    "MH Marshall Islands",
+    "MD Maryland",
+    "MA Massachusetts",
+    "MI Michigan",
+    "MN Minnesota",
+    "MS Mississippi",
+    "MO Missouri",
+    "MT Montana",
+    "NE Nebraska",
+    "NV Nevada",
+    "NH New Hampshire",
+    "NJ New Jersey",
+    "NM New Mexico",
+    "NY New York",
+    "NC North Carolina",
+    "ND North Dakota",
+    "MP Northern Mariana Islands",
+    "OH Ohio",
+    "OK Oklahoma",
+    "OR Oregon",
+    "PW Palau",
+    "PA Pennsylvania",
+    "PR Puerto Rico",
+    "RI Rhode Island",
+    "SC South Carolina",
+    "SD South Dakota",
+    "TN Tennessee",
+    "TX Texas",
+    "UT Utah",
+    "VT Vermont",
+    "VI Virgin Islands",
+    "VA Virginia",
+    "WA Washington",
+    "WV West Virginia",
+    "WI Wisconsin",
+    "WY Wyoming",
+    "AE Armed Forces Africa",
+    "AA Armed Forces Americas (except Canada)",
+    "AE Armed Forces Canada",
+    "AE Armed Forces Europe",
+    "AE Armed Forces Middle East",
+    "AP Armed Forces Pacific"
+    ]
+
+};
+
+  Core.start(States);
+

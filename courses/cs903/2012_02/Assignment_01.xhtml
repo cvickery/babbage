@@ -1,0 +1,101 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CSCI 903 Assignment 1</title>
+    <link rel="shortcut icon" href="../../cs903/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+  </head>
+
+  <body>
+    <h1>CSCI-903 Assignment 1</h1>
+    <h2>Links</h2>
+    <div>
+      <ul>
+        <li><a href="http://usesthis.com">The Setup</a></li>
+      </ul>
+    </div>
+    <h2>Assignment</h2>
+    <div>
+      Look at a few interviews on The Setup to get an idea of the types of answers prople give
+      there. Then write your own answers to the questions:
+      <ul>
+        <li>
+          Who are you, and what do you do?
+          <p>
+            We know you are student at Queens College, but give some more details. What year are
+            you in? What majors or minors are you taking, or planning to take? What do you do
+            outside of school that might relate to this course?
+          </p>
+        </li>
+        <li>
+          What hardware are you using?
+          <p>
+            Computers, phones, ...
+          </p>
+        </li>
+        <li>
+          And what software?
+          <p>
+            Applications, operating systems, ...
+          </p>
+        </li>
+        <li>
+          What would be your dream setup?
+        </li>
+      </ul>
+      <p>
+        A Word document is probably the simplest form, but I’ll accept anything electronic, so long as
+        it’s easy to read.
+      </p>
+      <p>
+        Brief is good.
+      </p>
+      <p>
+        Grammar, spelling, and punctuation count.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

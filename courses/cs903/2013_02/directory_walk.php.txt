@@ -1,0 +1,45 @@
+#! /usr/bin/php
+<?php
+
+//  directory_walk.php
+/*  Command-line code to define and test a function to traverse a directory tree.
+ */
+
+//  Setup
+//  -------------------------------------------------------------------------------------
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 'On');
+assert_options(ASSERT_ACTIVE, 1);
+assert_options(ASSERT_BAIL, 1);
+define('MAX_DEPTH', 5);
+
+//  dir_walk()
+//  -------------------------------------------------------------------------------------
+/*  Walk a directory tree, printing each file or directory's name, to a depth of
+ *  MAX_DEPTH. Will generate one line of output for every file and/or directory found.
+ */
+  function dir_walk($dir, $current_depth)
+  {
+    assert('is_dir($dir)');
+
+    if ($current_depth > MAX_DEPTH || ! is_readable($dir)) return;
+
+    $dir_handle = opendir($dir) or die("Unable to open $dir\n");
+    while (false !== ($node = readdir($dir_handle)))
+    {
+      if ($node === '.' || $node === '..') continue;
+      echo "$dir/$node\n";
+      if (is_dir("$dir/$node"))
+      {
+        dir_walk("$dir/$node", $current_depth + 1);
+      }
+    }
+  }
+
+//  Test the function
+//  -------------------------------------------------------------------------------------
+$dir = '.';
+dir_walk($dir, 0);
+exit;
+
+?>

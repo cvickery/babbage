@@ -1,0 +1,230 @@
+<?php
+  $mime_type = "text/html";
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $mime_type = "application/xhtml+xml";
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: $mime_type");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+  <head>
+
+    <title>CSCI 903 Assignment 2</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='../feed.xml' />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/assignments.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+  </head>
+  <body>
+    <h1>CSCI 903 Assignment 2</h1>
+    <h2>Overview</h2>
+    <section>
+      <p>
+        For this assignment, you are to complete the first assignment so the XHTML validation
+        link actually works.
+      </p>
+      <p>
+        In addition, you are to “deploy” your web site by copying both files to your
+        <code>H:\htdocs</code> directory in the lab. As discussed in class, you can access
+        this directory while logged into any computer in the lab, and the effect will be
+        to access the <code>htdocs</code> directory under your “home” directory on the
+        Oak server.
+      </p>
+    </section>
+    <h2>Instructions</h2>
+    <section>
+      <p>
+        First, replace the <code>&lt;?xml&#x2026;</code>, <code>&lt;!DOCTYPE&#x2026;</code>,
+        and <code>&lt;html&#x2026;</code> lines at the beginning of the web page with the
+        following code:
+      </p>
+      <code class='block'>&lt;?php
+  $html_attributes="lang='en'";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &amp;&amp;
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &amp;&amp;
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $html_attributes = "xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'";
+    header("Content-type: application/xhtml+xml");
+    echo "&lt;?xml version='1.0' encoding='UTF-8'?&gt;\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html &lt;?php echo $html_attributes;?&gt;&gt;</code>
+      <p>
+        <strong>Note: </strong> Be sure to paste this code at the very beginning of the
+        web page. In particular, a blank line, or even a single space character, before
+        the <code>&lt;?php</code> line will “break” the web page (<em>Why?</em>), a very
+        difficult bug to locate. (<em>Why?</em>).
+      </p>
+      <p>
+        Second, the file name for the web page has to be either <code>index.php</code> or
+        <code>index.xhtml</code>. There are two reasons for this: (1) our Apache web
+        servers are configured so that only files with a <code>.php</code> or
+        <code>.xhtml</code> extension will be processed by the PHP module. If you don’t
+        use one of those extensions (for example, if the extension is <code>.html</code>),
+        Apache will pass the PHP code embedded in the file back to the browser, which will
+        not know what to do with it, probably resulting in the user seeing an error
+        message rather than your web page. (2) our Apache web servers are configured so
+        that a request for a directory rather than a file will be treated as a request for
+        a file named <code>index.xhtml</code>, <code>index.php</code>, or
+        <code>index.html</code> located in that directory instead. This convention is one
+        of the techniques we can use to simplify the URLs that users need to deal with.
+      </p>
+      <p>
+        The choice of whether to use the <code>.php</code> or <code>.xhtml</code>
+        extension is up to you: as discussed in class, Dreamweaver will syntax-color
+        either the HTML or the PHP code depending on which extension you use, but they are
+        otherwise equivalent.
+      </p>
+      <p>
+        Create a subdirectory named <code>css</code> under your <code>H:\htdocs</code>
+        directory, and put your stylesheet there. You will have to adjust the link to it
+        in your index page to reflect this change.
+      </p>
+      <p>
+        These instructions assume you are already comfortable with accessing your account
+        in the TREE lab. If not, <a href='../../TREE_Lab'>TREE Lab Information</a> can help.
+        But note that some of the information there is out of date. Aside from the course
+        numbers (this is CSCI 903, not 090.3), that information does not take into account
+        the Apache web server that now runs on Oak, suggesting that you have to keep your
+        work only in your Profile. Starting this semester, you will submit assignments by
+        putting your code into your <code>H:\htdocs</code> directory.
+      </p>
+      <p>
+        Note that there is no requirement for you to use Dreamweaver for this assignment.
+        You may do so if you wish, but you can use any code editor you like to prepare the
+        two files for this assignment.
+      </p>
+    </section>
+    <h2>Test and Submit</h2>
+    <section>
+      <h3>Test</h3>
+      <ul>
+        <li>
+          The most important part of coding is testing.
+        </li>
+        <li>
+          In this course, your assignments are to code web pages.
+        </li>
+        <li>
+          The most important part of your assignments is testing.
+        </li>
+        <li>
+          Look at the <a href='../syllabus.xhtml'>course syllabus</a> and figure out how
+          much of your course grade depends on testing your code.
+        </li>
+      </ul>
+      <p>
+        You know from our discussion of “why XML” that the goal of this course is not only
+        to introduce you to how to code, but how to code well. Starting with this
+        assignment, there is a basic requirement for all assignments that you submit,
+        whether mentioned explicitly in the assignment web page or not: <strong>test your
+        code carefully before submitting it for grading.</strong> Make sure it does what
+        it is supposed to do; make sure it handles “<span class='tech-term'
+        title='Situations near the borders of normal conditions.'>corner cases</span>”
+        correctly; and make sure it meets the specifications given in the assignment web
+        page.
+      </p>
+      <p>
+        For this assignment, testing consists of putting your web page and style sheet in
+        your <code>H:\htdocs</code> directory, and viewing it using the URL,
+        <code>http://oak.cs.qc.cuny.edu/~stpe9999</code>. Of course, you have to
+        substitute your own account for Perfect Student’s.
+      </p>
+      <p>
+        Make sure the page shows exactly what the assignment calls for: a level-1 heading,
+        15-20 paragraphs, and links to the XHTML and CSS validators at the bottom. Pay
+        close attention to the beginning of the page to make sure there are no stray
+        characters before the level-1 header, which would indicate a problem with the PHP
+        code inserted at the beginning of the page.
+      </p>
+      <p>
+        Make sure the page behaves as it’s supposed to. Hover your mouse over everything,
+        you are testing corner cases here, and be sure the text of each paragraph except
+        the fourth one turns red when you hover over it, that the fourth one turns blue,
+        and that hovering doesn't affect anything else on the page.
+      </p>
+      <p>
+        Make sure the two validation links work and that both give you no warnings or
+        errors. The only exception is that the XHTML validator should give a warning that
+        the “HTML5 Conformance Checker” (the validatory itself) is still experimental. Be
+        sure the HTML validator recognizes the page as HTML5 and the CSS validator
+        recognizes the page as CSS3.
+      </p>
+      <p>
+        Finally, make sure the web page is being delivered as XML. In class, we'll cover how
+        to get the browser to show the request and reply headers so you can verify it; for
+        now use your browser's "view source" option to look at the source code for your web
+        page. The first line it shows has to be the <code>&lt;?xml&#x2026;</code>
+        declaration. All major browsers have a view source option, but it’s in different menu
+        places on different browsers. Look under the View menu for “Developer Tools” or
+        “Page Source,” or ask Mr. G. for help. (If you don’t know who Mr. G. is, you can go
+        to
+        <a href='http://www.google.com'>his website</a>, where you will find answers to many
+        questions.)
+      </p>
+      <p>
+        Correct anything that is wrong before submitting the assignment.
+      </p>
+      <h3>Submit</h3>
+      <p>
+        When you are ready to submit the assignment, send me an email:
+      </p>
+      <ul>
+        <li>Use <code style='color:#c30'>CSCI 903 Assignment 2</code> as the Subject.</li>
+        <li>Put your account name in the message body.</li>
+        <li>You can include a message or questions in the email, but do not attach any
+        files to it.</li>
+      </ul>
+      <p>
+        That’s it. When I get your email, I’ll look at your web page on oak, and send you
+        back your grade by email. The grade for this assignment will simply be “ok” or
+        “not ok”. See the course syllabus to learn how to interpret these grades.
+      </p>
+      <p>
+        To get full credit, you have to send the email to me by midnight of the due date
+        (February 12).
+      </p>
+      <p>
+        As soon as you receive the email from me with your grade, use the form on the <a
+        href='.'>course schedule</a> to be sure I have recorded your grade correctly
+      </p>
+    </section>
+    <footer>
+      <a href='.'>Class Schedule</a> —
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> —
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </footer>
+  </body>
+</html>

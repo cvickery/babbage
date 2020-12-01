@@ -1,0 +1,95 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CSCI 903 Assignment 3</title>
+    <link rel="shortcut icon" href="../../cs903/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+  </head>
+
+  <body>
+  <h1>CSCI-903 Assignment 3</h1>
+    <h2>Phrases</h2>
+    <ul>
+      <li> Menippus in the Moon </li>
+      <li> Synchronize sympathetic needles </li>
+      <li> Morse Code is not a binary language </li>
+      <li> 12,000 E’s, but only 200 Z’s </li>
+      <li> Tone languages </li>
+      <li> Redundancy </li>
+    </ul>
+    <h2>Assignment</h2>
+    <div>
+      <p>
+        As you read Chapter 1 of <em>The Information</em>, you will encounter the above phrases (or
+        approximations to them). Each deals with an aspect of encoding information:
+      </p>
+      <ul>
+        <li>Communicating information over distances</li>
+        <li>Time coordination between cummunicators</li>
+        <li>Efficient encoding schemes</li>
+      </ul>
+      <p>
+        Write an <em>outline</em> for a 1-2 page essay that would, if written, take two or more
+        of the listed phrases as points of departure to explain fundamental aspects of
+        information theory.
+      </p>
+      <p>
+        To complete this assignment successfully, you need to decide what the main points of the
+        essay will be, then decide how to organize the essay so that it makes those points in
+        a logical way.
+      </p>
+      <p>
+        <em>Note:</em> the sympathetic needles reference is actually a problem for which Gleick does
+        not provide a solution. If you choose that phrase, you should design an essay that explains
+        what the problem is, and offers a workable solution. Don’t pick this option unless you have
+        an idea for a workable solution.
+      </p>
+      <p>And, yes, you will be writing the essay next week. But do not write the essay yet,
+      just the outline. The outline itself will be very short, probably just one line per
+      paragraph of the essay. But preparing a good outline will take time and thought.</p>
+    </div>
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

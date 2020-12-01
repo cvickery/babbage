@@ -1,0 +1,98 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 8</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:B743D004-C9E5-48AC-AF49-B2C5A91797B4'>
+
+    <h1>CS-90.3 Assignment 8</h1>
+
+    <div id="content">
+      <h2>Requirement</h2>
+      <div>
+        <p>
+        	Add functionality to Assignment 7 so that the response to submitting the form says,
+          “Thank-you, _____, for submitting the form. Your password is _____.” Where the two blanks
+          are filled in with the values the user typed into the text and password inputs of the form, respectively.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+          	<h5>Prepare the form.</h5>
+             <p>
+               If you did not do so in Assignment 7, you need to add a <span class="attribute-name">name</span>
+               attribute to the two <span class="tag-name">input</span> elements in the form. The value of the
+               text input should be “user” or “username” or “email”&mdash; you can pick any name you like, so long
+               as it is plausably meaningful. Likewise, use the value “passwd” or something similar for the password
+               input.
+             </p>
+           </li>
+           <li>
+           	<h5>Add PHP code to <span class="file-name">process_form.php</span> to implement the assignment.</h5>
+            <p>
+            	You do not have to do any error checking the way I did in class on April 29; just display the required
+              text as the content of the <span class="tag-name">h1</span> element of the page.
+            </p>
+            <p>
+            	You have to decide how you want to implement the requirement: string interpolation or string concatenation.
+              Be sure you know how to use both techniques, because they will be covered on the final exam.
+            </p>
+            <p>
+            	Look carefully at the URL to see how the form data is being passed to 
+              <span class="file-name">process_form.php</span>. That’s another final exam topic.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you are sure your program does everything correctly, and that there are no errors are warnings from the
+          XHTML and CSS validators, nor from Firebug,
+          just send me an email message, and I’ll check it out in the usual way.
+        </p>
+        <p>
+          Send your email message to me at: vickery<span class="at" title="Change to @">at</span>babbage.cs.qc.cuny.edu
+          by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-90.3 Assignment 8.”
+        </p>
+        <p>
+          Don’t forget to put your name in your email message!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>
+

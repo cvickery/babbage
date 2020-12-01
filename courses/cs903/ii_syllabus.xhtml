@@ -1,0 +1,229 @@
+<?php
+  $this_dir = opendir('.');
+  $this_link = "2012_02";
+  $this_year = "2012";
+  $this_term = "Spring";
+/*
+  while ($dir_entry = readdir($this_dir))
+  {
+    if (is_dir($dir_entry) && preg_match('/(\d{4})_(\d{2})/', $dir_entry, $year_term))
+    {
+      $this_year = $year_term[1];
+      $this_term = ($year_term[2] === '02') ? 'Spring' : 'Fall';
+      $this_link = $dir_entry;
+    }
+  }
+*/
+
+  header("Vary: Accept");
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+  stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+  stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+  )
+  {
+      header("Content-type: application/xhtml+xml");
+      header("Last-Modified: "
+      .gmdate('r', filemtime($_SERVER['SCRIPT_FILENAME'])));
+      print ("<?xml version=\"1.0\" encoding=\"utf-8\"
+  ?>
+  \n");
+  }
+  else
+  {
+  header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Information and Intelligence Syllabus</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../css/style-print.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/syllabus.css" />
+  </head>
+  <body id='urn:uuid:BE1F3403-66D2-4D17-AD14-51453DBC8B6D'>
+      <h1>CSCI-903: Information and Intelligence<br/>Syllabus</h1>
+      <?php
+        echo <<<EOT
+        <p id='current-semester-link'>
+          Link: <a href='$this_link'>Schedule and Assignments for $this_term $this_year</a>
+        </p>
+EOT;
+       ?>
+      <h2>Course Description</h2>
+      <div>
+        <p>
+          What, I hear you ask, do information and intelligence have to do with each
+          other? And what, you might also ask, do they have to do with computer science?
+          <br/>The short answer: information theory is one of the key underpinnings of
+          computer science, and artificial intelligence is a key area of computer science
+          that owes its success to careful exploitation of the principles of information
+          theory (among others).
+        </p>
+        <p>
+          The longer answer is why we have an entire semester devoted to this “special topic”
+          course!
+        </p>
+        <p>
+          The course will be conducted in seminar form: students will play an active role
+          in the course, and will each be responsible for leading some of the discussions
+          and activities in the course. The goal here is for you to learn to organize and
+          express your understanding of some complex, but interesting, topics.
+        </p>
+        <p>
+          There are two main readings for the course, the first two items in the <a
+          href="#texts"> Texts</a> section below. As its title suggests, the Gleick book
+          deals with information theory. Don’t let the word “theory” put you off: despite
+          information theory’s basis in mathematics, Gleick presents the material without
+          assuming any particular mathematical spohistication, yet without watering down
+          its essence. The Christian book is written at a level that assumes no more
+          preparation than a willingness to think about and evaluate ideas that might be
+          new to you. Coincidentally, the two books were published within a month of each
+          other early in 2011.
+        </p>
+        <p>
+          The course requires a regular time committment from you: because of the seminar
+          format, you have to be prepared for each class (especially the ones where you
+              lead part of the discussion!), and you will be required to complete a small
+          (1-2 page) writing assignment each week.
+        </p>
+        <p>
+          In addition to reading, discussing, and writing about course topics, there is
+          another course component: coding. Writing code is emerging as a valuable skill
+          for artists, social and natural scientists, business people, and professionals
+          of all types. This course does not aim to make you into a programmer, but will
+          use one or more coding exercises as a way to reinforce the principles of
+          information theory and artificial intelligence you will be wrestling with during
+          the semester.
+        </p>
+      </div>
+      <h2>Course Objectives</h2>
+      <div>
+        <p>
+          Students who complete this course successfully will be able to:
+        </p>
+        <ul id="rubrics">
+          <li>
+            Explain the relationship between information and information codes.
+          </li>
+          <li>
+            Explain the differences among data, information, and knowledge.
+          </li>
+          <li>
+            Describe the model underlying the concept of an “intelligent agent.”
+          </li>
+          <li>
+            Give examples of artificial intelligence in daily life.
+          </li>
+          <li>
+            Discuss the relationships among information, probabilities, and search
+            strategies.
+          </li>
+          <li>
+            Write code to implement the algorithm for an elementary intelligent agent.
+          </li>
+        </ul>
+      </div>
+      <h2>Instructor</h2>
+      <div>
+        The instructor for the course is Dr. Christopher Vickery. See <a
+        href="../../contact_info.xhtml">Dr. Vickery’s Contact Information and Office
+        Hours</a> for that information.
+      </div>
+      <h2>Course Structure and Assessment</h2>
+      <div>
+        <h3>
+          The following information is not specific to this course.<br/>
+          Details to follow ...</h3>
+        <p>
+          There are two 75 minute class meetings per week. Attendance will not be taken
+          (except at the beginning of the semester to verify your registration for the
+           course), but students who often miss class will probably fail the course. The
+          reading assignments for the course are listed below, and will be broken down
+          further in the course schedule page for the semester.
+        </p>
+        <h3>Assignments</h3>
+        <h3>Grading</h3>
+        <p>
+          Grades are posted on the web as soon as they are available.
+        </p>
+        <p class="standout-block">
+          Exam and assignment grades become permanent one week after they have been
+          posted, even if there has been a scoring error.  Be sure to check that your exam
+          was scored correctly and that the correct grade has been recorded (using the
+              &ldquo;Check My Grades&rdquo; form on the course schedule page) as soon as
+          exams are returned.
+        </p>
+        <p>
+          The College has a standard policy for converting course averages into letter
+          grades, which I follow mechanically, except I compute fractional course averages
+          and round to the nearest integer, which gives you half a point of automatic
+          grade inflation. For example, the college policy specifies a grade of B+ for
+          course averages between 87 and 90: because of rounding, that means that any
+          score between 86.5 and 89.5 is a B+.
+        </p>
+      </div>
+      <h2 id='texts'>Texts</h2>
+      <div>
+        <ul>
+          <li>
+            James Gleick, <em>The Information</em>. Pantheon, 2011. ISBN-13: 978-0375423727
+          </li>
+          <li>
+            Brian Christian, <em>The Most Human Human</em>. Doubleday, 2011. ISBN-13:
+            978-0385533065
+          </li>
+          <li>
+            Edward Tufte, <em>Beautiful Evidence</em>, Graphics Press, 2006. ISBN-13:
+            978-0961392178
+          </li>
+        </ul>
+        <h3>Notes:</h3>
+        <ul>
+          <li>Both the Gleick and Christian books are available in electronic format. Both are
+          <strong>required</strong>.
+          </li>
+          <li>Prof. Tufte has offerred to make copies of <em>Beautiful Evidence</em>
+            available to students in this course for $10 each (below cost).
+          </li>
+        </ul>
+      </div>
+      <!--
+      <h2>Topics</h2>
+      <div>
+        <p>
+          Here is an idealized schedule of topics and assignments for the course. The actual
+          assignments <a href="<?php echo $this_link; ?>">are posted on a separate page</a>.
+        </p>
+        <table>
+          <tr>
+            <th>Classes</th><th>Topics</th><th>Assignments</th>
+          </tr>
+          <tr>
+            <th>1-2</th>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>14</th>
+            <td colspan="2" class='no-assignment'>Midterm Exam</td>
+          </tr>
+          <tr>
+            <th></th>
+            <td colspan="2" class='no-assignment'>Final Exam</td>
+          </tr>
+        </table>
+      </div>
+      -->
+
+    <div id="footer">
+      <a  href="../../">Vickery&nbsp;Home</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

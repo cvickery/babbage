@@ -1,0 +1,170 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-90.3 Assignment 2</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-90. Assignment 2<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+      	<p>
+        	The goal of this assignment is to set up your site for processing a form and for JavaScript to validate the form data before the
+          form is submitted. For this assignment, the JavaScript code will simply call <span class="functionName">alert()</span> when the
+          form is submitted to show that everything is set up correctly. It will not actually validate the form data in any way.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div class="whitebox">
+      	<p>
+        	Download the Core library file, <a href="../core.js">core.js</a> from the course web site and save it in your site&rsquo;s
+          <span class="directoryName">scripts</span> directory. Add a <span class="tagName">script</span> link to it in the 
+          <span class="tagName">head</span> of your index page.
+        </p>
+        <p>
+        	Duplicate the <span class="fileName">template.xhtml</span> file (Control-D), and move the copy to your site&rsquo;s
+          <span class="directoryName">scripts</span> directory. Then rename it to <span class="fileName">Login.php</span>. You do not need
+          to change the contents of this file for this assignment, but you may experiment if you want to.
+        </p>
+        <p>
+        	Create a new file named <span class="fileName">validate_form.js</span> in your <span class="directoryName">scripts</span> (right-click
+          on the directory name, and select New File, then rename the file from <span class="fileName">untitled.xhtml</span> to 
+          <span class="fileName">validate_form.js</span>).
+        </p>
+        <p>
+        	Add a <span class="tagName">form</span> to the index page; make the <span class="attributeName">method</span> be 
+          <span class="attributeValue">"get"</span> and the <span class="attributeName">action</span> be a relative URL to
+          <span class="fileName">Login.php</span>. Put a <span class="tagName">fieldset</span> inside the <span class="tagName">form</span> to
+          avoid validation errors, and add a <span class="tagName">legend</span> to spiff things up.
+        </p>
+        <p>
+        	Add three <span class="tagName">input</span> elements (of <span class="attributeName">type</span> 
+          <span class="attributeValue">"text"</span>, <span class="attributeValue">"password"</span>, and
+          <span class="attributeValue">"submit"</span>). Add <span class="tagName">label</span> elements for the first two inputs.
+        </p>
+        <p>
+        	Test the page in <span class="programName">Firefox</span> to be sure you can submit the form. Check the URL of the result to be
+          sure you set up the names and values for passing the form data to the login script correctly.
+        </p>
+        <p>
+        	Set up a JavaScript event listener for the form&rsquo;s <span class="variableName">submit</span> events. Do this part in steps:
+        </p>
+        <ol>
+        	<li>
+          	Create an object that contains an <span class="functionName">init()</span> method. (Functions inside objects are traditionally
+            called &ldquo;methods;&rdquo; the difference is not significant.). Have <span class="functionName">init()</span> display an
+            <span class="functionName">alert()</span> box when it is called. Pass this object as an argument to 
+            <span class="functionName">Core.start()</span>. Load the web page and verify that <span class="functionName">init()</span> is
+            called when the page loads.
+          </li>
+          <li>
+          	Replace the <span class="functionName">alert()</span> call in <span class="functionName">init()</span> with this statement:
+            <p class="code-block">
+Core.addEventListener(theForm, "submit", submitListener);
+            </p>
+            <p>
+            	You need to define <span class="variableName">theForm</span> and <span class="variableName">submitListener</span> in order
+              to be able to run the code now.
+            </p>
+          </li>
+          <li>
+          	Add this line of code to <span class="functionName">init()</span> before it calls 
+            <span class="functionName">Core.addEventListener()</span>:
+            <p class="code-block">
+var theForm = document.getElementsByTagName('form')[0];
+            </p>
+          </li>
+          <li>
+          	Try to figure out how to set up the <span class="functionName">submitListener()</span> function in such a way that you can
+            reference it from within <span class="functionName">init()</span> as shown above.
+          </li>
+          <li>
+          	Give up and proceed to the next step.
+          </li>
+          <li>
+          	Create an anonymous self-executing function that returns the object you created in Step 1; make it the arguement to 
+            <span class="functionName">Core.start()</span>. That is, this function executes and returns the object and it (the object)
+            becomes the value of the parameter passed to <span class="functionName">Core.Start()</span>, just like defining the object
+            inside the parentheses of <span class="code-snippet">Core.start()</span> in Step 1.
+          </li>
+          <li>
+          	Define the function <span class="functionName">submitListener()</span> inside the anonymous self-executing function.
+          </li>
+          <li>
+          	Test your code.
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+      	<p>
+        	When your assignment is working, log out and be sure your profile is copied back to the server. Send me an email message telling me
+          that you have completed the assignment, and I will get a copy of it from your account on Oak for testing. If your roaming profile does
+          not work, mention that in your email, and I will copy your <span class="directoryName">My Website</span> directory from your home directory
+          instead of your profile directory on Oak.
+        </p>
+        <ol>
+            <li>Be sure to put your name in your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-90.3 Assignment 2</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to either Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu or
+              vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu &mdash; but not to both.
+            </li>
+          	<li>
+            	See <a href="../syllabus.xhtml">the course syllabus</a> for grading and late homework policies.
+            </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs090.3">CS-90.3 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

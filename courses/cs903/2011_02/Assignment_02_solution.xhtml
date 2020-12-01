@@ -1,0 +1,58 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    $doctype = "XHTML5";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+    $doctype = "HTML5";
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-90.3 Assignment 2 Solution</title>
+    <link rel='alternate' type='application/atom+xml' title='Atom' href='feed.xml' />
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style>
+      img {border:1px solid red;}
+    </style>
+  </head>
+  <body id='urn:uuid:88027C6F-0A89-4F99-B64F-7FFFD1299A44'>
+    <h1>CS-90.3 Assignment 2<br/>
+    Solution Code</h1>
+    <div id="content">
+      <h2>Solution Code</h2>
+      <div>
+        <p>
+          For your for your edification, enlightenment, enjoyment, and exam preparation, here are links to the
+          assignment submitted by our good friend and colleague, “Perfect Student:”
+        </p>
+        <p>
+          <a href="html/index.php.html">index.php</a>
+        </p>
+        <p>
+          <a href="html/assignment_2.php.html">assignment_2.php</a>
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer"><?php echo $doctype; ?></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </div>
+  </body>
+</html>

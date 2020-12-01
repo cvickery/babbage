@@ -1,0 +1,161 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS-90.3 Assignment 5</title>
+    <meta http-equiv="Content-Type" content="charset=UTF-8" />
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:4FA2146D-9D38-4695-A934-6902BFCD8E1A'>
+    <h1>CS-90.3 Assignment 5</h1>
+    <h2>Summary</h2>
+    <div>
+      This assignment continues where we left off at the end of Assignment 4: it is the first step of two in
+      which you are to use JavaScript to help users fill out a form and to prevent submission of a form with
+      invalid data. In this step, you are to set up an event listener for a form&rsquo;s
+      <span class="function-name">submit</span> event, and to verify that the user has entered a value for one
+      of the form&rsquo;s <span class="tag-name">input</span> elements.
+    </div>
+    <h2>The Assignment</h2>
+    <div>
+      <ol>
+        <li>
+          <h5>Add a form to the index page for your site.</h5>
+          <p>
+            Without changing your code for Assignment 4, just add a <span class="tag-name">form</span> element
+            between the <span class="tag-name">h1</span> element and the first paragraph. Use the
+            <span class="attribute-value">get</span> method, and set the <span class="attribute-name">action</span>
+            attribute to a nonexistent web page: <span class="file-name">scripts/process_form.php</span>. (You will
+            not actually create that file until two assignments from now.)
+          </p>
+          <p>
+            Add the following elements to your form:
+          </p>
+          <div class="code-block">
+&lt;form action="http://scripts/process_form.php/" method="get">
+  &lt;fieldset>
+    &lt;label for="email">Email:&lt;/label>
+    &lt;input type="text" id="email" name="email" />
+    &lt;span id="email-status">Missing&lt;/span>
+    &lt;label for="password">Password:&lt;/label>
+    &lt;input type="password" id="password" name="password" />
+    &lt;span id="password-strength">Missing&lt;/span>
+    &lt;button type="submit">Submit&lt;/button>
+  &lt;/fieldset>
+&lt;/form>
+          </div>
+          <p>
+          	Based on the XHTML given above, edit the stylesheet for your web page so the form looks like this:
+          </p>
+          <div>
+            <img src="images/assignment_05-1.png" alt="Screenshot of formatted form" />
+          </div>
+        </li>
+        <li>
+        	<h5>Add a <span class="function-name">submit</span> listener to the form.</h5>
+          <p>
+          	Keeping the script file for Assignment 4 in place, add another script file, named
+            <span class="file-name">assignment_05.js</span>, to your web page. Using the standard technique for this
+            course, set up the code for this assignment in this new script file. The anonymous self-executing
+            function should have a local variable named <span class="variable-name">email</span> and 
+            an inner function named <span class="function-name">submitListener()</span>. Code the
+            <span class="function-name">init()</span> function so that it initializes the 
+            <span class="variable-name">email</span> variable with a reference to the DOM object corresponding to the
+            <span class="tag-name">input</span> element with the <span class="attribute-value">email</span>
+            <span class="attribute-name">id</span>. (Note that being able to understand and even to write sentences
+            like the previous one is a key objective of this assignment.)
+          </p>
+          <p>
+          	Also code <span class="function-name">init()</span> function to register the
+            <span class="function-name">submitListener()</span> function as a listener for 
+            <span class="function-name">submit</span> events generated from the form.
+          </p>
+          <p>
+          	In <span class="function-name">submitListener()</span> use <span class="function-name">console.log()</span>
+            to display the <span class="variable-name">value</span> property of the 
+            <span class="variable-name">email</span> object. Then use 
+            <span class="function-name">Core.preventDefault()</span> to prevent the form data from actually being sent
+            to the (nonexistent) <span class="file-name">form_processor.php</span> file.
+          </p>
+        </li>
+        <li>
+        	<h5>Test your web page.</h5>
+          <p>
+          	Use <span class="program-name">Firebug</span> to verify that your code displays whatever you type into the
+            <span class="function-name">email</span> <span class="tag-name">input</span> element when you submit the form,
+            and that the form does not actually get submitted.
+          </p>
+          <p>
+          	Be sure the W3C validators give no warnings or errors when you click the XHTML and CSS links at the bottom
+            of your page.
+          </p>
+          <p>
+          	Be sure your web page still does everything required for Assignment 4.
+          </p>
+        </li>
+      </ol>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+        When you have tested your web site and verified that everything validates and runs correctly, log out so your
+        site will be copied back to the server. Then send me an email to let me know your assignment is ready for
+        grading: I will copy your site from the lab server to babbage to verify that it is correct.
+      </p>
+      <p>
+        Send your email to vickery<span class="at" title="Change the word 'at' to the symbol
+        '@'">at</span>babbage.cs.qc.cuny.edu with <span class="code-snippet">CS-90.3 Assignment 5</span>, spelled and
+        capitalized just like that. Be sure to put your email address inside the message you send.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../../cs090.3">Course Home Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

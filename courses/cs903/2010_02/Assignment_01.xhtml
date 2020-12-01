@@ -1,0 +1,131 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="<?php echo $mime_type;?>; charset=UTF-8" />
+    <title>CS-90.3 Assignment 1</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+  </head>
+  <body id='urn:uuid:E88CCA66-D1AD-4D26-9D2D-B4A6BE9F53C3'>
+
+    <h1>CS-90.3 Assignment 1</h1>
+
+    <div id="content">
+      <h2>Reading</h2>
+      <div>
+      	Start reading the &ldquo;Simply JavaScript&rdquo; text. Read all of chapters 1 and 2. We will be covering
+        this material in class (statements, variables, and data types) in class, but it is important to read it in
+        the book first.
+      </div>
+      
+      <h2>The Assignment</h2>
+      <div>
+      	<p>
+        	Your assignment is to log into your account in the course’s laboratory as demonstrated in class.
+          See the <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a> web page for information on
+          how to do this if you didn’t follow it in class.
+        </p>
+        <p>
+        	After you log in, start Dreamweaver and fix your site’s document root and images directory paths so they
+          contain your account name instead of “prototype.” Be sure the only message you get from the site manager
+          is the one about rebuilding the site cache. Anything else has to be fixed before proceeding. Again, this
+          was demonstrated in class; you may need to seek help if you didn’t follow the procedure then.
+        </p>
+        <p>
+        	Duplicate <span class="file-name">template.xhtml</span> by selecting it in Dreamweaver and typing
+          Ctrl-D. Then change the file name of the copy to <span class="file-name">index.xhtml</span>.
+        </p>
+        <p class="standout-block">
+        	Be sure to spell and capitalized the new filename to be exactly, “index.xhtml” (all lowercase letters).
+          If you don’t do this right, you may not find out until I look at your assignment on my computer.
+        </p>
+				<p>
+        	Change the title and level-1 heading of your index file to something that includes the possessive form
+          of your name. The apostrophe in the title must be entered using the right-single quote character entity
+          (<span class="code-snippet">&amp;rsquo;</span>)
+        </p>
+        <p>
+        	Create a script file named <span class="file-name">assignment_01.js</span> in your site’s
+          <span class="directory-name">scripts</span> directory, and add an <span class="file-name">alert()</span>
+          function call that will display a message, such as &ldquo;Hello, World!&rdquo; when the page loads.
+        </p>
+        <h3>Test Your Code</h3>
+        <p>
+        	Use the Firefox browser to view your web page using the fully qualified domain name of the computer you
+          are working on for the host name part of the URL. The pathname part of the URL is ~ (tilde, the character
+          on the key in the upper left corner of the keyboard) followed by your account name.
+        </p>
+        <p class="standout-block">
+        	The previous paragraph is important. You cannot look at your web page just by clicking on it. That
+          sends the page to the browser without going through the PHP processor on the server, and the browser
+          will wail and gnash its teeth woefully if you try to do this. Also, it will not work.
+        </p>
+        <ol>
+        	<li>
+          	Be sure the web page displays properly with your custom page title appearing at the top of the
+          	browser window and your new page title displayed with a “curly” quote mark for the the apostrophe
+            in your name.
+          </li>
+          <li>
+          	Be sure the annoying “Hello World!” message shows up when you load your page!
+          </li>
+          <li>
+          	Validate your web page by clicking the XHTML link. Be sure you get the green “no error” message,
+            and that the page is identified as XHTML 1.1 and UTF-8.
+          </li>
+        </ol>
+        <p>
+        	If any of your testing fails, you have to fix the problem before submitting the assignment.
+        </p>
+        <p>
+        	Be sure to log out of your account when you finish the assignment so your work will be copied to
+          the server where I will be able to access it.
+        </p>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+        	When you are ready for me to look at your assignment, simply send me an email message to let me
+          know. I’ll copy your entire web site to my computer (babbage) and check it out. The full pathname
+          to your web site on babbage will be http://babbage.cs.qc.cuny.edu/Grading/903/ followed by your
+          account name.
+        </p>
+        <p>
+          Send your email message to me at: vickery<span class="at" title="Change to
+          @">at</span>babbage.cs.qc.cuny.edu by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-90.3 Assignment 1.”
+        </p>
+        <p>
+        	Don’t forget to put your name in your email message!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

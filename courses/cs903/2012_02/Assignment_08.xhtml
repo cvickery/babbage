@@ -1,0 +1,86 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CSCI 903 Assignment 8</title>
+    <link rel="shortcut icon" href="../../cs903/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <style type="text/css">
+      ul li {padding:0.2em;}
+    </style>
+  </head>
+  <body>
+  <h1>CSCI-903 Assignment 8</h1>
+    <h2>Assigned Videos</h2>
+    <ul>
+      <li>
+        <a href="http://www.ted.com/talks/ayah_bdeir_building_blocks_that_blink_beep_and_teach.html">
+        Little Bits (5 minutes)</a>
+      </li>
+    </ul>
+    <h2>Reading</h2>
+    <div>
+      You should have finished reading at least through Chapter 7 of the Gleick book by now.
+    </div>
+    <h2>Writinging Assignment</h2>
+    <div>
+      <p>
+        Write a one-page summary (approximately 250 words) of Chapter 7. One page is an interesting 
+        length for this essay: it’s too short to cover the whole chapter, but it’s long enough that
+        you have to say something substantive to fill up the page.
+      </p>
+      <p>
+        In one page, you should be able to explain key concepts from the chapter: identify the
+        most important people discussed, when they did their work, and why they were important; explain
+        the key definitions and terms related to information theory, including <em>entropy</em>,
+        <em>communication</em>, and redundancy.
+      </p>
+      <p>
+        Pay attention to the structure of your writing so that the pargraphs relate to each other in
+        an organized way.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CSCI 903 Assignment 9</title>
+    <link rel="shortcut icon" href="../../cs903/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <style type="text/css">
+      ul li {padding:0.2em;}
+    </style>
+  </head>
+  <body>
+  <h1>CSCI-903 Assignment 9</h1>
+    <h2>Assigned Reading</h2>
+    <ul>
+      <li>
+        <em>The Most Human Human</em>
+      </li>
+    </ul>
+    <h2>Assignment</h2>
+    <div>
+      <p>
+        Write a 2-page essay (approximately 500 words) on the relationship between information
+        theory (IT) and artificial intelligence (AI). The following are some ideas you might explore
+        in your essay. Note: these are <em>not</em> “questions to be answered.” Rather, they are
+        possible themes you might draw from as you decide what you are going to say in your essay.
+        You may use other, or additional, themes if you wish.
+      </p>
+      <p>
+        Think of each “theme idea” as the starting point or central idea for something you are going
+        to write about, not a self-contained topic.
+      </p>
+      <p>
+        As usual, it is important for you to think about what the point of your essay will be
+        before you start writing it. On Tuesday, May 1, submit an <em>outline</em> for your
+        essay that shows how it will be will be structured. Then submit the actual essay on May 3.
+      </p>
+      <p>
+        Failure to submit your outline on time will reduce your grade for the assignment by 20%.
+        <br/>
+        Failure to hand in the essay on time will reduce your grade for the assignment by 50%.
+      </p>
+      <h3>Theme Ideas</h3>
+      <ul>
+        <li>
+          What aspects of Alan Turing’s work give him a prominent role in both <em>The
+          Information</em> and <em>Human Human</em>?
+        </li>
+        <li>
+          What aspects of Claude Shannon’s work give him an important role in both books?
+        </li>
+        <li>
+          What does probability theory have to do with information theory, and with artificial
+          intelligence?
+        </li>
+        <li>
+          How do information theory and artificial intelligence relate to the concepts of
+          information, knowledge, and meaning?
+        </li>
+        <li>
+          What is information theory?
+        </li>
+        <li>
+          What is the difference between artificial and human intelligence?
+        </li>
+        <li>
+          What role does <em>communication</em> play in AI and IT?
+        </li>
+        <li>
+          What role does <em>decision making</em> play in AI and IT?
+        </li>
+      </ul>
+    </div>
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </div>
+  </body>
+</html>

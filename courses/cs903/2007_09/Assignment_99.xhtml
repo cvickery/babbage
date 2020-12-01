@@ -1,0 +1,329 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <title>CS 90.3 Final Project</title>
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignment_99.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS 90.3 Final Project</h1>
+    </div>
+
+    <div id="content">
+      <h2>Description</h2>
+      <div class="whitebox">
+        <p>
+          Create a web site that uses AJAX/PHP/JSON to implement user interaction with an XML database.
+        </p>
+        <p>
+          The essential requirements of the assignment are that the project presents a user with a form; when the user
+          changes some of the form data, create a JSON-encoded object that includes data from the form, send it to a PHP
+          script via an asynchronous <span class="functionName">XMLHttpRequest()</span> using the POST method. The PHP
+          script must create an object from the JSON string, get some data out of an XML database based on information
+          in that object, create another object containing information obtained from the database, and return that
+          object to the browser as another JSON string.  The browser must then display information derived from the
+          returned object without reloading the page.
+        </p>
+        <p>
+          The description of the project below uses a "login or register" form as the model for the project, but you do
+          not need to use exactly this model. In fact, you are encouraged to create your own design for the project
+          &mdash; provided only that your project incorporates all the elements outlined above. On the other hand, there
+          is nothing wrong with following the design presented here.
+        </p>
+      </div>
+      <h2>Procedure</h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Set up the assignment.
+            </h5>
+            <p class="run_in">
+              Create a directory named <span class="directoryName">Final_Project</span> under your <span
+              class="directoryName">My&nbsp;Website</span> directory, and create a web page named <span
+              class="fileName">index.xhtml</span> there. Either use the <span class="directoryName">scripts</span> and
+              <span class="directoryName">css</span> subdirectories for your site, or create new ones inside your
+              project directory.
+            </p>
+          </li>
+          <li>
+            <h5>Set up a form.</h5>
+            <p class="run_in">
+              Code <span class="fileName">index.xhtml</span> with a form where the user can enter an email address,
+              password, and name. Style the form nicely, and make sure the XHTML and CSS validate. The form&rsquo;s
+              method and action attributes may be arbitrary values at this point because the form will not actually be
+              submitted until much later in the project, if at all. Include a submit button, with meaningful text.
+              Provide instructions to visitors telling them that they can log in by supplying an email address (which
+              serves as the user name) and password, or they can register for the site by entering an email address,
+              password, and name. 
+            </p>
+            <p>
+              Include a paragraph on the page that tells the user that they don&rsquo;t have JavaScript enabled and
+              therefore will have to give full registration information each time they visit the site. Here is a sample
+              screenshot. As mentioned above, I encourage you to customize your page so it doesn&rsquo;t actually look
+              like mine!
+            </p>
+            <p><img src="images/form_screenshot.png" alt="Form Screenshot" /></p>
+          </li>
+
+          <li>
+            <h5>Set up basic JavaScript structures.</h5>
+            <p class="runin">
+              In addition to <span class="fileName">core.js</span> used in previous projects, you will need <span
+              class="fileName">json2.js</span>, which you can get through the <a href="http://www.json.org">JSON
+              website</a>. Set up a function that will work with <span class="functionName">Core.start()</span> in the
+              usual way. In your <span class="functionName">init()</span> function, hide the paragraph that says the
+              user does not have JavaScript (<span class="codeBlock">needJS.style.visibility = 'hidden'</span>) and
+              disable the submit button (<span class="codeBlock">submitButton.disabled = true</span>). Set up an event
+              listener to process <span class="variableName">change</span> events in either the email or password
+              fields. For now, it can just write a message to the console to be sure it is set up correctly.
+            </p>
+          </li>
+
+          <li>
+            <h5>Set up a PHP script to process <span class="functionName">XMLHttpRequest()</span> calls.</h5>
+            <p class="runin">
+              I&rsquo;ll use the name <span class="fileName">request_processor.php</span> to refer to this file, but you
+              can use any meaningful name you like. The big news is that this script is <em>not </em> valid XHTML in any
+              way, shape, or form. It&rsquo;s just a PHP script that will receive a JSON-encoded string as a POST
+              parameter, and will echo another JSON-encoded string as its output.  It&rsquo;s not a web page.
+            </p>
+            <p>
+              There is no need to mess around here; it&rsquo;s time to establish two-way <span class="functionName">
+              XMLHttpRequest() </span> interaction between the client (<span class="fileName">index.xhtml</span>) and
+              server (<span class="fileName">request_processor.php</span>) parts of the project. When the user changes
+              the email field to a non-empty string (for now, don&rsquo;t worry about whether the email address is valid
+              or not &mdash; any string will suffice), create an XMLHttpRequest object and send it to the server with
+              the string as the data. No JSON at this point, just plain text. The server picks up the data, delays ten
+              seconds, modifies the text slightly to prove that it really did operate on the data, and returns it to the
+              client. The client&rsquo;s readystatechange handler writes the response to the console. Have the server
+              sleep for 5 seconds before replying to the request so you can verify that the exchange is actually
+              happening asynchronously.
+            </p>
+            <p>
+              Be sure you set up the exchange so that no XML DOM tree is built. You do this by making sure your server
+              script does not send an &lt;?xml &hellip; ?&gt; line and that it does not send a Content-Type header
+              specifying XML or application/xhtml+xml. This issue should be no problem if you just remember that the
+              server script is not a web page and you omit all the boilerplate code we have been using for web pages and
+              do not generate any XHTML tags at all.
+            </p>
+            <p>
+              See page 311 of the text for how to set up the POST request on the client side.
+            </p>
+            <p>
+              If the XMLHttpRequest exchange completes with a status code of other than 200, display the returned
+              statusText field to the user. I inserted that text in the "need JavaScript" paragraph and un-hid the
+              paragraph. You can do it another way, but if you do use that technique, remember to hide the error message
+              if the user changes either of the input fields again.
+            </p>
+            <p class="codeBlock">
+  needJS.firstChild.nodeValue = "The error message you want to display goes here.";
+  needJS.style.visibility = 'visible';
+            </p>
+          </li>
+
+          <li>
+            <h5>Clean up the server.</h5>
+            <p class="runin">
+              Once you have basic two-way communication working, clean up the server so that it is bullet-proof: be sure
+              the request method was POST, and strip slashes if magic quotes is set. You should run the text through
+              <span class="functionName">htmlspecialchars()</span>, but do not let that function convert single or
+              double quotes: you will need them later when processing JSON strings.
+            </p>
+            <p>Take out the <span class="functionName">sleep()</span> call: that&rsquo;s not needed any more.</p>
+            <p class="standoutBlock">JSON escapes quotes in string data using backslashes, however this should not be
+            affected by the call to <span class="functionName">stripslashes() </span> because the backslashes in the JSON
+            string should be doubly-escaped when magic quotes is on. But you will need to test your project carefully
+            when you get to that point.</p>
+          </li>
+
+          <li>
+            <h5>Exchange objects using JSON-encoded strings.</h5>
+            <p class="runin">
+              On the client side, you are to create an object that you are going to send to the server: <span
+              class="codeBlock">var exchgObj = { email: emailInput.value, passwd: passwdInput.value };</span>.
+              Use JSON.stringify() to encode it, and pass it to the server.              
+            </p>
+            <p>On the server side, create a class that will mimic the contents of a database entry. It could look like
+            this:</p>
+            <p class="codeBlock">
+  class DBentry
+  {
+    public $name, $email, $passwd;
+    public function __construct($email, $passwd, $name = '')
+    {
+      $this-&gt;email   = $email;
+      $this-&gt;passwd  = $passwd;
+      $this-&gt;name    = $name;
+    }
+  }
+            </p>
+            <p class="standoutBlock">
+              Note that the data members of this class must be <span class="keyWord">public</span> for this project.
+              It&rsquo;s not good object-oriented design, but necessary because only public members get processed when
+              JSON-encoding objects. (<em>This little factoid has been known to cause certain professors considerable
+              anguish during the development stage of this assignment. Wise students should be extremely grateful to
+              such professors for figuring this out and sharing the discovery with them.</em>)
+            </p>
+            <p>
+              When the JSON-encoded object arrives from the client, decode it into another object, and use that object
+              to create a new instance of the DBentry class:
+            </p>
+            <p class="codeBlock">
+  $replyObj = new DBentry($clientObj-&gt;email, $clientObj-&gt;passwd, "Grateful Student");
+            </p>
+            <p>
+              JSON-encode the resulting object, and echo it back to the client. The client decodes the received string
+              into another object, and uses the members of that object to update the web page.
+            </p>
+          </li>
+
+          <li>
+            <h5>Set up an XML database for the project.</h5>
+            <p class="runin">
+              The database is just a text file. The filename can be anything; <span class="fileName">database.xml</span>
+              would work, but you might want to use something less generic. The first line should be:
+            </p>
+            <p class="codeBlock">
+  &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+            </p>
+            <p>
+              You can use any names for the tags that you want, just make sure the structure is valid XML, which means
+              that there has to be a root node that contains all other nodes, the tag and attribute names are case
+              sensitive, must be properly nested, etc. Populate the database with a few entries. For example, you could
+              have tags for email, password, and name. Modify your server so that it creates a DOM tree from the
+              database.
+            </p>
+            <p>
+              Here some the code from my course calendar program you can use as a model for creating a DOM tree from an
+              XML file and then processing information from the tree. If your database doesn&rsquo;t use any attributes
+              in the tag names, you do not have to worry about any of the attribute-processing code here:
+            </p>
+            <p class="codeBlock">
+  $collegeCalendarFile = @file_get_contents("college_calendar.xml", "r") or
+    die("Unable to read College calendar: $php_errormsg\n");
+  $college_dom = new DOMDocument();
+  $college_dom -&gt; loadXML($collegeCalendarFile);
+  $collegeEventElements = $college_dom-&gt;getElementsByTagName("event");
+  foreach ($collegeEventElements as $collegeEventElement)
+  {
+    if ($collegeEventElement-&gt;hasAttribute("id")) $collegeEventElement-&gt;setIdAttribute("id", true);
+    $start = trim($collegeEventElement-&gt;getElementsByTagName('start')-&gt;item(0)-&gt;nodeValue);
+    $endList = $collegeEventElement-&gt;getElementsByTagName('end');
+    $description = $collegeEventElement-&gt;getElementsByTagName('description')-&gt;item(0);
+    $end = ($endList-&gt;length &gt; 0) ? trim($endList-&gt;item(0)-&gt;nodeValue) : null;
+    $noClass = $description-&gt;getAttribute('no-classes');
+    if ($noClass)
+    {
+      $firstDay = strtotime($start);
+      $lastDay = strtotime($end);
+      for ($day = $firstDay; $day &lt;= $lastDay; $day += SecsPerDay)
+      {
+        $blockoutDates[date("Y-m-d", $day)] = true;
+      }
+    }
+    etc.
+            </p>
+            <p>
+              When an email address and password come in, see if there is a node in the database that matches both, in
+              which case, supply the user name from the database instead of the dummy name used above. If the email
+              matches, but not the password, set the user name to some special value, like "wrong password", which the
+              client will use to generate appropriate feedback for the user. If the email does not match anything in the
+              database, set the used name to a different special value, like "not in database", which the client will
+              use to change the label of the submit button to "Register Me".
+            </p>
+          </li>
+
+          <li>
+            <h5>Finish the project.</h5>
+            <p class="runin">
+              A working project at this point meets all the requirements of the assignment. Make sure the user interface
+              is cleanly-coded, robust (test various kinds of inputs, including typing slashes and quotes in the various
+              input fields), and attractive.
+            </p>
+            <p>
+              There are some additional features that you should add if you possibly can: the first is to vaidate email
+              addresses on both the client and server sides, taking appropriate recovery action if either is not valid;
+              the seond is to update the XML database to add a new user if the email address is not already in the
+              database and all three fields are filled in; the third is to make the client operate properly when
+              JavaScript is disabled, which will require setting up a form-processing script akin to the one in
+              Assignment 4.
+            </p>
+          </li>
+
+        </ol>
+      </div>
+
+      <h2>Check Your Work And Submit The Assignment</h2>
+      <div class="whitebox">
+
+        <h3>Due Date: December 22, 2007</h3>
+  
+        <p>
+          <span class="runin-head">Perform a link check on your site.</span> If necessary, go to the Manage Sites panel
+          and be sure you have selected the &ldquo;case-sensitive link checking&rdquo; option. Then right-click on your
+          <span class="directoryName">Assignment_03</span> directory and select the <span class="menuItem">Check
+          Links-&gt; Selected Files</span> menu item from the context menu. Fix any errors you find there.
+        </p>
+        
+        <p>If necessary, copy your site from your development system to the lab as described above, and do a final check
+        of your project using the <span class="codeSnippet">~</span>&lt;accountname&gt; form of URL. Then send email to
+        me telling me the project is ready for me to grade.  I will copy the project from your account in the lab to
+        <span class="computerName">babbage </span> for testing.</p>
+        
+        <p class="standout_block">The Subject line of your email must say, <span class="codeSnippet">CS-90.3 Final
+        Project</span>, just like that, in order to get through my spam filters. Within a day, you should receive an
+        &ldquo;OK, I&rsquo;ll check it out!&rdquo; message from me acknowledging that I received your email.</p>
+
+      </div>
+    </div>
+
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

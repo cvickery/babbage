@@ -1,0 +1,205 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-090.3 Assignment 5</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>CS-090.3 Assignment 5</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This is an open-ended assignment in which you are to use extend the login project to add as many &ldquo;interesting&rdquo;
+          features as you have time and/or the inclination for. Four ideas are presented below: <strong>only the first one is
+          required.</strong>
+        </p>
+      </div>
+
+      <h2>Description</h2>
+      <div>
+        <ol>
+          <li>
+            <h5>Allow existing users to change their password.</h5>
+            <p>
+              Once a user is logged in, display a &ldquo;new password&rdquo; field; when it is filled in, send an object to the server with
+              the user&rsquo;s old password, new password, and user ID. The PHP code verifies that the old password matches the
+              existing password for that user, and then updates that user&rsquo;s password with the new one. The query strings
+              would look like this:
+            </p>
+            <div class="codeblock">
+  SELECT password from users WHERE id = '123'
+  [ verify that the passwords match, then ]
+  UPDATE users SET password = 'secret' WHERE id = '123'            
+            </div>
+            <h5>You must prevent SQL injection attacks!</h5> 
+            <p class="run-in">
+              If <span class='functionName'>get_magic_quotes_gpc()</span> returns
+              true, strip all slashes from the characters typed by the user. Then, whether magic quotes
+              was set or not, use <span
+              class="functionName">htmlentities()</span>
+              to substitute HTML character entities wherever possible into the user&rsquo;s input. Be
+              sure the second parameter is
+              <span class="codeSnippet">ENT_QUOTES</span> and the third parameter is <span class="codeSnippet">"UTF-8"</span>.
+            </p>
+            <p>
+            	Note that you need the user&rsquo;s id to send from the client to your PHP code: when the user logged in, the PHP
+              code has to have sent this datum along with the user&rsquo;s name during the login exchange, and the JavaScript code has to
+              have saved it for use in this exchange.
+            </p>
+            <p>
+            	Although the exchange is to be done using AJAX, it is all right to add a <span class="tagName">button</span> to the form for
+              the user to click on when s/he wants to change his/her password instead of triggering the update just because the user changed
+              the contents of the new password field. But the button is not required if you decide you don&rsquo;t want to add it.
+            </p>
+            <p>
+            	Test your code carefully: I have to be able to test it! Be sure to let me have a list of valid user names and passwords for
+              your database when you submit the assignment.
+            </p>
+          </li>
+          <li>
+            <h5>Provide a mechanism for adding new users to the database.</h5>
+            <p>
+              Add a "Register Me" button and a place for the user to enter his/her name to the form.  If the button is
+              clicked and the name, email, and password fields are all non-blank, create an object containing all three
+              values, and send it as a JSON-encoded string to the server to add the user to the database. The PHP code
+              checks that the email address is valid and does not already exist in the database, and adds the user if it
+              is unique. Be sure to sanitize all user input to prevent SQL injection attacks as described above.
+            </p>
+            <div class="code-block">
+  INSERT INTO users (name, email, password) VALUES ('Mr. Scott', 'scotty@beammeup.com', 'prosper') 
+            </div>
+            <p>
+              As mentioned in class, you can have the database provide the uniqueness test by adding a
+              &ldquo;unique&rdquo; constraint to the email column of the users table. The a call to <span
+              class="functionName">pg_affected_rows()</span> will tell you whether the IMSERT query was successful or
+              not.
+            </p>
+            <p>
+              You should validate the email address on the JavaScript side. It is critical that you validate it on the
+              PHP side to prevent illegal email addresses from getting into the database.
+            </p>
+          </li>
+          <li>
+            <h5>Create a table containing a list of comments; let users add comments.</h5>
+            <p>
+            	Use <span class="programName">pgAdmin3</span> to add a table named &ldquo;comments&rdquo; to your database with
+              the following columns: 
+              <span class="variableName">id</span> (type serial, not null, no default value);
+              <span class="variableName">user_id</span> (type integer, not null, no default value); 
+              <span class="variableName">comment_date</span> (type date, not null, default value of <span class="codeSnippet">now()</span> );
+              and <span class="variableName">comment_text</span> (type text, not null, no default value). 
+            </p>
+            <p>
+            	Add the following constraints to the table: make <span class="variableName">id</span> the
+            	primary key, and add a foreign key constraint so that <span class="variableName">user_id</span> references
+            	the
+              <span class="variableName">id</span> column of the &ldquo;users&rdquo; table.
+            </p>
+            <p>
+            	Add a <span class="tagName">textarea</span> element to the form once the user has logged
+            	in. Create an object with the user&rsquo;s <span class="functionName">id</span> and the
+            	value of the <span class="tagName">textarea</span> and send it
+              to your PHP server, which sanitizes the text of the <span class="variableName">comment_text</span> and
+              inserts it into the database using a query like:
+            </p>
+            <div class="code-block">
+  INSERT INTO comments VALUES ( DEFAULT, 8, DEFAULT, 'This is my very first comment!' )
+            </div>
+            <p>
+              In this example, I omitted the column names, and used the special value, <span class="codeSnippet">DEFAULT</span> for the
+              <span class="variableName">id</span> (which is generated automatically by the serial data type) and
+              <span class="variableName">comment_date</span> (which is generated automatically by the <span class="codeSnippet">now()</span>
+              specification for the default value.
+            </p>
+            <p>
+            	Your PHP code should impose a reasonable limit on how long a comment can be.
+            </p>
+            <p>
+            	Verify that the program works by browsing your tables using <span class="programName">pgAdmin3</span>.
+            </p>
+          </li>
+          <li>
+          	<h5>Add the ability to browse existing comments.</h5>
+            <p>
+            	When the user selects this option from your newly expanded user interface, your PHP server returns an array of objects,
+              each of which contains the name of the person who made the comment, the date, and the comment itself. The JavaScript code
+              generates a table with a row showing the information for all the elements of the array. Use CSS to format the table nicely.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit the Assignment</h2>
+      <div>
+        <p>
+          When you have built and tested your web page, send me an email message to me saying your assignment
+          is ready; I will get a copy from your account on the server and check it out. Send your
+          email to:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          Be sure the Subject Line of your email says <span
+          class="codeblock">CS-90.3&nbsp;Assignment&nbsp;4</span>, just like that, to be sure your
+          message does not get trapped by my spam filters.
+        </p>
+        <p>Be sure to sign your email so I can tell who sent it!</p>
+      </div>
+    </div>
+
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs090.3">CSCI-090.3 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>
