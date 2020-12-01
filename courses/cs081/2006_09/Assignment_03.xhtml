@@ -1,0 +1,211 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 3</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Assignment 3</h1>
+    </div>
+
+    <div id="content">
+      <h2>Overview</h2>
+      <div class="whitebox">
+        <p>For this assignment, you are to use a stylesheet and an image to
+        customize the look of your course home page.</p>
+      </div>
+      
+      <h2>Procedure</h2>
+    <div class="whitebox">
+      
+      <ol>
+      
+        <li>
+          <h5>Get rid of the JavaScript alert.</h5>
+          <p class="runin">Edit your <span class="fileName">template.js</span> file, and
+            remove the <span class="functionName">alert()</span> statement. This assignment
+            does not use any JavaScript.</p>
+        </li>
+        
+        <li>
+          <h5>Make sure your Firefox extensions are up to date.</h5>
+          <p
+                    class="runin">Start Firefox, select Tools&rarr;Extensions, and click
+            the Find Updates button. Click any Update Now buttons, close the Extensions
+            panel, exit Firefox, and start it up again.</p>
+          </li>
+        
+        <li>
+          <h5>Use Firebug to examine the current structure of your home page.</h5>
+          <p class="runin"> At this point, your home page
+          consists of header, content, and footer <span
+          class="tagName">div</span>s. The only thing in the header is a
+          <span class="tagName">h1</span> tag, and the only thing in the
+          content is a <span class="tagName">h2</span> tag.  View your home
+          page in Firefox, and open up the Firebug extension.  You can do
+          this any of three ways: press F12, click on the smaller green
+          circle with a checkmark in it at the bottom of the browser window,
+          or use the Tools&rarr;Firebug menu.</p>
+          
+          <p>Select the Inspect tab in the Firebug panel, and open up the
+          DOM tree view so you can see both the <span
+          class="variableName">head</span> and <span
+          class="variableName">content</span> <span
+          class="tagName">div</span> tags and the heading tags inside them. 
+          Hover over the all four elements, observe the outline boxes in the
+          page itself, and verify that the headings occupy exactly the same
+          space on the web page as the <span class="tagName">div</span>
+          elements that contain them.  We will start updating the page by
+          adding some space below the headings so you can add some
+          formatting to the divisions that won&rsquo;t be covered up by the
+          headings.</p>
+
+          <p>Unfortunately, to do this you need to use code based on
+          topics covered in Chapter 11, which has not officially been
+          assigned yet. Here is what you need to add to your <span
+          class="fileName">screen.css</span> file:</p>
+
+          <fieldset>
+            <legend>Sample Code</legend>
+            <pre class="codeBlock">
+h1, h2 {
+  padding:          0 0 0.5em 0.5em;
+  }
+
+#header, #content {
+  padding:          0.5em 0 0.5em 0;
+  }
+            </pre>
+          </fieldset>
+
+          <p>Briefly, what you are doing here is adding a half <em>em</em> of
+            space on the bottom and the left of each heading, and a half <em>em</em> of
+            space to the top and bottom of the two <span class="tagName">div</span>s.
+            Use Firebug to verify that there is space between the headings and
+            the <span class="tagName">div</span>s that contain them.</p>
+        </li>
+
+        <li>
+          <h5>Add some dummy content.</h5>
+          <p class="runin">To evaluate the visual effects that you are going to add, it
+            will help to have more of a page to work with. Use a common technique for adding
+            ummy text to a web page: go to <a href="http://www.lipsum.com/">Lorem
+            Ipsum</a> and have it generate five paragraphs of Latin text for you. Just
+            click the &ldquo;Generate Lorem Ipsum&rdquo; button, and paste the paragraphs
+            into your web page right under the <span class="tagName">h2</span> element
+            in the <span class="variableName">content</span> <span class="tagName">div</span>.
+            Surround each paragraph with <span class="tagName">p</span> and <span class="tagName">/p</span> tags,
+            and adjust the formatting of the source code to maintain proper indentation
+            if necessary. Add another <span class="tagName">h2</span> element between the
+            second and third paragraphs that you just entered. Use Lorem Ipsum again to
+            generate a few words for the content of the new heading, and again to change
+            the content of the original <span class="tagName">h2</span> element. View the
+            web page to make sure it looks right.</p>
+          </li>
+          <li>
+            <h5>Apply different background colors to headings and paragraphs.</h5>
+            <p class="runin">Add three css rules to <span class="fileName">screen.css</span>,
+              one each for <span class="tagName">h1</span>, <span class="tagName">h2</span>,
+              and <span class="tagName">p</span> tags. Select a harmonious set of three color
+              for the backgrounds of these three sets of elements. Be sure to select an equally
+              harmonious set of contrasting colors for the text in each set of elements alse.
+              Actually, all you really need to do is to make sure the color differences are
+              easy to see and that the text remains easy to read. Be sure the three colors
+              are clearly different from the htmb/body background color for the page.</p>
+            </li>
+            <li>
+          <h5>Create background gradients for headings and paragraphs.</h5>
+          <p class="runin">This part of the assignment is an exercise in working
+            with images and opacity. There are several programs you could use
+            to complete this part of the assignment, such as <span class="programName">InkScape</span>, <span
+             class="programName">Fireworks</span>, and <span class="programName">Photoshop</span> together
+            with its companion, <span
+            class="programName">ImageReady</span>. <span class="programName">InkScape</span> is
+            free software available from <a href="http://www.inkscape.org">Inkscape.org</a>;
+            it is already installed on the computers in the lab. (The icon looks
+            like a black blob, representing an inkblot.) <span class="programName">Fireworks</span> is
+            part of Macromedia <span class="programName">Studio</span>, and is
+            also installed on the computers in the lab. There are old versions
+            of <span
+            class="programName">Photoshop</span> and <span class="programName">ImageReady</span> installed
+            in the lab, but we do not have current, licensed, versions installed
+            yet.</p>
+          <p>Work through the <a href="../using_inkscape.xhtml">Using Inkscape
+              web page</a> to create three different gradients, one for <span
+              class="tagName">h1</span> elements, one with a different color for
+              <span class="tagName">h2</span> elements,
+              and a third one for paragraphs. Edit your <span class="fileName">screen.css</span> style
+              sheet so that all headings and paragraphs have their respective
+              background images. Be sure to set them up so each image repeats
+              in the y direction only. Set the background color of first level
+              headings to something different from the page background and the
+              gradient color so you can see the effect illustrated in the Using
+              Inkscape introduction. </p>
+        </li>
+      </ol>
+
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+
+        <p>When you have completed the assignment, send me an email message
+        that says &ldquo;CS-081 Assignment 3&rdquo; in the subject line and
+        that contains your real name and account name in the message body. 
+        I will get a copy of your work from <span
+        class="computerName">maple</span> to look at.</p>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

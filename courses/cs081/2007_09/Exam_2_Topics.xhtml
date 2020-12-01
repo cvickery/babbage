@@ -1,0 +1,176 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>  
+    <title>Final Exam Topics</title>
+    <link rel="stylesheet" type="text/css" media="all" href="../../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../../css/style-print.css" />
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>Final Exam Topics</h1>
+    </div>
+    <div id="content">
+      <h2>Reading Material</h2>
+      <div class="whitebox">
+        <p>
+          Since the midterm exam, we have covered the material in chapters 3, 4, 5, 6, 7, 8, and 9. There is some
+          material in each chapter that was not covered, and some of the material in those chapters was covered on the
+          midterm and will not be tested again. But you need to review it all.
+        </p>
+        <p>
+          Much of the emphasis on the exam will be on how well you learned the concepts involved in the projects. So you
+          you should review the assignment web pages and your code for each assignment as well.
+        </p>
+        <p>
+          At the end of the semester we spent some time going over client-side scripting (JavaScript), and there is an
+          <a href="Assignment_07.xhtml">optional JavaScript project</a> that you need to study even if you do not
+          actually do that project. The only written material on JavaScript that we used was my <a
+          href="../Javascript_Tutorial">JavaScript Tutorial</a>.
+        </p>
+      </div>
+      <h2>Topic List</h2>
+      <div class="whitebox">
+        <p class="standoutBox">
+          There is no guarantee that these are the only topics that will be on the exam, but it should be quite complete.
+          Paying attention to these items should help focus your study time in a helpful way.
+        </p>
+        <ul>
+          <li>
+            <h5>Site structure and management.</h5>
+            <p class="runin">
+              You should be familiar with the use and purposes of the <span class="directoryName">css </span>, <span
+              class="directoryName">image </span>, and <span class="directoryName">script </span> directories in a web
+              site. You should understand the reason for case-sensitive link checking, how to perform a case-sensitive
+              link check on a site, and how to fix any problems found during the link-check operation.
+            </p>
+          </li>
+          <li>
+            <h5>Text and Link Formatting.</h5>
+            <p class="runin">
+            	Text effects: underline, overline, strike-through, small-caps, letter-spacing, line-height.
+            </p>
+            <p>
+              Formatting links: the <span class="variableName">:hover</span> and <span 
+              class="variableName">:visited</span> pseudo-classes to specify alternate background images and colors.
+            </p>
+          </li>
+          <li>
+            <h5>Images.</h5>
+            <p class="runin">
+              How to use the <span class="tagName">img</span> tag to insert images into a web page, and
+              how to use the <span class="attributeName">src</span> and <span class="attributeName">alt</span> attributes.
+            </p>
+            <p>
+              How to use CSS to include a background image for any element of a web page, and the
+              related background image properties: <span class="propertyName">repeat</span> and <span 
+              class="propertyName">position</span>. How to use background images to give rounded corners to boxes.How to
+              use the <span class="propertyName">left</span> property to create a faux column effect.
+            </p>
+            <p>
+              You should know what the <span class="techTerm">intrinsic size</span> of an image is, and how to use CSS
+              to control the actual size of an image. You should know when it would be appropriate to use <span 
+              class="techTerm">em</span> as the unit of measure for an image (Assignment 5).
+            </p>
+            <p>
+              You also need to know how to control the resolution and intrinsic size of an image in order to control the
+              size of an image file, and why doing so is important. You should know what types of images JPEG, PNG, and
+              GIF file formats are most appropriate for. You should know about transparency and gradients, and how they
+              can be used to create visual effects for backgrounds.
+            </p>
+          </li>
+          <li>
+            <h5>Tables.</h5>
+            <p class="runin">
+              The use of the <span class="tagName">table</span>, <span class="tagName">tr</span>, <span 
+              class="tagName">td</span>, and <span class="tagName">th</span> tags to construct a table; using the
+              <span class="attributeName">colspan</span> and <span class="attributeName">rowspan</span> attributes to
+              create merged cells.
+            </p>
+            <p>
+              We did not have an assignment that used tables, so I do not expect you to know anything more about
+              applying styles to the elements of a table beyond the general information you know about formatting any
+              any other box element on a page.
+            </p>
+          </li>
+          <li>
+            <h5>Page Layout.</h5>
+            <p class="runin">
+              Using CSS to turn a list into a horizontal menu. How to use the <span class="attributeName">float</span>,
+              <span class="attributeName">clear</span>, and <span class="attributeName">position</span> CSS properties to
+              manage the position of boxes on the page.
+            </p>
+          </li>
+          <li>
+            <h5>Forms.</h5>
+            <p class="runin">
+              The use of <span class="tagName">form</span>, <span class="tagName">fieldset</span>,
+              <span class="tagName">legend</span>, <span class="tagName">input</span>, <span class="tagName">select</span>,
+              <span class="tagName">textarea</span>, and <span class="tagName">label</span> tags to create a form.
+              The use of the <span class="attributeName">type</span> attribute to create
+              text fields, passwords, radio buttons, checkboxes, and submit buttons.
+            </p>
+            <p>
+              The use of the <span class="attributeName">for</span> and <span class="attributeName">id</span> attributes
+              to match labels with input elements; the purpose of labels.
+            </p>
+            <p>
+              The use of <span class="attributeName">name</span> and <span class="attributeName">value</span>
+              attributes and how they relate to the submission of form data. The use of square brackets in name
+              values when submitting a form to a PHP script. The r&ocirc;le of the <span class="attributeName">name</span>
+              attribute in creating radio button groups.
+            </p>
+            <p>
+              The use of <span class="tagName">option</span> tags in <span class="tagName">select</span> elements; the 
+              difference between single and
+              multiple <span class="tagName">select</span> items, and how to specify the two options.              
+            </p>
+            <p>
+              The <span class="attributeName">method</span> and <span class="attributeName">action</span> attributes in
+              <span class="tagName">form</span> tags. The difference between the GET and POST methods, and the reason
+              for choosing each.
+            </p>
+            <p>
+              Using CSS to lay out a form.
+            </p>
+          </li>
+          <li>
+            <h5>JavaScript</h5>
+            <p class="runin">
+            	Variables, Arrays, and Objects. Strings, numbers and references. Assignment statements. Function definitions,
+              Function references, and Function invocations (calls). Return values. <span class="keyword">if-else</span>
+              statements. Using <span class="tagName">script</span> tags to link to JavaScript code. Events and event
+              handler functions.
+            </p>
+            <p>
+            	The relationship between the DOM, a web page, and JavaScript.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>  
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

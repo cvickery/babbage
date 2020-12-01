@@ -1,0 +1,246 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 3</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>
+        CS-081 Assignment 3
+      </h1>
+    </div>
+    <div id="content">
+      <h2>
+        Introduction
+      </h2>
+      <div  class="whitebox">
+        <p>
+          This is an exercise in managing CSS layout box properties: margin, border, padding, background color,
+          background image, and position.
+        </p>
+      </div>
+      <h2>
+        The Assignment
+      </h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Set up the assignment directory.</h5>
+            <p class="runin">
+              Create a new subdirectory of your web site, and name it <span class="directoryName">Assignment_03</span>.
+              Right-click on your <span class="fileName">index.xhtml</span> file from <span
+              class="directoryName">Assignment 2</span>, and select <span class="menuItem">Edit&rarr;Duplicate</span>
+              from the drop down memory. This will create a new file named <span class="fileName">Copy of
+              index.xhtml</span>, which you should drag to the <span class="directoryName">Assignment_03</span>, and rename
+              <span class="fileName">index.xhtml</span>. 
+            </p>
+          </li>
+          <li>
+            <h5>Add a navagation list to your home page.</h5>
+            <p class="runin">
+              Add a new <span class="tagName">div</span> to the index page for this assignment, placing it between the header and content divs.
+              Use the following code:
+              </p>
+              <p class="code_block">
+&lt;div id="navList"&gt;
+  &lt;h2&gt;Navigation Links&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;a href="#" class="current-page"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;About Me&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Information&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Help&lt;/a&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+            </p>
+            <p>Feel free to change the wording of any of the text if you would like to, but keep exactly this XHTML code structure, and do not
+            change any of it as you work on the project.</p>
+            <p>Pick one of the style sheets you used for Assignment 2 to use as the starting point for this assignment. Feel free to change it
+            to make the page more attractive.</p>
+            <p>Verify that the list of links display properly as a bulleted list.</p>
+          </li>
+          <li>
+            <h5>Style the navigation list as a horizontal navigation bar.</h5>
+            <p class="runin">
+              Copy one of your stylesheets from Assignment 2 to your <span class="dirctoryName">css</span> directory, using
+              the name <span class="fileName">assignment_03.css</span>. Update the index page for this assignment so that it
+              uses just this one stylesheet. Update the stylesheet to make your new index page look &ldquo;good&rdquo; if it
+              doesn&rsquo;t already. Make sure your new index page displays properly as-is, with the ordered list for the links.
+            </p>
+              
+            <p>
+              Now edit the stylesheet for the assignemntn to remove the bullets from the unordered list (<span
+              class="codeSnippet">list-style-type:none</span>), make the <span class="tagName">h2</span> element
+              disappear (<span class="codeSnippet">display:none</span>), and make the list items all appear on the same
+              line.  You could implement that last feature by declaring the list items&rsquo; <span
+              class="propertyName">display</span> property as <span class="propertyValue">inline</span>, but to give you
+              better control over the appearance, use the <span class="codeSnippet">float:left;</span> property to stack
+              them together, left-justified, in a single line. Test the page to make sure the list is now displayed all in a line.
+            </p>
+
+            <p>
+              Use a background image for each anchor to make the links look like tabs. For this assignment, I am
+              providing a fixed-width image, 150px wide, <a href="images/Menu-Tab-150x250.png">Menu-Tab-150x250.png</a>,
+              which you may download to your <span class="directoryName">images</span> directory. Floating the <span
+              class="tagName">li</span> elements that hold the anchors causes them to &ldquo;shrink-wrap&rdquo; so they
+              just surround the anchors. To get the full width of the tab images to show, you need to set the width of
+              the list items to the width of the images (<span class="codeSnippet">width:150px;</span>).  This design
+              will accommodate a small amount of text-size increase because the images are taller than the text that
+              appears inside them. But when any line of text gets wider than 150px, the design &ldquo;breaks&rdquo; and
+              the text will extend outside the tabs. The <a href="http://alistapart.com/">Sliding Doors of CSS</a>
+              technique can be used to handle horizontal growth; feel free to experiment with it!
+            </p>
+            
+            <p>
+              The anchors should expand to fill up the list items that contain them, but anchors are normally inline elements, which
+              do not normally expand beyond their own content unless you specify margins, borders, and/or padding. But declaring the
+              <span class="propertyName">display</span> property of the anchors to be <span class="propertyValue">block</span>
+              (<span class="codeSnippet">display:block;</span>) will accomplish the same thing. You will still need to adjust the padding
+              of the anchors in order to stretch their height enough to make the tabs look &ldquo;good&rdquo;.
+            </p>
+            
+            <p class="standout_box">
+              Remember that in order for your CSS to pass validation, you must always specify a background-color if you specify a (text) color.
+            </p>
+            
+            <p>
+              To make the tabs change color when the user mouses over them, use different background image: <a 
+              href="images/Menu-Tab-150x250-Hover.png">Menu-Tab-150x250-Hover.png</a>.
+            </p>
+          </li>
+          <li>
+            <h5>Create multiple pages.</h5>
+            <p class="runin">Create four more web pages in the <span class="directoryName">Assignment_03</span>
+            directory for your site, which can all be copies of this assignment&rsquo;s <span
+            class="fileName">index.xhtml</span> page. Use file names like <span class="fileName">about.xhtml</span>,
+            <span class="fileName">info.xhtml</span>, etc. Update the <span class="codeSnippet">#</span> link targets in
+            the navigation list so clicking on each link actually takes the viewer to the selected page. (Update the
+            links, then create the pages: that way you won&rsquo;t have to update all the links in all the pages
+            separately.) Change the <span class="codeSnippet">current-page</span> <span class="attributeName">id</span>
+            so that is is on the proper link for each page. Add a CSS rule to the <span
+            class="fileName">assignment_03.css</span>  stylesheet so that the link to the current page looks different
+            from the other ones. For example, you simply have no background image for the anchor element on the current
+            page.
+            </p>
+          </li>
+          
+<li>
+  <h5>Optional: Create your own background images for the menu tabs.</h5>
+  <p class="runin">
+    Use Fireworks to create your own background images for the menu tabs. Experiment with shapes, colors, gradients, and 
+  </p>
+</li>
+        </ol>
+      </div>
+      <h2>
+        Submit The Assignment
+      </h2>
+      <div class="whitebox">
+        <p>
+          Before you submit the assignment, be sure you perform the following four tests:
+        </p>
+          <ol>
+            <li>
+              <h5>Publish your page and all the style sheets to the server&rsquo;s document root</h5>
+              <p class="run_in">Verify that everything looks right.</p>
+            </li>
+            <li>
+              <h5>
+                Perform a link check on your site to make sure there are no mistakes due to capitalization problems.
+              </h5>
+              <p class="runin">
+                (Remember, you checked the "case-sensitive link checking" option when setting up your site.) Right click
+                on the site folder in Dreamweaver, and select &ldquo;check links&rdquo;. If there are any problems, they
+                will show up in a separate window. Fix them and do another check until there are no problems left.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the XHTML.</h5>
+              <p>
+                You should have been looking at the TIDY and Firebug icons in the Firefox status bar as you were testing
+                your code to be sure they both are green circles with white checkmarks inside them. Now, click on the
+                XHTML link in the footer of your web page to get a full W3C validation check. Fix any warnings (or
+                errors) that the validator reports.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the CSS.</h5>
+              <p class="runin">
+                Once the XTML validates successfully, check the CSS using the other link in the footer of your page.
+                Again, fix any warnings or errors that the validator reports.
+              </p>
+            </li>
+          </ol>
+        <p>
+          A final check before you submit your assigment is to view the page using Internet Explorer instead of Firefox
+          to make sure there are no problems when using that browser. You should also check the page using Opera and
+          Safari. You may ignore minor differences, but correct any big discrepancies.
+        </p>
+        <p>
+          Once you have completely tested and fixed your web page, send me an email message telling me it is ready for
+          me to review.  I will get a copy of your entire site from the copy of your profile that is saved on <span
+          class="computerName">maple</span>, so there is no need to tell me which computer you were working on. Just
+          tell me that the site is ready for me to look at.
+        </p>
+        <p>
+          Send your email to me by midnight of the due date. My email address is: <span class="emailAddress
+          codeBlock">vickery at babbage.cs.qc.edu</span>.
+        </p>
+        <p class="standout_block">
+          <strong>You must use exactly this Subject line for your email to be sure I actually receive it:</strong> <span
+          class="codeBlock">CS-081 Assignment 3</span>. (Include the "CS-081" part in the subject line of <em>all</em>
+          messages you send to me this semester.)
+        </p>
+        <p>
+          If you do not receive an &ldquo;OK, I&rsquo;ll check it out!&rdquo; reply from me within a day or two of
+          submitting the assignment, it means I did not receive it. But I will be sending that acknowledgement manually,
+          so don&rsquo;t resubmit the assignment until I have had a chance to reply to the first one.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home Page</a>&nbsp;-&nbsp;<a
+           href="..">CS-081 Home Page</a>&nbsp;-&nbsp;<a
+           href=".">Fall 2007 Course Page</a><br/>
+        <a
+           href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      </p>
+      <p>
+        <em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

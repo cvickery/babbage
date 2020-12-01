@@ -1,0 +1,166 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 8</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>
+        CS-081 Assignment 8
+      </h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          For this assignment, you are to put it all together: in addition to practicing using forms, you are to fix up your web site so that it acts
+          as a coherent site.
+        </p>
+      </div>
+      
+      <h2>The Assignment</h2>
+      <div>
+      	<ol>
+        	<li>
+          	<h5>Add a separate web page to your site with a &ldquo;contact&rdquo; form.</h5>
+            <p class="run-in">
+            	Create a new page by copying the <span class="fileName">template.xhtml</span> file provided at the beginning of the semester; name it
+              <span class="fileName">contact.xhtml</span>, and put it in the top-level directory of your web site. Be sure to give it meaningful
+              <span class="tagName">title</span> and <span class="tagName">h1</span> elements.
+            </p>
+            <p>
+            	Your site should now have three pages: the index page for the site, the index page for the Blog, and the new contact page. Add the same
+              unordered navigation list in all three pages if it is not already there. The list is to have links to the three pages in your site,
+              plus links to the W3C XHTML and CSS validators.
+            </p>
+            <p>
+            	Make sure all the links work. Do not worry about how the three pages on your site look yet.
+            </p>
+          </li>
+          <li>
+          	<h5>Build the contact form.</h5>
+            <p class="run-in">
+            	Make an elaborate contact form that includes as many different form elements as you can, but make the form &ldquo;make sense.&rdquo;
+              For example: use a text input for the user to enter his/her email address; use a password input; use a select for the subject of the
+              message; use a textarea for the message body; use radio buttons to tell how urgent the message is; use checkboxes tell whether a reply is
+              needed and whether to add the user to your mailing list; use a file input so the user can upload more information related to the message.
+              These are suggestions; feel free to use the various elements for whatever you like.
+            </p>
+            <p>
+            	Be sure you use <span class="tagName">label</span> elements for all the controls and that they are set up correctly.
+            </p>
+            <p>
+            	Don&rsquo;t forget the Submit button!
+            </p>
+            <p>
+            	Download <a href="../echo_form_data.php.zip">echo_form_data.zip</a> to your web site and unzip it there, which will give you a file named
+              <span class="fileName">echo_form_data.php</span>. Use this file as the value of the <span class="attributeName">action</span>
+              attribute of your <span class="tagName">form</span> tag. This is the script file that just displays the form data that it receives in a table.
+              It will work with either
+              the GET or POST <span class="attributeName">method</span>, so you may specify either value for that attribute of the 
+              <span class="tagName">form</span> tag. Finally, to support the file upload feature (which the script does not do much with), you need
+              to add the <span class="attributeName">enctype</span> attribute to the <span class="tagName">form</span> with the value of
+              <span class="attributeValue">"multipart/form-data"</span>.
+            </p>
+            <p>
+            	All controls in a form have to be nested inside some other element: use one or more <span class="tagName">fieldset</span> elements for this;
+              add a <span class="tagName">legend</span> element to each fieldset.
+            </p>
+            <p>
+            	Verify that the form works correctly. If it is too messy to work with at this stage, it is all right to do the next step and then to test
+              your form.
+            </p>
+          </li>
+          <li>
+          	<h5>Style the form.</h5>
+            <p class="run-in">
+            	Link your contact page to either the single stylesheet you have been using all along, and/or to a new stylsheet that is used just for
+              the form. Use the <span class="attributeValue">table-cell</span> value for the <span class="attributeName">display</span> property of
+              various elements to get the form laid out as two columns: one for labels and one for input elements. You will have to wrap each label
+              and its corresponding control element inside another element, such as a <span class="tagName">span</span> or <span class="tagName">div</span>
+              to make the pairs of &ldquo;cells&rdquo; go into separate table rows. Use background colors, borders, padding, and margins to make the
+              form look good and to position it where you want it on the page.
+            </p>
+          </li>
+          <li>
+          	<h5>Pimp Your Ride!</h5>
+            <p	class="run-in">
+            	OK, there&rsquo;s not much time for this, but see what you can do to give your whole web site a consistent look and feel. Make the
+              navigation list and page heading look the same across all three pages for starters. Then do whatever else you can to show off your
+              XHTML and CSS skills. As long as everything validates, you can use non-standard extensions like 
+              <span class="attributeName">-moz-border-radius</span> and <span class="attributeName">-webkit-border-radius</span> if you like.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          I will check your assignment by copying it from <span class="computerName">Maple</span> to <span class="computerName">Babbage</span>;
+          to submit the assignment, send me an email with your name in the message body saying it is ready for me to look at.
+          Send your email to me by midnight on the due date (December 16). My email address is:
+        </p>
+          <address>Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu</address>
+        <p class="standout_block">
+          The Subject Line of your email must say <span class="codeblock">CS-081&nbsp;Assignment&nbsp;8</span>,
+          exactly like that, in order to avoid my spam filters.
+        </p>
+      </div>
+    </div>
+    <div id="footer">Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs081">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

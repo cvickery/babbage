@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+        "http://www.w3.org/TR/1998/REC-html40-19980424/loose.dtd">
+<html lang="cs">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-2">
+	<title>Barevné schéma &mdash; nápověda</title>
+
+<style type="text/css">
+<!--
+	body { font:100%/1.33 Verdana,sans-serif; background:white; }
+
+.small { font-size:90%; }
+.imgl { float:left; margin:0 1em 1em 0; }
+-->
+</style>
+
+</head>
+<body>
+
+<h1>Nápověda</h1>
+<ul>
+	<li><a href="#zaklad">Výběr základní barvy</a>
+	<li><a href="#varianty">Volby barevných variant</a>
+	<li><a href="#schemata">Použitá barevná schémata</a>
+	<li><a href="#ostatni">Další funkce</a>
+	<li><a href="#license">Licence</a>
+</ul>
+
+<h3>Použití barevných schémat</h3>
+
+<p>Nejen při návrhu webových stránek, ale čehokoli, kde se používají barvy (počítačové aplikace, návrh interiéru atd.), potřebujeme najít vhodné barevné schéma &mdash; tedy sadu barev, které mají produkovat co nejlepší celkový dojem.
+Ne všechny barvy však mohou koexistovat, některé kombinace působí nepříjemně či rušivě.</p>
+
+<p>Zkušení designéři mají kombinace "v oku", mnozí lidé poznají, které barvy spolu ladí a které ne. Někdy je ale nalezení dobré kombinace zdlouhavá a úmorná práce. Díky teorii barev je však možné si ji usnadnit &mdash; tento nástroj najde sadu barev, z níž je možné při návrhu vycházet, a usnadnit tak hledání optimální palety.</p>
+
+<p>Tato aplikace generuje barevná schémata několika typů. Každé vychází z jedné základní barvy, k níž doplní několik dalších barev, které společně dosahují nejlepšího optického dojmu &mdash; vždy podle jednoho z ověřených algoritmů.</p>
+
+<hr>
+<a name="zaklad"></a>
+<h3>Výběr výchozí barvy</h3>
+<p>Výchozí barvu, z níž je barevné schéma postaveno, můžeme definovat několika způsoby. Tato aplikace pracuje s barevným kruhem a tedy s barvami definovanými pomocí něj &mdash; tj. s <strong>odstínem</strong>, jemuž odpovídá úhel určující pozici barvy na kruhu. Jsou zde také vyznačeny barvy teplé ("warm", purpurová až žlutá) a studené ("cold", žlutozelená až fialová).</p>
+
+<p>Kliknutím na barevný proužek barevného kruhu můžeme vybrat přímo jednu ze základních barev. <strong>Primární barvy</strong> (červená, žlutá, modrá) odpovídají úhlům 0&deg;, 120&deg;, resp. 240&deg;, <strong>sekundární</strong> (oranžová, zelená, fialová) pak úhlům 60&deg;, 180&deg; a 300&deg;, <strong>terciární</strong> barvy jsou mezi nimi. Kruh také obsahuje i přechodové barvy &mdash; ty odpovídají násobkům 15&deg;. Kliknutím na jednu z těchto barev ji nastavíte jako základní.</p>
+
+<p>Kliknutím do vnitřního kruhu lze vybrat odstín ještě přesněji. Odpovídající úhel se při pohybu myši zobrazuje ve stavovém řádku prohlížeče. Navíc je zde rozdíl oproti výběru základních barev z vnějšího kruhu: při výběru úhlu zůstávají zachovány vybrané <a href="#varianty">varianty</a> barev, zatímco při výběru základní barvy z vnějšího kruhu se všechny varianty nastaví na výchozí hodnoty.</p>
+
+<p><strong>Důležitá pozn.:</strong> Zde použitý barevný kruh se liší od spektra RGB používaného na obrazovkách a odpovídá více klasické teorii barev. Některé základní barvy (především odstíny modré, tyrkysové a fialové) tvoří odstíny s menším jasem oproti základním barvám RGB modelu. RGB spektrum navíc tvoří kruh s primárními barvami červená-zelená-modrá, zde je to ale červená-žlutá-modrá &mdash; tato deformace je také hlavní příčinou toho, že zde použitý model naprosto neodpovídá obvyklému modelu HSV, známému z grafickým programů. Nečekejte proto, že pod stejnou hodnotou odstínu zde najdete stejnou barvu jako třeba ve Photoshopu. Také proto je <strong>zadání barvy v RGB</strong> pouze informativní, konverze je pouze přibližná a někdy může produkovat mírně odlišnou barvu, než byla zadána.</p>
+
+<hr>
+<a name="varianty"></a>
+<h3>Volby barevných variant</h3>
+<p>Každá z barev v zobrazovaném schématu má čtyři své varianty. Jsou to barvy téhož odstínu, liší se jen sytostí a světlostí. Kliknutím na čtvereček u zvolené barvy můžeme vybrat vhodnou variantu. První varianta (největší čtvereček) určuje vzhled základní barvy schématu, ostatní tři jsou pouze doplňkové. Pokud schéma tvoří méně než čtyři barvy, na místě nepoužitých barev jsou zobrazeny doplňkové varianty výchozí barvy (u kontrastního schématu i varianta barvy kontrastní).</p>
+
+<p>Pro rychlé nastavení typické sady barevných variant je pod plochou se vzorníkem barev připraveno několik typických variant (pastelové, kontrastní atd.). Kliknutím na některé z tlačítek nastavíte příslušnou sadu variant všem barvám najednou.</p>
+
+<hr>
+<a name="schemata"></a>
+<h3>Použitá schémata</h3>
+
+<p>Výsledná sada barev vznikne dosazením zvolené výchozí barvy do jednoho z barevných schémat. Schéma vybíráte kliknutím na příslušnou kartu schématu pod barevným kruhem. Některá schémata umožňují další nastavení, která se případně zobrazí ještě pod těmito kartami. Popis jejich nastavení naleznete níže v popisu jednotlivých schémat. Můžete si vybrat jedno z následujích barevných schémat:</p>
+
+<h4>Monochromatické</h4>
+<p><img class="imgl" src="prev_mono-on.gif" alt="">Barevné schéma vychází z jediného odstínu  a používá jen variací vzniklých změnou sytosti a jasu, doplněné o černou a bílou. Výsledek, na něž je aplikováno toto schéma, je celkem příjemný pro oči, a to i v jinak poměrně agresivních odstínech. Je však již těžší vytvořit nějaká zvýraznění či podtržení barevného tónu.</p>
+<p>Program vytváří jen několik monochromatických variant každé barvy, není jistě problém vytvořit další &mdash; sytější, světlejší, či tmavší. Monochromatické variace jsou vytvořeny také pro všechny barvy v ostatních schématech, zobrazeny jsou jako menší čtverečky u každé z barev.</p>
+
+<h4>Kontrastní</h4>
+<p><img class="imgl" src="prev_compl-on.gif" alt="">Základní barva je doplněna o svůj doplněk (barvu přesně na opačné straně barevného kola). Vznikne tak vždy jedna teplá a jedna studená barva &mdash; je potom na zvážení, která z nich bude dominantní, a celek podle toho bude působit teplejším či chladnějším dojmem. Schéma lze pak doplnit o vhodné monochromatické variace těchto dvou barev.</p>
+
+<h4>Měkký kontrast / Triáda</h4>
+<p><img class="imgl" src="prev_triad-on.gif" alt="">K základní barvě jsou doplněny dvě barvy, nacházející shodně po obou stranách od jejího doplňku. Na rozdíl od "ostrého" kontrastu je tato varianta často pro oko příjemnější, měkčí, navíc poskytuje větší prostor pro vyvážení teplých a studených barev.</p>
+<p>Kliknutím na posuvník (zobrazí se pod volbou schématu) lze určit odstup těchto barev od doplňku základní barvy &mdash; čím menší hodnota, tím jsou barvy podobnější a blíže k barvě kontrastní. Ideální bývají hodnoty kolem čtvrtiny až poloviny stupnice. Vyšší hodnoty již nejsou příliš vhodné &mdash; výjimkou je posun o maximální hodnotu (60&deg;), který tvoří specifické barevné schéma, tzv. triádu:</p>
+
+<h4>Triáda</h4>
+<p>Triáda je tvořena třemi barvami rovnoměrně rozloženými na třetinách barevného kruhu (po 120 stupních). Tato schémata jsou "vibrující", plná energie a poskytují velký prostor pro vytváření kontrastů, zvýraznění a vyvážení teplých a studených barev. Triádu vytvoříte pomocí tohoto schématu s odstupem nastaveným na maximum (posuvník zcela vpravo).</p>
+
+<h4>Dvojkontrast / Tetráda</h4>
+<p><img class="imgl" src="prev_tetrad-on.gif" alt="">Toto schéma je tvořeno dvojicí barev a jejich doplňky. Vychází z tzv. tetrády &mdash; tedy čtveřice barev rozmístěných rovnoměrně na čtvrtinách kruhu (po 90&deg;). Tetráda je velmi agresivní barevné schéma, vyžadující velmi dobré naplánování a citlivý přístup k vzájemným vazbám jednotlivých barev.</p>
+<p>Menší rozestup mezi dvěma základními barvami dá celku menší napětí, toto schéma je ale i tak vždy dost "nervní" a "akčnější" než schémata ostatní. Při práci s ním je třeba dát si hlavně pozor na vazby jedné barvy s protějškem barvy sousední &mdash; v případě tetrády (maximální hodnota 90&deg;, posuvník zcela vpravo) jsou pak citlivý přístup a dobré oko zcela nezbytné.</p>
+
+<h4>Analogické barvy</h4>
+<p><img class="imgl" src="prev_analog-on.gif" alt="">Toto schéma tvoří základní barva a její barvy sousední &mdash; tedy barvy shodně po obou stranách. Vypadá většinou velmi elegantně a čistě, ve výsledku je menší napětí a působí jednotně teple či studeně. Pokud zvolíte barvu na hranici teplých a studených odstínů, lze tu sousední barvu, která má opačnou "teplotu", použít pro zvýraznění a podtržení barev zbývajících.</p>
+<p>Posuvníkem můžete zvolit odstup sousedních barev &mdash; ideální opět bývají hodnoty mezi čtvrtinou a polovinou škály (15-30&deg;). Můžete zde také přidat kontrastní barvu, do schématu tak přibude barva doplňková k barvě základní. Považujte ji však jen za doplňující &mdash; přidává paletě napětí a v přehnané míře působí příliš agresivně, použitá v v detailech a pro podtržení hlavních barev však může být velmi účinná a elegantní.</p>
+
+<h4>Rozporné barvy</h4>
+<p>Žádné takové barevné schéma zde nenajdete &mdash; je to naopak schéma, které nedokážete "vecpat" do žádného z pravidel zde uvedených. Takové schéma nemusí být úplně zbytečné. Mohou nastat situace, kdy je třeba připravit dílo šokující, opravdu křiklavé. I v tomto případě může být tato stránka užitečná &mdash; pokud se vaše schéma diametrálně liší od všech uvedených modelů, máte patrně to pravé: nervní, řvavou, agresivní sadu barev. Je však pochopitelné, že taková sada není vhodná tam, kde hlavním záměrem výsledku nejsou pouze takovéto vypjaté emoce.</p>
+
+<hr>
+<a name="ostatni"></a>
+<h3>Další funkce</h3>
+<p>Přepínačem "Omezit na bezpečné barvy" můžete zapnout použití tzv. bezpečných barev. Všechny barvy ve schématu budou redukovány do barevného prostoru 216 barev (WebColors). I když dnes toto omezení nemá příliš velký význam, pro někoho může být stále užitečné. Tento převod mění odstíny barev a odladěné barevné schéma může zdeformovat. Pokud tuto funkci chcete využít, použijte raději jen takové barvy, které se po převodu na WebColors od původních příliš neliší.</p>
+
+<p>Vpravo dole se nachází přepínač simulace poruch barevného vidění. Obsahuje různé typy poruch barvocitu a pokud některou z těchto možností vyberete, zobrazené barvy se změní do podoby, v jaké je přibližně vidí člověk, který má uvedenou vadu vnímání barev. Tato funkce slouží jen pro kontrolu, zda náhodou vytvořené schéma nebude těžko přístupné pro osoby s těmito poruchami vidění &mdash; výsledné kódy barev to nijak neovlivňuje.</p>
+
+<p>
+Tabulka v pravé části zobrazuje aktuální kódy všech zobrazených barev. Simulace poruch barevného vidění na tyto kódy nemá vliv, omezení na bezpečné barvy však ano. Pro každou barvu je zobrazena její zvolená základní podoba a pod ní další tři varianty. Kliknutím na šipku vpravo provedete rotaci použitých variant. Můžete tak zvolit jako základní některou jinou z připravených variant a posoudit, jak vypadá zobrazena na větší ploše. 
+</p>
+
+<p>Konečná paleta barev je základem pro další práci designéra. Nikde není řečeno, že se musí použít všechny barvy, které se v paletě vyskytují. Pro zachování záměru barevného schématu by monochromatické varianty neměly být nadužívány, většinou se doporučuje použít jen černou a bílou. Pokud další varianty opravdu potřebujeme, vyberme jen několik variant základní barvy, pro doplnění případně jednu či dvě varianty jedné z kontrastních barev. Druhým možným použitím je také stejná varianta všech hlavních barev (např. stejný motiv ve světlejších, bledších či tmavších odstínech). Obecně platí, že jedna aplikace (např. jedna WWW stránka, či celý web) by měla kromě černé a bílé používat nejvýše šest barev (včetně všech variant). To, aby spolu dobře ladily, vám snad pomůže zajistit tato pomůcka.</p>
+
+<hr>
+
+<p>
+<strong>Pozn.:</strong> Pod odkazem "URL tohoto schématu" se v každém okamžiku skrývá URL právě zobrazené barevné palety a všech aktuálních nastavení. Můžete si tak například na právě vytvořenou sadu barev vytvořit záložku, napsat seznam svých oblíbených barevných sad i s názvy a popisy, nebo odkaz na hotové schéma poslat e-mailem k posouzení.
+</p>
+
+<hr>
+
+<a name="license"></a>
+<h3>Licence</h3>
+<p>
+Tento produkt je šířen pod licencí <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/">BY-NC-SA</a>. Licence pro komerční užití neposkytuji.
+</p>
+
+<hr>
+
+<p>
+	<a href="http://www.wellstyled.com">Wellstyled.com</a> &rarr;
+	<a href="/tools">Nástroje</a> &rarr;
+	<a href="index.html">Generátor barevných schémat 2</a> &rarr;
+	<strong>Informace &amp; Nápověda</strong>
+	<br>
+	Copyright <a href="http://www.pixy.cz">pixy</a> (c) 2002, 2004
+</p>
+
+
+</body>
+</html>

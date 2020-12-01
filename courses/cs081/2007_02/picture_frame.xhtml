@@ -1,0 +1,55 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Amoudi Harbor</title>
+    <link rel="stylesheet" type="text/css" href="css/picture_frame.css" />
+  </head>
+
+  <body>
+    <div id="content">
+    <div id="top">
+      <div id="right">
+        <div id="bottom">
+          <div id="left">
+            <div id="header">
+              <h1>Amoudi Harbor</h1>
+            </div>
+            <div id="picture">
+              <a href="#">
+                <img  src="picture_frame_images/harbor.jpg"
+                      alt="Amoudi Harbor, Santorini" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div id="footer">
+      <div id="navigation">
+        <a href="#">Previous</a>
+        <a href="#">Index</a>
+        <a href="#">Next</a>
+      </div>
+      <div id="validation">
+        <a href="http://validator.w3.org/check?uri=referer">XHTML</a> -
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      </div>
+    </div>
+  </body>
+</html>

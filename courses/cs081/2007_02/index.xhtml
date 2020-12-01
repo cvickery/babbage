@@ -1,0 +1,340 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+  <title>CS-081 - Spring 2007</title>
+
+  <link rel="shortcut icon" href="../favicon.ico" />
+  <link rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="../../css/style-all.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="screen"
+        href="../../css/style-screen.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="print"
+        href="../../css/style-print.css"
+  />
+  <style type="text/css">
+    button {
+      width: 80%;
+      padding: 1em 0;
+      font-weight: bold;
+      font-size: 1.5em;
+      border: 0.2em solid #666; }
+    #gotonow { visibility: hidden; margin: auto; }
+    #gotonowDiv { text-align: center; padding: 0 0 0.5em 0; }
+  </style>
+</head>
+
+<body>
+
+  <div id="header">
+    <h1 id="section">CS-081 - Spring 2007</h1>
+  </div>
+
+  <div id="content">
+    <h2>Course Info</h2>
+    <div class="whitebox">
+
+      <p>Section 1T3RA, Registration Code 2811
+      <br />Meets Tuesday &amp; Thursday 1:40 pm - 2:55 pm.  SB C-205</p>
+
+      <p class="standoutBlock"><strong>Room Change-Change!</strong> We will
+      <strong>not</strong> be meeting in room A-225 this semester despite
+      the previous announcment that we would do so.  We will have our
+      intimate soir&#233;es in C-205, the regularly scheduled classroom.</p>
+
+      <ul>
+        <li><a href="../syllabus.xhtml">Course Syllabus and Textbook</a></li>
+        <li><a href="/contact_info.xhtml">Vickery Office Hours and Contact
+        Information</a></li>
+        <li><a href="check_grades.xhtml">Check Grades</a></li>
+        <li><a href="../Exams/">Past Exams</a></li>
+        <li><a href="http://babbage.cs.qc.edu/Fora/Courses/viewforum.php?f=2">Course
+        Discussion Forum</a></li>
+      </ul>
+      
+    </div>
+    <h2>Schedule</h2>
+    <div>
+      <div id="gotonowDiv">
+        <button id="gotonow">-- Scroll to Current Date --</button>
+      </div>
+      <table summary="Spring 2007 Class Schedule">
+      <col width="5%" />
+      <col width="5%" />
+        <thead>
+          <tr>
+            <th>Class Number</th>
+            <th>Date</th>
+            <th>Notes and Assignments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>January 29<br />Monday</td>
+            <td>Classes Start</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>January 30<br />Tuesday</td>
+            <td>Course Introduction; Clients, Servers, and the Internet
+            <br /><strong>Textbook: Read Chapter 1</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>February 1<br />Thursday</td>
+            <td>The Apache web server: DocumentRoot and DirectoryIndex
+            directives in <span class="fileName">httpd.conf</span>
+            <br /><strong>Textbook: Read Chapter 2</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>February 6<br />Tuesday</td>
+            <td>Lab Access.  XHTML syntax: tags, attributes, nodes, and the
+            document tree.</td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>February 8<br />Thursday</td>
+            <td>The course template file.  DOCTYPE declaration; server-side
+            (PHP) scripting.  <span class="tagName">div</span> and <span
+            class="tagName">span</span> tags; <span
+            class="variableName">class</span> and <span
+            class="variableName">id</span> attributes as &ldquo;hooks&rdquo;
+            for CSS.</td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>February 12<br />Monday</td>
+            <td>Lincoln&rsquo;s Birthday<br />
+            <strong>College Closed</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>February 13<br />Tuesday</td>
+            <td>Introduction to CSS
+              <br /><strong><a href="./Assignment_01.xhtml">Assignment 1</a>
+              Due</strong>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>February 15<br />Thursday</td>
+            <td><strong>Monday Schedule<br />
+            No Class</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>February 19<br />Monday</td>
+            <td>President&rsquo;s Day<br />
+            <strong>College Closed</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>February 20<br />Tuesday</td>
+            <td>Dreamweaver site setup.</td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>February 21<br />Wednesday</td>
+            <td><strong>Monday Schedule</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">7</th>
+            <td>February 22<br />Thursday</td>
+            <td>Color<br />
+            <strong><a href="Assignment_02.xhtml">Assignment 2</a>
+            Due</strong><br />
+            <strong>Textbook: Read Chapters 3-4</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">8</th>
+            <td>February 27<br />Tuesday</td>
+            <td><a href="Assignment_03.xhtml">Assignment 3</a> Web Page
+            (<em>First part last updated <?php echo date("Y-m-d",
+            filemtime("Assignment_03.xhtml")); ?>.</em>) <br /> Processing
+            image files using <span
+            class="programName">Fireworks</span>.</td>
+          </tr>
+          <tr>
+            <th scope="row">9</th>
+            <td>March 1<br />Thursday</td>
+            <td>CSS Box model: margin, border, padding.  Centering block
+            boxes using <span class="codeSnippet">margin:&nbsp;auto</span>
+            and inline boxes using <span
+            class="codeSnippet">text-align:&nbsp;center</span>.</td>
+          </tr>
+          <tr>
+            <th scope="row">10</th>
+            <td>March 6<br />Tuesday</td>
+            <td>Preparing images for the web.
+            <br /><strong>Textbook: Read Chapter 5</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">11</th>
+            <td>March 8<br />Thursday</td>
+            <td><strong><a href="Assignment_03.xhtml">Assignment 3</a>
+            through Step 3 Due.</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">12</th>
+            <td>March 13<br />Tuesday</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">13</th>
+            <td>March 15<br />Thursday</td>
+            <td>White space and the box model.  Compound selectors.</td>
+          </tr>
+          <tr>
+            <th scope="row">14</th>
+            <td>March 20<br />Tuesday</td>
+            <td><strong>Midterm Exam</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">15</th>
+            <td>March 22<br />Thursday</td>
+            <td>Backgrounds</td>
+          </tr>
+          <tr>
+            <th scope="row">16</th>
+            <td>March 27<br />Tuesday</td>
+            <td>Nested <span class="tagName">div</span> scaffolding for CSS;
+            Inkscape. Introduction to the <a
+            href="http://www.alistapart.com/articles/slidingdoors"> sliding
+            doors technique</a>.
+            <br /><strong><a href="../framed_picture.xhtml">Second Part of
+            Assignment 3</a></strong> (<em>Second part last updated <?php
+            echo date("Y-m-d", filemtime("../framed_picture.xhtml"));
+            ?>.</em>)
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">17</th>
+            <td>March 29<br />Thursday</td>
+            <td>Box properties: overflow, visibility, display, position,
+            float, clear.
+            <br /><strong>P/NC Drop Period Ends</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>April 2 -<br />April 10</td>
+            <td><strong>Spring Break
+            <br />Textbook: Reread Chapters 1-5. Preread Chapters
+            6-9.</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">18</th>
+            <td>April 12<br />Thursday</td>
+            <td><strong><a href="Assignment_03_Requirements.xhtml">Complete
+            Assignment 3</a> Due</strong> (<em>Requirements last updated
+            <?php echo date("Y-m-d",
+            filemtime("Assignment_03_Requirements.xhtml")); ?>.</em>)</td>
+          </tr>
+          <tr>
+            <th scope="row">19</th>
+            <td>April 17<br />Tuesday</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">20</th>
+            <td>April 19<br />Thursday</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">21</th>
+            <td>April 24<br />Tuesday</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">22</th>
+            <td>April 26<br />Thursday</td>
+            <td><strong><a href="Assignment_04.xhtml">Assignment 4</a>
+            Due</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">23</th>
+            <td>May 1<br />Tuesday</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">24</th>
+            <td>May 3<br />Thursday</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">25</th>
+            <td>May 8<br />Tuesday</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">26</th>
+            <td>May 10<br />Thursday</td>
+            <td><a href="2007-05-10">JavaScript Coding Styles</a></td>
+          </tr>
+          <tr>
+            <th scope="row">27</th>
+            <td>May 15<br />Tuesday</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">28</th>
+            <td>May 17<br />Thursday</td>
+            <td><strong>Last Day of Classes</strong><br />
+            <strong><a href="Assignment_05.xhtml">Assignment 5</a>
+              Due</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">&nbsp;</th>
+            <td>May 25<br />Friday</td>
+            <td><strong>Final Exam</strong>
+            <br /><strong>1:15pm - 3:15pm</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="../../../">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="../">CS-081 Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>
+    </p>
+    <p><em>Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.</em>
+    </p>
+  </div>
+  <script type="text/javascript" src="../../scripts/core.js">
+  </script>
+  <script type="text/javascript" src="../../scripts/now.js">
+  </script>
+</body>
+</html>

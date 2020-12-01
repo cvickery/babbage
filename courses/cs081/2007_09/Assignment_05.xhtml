@@ -1,0 +1,349 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 5</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+    <style type="text/css" media="all">
+      .font-list {
+        list-style-type:none;
+        font-size:1.5em;
+        border:1px solid black;
+        padding:0.5em 2em;
+        }
+      .arial-font {
+        font-family:arial;
+        }
+      .arial-black-font {
+        font-family:"arial black";
+        }
+      .comic-sans-ms-font {
+        font-family:"comic sans ms";
+        }
+      .courier-new-font {
+        font-family:"courier new";
+        }
+      .georgia-font {
+        font-family:georgia;
+        }
+      .impact-font {
+        font-family:impact;
+        }
+      .times-new-roman-font {
+        font-family:"times new roman";
+        }
+      .trebuchet-ms-font {
+        font-family:"trebuchet ms";
+        }
+      .verdana-font {
+        font-family:verdana;
+        }
+      .serif-font {
+        font-family:serif;
+        }
+      .sans-serif-font {
+        font-family:sans-serif;
+        }
+      .cursive-font {
+        font-family:cursive;
+        }
+      .fantasy-font {
+        font-family:fantasy;
+        }
+      .monospace-font {
+        font-family:monospace;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>
+        CS-081 Assignment 5
+      </h1>
+    </div>
+    <div id="content">
+      <h2>
+        Introduction
+      </h2>
+      <div  class="whitebox">
+        <p>
+          Managing fonts is a perennial problem on the web. The only fonts a browser can use are ones that are
+          installed on the user&rsquo;s computer. But people use different operating systems, which provide
+          different sets of fonts. Then various applications, like Microsoft Office and Adobe Photoshop, provide
+          still other fonts. The net result is that the fonts available to you when you are developing a web
+          page will definitely not be the same as your users will see. Re-read page 49 of the textbook if any of
+          this is not already totally familiar to you.
+        </p>
+        <p>
+          There have been various attempts to provide a common set of fonts that web designers can count on,
+          but corporate politics have muddied the issue. Still, here is a set of fonts that are considered
+         &ldquo; quite safe&rdquo; because they are distributed with both Microsoft Windows and Macintosh OS X:
+        </p>
+        <ul class="font-list">
+          <li class="arial-font">Arial</li>
+          <li class="arial-black-font">Arial Black</li>
+          <li class="comic-sans-ms-font">Comic Sans MS</li>
+          <li class="courier-new-font">Courier New</li>
+          <li class="georgia-font">Georgia</li>
+          <li class="impact-font">Impact</li>
+          <li class="times-new-roman-font">Times New Roman</li>
+          <li class="trebuchet-ms-font">Trebuchet MS</li>
+          <li class="verdana-font">Verdana</li>
+        </ul>
+        <p>
+          I took this list from <cite>The Principles of Beautiful Web Design</cite> by Jason Beaird, available
+          from the publisher,
+          <a href="http://www.sitepoint.com/article/principles-beautiful-web-design">sitepoint.com</a>.
+        </p>
+        <p>
+          Remember, the W3C gives a list of generic <span class="propertyName">font-family</span> values that
+          you should include at the end of the list whenever you specify this property: not everyone uses Windows
+          or OS X! (Think cell phones and Linux users.)
+        </p>
+        <ul class="font-list">
+          <li class="serif-font">serif</li>
+          <li class="sans-serif-font">sans-serif</li>
+          <li class="cursive-font">cursive</li>
+          <li class="fantasy-font">fantasy</li>
+          <li class="monospace-font">monospace</li>
+        </ul>
+        <p>
+          Note that the generic font families may not look the same in different browsers, even on the same computer
+          where the same fonts are presumably available to all browsers; browsers are free to pick from the set of
+          available fonts when going to a generic font family, and they often make different choices. Check this page
+          out using different browsers in the lab and see what shows up.
+        </p>
+        <p>
+          One more detail. Specifying the same font size doesn&rsquo;t mean that text will take up the same amount of
+          space when using different font families. Consider the following lines, both shown with a font-size of 1em,
+          but the first line is Georgia and the second is Times New Roman:
+        </p>
+        <div class="whitebox" style="padding:0">
+          <p class="georgia-font">
+            The quick brown fox jumped over the lazy dogs and ate some Lorem Ipsum.
+          </p>
+          <p class="times-new-roman-font">
+            The quick brown fox jumped over the lazy dogs and ate some Lorem Ipsum.
+          </p>
+        </div>
+        <p>
+          Lest you think this has something to do with using ems, here are the same lines using
+          <span class="code-snippet">font-size:18px</span> for both:
+        </p>
+        <div class="whitebox" style="padding:0;font-size:18px;">
+          <p class="georgia-font">
+            The quick brown fox jumped over the lazy dogs and ate some Lorem Ipsum.
+          </p>
+          <p class="times-new-roman-font">
+            The quick brown fox jumped over the lazy dogs and ate some Lorem Ipsum.
+          </p>
+        </div>
+        <h3>The Image Temptation</h3>
+        <p>
+          As a web developer, you need to be aware of the issues surrounding the &ldquo;font issue.&rdquo;
+          But how you choose to deal with it, like so many other aspects of web design, allows for alternative
+          approaches, no one of which is perfect.
+        </p>
+        <p>
+          One way of trying to handle this particular problem is to use images to present text as bitmaps rather than to
+          rely on the vagaries of how different browsers on different operating systems with different sets of
+          fonts availale will &ldquo;rasterize&rdquo; fonts (vector information) into bitmaps when they render your page
+          in the browser
+          window. Just give the browser a picture of what you want the text to look like, using any font you want to
+          when you draw the picture. A robust way to do this, which is widely used, is called <a
+          href="http://www.mikeindustries.com/sifr" title="Scalable Inman Flash Replacement">sIFR</a>, an open-source
+          code solution that relies on Flash and JavaScript to turn text into a non-moving Flash movie.
+        </p>
+        <p>
+          For this assignment, you are to try a simpler approach to replacing text with an image: manually generate
+          an image of the text using Fireworks, and use CSS to style the <span class="attributeName">alt</span> text
+          for users who do not have images enabled.
+        </p>
+        <p>
+          This is an experimentation assignment: there is no &ldquo;right&rdquo; way to do it, just some
+          constraints within which you are free to explore possible ways of achieving the effect. And the
+          effect is to use an image for the <span class="tagName">h1</span> element of the web pages you
+          have been doing for Assignments 3 and 4.
+        </p>
+      </div>
+      <h2>
+        The Assignment
+      </h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Set up the assignment directory.</h5>
+            <p class="runin">
+              Create a new subdirectory of your web site, and name it <span class="directoryName">Assignment_05</span>.
+              Duplicate each of the xhtml files from Assignment 4, and move the copies into the Assignment_05
+              subdirectory.  Duplicate the stylesheet for Assignment 4, and change the name of copy to <span
+              class="fileName">assignment_05.css</span>. Change the stylesheet links in each of the xhtml files for this
+              assignment so they point to this new stylesheet.
+            </p>
+          </li>
+          <li>
+            <h5>Create an image for the heading&rsquo;s text.</h5>
+            <p class="runin">
+              Some of you used different text for the titles on the various pages in assignments 3 and 4. You do not
+              have to generate a different image for each page for this assignment: work on the <span class="fileName">
+              index.xhtml</span> page and don&rsquo;t worry about the other ones.
+            </p>
+            <p>
+              Use Fireworks to create an image of your page&rsquo;s <span class="tagName">h1</span> text. To keep it
+              simple, you may put multiple words within a single image, unlike the example I showed in class. Pick a
+              distinctive font from the dropdown list of fonts available in Fireworks so you will be able to see the
+              effect. Make the image larger than needed so you can use CSS to scale it down to the size you want it
+              actually to appear on the page. Change your <span class="tagName">h1</span> so it looks something like
+              this:
+            </p>
+            <p class="code_block">
+  &lt;h1&gt;&lt;img src="../images/lorem-ipsum.png" alt="Lorem Ipsum"&gt;&lt;/h1&gt;
+            </p>
+            <p>
+              There is a &ldquo;Web Developer&rdquo; Firefox extension installed in the lab, which you use to
+              disable images from being rendered:
+            </p>
+            <p>
+              <img src="images/hide-images.png" alt="Web Developer Screenshot Goes Here" />
+            </p>
+            <p>
+              Be sure your web page shows the proper heading text, both with and without images enabled.
+            </p>
+          </li>
+          <li>
+            <h5>Use CSS to style the heading image and alt text.</h5>
+            <p class="runin">
+              Now you get to do the experiments: how closely can you get the size and position of the image and the
+              <span class="attributeName">alt</span> text to match each other? You can use font-size and font-family to
+              style the <span class="attributeName">alt</span> text, and you can specify
+              the size the image using ems or any other unit you want. The biggest challenge is to see how well you can
+              get your page to respond to the user&rsquo;s changing the font size using the Control-plus and
+              Control-minus keys.
+            </p>
+          </li>
+        </ol>
+      </div>
+      <h2>
+        Submit The Assignment
+      </h2>
+      <div class="whitebox">
+        <p>
+          Before you submit the assignment, be sure you perform the following tests:
+        </p>
+          <ol>
+            <li>
+              <h5>Disable images.</h5>
+              <p class="runin">
+                Use the Firefox Web Developer extension to disable images and make sure your web page can still be
+                read clearly.
+              </p>
+            </li>
+            <li>
+              <h5>Resize the browser window.</h5>
+              <p class="runin">
+                With images enabled, change the size and aspect ratio of the browser window. The goal is to have
+                a &ldquo;bullet-proof&rdquo; design that behaves reasonably for all sizes and aspect ratios.
+              </p>
+            </li>
+            <li>
+              <h5>Publish your page, its stylesheet, and the image files to the server&rsquo;s document root</h5>
+              <p class="run_in">Verify that everything looks right.</p>
+            </li>
+            <li>
+              <h5>
+                Perform a link check on your site to make sure there are no mistakes due to capitalization problems.
+              </h5>
+              <p class="runin">
+                (Remember, you checked the "case-sensitive link checking" option when setting up your site.) Right click
+                on the site folder in Dreamweaver, and select &ldquo;check links&rdquo;. If there are any problems, they
+                will show up in a separate window. Fix them and do another check until there are no problems left.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the XHTML.</h5>
+              <p>
+                You should have been looking at the TIDY and Firebug icons in the Firefox status bar as you were testing
+                your code to be sure they both are green circles with white checkmarks inside them. Now, click on the
+                XHTML link in the footer of your web page to get a full W3C validation check. Fix any warnings (or
+                errors) that the validator reports.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the CSS.</h5>
+              <p class="runin">
+                Once the XTML validates successfully, check the CSS using the other link in the footer of your page.
+                Again, fix any warnings or errors that the validator reports.
+              </p>
+            </li>
+          </ol>
+        <p>
+          A final check before you submit your assigment is to view the page using Internet Explorer instead of Firefox
+          to make sure there are no problems when using that browser. You should also check the page using Opera and
+          Safari. You may ignore minor differences, but correct any big discrepancies.
+        </p>
+        <p>
+          Once you have completely tested and fixed your web page, send me an email message telling me it is ready for
+          me to review.  I will get a copy of your entire site from the copy of your profile that is saved on <span
+          class="computerName">maple</span>, so there is no need to tell me which computer you were working on. Just
+          tell me that the site is ready for me to look at.
+        </p>
+        <p>
+          Send your email to me by midnight of the due date. My email address is: <span class="emailAddress
+          codeBlock">vickery at babbage.cs.qc.edu</span>.
+        </p>
+        <p class="standout_block">
+          <strong>You must use exactly this Subject line for your email to be sure I actually receive it:</strong> <span
+          class="codeBlock">CS-081 Assignment 5</span>.<br />Include the "CS-081" part in the subject line of <em>all</em>
+          messages you send to me this semester.
+        </p>
+        <p>
+          If you do not receive an &ldquo;OK, I&rsquo;ll check it out!&rdquo; reply from me within a day or two of
+          submitting the assignment, it means I did not receive it. But I will be sending that acknowledgement manually,
+          so don&rsquo;t resubmit the assignment until I have had a chance to reply to the first one.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home Page</a>&nbsp;-&nbsp;<a
+           href="..">CS-081 Home Page</a>&nbsp;-&nbsp;<a
+           href=".">Fall 2007 Course Page</a><br/>
+        <a
+           href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      </p>
+      <p>
+        <em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

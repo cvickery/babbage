@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+                          "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>course_template.php</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body {
+        background-color: #ffc;
+        font-family:      sans-serif;
+        color:            #661;
+        margin:           2em;
+        }
+      h1 {
+        text-align:       center;
+        }
+      pre {
+        background-color: #fff;
+        color:            #111;
+        margin:           1em;
+        border:           2px solid red;
+        }
+  </style>
+</head>
+<h1>course_template.php</h1>
+<hr>
+<pre>
+&lt;?php
+  if (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"&gt;
+
+&lt;head&gt;
+
+  &lt;title&gt;CS-081 Course Template&lt;/title&gt;
+
+  &lt;link rel="shortcut icon" href="favicon.ico" /&gt;
+
+  &lt;link rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="css/style-all.css"
+  /&gt;
+  &lt;link rel="stylesheet"
+        type="text/css"
+        media="screen"
+        href="css/style-screen.css"
+  /&gt;
+  &lt;link rel="stylesheet"
+        type="text/css"
+        media="print"
+        href="css/style-print.css"
+  /&gt;        
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  &lt;div id="header"&gt;
+    &lt;h1&gt;CS-081 Course Template&lt;/h1&gt;
+  &lt;/div&gt;
+
+  &lt;div id="content"&gt;
+    &lt;h2&gt;Topic&lt;/h2&gt;
+  &lt;/div&gt;
+
+  &lt;div id="footer"&gt;
+  &lt;hr /&gt;
+    &lt;p class="links"&gt;
+      &lt;a href="http://validator.w3.org/check?uri=referer"&gt;
+      XHTML&lt;/a&gt;&amp;nbsp;-&amp;nbsp;
+      &lt;a href="http://jigsaw.w3.org/css-validator/check/referer"&gt;
+      CSS&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;&lt;em&gt;Last updated
+      &lt;?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?&gt;&lt;/em&gt;
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><hr></body></html>

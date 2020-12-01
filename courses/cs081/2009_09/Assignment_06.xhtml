@@ -1,0 +1,191 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 6</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:ABD523F9-E61D-4D0E-9557-D7DB304474AE'>
+    <h1>CS-081 Assignment 6</h1>
+    <h2>Introduction</h2>
+    <div>
+      This is the first step in developing a model of a full-blown web site with multiple web pages and a common set of
+      navigation links across the various parts of the site. In this step, you are to set up the site&rsquo;s structure
+      on disk and to fill in dummy content for two site sections: a Blog and an ePortfolio.
+    </div>
+    <h2>Lab Activities.</h2>
+    <div>
+      <ol>
+        <li>
+          <h5>Site preparation: </h5>
+          <p>
+            Use Dreamweaver to create two new directories for your site, named <span class="directory-name">Blog</span>
+            and <span class="directory-name">ePortfolio</span>. Drag your current <span
+            class="file-name">index.xhtml</span> file from the root of your site into the <span
+            class="directory-name">ePortfolio</span> directory, making sure you click &ldquo;Update&rdquo; when
+            Dreamweaver asks whether to update links. Rename this file to <span
+            class="file-name">term_paper.xhtml</span>. Your term paper would be just one element in your ePortfolio, so
+            we will be setting up a separate index file in the ePortfolio directory that (eventually) will have links to
+            the term paper as well as all the other items you decide to add to your ePortfolio.
+          </p>
+          <p>
+            As demonstrated in class on November 9, make a copy of <span class="file-name">template.xhtml</span>, and
+            rename the copy as <span class="file-name">index.xhtml</span>. Remove the unneeded set of comments from the
+            PHP code at the beginning of the file and the other set of comments that are before the paragraph with the
+            validation links.
+          </p>
+          <p> At this point, we will be a little more efficient than I was during class:
+          </p>
+          <ol>
+            <li>
+              Create a new stylesheet for this assignment, named <span class="file-name">assignment_06.css</span>, in
+              your <span class="directory-name">css</span> directory. You can leave the stylesheet blank for now.
+            </li>
+            <li>
+               Add a link to this stylesheet in the head of your new <span class="file-name">index.xhtml</span> file. Be
+               sure to include the <span class="attribute-name">rel</span> and <span class="attribute-name">type</span>
+               attributes in addition to the <span class="attribute-name">href</span> attribute in the <span
+               class="tag-name">link</span> link.
+            </li>
+            <li>
+              Add the list of navigation links to the new index page:
+              <div class="code-block">
+  &lt;ul id="nav-list&gt;
+    &lt;li class="current-page"&gt;
+      &lt;a href="."&gt;Home&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;a href="Blog"&gt;My Blog&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;a href="ePortfolio"&gt;My ePortfolio&lt;/a&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+              </div>
+            </li>
+            <li>
+              Now, instead of duplicating <span class="file-name">template.xhtml</span> to create the index pages, for
+              Blog and ePortfolio, duplicate your <span class="file-name">index.xhtml</span> page and move that copy
+              into the <span class="directory-name">Blog</span> directory. Again, be sure to let Dreamweaver update the
+              links for you. Once the copy is in the <span class="directory-name">Blog</span> directory, rename it to
+              <span class="file-name">index.xhtml</span>.
+            </li>
+            <li>
+              Duplicate <span class="file-name">index.xhtml</span> again, and move this copy into the
+              <span class="directory-name">ePortfolio</span> directory and, once it is there, rename that copy to
+              <span class="file-name">index.xhtml</span>.
+            </li>
+            <li>
+              What you have now is three directories containing files named <span class="file-name">index.xhtml</span>:
+              <span class="directory-name">My Website</span>, <span class="directory-name">Blog</span>, and <span
+              class="directory-name">ePortfolio</span>. Because you let Dreamweaver update the links for you, the links
+              in the nav-list all point to the proper directories, which you will check out in the next step of the
+              assignment
+            </li>
+          </ol>
+        </li>
+        <li>
+          <h5>Update the three index file and check that the links all work correctly.</h5>
+          <p>
+            Right now, the three index files all have the same content. Edit each one to change its <span
+            class="tag-name">title</span> and <span class="tag-name">h1</span> to something appropriate. I&rsquo;m sure
+            you can do something better than &ldquo;Welcome to my home page!&rdquo;, &ldquo;Welcome to my blog!&rdquo;,
+            and &ldquo;Welcome to my ePortfolio!&rdquo;. But if not, those three are okay.
+          </p>
+          <p>
+            Now load the home page in Firefox, and observe the three links. Check them out. You should be able to
+            navigate from any page to any other by clicking on the appropriate link. Since each index page has different
+            content for its <span class="tag-name">h1</span>, you can verify that the links are working by reading the
+            heading that shows up for each link.
+          </p>
+        </li>
+        <li>
+          <h5>Verify that all three index files link to the stylesheet properly.</h5>
+          <p>
+            Th check that the stylesheet is set up properly, you need to put some rules in it. For now, set up rule that
+            selects the <span class="tag-name">html</span> and <span class="tag-name">body</span> elements, and set the
+            <span class="property-name">background-color</span> to something other than black (you already used that for
+            your term paper; it&rsquo;s time to be creative) or white (that&rsquo;s the default, and you want to see
+            that the stylesheet is actually doing something to the three index pages.
+          </p>
+          <p>
+            Now, as you click the links to the various web pages in your site, they should all be displayed with the
+            same background color&mdash;whatever color you set up in the stylesheet. You might need to force each page
+            to do a complete reload (Ctrl-Shift-R instead of just Ctrl-R) to force the browser to use your updated
+            stylesheet.
+          </p>
+        </li>
+      </ol>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+        Once you have set up your web site and tested that <strong>both the XHTML and CSS links at the bottom of the
+        page give you no warnings and no errors</strong>, log out of your account so your site will be copied to the
+        server. I will copy your site from the server to the computer in my office (babbage) to check it out.
+      </p>
+      <p class="standout-block">
+        Remember: even if your site validates perfectly, you still have to make sure that all the CSS rules actually
+        work as you intended. Testing your web page and fixing any unexpected appearances is a critical component of all
+        the assignments for this course.
+      </p>
+      <p>
+        When you finish your assignment, send me an email message telling me that it is ready. Use
+        <span class="code-snippet">CS-081 Assignment 6</span>
+        as the subject line. Make it look just like that to avoid my spam filters. Send the email to:
+        <span class="variable-name">vickery<span class="at" title="change to @">at</span>babbage.cs.qc.cuny.edu</span>.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../">Course Home Page</a>&mdash;<a
+         href="./">This Semester&rsquo;s Schedule Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

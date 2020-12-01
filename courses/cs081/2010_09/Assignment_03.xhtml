@@ -1,0 +1,154 @@
+<?php
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>CS-081 Assignment 3</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">h5 {color:#666;}</style>
+  </head>
+  <body id='urn:uuid:82EC98E1-88E7-4786-B3D6-29E708AB5FD5'>
+    <h1>CS-081 Assignment 3</h1>
+    <section id="content">
+      <h1>Introduction</h1>
+      <p>
+        Welcome to XHTML5! This assignment page marks my transition to XHTML5 from XHTML 1.1, and the assignment for
+        you is to make the same transition for this and future assignments in this course.
+      </p>
+      <section>
+        <h1>
+          The Assignment
+        </h1>
+        <ol>
+          <li>
+            <h5>Read</h5> the <a href="../xhtml5.xhtml">XHTML5 Setup</a> web page. Then, duplicate your Assignment 2 web
+            page.  (There are directions for doing this in the <a href="../using_dreamweaver.xhtml">Dreamweaver
+                Setup</a> web page; basically, you select the file and press Control-D.) Rename the copy from <span
+            class="file-name">index.html</span> to <span class="file-name">index.xhtml</span>. This name is special in
+            two ways:
+            <ol>
+              <li>
+                Because of the the way the Apache server is set up in the lab, <span
+                class="file-name">index.xhtml</span> is the file that will be delivered when both <span
+                class="file-name">index.html</span> and <span class="file-name">index.xhtml</span> are in a directory.
+              </li>
+              <li>
+                Again, because of the way the Apache server is set up in the lab, files with the <code>.xhtml</code>
+                extension are recognized as containing PHP code. (<code>.html</code> files are not.) In order to get our
+                HTML5 code to be delivered as XHTML, we use PHP to generate the appropriate message headers, XML
+                declaration, DOCTYPE, and <span class="tag">html</span> tag for browsers that can process XHTML5
+                documents correctly, and the corresponding plain HTML values for other browsers.
+              </li>
+            </ol>
+          </li>
+          <li>
+            <h5>Replace</h5> everything in your <span class="file-name">index.xhtml</span> document from the beginning
+            through the <span class="tag">html</span> tag with the PHP code given in the first white box in the XHTML5
+            Setup page.
+          </li>
+          <li>
+             <h5>Replace</h5> the <span class="tag">/body</span> and <span class="tag">/html</span> tags at the end of
+             your <span class="file-name">index.xhtml</span> file with the code from the second white box in the XHTML5
+             Setup page. This will insert the two links to the W3C validators that are required for all web pages you do
+             for this course.
+          </li>
+          <li>
+            <h5>View</h5> <p>your web page! It should look exactly like your web page for Assignment 2 except for the 
+            added links to validators at the bottom. If not, there are several things you need to check:</p>
+            <ul>
+              <li>
+                <h5>Are you testing with a browser that processes XHTML5 documents correctly?</h5>
+                <p>
+                  If you are using IE9, Firefox, Chrome, or Safari in the lab, the answer should be “yes.” But to be
+                  sure, you should check the XHTML5 Setup page to be sure that page is being delivered to your browser
+                  using the <em>application/xhtml+xml</em> MIME type.
+                </p>
+              </li>
+              <li>
+                <h5>Is there an XML parsing error message being displayed?</h5>
+                <p>
+                  Browsers indicate XML errors in various ways: Firefox draws <code>------^</code> characters to point
+                  at where it found the problem; Chrome shows the web page up to the line of code that caused the
+                  problem; all browsers also display error messages that can be seem obscure until you get used to them.
+                </p>
+                <p>
+                  If there is an XML syntax error, you have to correct it.
+                </p>
+              </li>
+              <li>
+                <h5>Is the page content garbled?</h5>
+                <p>
+                  If the page just doesn’t look right, you have to track down what tag(s) got messed up when you edited
+                  the page. Look at the browser output for clues, and then read your code to see where the problem is.
+                  It might be helpful to use the browser’s “view source” option to see exactly what code was delivered
+                  to the browser.
+                </p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <h5>Validate your page.</h5>
+            <p>
+              Use the XHTML Validator link at the bottom of the page to make sure that the page is recognized as valid
+              HTML5. There must be no errors, and only the single warning about HTML5 being experimental. If there are
+              any errors or any other warnings, you have to figure out what went wrong and fix the document.
+            </p>
+            <p>
+              Try the CSS Validator too. Your web page has no CSS rules yet, so there will be no errors. But be sure the
+              link is set up correctly and does indeed take you to the validator.
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h1>Submit the Assignment</h1>
+        <p>
+          When your page is ready for me to review, send an email message to 
+          <a href="mailto:Christopher.Vickery@qc.cuny.edu?subject=CS-081%20Assignment%203">
+          Christopher.Vickery@qc.cuny.edu</a>
+          with <span class="code-snippet">CS&#x2011;081&#x00a0;Assignment&#x00a0;3</span> as the Subject line. All you have to do is to put your name in the
+          body of the message so that I know who sent the message. I will then copy your website from your profile on
+          the server (oak) in the lab to the web server on babbage, where I will verify that it works correctly.
+        </p>
+        <ul class="standout-block">
+          <li><span class=""></span>
+            The web server on babbage is on a case-sensitive file system. That means that if you don't capitalize file
+            and directory names exactly right, your site will no longer work when it is copied to babbage, even though
+            it may have worked perfectly well in the lab, where the file system is case-insensitive. Be sure the name
+            of you web page is <span class="filename">index.xhtml</span> using all lowercase letters.
+          </li>
+          <li>
+            Your site will not be copied to the DocumentRoot on babbage, so any links with absolute pathnames (ones
+            that start with a <code>/</code> character) will not work: make sure that all internal links in your site
+            use relative, not absolute, pathnames. This is not an issue for this assignment (there are no internal links),
+            but important to keep in mind for future assignments.
+          </li>
+        </ul>
+      </section>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+    </footer>
+  </body>
+</html>

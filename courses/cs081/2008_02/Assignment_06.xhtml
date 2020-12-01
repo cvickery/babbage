@@ -1,0 +1,205 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 6</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 6</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          For this assigment you are to apply different colors and background images to the various elements of your
+          blog site.
+        </p>
+      </div>
+
+      <h2>Description</h2>
+      <div>
+        <p>
+          First, be sure your site is set up properly. Your web page for Assignment 5 will be the content page for this
+          assignment. It should be named <span class="fileName">index.xhtml</span>, and it should be in your <span
+          class="directoryName">My Website</span> directory (not in a subdirectory). There should already be a
+          subdirectory named <span class="directoryName">css</span> containing a stylesheet named <span
+          class="fileName">typography.css</span> in it. Now create a second stylesheet there, and name it <span
+          class="fileName">backgrounds.css</span>. Add a link to it in the head of your <span
+          class="fileName">index.xhtml</span> code. The code for this assignment will all go in this new stylesheet.
+        </p>
+        <p>
+          If your blog page does not have at least two lists, update the content now so that it does. One list must contain
+          links to other parts of the web site, such as Home, About, Contact, etc. (even though those other parts
+          don&rsquo;t exist). The other list can be anything, such as blog entries or links to related sites. 
+        </p>
+        <p>
+          The formal requirement for this assignment is simply to apply different backgrounds to all the elements of your
+          blog site. The goal is for you to experiment with background colors and background images. You might well decide
+          to change the colors and images you use in the future assignments, when you will be working with different layout
+          options for your site. For now, exploring the various CSS properties that control the backgrounds of your
+          page&rsquo;s CSS boxes: headings and lists in particular.
+        </p>
+        <p>
+          For this assignment, the background colors of the entire page, each heading level, and all lists must be
+          different. 
+        </p>
+        <p>
+          In addition, you are to create a background image for the level-1 heading on the page. You may use
+          <span class="programName">Fireworks</span> to build the image as demonstrated in class, or another program of
+          your choice if you have one available. Your image must be in the PNG format, and it must include a gradient
+          that goes from a color to transparent; the background color of your <span class="tagName">h1</span> must show
+          through the transparent part of the image. Your image may optionally include a texture, and you are certainly
+          free to add background images to other page elements in addition to the <span class="tagName">h1</span> tag.
+        </p>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <h3>Test, Verify, and Validate</h3>
+        <p>
+          You must carefully test, verify and validate your assignments before submitting
+          them.  Although I am listing this information at the end of this assignment&rsquo;s web page, these are
+          actually activities that you should be performing regularly as you add code to your site. Write a little code,
+          and test to be sure it does what you expect. Then write a little more and test that. The hardest part of
+          debugging code is finding the errors. But if you test your site every time you add a little code, it&rsquo;s
+          much easier to find any errors: they are in the little bit of code that you just added!
+        </p>
+        <p>
+          Watch the green circle in the status line provided by HTML Tidy; any time it changes to a yellow triangle or a
+          red X, there is a problem that you need to fix before continuing.
+        </p>
+
+        <h4>Test</h4>
+        <p>
+          Testing consists of looking at the web page in a browser to be sure the effects you have added to the page
+          actually are working. If a heading is to have a particular font-family and size, does it? Because the
+          browser does not issue error messages for errors in your CSS code, you have to look at the page to be sure
+          it is doing what you expect. If you see a problem, you have to figure out how to fix it! Note that for CSS
+          errors, the CSS Validator can help you figure out what is wrong.
+        </p>
+        <p>
+          Another test you need to perform is to try your web page using different browsers to make sure no browser
+          compatability problems have crept into your code. This kind of problem is not likely to show up in the
+          projects for this course, but it is good to check anyway. Simply look at your web site using Internet
+          Explorer, Opera, and Safari to be sure it looks &ldquo;about the same&rdquo; in each one.
+        </p>
+        <h4 id="link-check">Verify</h4>
+        <p>
+          You need to do an explicit check to be sure all the links in your web pages are correct, because Windows will
+          let you use mis-matched file and directory names in your links that won&rsquo;t show up until your code is
+          copied to a Unix/Macintosh computer for testing. Dreamweaver will check the <span
+          class="tagName">link</span> tags in the head of your page, as well as the <span class="tagName">a</span> and
+          <span class="tagName">img</span> tags in the body of the page, provided they refer to files within your web site.
+          It won&rsquo;t check links to things on other web sites.
+        </p>
+        <p>
+          When you <a href="../using_dreamweaver.xhtml">set up your site</a>, you should have checked the &ldquo;Use
+          case-sensitive link checking&rdquo; in the Local Information panel for the site. If not, select the <span
+          class="menuItem">Site-&gt;Manage Sites&hellip;</span> menu item, and edit your site definition so this
+          option is checked.
+        </p>
+        <p>
+          To check links, right-click on the top line of the Files panel where it says, &ldquo;Site - &hellip;&rdquo;
+          and select &ldquo;Check Links.&rdquo; Pick the option to check the entire site. A new panel will show up
+          with a list of all the broken links in your site, if there are any. (Select &ldquo;Broken Links&rdquo; from
+          the <span class="codeSnippet">Show:</span> option box.) There will be a line for each broken link you need
+          to fix. The folder icon next to the lines will open up a file browser so you can simply point to the correct
+          file.
+        </p>
+        <p>
+          There is another link check you need to perform. All the links to stylesheets and images should be given as
+          relative pathnames. In simple terms, this means they must not begin with a <span
+          class="codeSnippet">/</span> character. If your links do not use relative pathnames, they will fail to work
+          when your code is copied to another place on the disk (or to another computer&rsquo;s disk). For this, you
+          will need to set up a remote sever for your site, have Dreamweaver copy your site to the remote server, and
+          test it there. The procedure is documented in the
+          <a href="../using_dreamweaver.xhtml#remote-server">Dreamweaver Setup</a> web page.
+        </p>
+
+        <h4>Validate</h4>
+        <p>
+          If you have been watching the HTML Tidy icon in your status bar, your code will already pass the XHTML
+          validation check automatically, but you can click the link at the bottom of the page to be sure. You should
+          get a page with a nice big green bar offering you congratulations for having no warnings or errors on your
+          page. Do the same with the CSS link at the bottom of the page and make sure there are absolutely no errors
+          or warnings there. Fix any problems that show up.
+        </p>
+
+        <h3>Save and Submit</h3>
+        <p>
+          When you have tested, verified, and validated your code, be sure log out so your code will be saved to the
+          server, and send me an email message saying your assignment is ready. I will copy it from the server to the
+          Unix computer in my office (babbage), and will check it out from there.
+        </p>
+        <p>
+          My email address is:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout">
+          The Subject Line of your email must say <span
+          class="codeblock">CS-081&nbsp;Assignment&nbsp;6</span>, exactly like that, in order to avoid my spam
+          filters.
+        </p>
+        <p>
+          Always include <span class="codeSnippet">CS-081</span> in the subject line of your email messages to me, even
+          if you are not submitting an assignment, because of the spam filters.
+        </p>
+        <p class="important">
+          Be sure to sign your email so I know who sent it!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

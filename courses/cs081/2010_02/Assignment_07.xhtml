@@ -1,0 +1,300 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 7</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      img {width:200px;}
+    </style>
+  </head>
+  <body id='urn:uuid:A266DB34-0D1D-470B-B369-C254E2D653EE'>
+
+    <h1>CS-081 Assignment 7
+    </h1>
+    <h2>Introduction</h2>
+    <div>
+      <p>
+        For this assignment, you are to create a “faux column” effect on your web page. This is a relatively
+        simple assignment to give you more practice understanding how background image positioning works.
+      </p>
+      <p>
+        The assignment also includes more practice with fixed positioning of elements.
+      </p>
+    </div>
+    <h2>The Assignment</h2>
+    <div>
+      <h5>Preparation:</h5>
+      <p>
+        There are no changes to make to the XHTML of the web page you have been working with. Also, this assignment
+        retains most of the features of the previous assignments, so you should continue using the same stylesheet.
+      </p>
+      <ol>
+        <li>
+          <h5>Clean up your stylesheet.</h5>
+          <p>
+            As mentioned in class, stylesheets that evolve over time the way the one for these assignment have become
+            quite difficult to maintain. Take the time now to edit your stylesheet:
+          </p>
+          <ul>
+            <li>
+              Sort the rules alphabetically by tag name. If a selector uses descendant or child operators (space or
+              &gt; symbols between tag names, order by the <em>last</em> tag name in the selector. (Think about why
+              this makes more sense than ordering by the first tag name.)
+              <p>
+                If a selector uses the comma operator (like <span class="code-snippet">html, body</span>,
+                use your best judgment how to alphabetize.
+              </p>
+            </li>
+            <li>
+              List class (<span class="code-snippet">.</span>) selectors next, in alphabetical order.
+            </li>
+            <li>
+              List id (<span class="code-snippet">#</span>) selectors last, again in alphabetical order.
+            </li>
+            <li>
+              Merge overlapping rules; eliminate contradictions. Look for contradictory settings for the same elements,
+              and eliminate the ones that do not belong.
+            </li>
+            <li>
+              <p>
+                Check your web page to make sure nothing has changed. If anything has changed, it has to be because you
+                the order of the rules; sometimes there is no way around this, and you have to break the alphabetical
+                rule.
+              </p>
+              <h3 id="specificity">On Specificity</h3>
+              <div>
+                <p>
+                  Note that the order above (tag names, classes, ids) lists the three types of selectors in order of
+                  increasing
+                  <span class="tech-term" title="a rule for resolving conflicting selectors">specificity</span>.
+                  A selector like <span class="code-snippet">p</span> selects <em>all</em>
+                  paragraphs; <span class="code-snippet">p.special</span> selects only those paragraphs that have the
+                  <span class="attribute-value">special</span> class, and
+                  <span class="code-snippet">p#unique</span> selects only the one paragraph that has the
+                  <span class="attribute-vale">unique</span> id. (Of course, there might not be a paragraph with
+                  the <span class="attribute-vale">unique</span> id, and/or there might be any paragraphs with the
+                  <span class="attribute-value">special</span> class. In fact there might not be any paragraphs at all!
+                  But the principle remains: ids are more specific than classes, and classes are more specific than
+                  plain element names.
+                </p>
+                <p>
+                  The rules for specificity are formally presented at
+                  <a href="http://www.w3.org/TR/CSS21/cascade.html#specificity">the W3C website</a>. Here is a summary:
+                </p>
+                <ol>
+                  <li>
+                    Set three variables named <span class="variable-name">a</span>,  <span class="variable-name">b</span>,
+                    and <span class="variable-name">c</span> to zero.
+                  </li>
+                  <li>
+                    Add 1 to <span class="variable-name">a</span> if the selector has a <span class="code-snippet">#</span>
+                    in it.
+                  </li>
+                  <li>
+                    Add 1 to <span class="variable-name">b</span> for each <span class="code-snippet">.</span> and each
+                    <span class="code-snippet">[</span> in the selector. (We haven’t used <span class="code-snippet">[</span>
+                    in any selectors; their use is an “advanced” topic.)
+                  </li>
+                  <li>
+                    Add 1 to <span class="variable-name">c</span> for each tag name and
+                    <span class="code-snippet">:</span> in the selector.
+                  </li>
+                  <li>
+                    Disregard spaces, plus signs, and greater-than symbols in the selector.
+                  </li>
+                  <li>
+                  	If there are commas in the selector part of a rule, they separate individual selectors, and the
+                    specificity of each one is calculated separately using the above rules.
+                  </li>
+                  <li>
+                    Write the values of <span class="variable-name">a</span>, <span class="variable-name">b</span>,
+                    and <span class="variable-name">c</span> in left-to-right order as if they were a single number.
+                    For example, the selector <span class="code-snippet">p>span:hover</span> (select
+                    <span class="tag-name">span</span> elements that are children of paragraphs, but only when the mouse
+                    hovers over them), would have the value 003: no id, no periods, 2 tag names, and 1 colon.
+                  </li>
+                  <li>
+                    The bigger the number, the greater the specificity. If two rules select the same element, the rule with
+                    the higher specificity wins. If two rules select the same element and both rules have the same
+                    specificity, the second one wins.
+                  </li>
+                </ol>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h5>Adjust the position of the ordered list; hide the sublists; move the contents.</h5>
+          <p>
+            In the previous assignment, you floated the ordered list to the right. Now give it a fixed position
+            on the left side, under the <span class="tag-name">h1</span> element. That is, take out the
+            <span class="property-name">float</span> property, and replace it with
+            <span class="code-snippet">position:fixed</span>. Add <span class="property-name">top</span> and
+            <span class="property-name">left</span> properties to position the list properly.
+          </p>
+          <p>
+            We are going to be using this list as a navigation list in the next assignment. The sub and sub-sub lists
+            may be useful at some point, but for now make them disappear:
+          </p>
+          <div class='code-block'>
+ div&gt;ol&gt;li&gt;ol * {
+   display:none;
+   }
+          </div>
+          <p>
+            We have talked about the inline and block display properties before; now you know another important one!
+            (Could you use a different selector that would target the same elements?)
+          </p>
+          <p>
+            Make the left margin of the <span class="tag-name">div</span> with the
+            <span class="variable-name">content</span> id 20% of the width of its containing element (the
+            <span class="tag-name">body</span> element) and make the width of the ordered list 20% of its containing
+            element (also the <span class="tag-name">body</span> element).
+          </p>
+          <p>
+            View your page and check the layout. Do not worry about details, but the list should be on the left,
+            and should not overlap either the heading (above it) or the content (to the right of it).
+          </p>
+        </li>
+        <li>
+          <h5>
+            Add a faux column to the <span class="tag-name">html</span> and <span class="tag-name">body</span>
+            elements.
+          </h5>
+          <p>
+            The French word, <em>faux</em> (pronounced “foe”) means “false.” For this step you are to create a
+            colored element that looks like the background of the lefthand 20% of the web page, but without
+            creating an XHTML element that actually occupies that part of the screen. The list on the left side
+            is 20% of the width of the screen, but its height is only enough to hold the list items that make up
+            its content. Our false column will extend the entire height of the screen.
+          </p>
+          <p>
+            This is an exercise in understanding how background positioning works: If you specify a background position
+            in pixels or ems, the value will specify where to position the top left corner of the background image within
+            the element. But if you specify the position in percentages, that will specify how to line up the corresponding
+            positions of the screen and the image, a totally different matter.
+          </p>
+          <p>
+            For example, here is a 200&times;100 rectangle inside an element that is 300 pixels wide, with
+            <span class="code-snippet">background-position:100px&nbsp;100px;</span>.
+            The top left corner of the rectangle is 100 pixels
+            in from the left and 100 pixels down from the top:
+          </p>
+          <img src="images/Figure_07.pixels.png" alt="image described in previous paragraph" />
+          <p>
+            But here is the same 200&times;100 rectangle inside the same 300-pixel wide element, but with
+            <span class="code-snippet">background-position:25%&nbsp;100px;</span>:
+          </p>
+          <img src="images/Figure_07.percent.png" alt="image described in previous paragraph" />
+          <p>
+            The top is positioned the same (because the same value was used), but now you have to do some arithmetic
+            to figure out where the rectangle is positioned horizontally. 25% of 300 is 75, the number of pixels in
+            from the left of the containing element, and 25% of 200 is 50, the number of pixels in from the left of
+            the rectangle. As the diagram shows, a vertical (red) line 75 pixels in from the left edge of the container
+            lines up a vertical (white) line drawn 50 pixels in from the left edge of the rectangle.
+          </p>
+          <p class="standout-block">
+            That is, specifying <span class="code-snippet">background-position:25%&nbsp;100px;</span> made the position
+            25% of the way from the left edge of the image file line up with the position 25% of the way from the left edge
+            of containing element. If the “containing element” is the <span class="tag-name">body</span> or
+            <span class="tag-name">html</span> element of the web page, the leftmost 25% of the browser window will be
+            covered by the leftmost 25% of the image file: our “faux column”̈ effect. But you have to be sure the image file
+            is wide enough that the leftmost 25% of the image will cover the leftmost 25% of the viewport no matter how
+            wide the user tries to make the browser window. And the faux column for this assignment will be 20%, not 25%
+            wide.
+          </p>
+          <p>
+            The faux column is to provide a color fill for the left hand 20% of the browser window, and
+              to have no effect (be transparent) over the remaining 80% of the viewport (the proper name
+              for the part of the browser window where the web page is displayed. Regardless of how wide
+              the viewport is, we want the leftmost 20% to have the faux column color. The solution is
+              to decide how wide a browser window will “ever” be, and to make the background image width
+              wider than that. Let’s say the largest monitors these days are 2000 pixels wide, and make
+              our background image 5 times wider than that: 10,000 pixels. The height of the image doesn’t
+              matter because it will be tiled vertically. Create a Photoshop document 10,000 pixels wide,
+              but as few pixels tall as you are comfortable working with: 50 should be enough, for example.
+              Be sure the background of the image is transparent, or you will have to erase all the pixels
+              in the bottom layer.
+          </p>
+          <p>
+            The goal is to draw a solid colored rectangle that fills exactly the leftmost 20% of the
+              image (2000 pixels).
+          </p>
+          <p>
+            From the View menu, turn on the Snap To &gt; Guides option (if it is not already selected). Drag a guideline
+            out from the left ruler as demonstrated in class and get it to line up with the 2000 pixel ruler point. (If
+            rulers are not showing, type Ctrl-R. If the rulers are showing, but the units are in inches instead of pixels,
+            right-click on the ruler and select pixels from the drop-down menu.)
+            Be sure to position the guide exactly at the 2000 pixel mark. Zoom in (Ctrl-+)
+            on the top ruler so you can see the tick marks clearly, and drag the guide into the exact position.
+            (The move tool has to be selected to do this; typing ‘V’ will turn it on.) You can zoom back out to normal
+            view by typing Ctrl-0.
+          </p>
+          <p>
+            Select the color you want for your column by setting the foreground color (click on the foreground/background
+            tool), then select the rectangle tool, be sure the “fill pixels” option is selected at the top of the window.
+            Drag out a rectangle starting outside and above the image on the left, over and down to cover the image
+            vertically; line up the right end of the rectangle with the guideline at the 2000 pixel point; it will snap into
+            place.
+          </p>
+          <p>
+            Save the PhotoShop file (the .psd file) in your <span class="file-name">images</span> directory, and then
+            save a suitable background image in the same directory. It will probably be a PNG-8 file, as discussed in
+            class. Use this file as the background image for the <span class="tag-name">html</span> and
+            <span class="tag-name">body</span> elements of your web page.
+          </p>
+          <p>
+            Be sure the web page has your colored faux column on the left side, lined up with the width of the
+            list that you have fixed in position on the left side, no matter how wide or narrow you make the browser
+            window.
+          </p>
+        </li>
+      </ol>
+    </div>
+    <h2>Submission</h2>
+    <div>
+      <p>
+        When you are ready for me to look at your assignment, simply send me an email message to let me
+        know. I’ll manually copy your entire web site to my computer (babbage) and check it out. The full pathname
+        to your web site on babbage will be http://babbage.cs.qc.cuny.edu/Grading/cs081/ followed by your
+        account name.
+      </p>
+      <p>
+        Send your email message to me at: <span class="email">vickery<span class="at" title="Change to
+        @">at</span>babbage.cs.qc.cuny.edu</span> by midnight of the due date.
+      </p>
+      <p class="standout-block">
+        The Subject line of your email message must be: “CS-081 Assignment 7.”
+      </p>
+      <p>
+        Don’t forget to put your name in your email message!
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

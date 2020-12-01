@@ -1,0 +1,176 @@
+<?php
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: application/xhtml+xml");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html><!-- PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"-->
+<html <?php echo "$html_attributes";?>>
+  <head>
+    <title>CS-081 Assignment 4</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <link rel="stylesheet"                 href="css/assignment_04.css" />
+  </head>
+  <body id='urn:uuid:F1C80A9E-F9F7-436A-99C3-9AF7A9533483'>
+    <h1>CS-081 Assignment 4</h1>
+    <section id="content">
+    	<section>
+      	<h1>Reading Assignment</h1>
+        <p>
+          We are moving on from Chapter 3 to Chapter 4 of the textbook even though we have not covered forms and tables
+          from Chapter 3 in our assignments yet.
+        </p>
+        <p>
+          We will be using only some basic selectors and properties in this assignment, but you really need to read
+          through all of Chapter 4 now rather than try to pick out just the bits and assignments needed for this
+          assignment. See what’s there now, and you will be able to refer back to the various parts of the chapter as
+          needed in the weeks to come.
+        </p>
+      </section>
+      <section>
+        <h1>Coding Assignment</h1>
+        <ol>
+          <li>
+            <h5>Create a stylesheet.</h5>
+            <p>
+              If your <span class="directory-name">My Website</span> directory does not yet have a subdirectory, create
+              it now. You can do this from within Dreamweaver: right-click on the “Site” line at the top of the files
+              pane (which should be on the left side of the Dreamweaver window, assuming you have selected the “Coder”
+                  or “Coder Plus” workspace layout from the Window menu); select New Folder from the drop-down menu, and
+              then click twice on the “untitled” name and change it to <span class="directory-name">css</span>.
+            </p>
+            <p class="standout-block">
+              Remember: capitalization will matter when I copy your site to babbage for grading. Be sure to use the same
+              capitalization here and in the <span class="tag">link</span> element you write in the next step. The
+              convention is to use lowercase, but that doesn’t matter as long as you are consistent.
+            </p>
+            <p>
+              Now right-click on your <span class="directory-name">css</span> directory, and create a new file. Click on
+              the name twice so you can edit it, and change the name to <span class="file-name">style.cc</span>. Edit
+              the file and remove anything that Dreamweaver put in it.
+            </p>
+          </li>
+          <li>
+            <h5>Link your stylesheet to your <span class="file-name">index.xhtml</span> page.</h5>
+            <p>
+              Add a (self-closing) <span class="tag">link</span> to <span class="file-name">index.xhtml</span>; set the
+              <code>rel</code>, <code>type</code>, and <code>href</code> attributes to “stylesheet,” “text/css,” and
+              “css/style.css” respectively.
+            </p>
+            <p>
+              Add a rule to the stylesheet that causes all paragraphs to have red text as demonstrated in class:
+            </p>
+            <div class="code-block">
+p {
+  color:red;
+  }
+            </div>
+            <p>
+              Test your code: be sure text in the paragraphs of your web page is all red. Click the CSS validation
+              link at the bottom of the page, and be sure there are no errors or warnings. Fix whatever is wrong if
+              there are problems.
+            </p>
+          </li>
+          <li>
+            <h5>Change the appearance of the page.</h5>
+            <p>
+              This is an exercise in following instructions as much as it is an exercise in using CSS. Pretend you are
+              creating this web page for a client who is paying you to bring his or her vision to life. If you want to
+              get paid, you have to resist the urge to do anything differently from what the client asked for.  Here are
+              your client’s requirements:
+            </p>
+            <ul>
+            	<li>
+                Make the text all level-1 headings blue. Use the <span class="attribute-name">text-align</span>
+                attribute to center the heading.
+              </li>
+              <li>
+                Make all elements with the class “important” have the <span class="attribute-name">font-style</span>
+                value <span class="attribute-value">italic</span>. Add the important class to the first and third
+                paragraphs, and to the second item in your list.
+              </li>
+              <li>
+              	Make all elements with the class “interesting” have green text. Add the interesting class to the
+                third paragraph and to the first and second items in your list.
+              </li>
+              <li>
+              	Make the element with the id “unique” display as bold (attribute 
+                <span class="attribute-name">font-weight</span>) and blue. Give the second paragraph the “unique”
+                id.
+              </li>
+              <li>
+              	Set the left and right padding for all paragraphs to 1em; set the top and bottom padding to 0. (See
+                pages 109 and 112 of the text.)
+              </li>
+              <li>
+              	Set the <span class="property-name">display</span> property for all list items to "inline".
+              </li>
+            </ul>
+          </li>
+          <li>
+          	<h5>Check your work carefully.</h5>
+            <p>
+            	When you finish, your page should look pretty much like the screenshot below. Your actual text
+              may differ from this, but the colors, fonts, and layout should be the same. If not, fix it!
+            </p>
+            <p>
+              Be sure both validation links come up with no errors and no warnings, except for the one XHTML warning
+              about that validator being experimental.
+            </p>
+            <p>
+            	<img src="images/assignment_04-screenshot.png" alt="screenshot of completed assignment" />
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h1>Submit the Assignment</h1>
+        <p>
+          When your page is ready for me to review, send an email message to 
+          <a href="mailto:Christopher.Vickery@qc.cuny.edu?subject=CS-081%20Assignment%204">
+          Christopher.Vickery@qc.cuny.edu</a>
+          with <span class="code-snippet">CS&#x2011;081&#160;Assignment&#160;4</span> as the Subject line.
+          All you have to do is to put your name in the
+          body of the message so that I know who sent the message. I will then copy your website from your profile on
+          the server (oak) in the lab to the web server on babbage, where I will verify that it works correctly.
+        </p>
+        <ul class="standout-block">
+          <li><span class=""></span>
+            The web server on babbage is on a case-sensitive file system. That means that if you don't capitalize file
+            and directory names exactly right, your site will no longer work when it is copied to babbage, even though
+            it may have worked perfectly well in the lab, where the file system is case-insensitive. Be sure the name
+            of you web page is <span class="filename">index.xhtml</span> using all lowercase letters.
+          </li>
+          <li>
+            Your site will not be copied to the DocumentRoot on babbage, so any links with absolute pathnames (ones
+            that start with a <code>/</code> character) will not work: make sure that all internal links in your site
+            use relative, not absolute, pathnames. This is not an issue for this assignment (there are no internal links),
+            but important to keep in mind for future assignments.
+          </li>
+        </ul>
+      </section>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </footer>
+  </body>
+</html>

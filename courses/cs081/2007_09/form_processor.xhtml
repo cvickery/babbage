@@ -1,0 +1,201 @@
+<?php
+  //  Headers
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+  
+  //  Evaluate the Request
+  $referer = "<span class=\"warning\">Unknown Referer</span>\n";
+  if (isset($_SERVER['HTTP_REFERER']))
+  {
+    $referer = "<em>{$_SERVER['HTTP_REFERER']}</em>";
+  }
+  $method = "<span class=\"warning\">Unspecified Request Method</span>\n";
+  if (isset($_SERVER['REQUEST_METHOD']))
+  {
+    $method = $_SERVER['REQUEST_METHOD'];
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Echo Form Data</title>
+
+    <style type="text/css" media="all">
+      html,body {
+        margin:0;
+        padding:0;
+        background-color:#99F;
+        color:#000;
+        font-family:Arial, Helvetica, sans-serif;
+        font-size:90%;
+        }
+      body {
+        margin:auto;
+        width:80%;
+        }
+      h1 {
+      	font-weight:bold;
+        font-size:3em;
+        }
+      table {
+        border-collapse:collapse;
+        width:60%;
+        background-color:white;
+        color:black;
+        border:4px solid blue;
+        }
+      th {
+        background-color:#ccc;
+        color:black;
+        border:1px solid black;
+        border-bottom:2px solid black;
+        }
+      td {
+        border:1px solid black;
+        padding:0.2em 1em;
+        }
+      a, a:visited, a:hover {
+        background-color:#666;
+        color:white;
+        }
+      .warning {
+        background-color:#fff;
+        color:#f00;
+        padding:0 0.5em;
+        }
+      #header {
+        text-align:center;
+        }
+      #content {
+        font-size:1.5em;
+        font-weight:bold;
+        }
+      #footer {
+        width:120%;
+        margin:2em 0 0 -10%;
+        border-top:1px solid blue;
+        font-size:0.85em;
+        background-color:#666;
+        color:white;
+        text-align:center;
+        padding:0 0 1em 0;
+        }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Echo Form Data</h1>
+    </div>
+
+    <div id="content">
+      <p>The web page at <?php echo $referer; ?> has sent the following form data:</p>
+  <?php
+    $num_get = count($_GET);
+    $num_post = count($_POST);
+    if ($num_get + $num_post == 0)
+    {
+      echo "<p>No GET/POST parameters were passed to this script.</p>\n";
+    }
+    else
+    {
+      echo "<p>The Request Method is $method.</p>\n";
+      $num_param = ($method === 'GET') ? $num_get : $num_post;
+      $copula = ($num_param === 1) ? 'is' : 'are';
+      $plural = ($num_param === 1) ? '' : 's';
+      echo "<p>There $copula $num_param $method parameter$plural.</p>\n";
+      $num_other = ($num_get + $num_post) - $num_param;
+      echo "<table summary=\"Parameter Names and Values Passed to This Script\">\n";
+      echo "<tr><th colspan=\"2\">$method Parameter$plural</th></tr>\n";
+      echo "<tr><th>Name</th><th>Value(s)</th></tr>\n";
+      $params = ($method === 'GET') ? $_GET : $_POST;
+      while ($param = each($params))
+      {
+        if (is_array($param['value']))
+        {
+          $val = $param['value'];
+          $n = count($val);
+          $name = str_replace('&', '&amp;', $param['key']);
+          echo "<tr><td>$name</td><td>\n";
+          while ($value = each($val))
+          {
+            $index = str_replace('&', '&amp;', $value[0]);
+            $thisValue = str_replace('&', '&amp;', $value[1]);            
+            echo "[$index]: $thisValue<br/>\n";
+          }
+          echo "</td></tr>\n";
+        }
+        else
+        {
+          $p = str_replace('&', '&amp;', nl2br($param['value']));
+          echo "<tr><td>$param[key]</td><td>$p</td></tr>\n";
+        }
+      }
+      echo "</table>\n";
+      if ($num_other > 0)
+      {
+        $copula_other = ($num_other === 1) ? 'is' : 'are';
+        $plural_other = ($num_other === 1) ? '' : 's';
+        $method_other = ($method === 'GET') ? 'POST' : 'GET';
+        echo "<h3 class=\"warning\">There $copula_other also $num_other $method_other parameter$plural_other!</h3>\n";
+        echo "<table summary=\"Bogus Parameter Names and Values Passed to This Script\">\n";
+        echo "<tr><th colspan=\"2\">$method_other Parameter$plural_other</th></tr>\n";
+        echo "<tr><th>Name</th><th>Value(s)</th></tr>\n";
+        $params = ($method === 'GET') ? $_POST : $_GET;
+        while ($param = each($params))
+        {
+          if (is_array($param['value']))
+          {
+            $val = $param['value'];
+            $n = count($val);
+            $name = str_replace('&', '&amp;', $param['key']);
+            echo "<tr><td>$name</td><td>\n";
+            while ($value = each($val))
+            {
+              $index = str_replace('&', '&amp;', $value[0]);
+              $thisValue = str_replace('&', '&amp;', $value[1]);            
+              echo "[$index]: $thisValue<br/>\n";
+            }
+            echo "</td></tr>\n";
+          }
+          else
+          {
+            $p = str_replace('&', '&amp;', nl2br($param['value']));
+            echo "<tr><td>$param[key]</td><td>$p</td></tr>\n";
+          }
+        }
+        echo "</table>\n";
+      }
+    }
+  ?>
+    </div>
+
+    <div id="footer">
+      <p>
+        <a href="../../../">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="../">CS-081 Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,189 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 5</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:9A5EEBA1-F19C-4048-B59C-FE2FD8D25F85'>
+
+    <h1>CS-081 Assignment 5</h1>
+    <h2>Introduction</h2>
+    <div>
+      <p>
+        This assignment is an exercise in using the <span class="property-name">float</span> property to position
+        elements on the page. In addition, you will start working with image files, in this case an image that acts
+        as part of the content of a web page.
+      </p>
+    </div>
+    <h2>The Assignment</h2>
+    <div>
+    <p>
+      At this point, you should have a single web page that includes a heading and several paragraphs, with 
+      a triply-nested set of lists between the first and second paragraphs. 
+      There should be a <span class="tag-name">div</span> surrounding all the paragraphs (and the lists between
+      the first and second paragraph).
+      If you have not completed Assignment 4
+      successfully yet, you need to do so before doing this assignment.
+    </p>
+    <ol>
+      <li>
+        <h5>Float the set of ordered list to the right.</h5>
+        <p>
+          Without adding any <span class="attribute-name">class</span> or <span class="attribute-name">id</span>
+          attributes to your web page’s markup, add code to the stylesheet you have been working with to float the
+          outermost ordered list to the right. <em>Hint:</em> because you have a <span class="tag-name">div</span>
+          around all the paragraphs, the outermost ordered list is the only <span class="tag-name">ol</span> that
+          is a child of a <span class="tag-name">div</span>.)
+        </p>
+        <img style="float:right;padding:1em;" src="images/Figure_05.1.png" alt="Screenshot of the floated lists" />
+        <p>
+          Add a background color to the outermost ordered list so it is visually separated from the remainder of
+          the page.
+        </p>
+        <p>
+          Make sure there is some space between the outermost ordered list and the text in the paragraphs that
+          follow it, which should now be flowing around the left side of the lists.
+        </p>
+        <p>
+          In this screenshot, which shows part of the right side of the browser window, the green patch is part of
+          the background of the <span class="tag-name">body</span>
+          element, the light blue parts are the background of the <span class="tag-name">div</span> that contains
+          both the paragraphs and the ordered lists, and the cream color is the background of the paragraphs.
+        </p>
+        <p>
+          Note that only the outermost list (1, 2, 3, &hellip;) has been floated to the right. The lower-level lists
+          are still aligned to the left side of their containing elements.
+        </p>
+        <p>
+          When you set this up, you will see that the numbers for the top-level list appear at least partly outside
+          the area covered by the background color for the list. To get that list’s numbers inside the background, as
+          in the screenshot, you will either have to apply negative left padding for that list, or simply to use
+          the <span class="property-name">list&#x2011;style&#x2011;position</span> property with the value
+          <span class="property-value">inside</span>. You may use either technique, but be sure to try both for practice.
+        </p>
+      </li>
+      <li style="clear:both;">
+        <h5>Add a stock photograph “comp” to your web page</h5>
+        <p>
+          First read the <a href="http://en.wikipedia.org/wiki/Microstock_photography">Wikipedia article on microstock
+          photography</a>,
+          then go to <a href="http://istockphoto.com">iStockphoto.com</a>
+          and sign up for a free account there.
+        </p>
+        <p>
+          Select an image from iStockphoto suitable to use as “visual content” for your web page. That is, pick a picture
+          of something that you might write about in the surrounding text&mdash;if only you weren’t writing in fake Latin!
+          There is no hard and fast rule here. A picture of clouds could be used as a decorative element on one web site,
+          but the same image might be an important illustration in a meteorology site. Feel free to be creative, and feel
+          free to choose either a landscape (horizontal) or portrait (vertical) image.
+        </p>
+        <p>
+          Download a free “comp” of your image, and put it in the <span class="directory-name">images</span> directory
+          of your web site.
+        </p>
+        <p>
+          Your image file for this assignment must have the iStockphoto watermark: it’s how I will know that you did
+          this step of the assignment correctly.
+        </p>
+        <p>
+          Add an <span class="tag-name">img</span> element to your website between the third and fourth paragraphs. Use
+          a CSS rule to float the image to the left. View the page to make sure your picture has been linked to properly
+          and is displayed in the correct position. Do not add any margins, borders, or padding to it yet.
+        </p>
+      </li>
+      <li>
+        <h5>Use Photoshop to optimize the comp for the web.</h5>
+        <p>
+          For this last step, you are to open your picture in Photoshop, and use the “Save for Web and Devices” option
+          (it’s under the <span class="menu-item">File</span> menu) to explore alternative ways to reduce the size of
+          the file while maintaining full image quality. This process was demonstrated in class on April 8.
+        </p>
+        <p>
+          In the Save for Web and Devices panel, note the size of the original file you downloaded from iStockphoto.
+        </p>
+        <p>
+          Reduce the intrinsic size of the image so that it is 200 pixels along its longer edge (its width if it is
+          a horizontal photo; its height if it is a vertical photo). Experiment with various JPEG compression settings,
+          and pick the lowest quality setting that still makes the image look good. Experiment with various PNG settings
+          to see if you can create a smaller file of equal image quality to the JPEG.
+        </p>
+        <p>
+          Note the size of the optimized file.
+        </p>
+        <p>
+          Save the file in your site’s <span class="directory-name">images</span> directory <strong>using a
+          different file name so you don’t overwrite the file you downloaded from iStockphoto</strong>. Change
+          the <span class="tag-name">img</span> element so it links to the new photo.
+        </p>
+        <p>
+          Verify that the photo is displayed properly, and then make the following changes to the CSS for the image:
+        </p>
+        <ul>
+          <li>
+            Use the <span class="property-name">width</span> or <span class="property-name">height</span>
+            property to reduce the dimension of the long side to 150px. If you have not done so already, remove
+            the <span class="attribute-name">width</span> and <span class="attribute-name">height</span>
+            attributes from the <span class="tag-name">img</span> tag so that this CSS manipulation does not cause
+            any distortion of the image.
+            <p>
+              Verify that the image displays with no distortion.
+            </p>
+          </li>
+          <li>
+            Adjust the margins, border, and padding of the image to make it look “good.”
+          </li>
+        </ul>
+      </li>
+    </ol>
+    </div>
+    <h2>Submission</h2>
+    <div>
+      <p>
+        When you are ready for me to look at your assignment, simply send me an email message to let me
+        know. I’ll manually copy your entire web site to my computer (babbage) and check it out. The full pathname
+        to your web site on babbage will be http://babbage.cs.qc.cuny.edu/Grading/cs081/ followed by your
+        account name.
+      </p>
+      <p class="standout-block">
+        In the body of your email message, write down the size of the unoptimized and optimized versions of the image
+        file. And don’t forget to sign your email so I can tell who sent it.
+      </p>
+      <p>
+        Send your email message to me at: <span class="email">vickery<span class="at" title="Change to
+        @">at</span>babbage.cs.qc.cuny.edu</span> by midnight of the due date.
+      </p>
+      <p class="standout-block">
+        The Subject line of your email message must be: “CS-081 Assignment 5.”
+      </p>
+      <p>
+        Don’t forget to put your name in your email message!
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

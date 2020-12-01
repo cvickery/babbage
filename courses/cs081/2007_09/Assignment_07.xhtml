@@ -1,0 +1,390 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>  
+    <title>Assignment 7</title>
+    <link rel="stylesheet" type="text/css" media="all" href="../../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../../css/style-print.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="css/assignment_07.css" />
+  </head>
+  <body>  
+    <div id="header">
+      <h1>Assignment 7</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+        <p>
+          This is an optional assignment. If you do it, you can receive credit for doing an extra homework
+          assignment, but you can get full credit for the homework portion of your course grade (10 to 15% of your course
+          grade) even if you do not do this assignment. Aside from the possibility of receiving a little bit of extra
+          credit towards your course grade, a reason for working on the assignment is that doing so should help you
+          prepare for the JavaScript questions on the final exam.
+        </p>
+        <p class="standoutBox">
+          There will be a <a href="Exam_2_Topics.xhtml">final exam study guide</a> that will give you an idea of
+          what material will be on the final exam. I will write that web page after I finish this one.
+        </p>
+        <p>
+          For this assignment, you are to use JavaScript to prevent the user from submitting the form you constructed for
+          <a href="Assignment_06.xhtml">Assignment 6</a> if the user has not entered any information for certain fields
+          on the form. This page will basically give the code to you; the process of typing it in yourself as you read the
+          description presented here should give you a fairly good understanding of some important features of working
+          with JavaScript code.
+        </p>
+      </div>
+      <h2>Project Description</h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Set up the project.</h5>
+            <p class="runin">
+              Create a project directory named <span class="directoryName">Assignment_07</span>, and copy everything
+              from Assignment 6 into that directory. If you didn&rsquo;t create a separate <span 
+              class="directoryName">css</span> directory for that assignment, this means just copying over the <span 
+              class="fileName">index.xhtml</span> file. Create a <span class="directoryName">scripts</span> directory,
+              either under <span class="directoryName">Assignment_07</span>, or directly under <span 
+              class="directoryName">My Website</span>; this is where your JavaScript program for this assignment will go.
+            </p>
+            <p>
+              Test your web page at this point to make sure it still works the same as it did when it was Assignment 6.
+              There is no need to create a new stylesheet for this assignment; just make sure that the index page still is
+              linked to either the original <span class="fileName">assignment_06.css</span> stylesheet, or to a copy of it.
+            </p>
+            <p>
+              Create a JavaScript file and save it in your <span class="directoryName">scripts</span> directory with the
+              name <span class="fileName">assignment_07.js</span>. You can create this file from Dreamweaver&rsquo;s 
+              <span class="menuItem">New</span> menu, which will give you an empty file except for a one-line comment at
+              the beginning that says, &ldquo;JavaScript Document&rdquo;. I suggest changing that comment to match the
+              name of the file, &ldquo;assignment_07.js&rdquo;.
+            </p>
+            <p>
+              Enter the following code into your script file:
+            </p>
+            <p class="codeBlock">
+  function init()
+  {
+    alert("Assignment 7");
+  }
+  window.onload = init;
+            </p>
+            <p>
+              Link the script file to your web page by adding the following <span class="tagName">script</span> tag
+              to the index page. This tag may go either in the head of the page, typically after the
+              links to the page&rsquo;s stylesheet(s), or at the end of the page, just before the closing <span
+              class="tagName">/body</span> tag. The latter placement is not as logical as the former,
+              but (a) both positions work because processing a <span class="tagName">script</span> tag
+              has no effect on the appearance of a page, and (b) most browsers interrupt their rendering
+              of a page when they encounter a
+              <span class="tagName">script</span> tag while they send a request for the page to the server,
+              wait for it to come back, and then process the code in it. By putting the tag near the
+              end of the page, you get browsers that follow this procedure to render the page before
+              reading the script file, making the page load time seem shorter to the user. By the time
+              the user does something that requires the script to have been processed, the browser will
+              have had time to retrieve and process the script file.
+            </p>
+            <p>
+              Test the web page: when it loads, a pop-up that says &ldquo;Assignment 7&rdquo; should appear. Pop-ups are
+              annoying, so replace the <span class="functionName">alert()</span> statement with the following one:
+            </p>
+            <p class="codeBlock">
+    console.log("Assignment 7");
+            </p>
+            <p>
+              This statement will work only in Firefox, and only if you have the Firebug extension installed. If you try
+              to view the page using Internet Explorer or Opera, you will get a &ldquo;script error&rdquo; on the page,
+              and your JavaScript code will not work. Safari simply ignores the call to <span
+              class="functionName">console.log()</span>. To see the message, you have to open the Firebug console
+              window.  The easiest way to do this is just to press the F-12 key, but you can also use the Firefox Tools
+              menu to do it. If Firebug is disabled (evidenced by F-12 not doing anything, you will definitely have to
+              use the Tools menu to start Firebug the first time. There are several tabs in the Firebug window; if the
+              Console tab is selected you should see the message from the <span class="codeSnippet">console.log()</span>
+              statement.
+            </p>
+            <p>
+              From now on, this page will assume you have Firebug&rsquo;s console tab visible so you can see messages
+              produced by calls to <span class="functionName">console.log()</span>. As mentioned above, pop-ups are
+              annoying (you have to click on each one in order to proceed with your work), so use Firebug&rsquo;s <span
+              class="functionName">console.log()</span> instead of JavaScript&rsquo;s built-in <span
+              class="functionName">alert()</span> function while developing your code. Just be sure to remove the calls
+              to <span class="functionName">console.log()</span> before releasing your code to the public so they
+              won&rsquo;t cause problems for non-Firebug users.
+            </p>
+            <p class="standoutBlock">
+              Notice the indentation structure of the JavaScript code. Like XHTML, JavaScript (and other
+                programming languages) typically involve lots of nesting of blocks within blocks. Instead
+                of XHTML tags, JavaScript enclosed blocks inside curly braces ( <span class="codeSnippet">{ &hellip; }
+                </span> ). If you line up matching braces vertically and indent the code inside them, it makes it
+                easier to spot mis-matches. Some code editors will highlight matching braces as you type
+                them; in Dreamweaver, you can highlight all the code between a matching pair of braces,
+                parentheses, or square brackets by positioning the cursor inside them and using the <span 
+                class="menuItem">Edit-&gt;Balance Braces</span> menu item.
+            </p>
+          </li>
+          <li>
+            <h5>Set up a <span class="variableName">submit</span> event handler.</h5>
+            <p class="runin">
+              An <span class="techTerm" title="A function that runs when an event occurs">event handler</span> is any
+              JavaScript that is set up to run whenever an event occurs. You have already seen an event handler: the
+              <span class="functionName">init()</span> function is set up to run when the <span
+              class="codeSnippet">window.onload</span> event occurs. That is, when the browser finishes getting all the
+              web page&rsquo;s files from the server and has built the <span class="techTerm" 
+              title="Document Object Model">DOM</span> tree, the data structure that holds the information about all
+              the XHTML elements for the page, including each element&rsquo;s tag name, attributes, style information,
+              and contents.
+            </p>
+            <p>
+              For this assignment, the task is create a function that verifies that the user has filled in the form
+              properly. (The definition of &ldquo;properly, &rdquo; for now, will be whether they have typed anything
+              into the <span class="tagName">textarea</span> element or not.) Here is code that finds the <span
+              class="tagName">form</span> element in the DOM tree, and connects an event handler to the <span
+              class="variableName">submit</span> event that is triggered when the user clicks on the form&rsquo;s submit
+              button:
+            </p>
+            <p class="codeBlock">
+  function submitHandler()
+  {
+    console.log("Submit event detected.");
+    return false;
+  }
+  function init()
+  {
+    var allForms = document.getElementsByTagName('form');
+    var theForm  = allForms[0];
+    theForm.onsubmit = submitHandler;
+  }
+  window.onload = init;
+            </p>
+            <p>
+              JavaScript functions do not have to return a value, but they may. For event handlers, returning
+                a value of
+              <span class="keyWord">false</span> prevents the default behavior for that event from occurring.
+              In the case of a <span class="codeSnippet">submit</span> event, the default behavior is
+              to submit the form to the web page that will process the form data, so returning <span 
+              class="keyWord">false</span> from this <span class="functionName">submitHandler()</span> function prevents
+              the form from being submitted. (The script needs to tell the user what happened; that comes later.)
+            </p>
+            <p>
+              The last line of the <span class="functionName">init()</span> function (which is the page&rsquo;s
+              (&ldquo;window&rsquo;s&rdquo;) <span class="codeSnippet">load</span> event handler) sets up <span
+              class="functionName">submitHandler()</span> as the <span class="codeSnippet">submit</span> event handler
+              for the form. The first two lines get a reference to the page&rsquo;s <span class="tagName">form</span>
+              tag from the DOM tree for the page.
+            </p>
+            <p>
+              The <span class="codeSnippet">document</span> object is a reference to the root of the DOM tree; it is
+              created automatically by the browser when it processes the contents of a web page. The function
+              <span class="functionName">getElementsByTagName()</span> searches the DOM tree for all <span 
+              class="tagName">form</span> elements, and returns an array containing references to all of them, even if
+              there are none. The web page you constructed for Assignment 6, we know, has exactly one <span 
+              class="tagName">form</span> element, and the second statement uses a subscript with the value 0 to get
+              the first element from the array returned by the previous statement and to put it in <span 
+              class="variableName">theForm</span>. (Array subscripts always start at 0 in JavaScript, so
+              <span class="variableName">allForms[0]</span> gets the first element of the array. Since we know there is
+              exactly one form on this particular web page, the first element of the array is actually the only element
+              in this particular array.)
+            </p>
+            <p>
+              The variables <span class="variableName">allForms</span> and <span class="variableName">theForm</span> are
+              not actually necessary; I put them there to make the code clearer (I hope). The entire <span 
+              class="functionName">init()</span> function could have been written equivalently like this:
+            </p>
+            <p class="codeBlock">
+  function init()
+  {
+    document.getElementsByTagName('form')[0].onsubmit = submitHandler;
+  }
+            </p>
+            <p>
+              Often, having fewer lines of code to read makes a program easier to understand. For beginners it generally
+              just makes it too complex.
+            </p>
+          </li>
+          <li>
+            <h5>Make submitting the form conditional.</h5>
+            <p class="runin">
+              Right now, the form never gets submitted. The next step is to find out whether the user has typed anything
+              into the <span class="tagName">textarea</span> or not. The following code uses an <span 
+              class="keyWord">if-else</span> statement to see whether the user has typed anything into the <span 
+              class="tagName">textarea</span> or not:
+            </p>
+            <p class="codeBlock">
+  function submitHandler()
+  {
+    var allTextareas = document.getElementsByTagName('textarea');
+    var theTextarea = allTextAreas[0];
+    var theText = theTextarea.value;
+    if (theText === '')
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+            </p>
+            <p>
+              The triple-equal operator ( <span class="codeSnippet">===</span> ) tests whether two things are the same or
+              not. If they are the same, the value of the expression is <span class="keyWord">true</span> and the code
+              inside the first pair of curly braces gets executed. If they are not the same, the value of the expression is
+              <span class="keyWord">false</span>, and the code inside the curly braces following the <span 
+              class="keyWord">else</span> gets executed instead.
+            </p>
+            <p class="standoutBlock">
+              You will see the double-equal operator ( <span class="codeSnippet">==</span> ) used in a lot of JavaScript
+              programs, but you should avoid using it because it automatically converts the two operands to be the same
+              type if possible, leading the program to treat two things as the same when they are not. For example,
+              <span class="codeBlock">'3'&nbsp;==&nbsp;3</span> is <span class="keyWord">true</span> even though one side
+              is a string and the other side is a number; The string gets treated like a number because it looks like one.
+              But <span class="codeBlock">'3'&nbsp;===&nbsp;3</span> is <span class="keyWord">false</span> strings are not
+              the same thing as numbers even if they look like them.
+            </p>
+          </li>
+          <li>
+            <h5>Give the user feedback when the form is not submitted.</h5>
+            <p class="runin">
+              Clicking on the submit button and having nothing happen is bad user interface design. The simplest
+              solution is simply to put an <span class="functionName">alert()</span> call into the event handler:
+            </p>
+            <p class="codeBlock">
+    if (theText === '')
+    {
+      alert("You idiot!");
+      alert("You didn't type anything in the textarea!!");
+      alert("Form data submission blocked!!!");
+      return false;
+    }
+    else
+    {
+      return true;
+    }  
+            </p>
+            <p>
+              While the above example might be a bit extreme, it does illustrate some things to avoid in designing a web
+              page: alert boxes in general; multiple alert boxes where one would suffice; using jargon the user probably
+              does not understand (&ldquo;textarea&rdquo; and &ldquo;form data submission&rdquo;); insulting the user; and
+               emotion or excitement for something mundane.
+            </p>
+            <p>
+              Rather, you can use JavaScript to display an informative error message or provide simple feedback to
+              indicate something is wrong. As an easy example, here is how to make the background of the textarea turn red
+              if the user tries to submit the form without typing anything in it:
+            </p>
+            <p class="codeBlock">
+  // Make sure the textarea is not empty
+  if (theText === '')
+  {
+    theTextarea.style.backgroundColor = "#fcc";
+    return false;
+  }
+  else
+  {
+    theTextarea.style.backgroundColor = "#fff";
+    return true;
+  }
+            </p>
+          </li>
+          <li>
+            <h5>Other improvements.</h5>
+            <p class="runin">
+              The project as developed so far should give you a good sense of how you can use JavaScript to verify that a
+              use filled a form out properly before submitting the form to the script that will process the form data.
+              Note that if the user has JavaScript disabled, the form data will always be submitted without any 
+              verification, which means that the data processing script always has to verify the data it receives and not
+              rely on JavaScript to have taken care of this anyway. All the JavaScript is doing is giving the user better
+              and quicker feedback than would have happened if the server-side script did all the work.
+            </p>
+            <p>
+              An easy way to make the form better is to indicate what parts of the form are required, for example by
+              putting a red asterisk (<span class="requiredIndicator">*</span> or <span 
+              class="requiredIndicator">&lowast;</span>) next to them. (The second one is a &ldquo;low asterisk&rdquo;,
+              which you can get with the <span class="codeSnippet">&amp;lowast;</span> character entity.)
+            </p>
+            <p>
+              Using JavaScript to display an error message on the web page is not all that hard, but it is beyond the
+              scope of this assignment page. But we can add another event handler so the red background goes away once
+              the user has typed a few characters into the <span class="tagName">textarea</span>. That involves setting
+              up a third event handler, one that is activated every time the user types a character in the <span
+              class="tagName">textarea</span>:
+            </p>
+            <p class="codeBlock">
+  if (theText === '')
+  {
+    theTextarea.onkeyup = keyupHandler;
+    theTextarea.style.backgroundColor = '#fcc';
+    return false;
+  }
+  else &hellip;
+            </p>
+            <p>And the <span class="codeSnippet">keyup</span> event handler could look like this:</p>
+            <p class="codeBlock">
+  function keyupHandler()
+  {
+    var theText = document.getElementsByTagName('textarea')[0].value;
+    if (theText.count > 3)
+    {
+      theText.style.backgroundColor = '#fff';
+    }
+    else
+    {
+      theText.style.backgroundColor = '#fcc';
+    }
+  }
+            </p>
+            <p>
+              If the user types more than three characters into the <span class="tagName">textarea</span>, the handler
+              changes the background color back to white. Until then (or if the user types in more than three characters
+              and backspaces so there are again fewer than three still there) the background color stays (or goes back
+              to) red.
+            </p>
+            <p>
+              There is a working version the form for this web page below. If you experiment with it, you will see that
+              there is a way you can submit the form even if you type in only 1-2 characters. See if you can figure out 
+              how to do that, and then see if you can fix it so the user always has to type in more than three characters.
+            </p>
+          </li>
+        </ol>
+        <form method="post" action="form_processor.xhtml">
+          <fieldset>
+            <label for="theTextarea">Comments: </label><span class="requiredIndicator">&lowast;</span>
+            <textarea id="theTextarea" rows="3" cols="20" name="comments"></textarea>
+            <p><input type="submit" value="Submit Comments" /></p>
+          </fieldset>
+        </form>
+      </div>
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+        <p>
+          Check your assignment in the usual ways: test its behavior, validate the xhtml and css, and do a case-sensitive
+          link check. When you sumbit it use <span class="codeBlock">CS-081 Assignment 7</span> as the subject line of your
+          email message. You can get the extra credit for doing the assignment only if you submit it by midnight of the due
+          date, <strong>December 19</strong>.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+    <script type="text/javascript" src="scripts/assignment_07.js"></script>
+  </body>
+</html>

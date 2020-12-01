@@ -1,0 +1,134 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Midterm Exam Topics</title>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <style type="text/css">
+      * { letter-spacing: .005em;}
+    </style>
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Midterm Exam Topics</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>Topics</h2>
+      <p>
+        We have not followed the textbook closely this semester. So far we have covered all of Chapters 1 and 2,
+        most of chapters 3 and 6, and parts of chapter 5.
+      </p>
+      <p>
+        In addition to the textbook material, a lot of the material on the exam will come from what I have covered in
+        class.  Here is a list of topics you may use as a checklist.<br />I cannot promise that it is a complete list,
+        but I hope it helps you in your preparation for the exam:
+      </p>
+      <ul>
+        <li>XHTML Syntax: Tags; Nodes; Attributes, attribute names, and attribute values.</li>
+        <li>CSS Syntax: Rules; Selectors; Properties, property names, and property values.</li>
+        <li>CSS classes and id&rsquo;s; their use in CSS selectors.</li>
+        <li>The role of a DOCTYPE in web pages.</li>
+        <li>
+          Basic structure of a web page: the <span class="tagName">html</span>, <span class="tagName">head</span>,
+          <span class="tagName">title</span>, and <span class="tagName">body</span> tags and how they are structured
+          on a page.
+        </li>
+        <li>Why separate content from presentation.</li>
+        <li>How to separate content from presentation.</li>
+        <li>XHTML related to text: headings, paragraphs, line breaks.</li>
+        <li>
+          CSS related to text: font-family, font-size, font-style, font-variant, color, background-color, text-decoration,
+          text-align, line-height, letter-spacing.
+        </li>
+        <li>
+          Character Entities: <span class="variableName">&amp;amp;</span>, <span class="variableName">&amp;lt;</span>,
+          <span class="variableName">&amp;gt;</span>, <span class="variableName">&amp;nbsp;</span>,
+          <span class="variableName">&amp;rsquo;</span>, <span class="variableName">&amp;ldquo;</span>,
+          <span class="variableName">&amp;rdquo;</span>, &hellip;
+        </li>
+        <li>
+          Linking to stylesheets and alternate stylesheets to a web page: the <span class="tagName">link</span> tag and
+          its <span class="variableName">type</span>, <span class="variableName">media</span>, and <span
+          class="variableName">title</span> attributes.
+        </li>
+        <li>Web browser&mdash;Web server interactions.</li>
+        <li>
+          Web server configuration: <span class="variableName">DocumentRoot</span> and <span
+          class="variableName">UserDir</span> settings; relationship between URL syntax and these settings.
+        </li>
+        <li>URL Syntax: protocol, host, path.</li>
+        <li>Trees: Document Object Model (DOM) tree for web pages; File system tree for directories and files.</li>
+        <li>
+          Link paths: use of <span class="variableName">/</span>, <span class="variableName">#</span>, <span
+          class="variableName">~</span>, and <span class="variableName">..</span> .
+        </li>
+        <li>
+          Anchors: The <span class="tagName">a</span> tag; the <span class="variableName">a:hover</span> and
+          <span class="variableName">a:visited</span> pseudo-classes.
+        </li>
+        <li>
+          Color values: color names; <span class="variableName">rgb(&hellip;)</span> and hexadecimal notations.
+        </li>
+        <li>
+          Measurement units: <span class="variableName">px</span>, <span class="variableName">pt</span>, <span
+          class="variableName">%</span>, <span class="variableName">em</span>.
+        </li>
+        <li>
+           Display styles: <span class="variableName">inline</span>, <span class="variableName">block</span>, and
+           <span class="variableName">list-item</span>.
+        </li>
+        <li>
+          The CSS Box Model: content, padding, border, margin; collapsing margins.
+        </li>
+      </ul>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

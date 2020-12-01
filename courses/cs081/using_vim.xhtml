@@ -1,0 +1,186 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Using Vim</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../css/style-print.css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>Using Vim</h1>
+    </div>
+    <div id="content">
+      <h2>A Tiny Vim Tutorial</h2>
+      <div class="whitebox">
+
+        <p>
+          There are lots of tutorials on the use of Vim out there. You can check
+          <a href="http://www.vim.org">www.vim.org</a> to find some of them, or
+          use your preferred search engine. This document contains just enough
+          information to give you the advantages of working with Vim to edit
+          code files. It does <em>not</em> tell you how to become a Vim power
+          user.
+        </p>
+
+        <p>
+          The first thing to know about Vim is that its roots go back to the
+          days when there were no mice and everthing entered into computers was
+          typed. So they needed a way to tell when you were typing text into a
+          file and when you were typing commands into Vim.  Hence the need for
+          two <em>modes</em>: insert mode and command mode.  When you start Vim,
+          you are in command mode (more on that later). To enter text, type the
+          letter <code>i</code> to enter insert mode, and type away. To get back
+          to command mode, press the <code>&lt;Esc&gt;</code> key.
+        </p>
+
+        <p>
+          Fortunately, there is a graphical user interface for Vim, and you can
+          do most normal operations, like saving files, using the mouse and
+          menus in the usual way. However, the standard keys for cut and paste
+          (<code>Ctrl-C</code>/<code>Ctrl-V</code>) don&rsquo;t work in Vim
+          because it uses other keys for those operations. But you can do them
+          using the Edit menu.
+        </p>
+
+        <p>
+          When you are in command mode, typing <code>u</code> undoes the most
+          recent editing, and <code>Ctrl-R</code> re-does the most recent undo.
+        </p>
+
+        <p>
+          That&rsquo;s it!  With just this much information, you can use Vim to
+          edit your code files and get the advantages of syntax highlighting and
+          the possibility of being much more productive when writing code.
+        </p>
+
+      </div>
+
+      <h2>Super Advanced Vim Tutorial</h2>
+
+      <div class="whitebox">
+
+        <h3>Features Available with my <code>_vimrc</code> File</h3>
+        <p>
+          Vim is highly configurable, customizable, and extendable.  In this
+          section I&rsquo;ll mention some shortcuts you can use in the version
+          of Vim installed in the lab.  These features are available because I
+          have replaced the standard Vim configuration file with one that
+          I&rsquo;ve customized for my own preferences.  So if you install Vim
+          on your own computer and want it to work like the ones in the lab,
+          grab a copy of the configuration file from any computer in the lab.
+          It&rsquo;s <span class="filename">C:\Program Files\Vim\_vimrc </span>
+          or, possibly, <span class="filename">C:\Program Files\Vim\.vimrc
+          </span> depending on which computer you use.  The name <span
+          class="filename">_vimrc </span> is normally used on Windows, and <span
+          class="filename">.vimrc </span> on Unix, but Vim will use either name,
+          and different computers in the lab may be set up differently. If
+          it&rsquo;s named <span class="filename">.vimrc </span> on the computer
+          you get it from, it probably would be best to rename in to <span
+          class="filename">_vimrc </span> on your own computer.
+        </p>
+
+
+        <p>
+          The first thing I did was to set the tab width to 2 and made the
+          editor substitute spaces for tab characters.
+        </p>
+
+        <p>
+          <code>Ctrl-S</code> or <code>Ctrl-W</code> will save your work to
+          disk.  <code>Ctrl-K</code> &ldquo;kills&rdquo; (deletes) the line the
+          cursor is in.
+        </p>
+
+        <p>
+          <code>Ctrl-J</code> will reformat a paragraph so lines are less than
+          76 characters wide. But a &ldquo;paragraph&rdquo; consists of all
+          lines that are not separated from each other by a blank line.  So you
+          often need to insert tempory blank lines to limit the scope of the
+          <code>Ctrl-J</code> command. Alternatively, you can select lines
+          within the paragraph you want to reformat, either with the mouse or
+          the arrow keys (hold down the Shift key when using the arrow keys),
+          and then type <code>Ctrl-J</code>. If you find 76 is narrower than you
+          like, you can change it to something like 100 characters by entering
+          the command, <code>:set tw=100</code>. If you want to change this
+          setting permanently, you can edit your <span
+          class="fileName">_vimrc</span> file; the command is one of the first
+          ones in the file.
+        </p>
+
+        <h3>Other Features</h3>
+        <p>
+          The <code>:retab</code> command will take out any tab characters that
+          have crept into your file and turn them into the proper number of
+          spaces.  Tab characters are a nuisance because the View Code option in
+          Firefox considers tab stops to be set every 8 characters, but
+          Dreamweaver and Vim have them set every 2 characters.  When
+          viewing/editing your code in these different programs, what looks good
+          in one can appear all jumbled in another.
+        </p>
+
+        <p class="standoutBlock">
+          It&rsquo;s not an absolute requirement, but there <strong>should
+          </strong> be no tab characters in the code files you prepare for this
+          course.
+        </p>
+
+        <p>
+          You can get help by typing the <code>:he</code> command.
+        </p>
+
+        <p>
+          To dismiss the help part of the window, type either <code>:x</code> or
+          <code>:q</code> if you are in command mode, or you can type either
+          <code>Ctrl-X</code> or <code>Ctrl-Q</code> while in either command or
+          insert mode.
+        </p>
+
+        <p>
+          Type <code>:x</code> (while in command mode) or
+          <code>Ctrl-X</code> (in either mode) to save your work and exit.
+          Use <code>:q!</code> in command mode to quit Vim without saving any
+          changes you have made to a file, and use <code>Ctrl-Q</code> to quit
+          without saving if you haven&rsquo;t made any changes.
+        </p>
+
+        <p>
+          One last super-super-advanced topic: You can edit multiple files
+          simultaneously.  The terminology is that you can have multiple
+          editing buffers.  Use the command <code>:n</code> to go to the next
+          buffer, <code>:p</code> to go to the previous one, and
+          <code>Ctrl-^</code> to switch back and forth between the two most
+          recent ones you have looked at.  I&rsquo;ve added
+          <code>Ctrl-F1</code> through <code>Ctrl-F8</code> to take you
+          directly to each of the first 8 buffers you might be working on
+          simultaneously, and those shortcuts work from insert mode as well as
+          command mode.
+        </p>
+
+      </div>
+
+    </div>
+    <div id="footer">
+      <p>
+        <a href="../../">Vickery Home</a>&nbsp;-&nbsp;<a
+           href="./">CS-081 Home</a>&nbsp;-&nbsp;<a
+           href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      </p>
+    </div>
+  </body>
+</html>

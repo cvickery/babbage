@@ -1,0 +1,129 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Check My Grades</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../../css/style-print.css" />        
+
+    <!-- Style for this page only -->
+    <style type="text/css" media="all">
+      form  { text-align: center; }
+      p     { font-size:  1.2em; }
+    </style>
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Check My Grades</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+    
+      <p>Fill in the information below to see what grades I have recorded for you so far in the course.</p>
+      <p>Be sure to let me know right away about any discrepancies between what you see here and the grades you think I should have recorded.</p>
+
+      <form method="post"
+            action="check_grades_new.xhtml">
+        <p>
+          Enter your 4-digit student ID:
+          <input type="text" name="idNum" size="4" />
+        </p>
+        <p>
+          <input type="submit" value="Show Me My Grades for CS-081" />
+          <input type="hidden" name="file" value="081-2007_09" />
+        </p>
+      </form>
+<?php
+  if (isset($_POST['idNum']))
+  {
+  	if (! preg_match("/\d\d\d\d/", $_POST['idNum']) )
+    {
+      echo "<h2 class=\"notyet\">You did not enter your four-digit College ID number.</h2>\n";
+    }
+    else
+    {
+      //  Generate lookup results
+      $gradesFile = @fopen("../../Grades/2007_09/CS-081_1T3RA_2956-Table 1.csv", "r");
+      if (! $gradesFile)
+      {
+        echo "<h2 class=\"notyet\">Unable to read grades file.<br/>$php_errormsg</h2>\n";
+      }
+      else
+      {
+        $fstat = fstat($gradesFile);
+        echo "<h2 class=\"notyet\">Grades were last updated ".date("Y-m-d h:m a", $fstat['mtime'])."</h2>\n";
+        $headings = fgetcsv($gradesFile);
+        //	Heading[0] must be student id number
+        //	Heading[1] and Heading[2] must contain student's name, with 'first' and 'last' indicating which is which
+        $firstNameIndex = 1; $lastNameIndex = 2;
+        if (preg_match("/.*last.*/i", $headings[1]))
+        {
+        	$firstNameIndex = 2; $lastNameIndex = 1;
+        }
+        unset($studentValues);
+        while (!feof($gradesFile))
+        {
+        	$info = fgetcsv($gradesFile);
+          if ($info[0] != $_POST['idNum']) continue;
+          $studentValues = $info;
+          break;
+        }
+        if (isset($studentValues))
+        {
+        	$firstName = $studentValues[$firstNameIndex];
+          $lastName = $studentValues[$lastNameIndex];
+        	echo "<h2>Grades for $firstName $lastName:</h2>\n";
+          ?>
+          <table class="whitebox">
+          	<tr><th>Item</th><th>Grade</th><th>T-Score</th></tr>
+            <?php
+            for ($i=3; $i<count($headings); $i++)
+            {
+            	if ($headings[$i] != "")
+              {
+            		echo "<tr><th>".$headings[$i]."</th><td>".$studentValues[$i]."</td><td>&nbsp;</td></tr>\n";
+              }
+            }
+            ?>
+          </table>
+          <?php
+          
+        }
+      }
+		}
+  }
+?>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p> <a href="../../../">Vickery Home</a>&nbsp;
+          <a href="..">Course Home</a>&nbsp;
+          <a href=".">Fall 2007 Home</a>&nbsp;
+          <a href="http://validator.w3.org/check?uri=referer">
+          XHTML</a>&nbsp;
+          <a href="http://jigsaw.w3.org/css-validator/check/referer">
+          CSS</a></p>
+    </div>
+  </body>
+</html>

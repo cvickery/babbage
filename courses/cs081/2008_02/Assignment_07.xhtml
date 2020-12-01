@@ -1,0 +1,155 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 7</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 7</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        For this assignment you are to start working with CSS layout features. In particular, you are to format your list of
+        navigation links so it looks and operates somewhat like the one <a href="http://babbage.cs.qc.cuny.edu/81">designed
+        in class</a>.
+      </div>
+
+      <h2>Description</h2>
+      <div>
+        <p>
+          In Assignment 6, you were told to include a list of &ldquo;navigation links&rdquo; in your blog&rsquo;s page.
+          According to the principle that you can make your web page look any way you want using CSS, it really doesn&rsquo;t
+          matter where in your document that navigation list appears. But for this assignment, it has to be right after the
+          <span class="tagName">h1</span> element. If it is not there already, move it there before proceeding.
+        </p>
+        <p class="standoutblock">
+          If you want to change the color scheme for your page, do so now. But you must keep a gradient background image for
+          the <span class="tagName">h1</span> element. You can alter the image, but there has to be one there, and it has to
+          have a gradient that goes from a color to transparent.
+        </p>
+        <p>
+          Create a new stylesheet for this assignment. Despite the problem with this naming scheme mentioned in class, call
+          this one <span class="fileName">layout.css</span>, and put a link to it in the head of your blog&rsquo;s index
+          page. All of the requirements below are to be done using rules in this stylesheet.
+        </p>
+        <p>
+          Here are the requirements for the assignment:
+        </p>
+        <ul>
+          <li>
+            Set a background image on the page&rsquo;s <span class="tagName">body</span>. Make the image wider than the
+            widest screen people will use, and give it a colored background covering
+            the leftmost 25% of the image, with the right 75% of the image transparent. You may use somewhat different
+            percentages if you want to experiment, but do not use 50%. Set this image&rsquo;s horizontal position using
+            the same percentage value as the width of the colored part of the image. Tile the image vertically. You
+            should get the solid colored bar on the left side of your web page, which should shrink and grow in width
+            as you resize the width of the browser window. Proceed only when you have gotten this part of the assignment
+            working. Be sure your code is still valid XHTML and CSS, and that it works across browsers.
+          </li>
+          <li>
+            Set the left margin of the next part of your web page (presumably a list of blog entries) to match the
+            width of the colored bar. The navigation list should now be inside the colored &ldquo;faux column&rdquo; and
+            all the rest of your content should be on the right side of the page.
+          </li>
+          <li>Set the width of the navigation links list to match the width of the faux column.</li>
+          <li>
+            Convert the <span class="tagName">a</span> element for each item in the list to <span
+            class="codeSnippet">display:block</span> so the anchor completely fills it&rsquo;s <span
+            class="tagName">li</span> element. Adjust borders, paddings, margins, and background colors of the list, the
+            list items, and the anchors to get an appearance you like. Apply typographic changes to anchors to make them
+            look &ldquo;good.&rdquo; Remove the underlines using the <span class="codeSnippet">text-decoration</span>
+            property. Test and validate your code.
+          </li>
+          <li>
+            Use the <span class="codeSnippet">:hover</span> pseudo-class for the anchors to give them a different
+            appearance when the user hovers over them.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <h3>Test, Verify, and Validate</h3>
+        <p>
+          Carefully test, verify and validate your assignment before submitting it, as described in previous assignments.
+        </p>
+
+        <h3>Save and Submit</h3>
+        <p>
+          When you have tested, verified, and validated your code, be sure log out so your code will be saved to the
+          server, and send me an email message saying your assignment is ready. I will copy it from the server to the
+          Unix computer in my office (babbage), and will check it out from there.
+        </p>
+        <p>
+          My email address is:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout">
+          The Subject Line of your email must say <span
+          class="codeblock">CS-081&nbsp;Assignment&nbsp;7</span>, exactly like that, in order to avoid my spam
+          filters.
+        </p>
+        <p>
+          Always include <span class="codeSnippet">CS-081</span> in the subject line of your email messages to me, even
+          if you are not submitting an assignment, because of the spam filters.
+        </p>
+        <p class="important">
+          Be sure to sign your email so I know who sent it!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

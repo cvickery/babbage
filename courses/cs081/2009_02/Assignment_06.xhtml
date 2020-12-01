@@ -1,0 +1,182 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 6</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignment_06.css" />
+    <script type="text/javascript" src="../scripts/core.js.min"></script>
+    <script type="text/javascript" src="scripts/assignment_06.js"></script>
+	</head>
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 6<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+      	<p>
+        	For this assignment, you are to use Photoshop to prepare images for use as background images
+        	  and <span class="tagName">img</span> elements.
+        </p>
+      </div>
+      <h2>Reference Material</h2>
+      <div>
+        <ul>
+          <li>Chapter 4 of the textbook</li>
+          <li><a href="../preparing_images.xhtml">Preparing Image Files</a></li>
+          <li><a href="../using_photoshop.xhtml">Using Photoshop To Edit Web Image Files</a></li>
+        </ul>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+      	<p>
+        	Be sure you have completed <a href="Assignment_05.xhtml">Assignment 5</a> successfully before you start working on this one.
+          It is too late to receive credit for Assignment 4, but you cannot receive credit for this assignment without completing that one first.
+        </p>
+        <p>
+        	For this assignment, you are to create/edit three images files using Photoshop:
+        </p>
+        <ol>
+        	<li>
+          	<h3 id="gradient-target">A background gradient</h3>
+            <p>
+            	Create a gradient image file which, when tiled vertically (<span class="code-snippet">background-repeat:repeat-y;</span>), will create a
+              linear
+              gradient across all <span class="tag-name">h2</span> elements of the blog page. The left end of the gradient may be any solid color that
+              contrasts with the text in the <span class="tag-name">h2</span> elements, and the right end must be transparent. Change the background
+              color of the <span class="tag-name">h2</span> elements to different values to be sure the transparency feature is working.
+            </p>
+            <p>
+            	You may experiment with different dimensions for this image, and it may be as small as one pixel tall. But you may make it taller
+              so you can see what you are doing. Make the image at least 600 pixels wide.
+            </p>
+            <p>
+            	The heading at the beginning of this section is an example of what your headings might look like. The gradient is dark green on the left
+              end and transparent on the right end. The background color is red. If you have JavaScript
+              enabled, you can click on the heading to see the same background image but with different background colors. (Changing the background
+              colors using JavaScript is not part of your assignment!)
+            </p>
+          </li>
+          <li>
+          	<h3 id="tiled-image-target">A tiled picture background</h3>
+            <p>
+            	For this part of the assignment, you are to create image from a JPEG photograph, and edit it so the left and right edges blend seamlessly.
+              Make the image 128 pixels square (JPEG compression works on blocks that are 16 pixels square, so it can sometimes help to use
+              intrinsic sizes that are multiples of 16 in both dimensions&mdash;but there is no need to be a slave to this rule.) You may make the image
+              smaller if you like, but make it square and small enough so that it will have to be repeated several times horizontally to fill
+              the background of the <span class="tag-name">h1</span>.
+            </p>
+            <p>
+            	Use your image as a background that tiles horizontally behind the <span class="tag-name">h1</span> element of your blog page, similar
+              to the demonstration in class. Use any JPEG image you think would be appropriate, but be sure the background looks like one wide
+              picture when it is repeated horizontally across the <span class="tag-name">h1</span> element.
+            </p>
+            <p>
+            	The heading at the beginning of this section illustrates the effect you are trying to accomplish. This heading clearly repeats, but
+              you cannot see where one copy of the image ends and the next copy begins.
+            </p>
+          </li>
+          <li>
+          	<h3>A text replacement image</h3>
+            <p>
+            	Use Photoshop to create an image to replace the <span class="tag-name">h1</span> content of your blog page. Use a font that is
+              &ldquo;distinctive&rdquo; (i.e., not commonly found on people&rsquo;s computers; explore the fonts installed with Photoshop), put the text
+              on a transparent background, and use layer styles to make the text &ldquo;interesting&rdquo; and to make it stand out from the background
+              image you created in the previous step.
+            </p>
+          </li>
+        </ol>
+      	<p>
+          Use the web developer&rsquo;s toolbar to disable all images, and reload the page. Verify that a visitor can still read all the headings.
+          This screenshot shows a user about to click on the web developer&rsquo;s toolbar option to disable all images:
+        </p>
+        <p>
+        	<img src="images/assignment_6_disable.png" alt="screenshot of web developer toolbar" title="about to disable images" />
+        </p>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+      	<p class="standout-block">
+        	You must check your page using to the W3C validators: there must be no warnings or errors
+          that either of them can detect.
+        </p>
+        <p>
+        	Check your home page to make sure it is still legible and functional.
+        </p>
+        <p>
+        	Run a link check on your site before submitting the assignment; fix any errors. (Right click in the Files panel on the right,
+          select <span class="menuItem">Check Links</span>, then select <span class="menuItem">Entire Local Site</span> (keyboard shortcut:
+          Control-F8). Fix any broken links.
+        </p>
+        <p>
+          Submit the assignment by midnight of the due date:
+        </p>
+        <ol>
+            <li>
+              To submit this assignment, simply send me an email message telling me that your web page is ready for me
+              to look at: I will copy it from <span class="computerName">Oak</span> to <span
+              class="computerName">Babbage</span>, and check it out there.
+            </li>
+            <li class="standout-block">Be sure to put your name in the body of your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-081 Assignment 6</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu. (Fix up the 'AT' part.)
+            </li>
+        </ol>
+        <p>
+          See <a href="../../cs081/index.xhtml">the course home page</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

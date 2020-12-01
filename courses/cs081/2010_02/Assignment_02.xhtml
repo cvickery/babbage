@@ -1,0 +1,191 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="<?php echo $mime_type;?>; charset=UTF-8" />
+    <title>CS-081 Assignment 2</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+  </head>
+  <body id='urn:uuid:06DB7C35-90CF-4BA0-99DF-9EBD4A91BEB7'>
+
+    <h1>CS-081 Assignment 2</h1>
+
+    <div id="content">
+      <h2>Preparation</h2>
+      <div>
+        <p>
+          If you have not finished reading chapters 1 and 2 of &ldquo;HTML Dog&rdquo; yet, now is the time to catch up.
+          If your eyes glazed over when you read the parts on stylesheets in chapter 1 the first time, you should
+          go back and read them again now, armed with the knowledge that the only technique we will use for
+          adding CSS to our web pages is through the use of external stylesheets. And we will be using
+          <span class="tag-name">link</span> elements. You are free to use the @import construct instead, but
+          to reduce complexity, we’ll concentrate on just the one technique.
+        </p>
+        <p>
+          This assignment is due at the same time as <a href="Assignment_01.xhtml">Assignment 1</a>. If you wish,
+          you can submit both assignments at the same time. If this assignment is correct, you will get
+          retroactive credit for Assignment 1 without having to submit it separately.
+        </p>
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            <h5>Activate your firefox plugins.</h5>
+            <p>
+              If you haven’t already done so, activate your Firefox plugins. The issue is that we installed the
+              plugins you need for the course (Firebug, YSlow, Web Developer’s Toolbar, Tidy, and MeasureIt),
+              but we haven’t figured out how to make them show up when you log in. So that leaves you with the
+              job of activating them manually. We found that you can do that simply by installing any plugin
+              yourself, and when you restart Firefox, all of them will become active.
+            </p>
+            <p>
+              In class I demonstrated installing a new plugin, and chose the “Download Statusbar” plugin. But
+              you can install any plugin you like, even one that is already installed. For example, type “measureit”
+              into the google search box, and the first search result will be for the MeasureIt plugin that is already
+              installed. Click the big green “Install Now” button, follow the instructions, and when Firefox restarts
+              you will be good to go. Let me know if you have any problems with this.
+            </p>
+            <p>
+              You won’t actually be using any of the plugins for this assignment. This step is just to get your site set up
+              properly for future assignments.
+            </p>
+          </li>
+          <li>
+            <h5>Link a stylesheet to your site’s index page.</h5>
+            <p>
+              Right click on the <span class="directory-name">css</span> in your site (while in Dreamweaver), and
+              select &ldquo;New File&rdquo; from the drop-down menu. The initial name for that file will be
+              <span class="file-name">untitled.xhtml</span>; change the name to
+              <span class="file-name">assignment_02.css</span>.
+            </p>
+            <p>
+              Link this new stylesheet to your site’s index page. The textbook tells you how to do this using a
+              <span class="tag-name">link</span> tag on page 34. But, as demonstrated in class, Dreamweaver will
+              generate this code for you automatically. All you have to do is drag
+              <span class="file-name">assignment_02.css</span> from the file browser into the code for your index
+              page. It goes inside the <span class="tag-name">head</span> element. Initially, your page’s
+              head element should look something like this:
+            </p>
+            <div class="code-block">
+  &lt;head>
+    &lt;title>My Fabulous CS-081 Web Site&lt;/title>
+    &lt;meta http-equiv="Content-Type" content="&lt;?php echo $content_type;?>; charset=UTF-8" />
+  &lt;/head>
+            </div>
+            <p>
+              Afterwards, it should look like this:
+            </p>
+            <div class="code-block">
+  &lt;head>
+    &lt;title>My Fabulous CS-081 Web Site&lt;/title>
+    &lt;meta http-equiv="Content-Type" content="&lt;?php echo $content_type;?>; charset=UTF-8" />
+    &lt;link rel="stylesheet" type="text/css" href="css/assignment_02.css" />
+  &lt;/head>
+            </div>
+            <p>
+              Now edit the stylesheet to incorporate the following:
+            </p>
+            <ul>
+              <li>
+                Set up a rule so that any <span class="tag-name">h1</span> elements have colors you choose for
+                the text and the background of the element. There is exactly one <span class="tag">h1</span>
+                tag on the page, so the rule should affect that element. I’ll give you the code for the rule
+                to get you started, but you should pick your own colors.
+                <div class="code-block">
+h1 {
+  color:orange;
+  background-color:purple;
+  }
+                </div>
+                <p>
+                  I tried to pick an ugly color combination here so that you will be motivated to pick better ones!
+                  If you know
+                  about other ways to specify colors, or want to use Dreamweaver’s “color picker” tool to pick your
+                  colors, feel free to do so instead of using color names.
+                </p>
+              </li>
+              <li>
+                Now set a background color for the entire web page. The rule should select the
+                <span class="tag-name">body</span> element of the page. You can use any color you like, including the
+                color or background-color you used for the heading. Just be sure that all the text on the page, including
+                the two validation links, remains easy to read.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <h5>Validate your XHTML and CSS code.</h5>
+            <p>
+              You should be watching the validator icons provided by the Tidy and Web Developer’s Toolbar while
+              testing your code in Firefox to be sure they give green circles all the time. (The Tidy icon is the
+              one in the bottom status bar; the Web Developer’s Toolbar actually has three separate ones, which are
+              located at the right end of the toolbar, just above the browser’s viewport. (The viewport is the part
+              of the browser window where web pages are displayed.)
+            </p>
+            <p>
+              But the final validation test is provided by the external validators. While viewing your web page
+              (in any browser), click the two validation links to make sure your XHTML and CSS code are both
+              perfect. There must be no warnings and no errors from either validator.
+            </p>
+          </li>
+          <li>
+            <h5>Do a link check.</h5>
+            <p>
+              Even it your site works and validates, it’s still possible to have broken links that won’t show up
+              until I copy your site to babbage, where directory and filenames are case-sensitive. Since we set
+              up Dreamweaver to do case-sensitive link checking, you can use Dreamweaver to be sure you have no
+              broken links in your site. Just right-click anywhere in the Files panel on the left, and select
+              &ldquo;Check Links&rdquo; -&gt; &ldquo;Entire Local Site.&rdquo; A panel will show up that tells you
+              about any broken links. It should be empty. The F7 key will get rid of the panel (or bring it back.)
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you are ready for me to look at your assignment, simply send me an email message to let me
+          know. I’ll copy your entire web site to my computer (babbage) and check it out. The full pathname
+          to your web site on babbage will be http://babbage.cs.qc.cuny.edu/Grading/cs081/ followed by your
+          account name.
+        </p>
+        <p>
+          Send your email message to me at: vickery<span class="at" title="Change to
+          @">at</span>babbage.cs.qc.cuny.edu by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-081 Assignment 2.”
+        </p>
+        <p>
+          Don’t forget to put your name in your email message!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

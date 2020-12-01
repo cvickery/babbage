@@ -1,0 +1,112 @@
+<?php
+  $this_dir = opendir('.');
+  $this_link = "";
+  $this_year = "";
+  $this_term = "";
+  while ($dir_entry = readdir($this_dir))
+  {
+    if (is_dir($dir_entry) && preg_match('/(\d{4})_(\d{2})/', $dir_entry, $year_term))
+    {
+      $this_year = $year_term[1];
+      $this_term = ($year_term[2] === '02') ? 'Spring' : 'Fall';
+      $this_link = $dir_entry;
+    }
+  }
+
+header("Vary: Accept");
+if (	array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+			stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+			stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")  )
+{
+		$content_type = "application/xhtml+xml";
+    header("Content-type: $content_type");
+    header("Last-Modified: " . date('r', filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print ("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
+}
+else
+{
+	$content_type = "text/html";
+	header("Content-type: $content_type; charset=utf-8");
+}
+?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="<?php echo $content_type; ?>; charset=UTF-8" />
+    <title>CS-081: HTML and Web Programming Course Home Page</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../css/style-print.css" />
+  </head>
+  <body id='urn:uuid:4AEBBA6E-3DCA-46CC-93B9-E8665BC911F3'>
+    <div id="header">
+      <h1>CS-081: HTML and Web Programming</h1>
+    </div>
+    <div id="content">
+      <h2>Course Description</h2>
+      <div class="whitebox">
+        <p>
+          This is a course on the <strong>technical aspects of web site construction</strong>.  You should already be
+          familiar with web pages and web sites from your everyday life, and you probably have developed your own page
+          or pages one way or another before taking this course.  In this course, you will learn how to use &ldquo;best
+          practices&rdquo; to build web pages that work well for as many of your web site&rsquo;s visitors as possible.
+        </p>
+        <p>
+          In the process of learning <strong>how web pages work</strong>, you will learn how <span class="techTerm"
+          title="Programs that deliver web pages to users.">web servers </span>, <span class="techTerm" title="Programs
+          people use to find and view web pages">web browsers </span>, <span class="techTerm" title="Programs that are
+          part of a web page and run in the user's browser">client-side scripts </span>, and <span class="techTerm"
+          title="Programs that are part of a web page and run before the server delivers the page">server-side scripts
+          </span> all interact to produce what people encounter when they use the Web. But most of all, the course
+          covers <strong>writing code to produce web pages</strong>: <span class="techTerm" title="eXtensible Hypertext
+          Markup Language">XHTML </span> and <span class="techTerm" title="Cascading Style Sheets">CSS</span>.
+        </p>
+        <p>
+          Using <strong>best practices</strong> for web design means generating pages that are clear, attractive, and
+          easy to use regardless of whether they are accessed by a traditional desk-top or laptop computer, a
+          high-resolution cell phone like the iPhone, a conventional low-resolution phone, or even a &ldquo;screen
+          reader&rdquo; that speaks the content of the page for visually impaired visitors. Ultimately, all these issues
+          reduce to the matter of working with <span class="techTerm" title="Formal documents that give the rules for
+          building web pages">web standards</span>.
+        </p>
+        <p>
+          The two main <strong>standards</strong> covered in the course are the <a
+          href="http://www.w3.org/TR/xhtml11/#toc">XHTML</a> (Extensible Hypertext Markup Language) and <a
+          href="http://www.w3.org/TR/CSS21/cover.html#minitoc">CSS</a> (Cascading Style Sheets) developed by the <a
+          href="http://www.w3c.org">World Wide Web Consortium</a> (W3C).  The course will also introduce the use of <a
+          href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">JavaScript</a> (also known
+          as<span class="programName">ECMAScript</span>) to create dynamic effects based on the W3C Document Object
+          Model,<a href="http://www.w3.org/DOM/">DOM</a>. In addition, we will also look at the concepts of client-side
+          scripting using <a href="http://www.php.net/">PHP</a>.
+        </p>
+        <h3>Laboratory Facilities</h3>
+        <p>
+          You will have access to <strong>laboratory facilities</strong> in the department that provide complete control
+          over the web server (<a href="http://www.apache.org/">Apache</a>) as well as development tools, including <a
+          href="http://www.adobe.com/products/creativesuite/web/">Dreamweaver</a> one of the most popular web
+          development programs available. But this is not a &ldquo;Dreamweaver Course&rdquo;. Rather, you will learn to
+          use subsets of Dreamweaver&rsquo;s extensive range of features to manage a web site and to write XHTML and CSS
+          code. <span class="aside">For now, the laboratory version of Dreamweaver is one version &ldquo;old;&rdquo; the
+          link in this paragraph is to the product page for the current version.</span>
+        </p>
+        <p>
+          The laboratory is an &ldquo;open laboratory.&rdquo; That means that you can use the lab any time the college
+          is open, and at all times of the day and night from the internet. See the <a href="../TREE_Lab">laboratory
+          information</a> page for details.
+        </p>
+        <p class="standout-box">
+          There are no scheduled times when the class meets in the lab. Rather, you are to use it for doing your
+          assignments for the course on your own time outside of class.
+        </p>
+      </div>
+      <h2>Link to <a href="./syllabus.xhtml">Course Syllabus</a></h2>
+      <h2>Link to <a href="<?php echo $this_link;?>">This Semester&rsquo;s Course Information and Assignments</a></h2>
+    </div>
+    <div id="footer">
+      Last updated <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>&mdash;<a
+        href="../..">Vickery Home</a>&nbsp;&mdash;&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;&mdash;&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

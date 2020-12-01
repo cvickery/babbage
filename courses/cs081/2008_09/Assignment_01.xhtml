@@ -1,0 +1,137 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 1</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />    
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>
+        CS-081 Assignment 1
+      </h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          Building a web site requires a combination of graphic design and technology. This course is offered by the Computer
+          Science Department, so you should not be surprised to find that its emphasis is on the technology side
+          of the process. In a big project, graphic design and web programming are normally performed by different people
+          who are trained in one side of the operation or the other. But the two sides need to be able to communicate with
+          each other. And in this course, we have no choice but for each student to play both the design and implementation
+          roles.
+        </p>
+        <p>
+          Your first assignment is to start thinking about design, implementation, and how they relate to each other. You
+          are to read an article on one aspect of the topic, and answer some questions raised by the article.
+        </p>
+      </div>
+      
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+          The article you are to read is <a 
+          href="http://www.digital-web.com/articles/web_design_by_designers/" title="Article by Kimberly Elam">Web Design By
+          Designers</a>. Read the article, look at the two web sites discussed in the article, and write out answers to the
+          following questions.
+        </p>
+        <ol>
+          <li>
+            Compare the two sites for ease of use. Assume you were interested in hiring one of these companies to to do a
+            design project, and tell how the two sites influenced your interest in .
+          </li>
+          <li>
+            Tell which site you think does a better job of making it easy to contact them, and why.
+          </li>
+          <li>
+            The article mentions the use of a grid in the design of the first site. Was this clear when you first visited the 
+            site? Do you think the second site uses a grid?
+          </li>
+          <li>
+            The article says, &ldquo;&hellip; it is guaranteed that the principals in the firm will actively art direct the 
+            project, and insist on good typography and design.&rdquo; What do you think it means to &ldquo;art direct&rdquo; a 
+            project? And what aspects of the web pages do &ldquo;typography&rdquo; and &ldquo;design&rdquo; refer to?
+          </li>
+          <li>
+            One of the web sites uses Flash, and both use JavaScript. What happens to the sites if you disable these features
+            in your browser? (We will go over how to do this in class.)
+          </li>
+          <li>
+            Which site looks more like the <a href="http://www.google.com">Google</a> home page? Why do you think they did that?
+          </li>
+          <li>
+            Tell how you think design and typography relate to the technical material we will be covering in this
+            course.
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>Write your answers to the questions in the body of an email message. You can use plain
+        text or formatted email, but <strong>do not use a word processor and/or send your answers as an
+        attachment.</strong> Send your email to me by midnight on the due date (September 2). My email address
+        is:</p>
+        <address>Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu</address>
+        <p class="standout_block">
+          The Subject Line of your email must say <span class="codeblock">CS-081&nbsp;Assignment&nbsp;1</span>,
+          exactly like that, in order to avoid my spam filters.
+        </p>
+        <p>Be sure to sign your email so I know who sent it!</p>
+      </div>
+    </div>
+    <div id="footer">Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs081">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

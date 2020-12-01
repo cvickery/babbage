@@ -1,0 +1,232 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 5</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Assignment 5</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>Description</h2>
+      <div class="whitebox">
+        <p>For this assignment, you are to create a web page that uses a
+        <span class="tagName">form</span> to gather information from users. 
+        There are three parts to the assignment:</p>
+        <ol>
+          <li>Use a <span class="tagName">table</span> to present form
+          controls and their labels; practice using various features of
+          tables and formatting them using CSS.</li>
+          <li>Practice using various form controls (different types of <span
+          class="tagName">input</span>, <span
+          class="tagName">textarea</span>, <span
+          class="tagName">select</span>, and <span
+          class="tagName">button</span> controls) and submitting form data
+          to a server-side script.</li>
+          <li>Use JavaScript to validate the form data before submitting it
+          to the server-side script.</li>
+        </ol>
+      </div>
+      <h2>Requirements and Procedure</h2>
+      <div class="whitebox">
+
+        <ol>
+
+          <li>
+          
+            <h5>Add a page for the form to your web site.</h5>
+            <p class="runin">Create a new .xhtml file for your form and add
+            a link to it to your site&rsquo;s home page.  Use a meaningful
+            file name for this page based on what you are going to use the
+            form for (see next item).</p>
+            
+          </li>
+
+          <li>
+          
+            <h5>Code the <span class="tagName">table</span> and the <span
+            class="tagName">form</span>.</h5>
+
+            <p class="runin">Study Chapter 9 of the textbook, and look at <a
+            href="../a_form.php">the sample form used in class</a>. 
+            (<em>Note:</em> if you want to try the
+            &ldquo;localhost:81&rdquo; feature of that web page, you will
+            need to download and run <a
+            href="../Echo_HTTP_Requests.jar">Echo_HTTP_Requests.jar</a>:
+            right-click on the link to download the file, save it to your
+            desktop, and double-click it to run it.)</p>
+
+            <p>Design a form for any purpose you like.  If you don&rsquo;t
+            feel like being creative, make it a form for people who want to
+            open an account at a new social networking club.  The form is to
+            use all the types of input controls available except for image
+            maps.  That is, there must be at least one radio button group,
+            more than one checkbox, at least one text line, text area,
+            single selection list, multiple selection list, and password
+            box.</p>
+
+            <p>Put the text lines, text area(s), and password(s) into the
+            second column of a two-column table.  Put <span
+            class="tagName">label</span>s for each of these items in the
+            first column of the table.  Put a radio group into a row of the
+            table that spans both columns.  Aside from these requirements,
+            you may structure your form in any way that makes sense.  That
+            is, you may use the table for other label/input items, or you
+            can put the other items in separate paragraphs, divs, or
+            whatever makes the most sense.</p>
+            
+            <p>Be sure to include a Submit button for your form.</p>
+            
+            <p>The <span class="attributeName">action</span> for your form
+            may be either <span
+            class="attributeValue">http://babbage.cs.qc.edu/courses/cs081/Form_Script.php</span>
+            or <span
+            class="attributeValue">http://babbage.cs.qc.edu/courses/cs081/Form_Script.sh.</span> 
+            Use the <span class="attributeValue">post</span> <span
+            class="attributeName">method</span>.  Test your script to be
+            sure everything works before proceeding.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Format your form.</h5>
+            <p class="runin">Use CSS to format the positions, margins,
+            borders and padding, colors, fonts, and images for your form
+            page.</p>
+            
+          </li>
+
+          <li>
+          
+            <h5>Use JavaScript to Validate the Form.</h5>
+            <p class="runin">Begin by working your way through my <a
+            href="../Javascript_Tutorial">JavaScript Tutorial</a>.</p>
+            <p>This part of the assignment has one required component, and
+            some optional components you may try for extra credit.</p>
+            
+            <p>The <strong>required</strong> component is to use JavaScript
+            to validate that the user has provided information for two or
+            more required entries in your form.  You may use the <a
+            href="2007-05-10">sample code from May 10</a> as a model, but
+            you will have to adapt it to the particular nature of your
+            form.</p>
+            
+            <p>The first <strong>optional</strong> component can only be
+            done if your form requires the user to enter an email address. 
+            Use a regular expression to test whether the email address is
+            valid or not.  Here is one you can use:</p>
+            <div class="codeBlock">
+  var emailRegex =/^[a-z0-9\_\-\.]+@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+)*\.[a-z]{2,4}$/i;
+            </div>
+            
+            <p class="standoutBox">Note that the function for testing
+            whether a string matches a regular expression is named <span
+            class="functionName">test()</span>, not <span
+            class="functionName">match()</span>.  (I misspoke in class on
+            May 15.)  Also, on May 17 I failed to tell you to be sure to
+            start your regular expression with ^ and to end it with $. 
+            Those two symbols mark the beginning and end of the string being
+            tested, and without them you could get a spurious match if there
+            is a valid email address the middle of some string that has
+            other invalid characters at the beginning and/or end.</p>
+
+            <p>Let&rsquo;s assume you have an <span
+            class="tagName">input</span> tag in your web page that looks like
+            this:</p>
+            <div class="codeBlock">
+  &lt;input type="text" id="emailAddress" /&gt;
+            </div>
+            
+            <p>In your JavaScript, you can get a reference to this element
+            in the DOM tree like this:</p>
+            <div class="codeBlock">
+  var emailTextElement = document.getElementById('emailAddress');
+            </div>
+
+            <p>You can find out what the value of the text box is (what the
+            user typed, or an empty string if the user typed nothing) like
+            this:</p>
+            
+            <div class="codeBlock">
+  var emailTextValue = emailTextElement.value;
+            </div>
+            <p>Finally, you can test whether the current value of the text
+            box is a valid email address or not like this:</p>
+            <div class="codeBlock">
+  if ( emailRegex.test(emailTextValue) )
+  {
+    //  address is valid
+  }
+  else
+  {
+    //  address is not valid
+  }
+            </div>
+            
+            <p>The second <strong>optional</strong> component is to use
+            something other than an <span class="functionName">alert</span>
+            box to tell the user that the form was not valid.  To do this,
+            you would change the visibility and/or color of an error message
+            that appears directly on the web page.</p>
+
+          </li>
+
+
+        </ol>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

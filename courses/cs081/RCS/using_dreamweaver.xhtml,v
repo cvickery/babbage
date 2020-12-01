@@ -1,0 +1,808 @@
+head	1.1;
+access;
+symbols;
+locks
+	vickery:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2008.02.24.17.37.41;	author vickery;	state Exp;
+branches;
+next	;
+
+
+desc
+@How to set up Dreamweaver in the TREE lab.
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+  <title>Dreamweaver Setup</title>
+
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="stylesheet"
+        type="text/css"
+        media="all"
+        href="../../css/style-all.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="screen"
+        href="../../css/style-screen.css"
+  />
+  <link rel="stylesheet"
+        type="text/css"
+        media="print"
+        href="../../css/style-print.css"
+  />
+
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>Dreamweaver Setup</h1>
+  </div>
+
+  <div id="content">
+    <h2>Introduction</h2>
+
+    <div class="whitebox">
+
+      <p><span class="programName">Dreamweaver</span> is one of the most
+      widely used tools for writing web pages.  It was developed by <a
+      href="http://macromedia.com">Macromedia</a>, the same company that
+      developed the <a
+      href="http://www.macromedia.com/software/flash/flashpro/">Flash</a>
+      system for animating web pages.  Macromedia was purchased by <a
+      href="http://www.adobe.com">Adobe</a>, the developers of <a
+      href="http://www.adobe.com/products/acrobat/main.html">Acrobat</a> and
+      <a href="http://www.adobe.com/creativesuite/main.html">Photoshop</a>
+      in December, 2005.</p>
+
+      <p>There are plenty of good alternatives to Dreamweaver for serious
+      web design work -- and lots of bad alternatives too!  I personally
+      prefer to work with a good programmer&rsquo;s editor, such as <a
+      href="./using_vim.xhtml"><span class="programName">vim</span></a>, to
+      develop my web pages.  But a programmer&rsquo;s editor only
+      substitutes for one part of an Integrated Development Environment
+      (IDE) such as Dreamweaver, so I have to use separate programs to do a
+      lot of the housekeeping operations that are built into
+      Dreamweaver.</p>
+
+      <p>Dreamweaver (and all the other components of Macromedia&rsquo;s
+      &ldquo;Studio&rdquo; suite of programs, including Flash) is available
+      on all the computers in our Lab.  This web page will guide you through
+      the process of setting up Dreamweaver so that it is tailored to doing
+      projects for this course.</p>
+
+      <p>If your really want to master Dreamweaver, there are lots of
+      Dreamweaver books and online tutorials available, and I don&rsquo;t
+      claim to have surveyed them well enough to make any serious
+      recommendations.  But I have looked at Rachel Andrew&rsquo;s <em>Build
+      Your Own Standards Compliant Website Using Dreamweaver 8</em>
+      published by Sitepoint and can recommend it.  You can get a copy for
+      about $27 from most bookstores, or directly from <a
+      href="http://www.sitepoint.com/books/dreamweaver1/">Sitepoint</a>,
+      where you can download sample chapters if you want to look at (most)
+      of the book before deciding whether to buy it.</p>
+
+    </div>
+
+    <h2>Setting Up</h2>
+
+    <div class="whitebox">
+
+      <h5>Open your template.xhtml file in Dreamweaver.</h5> <p
+      class="runin">Start Dreamweaver by clicking the green Dreamweaver icon
+      on the desktop.  It&rsquo;s a big program, so be patient while you
+      wait for it to load.  The big green &ldquo;splash screen&rdquo; that
+      comes up in the center has a checkbox at the bottom that says
+      &ldquo;Don&rsquo;t show again.&rdquo;  I suggest that you check that
+      box simply because we will generally work from the menus that offer
+      the same choices.  You should also see a set of panels down the right
+      side of thw window called <span class="functionName">CSS</span>, <span
+      class="functionName">Application</span>, <span
+      class="functionName">Tag Inspector</span>, and <span
+      class="functionName">Files</span>.</p>
+
+      <p>The Files panel should be open.  If not, click on it to open it up
+      to show the full panel with three tabs: <span
+      class="functionName">Files</span>, <span
+      class="functionName">Assets</span>, and <span
+      class="functionName">Snippets.</span> Use the Files tab to navigate to
+      your &ldquo;My Web Pages&rdquo; folder, which will appear under
+      &ldquo;<span class="directoryName">C:\Documents and Settings\*\My
+      Documents</span>&rdquo;.  You will have to substitute your account
+      name (with &ldquo;<span class="fileName">.TREE</span>&rdquo; after it)
+      for the asterisk.  Double-click on the <span
+      class="fileName">template.xhtml</span> file there to open it for
+      editing.  Part of the setup process will be to convert this file into
+      a Dreamweaver template, and you will be making some changes to it
+      before doing that.</p>
+
+      <h5>Change some Dreamweaver preferences.</h5> <p class="inline">From
+      the Edit menu at the top, select Preferences, the bottom item.  This
+      opens up a big panel with lots of items, a few of which need to be
+      changed.  Select the fourth item, Code Formatting, and make sure the
+      following settings are in place: <span class="optionValue">Indent
+      (checked) with 2 <em>spaces.</em></span>  <span class="optionName">Tab
+      size</span>: a number no larger than 4 (I prefer <span
+      class="optionValue">2</span>).  <span class="optionName">Default tag
+      case</span>: <span class="optionValue">&lt;lowercase&gt;</span>.
+      <span class="optionName">Default attribute case</span>: <span
+      class="optionValue">lowercase="value"</span>. <span
+      class="optionName">Centering</span>: <span class="optionValue">Use DIV
+      tag</span>.</p>
+
+      <p>Next, select &ldquo;<span class="optionName">File Types /
+      Editors</span>&rdquo; and change the <span class="optionName">External
+      code editor</span> to <span class="programName">gvim.exe</span>.  You
+      will have to use the Browse button to locate the current version of
+      this program.  At the time this web page was written, the current
+      version was in <span class="pathName">C:\Program
+      Files\vim\vim63</span>.</p>
+
+      <p>Now go down to the <span class="optionName">New Document</span>
+      preferences. Change the <span class="optionName">Default
+      extension</span> to <span class="optionValue">.xhtml</span>.  Make the
+      <span class="optionName">Default Document Type (DTD)</span> <span
+      class="optionValue">XHTML</span> 1.1.  <span class="optionName">Make
+      the Default encoding</span> <span class="optionValue">Unicode
+      (UTF-8)</span>.</p>
+
+      <p>In the <span class="optionName">Preview in Browser</span> panel,
+      make sure <span class="programName">Firefox</span> is set as the
+      primary browser and <span class="programName">Internet Explorer</span>
+      as the secondary browser.  If there is a third browser already listed,
+      it may be set up incorrectly: delete it (with the big <span
+      class="functionName">minus</span> button) and add <span
+      class="programName">Opera</span>, which is in <span
+      class="pathName">C:\ProgramFiles\Opera\opera.exe</span>.</p>
+
+      <p>In the <span class="optionName">Validate</span> panel, turn off the
+      checkbox for HTML 4.0 and turn on the one for <span
+      class="optionValue">XHTML 1.0 strict</span>.</p>
+
+      <p>Exit the preferences panel and be patient while everything is
+      saved.</p>
+
+      <h5>Set up your development directory.</h5> <p class="runin">To make
+      sure you are setting up your Dreamweaver site correctly, make the
+      following changes to your &ldquo;<span class="directoryName">My Web
+      Pages</span>&rdquo; directory: (1) Add three subdirectories to
+      &ldquo;<span class="directoryName">My Web Pages</span>,&rdquo; and
+      name them <span class="directoryName">css</span>, <span
+      class="directoryName">scripts</span>, and <span
+      class="directoryName">images</span>.  (You can do this by
+      right-clicking on <span class="directoryName">My Web Pages</span> in
+      Dreamweaver.)  <em>Be sure to use lowercase names for these
+      directories (see note below).</em>  Then edit your template file and
+      create a stylesheet and a Javascript program as follows:</p>
+
+      <ul>
+
+          <li>
+
+            <h5>Edit your <span class="fileName">template.xhtml</span>
+            file.</h5> <p class="runin">First, copy <span
+            class="fileName">template.xhtml</span> to <span
+            class="fileName">template.xhtml.save</span>.  You are about to
+            modify it, and it&rsquo;s a good idea to keep a copy of the
+            original so you can get it back in case you make a mistake.</p>
+
+            <p>To edit a file, you must be in either &ldquo;code view&rdquo;
+            or &ldquo;split view.&rdquo;  There are buttons underneath the
+            tab with the filename on it for switching views.  The keyboard
+            shortcut is <span class="optionValue">Ctrl-`</span>.
+            (That&rsquo;s a backquote, located in the upper-left corner of
+            the keyboard.)</p>
+
+            <p>Change your <span class="fileName">template.xhtml</span> file
+            as follows:  Add a <span class="tagName">link</span> tag to the
+            <span class="nodeName">head</span> node of the document with the
+            following attributes and values:</p>
+
+            <table>
+              <tr>
+                <th scope="col">Attribute</th>
+                <th scope="col">Value</th>
+              </tr>
+              <tr>
+                <td>rel</td>
+                <td>stylesheet</td>
+              </tr>
+              <tr>
+                <td>type</td>
+                <td>text/css</td>
+              </tr>
+              <tr>
+                <td>media</td>
+                <td>screen</td>
+              </tr>
+              <tr>
+                <td>href</td>
+                <td>css/screen.css</td>
+              </tr>
+            </table>
+
+          <p>Now add a <span class="tagName">script</span> tag to the <span
+          class="nodeName">head</span> node with the following attributes
+          and values:</p>
+
+            <table>
+              <tr>
+                <th scope="col">Attribute</th>
+                <th scope="col">Value</th>
+              </tr>
+              <tr>
+                <td>type</td>
+                <td>text/javascript</td>
+              </tr>
+              <tr>
+                <td>src</td>
+                <td>scripts/template.js</td>
+              </tr>
+            </table>
+
+            <p>Note that the <span class="nodeName">link</span> node may be
+            a single self-closing tag, but the <span
+            class="nodeName">script</span> node must have a separate closing
+            tag to be compatible with Internet Explorer.  The <span
+            class="nodeName">script</span> node itself is empty.</p>
+
+            <div class="standoutBox"><h5>Check your typing to make sure that
+            what you typed is what you got.</h5>  <p class="runin">For
+            example, Dreamweaver automatically types closing tags for you as
+            soon as you type &ldquo;&lt;/&rdquo; so be sure you didn&rsquo;t
+            repeat some of the characters it typed for you.  Check that the
+            quotes surrounding the attribute values are in the right places
+            and that there is at least one whitespace character separating
+            the attributes from each other.</p></div>
+
+
+            <div class="standoutBox"><h5>Be careful about
+            capitalization.</h5> <p class="runin">Windows does not
+            distinguish between upper and lower case letters in file and
+            directory names, but other operating systems, such as Unix,
+            Linux, Solaris, and some parts of OS-X (Macintosh) do
+            distinguish between them.  To be sure your web site will not
+            &ldquo;break&rdquo; when copied to one of these other systems
+            (such as the one where I will be testing your projects!) be sure
+            to be consistent about the case of directory and filenames
+            wherever they appear.  for example, except for the &ldquo;<span
+            class="directoryName">My Web Pages</span>&rdquo; directory name,
+            all files and directories you will be working with while setting
+            up your site will have all lowercase names.  Be sure the values
+            of the <span class="attributeValue">href</span> and <span
+            class="attributeValue">src</span> attributes in your <span
+            class="tagName">link</span> and <span
+            class="tagName">script</span> tags have all lowercase
+            letters.</p></div>
+
+            <p>Add two <span class="nodeName">div</span> nodes to your
+            template, one surrounding the existing <span
+            class="nodeName">h1</span> node, and the other one following
+            that.  Put an <span class="nodeName">h2</span> node inside the
+            second <span class="nodeName">div</span>, with a content of
+            &ldquo;Template Content&rdquo;.  Add an <span
+            class="attributeName">id</span> attribute to the first <span
+            class="tagName">div</span> tag with a value of
+            &ldquo;heading&rdquo;, and put an <span
+            class="attributeName">id</span> in the second <span
+            class="tagName">div</span> with a value of
+            &ldquo;content&rdquo;.</p>
+
+            <p>Save your <span class="fileName">template.xhtml</span>
+            file.</p>
+
+          </li>
+
+          <li>
+
+            <p>From the File menu, select New (or just type <span
+            class="codeSnippet">Ctrl-N</span>), and a dialog box with two
+            tabs will open up.  From the General tab&rsquo;s General
+            category, pick a <span class="optionName">Basic page</span> of
+            type <span class="optionValue">CSS</span>.  When that page opens
+            up, add the following CSS rule under the comment line that will
+            already be there:</p>
+
+            <p class="codeBlock">
+ html, body {
+  background-color: #000;
+  color:            #fff;
+  }
+            </p>
+
+            <p>Pay attention to what is happening as you type this rule.
+            Once you type the each colon, Dreamweaver will show you a color
+            picker so you can pick the colors you want.  The two values I
+            showed above are black for the background and white for the
+            foreground, but you can pick any two distinct colors you like so
+            long as one is dark and the other is light.  And don&rsquo;t use
+            white for the background; the idea is to be able to see easily
+            that you have changed the default style for the page, and white
+            is the default background color.  (Yes, it would make more sense
+            if the foreground color property name was
+            &ldquo;foreground-color&rdquo; rather than &ldquo;color&rdquo;
+            -- but it isn&rsquo;t.)</p>
+
+            <p>Save your new stylesheet in your
+            <span class="directoryName">css</span> directory with the name
+            <span class="fileName">screen.css</span>.</p>
+
+          </li>
+
+          <li>
+
+            <p>Create another Basic page as you did for the stylesheet, but
+            make this one a <span class="optionValue">Javascript</span>
+            file.  Add this one line below the comment at the top of the
+            file:</p>
+
+            <p class="codeBlock">
+  alert("hello");
+            </p>
+
+            <p>You may be creative about what goes inside the quotes, but be
+            sure the rest of the spelling and all of the punctuation are
+            exactly as shown.  Save the file as <span
+            class="fileName">template.js</span> in your <span
+            class="directoryName">scripts</span> directory.</p>
+
+          </li>
+
+      </ul>
+
+      <p>At this point, looking at <span
+      class="fileName">template.xhtml</span> in &ldquo;split&rdquo; or
+      &ldquo;design&rdquo; view (the third alternative to code and split
+      views) should show the colors you picked in your stylesheet and the
+      bottom line should show a little &ldquo;php&rdquo; icon instead of the
+      file&rsquo;s modification date, but the Javascript program
+      doesn&rsquo;t do anything yet.  Be sure that Dreamweaver now renders
+      your template file in all its colorful glory before proceeding!</p>
+
+      <h5>Set up a Dreamweaver site.</h5> <p class="runin">For this course,
+      you will do your initial coding and testing in your &ldquo;<span
+      class="directoryName">My Web Pages</span>&rdquo; directory, and then
+      do a final test in the web server&rsquo;s document root, <span
+      class="directoryName">C:\htdocs</span>.  At this point, you will set
+      up a Dreamweaver &ldquo;site&rdquo; so that Dreamweaver can make
+      development and final testing easier.  Setting up the site is also a
+      prerequisite for converting your <span
+      class="fileName">template.xhtml</span> into a Dreamweaver
+      template.</p>
+
+      <p>The process has several steps:</p>
+
+      <ol>
+
+        <li>
+
+          <h5>Set up Local Info</h5> <p class="runin">Use the <span
+          class="menuItem">Site->New Site</span> menu item to bring up the
+          Site Definition panel. There are Basic and Advanced tabs.  The
+          Basic tab does not give enough options for setting everything
+          up,so switch to the Advanced tab.</p>
+
+          <p>In the <span class="menuItem">Local Info</span> category give a
+          name to your web site.  You can use any name you like.  If you
+          were using Dreamweaver to manage several different web sites, you
+          would give each one a descriptive name so you could keep track of
+          them.  For this course a good name might be &ldquo;CS-081.&rdquo;
+          Use <span class="nodeValue">http://localhost/</span> as the URL
+          for the site.  (This way you will be able to access your site from
+          any computer in the lab.)  For the Local root folder, give the
+          pathname to your <span class="directoryName">My Web Pages</span>
+          directory.  Click the &ldquo;Links relative to Document&rdquo;
+          radio button, which will make it easy to move your web site to
+          different places relative to the web server&rsquo;s document
+          root.</p>
+
+          <p>Be sure to check the &ldquo;case-sensitive link checking&rdquo;
+          option.  This feature is critical for making sure your web pages
+          will work when I test them on a Unix computer.  To take advantabe
+          of this feature, you will have to tell Dreamweaver to perform a
+          link check before submitting each assignment.</p>
+
+          <p>The Enable cache option can be checked, although the
+          performance benefit of using a cache probably won&rsquo;t be
+          evident for the projects in this course.</p>
+
+          <p>If you click OK to close the Site Definition panel, you should
+          now see that the Files palette has a drop-down item for your site.
+          Whatever name you gave to it should appear, and when you select
+          it, you should see the files and folders in your <span
+          class="directoryName">My Web Pages</span> with green icons instead
+          of yellow ones.  A second drop-down list gives you a choice of
+          Local, Testing, or Remote view of your site, but only the Local
+          view is ready so far.</p>
+
+        </li>
+        
+        <li>
+
+          <h5>Set up the Testing Server</h5> <p class="runin">Bring up the
+          Site Definition panel again using the <span class="menuItem">Site->Manage
+          Site</span> menu item and selecting the Edit option.  Select the
+          <span class="menuItem">Testing Server</span> category.</p>
+
+          <p>Leave the <span class="optionName">Server model</span> set to
+          <span class="optionValue">None</span>, and Change the <span
+          class="optionName">Access</span> choice to <span
+          class="optionValue">Local/Network</span>.  Doing this will open up
+          a checkbox to &ldquo;Refresh testing file list
+          automatically,&rdquo; which should be checked.  For the <span
+          class="optionName">URL prefix</span> enter <span
+          class="pathName">http://localhost/~youraccount</span>.  You are
+          telling Dreamweaver to use that URL to get a browser to bring up
+          the web pages under your <span class="directoryName">My Web
+          Pages</span> directory.  This works because we set up the Apache
+          servers on all the lab computers to use the tilde (~) convention
+          for getting to users&rsquo; personal web sites.  Be sure to
+          substitute your own account name in the URL, and remember that the
+          tilde convention works only on the computer that you are actively
+          logged into.</p>
+
+          <p>At this point you can close the Site Definition panel, and get
+          Dreamweaver to display your web page in the browsers you set up
+          earlier.  First, verify that the Files palette now lets you look
+          at your web site using the Testing server view; the folder colors
+          will be red instead of green.</p>
+          
+          <p>If you set up your primary and secondary browsers correctly,
+          you should be able to select your <span
+          class="fileName">template.xhtml</span> (click in the code, on the
+          design view, or select the file in either the Local or Testing
+          view of the Files palette) and press <span
+          class="tagName">F12</span> to bring up the page in <span
+          class="programName">Firefox</span> and to click <span
+          class="tagName">Shift-F12</span> to bring it up in Internet
+          Explorer.  You can also right-click on the file name in the Local
+          or Testing view, and select Opera from the <span
+          class="menuItem">View in Browser</span>.  In all cases, your
+          JavaScript code should run and display the message you entered
+          inside the quotation marks.  The style you set up should display
+          correctly, and the PHP code that displays the bottom of the page
+          should be replaced with the actual date.</p>
+        </li>
+
+        <li>
+        
+          <h5>Set up Remote Info</h5> <p class="runin">Now set up
+          Dreamweaver so you can make sure your pages work correctly outside
+          of your <span class="directoryName">My Web Pages</span> folder. 
+          Bring up the Site Definition panel for your site again.  This time
+          select the <span class="optionName">Remote Info</span> category.
+          <span class="optionName">Access</span> should again be <span
+          class="optionValue">Local/Network</span>, and <span
+          class="optionName">Remote folder</span> should be <span
+          class="directoryName">C:\htdocs</span>.  Check the &ldquo;<span
+          class="optionName">Refresh &hellip;</span>,&rdquo; &ldquo;<span
+          class="optionName">Maintain &hellip;</span>, &rdquo; and <span
+          class="optionName">Automatically &hellip;</span> options, and
+          leave the <span class="optinName">Enable &hellip;</span> option
+          unchecked.</p>
+          
+          <p>With this setup, each time you save a file under <span
+          class="directoryName">My Web Pages</span>, it will automatically
+          be copied to <span class="directoryName">C:\htdocs\</span>.  If
+          you would rather do the copying manually for some reason, you can
+          uncheck the third item on this panel.  There are big arrows in the
+          Files panel that you can click to copy all or part of your site
+          &rsquo; to <span class="directoryName">C:\htdocs\</span> from
+          <span class="directoryName">My Web Pages</span> or &rsquo; to go
+          the other way.  Manual transfers are useful when you have a site
+          where the remote computer is ... remote ... rather than on the
+          same computer as you are working on.</p>
+          
+        </li>
+        
+        <li>
+        
+          <h5>Set a Templates option if it is available.</h5> <p
+          class="runin">While the Site Definition panel is still open, look
+          to see if there is a <span class="optionName">Template</span> item
+          at the bottom of the list of categories on the left side of the
+          panel. If it is there, select it and make sure the <span
+          class="optionName">Template Updating</span> checkbox is checked. 
+          This category was added in an update to Dreamweaver and might not
+          appear in the version you are working with.</p>
+
+          <p>Click OK on the setup panel and then Done on the Manage Sites
+          panel.</p>
+
+        </li>
+
+        <li>
+        
+          <h5>Test your remote server setup and validate your code.</h5> <p
+          class="runin">You may need to do the initial copying of your site
+          to <span class="directoryName">C:\htdocs</span> explicitly even if
+          you have selected the automatic copying option.  Click on the site
+          in the Files palette, and click on the big up arrow icon.  You
+          will be asked whether you want to save the entire site: click
+          yes.  This will create the subdirectories and copy all your
+          files.</p>
+          
+          <p class="standoutBox">Remember, <span
+          class="directoryName">C:\htdocs</span> is shared by everyone who
+          uses one of the computers in the lab.  When you first log into a
+          machine, it would be a good idea to remove anything in that
+          directory that someone else might have left there and to copy your
+          entire site over to get it initialized.</p>
+          
+          <p>Switch to <span class="programName">Firefox</span> and type the
+          following URL into the location (<span
+          class="tagName">Ctrl-L</span>) bar: <span
+          class="optionValue">http://computer.cs.qc.edu/template.xhtml</span>
+          -- substitute the actual name of the computer your are working on
+          for the word &ldquo;computer&rdquo; in that URL.  The <span
+          class="functionName">alert</span> box should come up, your page
+          should then load with your styled background color, and the date
+          should appear in place of the PHP code at the bottom.  If not, fix
+          whatever is wrong!</p>
+
+          <p>The template file I provided has two links at the bottom for
+          validating your XHTML and CSS code using the validator programs
+          provided by the World Wide Web Consortium (w3.org).  There are
+          also two validation icons in the status bar at the bottom of your
+          Firefox window.  Both should be green circles with white
+          checkmarks in them.  If not, click on the <span
+          class="programName">Tidy</span> icon, which is normally a yellow
+          triangle when it is not a green circle.  The problems with your
+          code will be indicated there; fix your code before proceeding.</p>
+          
+          <p>Click the XHTML and CSS links at the bottom of your web page,
+          and the W3C validators will make more refined checks of your code
+          and style sheets.  Both should indicate no errors or warnings.</p>
+          
+          <p class="standoutBox">The W3C validators will find your web pages
+          only if you have used an actual computer name to open the web
+          page.  If the URL is <span
+          class="pathName">http://localhost/&hellip;</span> the validators
+          will not be able to access the pages to validate them.</p>
+
+        </li>
+        
+        <li>
+        
+          <h5>Check for broken links.</h5> <p class="runin">Your web site
+          could pass all tests so far and still not work when I test it on
+          babbage, which uses case sensitive file and directory names as
+          mentioned above.  When you set up your site, one of the options
+          you should have turned on was to do case-sensitive link checks. 
+          To perform this test, go to <span
+          class="menuItem">File->Check&nbsp;Page->Check&nbsp;Links</span>. 
+          (Or right click on any file or directory in the Files palette and
+          select <span class="optionValue">Entire Site</span> from the <span
+          class="menuItem">Check Links</span> menu item.</p>
+
+          <p>If it is not already visible, a panel will show up below the
+          editing window.  There should be an empty white section and below
+          that a line that ends with &ldquo;2 OK, 0 Broken, 2
+          External.&rdquo;  If it doesn&rsquo;t say &ldquo;0 Broken&rdquo;
+          there will be a line in the white section for each broken link. 
+          The the right end of those lines will be a file browser button
+          that you can use to browse to the correct file.  But because this
+          is Windows, Dreamweaver will report capitalization errors here,
+          but you won&rsquo;t be able to fix them by browsing to the
+          &ldquo;correct&rdquo; file.  So you have to go back to the code
+          for your <span class="fileName">template.xhtml</span> file and fix
+          the capitalization there.</p>
+          
+          <p>That panel with the link check results takes up valuable space,
+          which you can recover by clicking the little down arrow above it
+          to hide it.</p>
+
+        </li>
+        
+        <li>
+        
+          <h5>Create a Dreamweaver Template for new documents.</h5> <p
+          class="runin">Now that you have verified that your site structure
+          has been set up correctly and that your <span
+          class="fileName">template.xhtml</span> file is properly linked to
+          a stylesheet and a client-side script correctly, you can proceed
+          with confidence to creating a Template that Dreamweaver can use to
+          start new web pages for you.  We haven&rsquo;t done anything with
+          images yet, but we can fix that later if necessary.</p>
+          
+          <p>Be sure  you are editing your <span
+          class="fileName">template.xhtml</span> file.  Select the
+          &ldquo;<span class="menuItem">File->Save As Template
+          &hellip;</span>&rdquo; menu item, which will bring up a dialog
+          box.  There should be a place for you to put in a Description,
+          where you should type something meaningful, like &ldquo;CS-081
+          Standard Template.&rdquo;  If there is no name in the &ldquo;Save
+          as&rdquo; field in the bottom part of the dialog box, put in
+          &ldquo;template&rdquo; (no quotes).  Click Save, and when it asks
+          you whether to update links, click OK.</p>
+
+          <p>After some rumination on Dreamweaver&rsquo;s part, you should
+          see a new directory named <span
+          class="directoryName">Templates</span> in the Local and Testing
+          views of your site, and if you
+          open it up, you should see a file named <span
+          class="fileName">template.dwt</span>.  If it isn&rsquo;t already
+          open for editing, double-click on <span
+          class="fileName">template.dwt</span> and make the following
+          changes:  Find the text that says, &ldquo;&lt;!--
+          TemplateBeginEditable name="head" --&gt;&rdquo; and move it to a
+          separate line above your <span class="tagName">link</span> tag. 
+          Fix up indentation, and your <span class="nodeName">head</span>
+          node should look like this:</p>
+
+          <div class="codeBlock">
+  &lt;head&gt;
+    &lt;!-- TemplateBeginEditable name="doctitle" --&gt;
+    &lt;title&gt;CS-081 Course Template&lt;/title&gt;
+    &lt;!-- TemplateEndEditable --&gt;
+    &lt;!-- TemplateBeginEditable name="head" --&gt;
+    &lt;link rel="stylesheet" type="text/css" media="screen" href="../css/screen.css" /&gt;
+    &lt;script type="text/javascript" src="../scripts/template.js"&gt;&lt;/script&gt;
+    &lt;!-- TemplateEndEditable --&gt;
+  &lt;/head&gt;
+          </div>
+
+          <p>You also need to create an editable region for the body of your
+          new documents by inserting a pair of comment lines to surround
+          that node in your document.  Select everything between the opening
+          and closing <span class="tagName">body</span> tags (not including
+          the tags themselves), and use the Insert->Template
+          Objects->Editable Region menu item to do this.  Use
+          &ldquo;body&rdquo; as the name of the region. Your code formatting
+          will probably be messed up horribly.  After adding the comment
+          lines and fixing indentation, your <span
+          class="nodeName">body</span> node should look like this:</p>
+
+          <div class="codeBlock">
+  &lt;body&gt;
+    &lt;!-- TemplateBeginEditable name="body" --&gt;
+    &lt;div id="header"&gt;
+      &lt;h1&gt;CS-081 Course Template&lt;/h1&gt;
+    &lt;/div&gt;
+    &lt;div id="content"&gt;
+      &lt;h2&gt;Template Content&lt;/h2&gt;
+    &lt;/div&gt;
+    &lt;div id="footer"&gt;
+      &lt;hr /&gt;
+      &lt;p&gt;
+        &lt;a href="http://validator.w3.org/check?uri=referer"&gt;
+        XHTML&lt;/a&gt;&nbsp;-&nbsp;
+        &lt;a href="http://jigsaw.w3.org/css-validator/check/referer"&gt;
+        CSS&lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;&lt;em&gt;Last updated
+        &lt;?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?&gt;&lt;/em&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+    &lt;!-- TemplateEndEditable --&gt;
+  &lt;/body&gt;
+          </div>
+
+          <p>Save your <span class="fileName">template.dwt</span> file (type
+          <span class="optionValue">Ctrl-S</span>).  There should be no
+          warning messages, but you might get a message about the fact that
+          your remote site is being updated.</p>
+
+        </li>
+
+        <li>
+        
+          <h5>Use your new template to create your site index file.</h5> <p
+          class="runin">Now select the <span
+          class="menuItem">File->New</span> menu item, and select the <span
+          class="optionName">Templates</span> tab from the dialog box that
+          comes up.  Your new template should be the only one listed.  The
+          DTD should already be set to <span class="optionValue">XHTML
+          1.1</span>, and the Description should match the one you typed
+          when you originally created the template.</p>
+
+          <p class="standoutBox">Uncheck the &ldquo;Update page
+          &hellip;&rdquo; option.  This will take the dreamweaver template
+          comments out of your new web page, making the code much easier to
+          work with.</p>
+
+          <p>Click <span class="optionName">Create</span> and you should get
+          a new web page with the name <span
+          class="fileName">Untitled.xhtml</span> opened in
+          Dreamweaver&rsquo;s editing pane.  Change the <span
+          class="nodeName">tile</span> and <span class="nodeName">h1</span>
+          nodes to the name for your web site.  Use something descriptive,
+          personalized, and clever here, such as &ldquo;My CS-081 Web
+          Site&rdquo;</p>
+
+          <p>Save your new web page with the filename <span
+          class="fileName">index.xhtml</span> in your <span
+          class="directoryName">My Web Pages</span> directory.  With the
+          file selected (click on it in the editing pane), press <span
+          class="optionValue">F12</span>, and it should come up, with color,
+          in <span class="programName">Firefox</span> after displaying your
+          &ldquo;hello&rdquo; alert.</p>
+          
+          <p>Use the <span class="nodeValue">Put File(s)</span> button (the
+          up arrow oin the Files palette) if necessary to save you <span
+          class="fileName">index.xhtml</span> file in <span
+          class="directoryName">C:\htdocs\</span>.  Switch to <span
+          class="programName">Firefox</span>, and go to <span
+          class="nodeValue">http://computer.cs.qc.edu</span> with the
+          correct name substituted for &ldquo;computer&rdquo; and making
+          sure there is nothing after the computer name.  Apache should
+          deliver your <span class="fileName">index.xhtml</span> file to the
+          browser.</p>
+
+        </li>
+        
+        <li>
+        
+          <h5>Final clean up: convert tabs to spaces.</h5> <p
+          class="runin">With <span class="fileName">index.xhtml</span>open
+          for editing, select the &ldquo;<span class="menuItem">Edit->Edit
+          with Vim</span>&rdquo; menu item.  When the Vim window opens, just
+          type &ldquo;<span class="variableName">:retab</span>&rdquo;
+          (without quotes) followed by the Enter key.  Type <span
+          class="nodeValue">Ctrl-X</span> to save the file and exit Vim. 
+          Make sure the file still has the correct indentation, then select
+          the &ldquo;<span class="menuItem">View->Code View Options->Hidden
+          Characters</span>&rdquo; menu item.  Verify that all the
+          whitespace in the file consits of dots and that there are no tab
+          characters, which will show up as <span
+          class="optionValue">&raquo;</span> characters.</p>
+
+          <p>Repeat the final clean up procedure for your <span
+          class="fileName">template.dwt</span> file, and your Dreamweaver
+          set up is complete!  Be sure to log off so that your work gets
+          copied back to the server.</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+  </div>
+
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="../../">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>
+    </p>
+    <p><em>Last updated
+      <?php echo gmdate("Y-m-d", filemtime($_SERVER["SCRIPT_FILENAME"]));
+      ?>.</em>
+    </p>
+  </div>
+</body>
+</html>
+@

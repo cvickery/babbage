@@ -1,0 +1,164 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+<title>CS-081 Assignment 5</title>
+
+
+<link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css" />
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>CS-081 Assignment 5</h1>
+  </div>
+  <div id="content">
+    <h2>Introduction</h2>
+    <div class="whitebox">
+      <p>For this assignment you are to write a JavaScript event
+      handler that changes the style of a table so that alternate rows
+      have a different background color.  I am providing a web page
+      that creates tables with varying numbers of rows dynamically for
+      your event handler to operate on.</p>
+    </div>
+
+    <h2>Procedure</h2>
+    <div class="whitebox">
+      <ol>
+        <li>
+
+          <h5>Set up the Contours web page in your own web site and test it.</h5>
+          <p class="runin">I have a web page that calculates contour
+          intervals at <a href=
+          "http://babbage.cs.qc.edu/Contours">http://babbage.cs.qc.edu/Contours</a>.
+          Visit that page and make sure you understand what it does.
+          I am providing you with a zip file that contains <span
+          class="fileName">index.xhtml</span>, <span
+          class="fileName">css/style-screen.css</span> and <span
+          class="fileName">scripts/contours.js</span>: <a
+          href="Assignment_05.zip">Assignment_05.zip</a>.  <strong>Do
+          not unzip this file directly into your web site, as it would
+          overwrite your index page and stylesheet.</strong> Instead,
+          unzip the contents to some other directory, such as your
+          Desktop.  Then rename <span
+          class="fileName">index.xhtml</span> to <span
+          class="fileName">Assignment_05.xhtml</span> and move it to
+          your web site.  Use Dreamweaver&rsquo;s code editor to merge
+          (copy and paste) the parts of my <span
+          class="fileName">style-screen.css</span> that you want to
+          use into your own <span class="fileName">screen.css</span>,
+          and move <span class="fileName">contours.js</span> into your
+          <span class="directoryName">scripts</span> directory.
+          Finally, create a link to <span
+          class="fileName">Assignment_05.xhtml</span>  in the
+          unordered list you added to your index page in
+          Assignment&nbsp;4, and verify that the page works from
+          within your web site.</p>
+        </li>
+        <li>
+
+          <h5>Add a second script file containing a JavaScript event
+          handler.</h5> <p class="runin">At this point, <span
+          class="fileName">Assignment_05.xhtml</span> should be in
+          your web site&rsquo;s document root, and <span
+          class="fileName">contours.js</span> should be in your <span
+          class="directoryName">scripts </span> directory.  Add
+          another script file, named <span
+          class="fileName">assignment_05.js</span>, to the script
+          directory, and use a second <span
+          class="tagName">script</span> tag in the head of <span
+          class="fileName">Assignment_05.xhtml</span> to link to it.
+          This second <span class="tagName">script</span> tag must
+          come <em>after</em> the tag for <span
+          class="fileName">contours.js</span> because it creates a
+          variable in an object (<span
+          class="variableName">ContourTable </span>) that
+          doesn&rsquo;t exist until the browser has processed <span
+          class="fileName">contours.js</span>. Put the following code
+          in the new script file, and verify that it is executed
+          whenever a new table is displayed:</p>
+
+          <div class="codeBlock">
+  ContourTable.notifyOnChange = function(theTable)
+  {
+    alert(theTable);
+  }         </div>
+
+          <p>Make the following changes so that this code is your
+          &ldquo;own&rdquo; before proceding.  Note that these changes
+          will require you to edit parts of both <span
+          class="fileName">contours.js</span> and <span
+          class="fileName">assignment_05.js</span>.</p> <ul>
+          <li>Change the name of the event to <span
+          class="variableName">DynamicTable.changeStyle</span></li>
+          <li>Change the name of the <span class="techTerm">formal
+          parameter</span> in the event handler to <span
+          class="variableName">aTable</span>.</li> </ul> <p>Be sure
+          the page still works correctly before proceeding.</p>
+        </li>
+        <li>
+
+          <h5>Code the event handler so that alternate rows of the
+          table have different backgrounds.</h5> <p
+          class="runin">There are three ground rules for doing this
+          step.  The first is that you are not allowed to change the
+          XHTML file that I provided, nor are you to change the style
+          sheet to add this effect. Second, except for the changes you
+          had to make to <span class="fileName">contours.js</span> in
+          the previous step, you are to make no further changes to
+          that file either. Finally, make sure your event handler
+          changes only the data table; there is another table in the
+          page that must not be changed.</p>
+
+          <p>If you want to make your code easier, you may assume that
+          all rows are created with a white background, so you
+          don&rsquo;t have to change the ones that are already
+          white.</p>
+
+        </li>
+      </ol>
+  </div>
+
+
+  </div>
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>    </p>
+    <p><em>Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>    </p>
+</div>
+  </body>
+</html>

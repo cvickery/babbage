@@ -1,0 +1,253 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 3</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 3<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+        	This assignment builds on the previous one, so if you have not completed <a href="Assignment_02.xhtml">Assignmnent 2</a> yet,
+          do so now even though it is too late to receive full credit for it.
+        </p>
+        <p>
+        	For this assignment you are to set up your course web site with a home page for the site, and a blog within the site. For now,
+          the home page and the blog index page will have very little content: just titles and links to each other.
+        </p>
+        <p>
+        	You will also set up your web site as a Dreamweaver site if you have not already done so.
+        </p>
+      </div>
+      <h2>Background Material</h2>
+      <div>
+      	<ul>
+        	<li>
+          	<a href="../using_dreamweaver.xhtml">Using Dreamweaver</a>
+          	<p>
+            	Instructiions for setting up a Dreamweaver site.
+            </p>
+          </li>
+          <li>
+          	Chapter 2 of the textbook
+          	<p>
+            	Information on using text-related tags and style rules.
+            </p>
+          </li>
+          <li>
+          	Chapter 3 of the textbook
+            <p>
+            	Information on using links.
+            </p>
+          </li>
+          <li>
+          	Class notes from February 19
+            <p>
+            	Information on different types of links, including stylesheets and anchors. Get a copy of someone&rsquo;s notes if you missed class.
+            </p>
+          </li>
+        </ul>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+        	If you have not done so already, create the following three directories under <span class="directoryName">My Website</span>. You could
+          do this using Dreamweaver, but it is all right to to use Windows Explorer. You should already have <span class="fileName">
+          template.xhtml</span> and a copy of that file, named <span class="fileName">index.xhtml</span>, in your <span class="directoryName">My
+          Website</span> directory from your work on Assignment 2.
+        </p>
+        <ol>
+        	<li>
+          	<span class="directoryName">images</span>
+            <p>
+            	This directory will eventually hold various image files (pictures, backgrounds, etc.) that you will add to your web pages.
+              For now, it will be empty.
+            </p>
+          </li>
+        	<li>
+          	<span class="directoryName">css</span>
+            <p>
+            	This directory will hold the stylesheets for all the pages of your website. You will add one stylesheet to it for this assignment.
+            </p>
+          </li>
+        	<li>
+          	<span class="directoryName">Blog</span>
+            <p>
+            	Unlike the previous two, which are &ldquo;housekeeping&rdquo; directories, this one will be for content: the blog part of your web
+              site.
+              Like the other two directories, capitalization for this one matters: links to directories must use the same case for directory names
+              as the actual names of the
+              directories that you create. Unfortunately, your pages can work fine on the Windows computers in the lab if you mis-match cases in
+              links compared to directory/file names on disk, but it will matter when I check your site on the computer in my office. See the
+              &ldquo;Using Dreamweaver&rdquo; web page cited above for details.
+            </p>
+          </li>
+        </ol>
+        <ol>
+          <li>
+            <h5>Set up a Dreamweaver site for your course web site.</h5>
+            <p>
+            	The &ldquo;Using Dreamweaver&rdquo; page gives instructions for doing this step. You need to supply only the Local Information for
+              the site for this assignment.
+            </p>
+          </li>
+          <li>
+          	<h5>Create an index page for your blog.</h5>
+            <p>
+            	Duplicate <span class="fileName">template.xhtml</span> (select it in the Files panel on the right side of Dreamweaver, and type
+              Control-D.) Move the copy into the <span class="directoryName">Blog</span> directory, and then rename it to <span 
+              class="fileName">index.xhtml</span>, as demonstrated in class. Change the <span class="tagName">title</span> and <span 
+              class="tagName">h1</span> elements of this new index page to something like, &ldquo;My Blog&rdquo;.
+            </p>
+            <p class="standout-block">
+            	<strong>Optional (but much more fun):</strong> Pick a theme for your blog, and give it a name to match the theme. &ldquo;My
+              Race-Car Passion,&rdquo; &ldquo;All About Flowers,&rdquo; &ldquo;How To Get Rich,&rdquo; whatever you like. Later in the course,
+              as you customize the appearance
+              of your blog, you can try your hand at matching the &ldquo;look&rdquo; of your blog to its theme. If you like, you can also
+              change the name of the
+              directory from <span class="directoryName">Blog</span> to something that will be more meaningful in a URL, like RCP, Flower_Blog,
+              etc. Remember that the name must not contain spaces or punctuation marks, though.
+            </p>
+          </li>
+          <li>
+          	<h5>Set up navigaton links</h5>
+            <p>
+            	Both your main index page and your blog index page already have two <span class="tagName">a</span> tags inside a paragraph at
+              the end of the document body. These are links to validation sites that will examine your web page and produce reports telling
+              you whether your XHTML and CSS code files meet the formal specifications for those two languages. There are Firefox add-ons that
+              will tell you most of the same information, but these links will work no matter what browser you are using.
+            </p>
+            <p>
+            	For this step, add a third <span class="tagName">a</span> to the same paragraph that already contains the two validation links. In
+              the main page, make the link target be your blog, and in the blog index, make the link target be your home page. The content of 
+              the link on the main page could be, &ldquo;Check out my blog!&rdquo; or anything else you think would be appropriate. The content of
+              the link in the blog index page could be as simple as the word, &ldquo;Home&rdquo;.
+            </p>
+            <p class="standout-block">
+            	Try to avoid using the words &ldquo;click&rdquo; and/or &ldquo;here&rdquo; in the content part of links: users should be able to tell
+              what a link will do just by looking at it.
+            </p>
+            <p>
+            	View your web site in a browser. Be sure main page displays properly and that clicking on the new link takes you to the blog index
+              page. Make sure that one displays propery and that clicking on its new link takes you back to your site&rsquo;s home page. Fix any
+              mistakes before proceeding.
+            </p>
+          </li>
+          <li>
+          	<h5>Add a stylesheet to your site.</h5>
+            <p>
+            	In Dreamweaver, right-click on your site&rsquo;s <span class="directoryName">css</span> directory in the Files panel, and select
+              &ldquo;New File&rdquo; from the drop-down menu. (This is called a &ldquo;context&rdquo; menu because the menu changes depending
+              on what you right click on, <em>i.e.</em>, the context of the click.) Click twice on the new file&rsquo;s name (not so fast as to
+              double-click and open it up for editing yet), and change the name from <span class="fileName">untitled.xhtml</span> to
+              <span class="fileName">main.css</span>. Now double-click on the file name to open it in Dreamweaver&rsquo;s editing panel.
+            </p>
+            <p>
+            	Add the following CSS rule to your stylesheet:
+            </p>
+            <p class="code-block">
+ h1 {
+   background-color: blue;
+   color: white;
+   }
+            </p>
+            <p>
+            	Feel free to experiment with different colors. Save the file, and add <span class="tagName">link</span> elements to the heads of
+              both your index pages as demonstrated in class for linking stylesheets to web pages. Have both index pages link to the same
+              <span class="fileName">main.css</span> file. See page 34 of the textbook if you don&rsquo;t
+              know how to do this.
+            </p>
+            <p>
+            	Refresh the browser&rsquo;s view of your home page (type Control-R in Firefox, or click the reload button in the toolbar at the top
+              of the browser), and verify that the heading now looks different (white text on a blue background if you used exactly the rule
+              given above.) If it does not, you have to figure out what went wrong and fix it. Looking at the report generated by the CSS
+              validator (click the CSS link at the bottom of your web page) will often help a lot in this figuring-out process.
+            </p>
+            <p>
+            	Once the home page looks right, click the link to your blog, and make sure that the heading on that page has changed appearance too.
+            </p>
+          </li>
+        </ol>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+        <p>
+          Submit the assignment by midnight of the due date:
+        </p>
+        <ol>
+            <li>
+              To submit this assignment, simply send me an email message telling me that your web page is ready for me
+              to look at: I will copy it from <span class="computerName">Oak</span> to <span
+              class="computerName">Babbage</span>, and check it out there.
+              <p>
+                If your have trouble with the roaming profile feature of the lab, mention that in your message and I
+                will copy your <span class="directoryName">My Website</span> directory to <span
+                class="computerName">Babbage</span> from your home directory instead of your profile directory on <span
+                class="computerName">Oak</span>.
+              </p>
+            </li>
+            <li class="standout-block">Be sure to put your name in the body of your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-081 Assignment 3</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu. (Fix up the 'AT' part.)
+            </li>
+        </ol>
+        <p>
+          See <a href="../../cs081/index.xhtml">the course home page</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

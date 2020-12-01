@@ -1,0 +1,231 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 5</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>
+        CS-081 Assignment 5
+      </h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This assignment deals with using CSS to control the layout of web pages. In particular, the assignment is to position the list of navigation links
+          on your blog web page so they sit on top of the &ldquo;faux column&rdquo; you created using a background image in 
+          <a href="Assignment_04.xhtml">Assignment 4</a>.
+        </p>
+        <p>
+        	If you were not able to complete Assignment 4 successfully, set up your Blog index page as follows:
+        </p>
+        <ul>
+        	<li>
+            Download this <a href="images/2000x20_400_left_fill.png">background image file</a> to your site&rsquo;s 
+            <span class="directoryName">images</span> directory.
+          </li>
+          <li>
+          	Set up your blog entries as an Ordered List in your Blog&rsquo;s index page:
+            <div class="code_block">
+  &lt;body&gt;
+    &lt;h1&gt;My Blog&lt;/h1&gt;
+    &lt;ol id="blogEntries"&gt;
+      &lt;li&gt;
+        &lt;h2&gt;Title of First Entry&lt;/h2&gt;
+        &lt;p class="dateline"&gt;October 15, 2008&lt;/p&gt;
+        &lt;p&gt;<em>Lorem Ipsum</em> text goes here &hellip;&lt;/p&gt;
+        &lt;p&gt;More <em>Lorem Ipsum</em> text goes here &hellip;&lt;/p&gt;
+        &lt;p&gt;Still more <em>Lorem Ipsum</em> text goes here &hellip;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h2&gt;Title of Second Entry&lt;/h2&gt;
+        &lt;p class="dateline"&gt;October 31, 2008&lt;/p&gt;
+        &lt;p&gt;<em>Lorem Ipsum</em> text goes here &hellip;&lt;/p&gt;
+        &lt;p&gt;More <em>Lorem Ipsum</em> text goes here &hellip;&lt;/p&gt;
+        &lt;p&gt;Still more <em>Lorem Ipsum</em> text goes here &hellip;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;!-- links to home page and validators go here --&gt;
+  &lt;/body&gt;
+            </div>
+          </li>
+          <li>
+          	Set up your blog entries list to use the background image as a &ldquo;faux column&rdquo; occupying the left 20% of the box holding the list,
+            and move the list contents to the right of this column of color. To do this, put this rule in your Blog&rsquo;s style sheet:
+            <div class="code_block">
+  #blogEntries {
+    background: url(../images/2000x20_400_left_fill.png) repeat-y 20%;
+    padding: 0 1em 0 20%;
+    }
+            </div>
+          </li>
+          <li>
+          	Make sure your Blog page is valid and looks right. I have posted a <a href="Sample_Assignment_04.xhtml">sample version of Assignment 4</a> 
+            that you may try out for yourself and see what that assignment was supposed to look like.
+          </li>
+        </ul>
+      </div>
+      
+      <h2>The Assignment</h2>
+      <div>
+      	<ol>
+        	<li>
+          	<h5>Remove the list item numbers from the blog entries list.</h5>
+            <p class="run_in">
+            	Simply create a rule for the ordered list with the <span class="attributeName">id</span> of <span class="attributeValue">blogList</span>
+              (or whatever you called it). Give the <span class="propertyName">list-style-type</span> the value <span class="propertyValue">none</span>.
+            </p>
+          </li>
+        	<li>
+          	<h5>Put all the &ldquo;navigation links&rdquo; into an unordered list and remove the bullets.</h5>
+            <p class="run-in">
+            	At various points the links (anchor elements) at the bottom of the page might have been inside paragraphs and/or divs. If you have not
+              done so already, take the three links at the bottom of your Blog out of whatever elements (<span class="tagName">p</span>, 
+              <span class="tagName">div</span>, or anything else) and put each one inside a list item, with the three list items part of an
+              unordered list with an <span class="attributeName">id</span> of <span class="attributeValue">navList</span>.
+            </p>
+            <p>
+            	Using the same technique as you did to remove the numbers from the blog entries list, remove the bullets from the navigation list.
+            </p>
+          </li>
+        	<li>
+          	<h5>Position and resize the navigation list so it fits in the faux column.</h5>
+            <p>
+            	Make the width of the navigation list 20% of the width of its containing element, the body of the web page; remove all margins and
+              padding, and use absolute positioning to place the list at the left edge of the body and down 6 ems from the top. The 6 ems value should position
+              the list below the <span class="tagName">h1</span> at the top of the page, and thus inside the space occupied by the blog entries list.
+            </p>
+            <p>
+            	If necessary, change the text color of the links so you can see them. Here is the sample page viewport after making these changes; the color
+              property for <span class="tagName">a</span> elements inside the navigation list has been set to white. Right-click and select &ldquo;view
+              image&rdquo; for a larger version:
+            </p>
+            <p>
+            	<img src="images/sample_assignment_04-1.png" alt="Screenshot of absolutely positioned list" width="200" />
+            </p>
+          </li>
+        	<li>
+          	<h5>Style the navigation list items and anchors.</h5>
+            <p class="run-in">
+            	The effect you are to achieve here is to use CSS to make the navigation list&rsquo;s links look and operate like buttons. To do this, you need
+              to use a trick shown in class: if you set the <span class="propertyName">display</span> property of the anchors to
+              <span class="propertyValue">block</span>, the anchor will fill the entire list item, but will not start on a new line the way block
+              elements normally do. I call this a &ldquo;trick&rdquo; because there seems to me to be no general principle involved. The behavior is,
+              however, explicitly stated in Section 10.3.3 of the CSS Specification, <a href="http://www.w3.org/TR/CSS21/visudet.html#blockwidth">Block-level,
+              non-replaced elements in normal flow</a>.
+            </p>
+            <p>
+            	To make the anchors/list items act like buttons, you need to provide a distinctive appearance when the user hovers over the button: use the
+              <span class="tech-term">dynamic pseudo-class</span>, <span class="functionName">a:hover</span> as the selector for elements whose propeties
+              you want to set.
+              To prevent the rule from applying to all anchors on the page, you should limit to the ones inside your navigation list:
+            </p>
+            <p class="code_block">
+ #navList a:hover { background-color: red; }
+            </p>
+            <p class="standout_block">
+            	While writing this assignment up I discovered a browser-specific dependency I hadn&rsquo;t known about. If you specify a background color
+              for the <span class="functionName">a:hover</span> dynamic pseudo-class without specifying an explicit background color for the corresponding
+              &ldquo;regular&rdquo; <span class="tagName">a</span> elements, Internet Explorer (all versions tested) will not change the background color
+              until the user actually clicks on the anchor. Other browsers do not display this behavior. The W3C used to recommend that you <em>always</em>
+              set both the <span class="property-name">background-color</span> and the <span class="propertyName">color</span> any time you set one of them
+              to avoid accidently making the text go invisible against the background; following that advice would avoid the IE dependency.
+            </p>
+            <p>
+            	There is another dynamic pseudo-class that can be used to enhance the &ldquo;button&rdquo; effect: <span class="functionName">a:active</span>.
+              This one takes effect when the user actually presses the mouse button on the element. So you can have three different appearances for your
+              buttons: (1) when they are just sitting there, (2) when the user mouses (hovers) over them, and (4) when the user actually is pressing them.
+              Finally, there is a fourth dynamic pseudo-class, <span class="functionName">a:visited</span> that you can use to give a different appearance
+              to anchors that would take the user to places they have already visited, like the purple text that most browsers use in place of the default
+              blue.
+            </p>
+            <p>
+            	To complete the button effect, you will also need to change the <span class="property-name">text-decoration</span> property for the anchors;
+              the default value is <span class="propertyValue">underline</span>, which you should set to <span class="propertyValue">none</span>.
+            </p>
+            <p>
+            	Finally, you will need to adjust margins, padding, and possibly the borders of the list items and/or their contained anchors to achieve the
+              exact appearance you want.
+            </p>
+            <p>
+            	Here is a screen shot of the sample page viewport after making these changes; the mouse is hovering over the first link in the list. Your
+              colors and sizes will undoubtedly be different:
+            </p>
+            <p>
+            	<img src="images/sample_assignment_04-2.png" alt="Screenshot with formatted list items and anchors" width="200" />
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          I will check your assignment by copying it from <span class="computerName">Maple</span> to <span class="computerName">Babbage</span>;
+          to submit the assignment, send me an email with your name in the message body saying it is ready for me to look at.
+          Send your email to me by midnight on the due date (November 13). My email address is:
+        </p>
+          <address>Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu</address>
+        <p class="standout_block">
+          The Subject Line of your email must say <span class="codeblock">CS-081&nbsp;Assignment&nbsp;5</span>,
+          exactly like that, in order to avoid my spam filters.
+        </p>
+      </div>
+    </div>
+    <div id="footer">Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs081">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

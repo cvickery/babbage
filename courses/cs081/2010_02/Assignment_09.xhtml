@@ -1,0 +1,248 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 9</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      img {width:200px;}
+    </style>
+  </head>
+  <body id='urn:uuid:E0F45F4F-8D76-474B-9641-16A61AA63B38'>
+
+    <h1>CS-081 Assignment 9</h1>
+    <h2>Introduction</h2>
+    <div>
+      <p>
+        In this assignment, you are to turn the ordered list that is now appearing in a fixed position on the left
+        side of the page into a “navigation list.”
+      </p>
+    </div>
+    <h2>The Assignment</h2>
+    <div>
+      <h5>XHTML Preparation:</h5>
+      <p>
+        Change the top-level ordered list so that each list item contains an <span class="tag-name">a</span>
+        element, with the previous text of the list item moved inside the a element. If you want, you can remove the
+        sublists to make the code a little easier to work with, but it’s not necessary.
+      </p>
+      <p>
+        Since we are working on CSS rather than on site structure, it doesn’t matter where the links actually go. You
+        can use the technique shown in class of making them go “nowhere:”
+      </p>
+      <div class="code-block">
+&lt;ol>
+  &lt;li>&lt;a href="#a">First item&lt;/a>&lt;/li>
+  &lt;li>&lt;a href="#b">Second item&lt;/a>&lt;/li>
+  &lt;li>&lt;a href="#c">Third item&lt;/a>&lt;/li>
+  &lt;li>&lt;a href="#d">Fourth item&lt;/a>&lt;/li>
+&lt;/ol>
+      </div>
+      <p>
+        Note in the above code that there are actually four different “nowhere” links (#a, #b, #c, and #d). That’s
+        so you can implement the triple-sprite option described below. If you make all four hrefs go to the same
+        “nowhere” (#, #, #, and #), you will be limited to implementing only the required two-sprite version of the
+        assignment.
+      </p>
+      <h5>Image Preparation</h5>
+      <p>
+        Use Photoshop to prepare an “image sprite” file to use as the background for the anchors in what is now a
+        “navigation list” for the page. Using the CSS <span class="variable-name">:hover</span> pseudo-class you
+        will be able to change properties of the links depending on whether the user’s mouse is hovering over a link
+        or not. The image sprite file will contain two different images to use as backgrounds for the links in
+        their two different states.
+      </p>
+      <p>
+        <strong>Optional: </strong> <em>A third state of links can be targeted using the
+        <span class="variable-name">:visited</span> pseudo-class to indicate whether the user has previously
+        followed the link or not. (For un-styled text links, most browsers show un-visited links as underlined blue
+        text whether the mouse hovers over them or not, and they show visited links in purple.) If you want to do the
+        triple-sprite version of the assignment, you will need to add a third image to your image file; put the image
+        for visited links between the other two.</em>
+      </p>
+      <p>
+        Create a transparent image 30 pixels tall and 300 pixels wide (450 pixels wide if you are doing the triple
+        option.) This will give you room to put two 150&times;30 sprites side by side in the file. If you decide you
+        want to work with larger or smaller sprites for aesthetic reasons, you certainly may, but you will have to keep
+        track of the pixel dimensions as you read the material below.
+      </p>
+      <p>
+        Zoom way in and accurately set a vertical guide at the 150px mark. Select the rounded rectangle tool; be sure
+        the “fill pixels” option is selected in the button bar at the top. Go to the down-triangle that lets you specify
+        geometry options, and set the pixel dimensions for your rectangle to 150&times;30. Now there will be no need to
+        drag out the rectangles’ dimensions accurately, just put them in the right places!
+      </p>
+      <p>
+        Decide what two colors you want to use for the two states of the links. Set the foreground to the color you want
+        for the normal state, and click to draw a rectangle on the left side of the image. Even with the guide line
+        in place, it’s a good idea to zoom way in so you can get the horizontal and vertical placement of the rectangle
+        exactly right. Now switch to the other color you want to use, and place a second rectangle on the right side of
+        the image. Be sure the two rectangles exactly meet in the center: no space no overlap. (For the triple-sprite
+        version, use the color you want to have on visited links for a rectangle that fits precisely between the other
+        two. Again, no gaps, no overlap.)
+      </p>
+      <p>
+        Using Photoshop’s layer effects you can now add a 3D appearance to your sprites so they look more like buttons,
+        something you can’t currently do using CSS. If the Layers palette is not visible, use the Window menu to bring
+        it up. Either double-click on the right side of the layer, or click on the fx icon at the bottom of the palette
+        to bring up the layer effects dialog box. Feel free to experiment here: any effects you want to use are okay
+        for this assignment, so long as you do something! To create a straight-forward 3D look, use the
+        Bevel and Emboss effect. The default settings will make your rounded rectangles into buttons that look like they
+        protrude from the web page. You could do the same thing using CSS’s border-style property value
+        <span class="variable-name">outset</span>, but that effect doesn’t have the gradations you can get with Photoshop.
+      </p>
+      <p>
+        <strong>Optional: </strong> <em>If you want to use different layer styles in your image file, for example to
+        make one button look like it is protruding from the page and another one look like it is sunk into the page, you
+        have to have two different layers. The marquee tool (keyboard shortcut: Shift-M) is used to select part of an
+        image.  There are different marquee shapes: keep pressing Shift-M until you get the rectangular one. The marquee
+        tool button is near the top of the toolbar on the left side of the window. Select just the part of the image
+        that you want to apply a different layer style to, and press Ctrl-J to duplicate that part of the image onto a
+        new layer.  This new layer appears above the original layer in the layers palette, which means its pixels will
+        hide the ones in any layers below it. Bring up the layer effects panel for this layer, and you will see that you
+        can change the layer style for the button you selected without affecting the other one(s). There may be an
+        easier way to do this, but one way to get a sunken effect is to select the Bevel and Emboss option and reverse
+        the Highlight and Shadow settings in the Shading section. Reverse the Multiply/Screen Modes, and reverse the
+        black and white colors used for shadows and highlights. (Click on the color patches to change them.)</em>
+      </p>
+      <p class="standout-block">
+        Be sure to save both the psd file and the PNG copy of your sprites file in your site’s
+        <span class="file-name">images</span> directory.
+      </p>
+      <h5>Edit CSS settings to get the desired appearance.</h5>
+      <p>
+        Here is a list of settings you will need to adjust:
+      </p>
+      <dl>
+        <dt class="variable-name">list-style-type</dt>
+        <dd>Set this to <span class="variable-name">none</span> for the <span class="tag-name">ol</span> to get
+        rid of the numbers on the list items</dd>
+
+        <dt class="variable-name">display</dt>
+        <dd>Set this to <span class="variable-name">block</span> for the links (<span class="tag-name">a</span>
+        elements) to get them to fill the <span class="tag-name">li</span> elements that contain them.</dd>
+
+        <dt class="variable-name">margin</dt>
+        <dd>
+          Set the top/bottom margins of the list items so create space between the “buttons.” Use the
+          <span class="variable-name">auto</span> value to get the list items centered horizontally within
+          the ordered list.
+        </dd>
+
+        <dt class="variable-name">width</dt>
+        <dd>
+          You have to set this to 150px for the list items (a) so the <span class="variable-name">auto</span>
+          setting will work for centering them, and (b) to be sure the image sprites exactly fit inside the
+          list items. <strong>Note:</strong> for IE compatibility you must <em>not</em> specify a value for
+          <span class="variable-name">list-style-position</span>; the buttons will be off-center in IE if you have
+          <span class="code-snippet">list-style-position:inside</span>.
+        </dd>
+
+        <dt class="variable-name">line-height</dt>
+        <dd>
+          <p>
+            You have to set this to 30px for the list items to match the height of your image sprites.
+            You would think you would set the <span class="variable-name">height</span> property instead, but
+            doing it this way will get the text for the links properly centered vertically.
+          </p>
+          <p>
+            You could set this property on the links instead of the list items, but it seems clearer to
+            to keep the height and width settings together, and the width has to be set on the list items to get
+            them centered horizontally.
+          </p>
+        </dd>
+
+        <dt class="variable-name">background</dt>
+        <dd>
+          <p>
+            You need to specify the color, image, and position of the link (<span class="tag-name">a</span>)
+            elements in the list. The color must be <span class="variable-name">transparent</span> so the
+            rounded corners will reveal the background color of the ordered list rather than some other color;
+            the image file is the sprites file you created for the assignment, and the position should be
+            <span class="variable-name">top left</span>.
+          </p>
+          <p>
+            With this position setting, the left edge of your image file will line up with the left edge of the link
+            element’s CSS box, and you will see the left sprite as the background image.
+          </p>
+          <p>
+            For a different sprite to be used when the user hovers over the link, it’s just a matter of changing
+            the <span class="variable-name">background-position</span> to <span class="variable-name">top right</span>,
+            so the right edge of the image file lines up with the right edge of the link.
+          </p>
+          <p>
+            If you do the optional 3-sprite version, all you have to do is to set the background position so the
+            horizontal center of your image file lines up with the horizontal center of the link. Note that the
+            specificity of <span class="variable-name">a:hover</span> and <span class="variable-name">a:visited</span>
+            are the same, so whichever comes second in the stylesheet will rule in the case of a tie. That means
+            you have to put the a:hover rule after the a:visited rule if you want visited buttons to change state
+            when the mouse hovers over them.
+          </p>
+        </dd>
+
+        <dt class="variable-name">text-align</dt>
+        <dd>
+          In order to center the text in the buttons, you need to set this property to
+          <span class="variable-name">center</span> for the <span class="tag-name">a</span> elements.
+        </dd>
+
+        <dt class="variable-name">
+          font-family, font-size, font-weight, letter-spacing, text-decoration,
+          text-transform, etc
+        </dt>
+        <dd>
+          These properties can, and should, all be manipulated for the <span class="tag-name">a</span> elements
+          in order to produce good looking buttons.
+        </dd>
+      </dl>
+      <p>
+        Here is a screenshot of a navigation list with the mouse hovering over the first link:
+      </p>
+      <p><img src="images/Figure_09.1.png" alt="screenshot showing the list" /></p>
+    </div>
+    <h2>Submission</h2>
+    <div>
+      <p>
+        When you are ready for me to look at your assignment, simply send me an email message to let me
+        know. I’ll manually copy your entire web site to my computer (babbage) and check it out. The full pathname
+        to your web site on babbage will be http://babbage.cs.qc.cuny.edu/Grading/cs081/ followed by your
+        account name.
+      </p>
+      <p>
+        Send your email message to me at: <span class="email">vickery<span class="at" title="Change to
+        @">at</span>babbage.cs.qc.cuny.edu</span> by midnight of the due date.
+      </p>
+      <p class="standout-block">
+        The Subject line of your email message must be: “CS-081 Assignment 9.”
+      </p>
+      <p>
+        Don’t forget to put your name in your email message!
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,181 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 10</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <style media="all" type="text/css">
+      dt {font-weight:bold;font-style:italic;}
+    </style>
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:FC5E3C32-67DB-41CD-8402-5BE7BC3A77C2'>
+    <h1>CS-081 Assignment 10</h1>
+    <h2>Introduction</h2>
+    <div>
+      <p>
+      	For this final assignment, you are to implement a form on your web page and to use CSS to format and
+        position it.
+      </p>
+      <p>
+      	If you have not done so already, you are also to position the <span class="tag-name">div</span> containing
+        the validation links at the bottom of each web page.
+      </p>
+      <p>
+      	This assignment includes an optional component that lets you try your hand at writing server-side PHP code
+        to process your form data.
+      </p>
+    </div>
+    <h2>Lab Activities.</h2>
+    <div>
+      <ol>
+      	<li>
+        	<h5>If you did not yet implement the positioning of the footer component of your web pages, do so now.</h5>
+          <p>
+          	 See the <a href="Assignment_08.xhtml">Assignment 8 web page</a>
+             for details on this requirement. (I added it late to that assignment, so I didn&rsquo;t actually require it
+        then.)
+          </p>
+        </li>
+        <li>
+        	<h5>Add a <span class="tag-name">form</span> to your Blog.</h5>
+          <p>
+          	You will need a <span class="tag-name">form</span> element that has an <span class="attribute-name">action</span>
+            attribute with the value:
+            <span class="attribute-value">http://babbage.cs.qc.cuny.edu/courses/cs081/form_script.php</span>. You may specify
+            either the <span class="attribute-value">get</span> or <span class="attribute-value">post</span> value for the
+            <span class="attribute-name">method</span> attribute, or you could simply omit it and use the default value
+            (which is <span class="attribute-value">post</span>).
+          </p>
+          <p>
+          	Use a <span class="tag-name">fieldset</span> (and a <span class="tag-name">legend</span> for it) to serve as a
+            container for all the form elements.
+          </p>
+          <p>
+          	Each <span class="tag-name">input</span> element, except the Submit button, must have an associated
+            <span class="tag-name">label</span>; labels should go to the left of (or above) text inputs, but to
+            the right of checkboxes and radio buttons.
+          </p>
+          <p>
+          	The default set of inputs is:
+          </p>
+          <ul>
+          	<li>A text input for the user&rsquo;s email address</li>
+            <li>A text input for the user to enter a link to a website.</li>
+            <li>A password input</li>
+            <li>Two checkboxes</li>
+            <li>A group of three radio buttons, with one of them initially checked</li>
+            <li>Either a submit input or a button of type submit.</li>
+          </ul>
+          <p>
+          	You may change the labels and names for the inputs if you like, and you are free to add other elements
+            to your form as well.
+          </p>
+          <p>
+          	Before doing anything else, test your form to be sure it works. Experiment by typing different things
+            into the text/password fields; check and uncheck different combinations of checkboxes; test each of the
+            radio buttons. Look at the names and values displayed by the <span class="file-name">form_script.php</span>
+            page when you submit the form, and be sure (a) the form works and (b) you understand how the name-value
+            pairs are being gathered from the form and sent to the server.
+          </p>
+        </li>
+        <li>
+        	<h5>Format and layout your form.</h5>
+          <p>
+          	Once the form is working, use your CSS skills to position it and lay it out so it looks like this:
+          </p>
+          <div><img src="images/assignment_10-1.png" alt="screenshot of form" /></div>
+          <p>
+          	Well, it doesn&rsquo;t have to look <em>exactly</em> like that, but do make it so the form is basically
+            square with each <span class="tag-name">input</span> and its label set apart from other form elements so
+            that it is easy to read and makes sense to users. For example, as mentioned in class, it would be all
+            right if you put the labels for the text and password inputs above them instead of to the left of them.
+          </p>  
+        </li>
+        <li>
+        	<h5>Optional: Write your own form processing program in PHP.</h5>
+          <p>
+          	To do this, you will need to change the <span class="attribute-name">action</span> attribute of your
+            <span class="tag-name">form</span> to point to an XHTML file that you write. The conventional place to
+            put such pages is a subdirectory named <span class="directory-name">scripts</span>. Whatever mix of PHP
+            and XHTML code you put on that page is what will be displayed when you submit your form.
+          </p>
+          <p>
+          	Feel free to experiment, but you might want to start by trying to generate two different greeting messages
+            depending on whether the email address submitted is a Queens College email address, as demonstrated in the
+            last class meeting.
+          </p>
+        </li>
+      </ol>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+        Once you have set up your web site and tested that <strong>both the XHTML and CSS links at the bottom of the
+        page give you no warnings and no errors</strong>, log out of your account so your site will be copied to the
+        server. I will copy your site from the server to the computer in my office (babbage) to check it out.
+      </p>
+      <p class="standout-block">
+        Remember: even if your site validates perfectly, you still have to make sure that all the CSS rules actually
+        work as you intended. Testing your web page and fixing any unexpected appearances is a critical component of all
+        the assignments for this course.
+      </p>
+      <p>
+        When you finish your assignment, send me an email message telling me that it is ready. Use
+        <span class="code-snippet">CS-081 Assignment 10</span>
+        as the subject line. Make it look just like that to avoid my spam filters. Send the email to:
+        <span class="variable-name">vickery<span class="at" title="change to @">at</span>babbage.cs.qc.cuny.edu</span>.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../">Course Home Page</a>&mdash;<a
+         href="./">This Semester&rsquo;s Schedule Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

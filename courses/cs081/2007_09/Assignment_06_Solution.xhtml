@@ -1,0 +1,167 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>  
+    <title>Assignment 6 Solution</title>
+    <style type="text/css" media="all">
+      html, body {
+        width:            100%;
+        background-color: #fc9;
+        color:            #030;
+        font-family:      sans-serif;
+        }
+.clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.clearfix {display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+      h2 {
+        clear: both;
+        }
+      label, span.echo {
+        clear:both;
+        float:            left;
+        text-align:       right;
+        width:            15em;
+        display:          block;
+        padding:          0 1em 0 0;
+        }
+      input, textarea, select {
+        float:            left;
+        display:          block;
+        }
+      select {
+      	margin-right: 2em;
+        }
+      #header {
+        text-align:       center;
+        }
+      
+      #content  {
+        width:            90%;
+        margin:           auto;
+        }
+			.radio-check-set p {
+        text-align:right;
+        width:15em;
+        margin:0;
+        padding:0 1em 0 0;
+        float:left;
+        clear:both;
+        }
+      .radio-check-set div {
+      	float:left;
+        }
+  		.radio-check-set input {
+      	display:inline;
+        float:none;
+        }
+      .radio-check-set label {
+      	display:inline;
+        float:none;
+        text-align:left;
+        padding-left:0.5em;
+        padding-right:2em;
+        }
+
+      #footer {
+        width:            60%;
+        margin:           auto;
+        text-align:       center;
+        font-size:        0.7em;
+        }
+    </style>  
+  </head>
+  <body>
+  
+    <div id="header">
+      <h1>Assignment 6</h1>
+    </div>
+    <div id="content">
+      <form method="post" action="form_processor.xhtml?email_2=stuff@nonsense">
+        <fieldset><legend>Information</legend>
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="username" />
+          <label for="passwd">Password:</label>
+          <input type="password" id="passwd" name="password" />
+          <label for="email_1">Email:</label>
+          <input type="text" id="email_1" name="email_1" />
+          <label for="email_2">Retype email:</label>
+          <input type="text" id="email_2" name="email_2" />
+          <div class="radio-check-set">
+          	<p>Gender:</p>
+            <div>
+            <input type="radio" id="male" name="gender" value="Male" />
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="Female" />
+            <label for="female">Female</label>
+            <input type="radio" id="other" name="gender" value="Other" checked="checked" />
+            <label for="other">Other</label>
+            </div>
+          </div>
+          <div class="radio-check-set">
+          	<p>Color:</p>
+            <div>
+            <input type="checkbox" id="red" name="color[]" value="Red" />
+            <label for="red">Red</label>
+            <input type="checkbox" id="green" name="color[]" value="Green" />
+            <label for="green">Green</label>
+            <input type="checkbox" id="blue" name="color[]" value="Blue" />
+            <label for="blue">Blue</label>
+            </div>
+          </div>
+          <label for="meal">Meal:</label>
+          <select id="meal" name="meal">
+          	<option value="">Select One</option>
+          	<option value="Breakfast">Breakfast</option>
+          	<option value="Lunch">Lunch</option>
+          	<option value="Dinner">Dinner</option>
+          	<option value="Midnight Snack">Midnight Snack</option>
+          </select>
+          <label for="food">Food:</label>
+          <select id="food" name="food[]" multiple="multiple">
+          	<option value="">Select Any</option>
+          	<option value="eggs">Eggs</option>
+            <option value="bacon">Bacon</option>
+            <option value="ice cream">Ice Cream</option>
+          </select>
+          <label for="comment">Comment:</label>
+          <textarea rows="10" cols="40" name="comment" id="comment"></textarea>
+          
+          <label for="submit">&nbsp;</label><input type="submit" id="submit" value="Process This Form" />
+        </fieldset>
+      </form>
+    </div>
+    <div id="footer">
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,181 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 7</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css" />
+    <link rel="alternate stylesheet"
+          type="text/css"
+          media="all"
+          title="A different style"
+          href="css/assignment_07.css" />
+	</head>
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 7<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+      	<p>
+        	For this assignment, you are to create two stylesheets for your Blog, one which positions the navigation links
+          vertically, and one which positions the links horizontally between the top heading and the blog entries list.
+        </p>
+      </div>
+      <h2>Reference Material</h2>
+      <div>
+        <ul>
+          <li>Chapter 5 of the textbook</li>
+        </ul>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+      	<p>
+        	Be sure you have completed <a href="Assignment_06.xhtml">Assignment 6</a> successfully before you start working on this one.
+          It is too late to receive credit for Assignment 5, but you cannot receive credit for this assignment without completing that one first.
+        </p>
+        <ol>
+        	<li>
+          	<h5>Create two stylesheets for the blog page.</h5>
+            <p>
+            	Create two new files in your site&rsquo;s <span class="directory-name">css</span>. Name one <span class="file-name">fixed.css</span>,
+              and the other one <span class="filename">absolute.css</span>.  Add these two links to the <span class="tag-name">head</span>
+              element of your blog&rsquo;s index page: 
+            </p>
+            <p class="code-block">
+    &lt;link rel="alternate stylesheet"
+          type="text/css"
+          media="all"
+          title="Vertical Menu"
+          href="../css/fixed.css" /&gt;
+    &lt;link rel="alternate stylesheet"
+          type="text/css"
+          media="all"
+          title="Horizontal Menu"
+          href="../css/absolute.css" /&gt;
+            </p>
+            <p>
+            	You need to put these links after the existing link to the stylesheet you have been using so far for the course. (Do not take that
+              one out.) With these links in place, Firefox will let you activate one of these alternative stylesheets from the 
+              <span class="menu-item">View</span> menu. This web page is set up with an alternate stylesheet that you can try now. If you open
+              <span class="menu-item">View&mdash;&gt;Page Style</span>, you will see an item named <span class="menu-item">A different style</span>;
+              click on it, and see the appearance of this page change. (Use <span class="menu-item">View&mdash;&gt;Page Style&mdash;&gt;Basic
+              Page Style</span> to get back to the original version&mdash;or just reload the page.)
+            </p>
+          </li>
+          <li>
+          	<h5>Implement the fixed position version</h5>
+          	<p>
+              Add rules to <span class="file-name">fixed.css</span> so that the navigation links occupy a fixed position relative to the
+              viewport, on the left side, far enough down to be below the main heading. Add enough of a left margin to the blog list so
+              that it does not overlap the navigation links. Use Photoshop to create two background images for the <span class="tag-name">a</span>
+              elements in the navigation links list, one for the inactive state, and a different one for when the mouse is hovering over the link.
+              Adjust the list&rsquo;s <span class="property-name">list-style-type</span> property for the list, the 
+              <span class="property-name">display</span> property for the <span class="tag-name">a</span> elements, margins, and paddings as
+              needed to create a visually coherent navigation list.
+            </p>
+            <p>
+            	Test the blog page to be sure scrolling works as expected, that the links respond correctly when the mouse hovers over them,
+              and that everything looks right.
+            </p>
+          </li>
+          <li>
+          	<h5>Implement the absolutely positioned version</h5>
+            <p>
+            	Add rules to <span class="file-name">absolute.css</span> so the navigation list shows up as a horizontal &ldquo;menu bar&rdquo;
+              between the top heading and the blog entry list. Unlike the fixed position version,
+              this version of the menu should scroll off the screen if you scroll down the page. Use margins, paddings, borders, background
+              images, colors, etc. to create the best-looking menu bar you can.
+            </p>
+            <p>
+            	<strong>Optional: </strong>Add a navigation link to the blog page itself and to another page called 
+              <span class="file-name">resume.xhtml</span>. Add a <span class="attribute-name">class</span> attribute with the value,
+              <span class="attribute-value">current-page</span> to the link to the blog page, and use CSS to make that link look
+              different.
+            </p>
+          </li>
+        </ol>
+
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+      	<p class="standout-block">
+        	You must check your page using to the W3C validators: there must be no warnings or errors
+          that either of them can detect.
+        </p>
+        <p>
+        	Check your home page to make sure it is still legible and functional.
+        </p>
+        <p>
+        	Run a link check on your site before submitting the assignment; fix any errors. (Right click in the Files panel on the right,
+          select <span class="menuItem">Check Links</span>, then select <span class="menuItem">Entire Local Site</span> (keyboard shortcut:
+          Control-F8). Fix any broken links.
+        </p>
+        <p>
+          Submit the assignment by midnight of the due date:
+        </p>
+        <ol>
+            <li>
+              To submit this assignment, simply send me an email message telling me that your web page is ready for me
+              to look at: I will copy it from <span class="computerName">Oak</span> to <span
+              class="computerName">Babbage</span>, and check it out there.
+            </li>
+            <li class="standout-block">Be sure to put your name in the body of your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-081 Assignment 7</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu. (Fix up the 'AT' part.)
+            </li>
+        </ol>
+        <p>
+          See <a href="../../cs081/index.xhtml">the course home page</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

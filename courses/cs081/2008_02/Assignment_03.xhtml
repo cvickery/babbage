@@ -1,0 +1,260 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 3</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignments.css" />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Assignment 3</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          The assignment is to decide what information will go on the home page of a client&rsquo;s
+          new blog that you have been hired to build.
+        </p>
+        <p>
+          We are going to pretend that you have a client who has hired you to provide him or her with
+          a blog site. Blogs are complicated beasts because bloggers customize them in various ways
+          and, ultimately, they must be integrated with a Content Management System (CMS), which is
+          tech-talk for a database that keeps a record of blog posts and (if the site allows them) the
+          associated comments readers make on those posts. But long before the blog goes public, there
+          is a lot of preparatory work that has to take place as you and your client decide just what
+          type of blog to develop, what the content of the blog will be, and how that content will be
+          presented on the blog&rsquo;s web pages.
+        </p>
+        <p>
+          The last stage before the site is developed &ldquo;for real&rdquo; and connected to a CMS, is often
+          to develop prototype designs that let the client look at various design styles and ways of using
+          the site. One prototype then becomes the basis for building the actual site.
+        </p>
+        <p>
+          A common strategy for designing web site prototypes is to use a drawing program like Photoshop or
+          Illustrator to create an image that looks like the proposed site. This type of prototype is either
+          discarded when the real site is built, or may actually be sliced up into a set of images that make
+          up the actual site. The problem with this approach is that once an image has been approved and the
+          coding process begun, there is very little flexibility for making design changes without impacting
+          other parts of the design in significant ways.
+        </p>
+        <p>
+          A better approach, arguably, is to build the prototype as real web pages using real HTML and real CSS.
+          The advantage is that it is easy to see how users interact with the site, and changes can be
+          incorporated more easily during the coding phase than using the drawn-image approach. As you might
+          guess, given that this is a course on HTML and CSS coding, this approach is the one we will be
+          following.
+        </p>
+        <p>
+          The &ldquo;blog project&rdquo; will span multiple assignments for this course. In this assignment,
+          you will pick your client and do some initial content analysis for the blog.
+        </p>
+      </div>
+
+      <h2>Pick Your Client</h2>
+      <div>
+        <p>
+          Normally, clients hire web developers, but for this course it works the other way around: you get to
+          pick your client!
+        </p>
+        <p>
+          In the real world, blogs are usually set up using some sort of template system where the blogger
+          picks one of several basic templates, and then &ldquo;tweaks&rdquo; various features to customize
+          the basic template. For example, the <a href="http://blogs.qc.cuny.edu">blogs Queens College</a>
+          use Moveable Type&reg; this way. But you are going to be working with a discerning client who wants
+          to create a truly unique blog site that stands above the run of the mill sites that are generated
+          from templates. (We&rsquo;ll ignore for the moment that hiring a student who is taking a first course
+          in web design might not be the best way to achieve this goal; after all, the instructor&rsquo;s
+          reputation has to be taken into account.)
+        </p>
+
+        <h2>Different Blogs For Different Blokes.</h2>
+        <p>
+          People create blogs for different reasons, and the type of blog affects the content. Here are some
+          examples, presented as descriptions of clients who wants to create each sort of blog.
+        </p>
+        <ul id="bloggers">
+          <li>
+            <h3>The Fashonista</h3>
+            <p>
+              <span class="bloggerName">Anna Winters</span> comments on all things fashion-related almost
+              every day. She has comments to make, pictures (sometimes, many pictures) to show, and links
+              to advertisers. She often leaves comments at <a
+              href="http://iamfashion.blogspot.com">iamfashion.blogspot.com</a>.
+            </p>
+          </li>
+          <li>
+            <h3>The Technoratist</h3>
+            <p>
+              <span class="bloggerName">Kevin Hanks</span> writes a blog entry whenever he discovers a new
+              web design technique that he wants to share with the world. He has written a book that he wants
+              people to buy. In fact, his blog is really a means of showing off his technical skills so that
+              people will buy his book and/or hire him to design their web sites. Entries tend to be several
+              pages long, with an occasional diagram or code example. He thinks that Peter-Paul Koch has done
+              a good job at <a href="http://www.quirksmode.com">quirksmode.com</a>
+            </p>
+          </li>
+          <li>
+            <h3>The Photographer</h3>
+            <p>
+              <span class="bloggerName">Kathleen Konnory</span> posts a new picture on her photoblog almost
+              every day, and visits a number of other photoblogs, like <a
+              href="http://durhamtownship.com">durhamtownship.com</a> and <a
+              href="http://topleftpixel.com">topleftpixel.com</a> each morning to be inspired by what other
+              photographers are doing.
+            </p>
+          </li>
+          <li>
+            <h3>The Foodie</h3>
+            <p>
+              <span class="bloggerName">Nelly Pill-Popper</span> loves all things related to food, and writes
+              about recipes, restaurants, and memorable meals whenever she gets a chance. She likes the writing
+              style and content at <a href="http://whatweate.com">whatweate.com</a>, but wishes they would
+              publish more entries for her to read.
+            </p>
+          </li>
+          <li>
+            <h3>The Pundit</h3>
+            <p>
+              <span class="bloggerName">John Budge</span>, wants to use his &ldquo;I Won&rsquo;t Budge
+              Report&rdquo; to write about politics and other issues. He thinks the <a
+              href="http://drudgereport.com">Drudge Report</a> is pretty good, because it contains lots of links
+              to other interesting material as well as having room for the author&rsquo;s comments.
+            </p>
+          </li>
+          <li>
+            <h3>The Candidate</h3>
+            <p>
+              <span class="bloggerName">Barker O&rsquo;Clifton</span> wants to be president, and needs a website
+              that will help him get his message out. A critical feature of the site is that it will make it
+              easy for enthusiasts to donate money to his campaign. Links to whitepapers, and a daily log of his
+              campaign visits are other critical components. Any color scheme is fine as long as it&rsquo;s red,
+              white and blue.
+            </p>
+          </li>
+        </ul>
+        <p>
+          You may pick any client you want, real or imaginary. You can pick one of the ones above, or make up
+          your own client. You can even use a real client&mdash;provided your client wants to create a blog site.
+        </p>
+      </div>
+
+      <h2>Decide On The Content</h2>
+      <div>
+        <p>
+          For your assignment, you need to decide what content your client will be including on his/her site
+          and how to structure it. Normally you would do this by consulting with your client, but that will be
+          a bit difficult if your client is fictitious. But since fictitious clients can&rsquo;t complain, you
+          can safely decide on the content yourself.  Here are some of the content areas of a web page that
+          your client might want to include: A section for branding (the name of the blog, a tag line, a logo,
+          etc.); decorative images that occupy space on the page (not background images); content images
+          related to the text entries in the blog; images that form the bulk of each entry (as in a
+          photoblog); space for paid ads; site information (copyright notice, etc.); one or more navigation
+          areas for links to other sites, other blog entries, to comments on entries, etc.; information about
+          entries (title, date, categories, etc.); entry contents; space for people to comment or vote on items;
+          etc.
+        </p>
+        <p>
+          Make a list of each type of content that your client will be using and add a note for each that tells
+          how extensive each type of information will be. (Lots of picture ads, a list of text ads, no ads,
+          multiple blocks of ads; long-winded entries spanning multiple screens, 1-2 paragraphs per entry; just
+          a sentence and maybe a link per entry; links to archived articles; etc.) Write down your list and notes.
+        </p>
+        <p>
+          Decide which information will actually go on the home page for your blogger, and which will go
+          elsewhere on the site. Will there be one blog entry per page, a running list of entries with old
+          entries at the bottom of the page falling off into the archives, a brief part of several entries
+          with links to the remainder of each one on a separate page, or some other structure? The idea here
+          is to think about what makes good sense for your particular client. Write a star next to each item
+          in your content list that will be appearing on the home page. The decisions you make here will affect
+          the appearance of the home page to some extent: the more information you include, the more
+          &ldquo;dense&rdquo; the page will appear. Information-rich sites, like the pundit&rsquo;s might
+          benefit from a dense page, while a photoblogger might want a more open page that gives
+          &ldquo;today&rsquo;s picture&rdquo; a chance to stand out on the screen. The fashionista might want
+          to have lots of short blog entries available at the beginning so that all her latest and most
+          breathless comments will have a chance to capture vistors&rsquo; attention. But you get to decide; there
+          is no single &ldquo;right&rdquo; answer here.
+        </p>
+        <p>
+          Now decide what the most appropriate XHTML content tags are for your home page items. You may use
+          <strong>only the following elements</strong>: headings (h1-h6; indicate which level for each item),
+          paragraphs, lists, images, and (possibly) tables. Do not try to imagine what the home page will look
+          like, just categorize the contents. Where you have a group of things that seem to belong together,
+          they probably should be made into a list: decide whether the items have an order or not in deciding
+          which kind of list to construct. Put the XHTML tag name next to each starred item on your content
+          list.
+        </p>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          To submit the assignment, write a sentence or two describing your &ldquo;client&rdquo; and send it
+          along with your marked-up content list to me for review.
+          My email address is:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          The Subject Line of your email must say <span
+          class="codeblock">CS-081&nbsp;Assignment&nbsp;3</span>, exactly like that, in order to avoid my spam
+          filters.
+        </p>
+        <p>
+          Always include <span class="codeSnippet">CS-081</span> in the subject line of your email messages to
+          me, even if you are not submitting an assignment, because of the spam filters.
+        </p>
+        <p>Be sure to sign your email so I know who sent it!</p>
+      </div>
+    </div>
+    <div id="footer">Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

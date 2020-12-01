@@ -1,0 +1,200 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 10</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      img {width:300px;}
+    </style>
+  </head>
+  <body id='urn:uuid:3CC28230-F4FF-42D9-9F3E-4AAC1B42C817'>
+
+    <h1>CS-081 Assignment 10</h1>
+    <h2>Introduction</h2>
+    <div>
+      <p>
+        For this assignment, you are to add a form element containing an assortment of form-related
+        elements to your web page.
+      </p>
+      <p>
+        This assignment is very loosely structured: the goal is for you to become familiar with forms,
+        but there is not enough time for you realistically to do a full-blown form design assignment
+        before the end of the semester.
+      </p>
+    </div>
+    <h2>The Assignment</h2>
+    <div>
+      <p>
+        The minimum structure of the assignment is for you to display a form on the web page that requires
+        visitors to “log in” by supplying a user name and a password. If you have time to do more, you can
+        turn the “log in” form into a “register” form that uses various additional form elements to supply
+        additional information besides a user name and password.
+      </p>
+      <p>
+        A second requirement is to use your CSS skills to style the form so that looks good and is well
+        positioned on the page.
+      </p>
+      <p>
+        I am providing you with the following PHP code that you are to add to your web page to control the content based
+        on whether the form has been submitted to it or not. (This concept will be covered in class.)
+      </p>
+      <div class="code-block">
+  &lt;?php
+    if (count($_GET) > 0)
+    {
+      echo "&lt;table>&lt;tr>&lt;th>name&lt;/th>&lt;th>value&lt;/th>&lt;/tr>\n";
+      $keys = array_keys($_GET);
+      foreach ($keys as $key)
+      {
+        echo "&lt;tr>&lt;td>$key&lt;/td>&lt;td>{$_GET[$key]}&lt;/td>&lt;/tr>\n";
+      }
+      echo "&lt;/table>\n";
+    }
+    else echo &lt;&lt;&lt;EOD
+    &lt;form action="index.xhtml">
+    // <em>Your form elements go here</em>
+    &lt;/form>
+EOD;
+   ?>
+      </div>
+			<p>
+      	Copy and paste the above code into your <span class="file-name">index.xhtml</span> file just before the
+        first paragraph (<span class="tag-name">p</span>) element in the #content <span class="tag-name">div</span>.
+        It’s very important that the second to last line (<span class="code-snippet">EOD;</span>) starts with the 'E'
+        in the leftmost character position of the line because of the way PHP implements the 
+        <span class="code-snippet">else&nbsp;echo&nbsp;&lt;&lt;&lt;EOD</span> statment three lines above it.
+      </p>
+      <p>
+      	The <span class="tag-name">form</span> element is already in the PHP code: all you need to do is to add the
+        code for the elements inside the form. The first part of the code generates a <span class="tag-name">table</span>
+        that will show the name and value of each item of form data when the form is submitted.
+      </p>
+      <p>
+      	That is, when you insert this code into your web page, the #content <span class="tag-name">div</span> will start
+        with either a <span class="tag-name">form</span> or a <span class="tag-name">table</span>, depending on whether
+        the form has been submitted yet or not. Seeing the page in action in class should make this mechanism a bit clearer.
+      </p>
+      <p>
+      	Forms are covered in Chapter 9 of the textbook, so consult that if any of the following material is not clear.
+      	Here are the elements and their attributes that you will need to add to the <span class="tag-name">form</span>
+        to implement the <span class="variable-name">login</span> feature:
+      </p>
+      <dl>
+      	<dt class="tag-name">fieldset</dt>
+      	<dd>
+        	All the interactive elements in a form must be contained inside some other element, such as a 
+          <span class="tag-name">p</span> or <span class="tag-name">div</span> in oder to pass XHTML
+          validatation. The <span class="tag-name">fieldset</span> element is designed for just this purpose,
+          so use it for this assignment so you can become familiar with it. It can be styled just like any other
+          XHTML element, but it is unique in that it has a solid border by default. See the next element.
+        </dd>
+      	<dt class="tag-name">legend</dt>
+      	<dd>
+        	The <span class="tag-name">legend</span> element is specifically designed for use with 
+          <span class="tag-name">fieldset</span>s. (In fact, it should arguably have been made an optional
+          attribute of the <span class="tag-name">fieldset</span> element instead of a separate element in
+          its own right. The legend will appear in the middle of the border of its 
+          <span class="tag-name">fieldset</span>. Again, all the CSS style properties can be used to make this
+          element look any way you want.
+        </dd>
+      	<dt class="tag-name">input type="text"</dt>
+      	<dd>
+        	Use this element for the box the user is to type a user name or email address into. In addtion to the
+          <span class="attribute-name">type</span> attribute, you must supply a <span class="attribute-name">name</span>
+          attribute for identifying this piece of form data, such as <span class="code-snippet">name="user"</span>. The
+          value of the <span class="attribute-name">name</span> attribute can be pretty much anything you want provided
+          it doesn’t contain any spaces. But make it meaningful. ("text" would be legal, but not meaningful, for example).
+          <p>
+          	You will also need to provide an <span class="attribute-name">id</span> for this element for use with its
+            <span class="tag-name">label</span>. (See next item.)
+          </p>
+        </dd>
+      	<dt class="tag-name">label</dt>
+      	<dd>
+        	The <span class="tag-name">label</span> element is used to associate some text with an 
+          <span class="tag-name">input</span> element. If the user clicks on a label, it’s the same as if the user
+          clicked on the corresponding element. Using <span class="tag-name">label</span>s in forms is essential for
+          radio buttons and checkboxes, which can be hard to “hit” with a mouse because they are normally quite small;
+          they also make text an password inputs easier to use.
+          <p>
+          	To associate a <span class="tag-name">label</span> with an <span class="tag-name">input</span> element, you
+            have to use the <span class="attribue-name">for</span> attribute in the <span class="tag-name">label</span>,
+            and the value of the <span class="attribue-name">for</span> attribute has to match the value of the
+            <span class="attribue-name">id</span> attribute of the corresponding input element.
+          </p>
+          <p>
+          	You will probably have an easier time using CSS to manage the layout of your form if you put the labels
+            before their corresponding input elements.
+          </p>
+        </dd>
+      	<dt class="tag-name">input type="password"</dt>
+      	<dd>
+        	This works just like an <span class="tag-name">input type="text"</span> element, including everything
+          mentioned above about the <span class="attribute-name">name</span> attribute and providing a matching
+          <span class="tag-name">label</span>. The difference is that characters typed into
+          a <span class="tag-name">input type="password"</span> element are echoed as asterisks or bullets.
+          <p>Be sure the <span class="attribute-name">name</span> attribute for the password is both meaningful
+          and different from the <span class="attribute-name">name</span> attribute for the user field.</p>
+        </dd>
+      	<dt class="tag-name">button type="submit"</dt>
+      	<dd>
+        	By adding the <span class="code-snippet">type="submit"</span> attribute to a <span class="tag-name">button</span>
+          the browser will submit the form data to the <span class="attribute-name">action</span> page when the user clicks
+          on it. Unlike the <span class="tag-name">input</span> element, this is not a self-closing tag: the content can
+          be anything you like, typically either some text or an image of a fancy button that you created in Photoshop.
+        </dd>
+      </dl>
+      <p>This screenshot of a form might help you follow the above description (right-click to view larger size):</p>
+      <img src="images/Figure_10.1.png" alt="screenshot of login form" />
+      <p>
+      	The optional version of the form would use multiple text inputs for name, address, etc., and could use
+        checkboxes and/or radio buttons so the user could express preferences, past experience, etc. Be creative!
+      </p>
+    </div>
+    <h2>Submission</h2>
+    <div>
+      <p>
+        When you are ready for me to look at your assignment, simply send me an email message to let me
+        know. I’ll manually copy your entire web site to my computer (babbage) and check it out. The full pathname
+        to your web site on babbage will be http://babbage.cs.qc.cuny.edu/Grading/cs081/ followed by your
+        account name.
+      </p>
+      <p>
+        Send your email message to me at: <span class="email">vickery<span class="at" title="Change to
+        @">at</span>babbage.cs.qc.cuny.edu</span> by midnight of the due date.
+      </p>
+      <p class="standout-block">
+        The Subject line of your email message must be: “CS-081 Assignment 10.”
+      </p>
+      <p>
+        Don’t forget to put your name in your email message!
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

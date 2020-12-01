@@ -1,0 +1,134 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 8 Solutions</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <style type="text/css">
+      ol {  list-style-position:inside; }
+      h4 {  display:inline; }
+    </style>
+  </head>
+  <body id='urn:uuid:A0E0EBF5-968F-46AD-9CCC-906D644C9235'>
+
+    <h1>CS-081 Assignment 8</h1>
+    <h2>Solutions</h2>
+    <div>
+      <ol>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">html, body</span>?</h4>
+          <p><strong>Answer:</strong> 2 separate selectors, each with a specificity of one (001).</p>
+          <p>
+            Select all <span class="tag-name">html</span> and all <span class="tag-name">body</span>
+            elements. (Which is sort of silly to say because there is exactly one of each on every
+            web page. But it’s correct.)
+          </p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">html > body</span>?</h4>
+          <p>two (002)</p>
+          <p>Select all <span class="tag-name">body</span> elements that are children of
+          <span class="tag-name">html</span> elements. (Again, it’s silly, since every web page has
+          exactly one <span class="tag-name">body</span> element, and it is always a child (one of two
+          children) of the <span class="tag-name">html</span> element.</p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">.special</span>?</h4>
+          <p>ten (010)</p>
+          <p>
+            Select any elements with a class attribute that has the value “special.”
+          </p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">p.special</span>?</h4>
+          <p>eleven (011)</p>
+          <p>
+            Select any <span class="tag-name">p</span> elements with a class attribute that has the
+            value “special.”
+          </p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">a:hover</span>?</h4>
+          <p>two (002)</p>
+          <p>
+            Select all <span class="tag-name">a</span> elements when the mouse hovers over them.
+          </p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">.off-site a:hover</span>?</h4>
+          <p>twelve (012)</p>
+          <p>
+            Select any <span class="tag-name">a</span> elements that are descendents of any element
+            with a class attribute that has the value “off-site,” when the mouse hovers over them.
+          </p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">#footer</span>?</h4>
+          <p>one hundred (100)</p>
+          <p>
+            Select the element that has an id attribute with the value “footer,” if there is one.
+          </p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">#footer a</span>?</h4>
+          <p>one hundred one</p>
+          <p>Select any <span class="tag-name">a</span> elements, if there are any, that are descendents of the element
+          with an id that has the value, “footer,” if there is one.</p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">#footer a:hover</span>?</h4>
+          <p>one hundred two (102)</p>
+          <p>
+            If there is an element with an id that has the value “footer,” select all descendent
+            <span class="tag-name">a</span> elements (if there are any) when the mouse hovers over them.
+          </p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of <span class="code-snippet">p:first-child</span>?</h4>
+          <p>two (002)</p>
+          <p>
+            Select any <span class="tag-name">p</span> elements that are the first child of another element.
+          </p>
+        </li>
+        <li>
+          <h4>What is the <em>specificity</em> of
+          <span class="code-snippet">div > p.interesting span:hover img[src$=jpg]</span>?</h4>
+          <p>twenty-five (025)</p>
+          <p>
+            As stated in the assignment web page, it’s simply,
+            “all <span class="tag-name">img</span> elements, if there are any,
+            that have a <span class="variable-name">src</span> attribute value ending in “jpg” and which are descendents of
+            a <span class="tag-name">span</span> that the mouse is hovering over, provided the <span
+            class="tag-name">span</span> is a descendent of a <span class="tag-name">p</span> element that has the class
+            “interesting”, provided the <span class="tag-name">p</span> is a child of a <span class="tag-name">div</span>.”
+          </p>
+        </li>
+      </ol>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

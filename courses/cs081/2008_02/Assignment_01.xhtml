@@ -1,0 +1,114 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 1</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignments.css"
+    />		
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Assignment 1</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          We will be dealing with a lot of technology this term, and the goal of this first
+          assignment is to get you to start viewing the Web with a developer&rsquo;s eye:
+          what&rsquo;s good and what&rsquo;s not so good out there?
+          </p>
+      </div>
+      
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+          Pick three web sites: one academic, one commercial, and one entertaining. The academic
+          site could be Queens College&rsquo;s, a department with the college, or some other
+          college&rsquo;s; the choice is yours. The commercial site should be one where you have
+          actually bought something if possible. And the entertainment site can be any site that
+          provides entertainment: YouTube, somebody&rsquo;s blog, whatever. For each site, write out
+          the answers to the following questions, and send them to me by email.
+        </p>
+        <ol>
+          <li>Describe the site&rsquo;s customers. Most sites serve multiple categories of
+          customers. Describe each category, and tell what you think they use the site for. For
+          example, two categories of &ldquo;customers&rdquo; for an academic site would be
+          prospective and currrent students. (I can think of at least two other categories.)</li>
+          <li>Tell what each site does to help each category of customers find what they want on the
+          site. Is the site good at this? Give a specific example of what they do either well or
+          poorly in this regard.</li> <li>What makes the site either a pleasure or a bother to you
+          when you use it?</li>
+          <li>Do you think the home page is well-organized and attractive?</li>
+          <li>If you were to suggest just one change to make on the home page, what would it be and
+          why?</li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>Write your answers to the questions in the body of an email message. You can use plain
+        text or formatted email, but do not use a word processor and/or send your answers as an
+        attachment. Send your email to me by midnight on the due date (January 31). My email address
+        is:</p>
+        <address>Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu</address>
+        <p class="standout_block">
+          The Subject Line of your email must say <span class="codeblock">CS-081&nbsp;Assignment&nbsp;1</span>,
+          exactly like that, in order to avoid my spam filters.
+        </p>
+        <p>Be sure to sign your email so I know who sent it!</p>
+      </div>
+    </div>
+    <div id="footer">Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,156 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 1 Solutions</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+  	<div id="header">
+    	<h1>CS-081 Assignment 1<br />Spring 2009</h1>
+		</div>
+    <div id="content">
+    	<h2>Introduction</h2>
+      <div class="whitebox">
+      	The laboratory facility for the course is not set up yet, so we will use this first part of the course to develop some understanding of
+        how the Internet and the World Wide Web works, and to practice looking at web sites from a developer&rsquo;s perspective.
+      </div>
+      <h2>The Assignment</h2>
+      <div class="whitebox">
+        Read the first five articles in the <a
+        href="http://dev.opera.com/articles/view/1-introduction-to-the-web-standards-cur/" title="Link to Opera/Yahoo
+        Web Standards Curriculum">Opera/Yahoo Web Standards Curriculum</a> (don&rsquo;t panic: each
+        &ldquo;article&rdquo; is quite short), and answers the following questions:
+      <ol>
+      	<li>
+          In what year did the Internet as we know it first become operational?
+          <p class="ans">
+          	&ldquo;&hellip;in 1982 the ARPANET connections outside of the US were converted to use the new "TCP/IP" protocol. The Internet as we know it had
+            arrived.&rdquo;
+          </p>
+        </li>
+        <li>
+        	What is the relationship between the Internet and the World Wide Web?
+          <p class="ans">
+          	The World Wide Web Uses the Internet to exchange messages according to the HyperText Transfer Protocol.
+          </p>
+        </li>
+        <li>
+        	What code did Tim Berners-Lee first release to the public in 1993 while he was at CERN?
+          <p class="ans">
+          	The source code for the &ldquo;WorldWideWeb&rdquo;&mdash;programs that implemented message exchanges between computers using the HTTP protocol, plus
+            the specifications for HTML for structuring hypertext documents to be exchanged using HTTP.
+          </p>
+        </li>
+        <li>
+        	What is the name of the organization that Tim Berners-Lee founded at MIT in 1994?
+          <p class="ans">
+          	The World Wide Web Consortium, known as the W3C.
+          </p>
+        </li>
+        <li>
+          Chapter 3 says, &ldquo;Every request/response starts by typing a Universal Resource Locator (URL) into the
+          address bar of your web browser, &hellip;&rdquo; But there is another way to make a URL request besides typing
+          it. What is it?
+          <p class="ans">
+          	Click on a link.
+          </p>
+        </li>
+        <li>
+        	What are the three principle components of a URL, and how are they specified in a URL string?
+          <p class="ans">
+          	The protolol, the host address, and the path. The protocol is specified before the characters ://, as in http://. The host name is given immediately
+            after the :// part, and ends with the next slash in the URL. The path is everything to the right of the host name. (Note: there may be a port number
+            at the end of the host name, using a : to separate those two parts; there may be a query string following the path; a ? marks the start of a query.
+          </p>
+        </li>
+        <li>
+					What does DNS stand for, and what role does it play in making Internet requests?
+          <p class="ans">
+          	The Domain Name Service translates fully qualified domain names (FQDNs), like babbage.cs.qc.cuny.edu into internet protocol (IP) addresses,
+            like 149.4.211.122. The internet uses IP addresses for the actual routing of messages between computers, but it is easier for people to work
+            with FQDNs.
+          </p>
+        </li>
+        <li>
+        	What is HTTP, and how does it relate to the World Wide Web?
+          <p class="ans">
+          	The HyperText Transfer Protocol is a set of rules for using the internet to send messages between web browsers and web servers. The World Wide
+            Web is another name for using the internet to exchange messages using HTTP. Other internet protocols include SMTP for email and VOIP for telephone.
+          </p>
+        </li>
+        <li>
+        	Define the following HTML terms: element, start tag, end tag, attribute, attribute name, attribute value, and element content.
+          <p class="ans">
+          	An element is everything from the beginning of a start tag to the end of the corresponding end tag. The start tag consists of &lt; followed
+            by the name of the tag, followed by any number (possibly zero) of attributes, followed by &gt;. The end tag starts with &lt;/, the tag name again,
+            and &gt;.The element content is everything from the &gt; of the start tag to the &lt; of the end tag; elements may be nested inside the contents
+            of other elements. If an element has no content, the end tag may be combined with the start tag by putting a / just before its &gt;. An attribute
+            is a name-value pair: the name is made of letters and numbers, followed immediately by an equal sign, followed immediately by the attribute
+            value, which must be inside quotation marks.
+          </p>
+        </li>
+        <li>
+        	What are the three components of a static web page, and what language is used for each?
+          <ol class="ans level2outline">
+          	<li>Content markup: HTML or XHTML</li>
+            <li>Appearance: CSS</li>
+            <li>Behavior: JavaScript</li>
+          </ol>
+        </li>
+        <li>
+        	Give the names of 4 different browsers.
+          <p class="ans">
+          	Firefox, Internet Explorer, Opera, Safari. (There are many others.)
+          </p>
+        </li>
+      </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

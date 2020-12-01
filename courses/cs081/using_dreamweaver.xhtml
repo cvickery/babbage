@@ -1,0 +1,510 @@
+<?php
+  $mime_type = "text/html";
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $mime_type = "application/xhtml+xml";
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: $mime_type");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes;?>>
+
+  <head>
+
+    <title>Dreamweaver Setup</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          href="css/style-all.css" />
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Dreamweaver Setup</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+
+      <div class="whitebox">
+
+        <p>
+          <span class="programName">Dreamweaver</span> is one of the most widely used tools for
+          writing web pages.  It was developed by Macromedia, the same company that developed the
+          <span class="programName">Flash</span> system for animating web pages and <span
+          class="programName">Fireworks</span> program for working with images.  Macromedia was
+          purchased by <a href="http://www.adobe.com">Adobe</a>, the developers of <a
+          href="http://www.adobe.com/products/acrobat/main.html">Acrobat</a> and <a
+          href="http://www.adobe.com/creativesuite/main.html">Photoshop</a> in 2005. We have
+          installed Adobe’s “Creative Suite” in the TREE lab, which includes
+          Dreamweaver, Fireworks, Photoshop, Flash, and Illustrator.
+        </p>
+
+        <p>
+          There are plenty of good alternatives to Dreamweaver for serious web development—and
+          lots of bad alternatives too! In my courses, you are learning how to write code for the
+          web, so the important features of Dreamweaver are the code editor and site manager. The
+          web page, <a href="../TREE_Lab/using_scp.xhtml">Working From Off Campus</a>, gives you
+          information about alternate software that can be used to perform these functions.
+        </p>
+
+        <p>
+          If your really want to master Dreamweaver, there are lots of Dreamweaver books and online
+          tutorials available, and I don’t claim to have surveyed them well enough to make any
+          serious recommendations. This web page is a guide to using the site management features of
+          Dreamweaver. The code editor is the other part of Dreamweaver that is important for our
+          work, but using that part is quite self-explanatory.
+        </p>
+
+      </div>
+
+      <h2>Anatomy Of A Dreamweaver Site</h2>
+
+      <div class="whitebox">
+        <p>
+          Your web site for the course will actually reside in three different places at various
+          points:
+        </p>
+        <ol>
+          <li>
+            <p>
+              In a directory named <span class="directoryName">My Website</span> under your <span
+              class="directoryName"> My Documents</span> directory. This is the master copy of your
+              web site, which gets copied to and from the lab server (<span
+              class="computerName">Oak</span>) when you log off and onto the computers in the
+              TREE lab. No one else can access the files you put here, but I can get a copy of them
+              from <span class="computerName">Oak</span>.
+            </p>
+            <p class="standoutBlock">
+              The terms “directory” and “folder” are synonyms. Likewise, the
+              terms “file” and “document” are synonyms. Directories
+              (folders) are containers that can hold files (documents) and/or other directories.
+            </p>
+            <p>
+              You can use a web browser (<span class="programName">Firefox</span>, <span
+                  class="programName">Internet Explorer</span>, etc.) to access this copy of your
+              web site only when you are actually logged onto a particular computer in the TREE lab.
+              You do so using “tilde notation.” For example, if you are logged onto
+              <span class="computerName">cherry</span> and your user account is <span
+              class="variableName">student081</span>, the URL to get to your site is <span
+              class="codeSnippet">http://cherry.cs.qc.cuny.edu/~student081</span>.  The character
+              before your account name is a tilde, from the upper-left corner of the keyboard, not a
+              dash.
+            </p>
+            <p class="standoutBlock">
+              The computer you are logged into can always be referred to as “<span
+              class="computerName">localhost</span>”—but only from that computer. If you
+              use Dreamweaver to view your site in a browser, Dreamweaver will use the <span
+              class="computerName">localhost</span> name instead of the full Internet name (like
+                  <span class="computerName">cherry.cs.qc.cuny.edu</span>); you will have to load
+              your pages using the full Internet name when you validate them.
+            </p>
+            <p>
+              In Dreamweaver, this will be the “local” version of your site.
+            </p>
+          </li>
+          <li>
+            <p>
+              In a directory named <span class="directoryName">C:\htdocs\</span>. This is a shared
+              directory, meaning everyone can read from it and write to it. When you set up your
+              site in Dreamweaver, this will be the “remote” location for your site. You
+              will use Dreamweaver’s “put” feature to copy your site from your
+              local directory to <span class="directoryName">C:\htdocs\</span>. The reason for
+              testing your site in this other directory is to make sure all the links are set up
+              correctly and do not accidently depend on where the site is located in the file tree.
+              This test is important to perform before I copy your site to babbage for testing.
+            </p>
+            <p>
+              The URL for accessing <span class="directoryName">C:\htdocs\</span> is just the
+              hostname of the the computer, such as <span
+              class="codeSnippet">http://cherry.cs.qc.cuny.edu/</span>. This form of the URL works
+              whether anyone is logged onto the computer or not. When you are logged onto a
+              computer, you can also use the <span class="codeSnippet">http://localhost/</span> form
+              mentioned above instead.
+            </p>
+            <p class="standout_block">
+              The fact that <span class="directoryName">C:\htdocs\</span> is shared means that you
+              and everyone else in the course can put files and directories there. Good housekeeping
+              says you should delete everything you find there before putting anything there so you
+              can be sure what you test is just your own material rather than yours mixed in with
+              someone else’s. Likewise, it is a good idea to empty the directory again before
+              you log off to help avoid problems for the next user.
+            </p>
+            <p>
+              You can leave things in <span class="directoryName">C:\htdocs\</span> if you want to,
+              and those pages will continue to be accessible after you log off. But you cannot count
+              on them staying there because the next student to use that computer will probably
+              delete them before putting his/her own pages there.
+            </p>
+            <p>
+              Note that there is a separate <span class="directoryName">C:\htdocs\</span> directory
+              for each computer in the lab (because each computer has its own <span
+                  class="directoryName">C:\</span> drive), so what you put there on one computer
+              does not automatically migrate to other computers the way your roaming profile does.
+            </p>
+          </li>
+          <li>
+            <p>
+              The third place your site will reside is on <span class="computerName">babbage</span>,
+              the workstation in my office. When you send me email telling me your site is ready for
+              inspection, I run a script on <span class="computerName">babbage</span> that copies
+              your <span class="directoryName">My Website</span> directory from your roaming profile
+              on <span class="computerName">Oak</span> to a directory on <span
+              class="computerName">babbage</span>. I then look your site using a URL that looks
+              like, <span
+              class="codeSnippet">http://babbage.cs.qc.cuny.edu/Grading/yourlastname/</span>, where
+              “yourlastname” is your last name (no course number). Sometimes I will
+              invite you to look at your site on <span class="computerName">babbage</span> so you
+              can see what I see.
+            </p>
+            <p>
+              The critical feature of <span class="computerName">babbage</span> for testing purposes
+              is that it runs a Unix operating system (Macintosh OS X), which uses case-sensitive
+              file and directory names. Windows (and some Macintosh) systems ignore upper/lower case
+              differences, so a site that works fine on a Windows machine (like the ones in the TREE
+                  lab), can fail miserably when tested on a case-sensitive computer, like <span
+              class="computerName">babbage</span>. Fortunately, Dreamweaver can check all the links
+              in your site for you, and will do a case-sensitive check if you ask for it.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Initialize Your Site</h2>
+      <div class="whitebox">
+        <p>
+          Your course’s schedule page should have a link to a file named <span
+          class="fileName">template.zip</span>; download it, and extract the contents into your
+          <span class="directoryName">My Website</span> directory. What you will get is a file named
+          <span class="fileName">template.xhtml</span> that is a basic web page with some
+          boilerplate code that all the pages for your course need. I change this code from time to
+          time, so there is no link to it here. Get the current version from your course’s
+          schedule page.
+        </p>
+        <p>
+          Having put this file in place, you are ready to set up Dreamweaver to manage your course
+          web site for you.
+        </p>
+        <p>
+          Start Dreamweaver by clicking the green Dreamweaver icon on the desktop. It’s a big
+          program, so be patient while you wait for it to load.  A big green “splash
+          screen” may come up in the center with a checkbox at the bottom that says
+          “Don’t show again.” I suggest that you check that box simply because we
+          will generally work from the menus that offer the same choices as the splash screen.
+        </p>
+        <p>
+          You should see a set of panels down the right side of thw window called <span
+          class="functionName">CSS</span>, <span class="functionName">Application</span>, <span
+          class="functionName">Tag Inspector</span>, and <span class="functionName">Files</span>.
+        </p>
+
+        <p>
+          The Files panel should be open.  If not, click on it to open it up to show the full panel
+          with three tabs: <span class="functionName">Files</span>, <span
+          class="functionName">Assets</span>, and <span class="functionName">Snippets.</span> Use
+          the Files tab to navigate to your <span class="directoryName">My Website</span> folder.
+          You may need to navigate to “<span class="directoryName">C:\Documents and
+          Settings\*\My Documents</span>” to get there; substitute your account name (with
+              “<span class="fileName">.TREE</span>” after it) for the asterisk.  Click
+          once on the <span class="fileName">template.xhtml</span> file you just put there to select
+          it, and type Control-D, which will duplicate it, using the name “<span
+          class="fileName">Copy of template.xhtml</span>.” Click twice on that file name
+          (slower than a double-click) and the name will be selected so that you can type in a new
+          name for this file. Name it <span class="fileName">index.xhtml</span>. This name is
+          “magic” because we have configured the Apache server to deliver the page with
+          this name whenever a URL ends with a directory name instead of a file name.
+        </p>
+        <p class="standout_block">
+          I will often refer to <span class="fileName">index.xhtml</span> as a directory’s
+          “index page.”
+        </p>
+
+        <p>
+          There are three parts to initializing a Dreamweaver site: Giving the local information,
+          setting up the testing server (this part is optional for the purposes of this course), and
+          setting up the remote server. You can do one part of the setup at a time, if you like; it
+          is always possible to go back and add/remove/change features of a site. But you have to
+          set up the local information before doing the other two parts.
+        </p>
+
+        <h3>Local Information</h3>
+        <p>
+          To start using Dreamweaver to manage your site, click on the Site menu at the top of the
+          screen, and select “New Site…” This will bring up a large panel with
+          two tabs at the top (Basic and Advanced), and several categories in a pane going down the
+          left side (Local Info, Remote Info, Testing Server, …).  If you don’t see the
+          category list, switch from the Basic to the Advanced tab at the top.
+        </p>
+        <p>
+          With “Local Info” selected in the Category panel, pick a name for your site.
+          There are no rules for this name; you can use anything you like. Spaces and punctuation
+          marks are okay. If you were to use Dreamweaver to manage multiple sites on the same
+          computer, this is the name that would tell you which site you are working on.
+        </p>
+        <p>
+          The Local root folder is your <span class="directoryName">My Website</span> directory. Use
+          the folder icon to browse to it if you like. The default images folder should be <span
+          class="directoryName">My Website\images</span>. Use the folder icon to create this folder.
+          <strong>Be sure you use all lowercase letters for this folder name, as that is the
+          standard name to use. If you capiatlize it, you will have to adjust your code later on
+          when you start using <span class="tagName">img</span> tags in your web pages.</strong>
+        </p>
+        <p>
+          Be sure the “Links relative to: Document” option is selected. (It is by
+              default.)
+        </p>
+        <p class="standout_block">
+          Be sure the “Use case-sensitive link checking” box is checked. (It is
+              <strong>not</strong> by default.)
+        </p>
+        <p>
+          The other options on this panel are not important.
+        </p>
+        <p>
+          Go back and make sure case-sensitive link checking is turned on before leaving this panel.
+          You can click out of this panel and save your site at this point. The following steps can
+          be done later.
+        </p>
+
+        <h3 id="testing_server">Testing Server</h3>
+        <p>
+          Setting up a testing server is what will allow you view your web page in a browser by
+          clicking a button in Dreamweaver. The only consequence of omitting this part of the site
+          setup is that the first time you check a page you are working on, you will have to enter
+          the URL into your browser’s address bar manually.  When you select this Category,
+          the first thing to do is to change the Access to “Local/Network.” This will
+          open up a box where you will enter the testing server folder (give the complete pathname
+              to <span class="directoryName">My Website</span>), and the URL prefix. The latter is
+          where you enter the URL of your website using tilde notation. The problem here is that
+          because the lab uses roaming profiles, your testing server computer will change depending
+          on which computer you log into. The solution is to use the hostname <span
+          class="computerName">localhost</span>. So the pathname for the student named Perfect
+          Student taking CS-081 would be <span
+          class="codeSnippet">http://localhost/~student081</span>.
+        </p>
+        <p class="standout_block">
+          The problem with using <span class="computerName">localhost</span> is that nobody can
+          access your web pages from other computers using that name. In particular, if you are
+          looking at your web page using the localhost form of the URL and click on the XHTML or CSS
+          validation links at the bottom of the page, the validators, which run on other computers,
+          will not be able to access your page to validate it. In that case, you will have to enter
+          the name of the computer you are using into the URL before clicking the validation links.
+          This applies to the Remote Server setup too.
+        </p>
+
+        <h3 id="remote-server">Remote Server</h3>
+        <p>
+          The “Remote Server” for the lab is actually the same Apache server, running on
+          whatever computer you are logged into, that you are using for writing your code and which
+          you also (optionally) use as a testing server.  But the remote server’s document
+          root is <span class="directoryName">C:\htdocs</span> rather than your <span
+          class="directoryName">My Website</span> directory.
+        </p>
+        <p>
+          Select “Remote Info” from the category list, and select
+          “Local/Network” for the Access method, and <span
+          class="directoryName">C:\htdocs</span> as the Remote folder. This tells Dreamweaver how to
+          “publish” your web pages on the remote server. (“Publish” just
+              means to copy the web site to a publicly accessible web server.) In this case, the
+          pages simply get copied to the <span class="directoryName">C:\htdocs</span> directory of
+          the computer you are working on. (See description above about how to manage the contents
+              of that directory.) In a real-world setup, you would develop and test your site on one
+          computer, and then finally put the site onto the actual public host using <span
+          class="programName">ftp</span> or one of the other network technologies listed in the
+          Access box of the Remote Info panel.
+        </p>
+        <p>
+          None of the checkboxes in the Remote Info panel matter except the “Automatically
+          upload files to server on save” option which should not be checked. That would cause
+          all your pages to be copied to <span class="directoryName">C:\htdocs</span> every time you
+          saved them to your <span class="directoryName">My Website</span> directory, a piece of
+          overhead that is not worthwhile.
+        </p>
+      </div>
+
+      <h2>Previewing In Browsers and Checking Links</h2>
+      <div class="whitebox">
+        <h3>Previewing In Browsers</h3>
+        <p>
+          Much of the time you spend developing a web site will be spent testing your site to make
+          sure it looks and behaves correctly when viewed in a browser. You will use Firefox for
+          testing your pages because it has the best tools for finding and fixing errors. A typical
+          scenario will be to have the web page you are working on open in Firefox, switch to
+          Dreamweaver to fix a problem in the code, switch to Firefox and reload the page to see if
+          the problem has actually been fixed, switch back to Dreamweaver and make some changes,
+          switch back to Firefox and reload the page to see if it works, …. Remember, <span
+          class="codeSnippet">Alt-Tab</span> (<span class="codeSnippet">Command-Tab</span> on
+              Macintosh) is a quick way to switch between applications. And typing <span
+          class="codeSnippet">Control-R</span> in Firefox will reload the current web page so you
+          can see the effect of your code changes. (Browsers like to keep old code around in their
+              “cache” to avoid the time needed to fetch files over the network that
+              haven’t changed since last viewed. If this causes a problem, you can force the
+              browser to go to the server for the files by using <span
+              class="codeSnippet">Control-Shift-R</span> instead of just <span
+              class="code_snippet">Control-R</span>.)
+        </p>
+        <p>
+          Dreamweaver provides a way to launch a browser and open the web page you are working on in
+          it: there is a toobar button that looks like the earth that gives you a list of the
+          browsers that Dreamweaver knows about; click on one to view your page in that browser. Two
+          of the browsers are assigned hot keys (F_12 and Shift-F_12) to make the process more
+          efficient. But once you have a page opened in a browser, it’s probably faster just
+          to switch to the browser and reload the page.
+        </p>
+        <p class="standout_block">
+          In order to work, this Dreamweaver feature requires the <a href="#testing_server">Testing
+          Server</a> information to be set up correctly for the site. See above.
+        </p>
+        <p>
+          Be sure to keep an eye on the Tidy and Firebug icons in the status bar at the bottom of
+          the Firefox window: any time either one stops being a green circle with a check mark,
+          there is a problem you need to fix.
+        </p>
+        <p class="standout_block">
+          You need to validate your XHTML and CSS using the links at the bottom of each page before
+          submitting assignments, but you will also find that CSS validation will give a lot of help
+          tracking down problems getting your CSS rules to work.
+        </p>
+        <p>
+          Once you have your project working correctly in Firefox, you have to check it in the other
+          browsers to make sure you haven’t stumbled across a browser incompatability.
+          Don’t expect everything to be exactly the same in Firefox, Internet Explorer,
+          Safari, Chrome, and Opera. But make sure nothing is seriously “broken.” Do
+          your testing in the order of the browsers listed: if a problem shows up in Internet
+          Explorer, you have to change your code to deal with the issue, check again in Firefox to
+          make sure the code still works and validates there, then go on to the other two.
+        </p>
+
+        <h3 id="checking-links">Checking Links</h3>
+        <p>
+          To make sure all the links in your site will continue to work when the site is copied to
+          another server, follow the directions for <a href="#remote-server">setting up a remote
+          server</a> above, and tell Dreamweaver to “put” your files to the remote
+          server (actually, to the <span class="codeSnippet">C:\htdocs</span> directory on the local
+              computer). There is a blue up-pointing arrow under the site name in the Files panel
+          for doing this. Alternatively, you can right-click on the file in the Files panel and
+          select <span class="menuItem">Put</span> from the drop-down menu. Or you can just click
+          anywhere in the code and type <span class="codeSnippet">Control-Alt-U</span>. There is a
+          little Log… button in the lower right corner of the Files panel that will show you
+          a record of what got copied to the remote server.  </p>
+        <p>
+          The issue of Windows treating directory and file names differently from other operating
+          systems means that there is a chance that your site will work perfectly well when you test
+          it in the lab (Windows computers) but fail badly when I copy it to <span
+          class="computerName">babbage</span> for testing. But Dreamweaver can help eliminate the
+          problem by doing a case-sensitive link check on your site.
+        </p>
+        <p>
+          Right-click on any item in the Local Files panel, and click the <span
+          class="menuItem">Check Links…</span> menu item. You will have the choice of
+          checking just the item you clicked on or your entire site. For the size of the site you
+          are working on, it never hurts to check the entire site; it happens fast. A report panel
+          will pop up listing all the broken links in your site, along with a “browse”
+          option for each one that will let you select the appropriate file the link is supposed to
+          go to. Note that “link” is a generic term here; the links could references to
+          local files from inside <span class="tagName">link</span>, <span class="tagName">a</span>,
+          <span class="tagName">img</span>, or <span class="tagName">script</span> tags.
+        </p>
+        <p class="standout_block">
+          You must have clicked the “use case-sensitive link checking” option in the
+          Local Info category of the site setup panel for this feature to do any good. You can check
+          and/or change it by going to the <span class="menuItem">Site-&gt;Manage
+          Sites…</span> menu item.
+        </p>
+        <p>
+          You don’t need to check links as you develop you site, just as a last check before
+          submitting each assignment.  Be sure to check your site again after fixing any broken
+          links to be sure nothing got messed up in the repair process.
+        </p>
+      </div>
+      <h2>Cleaning Up Your Code</h2>
+      <div class="whitebox">
+        <p>
+          The Dreamweaver code editor is good, and the code hints eliminate the need for a lot of
+          memorization.  But it is extremely annoying in the way it formats the whitespace (spaces,
+              ends of lines, and tabs) in your code. Of course whitespace in your code has no effect
+          on the appearance of your web pages, but indentation and margins are critical for
+          reading code efficiently, an especially important issue when trying to fix problems in the
+          code!  The problem is that no matter what you tell Dreamweaver to do, it will regularly
+          insert some tab characters into your code, thereby messing up the indentation structure
+          when you look at the code in some software that uses a different setting for tab stops.
+          For example, the code view option in Firefox sets tab stops every 8 characters instead of
+the 2-character setting used by Dreamweaver. (That 8-character setting is a bad idea because code
+    tends to run out of space on the right after just a few levels of indentation.)
+        </p>
+        <p>
+          Dreamweaver has an “Apply Source Formatting” option under the <span
+          class="menuItem">Commands</span> menu, but that item simply makes things worse. So, until
+          Adobe fixes the problem, the only solution is to use another editor to clean up the
+          whitespace. The <span class="programName">Vim</span> editor can do this easily, and
+          Dreamweaver lets you easily switch between using its built-in code editor and <span
+          class="programName">Vim</span> (or any other editor of your choice). Almost at the bottom
+          of the <span class="menuItem">Edit</span> menu is the option to edit the current page in
+          <span class="progamName">Vim</span>.  The <a href="using_vim.xhtml">Using Vim</a>
+          mini-tutorial has enough information to get you started using <span
+          class="progamName">Vim</span>, with instructions on replacing tab characters with spaces
+          included in the second part of the page.
+        </p>
+        <p>
+          When you exit <span class="progamName">Vim</span>, you will automatically come back to
+          Dreamweaver, which might ask you if you want to update the page with the changes you made
+          to it in <span class="progamName">Vim</span>. Since the answer is always “yes”
+          (because you would quit <span class="progamName">Vim</span> without saving the changes if
+           you didn’t want to update the file), you might want to turn off this dialog by
+          editing your Dreamweaver preferences (Bottom of the <span class="menuItem">Edit</span>
+              menu in Windows; <span class="codeSnippet">Command-,</span> on Macintosh.) In the File
+          Types / Editors catagory, set the “Reload Modified Files” option to
+          “Always.”
+        </p>
+        <p>
+          The <a href="using_vim.xhtml">Using Vim</a> web page also tells how to reformat paragraphs
+          so they aren’t so long that you have to scroll horizontally to read them.
+        </p>
+        <p>
+          Unlike link checking, cleaning up your code’s formatting is probably something that
+          will be helpful if you do regularly so that it is easier for you to read and fix when you
+          find errors.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      Last updated <?php echo gmdate("Y-m-d", filemtime($_SERVER["SCRIPT_FILENAME"]));
+      ?> - <a
+         href="../../">Vickery Home</a> - <a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a> - <a
+         href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS
+       </a>
+    </div>
+  </body>
+</html>

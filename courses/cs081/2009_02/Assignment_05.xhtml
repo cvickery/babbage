@@ -1,0 +1,179 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 5</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 5<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+      	The topics for this assigment are lists and the CSS box model.
+      </div>
+      <h2>Reference Material</h2>
+      <div>
+        <ul>
+          <li>Chapter 6 of the textbook (Lists)</li>
+          <li>Chapter 5 of the textbook (The Box Model)</li>
+        </ul>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+      	<p>
+        	Be sure you have completed <a href="Assignment_04.xhtml">Assignment 4</a> successfully before you start working on this one.
+          It is too late to receive credit for Assignment 4, but you cannot receive credit for this assignment without completing that one first.
+        </p>
+        <p>
+        	The first part of this assignment is to construct two lists on your blog page: an ordered list to hold blog entries, and an unordered
+          list to hold navigation links.
+        </p>
+        <ol>
+        	<li>
+          	Each <span class="tagName">h2</span> element and all the <span class="tagName">p</span> elements that follow it, until the next
+            <span class="tagName">h2</span>, make up a <span class="tech-term">blog entry</span>. Wrap each complete blog entry in a
+            <span class="tagName">li</span> element, and wrap all these list items in an <span class="tagName">ol</span> element. Give this list
+            the <span class="attributeName">id</span> the value, <span class="attributeValue">"blog-entry-list"</span>.
+            <p>
+            	Do not include the paragraphs with the navigation links in the last blog entry.
+            </p>
+            <p>
+            	Load your web page and make sure it validates with no warnings or errors. The difference you should see from the previous assignment is
+              the appearance of a number to the left of each <span class="tagName">h2</span>:
+            </p>
+            <p>
+            	<img src="images/assignment_05-Figure_01.png" alt="screenshot of blog list item" />
+            </p>
+          </li>
+          <li>
+          	In Assignment 4, the navigation links were in a paragraph with the <span class="attributeName">id</span> of 
+            <span class="attributeValue">"nav-links"</span>. Change that <span class="tagName">p</span> tag to an <span class="tagName">ul</span>
+            tag. Wrap each <span class="tagName">a</span> element in a <span class="tagName">li</span> element; remove any characters or character
+            entities from between the links, except for normal spaces.
+            <p>
+            	Again, check your page for errors. The nav links should be centered and each one should have a bullet next to it:
+            </p>
+            <p>
+            	<img src="images/assignment_05-Figure_02.png" alt="screenshot of nav list" />
+            </p>
+          </li>
+        </ol>
+        <p>
+        	The second part of the assignment is to use the CSS Box Model to change the appearance of various boxes on the blog page.
+        </p>
+        <p>
+        	Give the entire list of blog entries a different <span class="propertyName">background-color</span> from the rest of the page. Make sure
+          the text remains easy to read: adjust the <span class="propertyName">color</span> if necessary.
+        </p>
+        <p>
+        	Give the list of navigation links yet a different <span class="propertyName">background-color</span>. Adjust the
+          <span class="propertyName">color</span> of the <span class="tagName">a</span> elements as well.
+        </p>
+        <p>
+          There is already
+          a rule in your stylesheet for all paragraphs with the <span class="attributeName">class</span> <span class="attributeValue">"lead-paragraph"</span>.
+          Edit <span class="fileName">main.css</span> to make those paragraphs distinctive:
+        </p>
+        <ul>
+        	<li>
+          	Give them a different <span class="propertyName">background-color</span> and <span class="propertyName">color</span> from the other paragraphs.
+          </li>
+          <li>
+          	Give them margins, borders, and padding. Make sure all three properties have visible effect on your web page.
+          </li>
+        </ul>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+      	<p>
+        	Be sure to check your blog page carefully using Firefox: there must be no errors or warnings, and all the CSS rules have to cause
+          their intended effects. You must also double-check the page using to the W3C validators: there must be no warnings or errors
+          that they can detect either.
+        </p>
+        <p>
+        	Check your home page to make sure it is still legible and functional.
+        </p>
+        <p>
+        	Run a link check on your site before submitting the assignment; fix any errors. (Right click in the Files panel on the right,
+          select <span class="menuItem">Check Links</span>, then select <span class="menuItem">Entire Local Site</span> (keyboard shortcut:
+          Control-F8). Fix any broken links.
+        </p>
+        <p>
+          Submit the assignment by midnight of the due date:
+        </p>
+        <ol>
+            <li>
+              To submit this assignment, simply send me an email message telling me that your web page is ready for me
+              to look at: I will copy it from <span class="computerName">Oak</span> to <span
+              class="computerName">Babbage</span>, and check it out there.
+              <p>
+                If your have trouble with the roaming profile feature of the lab, copy your <span class="directoryName">My&nbsp;Website</span> 
+                directory to your <span class="directoryName">H:\</span> drive. Mention that in your email message, and I
+                will copy your <span class="directoryName">My Website</span> directory to <span
+                class="computerName">Babbage</span> from your home directory instead of from your profile directory on <span
+                class="computerName">Oak</span>.
+              </p>
+            </li>
+            <li class="standout-block">Be sure to put your name in the body of your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-081 Assignment 5</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu. (Fix up the 'AT' part.)
+            </li>
+        </ol>
+        <p>
+          See <a href="../../cs081/index.xhtml">the course home page</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

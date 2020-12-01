@@ -1,0 +1,136 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+<title>CS-081 Assignment 4</title>
+
+
+<link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css" />
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>CS-081 Assignment 4</h1>
+  </div>
+  <div id="content">
+    <h2>Introduction</h2>
+    <div class="whitebox">
+      <p>This assignment is an exercise in using Javascript to alter
+      the presentation of a web page interactively.  The goal is for
+      you to become familiar with Javascript, the DOM tree, and CSS
+      all at the same time.  Consider it an experimental approach!
+      </p>
+      <p>If you have not done so, read the <a
+      href="../Javascript_Tutorial">Javascript Tutorial</a> assigned
+      previously. We still haven&rsquo;t covered forms yet, so you can
+      skip that part of the tutorial. But you will need to work with
+      events in this assignment, so you will need to understand that
+      part as you go through this assignment. </p>
+    </div>
+
+    <h2>Procedure</h2>
+    <div class="whitebox">
+      <ol>
+        <li>
+          <h5>Create a new web page for this assignment and add a link
+          to it from your home page.</h5> <p class="runin">Use your
+          XHTML template to create a new web page and save it as a
+          file named <span
+          class="fileName">Assignment_04.xhtml</span>.  Change the
+          title and <span class="tagName">h1</span> element to
+          &ldquo;Javascript Example,&rdquo; and change the <span
+          class="tagName">script</span> in the head of the document
+          from <span class="fileName">Template.js</span> to <span
+          class="fileName">Assignment_04.js</span>.  Save your new web
+          page in your document root directory.  Edit your <span
+          class="fileName">index.xhtml</span> file to add an unordered
+          list in the <span class="variableName">header</span> div
+          just under the <span class="tagName">h1</span> element.  But
+          one item in the list, a link to <span
+          class="fileName">Assignment_04.xhtml</span>.  Use
+          &ldquo;Javascript Example&rdquo; as the content of the link.
+          View your web site in the browser, and verify that the link
+          is in place and that clicking on it it takes you to your new
+          web page.</p>
+          </li>
+        <li>
+
+          <h5>Add Javascript code to display four <span
+          class="variableName">alert</span> messages.</h5> <p
+          class="runin">Ultimately, all Javascript code will be
+          contained in Assignment_04.js, but for this part of the
+          assignment, add additional <span
+          class="tagName">script</span> tags, one in the document
+          head, and one in the document body.  First add a few <span
+          class="variableName">Lorem Ipsum</span> paragraphs to the
+          content part of the web page.  Put one script tag in the
+          head of the document, and the second one between the first
+          and second paragraphs.  Put the message, &ldquo;Alert
+          1&rdquo; in an <span class="functionName">alert()</span>
+          statement in the first one, and the message &ldquo;Alert
+          2&rdquo; in an <span class="functionName">alert()</span>
+          statement in the second one.</p> <p>Create the <span
+          class="fileName">Assignment_04.js</span> file and save it
+          inside your <span class="directoryName">scripts</span>
+          directory.  Put a third alert statement in the script file,
+          and test that the three alert messages show up in the
+          expected order.</p>
+
+        </li>
+        <li>
+
+          <h5>Display the number of paragraphs as the page loads and
+          when loading is complete.</h5> <p class="runin">Modify the
+          three alert messages so they show the number of paragraph
+          elements in the document as they execute. Add a fourth <span
+          class="functionName">alert()</span> statement that displays
+          the number of paragraphs in the document after the DOM tree
+          has been built.</p>
+
+        </li>
+
+      </ol>
+    </div>
+
+  </div>
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>    </p>
+    <p><em>Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>    </p>
+</div>
+  </body>
+</html>

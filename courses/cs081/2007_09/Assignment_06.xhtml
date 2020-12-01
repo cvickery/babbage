@@ -1,0 +1,282 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 6</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>
+        CS-081 Assignment 6
+      </h1>
+    </div>
+    <div id="content">
+      <h2>
+        Introduction
+      </h2>
+      <div  class="whitebox">
+        <p>
+          The assignment is to create a web form that you can submit to a dummy page that does nothing but display
+          the form data in a new web page. You are to build the web form page, and I am supplying a dummy page that
+          shows all the names and values that were in the form data.
+        </p>
+      </div>
+      <h2>
+        The Assignment
+      </h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Set up the assignment.</h5>
+            <p class="runin">
+              Create a new directory for this assignment, named <span class="directoryName">Assignment_06</span>, 
+              and use the <a href="../template.zip">course template file</a> to create
+              <span class="fileName">index.xhtml</span> in that directory.
+            </p>
+          </li>
+
+          <li>
+            <h5>Create the form.</h5>
+            <p class="runin">
+              Use <span class="tagName">form</span>, <span class="tagName">fieldset</span>, <span
+              class="tagName">legend</span>, <span class="tagName">label</span>, <span class="tagName">input</span>,
+              <span class="tagName">select</span>, and <span class="tagName">textarea</span> to create a form that uses
+              various form elements something like the following example:
+            </p>
+            <p><img src="images/assignment_06_screenshot.png" alt="Assignment 6 Screenshot" /></p>
+            <p>
+              Start by getting all the form elements to show up, but do not apply any CSS rules yet. You can use
+              any additional elements you want, but be sure to include at least: two text areas for email addresses; a
+              password box; a set of radio buttons; a set of checkboxes; two select boxes, one that allows multiple
+              selections and the other that does not; and at least one textarea.
+            </p>
+            <p>
+              You may make the <span class="attributeName">method</span> attribute of your form either <span
+              class="attributeValue">get</span> or <span class="attributeValue">post</span>. In fact, I encourage
+              you to experiment with both.
+            </p>
+            <p>
+              The <span class="attributeName">action</span> attribute of the form should be set to
+              <a href="http://babbage.cs.qc.edu/courses/cs081/2007_09/form_processor.xhtml"
+                 title="Link to Vickery's form processor"><span 
+               class="codeSnippet">"http://babbage.cs.qc.edu/courses/cs081/2007_09/form_processor.xhtml"</span></a>. 
+               When you click on your submit button, you should get a blue web page with a table that shows all the 
+               names and values from your form.
+            </p>
+            <div class="standout_block">
+              <p>
+                Here is a summary of how to set name and value attributes for various form elements.
+              </p>
+              <table>
+                <tr><th>Element Types</th><th>Name</th><th>Value</th></tr>
+                <tr>
+                  <th>text, password, textarea</th>
+                  <td>Use the <span class="attributeName">name</span> attribute in the tag.</td>
+                  <td>The value will be whatever the user types.</td>
+                </tr>
+                <tr>
+                  <th>radio buttons</th>
+                  <td>All buttons in a set must have the same <span class="attributeName">name</span>.</td>
+                  <td>Give each radio button a different <span class="attributeName">value</span> attribute.</td>
+                </tr>
+                <tr>
+                  <th>checkboxes</th>
+                  <td>Each checkbox gets a different <span class="attributeName">name</span>.<br />(See note below.)</td>
+                  <td>Give each checkbox a different <span class="attributeName">value</span> attribute.</td>
+                </tr>
+                <tr>
+                  <th>select</th>
+                  <td>
+                    Use the <span class="attributeName">name</span> attribute in the <span
+                    class="tagName">select</span> tag.
+                    <br />(See note below for <span class="tagName">select</span>s with the <span
+                    class="attributeName">multiple</span> attribute.)
+                  </td>
+                  <td>
+                    Use a different <span class="attributeName">value</span> for each <span class="tagName">option</span>.
+                  </td>
+                </tr>
+              </table>
+              <p class="whitebox">
+                <strong>Note: </strong><em>If you know that your form data will be processed by a PHP script (and it will
+                be for this assignment), you can use a single name followed by square brackets to create a list of values
+                for that name, and the PHP script will receive an array of values for that list. Otherwise, using the same
+                name on multiple elements would cause the same name to be sent multiple times, but with different
+                values.</em>
+              </p>
+              <fieldset class="code_block"><legend style="font-family:sans-serif">Sample Code</legend>
+&lt;input type="checkbox" name="color[]" value="red" id="red" /&gt;&lt;label for="red"&gt;Red&lt;/label&gt; 
+&lt;input type="checkbox" name="color[]" value="green" id="green" /&gt;&lt;label for="green"&gt;Green&lt;/label&gt; 
+&lt;input type="checkbox" name="color[]" value="blue" id="blue" /&gt;&lt;label for="blue"&gt;Blue&lt;/label&gt;
+
+&lt;select name="food[]" multiple="multiple"&gt;
+  &lt;option value="eggs"&gt;Eggs&lt;/option&gt;
+  &lt;option value="ice cream"&gt;Ice Cream&lt;/option&gt;
+&lt;/select&gt;
+              </fieldset>
+            </div>
+            
+          </li>
+          <li>
+            <h5>Test your form.</h5>
+            <p class="runin">
+              Test your form to be sure it works; later you can work on making it look good.
+            </p>
+            <p>
+              Experiment with your form to be sure it always works and that you understand the page that
+              the form processing script generates. You can try to trick it by typing in unexpected values to
+              see what happens. Can you put HTML tags into text fields? What happens if you type quotation marks
+              and/or paste smart quotes that you copied from a word processing document?</p>
+            <p>
+              Try both the GET and POST methods for the form. Can you see the difference?
+            </p>
+          </li>
+          <li>
+            <h5>Style the form.</h5>
+            <p class="runin">
+              You are not allowed to use a table to manage your form&rsquo;s layout. Rather, use CSS and what you know 
+              about float and clear to get your form&rsquo;s layout to look similar to the sample above. For this 
+              assignment do <em>not</em> try to get the form to look right in Internet Explorer: that would require 
+              browser-specific &ldquo;hacks&rdquo;, and you don&rsquo;t have enough time to do that.
+            </p>
+            <p>
+              There seems to be no good way to get the sets of radio and checkbox buttons to come out right without
+              some addtional markup. One solution is to add two <span class="tagName">div</span> tags for each set:
+            </p>
+            <p class="code_block">
+&lt;div class="radio-check-set"&gt;
+  &lt;p&gt;Color:&lt;/p&gt;
+  &lt;div&gt;
+    &lt;input type="checkbox" id="red" name="color[]" value="Red" /&gt;
+    &lt;label for="red"&gt;Red&lt;/label&gt;
+    &lt;input type="checkbox" id="green" name="color[]" value="Green" /&gt;
+    &lt;label for="green"&gt;Green&lt;/label&gt;
+    &lt;input type="checkbox" id="blue" name="color[]" value="Blue" /&gt;
+    &lt;label for="blue"&gt;Blue&lt;/label&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+            </p>
+            <p>
+              The outer <span class="tagName">div</span> provides a class name so that the paragraphs, inputs,
+              and labels inside it can be styled differently from the other paragraphs, inputs, and labels on
+              the page. The paragraph gets styled like the labels for the other elements of the form (float left,
+              give an explicit width, and right-justify the text). The inner <span class="tagName">div</span>
+              gets styled like the text and password <span class="tagName">input</span> elements: float it to the
+              left. Then be sure these inputs and labels use the <span class="codeSnippet">display:inline</span>
+              property so they appear in a single row.
+            </p>
+          </li>
+        </ol>
+      </div>
+      <h2>
+        Submit The Assignment
+      </h2>
+      <div class="whitebox">
+        <p>
+          Before you submit the assignment, be sure you perform the following tests:
+        </p>
+          <ol>
+            <li>
+              <h5>Check the page as described above.</h5>
+              <p class="runin">
+              	Be sure the form data gets submitted and echoed back correctly.
+              </p>
+            </li>
+            <li>
+              <h5>Publish your page and its stylesheet to the server&rsquo;s document root</h5>
+              <p class="run_in">Verify that everything looks right.</p>
+            </li>
+            <li>
+              <h5>
+                Perform a link check on your site to make sure there are no mistakes due to capitalization problems.
+              </h5>
+              <p class="runin">
+                (Remember, you checked the "case-sensitive link checking" option when setting up your site.) Right click
+                on the site folder in Dreamweaver, and select &ldquo;check links&rdquo;. If there are any problems, they
+                will show up in a separate window. Fix them and do another check until there are no problems left.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the XHTML.</h5>
+              <p class="runin">
+                You should have been looking at the TIDY and Firebug icons in the Firefox status bar as you were testing
+                your code to be sure they both are green circles with white checkmarks inside them. Now, click on the
+                XHTML link in the footer of your web page to get a full W3C validation check. Fix any warnings (or
+                errors) that the validator reports.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the CSS.</h5>
+              <p class="runin">
+                Once the XTML validates successfully, check the CSS using the other link in the footer of your page.
+                Again, fix any warnings or errors that the validator reports.
+              </p>
+            </li>
+          </ol>
+        <p>
+          Once you have completely tested and fixed your web page, send me an email message telling me it is ready for
+          me to review.  I will get a copy of your entire site from the copy of your profile that is saved on <span
+          class="computerName">maple</span>, so there is no need to tell me which computer you were working on. Just
+          tell me that the site is ready for me to look at.
+        </p>
+        <p>
+          Send your email to me by midnight of the due date. My email address is: <span class="emailAddress
+          codeBlock">vickery at babbage.cs.qc.edu</span>.
+        </p>
+        <p class="standout_block">
+          <strong>You must use exactly this Subject line for your email to be sure I actually receive it:</strong> <span
+          class="codeBlock">CS-081 Assignment 6</span>.<br />Include the "CS-081" part in the subject line of <em>all</em>
+          messages you send to me this semester.
+        </p>
+        <p>
+          If you do not receive an &ldquo;OK, I&rsquo;ll check it out!&rdquo; reply from me within a day or two of
+          submitting the assignment, it means I did not receive it. But I will be sending that acknowledgement manually,
+          so don&rsquo;t resubmit the assignment until I have had a chance to reply to the first one.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home Page</a>&nbsp;-&nbsp;<a
+           href="..">CS-081 Home Page</a>&nbsp;-&nbsp;<a
+           href=".">Fall 2007 Course Page</a><br/>
+        <a
+           href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      </p>
+      <p>
+        <em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

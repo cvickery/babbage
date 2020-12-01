@@ -1,0 +1,178 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 7</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>
+        CS-081 Assignment 7
+      </h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          For this assignment you are to demonstrate your mastery of CSS table-based layout and the elements of CSS typography. To demonstrate your
+          mastery of CSS table-based layout, you will turn the navigation list into a horizontal row of &ldquo;tabs&rdquo; with virtually no change
+          to the XHTML code for the blog index page. For the typography part, you are invited to experiment with the various CSS text properties
+          discussed in class (and in various parts of the textbook) to create a &ldquo;pleasing&rdquo; appearance for the blog index page.
+        </p>
+      </div>
+      
+      <h2>The Assignment</h2>
+      <div>
+      	<ol>
+        	<li>
+          	<h5>Move the navigation list into position and style it as a table.</h5>
+            <p class="runin">
+            	You do have to make one change to the XHTML for your blog index page: move the <span class="propertyValue">navList</span> 
+              <span class="tagName">ul</span> from the end of the document to a position between the <span class="tagName">h1</span> and the
+              <span class="propertyValue">blogEntries</span> <span class="tagName">ol</span>. You could accomplish the same thing by absolutely
+              positioning the <span class="propertyValue">blogEntries</span> <span class="tagName">ol</span> below the navigation list, but then
+              you would also have to position the blog entries list below that. Just
+              moving the XHTML element seems easier at this point.
+            </p>
+            <p>
+            	Remove from your stylesheet all css rules that appply to the navigation list, its list items, and the anchors within the list items.
+              You need a clean slate for this project.
+            </p>
+            <p>
+            	Create a background image of a rectangle with rounded corners on the top and with a transparent background. The dimensions are somewhat
+              arbitrary, but the rectangle has to be large enough to hold the longest text in your anchors. This size, in turn, depends not only on the
+              actual characters in the text of your anchors, but also on their font-size, padding, margins, etc. That is, you may find you want to
+              change this image as you progress through the assignment.
+            </p>
+            <p>
+            	Style the navigation list, its list items, and their anchors to give an effect like that shown in the following screenshot:
+            </p>
+            <p>  
+              <img src="images/assignment_07-1.png" alt="screenshot" width="600" />
+            </p>
+            <p>
+            	As demonstrated in class, the tabs should totally change appearance when the mouse hovers over them:
+            </p>
+            <p>
+            	<img src="images/assignment_07-2.png" alt="screenshot with hover" />
+            </p>
+            <p>
+            	To get this layout to work, you will need to have each list item in the navigation list act like a table cell:
+              <span class="code-snippet">display:table-cell;</span>. As discussed in class, table cells have to be inside table rows, and
+              table rows have to be inside tables. But the CSS specification explicitly says that a sequence of adjacent table cells (such as
+              the list items in the navigation list) will automatically be wrapped in an anonymous table row element so that they all appear
+              in a horizontal row. Furthermore, this anonymous table row, if it is not already inside a table, will automatically be wrapped inside
+              an anonymous table element. So all it takes to get the list items to get displayed as table cells is simply to add one CSS rule to them
+              that declares them to be displayed like table cells.
+            </p>
+            <p>
+            	But of course nothing is really that simple. You need to use margins and padding, and perhaps some judicious settings of heights and
+              widths of the navigation list, the list items, and the anchors to get the effect we are looking for. In particular, note that the images
+              with the rounded corners on top for the &ldquo;tabs&rdquo; should be used as a background for the list items. Think about the stacking order
+              of nested elements. The list items are inside an ordered list, so they appear in front of any background you set for the list. Likewise, the
+              anchors are inside list items, so they appear in front of (obscure parts of) the list items. An important fact that makes this assignment
+              relatively easy to do is that the background of the anchors will be transparent unless you set it to a specific value. So the screen shot
+              shows the yellow tabs showing through the background of the anchors when the mouse is not hovering over them (no background specified for 
+              the anchors), but the background is set to blue for the <span class="variable-name">a:hover</span> pseudo-class, which covers the background
+              images of the list items and blends with the background color of the unordered list.
+            </p>
+            <p>
+            	Table cells do not have margins, but they do have padding, text-alignment, and vertical-alignment for moving the content around inside
+              the inside of the cells. Also, if you have an element that is displayed as a table with the separated borders model
+              (<span class="code-snippet">border-collapse:separate</span>, the default setting), you can use the 
+              <span class="propertyName">border-spacing</span> property to create pretty much the same thing as margins between the cells. You could
+              set the unordered list a table element to try out this option; but you can do the assignment without using it.
+            </p>
+          </li>
+          
+          <li>
+          	<h5>Develop the typography of the page.</h5>
+            <p class="run-in">
+            	Use a mixture of typographic properties to format the text in various parts of the blog page in a &ldquo;pleasing&rdquo; way.
+            </p>
+            <p>
+            	For this assignment, you must use <em>all</em> of the following typographic properties in your blog page: font family, font size, font weight,
+              font style, font variant, line height, letter spacing, first line, and first character. But please (<em>please!</em>) realize that
+              moderation is the key to success. A hodge-podge of different text effects all over the page is a hallmark of bad design. Rather, I suggest
+              you limit yourself to no more than two different font families and no more than three font sizes on the entire page. The font style and font
+              variant properties work best for headings (your blog should include two or three heading levels), or perhaps the dateline elements, which
+              are paragraphs that act in many ways like subheadings in our blog design. Line height, first line, and first character would make sense for
+              the paragraphs in the blog entries. Character spacing can be used effectively in both headings and paragraphs.
+            </p>
+          </li>
+          <li>
+          	Be sure your page works in all browsers, has all &ldquo;green circles&rdquo; from Firefox, and passes both W3C validator tests with no
+            errors or warnings. When you use IE-8, be sure &ldquo;compatability view&rdquo; is not turned on.
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          I will check your assignment by copying it from <span class="computerName">Maple</span> to <span class="computerName">Babbage</span>;
+          to submit the assignment, send me an email with your name in the message body saying it is ready for me to look at.
+          Send your email to me by midnight on the due date (November 25). My email address is:
+        </p>
+          <address>Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu</address>
+        <p class="standout_block">
+          The Subject Line of your email must say <span class="codeblock">CS-081&nbsp;Assignment&nbsp;7</span>,
+          exactly like that, in order to avoid my spam filters.
+        </p>
+      </div>
+    </div>
+    <div id="footer">Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs081">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

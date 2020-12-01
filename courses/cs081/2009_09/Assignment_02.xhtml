@@ -1,0 +1,150 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 2</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:79494D39-F602-4B63-85F2-BB8D31803620'>
+		<h1>CS-081 Assignment 2</h1>
+    <h2>Background Material</h2>
+    <div>
+    	The purpose of this assignment is for you to become familiar with the laboratory environment you will be working with this semester.
+    </div>
+    <h2>Lab Activities.</h2>
+    <div>
+    	<ol>
+        <li>
+        	<h5>Log into your account and verify that the roaming profile is working correctly.</h5>
+          <p class="run-in">
+          	Use the information in the <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a> web page to log into your account. Change your
+            password to something secure. (Type Ctrl-Alt-Delete and click on &ldquo;Change Password.&rdquo;)
+          </p>
+          <p>
+          	Download <a href="../template.zip">the zip file containing template.xhtml</a> to your desktop. Log out, and log into a different
+            computer in the lab. Be sure <span class="filename">template.zip</span> is on your desktop on that computer too.
+          </p>
+          <p class="standout-block">
+          	If you are not able to complete this step successfully, stop. Contact me to let me know what went wrong, and I will try to fix the
+            problem. But do not continue to the next step until this step works correctly.
+          </p>
+          <p>
+          	Extract the contents of <span class="filename">template.zip</span> to your <span class="directory-name">My Website</span> directory.
+          </p>
+        </li>
+        <li>
+        	<h5>Set up your course website using Dreamweaver</h5>
+          <p class="run-in">
+						The <a href="../using_dreamweaver.xhtml">Dreamweaver Setup</a> web page tells you haw to set up a Dreamweaver site. Create one using your
+            <span class="directory-name">My Website</span> directory as the local root and <span class="directory-name">C:\htdocs</span> as the remote
+            site, as demonstrated in class. Use Dreamweaver to edit the <span class="filename">template.xhtml</span> that you extracted in the previous
+            step. Remove all the comment lines from the template file, and save it, and close it.    	
+          </p>
+          <p>
+          	Duplicate <span class="filename">template.xhtml</span> (click on the file, then either type Ctrl-D or right-click, and select
+            Edit&rarr;Duplicate), then rename the duplicate file from <span class="filename">Copy of template.xhtml</span> to
+            <span class="filename">index.xhtml</span>. Now open <span class="filename">index.xhtml</span> (double-click on it) and make the following
+            changes:
+          </p>
+          <ul>
+          	<li>Change the page title to something meaningful rather than &ldquo;CS-081 Course Template&rdquo;</li>
+            <li>
+            	Change the contents of the <span class="tag-name">h1</span> element to something meaningful that includes your own name.
+            	<p class="standout-box">
+              	If you want to put an apostrophe in your new title (such as something like &ldquo;Vickery&rsquo;s Web Site,&rdquo;
+              	do not type a prime symbol ('), which is what you get if you type the
+              	&ldquo;apostrophe&rdquo; key on the keyboard. Instead, type &amp;rsquo;. This will give you a &ldquo;right single quote&rdquo;
+                symbol to use as your apostrophe. This topic will be covered in more depth later in the course.
+              </p>
+            </li>
+          </ul>
+        </li>
+        <li>
+        	<h5>Verify that your site is set up correctly.</h5>
+          <p class="run-in">
+          	Save your index file, and use Firefox to visit your web site using a &ldquo;~ type&rdquo; URL: 
+            <span class="code-snippet">http://<em>sometree</em>.cs.qc.cuny.edu/~<em>youraccount</em></span>. Substitute the name of the computer you
+            are logged into for <em>sometree</em> and your account name for <em>youraccount</em>. Check Firefox&rsquo;s title bar to be sure your
+            page&rsquo;s title shows up; look at the page to be sure the <span class="tag-name">h1</span> is displayed correctly. Check the HTML validator
+            on the lower right corner of the Firefox window to be sure it is a green circle with a checkmark in it and not a red circle with an X or a
+            yellow triangle with an exclamation point. Click on the XHTML link at the bottom of the page and verify that the page is valid XHTML 1.1 with
+            no errors or warnings. If your site fails any of these checks, fix it and try again.
+          </p>
+          <p>
+          	Use Dreamweaver to copy your index page to the &ldquo;remote&rdquo; location for your site. For this course, the remote site is actually the
+            <span class="directory-name">C:\htdocs</span> directory on the computer you are using. With the index page selected, you can type
+            Ctrl-Shift-U to do this. The Dreamweaver Setup web page gives some alternatives. Now visit the &ldquo;home page&rdquo; of the computer you are
+            logged into using the URL: <span class="code-snippet">http://<em>sometree</em>.cs.qc.cuny.edu/</span>. Your index page should show up
+            again and still pass all the validity checks listed above.
+          </p>
+        </li>
+      </ol>
+      <p>
+      	That&rsquo;s it: do not add any more pages to your site yet, and do not try to do anything to the appearance of your index page yet.
+      </p>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+      	Once you have set up your web site and tested that the index page validates, log out of your account so your site will be copied
+        to the server. I will copy your site from the server to the computer in my office (babbage) to check it out.
+      </p>
+      <p>
+      	When you finish your assignment, send me an email message telling me that it is ready. Use <span class="code-snippet">CS-081 Assignment 2</span>
+        as the subject line. Make it look just like that
+        to avoid my spam filters. Send the email to: 
+        <span class="variable-name">vickery<span class="at" title="change to @">at</span>babbage.cs.qc.cuny.edu</span>.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../">Course Home Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

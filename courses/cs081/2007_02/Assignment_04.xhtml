@@ -1,0 +1,266 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 4</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Assignment 4</h1>
+    </div>
+
+    <h2>Project Description</h2>
+    <div id="content" class="whitebox">
+
+      <p>For this assignment, you are to practice using various CSS
+      positioning and formatting features of your web site&rsquo;s home
+      page.  The structure you are to set up is to have five sections: (1)
+      The page title is to be in a <span class="tagName">div</span> named
+      <span class="variableName">header</span>: the title itself is to
+      appear centered at the top of the page.  (2) There is to be a footer
+      <span class="tagName">div</span> at the bottom of the page containing
+      the usual XHTML and CSS validation links for the page: they should be
+      small and centered. (3 and 4) There are to be two sidebar <span
+      class="tagName">div</span>s: the left one is to contain an unordered
+      list with links to the Home and Picture Gallery pages, and the one on
+      the right is to contain some thumbnails from your Picture Gallery,
+      aligned vertically.  (5) The content <span class="tagName">div</span>
+      goes in the middle of the other four.  Fill the content <span
+      class="tagName">div</span> with lots of paragraphs (fifteen would be a
+      good number) of Lorem Ipsum text, enough to make sure the page is too
+      tall to fit completely in anybody&rsquo;s viewport.</p>
+      
+      <h3>Details</h3>
+
+      <ol>
+
+        <li>
+
+          <h5>Set up the page structure and insert the Lorem Ipsum
+          text.</h5> <p class="runin">Here is the structure of the <span
+          class="tagName">body</span> of your <span
+          class="fileName">index.xhtml</span> file: </p>
+
+          <div class="codeBlock">
+  &lt;div id="header"&gt;
+    &lt;h1&gt;<em>Page title goes here.</em>&lt;/h1&gt;
+  &lt;/div&gt;
+  &lt;div id="navigation"&gt;
+    &lt;ul&gt;
+      <em>List items containing links go here.</em>
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div id="sidebar"&gt;
+    <em>Images go here</em>
+  &lt;/div&gt;
+  &lt;div id="content"&gt;
+    <em>Many paragraphs of Latin text go here.</em>
+  &lt;/div&gt;
+  &lt;div id="footer"&gt;
+    <em>Validation links go here.</em>
+  &lt;/div&gt;
+          </div>
+          
+          <p>Your page should look just like the one above, with your own
+          content inserted in the places indicated.  As explained in class,
+          Lorem Ipsum is latin text that is used in laying out projects to
+          show where text goes, but without distracting the viewer with
+          meaningful content.  There are several sites on the Web that will 
+          generate Lorem Ipsum text for you.  For example, <a
+          href="http://www.lipsum.com">www.lipsum.com</a> is a good one: go
+          to the section, &ldquo;Where can I get some?&rdquo; to get your
+          paragraphs for this project.  Copy the generated text, and paste
+          it into your content <span class="tagName">div</span>.  Be sure to
+          wrap each paragraph in its own <span class="tagName">p</span>
+          tags, and to reformat the text so your code will be easy to read
+          without having to scroll horizontally.</p>
+          
+          <p>Once you have your XHTML page set up properly, you can close it
+          and should not have to change it again for the rest of this
+          project: do everything else by editing your <span
+          class="fileName">screen.css</span> stylesheet for the page.</p>
+
+        </li>
+
+      
+        <li>
+
+          <h5>Use floats to position the sidebars and the content section.</h5>
+          <p class="runin">Edit your <span class="filename">screen.css</span>
+          stylesheet to assign the values <span
+          class="variableValue">left</span> and <span
+          class="variableValue">right</span> to the <span
+          class="variableName">float</span> property of the <span
+          class="variableName">navigation</span> and <span
+          class="variableName">sidebar</span>
+          <span class="tagName">div</span>s:</p>
+
+          <div class="codeBlock">
+  #navigation {
+    float: left;
+    }
+  #sidebar {
+    float: right;
+    }
+          </div>
+
+        </li>
+
+        <li>
+        
+          <h5>Select an harmonious color scheme for the five <span
+          class="tagName">div</span>s.</h5> <p class="runin">Use <a
+          href="../Color_Schemes/index-en.html">Petr &ldquo;Pixie&rdquo;
+          Stan&#237;&#269;ek&rsquo;s Color Scheme Generator</a> to select a
+          set of colors to use for various elements of your web site.  For
+          this assignment, you are to use a different background color for
+          each of the five <span class="tagName">div</span>s plus a
+          contrasting color for the text, so you would need at least six
+          colors.  However, you may use just one color for both the header
+          and footer, a second color for the content, and a third color for
+          both sidebars.  Set the background-color and color properties for
+          each <span class="tagName">div</span> and make sure your home page
+          looks good.</p>
+
+        </li>
+        
+        <li>
+        
+          <h5>Select fonts.</h5> <p class="runin">Select two different font
+          families for your site: one for headings and another for body text
+          (what goes inside paragraphs).  You have five <span
+          class="propertyName">font-family</span> property values to choose
+          from: <span class="propertyValue">serif</span>, <span
+          class="propertyValue">sans-serif</span>, <span
+          class="propertyValue">cursive</span>, <span
+          class="propertyValue">fantasy</span>, and <span
+          class="propertyValue">monospace</span>.  Review pages 48-49 of the
+          textbook, and experiment with those five values as your fallback
+          font families.  The following &ldquo;web safe&rdquo; fonts are
+          installed by default on both Windows and Mac OS X according to
+          Jason Beaird in <span class="bookTitle">The Principles of
+          Beautiful Web Design</span>; use two of them as the preferred
+          fonts for your headings and body text.  The following list shows
+          these font names using their own font-families, provided they are
+          installed on the computer you are using to read this page:</p>
+
+          <ul style="font-size:1.5em">
+            <li style="font-family:Arial">Arial</li>
+            <li style="font-family:Arial Black">Arial Black</li>
+            <li style="font-family:Comic Sans MS">Comic Sans MS</li>
+            <li style="font-family:Courier">Courier New</li>
+            <li style="font-family:Georgia">Georgia</li>
+            <li style="font-family:Impact">Impact</li>
+            <li style="font-family:Times New Roman">Times New Roman</li>
+            <li style="font-family:Trebuchet MS">Trebuchet MS</li>
+            <li style="font-family:Verdana">Verdana</li>
+          </ul>
+
+          <p>And here is the fallback set, whose appearance may vary from
+          browser to browser, even on the same computer:</p>
+          
+          <ul style="font-size:1.5em">
+            <li style="font-family:Serif">Serif</li>
+            <li style="font-family:Sans-Serif">Sans-Serif</li>
+            <li style="font-family:Cursive">Cursive</li>
+            <li style="font-family:Fantasy">Fantasy</li>
+            <li style="font-family:Monospace">Monospace</li>
+          </ul>
+
+        </li>
+        
+        <li>
+        
+          <h5>Style the Links.</h5>
+
+          <p class="runin">Use CSS to make the navigation list display as a
+          set of bars that span the width of the navigation <span
+          class="tagName">div</span>.  Make the appearance of a link change
+          when the mouse hovers over it and after the link has been visited
+          using the pseudo-classes, <span
+          class="variableName">a:link</span>, <span
+          class="variableName">a:hover</span>, and <span
+          class="variableName">a:visited</span>.</p>
+
+        </li>
+        
+        <li>
+        
+          <h5>Adjust Margins, Borders, and Padding.</h5>
+          <p class="runin">Use CSS to style the layout of the various parts
+          of the page so it is easy to read and looks good.</p>
+          
+        </li>
+        
+        <li>
+        
+          <h5>Optional Features</h5>
+          <p class="runin">You may apply background images to various parts
+          of the page, and you may choose to make some of the elements of
+          the page remain fixed on the screen as the user scrolls through
+          the content <span class="tagName">div</span>.</p>
+          
+        </li>
+
+      </ol>
+      
+      <h3>Submit The Assignment</h3>
+      
+        <p>Send me email when you have completed the assignment.</p><p
+        class="standoutBlock">  Be sure you put <span
+        class="codeSnippet">CS-081 Assignment 4</span> in the Subject of
+        your message and <span class="underline">put your name in the
+        message body</span>.</p>
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

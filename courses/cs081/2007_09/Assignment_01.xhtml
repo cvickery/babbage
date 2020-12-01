@@ -1,0 +1,191 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 1</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 1</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div  class="whitebox">
+        <p>In class and in the textbook you have heard and seen some important guidelines to
+          &ldquo;best practices&rdquo; in coding web pages: the use of a DOCTYPE to identify the version
+          of (X)HTML used, use of XHTML to mark up the page&rsquo;s content according to its meaning rather
+          than its appearance, the use of CSS to manage appearance, and the importance of writing well-structured
+          code so that it will be easy to change and extend in the future. For this assignment, you are to
+          look at the code on several web sites and to evaluate how well it measures up. We&rsquo;ll use
+          my homepage, the department&rsquo;s home page, the college&rsquo; home page, and the university&rsquo;s
+          home page as the working
+          set for this assignment, but you are free to add others to the list if you would like to.</p>
+        <p>&ldquo;But how,&rdquo; I hear you ask,
+          &ldquo;do I look at a web site&rsquo;s code?&rdquo; The answer is quite simple: all web browsers
+          have an option for looking at the web page being viewed. For example, if you are looking at a site
+          by using <span class="programName">Internet Explorer</span>, you use the <span class="menuItem">View</span> menu,
+          and select the <span class="mentItem">Source</span> item. But we&rsquo;ll be using the &ldquo;web
+          developer&rsquo;s browser, &rdquo; <span
+          class="programName">Firefox</span>, in this course &mdash; which gives us some better options.
+          You can invoke the View Source option in by typing <span class="keyCode">Control-U</span>, but
+          there are two free add-ons for <span class="programName">Firefox</span> that will help a lot; both
+          are already installed in the computers in the lab, but if you want to install <span
+          class="programName">Firefox</span> on your own computer, you can use the following links:</p>
+        <ul>
+          <li><a href="http://www.mozilla.com/en-US/firefox/">The <span class="programName">Firefox</span> Browser</a> (mozilla.org)</li>
+          <li><a href="https://addons.mozilla.org/en-US/firefox/addon/249">The <span class="programName">HTML
+                Tidy</span> Add-on</a></li>
+          <li><a href="https://addons.mozilla.org/en-US/firefox/addon/1843">The <span class="programName">Firebug</span> Add-on</a></li>
+        </ul>
+        <p>All this software is free and (despite a confusing comment to the contrary on the <span
+          class="programName">TIDY</span> web page) available for Windows, Linux, and OS X (Macintosh) systems.
+          When <span class="programName">Firefox</span> re-starts after installing <span
+          class="programName">TIDY</span>, you will be asked to pick from one of three modes: pick the right-hand
+          one, (&ldquo;serial&rdquo;).</p>
+        <h3>Accessing Your Lab Account</h3>
+        <div class="whitebox">
+          <p>You may do this assignment either using either a computer in the lab or any other one. If you decide to use
+            your lab account, here is basic information you need to do so:</p>
+          <p>You can log into any one of the computers in SB room A-205 or A-227 using your account name
+            for this course, which consists of your last name followed by the digits
+            &ldquo;81&rdquo; all as a single lower-case string. Use the password &ldquo;81&rdquo;; you will
+            be required to change it to something secure the first time you log in.</p>
+          <p>The names of the computers are:</p>
+          <table  summary="Lists of computer names in A-205 and A-227." id="computers">
+            <tr> <th>A-205</th>     <th>A-227</th>    </tr>
+            <tr> <td>birch</td>     <td>apple</td>    </tr>
+            <tr> <td>cherry</td>    <td>fir</td>      </tr>
+            <tr> <td>chestnut</td>  <td>juniper</td>  </tr>
+            <tr> <td>elm</td>       <td>mimosa</td>   </tr>
+            <tr> <td>ginkgo</td>    <td>peach</td>    </tr>
+            <tr> <td>hemlock</td>   <td>pine</td>     </tr>
+            <tr> <td>hickory</td>   <td>plum</td>     </tr>
+            <tr> <td>&nbsp;</td>    <td>spruce</td>   </tr>
+            <tr> <td>&nbsp;</td>    <td>sycamore</td> </tr>
+            <tr> <td>&nbsp;</td>    <td>walnut</td>   </tr>
+          </table>
+          <p>Room 205 is an &ldquo;open lab,&rdquo; which means you can use the computers there any time
+            you want. The secretaries in the CS Department Office (A-202) will open the lab for you if it
+            is closed. Room 227 is a closed lab, so you will not be able to sit at the computers in that
+            room to use them. However, all of the computers are accessible from the Internet. If you have
+            access to a computer running Windows XP or Vista with a broadband connection, you can use <span class="programName">Remote
+            Desktop </span> to log in. From the <span class="menuItem">Start</span> button, go to <span class="menuItem">Programs</span>,
+            to <span
+                class="menuItem">Accessories</span>, to <span
+                class="menuItem">Communications</span>, and you will find it. When it asks you what computer
+            you want to connect to, pick one of the names above and add the domain name
+            &ldquo;.cs.qc.edu&rdquo; to the computer name. For example, you would log into <span class="computerName">ginkgo</span> by
+            entering <span class="computerName">ginkgo.cs.qc.edu</span>.</p>
+          <p>If you are using a Macintosh, OS X comes with a Remote Desktop program you can use in the same
+            way as the Windows version. Under preferences, be sure to set a screen size and resolution to
+            match your computer&rsquo;s screen. The default value is very low resolution, making it difficult
+            to use.</p>
+          <p>There an open source version of Remote Desktop at <a
+                href="http://www.rdesktop.org">www.rdesktop.org</a> that might be useful if you are running
+            Linux. But I have had no experience with it.</p>
+          <p class="standoutBlock">When you use Remote Desktop, select one of the computers in A-227 so that
+            students who are on campus will be able to use the computers in A-205. Only one person can use a computer at a time, so if
+            the computer you try is occupied, just try another one until you find one that is available.</p>
+        </div>
+      </div>
+      <h2>The Assignment</h2>
+      <div class="whitebox">
+        <p>Browse to the following four web sites and answer the questions below about each one:</p>
+        <ul>
+          <li><a href="http://www.cuny.edu">www.cuny.edu</a></li>
+          <li><a href="http://www.qc.cuny.edu">www.qc.cuny.edu</a></li>
+          <li><a href="http://www.cs.qc.cuny.edu">www.cs.qc.cuny.edu</a></li>
+          <li><a href="http://babbage.cs.qc.cuny.edu">babbage.cs.qc.cuny.edu</a> (Note, there is no &ldquo;www&rdquo; in this URL.)</li>
+        </ul>
+        <p>Remember, you are free to add other pages to this list, including more &ldquo;interesting&rdquo; ones from babbage!</p>
+        <h3>Questions</h3>
+        <div class="whitebox">
+          <ol>
+            <li>How many HTML validation errors are there?
+              <p>If you are using Firefox/TIDY, you can just let your mouse hover over the icon in the right part of the status bar at the bottom of the
+                browser to get the answer to this. Otherwise, browse to <a href="http://validator.w3.org/">The W3C HTML Validator</a>, and enter the URL
+                there to find out.</p>
+            </li>
+            <li>How many CSS validation errors are there?
+              <p>For this, you will have to go to the <a href="http://jigsaw.w3.org/css-validator/">W3C CSS Validator</a> and enter the URL. My home
+                page (like this one), has a link at the bottom that will do this for you.</p>
+            </li>
+            <li>From what the textbook says, how serious is the missing DOCTYPE error on the department and college web sites? And how hard do you
+              think it would be to fix this problem?
+            </li>
+            <li>Look at the source code for each web page and describe an instance where you see <span class="techTerm"
+              title="Appearance of the content.">presentation</span> is mixed in
+              with the <span class="techTerm" title="Information about the meaning of the contents.">content
+              markup</span> of the page. Tell what you would do to fix the problem.
+            </li>
+            <li>Evaluate the use of class names (that is, the value of a tag&rsquo;s <span
+              class="attributeName">class</span> attribute) according to the guidelines given on page 19
+              of the textbook. Try to find one instance of a poor class name on each site, and suggest a
+              better name.
+            </li>
+          </ol>
+        </div>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+        <p><strong>Write your name</strong> and your answers to the questions in an email message.  I
+        read email as text only, so there is no point in formatting your answers with special font
+        effects, etc. Please paste your answers into the body of your message instead of sending
+        an attachment.</p>
+        <p>Send your email to me by midnight of the due date using an email account that you use
+        regularly.  I will add that email address to a mailing list for the course.  The mailing list
+        will be used for occasional announcements during the semester. My email address is:</p>
+        <address>vickery at babbage.cs.qc.edu</address>
+        <p><strong>You must use exactly this Subject line for your email to be sure I actually receive
+        it:</strong> <span class="codeBlock">CS-081 Assignment 1</span>. In fact, include the "CS-081"
+        part in the subject line of <em>all</em> messages you send to me this semester.</p>
+        <p>If you do not receive an &ldquo;OK, I&rsquo;ll check it out&rdquo; reply from me within a day
+        or two of submitting the assignment, it means I did not receive it.  But I will be sending that
+        acknowledgement manually, so don&rsquo;t resubmit the assignment until I have had a chance to
+        reply to the first one.</p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home Page</a>&nbsp;-&nbsp;<a
+        	 href="..">CS-081 Home Page</a>&nbsp;-&nbsp;<a
+           href=".">Fall 2007 Course Page</a><br/><a
+           href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      </p>
+      <p>
+        <em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

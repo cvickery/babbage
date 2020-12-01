@@ -1,0 +1,129 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Midterm Topics</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:49F24E3E-6066-4EAF-8DE8-0F2B1AA216EB'>
+    <h1>CS-081 Midterm Topics</h1>
+    <h2>Introduction</h2>
+    <div>
+    	<p>
+      	The exam will cover topics covered in class, in Assignments 1&mdash;4, and Chapters 1, 2, 3 (but only through page 64),
+        4 (but only through page 81), and 5 (the sections on the box model and floating, but not the sections on the display
+        property, positioning, or the sample page layouts).
+      </p>
+      <p>
+      	Here are some reminders of some of the things you should be prepared to answer questions about. There is no claim that
+        this list is exhaustive, however.
+      </p>
+      <ul>
+      	<li>
+        	The parts of a URL
+        </li>
+        <li>
+        	File system structure: directory tree and files; absolute and relative paths to files.
+        </li>
+        <li>
+        	The request-response exchange between a web browser and a web server
+        </li>
+        <li>
+        	XHTML syntax: tags, elements, attributes
+        </li>
+        <li>
+        	Structure of an XHTML document
+        </li>
+        <li>
+        	The DOM Tree and its relationship to an XHTML document
+        </li>
+        <li>
+        	Structuring text: the proper use of headings and paragraphs
+        </li>
+        <li>
+        	How to link a stylesheet to a web page
+        </li>
+        <li>
+        	CSS syntax: rules, selectors, property lists, property names, property values
+        </li>
+        <li>
+        	CSS selectors: by tag, by class, by id, by DOM relationships (child, decendent, first child)
+        </li>
+        <li>
+        	Font properties: family, style, size, and weight
+        </li>
+        <li>
+        	The CSS box model: content area, padding, borders, margins
+        </li>
+        <li>
+        	Measurement units: px, em, %
+        </li>
+        <li>
+        	The CSS <span class="function-name">float</span> and <span class="function-name">clear</span> properties
+        </li>
+        <li>
+        	The CSS <span class="function-name">color</span> and <span class="function-name">background-color</span> properties
+        </li>
+        <li>
+        	Specifying colors in CSS: using names and using 3 or 6 digit hexadecimal notation; the RGB color model
+        </li>
+        <li>
+        	The <span class="tag-name">img</span> element
+        </li>
+        <li>
+        	Case-sensitive link checking: how and why
+        </li>
+      </ul>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../">Course Home Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

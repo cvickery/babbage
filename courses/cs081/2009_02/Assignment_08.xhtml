@@ -1,0 +1,308 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 8</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css" />
+    <style type="text/css">
+    	#rules-list li {
+        padding-left:2em;
+        list-style-position:inside;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 8<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        This is an open-ended assignment with one required part and a number of optional parts that you can do for
+        extra credit if you have time. The required part is to add a <span class="tag-name">form</span> to your web
+        site, and the optional parts are to work with tables, content images, and server-side scripting.
+        <p>
+          To give people time to work on the assignment, the due date is not until late in the final exam period.
+        </p>
+      </div>
+      <h2>Reference Material</h2>
+      <div>
+        <ul>
+          <li>Chapters 8 and 9 of the textbook</li>
+        </ul>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <h3>Required</h3>
+        <p>
+          The required part of this assignment is for you to add a <span class="tag-name">form</span> to the index page
+          of your web site (the home page, not the Blog page). The form is to have three <span
+          class="tag-name">input</span> elements: one of type <span class="attribute-name">text</span>, with a <span
+          class="tag-name">label</span> that identifies it as the place to enter a user name (email address); one of
+          type <span class="attribute-name">password</span>, with a <span class="tag-name">label</span> that identifies
+          it as the palce to enter a password; one of type <span class="attribute-name">submit</span>, with no label.
+        </p>
+        <p>
+          Enclose all three <span class="tag-name">input</span> elements in a <span class="tag-name">fieldset</span>,
+          and use a <span class="tag-name">legend</span> for the fieldset that says something like, &ldquo;login
+          here.&rdquo;
+        </p>
+        <p>
+          Make the text of the submit button say <span class="variable-name">Login</span>.
+        </p>
+        <p>
+          Style the navigation links for the home page as a horizontal menu, and style the form so that it looks
+          &ldquo;good:&rdquo;
+        </p>
+        <ul>
+          <li>
+            The form should look like a separate object on the page: use a border, margins, padding, and/or a background
+            to make it a distinct visual element. You may position it wherever you think looks good, so long as it
+            appears below the navigation links.
+          </li>
+          <li>
+            Decide how you want the labels to look, either fixed-width and to the left of their input elements, or above
+            their input elements, and make that happen.
+          </li>
+          <li>
+            Use a mixture of margins, padding, and/or text effects to make the internal structure of the form look good.
+          </li>
+        </ul>
+        <p>
+          Set the two required attributes of the <span class="tag-name">form</span> to <span
+          class="code-snippet">http://babbage.cs.qc.cuny.edu/courses/cs081/echo_form_data.php</span> for the <span
+          class="attribute-name">action</span> and <span class="code-snippet">GET</span> for the <span
+          class="attribute-name">method</span>.
+        </p>
+				<p>
+        	Test the form to be sure it works; when you click the Login button, the green &ldquo;echo form data&rdquo;
+          page should come up with information about how you filled in the form.
+        </p>
+        <p>
+        	Be sure the page passes both external validations with no warnings or errors; be sure the link to your blog page
+          still works correctly.
+        </p>
+        <h3>Optional</h3>
+        <div>
+        	<p>
+          	The Options List gives you some ideas of things you can do to exercise and show off your web-design skills.
+            Each item has a range of
+          	point values, which will be <em>added</em> to your grade for the course.
+            So, for example, if your course average is 89 and you pick up
+            one point for doing one of these optional features, your average would go to 90; the difference between a B+ and A-.
+            (On the other hand, if your average is 85, going up to an 86 would not affect your course grade at all.) 
+          </p>
+          <p>
+          	This is an <em>unordered list</em>: you may pick and choose among the suggestions; you do not have to go through
+            the list in any particular order.
+          </p>
+          <ul id="rules-list" class="standout-block">
+          	<li>
+            	In order to receive credit for any of the items in this list, the email message you send to submit the assignment
+            	must state exactly which item(s) you did.
+            </li>
+            <li>
+            	You will not receive any points for items that you do but which cause your site to fail validation in any way.
+            </li>
+            <li>
+            	Complete and debug one item before
+            	proceeding to work on another one. If you start to work on an item and decide to give up on it, take out the code you put
+            	in for it so that it doesn&rsquo;t &ldquo;break&rdquo; your site.
+            </li>
+            <li>
+            	The maximum number of points you can add to your grade by doing these optional parts is <strong>five</strong>.
+            </li>
+          </ul>
+          <h4>The Options List</h4>
+          <ul>
+          	<li>
+            	<h5>Add a table (1-2 points)</h5>
+              <div>
+                Add some tabular information to your site. There are two options for this: add a calendar for the month
+                to the site’s home page, or add a table of information, such as information about something you collect.
+                An example of the latter could have a row for each of several cameras, with columns for name of the
+                cameras, the size of the sensor, etc. Another example would be a list of movies, with colums for the
+                title, date released, main actor(s), your comments, etc. Feel free to be creative about the content, but
+                the table must be properly structured, and styled, using both <span class="tag-name">th</span> for
+                header cells and <span class="tag-name">td</span> for data cells. Use CSS to style the table
+                &ldquo;nicely.&rdquo;
+              </div>
+            </li>
+            <li>
+            	<h5>Add a resumé page(1-3 points)</h5>
+              <div>
+                Create a web page for your resumé. Include sections for contact information, career objective(s),
+                education, work experience, and whatever else might help you in a job search. Nobody just puts out a
+                plain text resumé anymore, so see if you can come up with ideas that will help make yours stand out
+                without looking garish and while still making basic information, such as the items listed above, easy to
+                find. This is a place to show off your layout, typography, and color/image management skills.
+              </div>
+            </li>
+            <li>
+            	<h5>Add content pictures (1-2 points)</h5>
+              <div>
+                This item can be incorporated in any of several places. For example, a picture of you could go on your
+                blog or resumé; pictures of flowers or cameras could be used as illustrations for a floral or
+                photography blog. The point is that these pictures should somehow provide content for the page they are
+                on, not just decoration.
+                <p>
+                  The article on this topic that I mentioned in class is <a
+                  href="http://www.peachpit.com/articles/article.aspx?p=1338169">Neuro Web Design Review:
+                  VillageBanking.org</a>.
+                </p>
+              </div>
+            </li>
+            <li>
+            	<h5>Add decorative pictures (1-2 points)</h5>
+              <div>
+                Compared to the previous item, this one deals with pictures that simply make your site more interesting
+                or look better. These pictures can be background images or <span class="tag-name">img</span> images, or
+                a mix of both.
+              </div>
+            </li>
+            <li>
+            	<h5>Provide consistent site navigation (1-2 points)</h5>
+              <div>
+                This item makes the most sense to work on after you add more pages to your site, such as your resumé
+                and/or a comments page, but you can do it without them if you like. The idea is to use the same
+                unordered list of navigation links on all the pages, containing links to all the pages as well as to the
+                validators, and to explicitly use either the horizontal or vertical menu design from Assignment 6
+                (without alternate stylesheets) to give the site a consistent look. Note that the link targets will need
+                to be adjusted depending on which page the navigation list is on. A nice feature is to add a class, such
+                as &ldquo;current-page&rdquo; to the link to the page the list is on and to use CSS to make that link
+                look different and to have the cursor be the default cursor when the mouse hovers over it instead of
+                letting it change to the hand cursor when the mouse hovers over that link.  Type <span
+                class="property-name">cursor:</span> in a CSS rule to see the options you have for setting the shape of
+                the mouse cursor; we didn’t go over this in class, but it is something you can probably figure out on
+                your own once you know it is possible.
+              </div>
+            </li> 
+          	<li>
+            	<h5>Add a registration form. (1-2 points)</h5>
+              <div>
+                Add a second form on the home page to collect information from people who want to register for your
+                site. This form is in addition to the required form: position it so it makes sense, which probably means
+                that the two forms should appear side&ndash;by&ndash;side. Use a variety of form elements: checkboxes,
+                radio buttons, selections, etc. to gather a variety of information from the visitor. Possibilities
+                include telephone number(s), addresse(s), preferences (checkboxes/radio buttons), statement(s)
+                (textareas). Use the POST <span class="attribute-name">method</span> and <span
+                class="code-snippet">http://babbage.cs.qc.cuny.edu/courses/cs081/echo_form_data.php</span> for the <span
+                class="attribute-name">action</span> of this form. Use CSS to style the form &ldquo;nicely.&rdquo;
+              </div>
+            </li>
+            <li>
+            	<h5>Add a comments page. (1-2 points)</h5>
+              <div>
+                At the end of each blog entry, put in a link to a comments page. For this assignment, use the same page
+                for all the blog entries. The comments page should be named <span
+                class="file-name">comments.xhtml</span>, should be located in the site’s <span
+                class="directory-name">Blog</span> directory, and should be styled so that it has its own title, <span
+                class="tag-name">h1</span>, and navigation list. Put a form on the page where the visitor enters his/her
+                name, email address (assure them that the email address will not be displayed publicly), and a <span
+                class="tag-name">textarea</span> for the comment itself. The submit button should say, &ldquo;Submit
+                Comment&rdquo;. Use the POST <span class="attribute-name">method</span> and <span
+                class="code-snippet">http://babbage.cs.qc.cuny.edu/courses/cs081/echo_form_data.php</span> for the <span
+                class="attribute-name">action</span> of this form. Use CSS to style the page &ldquo;nicely.&rdquo;
+              </div>
+            </li>
+            <li>
+            	<h5>Use PHP to write your own <span class="attribute-name">action</span> page(s). (1-3 points)</h5>
+              <div>
+                Create a <span class="directory-name">scripts</span> directory to your site and, using <span
+                class="file-name">template.xhtml</span> as a starting point, create your own <span
+                class="attribute-name">action</span> page for the login form. This page is to provide a customized
+                response for the user, and needs to include the navigation menu for getting to the other pages in the
+                site. There is a <a href="../using_php.xhtml">separate page</a> to help you with this part of the
+                assignment.  Use CSS to style the page &ldquo;nicely.&rdquo; If you have multiple forms, each one would
+                get its own <span class="attribute-name">action</span> page.
+              </div>
+            </li>
+          </ul>
+				</div>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+        <p class="standout-block">
+          You must check your page using to the W3C validators: there must be no warnings or errors that either of them
+          can detect.
+        </p>
+        <p>
+          Run a link check on your site before submitting the assignment; fix any errors. (Right click in the Files
+          panel on the right, select <span class="menuItem">Check Links</span>, then select <span
+          class="menuItem">Entire Local Site</span> (keyboard shortcut: Control-F8). Fix any broken links.
+        </p>
+        <p>
+          Submit the assignment by midnight of the due date:
+        </p>
+        <ol>
+          <li>
+            To submit this assignment, simply send me an email message telling me that your web page is ready for me to
+            look at: I will copy it from <span class="computerName">Oak</span> to <span
+            class="computerName">Babbage</span>, and check it out there.
+          </li>
+          <li>
+          	<p class="standout-block">
+            	Be sure to put your name in the body of your email message!
+            </p>
+          </li>
+          <li>The Subject line must be <span class="code-snippet">CS-081 Assignment 8</span> to avoid my spam filters.</li>
+          <li>
+            Send your email to Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu. (Fix up the 'AT' part.)
+          </li>
+          <li>
+          	<p class="standout-block">
+            	This assignment will not be accepted after the due date. Submit whatever you have finished by then.
+						</p>
+
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

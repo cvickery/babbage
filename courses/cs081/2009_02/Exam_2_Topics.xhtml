@@ -1,0 +1,204 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Final Exam Topics</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Final Exam Topics<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+      	The final exam will not be cumulative in the sense of asking questions again that were asked on the midterm exam.
+        But it will be cumulative in the sense that the topics covered later in the course build on the concepts and
+        terminology developed earlier.
+      </div>
+      <h2>Reference Material</h2>
+      <div>
+      	<p>
+        	In addition to the material in chapters 1, 2, 3, 5, and 6 that were tested on the midterm, the following chapters have been
+          covered since then:
+        </p>
+        <ul>
+          <li>Chapter 3 (Link states)</li>
+          <li>Chapter 4 (Images and background images)</li>
+          <li>Chapter 5 (Positioning and Floating)</li>
+          <li>Chapter 7 (Client-side scripting)</li>
+          <li>Chapter 8 (Tables)</li>
+          <li>Chapter 9 (Forms)</li>
+        </ul>
+        <p>
+        	In addition, the material from the web pages for Assignments 6, 7, and 8 as well as the tutorial pages,
+          <a href="../using_photoshop.xhtml">Using Photoshop</a> and <a href="../preparing_images.xhtml">Preparing 
+          Image Files for the Web</a> will be covered.
+        </p>
+        <p>
+        	We also spent some time learning some of the basics of working with the server-side scripting language, PHP,
+          and there is a mini-tutorial on that topic available now at: <a href="../using_php.xhtml">Using PHP</a>. You
+          are not responsible for any material on that page that goes beyond what we covered in class, but it is available
+          to give you something written to use for review.
+        </p>
+      </div>
+      <h2>Exam Topics</h2>
+      <div>
+      	<p class="standout-block">
+					<strong>Disclaimer</strong> This is not guaranteed to be a complete list. Indeed, it will probably be updated in the last day or
+          two before the exam. But it&rsquo;s a start.
+        </p>
+        <ul>
+        	<li>Relative, absolute, and fixed positioning: the <span class="property-name">position</span> property and its values.</li>
+          <li>
+          	The properties associated with positioning: <span class="property-name">top</span>,
+          	<span class="property-name">left</span>, etc.
+          </li>
+          <li>
+          	Link states, especially <span class="variable-name">a:hover</span>; changing link properties 
+            (color, background-color, background-image) based on the link state
+          </li>
+          <li>
+          	CSS selectors
+          </li>
+          <li>
+          	Converting a list of anchors into a vertical or horizontal menu.
+          </li>
+          <li>
+          	Floats
+          </li>
+          <li>
+          	Removing bullets/numbers from list items
+          </li>
+          <li>
+          	Different types of image files and their features.
+          </li>
+          <li>
+          	Intrinsic dimensions of image files; aspect ratio
+          </li>
+          <li>
+          	Lossy and loss-less compression
+          </li>
+          <li>
+          	Color channels: don’t forget all the different ways to represent a color
+            <ul>
+            	<li><span class="property-value">#f00</span></li>
+              <li><span class="property-value">#ff0000</span></li>
+              <li><span class="property-value">red</span></li>
+              <li><span class="property-value">rgb(100%, 0, 0)</span></li>
+              <li><span class="property-value">rgb(255, 0, 0)</span></li>
+            </ul>
+          </li>
+          <li>
+          	Transparency: Alpha channel
+          </li>
+          <li>
+          	The advantage of using transparency in a background image (because it lets any
+            background color show through)
+          </li>
+          <li>
+          	CSS box layers: containing element; background color; background image; content
+          </li>
+          <li>
+          	Gradients: color stops and transparency stops
+          </li>
+          <li>
+          	Uses of images: tiled background pictures, background gradients, and text replacement
+          </li>
+          <li>
+          	Two required attributes of <span class="tag-name">img</span> elements: <span class="attribute-name">src</span> 
+            and <span class="attribute-name">alt</span>
+          </li>
+          <li>
+          	Photoshop layers and layer effects: drop shadows; glows.
+          </li>
+          <li>
+          	Options used in Photoshop’s Save for Web &amp; Devices panel
+          </li>
+          <li>
+          	Tags and attributes associated with forms:
+            <ul>
+            	<li><span class="tag-name">form</span></li>
+              <li><span class="tag-name">fieldset</span></li>
+              <li><span class="tag-name">input</span></li>
+              <li><span class="tag-name">textarea</span></li>
+              <li><span class="tag-name">select</span></li>
+              <li><span class="attribute-name">method</span></li>
+              <li><span class="attribute-name">action</span></li>
+              <li><span class="attribute-name">for</span></li>
+              <li><span class="attribute-name">name</span></li>
+              <li><span class="attribute-name">value</span></li>
+              <li><span class="attribute-name">type</span></li>
+            </ul>
+          </li>
+          <li>
+          	What happens when form data is submitted: how name/value pairs are encoded
+          </li>
+          <li>
+          	How checkboxes and radio buttons work
+          </li>
+          <li>
+          	PHP concepts: the &lt;?php &hellip; ?&gt; tag; variables; arrays; the <span class="keyword">echo</span> statement.
+          </li>
+          <li>
+          	Tags associated with tables:
+            <ul>
+            	<li><span class="tag-name">table</span></li>
+            	<li><span class="tag-name">tr</span></li>
+            	<li><span class="tag-name">th</span></li>
+            	<li><span class="tag-name">td</span></li>
+            	<li><span class="tag-name">caption</span></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

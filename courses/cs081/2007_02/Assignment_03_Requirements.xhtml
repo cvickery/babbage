@@ -1,0 +1,155 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Assignment 3 Requirements</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />        
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081: Assignment 3 Requirements</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+      <h2>Overview</h2>
+      <div class="whitebox">
+        <p>There are two parts to this assignment.  The first part, given in
+        the <a href="Assignment_03.xhtml">Assignment 3 Web Page</a>, was to
+        set up a photo gallery.  That was an exercise in setting up links
+        for navigating through a set of related pages and in preparing
+        images for the web.  The second part was to apply some more advanced
+        styling to the pages that made up the gallery, using the <a
+        href="../framed_picture.xhtml">Framed Picture Web Page</a> as a
+        guide.</p>
+        
+        <p>This page summarizes what you must do to complete the assignment.
+        You have freedom to make several design decisions on your own, but
+        parts of the design are requirements, which you must do as specified
+        here.</p>
+
+      </div>
+      
+      <h2>Reqirements</h2>
+      <div class="whitebox">
+
+        <p>You are to set up a photo gallery in a subdirectory of your
+        course web site.  The index page for the gallery should be styled
+        like the index page for your site, and is to contain thumbnails of
+        all the images in the gallery.  Clicking a thumbnail brings up a
+        page with a full-sized copy of the picture.</p>
+        
+        <p>Each picture page is to have a level 1 heading with the name of
+        the picture, links to go to the next and previous picture in the
+        gallery, a link back to the index page for the gallery, and links
+        for submitting the page to the W3C validators for XHTML and CSS. 
+        Prepare all images for the gallery following the instructions in the
+        <a href="Assignment_03.xhtml">Assignment 3 Web Page</a>.</p>
+
+        <p>The picture pages must not have scrollbars no matter what size
+        the user makes the browser window and/or font size.</p>
+        
+        <p>The picture pages must use background images for the photographs
+        and to create a frame for each photograph.  The frame must be
+        attached to the borders of the viewing area for the picture, and the
+        frame must be constructed from small images that are repeated to
+        create the frame effect.</p>
+        
+        <p>The links for navigating through the gallery must not change
+        position on the screen when going from one picture to another one. 
+        That is, if the user clicks the &ldquo;Next&rdquo; button on one
+        picture, s/he must not need to move the mouse to click the
+        &ldquo;Next&rdquo; button on the new picture.</p>
+
+      </div>
+      
+      <h2>Options</h2>
+      <div class="whitebox">
+      
+        <p>You may use whatever colors you think look good for your design. 
+        Your picture frame does not have to be a darkening vignette effect
+        inside the picture area.  For example, it could be outside the
+        picture, a color rather than gray, provide a gradient that goes in a
+        different direction rather than outside-in.  Feel free to be
+        creative about your design, provided you meet the background images
+        and gradients requirement.</p>
+
+        <p>The picture title, navigation links, and validation links may be
+        positioned and styled any way you think looks good.</p>
+        
+        <p>You may use as many style sheets as you want for this project,
+        but I suggest embedding picture-specific rules inside a <span
+        class="tagName">script</span> tag of each picture page.  The gallery
+        index page should use the same stylesheet as the main part of your
+        web site, but the picture pages may use a totally different one (or
+        ones).</p>
+
+        <p>There is no reason to use JavaScript for this assignment, but you
+        might want to use a small amount of PHP as described in the <a
+        href="../framed_picture.xhtml">Framed Picture Web Page</a>.  With
+        some serious PHP coding, you could use a single picture page for all
+        the pictures in the gallery, but that&rsquo;s beyond the scope of
+        this course.  If you are interested in trying it, let me know: the
+        Apache servers would need a small configuration change.</p>
+      
+      </div>
+      
+      <h2>Due Date</h2>
+      <div class="whitebox">
+
+        <p>The assignment is not due until after Spring Break.  When it is
+        ready, send me an email message with <span
+        class="codeSnippet">CS-081 Assignment 3 Complete</span> as the
+        subject.</p>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

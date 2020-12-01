@@ -1,0 +1,110 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>Amoudi Harbor</title>
+    <style type="text/css">
+    html, body {
+      background-color: red;
+      color: green;
+      font-family: sans-serif;
+      margin: 0;
+      height: 100%;
+      }
+    h1 {
+      margin:               0;
+      font-size:            2em;
+      padding:              0.5em 1em;
+      }
+    #header {
+      height:               10%;
+      background-color:     black;
+      color:                white;
+      }
+    #photo {
+      height:               75%;
+      background-color:     white;
+      background-image:     url(images/harbor_optimized.jpg);
+      background-repeat:    no-repeat;
+      background-position:  center;
+    }
+    #top {
+      height:               100%;
+      background-image:     url(images/borders/top_border.png);
+      background-repeat:    repeat-x;
+      }
+    #right {
+      height:               100%;
+      background-image:     url(images/borders/right_border.png);
+      background-repeat:    repeat-y;
+      background-position:  right;
+      }
+    #bottom {
+      height:               100%;
+      background-image:     url(images/borders/bottom_border.png);
+      background-repeat:    repeat-x;
+      background-position:  bottom;
+      }
+    #left {
+      height:               100%;
+      background-image:     url(images/borders/left_border.png);
+      background-repeat:    repeat-y;
+       }
+    #content {
+      height:               100%;
+      }
+    #content a { display: block; height: 100%; }
+
+    #footer {
+      height:               15%;
+      color:                white;
+      text-align:           center;
+      background-color:     black;
+      }
+    #navigation {
+      font-size:            1.5em;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Amoudi Harbor</h1>
+    </div>
+
+    <div id="photo">
+      <div id="top"><div id="right"><div id="bottom"><div id="left">
+        <div id="content">
+          <a href="#">
+          </a>
+        </div>
+      </div></div></div></div>
+    </div>
+
+    <div id="footer">
+      <div id="navigation">
+        Previous
+        Index
+        Next
+      </div>
+      <div id="validation">
+      </div>
+    </div>
+
+  </body>
+</html>

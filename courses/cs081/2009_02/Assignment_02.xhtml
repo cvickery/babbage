@@ -1,0 +1,239 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 2</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 2<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          For the projects in this course, you will be using the computers in the department&rsquo;s TREE lab. You may
+          use an off-campus computer to write the code for your assignments if that is more convenient for you, but
+          final testing and project submission have to be done using the lab computers. The purpose of this assignment
+          is to get you up and running with the laboratory computers.
+        </p>
+        <p>
+          In many college courses, a &ldquo;laboratory&rdquo; is a place where you go to do supervised course work. But
+          in this course it is significantly different: there is indeed a laboratory where you can go to do your course
+          work but (a) you can do your assignments using any computer that is configured properly if you prefer not to
+          go to the laboratory, and (b) there is no supervision in the laboratory.  Rather, you can use the laboratory
+          to do your assignments any time it is convenient for you.
+        </p>
+        <p>
+          That said, you are not completely abandoned with regard to laboratory assignments! In addition to the
+          guidelines provided by assignment web pages such as this one, you can always ask me for help if you are
+          working in the lab during my regular <a href="../../../contact_info.xhtml">office hours</a>.
+        </p>
+        <p>
+          There is also a <a href="http://babbage.cs.qc.cuny.edu/Fora/Courses/viewforum.php?f=1">bulletin board</a> set
+          up for the course where you can ask questions and discuss assignments with the other students in the course. I
+          monitor the bulletin board and will contribute answers to the discussions there too. Bulletin boards are
+          popular haunts for spammers, so access to it is restricted: you have to give a user name and password in a
+          pop-up box when you first get there (the user name is 'vickery-student'; I will give the password out in
+          class, or you can send me email requesting it), and then you have to register as a user to be able to post
+          messages/questions.
+        </p>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+          If you have not done so already, read the <a href="../../TREE_Lab/">TREE Lab</a> web page. If you prefer to
+          access the computers remotely, be sure to read the <a href="../../TREE_Lab/using_scp.xhtml">Working From Off
+          Campus</a> web page as well. Once you have digested that information, do the following:
+        </p>
+        <ol>
+          <li>
+            <h5>Log into your account and check your roaming profile.</h5>
+            <p>
+              We have had difficulties getting Windows&rsquo; &ldquo;roaming profile&rdquo; feature to work in the past,
+              but think we now have it set up to operate reliably now. This first step is to make sure we have it right.
+            </p>
+            <p>
+              Decide on the password you want to use for this course (you can always change it later), and log into one
+              of the computers in the lab, either while sitting at one of the machines in room A-205, or by using <span
+              class="programName">Remote Desktop Connection</span> (RDC). After you enter your user name and password,
+              you will get a notice saying that you have to change your password. Click on that and you will get to the
+              dialog box for actually setting up your new password.
+            </p>
+            <p>
+              Remember that it may take several minutes for your &ldquo;roaming profile&rdquo; to initialize the first
+              time, so please be patient.
+            </p>
+            <p>
+              To check your roaming profile, you need to create a file so you can see if it gets copied back to the
+              server successfully when you log off.  The easiest way to do this is to right-click on the desktop and
+              select <span class="menu-item">New->Text File</span> from the context menu that opens up. The file will
+              appear on your desktop. You don&rsquo;t need to do anything with it; just create it.
+            </p>
+            <p>
+              Now log off. Again, you need to be patient the first time while your new roaming profile gets copied back
+              to the server. Wait a minute or two after your log off completes before proceeding to the next step.
+            </p>
+            <p>
+              Log onto a different computer (using your new password). When the desktop comes up, you should see the
+              file you created in on the other computer there. This verifies that your roaming profile works and that
+              you can do your work on any computer in the lab.
+            </p>
+            <p class="standout-box">
+              Always pay attention to what happens when you log in to or out of any computer in the lab. If your roaming
+              profile does not work, you will get a message telling you about the problem. Report the problem to Dr.
+              Vickery, and use your home directory on your <span class="directoryName">H:</span> drive to make a copy of
+              your work on the server as described in the <a href="../../TREE_Lab/index.xhtml">TREE Lab Information</a>
+              web page.
+            </p>
+          </li>
+          <li>
+            <h5>Install the course template page in your website</h5>
+            <p>
+              Download <a href="../template.zip">template.zip</a> and extract the contents to the <span
+              class="directoryName">My Website</span> folder that is already in your <span class="directoryName">My
+              Documents</span> folder. The file you extract will be named <span class="fileName">template.xhtml</span>.
+              Open one of the web browsers available (Firefox, Internet Explorer, Safari, or Opera), and type in the URL
+              for your web site&rsquo;s root: <span
+              class="url">http://<em>hostname</em>.cs.qc.cuny.edu/~<em>username</em>/</span>, substituting the name of
+              the computer you are logged into for <em>hostname</em> and your own login ID for <em>username</em>. You
+              should see a directory listing for the contents of your <span class="directoryName">My Website</span>
+              folder, including <span class="fileName">template.xhtml</span> and a link to <span
+              class="directoryName">Parent Directory</span>. If you click on the link to <span
+              class="fileName">template.xhtml</span> you should see a web page that looks like this:
+            </p>
+            <p>
+              <img src="images/Assignment_02_Figure_01.png" alt="Screenshot" width="200" />
+            </p>
+            <p>
+              If you are unable to follow these directions and get the results indicated, check each step carefully to
+              see if you can figure out for yourself what went wrong. Get help if you need to: from Dr. Vickery, from
+              friends, from fellow students, from your Mother, or from anyone else who can help you figure out what went
+              wrong. But do not proceed to the next step until this step is working perfectly.
+            </p>
+            <p>
+              If you wish, you can log out now and proceed to the next step later; your roaming profile will let you
+              pick up right where you left off, using any computer in the TREE lab.
+            </p>
+          </li>
+          <li>
+            <h5>Set up a Dreamweaver local site for your web site</h5>
+            <p>
+              If you are working from outside the lab and do not have access to Dreamweaver, you won&rsquo;t be able to
+              do this step; do the equivalent operations using whatever development tools you decide to work with, such
+              as Apatana Studio and WinSCP.
+            </p>
+            <p>
+              As demonstrated in class, start Dreamweaver and open the Manage Sites menu using either the <span
+              class="menuItem">Site</span> menu or by clicking on the drop-down list at the top of the Files tab of the
+              Files panel on the right side of the application. Click on <span class="menuItem">New Site</span>, switch
+              to the Advanced tab. Select Local Information, and Fill in the site name (any name you like); the local
+              root folder (your <span class="directoryName">My Website</span> directory); the default images folder
+              (create a folder named <span class="directoryName">images</span> in your My Website directory); be sure
+              links are relative to the Document; leave the HTTP address blank; and <strong>be sure the case-sensitive
+              link checking option is selected</strong>. Decide now how you want ot capitalize your images folder (the
+              convention is all lower-case). You will have to be sure to capitalize links to it exactly the same way
+              later.
+            </p>
+            <p>
+              Save your new site and observe that the file pane on the right now shows just your site and that the folder
+              icons there are green instead of yellow.
+            </p>
+            <p>
+              Duplicate <span class="fileName">template.xhtml</span> by clicking on it and typing Control-D. Rename the copy
+              by clicking on its name twice (slowly, not a double-click), which will make the name editable. Make the new name
+              <span class="fileName">index.xhtml</span>. This file name must be all lowercase. Change the <span 
+              class="tagName">title</span> and <span class="tagName">h1</span>
+              elements&rsquo; contents from &ldquo;CS-081 Course Template&rdquo; to &ldquo;My CS-081 Website&rdquo; or any other
+              name you would like to use. Be sure to save your work, switch to Firefox, and access your web site using a URL in the
+              form <span class="url">http://hostname.cs.qc.cuny.edu/~username/</span>. Note that there is no file name at the end of
+              this URL. Your index page should be displayed.
+            </p>
+            <p>
+            	If you are using a computer outside the lab, be sure you copy your work to your <span class="directoryName">My Website</span>
+              directory in the lab.
+            </p>
+          </li>
+        </ol>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+      	<p>
+        	Log out of your account and be sure your roaming profile is copied back to the server successfully.
+        </p>
+        <p>
+          Submit the assignment by midnight of the due date:
+        </p>
+        <ol>
+            <li>
+              To submit this assignment, simply send me an email message telling me that your web page is ready for me
+              to look at: I will copy it from <span class="computerName">Oak</span> to <span
+              class="computerName">Babbage</span>, and check it out there.
+              <p>
+                If your have trouble with the roaming profile feature of the lab, mention that in your message and I
+                will copy your <span class="directoryName">My Website</span> directory to <span
+                class="computerName">Babbage</span> from your home directory instead of your profile directory on <span
+                class="computerName">Oak</span>.
+              </p>
+            </li>
+            <li>Be sure to put your name in your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-081 Assignment 2</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu. (Fix up the 'AT' part.)
+            </li>
+        </ol>
+        <p>
+          See <a href="../../cs081/index.xhtml">the course home page</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

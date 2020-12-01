@@ -1,0 +1,234 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 4</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>
+        CS-081 Assignment 4
+      </h1>
+    </div>
+    <div id="content">
+      <h2>
+        Introduction
+      </h2>
+      <div  class="whitebox">
+        <p>
+          In this assignment, you are to take exactly the same set of xhtml files as you used in
+          <a href="Assignment_03.xhtml">CS-081 Assignment 3</a>, but use CSS to give the page a totally
+          different appearance.
+        </p>
+      </div>
+      <h2>
+        The Assignment
+      </h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Set up the assignment directory.</h5>
+            <p class="runin">
+              Create a new subdirectory of your web site, and name it <span class="directoryName">Assignment_04</span>.
+              Duplicate each of the xhtml files from Assignment 3, and move the copies into the Assignment_04
+              subdirectory.  Duplicate the stylesheet for Assignment 3, and change the name of copy to <span
+              class="fileName">assignment_04.css</span>. Change the stylesheet links in each of the xhtml files for this
+              assignment so they point to this new stylesheet. Finally, go into this new stylesheet and remove all the
+              rules except for the one at the beginning for &ldquo;html, body.&rdquo;
+            </p>
+          </li>
+          <li>
+            <h5>Float the Navigation and Content <span class="tagName">div</span>s.</h5>
+            <p class="runin">
+              Use CSS rules to float the navigation list <span class="tagName">div</span> to the left and the content
+              <span class="tagName">div</span> to the right. Give each one a width in percentages such that the sum is
+              100%. Note that for this to work correctly in <span class="programName">Internet Explorer</span> the sum
+              must be slightly less than 100%. Verify that the two <span class="tagName">div</span>s display
+              side-by-side. Apply the proper clear property to the footer so that it appears below both the navigation
+              list and the content.
+            </p>
+          </li>
+          <li>
+            <h5>Create a background image to create a faux-column for the navigation links.</h5>
+            <p class="runin">
+              There will appear to be empty space below the navigaion links because the content has been floated right
+              and given a width that leaves space down the left side of the page. But the navigation list is not tall
+              enough to fill up this space, so applying a background color to it will not fill the open space. Rather,
+              use <span class="programName">Fireworks</span> to create a background image for the whole page that will
+              put a colored background down the left side, but which will have no effect on the right side.
+            </p>
+            <p>
+              The strategy here is to create an image that is wider than anyone&rsquo;s screen. These days, 2,000 pixels
+              should suffice, but to &ldquo;future-proof&rdquo; your site, you might want to make it even wider; an 
+              Apple 30" display, for example has a maximum resolution of 2560&times;1600. (If you would like to donate
+              one of these $1,800 monitors to the department, I would be more than happy to use it to evaluate your
+              assignment.)
+              You will tile the image vertically, so its height doesn&rsquo;t matter; it could be as little
+              as 1 pixel tall, leading to a small file size for downloading. But to be able to see what you are doing
+              I suggest that you might make it taller, such as 100 pixels.
+            </p>
+              
+              <p>
+                Open Fireworks and tell it to create a new document with the dimensions you decided on. Be sure the
+                resolution is no larger than necessary; the normal Web resolution is 72 dpi. If you were trying to
+                future-proof your site and were going to create a complicated graphic, you might use a higher resolution,
+                but that won&rsquo;t be necessary here. Multiply the percentage you used for the width of the navigation
+                <span class="tagName">div</span> times the width of the image to calculate the number of pixels on the
+                left side of this image that will get the background color. Draw a rectangle wide enough to cover that
+                much of the left side of your image and fill it with whatever color you want to use for the background
+                of the faux column on the left side of the page. Save the image as a PNG file in your site&rsquo;s
+                <span class="directoryName">images</span> directory using &ldquo;indexed transparency&rdquo; (not alpha
+                transparency). A certain unnamed browser has trouble with PNGs that use alpha transparency, but not with
+                indexed transparency. (<span class="programName">Fireworks</span> is one of the few image editing programs
+                that lets you save PNG files using indexed transparency, by the way.) Leave the entire right side of the
+                image transparent. That way, you can specify the background color for the right side of the page using
+                CSS without having to re-draw the image.
+              </p>
+              <p class="standout_block">
+                Be sure to use a meaningful name for the file so you will know what it is without having to open it up.
+                Image files tend to proliferate, and using good file names makes it easier to manage them all.
+            </p>
+            <p>
+            	Use your image as the background for the entire page by specifying it for the <span
+              class="tagName">body</span> element. For now, it might extend into the header and footer regions, but if it
+              is on the left side of the page and occupies the same proportion of the width no matter how the page is
+              resized, it&rsquo;s set up correctly. You will need to use the horizontal
+              <span class="propertyName">background-position</span> property to get the image positioned properly. You
+              should also set the <span class="propertyName">background-repeat</span> property to <span
+              class="propertyValue">repeat-y</span>, but the effect should actually work with the default value of
+              <span class="proertyValue">repeat</span> (meaning repeat in both the x and y directions) because you made
+              the image so wide that it will never repeat horizontally on any current monitors.
+            </p>
+            <p>
+            	Go back to the background image and add a rectangle that starts at the right end of the colored box and that
+              extends several pixels to the right. Fill the box with a black gradient that fades to transparent, which
+              should create a &ldquo;drop shadow&rdquo; effect on the right side of the navigation column.
+            </p>
+          </li>
+          <li>
+            <h5>Style The Document</h5>
+            <p class="runin">
+              Style the navigation list somewhat the way you did for Assignment 3, except you do not need to use any
+              background images for the anchors or links if you don&rsquo;t want to. The ones from Assignment 3 will
+              not work for this assignment because the list is to be displayed vertically. But do get rid of the bullets
+              (or numbers), do provide a hover effect, and style the link for the current page differently from the
+              others.
+            </p>
+            <p>
+            	Style the header and footer so that none of the body&rsquo;s background image shows through them. Use margins,
+              padding, borders, line height, letter spacing, fonts, and colors to make the pages look &ldquo;good.&rdquo;
+            </p>
+          </li>
+        </ol>
+      </div>
+      <h2>
+        Submit The Assignment
+      </h2>
+      <div class="whitebox">
+        <p>
+          Before you submit the assignment, be sure you perform the following four tests:
+        </p>
+          <ol>
+            <li>
+              <h5>Publish your page and all the style sheets to the server&rsquo;s document root</h5>
+              <p class="run_in">Verify that everything looks right.</p>
+            </li>
+            <li>
+              <h5>
+                Perform a link check on your site to make sure there are no mistakes due to capitalization problems.
+              </h5>
+              <p class="runin">
+                (Remember, you checked the "case-sensitive link checking" option when setting up your site.) Right click
+                on the site folder in Dreamweaver, and select &ldquo;check links&rdquo;. If there are any problems, they
+                will show up in a separate window. Fix them and do another check until there are no problems left.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the XHTML.</h5>
+              <p>
+                You should have been looking at the TIDY and Firebug icons in the Firefox status bar as you were testing
+                your code to be sure they both are green circles with white checkmarks inside them. Now, click on the
+                XHTML link in the footer of your web page to get a full W3C validation check. Fix any warnings (or
+                errors) that the validator reports.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the CSS.</h5>
+              <p class="runin">
+                Once the XTML validates successfully, check the CSS using the other link in the footer of your page.
+                Again, fix any warnings or errors that the validator reports.
+              </p>
+            </li>
+          </ol>
+        <p>
+          A final check before you submit your assigment is to view the page using Internet Explorer instead of Firefox
+          to make sure there are no problems when using that browser. You should also check the page using Opera and
+          Safari. You may ignore minor differences, but correct any big discrepancies.
+        </p>
+        <p>
+          Once you have completely tested and fixed your web page, send me an email message telling me it is ready for
+          me to review.  I will get a copy of your entire site from the copy of your profile that is saved on <span
+          class="computerName">maple</span>, so there is no need to tell me which computer you were working on. Just
+          tell me that the site is ready for me to look at.
+        </p>
+        <p>
+          Send your email to me by midnight of the due date. My email address is: <span class="emailAddress
+          codeBlock">vickery at babbage.cs.qc.edu</span>.
+        </p>
+        <p class="standout_block">
+          <strong>You must use exactly this Subject line for your email to be sure I actually receive it:</strong> <span
+          class="codeBlock">CS-081 Assignment 4</span>. (Include the "CS-081" part in the subject line of <em>all</em>
+          messages you send to me this semester.)
+        </p>
+        <p>
+          If you do not receive an &ldquo;OK, I&rsquo;ll check it out!&rdquo; reply from me within a day or two of
+          submitting the assignment, it means I did not receive it. But I will be sending that acknowledgement manually,
+          so don&rsquo;t resubmit the assignment until I have had a chance to reply to the first one.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home Page</a>&nbsp;-&nbsp;<a
+           href="..">CS-081 Home Page</a>&nbsp;-&nbsp;<a
+           href=".">Fall 2007 Course Page</a><br/>
+        <a
+           href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      </p>
+      <p>
+        <em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

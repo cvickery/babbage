@@ -1,0 +1,97 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 2</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Assignment 2</h1>
+    </div>
+
+    <div id="content">
+      <h2>Overview</h2>
+      <div class="whitebox">
+        <p>This assignment continues the &ldquo;getting started&rdquo;
+        process begun in Assignment 1.  You will augment your <span
+        class="fileName">template.xhtml</span> file so that it includes more
+        default structural information for your documents, and links to
+        stylesheet and client-side script files.  Finally, you will convert
+        your template file into a Dreamweaver template so it can be used to
+        start new web pages from within Dreamweaver automatically.</p>
+      </div>
+      
+      <h2>Procedure</h2>
+      <div class="whitebox">
+      
+        <p>The entire procedure for this assignment is to follow all the
+        steps for setting up Dreamweaver given in the <a
+        href="../using_dreamweaver.xhtml">Using Dreamweaver</a> web page. 
+        <strong>Note:</strong> that file was last updated on <?php echo
+        gmdate("M d, Y", filemtime("../using_dreamweaver.xhtml")); ?>; be
+        sure to work from the most recent version.</p>
+
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+
+        <p>When you have completed the assignment, send me an email message
+        that says &ldquo;CS-081 Assignment 2&rdquo; in the subject line and
+        that contains your real name and account name in the message body. 
+        I will get a copy of your work from <span
+        class="computerName">maple</span> to look at.</p>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

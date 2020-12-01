@@ -1,0 +1,176 @@
+<?php
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: application/xhtml+xml");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo "$html_attributes";?>>
+  <head>
+    <title>CS-081 Assignment 7</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:B3FDEDBC-A9E2-4FF5-9761-C607F6184AF4'>
+    <h1>CS-081 Assignment 7</h1>
+    <section id="content">
+      <section>
+        <h1>Reading Assignments</h1>
+        <p>
+          This assignment is based on the <cite>Forms</cite> section of Chapter 3 of the textbook (pages 51-59), plus
+          material covered in class on PHP.
+        </p>
+      </section>
+      <section>
+        <h1>Coding Assignment</h1>
+        <p>
+          The assignment is quite simple to state: create two web pages, one of which uses a <span
+          class="tag">form</span> to collect some data from the user, and another which displays that data when the user
+          submits the form.
+        </p>
+        <ol>
+          <li>
+            <h5>Set up your site for the assignment.</h5>
+            <p>
+              Create a new directory in your site named <span class="directory-name">scripts</span>, and add two web
+              pages, both based on the HTML5 template we are using for all web pages in this course, to your site. Name
+              the first web page <span class="file-name">login.xhtml</span>, and put it in your site’s document root
+              (the <span class="directory-name">My Website</span> directory). Name the second web page <span
+              class="file-name">process_login.xhtml</span>, and put it in your new <span
+              class="directory-name">scripts</span> directory.
+            </p>
+            <p>
+              Add a link from your index page to <span class="file-name">login.xhtml</span>. The link should say, “Login
+              Here,” and it should go right below the link to Assignment 6 ... assuming you set up Assignment 6
+              correctly.
+            </p>
+            <p>
+              Make the <span class="tag">title</span> and <span class="tag">h1</span> elements of <span
+              class="file-name">login.xhtml</span> say something clever, like “Login Here,” and add a <span
+              class="tag">form</span> element that has <span class="code-snippet">scripts/process_login.xhtml</span> as
+              the value of the <span class="attribute-name">action</span> attribute, and <span
+              class="code-snippet">get</span> as the value of the <span class="attribute-name">method</span> attribute.
+              Add either a <span class="tag">button</span> or an <span class="tag">input</span> with a <span
+              class="attribute-name">type</span> attribute of “submit.”
+            </p>
+            <p>
+              Make the <span class="tag">title</span> and <span class="tag">h1</span> elements of 
+              <span class="file-name">process_login.xhtml</span> say something clever, like "Login Data."
+            </p>
+            <p>
+              At this point, your new web pages are ugly (no CSS yet) and will not validate (you aren’t supposed to put
+              input elements inside a form without some sort of containing element). But you should be able to
+              navigate from your site’s index page to your login page, and you should be able to get your Login Data
+              page by submitting the form. Don’t proceed until you get this part set up and working properly
+            </p>
+          </li>
+          <li>
+            <h5>Create an “interesting” form.</h5>
+            <p>Use at least the following elements to create a valid input form:</p>
+            <ul>
+            	<li>
+                Use a <span class="tag">fieldset</span> to hold all the input elements in the form: needed so that
+                the web page will validate.
+              </li>
+              <li>Use a <span class="tag">legend</span> for your <span class="tag">fieldset</span>.</li>
+              <li>Use a <span class="tag">label</span> for each of the <span class="tag">input</span> elements below.</li>
+              <li><span class="tag">text</span> for the user’s name.</li>
+              <li><span class="tag">password</span></li>
+              <li>Three or more checkboxes</li>
+              <li>Two or more radio buttons</li>
+              <li>Any addtional elements your think would make the form “interesting,” possibly including addtional
+                elements of any of the above types, or others, such as <span class="tag">select</span> not explicitly
+                listed above
+              </li>
+            </ul>
+            <p>
+              Make sure the login page now passes HTML5 validation and that the submit button still takes you to the Form Data page.
+            </p>
+          </li>
+          <li>
+            <h5>Style your form.</h5>
+            <p>
+              Make your form look good: use color, borders, margins, padding, and positioning to make the form clear and easy to
+              read. Make sure the <span class="tag">input</span> elements line up well with their corresponding 
+              <span class="tag">label</span> elements and with each other. Note: labels for checkboxes and radio buttons should
+              be to the right of the boxes and buttons; labels for input and password elements should be to the left of or above
+              the text boxes that the user types into.
+            </p>
+            <p>Validate the CSS for the form page.</p>
+          </li>
+          <li>
+            <h5>Write PHP code to display the form data the user enters.</h5>
+            <p>
+              To do this part of the assignment, you need to know only the minimal amount of PHP covered in class. In case your notes
+              are not accurate, here is a piece of PHP code that will display the user’s name in a paragraph, assuming the 
+              <span class="attribute-name">name</span> attribute of the <span class="tag">input</span> element is “username:”
+            </p>
+<div class="code-block">
+  &lt;h1>Hello, 
+    &lt;?php
+      echo $_GET['username'];
+    ?&gt;,
+    thank you for logging in.
+  &lt;/h1>
+</div>
+            <p>
+              Use whatever HTML elements you want for the Form Data page. A <span class="tag">table</span> with two columns and a row
+              for each form datum would be appropriate, but is not required.
+            </p>
+            <p>
+              If you have time, style your Form Data page nicely. But whether you have time for that or not, be sure both the HTML5 and
+              the CSS for the Form Data page validate.
+            </p>
+            <p>Oh, and don’t forget to make sure the data entered on the form page are all displayed correctly by the Form Data page!</p>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h1>Submit the Assignment</h1>
+        <p>
+          When your page is ready for me to review, send an email message to 
+          <a href="mailto:Christopher.Vickery@qc.cuny.edu?subject=CS-081%20Assignment%207">
+          Christopher.Vickery@qc.cuny.edu</a>
+          with <span class="code-snippet">CS&#x2011;081&#160;Assignment&#160;7</span> as the Subject line.
+          All you have to do is to put your name in the
+          body of the message so that I know who sent the message. I will then copy your website from your profile on
+          the server (oak) in the lab to the web server on babbage, where I will verify that it works correctly.
+        </p>
+        <ul class="standout-block">
+          <li><span class=""></span>
+            The web server on babbage is on a case-sensitive file system. That means that if you don't capitalize file
+            and directory names exactly right, your site will no longer work when it is copied to babbage, even though
+            it may have worked perfectly well in the lab, where the file system is case-insensitive. Be sure to have Dreamweaver
+            run a link check before submitting the assignment.
+          </li>
+          <li>
+            Your site will <strong>not</strong> be copied to the DocumentRoot on babbage, so any links with absolute pathnames (ones that
+            start with a <span class="file-name">/</span> character) will not work: make sure that all internal
+            links in your site use relative, not absolute, pathnames.
+          </li>
+        </ul>
+      </section>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </footer>
+  </body>
+</html>

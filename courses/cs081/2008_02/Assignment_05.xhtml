@@ -1,0 +1,226 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 5</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 5</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          Finally, a chance to work on the appearance of your blog site! This time you are to make sure you know how to
+          set up a stylesheet and link it to your web page.
+        </p>
+      </div>
+
+      <h2>Description</h2>
+      <div>
+        <p>
+          First, be sure your site is set up properly. Your web page for Assignment 4 will be the content page for this
+          assignment. It should be named <span class="fileName">index.xhtml</span>, and it should be in your <span
+          class="directoryName">My Website</span> directory (not in a subdirectory). Rename it if necessary.
+        </p>
+        <p>
+          Create a subdirectory under <span class="directoryName">My Website</span> named <span
+          class="directoryName">css</span>. Be careful how you name this directory: I will be testing your site on a
+          machine with case-sensitive file and directory names, even though you will be developing your site on a
+          Windows computers, where file and directory names are case-insensitive. I suggest making this directory name
+          lowercase (it&rsquo;s a common convention), but that is not a requirement, so long as all the links in your
+          code use the same case as you used in naming the directory. The same thing goes for the <span
+          class="directoryName">images</span> subdirectory you should already have set up: the links in your code must
+          use the same case as the actual directory names. You will be <a href="#link-check">checking this aspect of your
+          code</a> before submitting the assignment.
+        </p>
+        <p>
+          Create a stylesheet for this project named <span class="fileName">typography.css</span> in your new
+          <span class="directoryName">css</span> directory. Add a <span class="tagName">link</span> to the head section
+          of your web page. After the <span class="tagName">title</span> tag is the usual place to put it. Be sure it
+          has the required <span class="codeSnippet">type</span> attribute set to the value
+          <span class="codeSnippet">"text/css"</span>, the <span class="codeSnippet">rel</span> attribute with the value
+          <span class="codeSnippet">"stylesheet"</span>, and a <span class="codeSnippet">href</span> attribute set to the
+          value <span class="codeSnippet">"css/typography.css"</span>. Remember, Dreamweaver will create this tag for you
+          if you drag the stylesheet file into the code for your web page, but it will not close the tag for you; you have
+          to add the <span class="codeSnippet">/</span> before the &gt; at the end of the tag yourself.
+        </p>
+        <p>
+          For this assignment you are to modify only the typographic features of the text items in your web page. You are
+          to set up CSS rules for all headings and paragraphs, specifying the font-family and font-size for each of the
+          <span class="tagName">p</span>, <span class="tagName">h1</span>, <span class="tagName">h2</span>, &hellip; tag
+          names that contain text in your page. Anchors (<span class="tagName">a</span> tags) are different from other
+          text containers, and will be covered separately. Do not set up any style rules for them in this assignment.
+        </p>
+        <p>
+          You do not need to add any <span class="functionName">class</span> or <span class="functionName">id</span>
+          attributes to any of the elements in your web page for this assignment. That means that all the selectors for
+          your CSS rules have to be based just on tag names.
+        </p>
+        <p>
+          I encourage you to experiment with additional typographic properties besides <span
+          class="codeSnippet">font-family</span> and <span class="codeSnippet">font-size</span>. But be sure to limit
+          yourself to only the following typographic properties for this assigment: <span
+          class="codeSnippet">font-family</span>, <span class="codeSnippet">font-size</span>, <span
+          class="codeSnippet">font-weight</span>, <span class="codeSnippet">font-style</span>, <span
+          class="codeSnippet">font-variant</span>, <span class="codeSnippet">letter-spacing</span>, <span
+          class="codeSnippet">line-height</span>, <span class="codeSnippet">text-align</span>, <span
+          class="codeSnippet">text-decoration</span>, <span class="codeSnippet">text-indent</span>, <span
+          class="codeSnippet">text-transform</span>, and <span class="codeSnippet">word-spacing</span>.
+        </p>
+        <p class="standout">
+          All of these typographic properties and their associated values are &ldquo;fair game&rdquo; for the upcoming
+          midterm exam.
+        </p>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <h3>Test, Verify, and Validate</h3>
+        <p>
+          From this assignment forward, you must carefully test, verify and validate your assignments before submitting
+          them.  Although I am listing this information at the end of this assignment&rsquo;s web page, these are
+          actually activities that you should be performing regularly as you add code to your site. Write a little code,
+          and test to be sure it does what you expect. Then write a little more and test that. The hardest part of
+          debugging code is finding the errors. But if you test your site every time you add a little code, it&rsquo;s
+          much easier to find any errors: they are in the little bit of code that you just added!
+        </p>
+        <p>
+          Watch the green circle in the status line provided by HTML Tidy; any time it changes to a yellow triangle or a
+          red X, there is a problem that you need to fix before continuing.
+        </p>
+
+        <h4>Test</h4>
+        <p>
+          Testing consists of looking at the web page in a browser to be sure the effects you have added to the page
+          actually are working. If a heading is to have a particular font-family and size, does it? Because the
+          browser does not issue error messages for errors in your CSS code, you have to look at the page to be sure
+          it is doing what you expect. If you see a problem, you have to figure out how to fix it! Note that for CSS
+          errors, the CSS Validator can help you figure out what is wrong.
+        </p>
+        <p>
+          Another test you need to perform is to try your web page using different browsers to make sure no browser
+          compatability problems have crept into your code. This kind of problem is not likely to show up in the
+          projects for this course, but it is good to check anyway. Simply look at your web site using Internet
+          Explorer, Opera, and Safari to be sure it looks &ldquo;about the same&rdquo; in each one.
+        </p>
+        <h4 id="link-check">Verify</h4>
+        <p>
+          You need to do an explicit check to be sure all the links in your web pages are correct, because Windows will
+          let you use mis-matched file and directory names in your links that won&rsquo;t show up until your code is
+          copied to a Unix/Macintosh computer for testing. Dreamweaver will check the <span
+          class="tagName">link</span> tags in the head of your page, as well as the <span class="tagName">a</span> and
+          <span class="tagName">img</span> tags in the body of the page, provided they refer to files within your web site.
+          It won&rsquo;t check links to things on other web sites.
+        </p>
+        <p>
+          When you <a href="../using_dreamweaver.xhtml">set up your site</a>, you should have checked the &ldquo;Use
+          case-sensitive link checking&rdquo; in the Local Information panel for the site. If not, select the <span
+          class="menuItem">Site-&gt;Manage Sites&hellip;</span> menu item, and edit your site definition so this
+          option is checked.
+        </p>
+        <p>
+          To check links, right-click on the top line of the Files panel where it says, &ldquo;Site - &hellip;&rdquo;
+          and select &ldquo;Check Links.&rdquo; Pick the option to check the entire site. A new panel will show up
+          with a list of all the broken links in your site, if there are any. (Select &ldquo;Broken Links&rdquo; from
+          the <span class="codeSnippet">Show:</span> option box.) There will be a line for each broken link you need
+          to fix. The folder icon next to the lines will open up a file browser so you can simply point to the correct
+          file.
+        </p>
+        <p>
+          There is another link check you need to perform. All the links to stylesheets and images should be given as
+          relative pathnames. In simple terms, this means they must not begin with a <span
+          class="codeSnippet">/</span> character. If your links do not use relative pathnames, they will fail to work
+          when your code is copied to another place on the disk (or to another computer&rsquo;s disk). For this, you
+          will need to set up a remote sever for your site, have Dreamweaver copy your site to the remote server, and
+          test it there. The procedure is documented in the
+          <a href="../using_dreamweaver.xhtml#remote-server">Dreamweaver Setup</a> web page.
+        </p>
+
+        <h4>Validate</h4>
+        <p>
+          If you have been watching the HTL Tidy icon in your status bar, your code will already pass the XHTML
+          validation check automatically, but you can click the link at the bottom of the page to be sure. You should
+          get a page with a nice big green bar offering you congratulations for having no warnings or errors on your
+          page. Do the same with the CSS link at the bottom of the page and make sure there are absolutely no errors
+          or warnings there. Fix any problems that show up.
+        </p>
+
+        <h3>Save and Submit</h3>
+        <p>
+          When you have tested, verified, and validated your code, be sure log out so your code will be saved to the
+          server, and send me an email message saying your assignment is ready. I will copy it from the server to the
+          Unix computer in my office (babbage), and will check it out from there.
+        </p>
+        <p>
+          My email address is:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout">
+          The Subject Line of your email must say <span
+          class="codeblock">CS-081&nbsp;Assignment&nbsp;5</span>, exactly like that, in order to avoid my spam
+          filters.
+        </p>
+        <p>
+          Always include <span class="codeSnippet">CS-081</span> in the subject line of your email messages to me, even
+          if you are not submitting an assignment, because of the spam filters.
+        </p>
+        <p class="important">
+          Be sure to sign your email so I know who sent it!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

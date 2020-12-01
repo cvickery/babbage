@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+                          "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>Form_Script.sh</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body {
+        background-color: #ffc;
+        font-family:      sans-serif;
+        color:            #661;
+        margin:           2em;
+        }
+      h1 {
+        text-align:       center;
+        }
+      pre {
+        background-color: #fff;
+        color:            #111;
+        margin:           1em;
+        border:           2px solid red;
+        }
+  </style>
+</head>
+<h1>Form_Script.sh</h1>
+<hr>
+<pre>
+#! /usr/local/bin/bash
+echo "Content-type: text/html"
+echo ""
+echo "&lt;!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0//EN\""
+echo "  \"http://www.w3.org/TR/xhtml10/DTD/xhtml10.dtd\"&gt;"
+echo "&lt;html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"&gt;"
+
+echo "&lt;head&gt;&lt;title&gt;Form Processing Script: Bash Version&lt;/title&gt;";
+echo "&lt;link rel=\"shortcut icon\" href=\"/favicon.ico\" /&gt;"
+echo "&lt;link rel=\"stylesheet\" type=\"text/css\" media=\"all\""
+echo "  href=\"/courses/css/style-all.css\" /&gt;"
+echo "&lt;link rel=\"stylesheet\" type=\"text/css\" media=\"screen\""
+echo "  href=\"/courses/css/style-screen.css\" /&gt;"
+
+echo "&lt;/head&gt;&lt;body&gt;&lt;div id=\"header\"&gt;"
+echo "&lt;h1&gt;Form Processing Script: Bash Version&lt;/h1&gt;"
+echo "&lt;/div&gt;&lt;div id=\"content\"&gt;"
+
+if [[ $REQUEST_METHOD != "" ]]
+then echo "&lt;h2&gt;The Request Method was $REQUEST_METHOD&lt;/h2&gt;"
+else echo "&lt;h2&gt;There was no Request Method specified&lt;/h2&gt;"
+fi
+
+if (( ${#QUERY_STRING} &gt; 0 ))
+then
+  echo "&lt;h3&gt;QUERY_STRING&lt;/h3&gt;"
+else
+  echo "&lt;h2&gt;Standard Input Stream (&lt;em&gt;stdin&lt;/em&gt;)&lt;/h2&gt;"
+  read QUERY_STRING
+fi
+
+qs=$QUERY_STRING
+let len=${#qs}
+
+if (( $len &gt; 100 ))
+then
+  echo "&lt;p&gt;&lt;em&gt;Long lines forced to wrap every 100 characters.&lt;/em&gt;&lt;/p&gt;"
+fi
+echo "&lt;div class='whitebox'&gt;&lt;pre&gt;"
+while (( len &gt; 0 ))
+do
+  localqs=${qs:0:100}
+  localqs=${localqs//&amp;/&amp;amp;}
+  localqs=${localqs//&lt;/&amp;lt;}
+  echo "${localqs}"
+  let len=len-100
+  qs=${qs:100}
+done
+
+echo "&lt;/pre&gt;&lt;/div&gt;"
+QUERY_STRING=$(echo "$QUERY_STRING" | tr "+" " ")
+QUERY_STRING=$(echo "$QUERY_STRING" | ./unescape)
+#echo "&lt;fieldset&gt;&lt;legend&gt;Debugging&lt;/legend&gt;"
+#echo "&lt;div class='whitebox'&gt;&lt;pre&gt;$QUERY_STRING&lt;/pre&gt;&lt;/div&gt;"
+#echo "&lt;/fieldset&gt;"
+IFS="&amp;"
+set -- $QUERY_STRING
+echo "&lt;h3&gt;There were $# parameters&lt;/h3&gt;"
+if [[ $# &gt; 0 ]]
+then
+  echo "&lt;table summary=\"Parameter Names and Their Values\"&gt;"
+  echo "&lt;caption&gt;Parameter Names and Their Values&lt;/caption&gt;"
+  echo "&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;"
+  for param in $@
+  do
+    # Separate name=value into lhs and rhs; block tags, fix
+    # ampersands left behind by ./unescape, and restore &lt;br /&gt;,
+    # assuming they were inserted by ./unescape.
+    lhs=${param%%=*}
+    lhs=${lhs//\%26/&amp;amp;}
+    lhs=${lhs//&lt;/&amp;lt;}
+    lhs=${lhs//&amp;lt;br \/&gt;/&lt;br \/&gt;}
+    rhs=${param#*=}
+    rhs=${rhs//\%26/&amp;amp;}
+    rhs=${rhs//&lt;/&amp;lt;}
+    rhs=${rhs//&amp;lt;br \/&gt;/&lt;br \/&gt;}
+    echo "&lt;tr&gt;&lt;td&gt;${lhs}&lt;/td&gt;&lt;td&gt;${rhs}&lt;/td&gt;&lt;/tr&gt;"
+  done
+  echo "&lt;/table&gt;"
+#else
+#  echo "&lt;fieldset&gt;&lt;legend&gt;Debugging&lt;/legend&gt;"
+#  echo "&lt;div class='whitebox'&gt;&lt;pre&gt;$QUERY_STRING&lt;/pre&gt;&lt;/div&gt;"
+#  echo "&lt;/fieldset&gt;"
+fi
+
+echo "&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"
+</pre><hr></body></html>

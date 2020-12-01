@@ -1,0 +1,233 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 6</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:29A7ABC2-847E-4F49-8F4C-B63DE452741A'>
+
+    <h1>CS-081 Assignment 6
+    </h1>
+    <h2>Introduction</h2>
+    <div>
+      <p>
+        For this assignment, you are to work with image files that include a gradient that involves levels transparency.
+        Using Photoshop to create such image files will leave you only one choice for the file format to use, PNG-24,
+        because JPEG files have no support for transparency, and the indexed file formats supported by Photoshop (GIF
+        and PNG-8) support only one level of transparency.
+      </p>
+      <p>
+        You will be using two different transparent gradients for two different elements of your web page.
+      </p>
+      <p>
+        The assignment also introduces other positioning mechanisms for CSS boxes in addition to the
+        <span class="property-name">float</span> property you have already worked with. The new positioning mechanisms
+        are specified using the <span class="property-name">position</span> property, which may take the values,
+        <span class="property-value">absolute</span>, <span class="property-value">fixed</span>,
+        <span class="property-value">relative</span>, or <span class="property-value">static</span>.
+      </p>
+      <p>
+        The topic of positioning is covered in the textbook, starting on page 107. There is a web page I prepared on
+        <a href="../using_photoshop.xhtml">Using Photoshop To Edit Web Images</a> that includes information on
+        creating gradients.
+      </p>
+    </div>
+    <h2>The Assignment</h2>
+    <div>
+      <p>
+        You may update the existing stylesheet for your web site for this assignment. So there are no changes to
+        the XHTML of your web page required.
+      </p>
+      <ol>
+        <li>
+          <h5>Add an element to hold a static background image for your web page.</h5>
+          <p>
+            Your web page should already have one <span class="tag-name">div</span> element at this point, which you
+            added in Assignment 3. Now add a second, empty, <span class="tag-name">div</span> at the beginning of the
+            body of the page. To differentiate between the two divs, give each an <span class="property-value">id</span>
+            that will uniquely identify it. For the new <span class="tag-name">div</span>, use the value <span
+            class="attribute-value">static_background</span>, and for the existing one, use the value <span
+            class="attribute-value">content</span>.
+          </p>
+          <p>
+            The first part of the body of your web page should look like this:
+          </p>
+          <div class="code-block">
+&lt;body&gt;
+  &lt;div id="static_background"&gt;
+  &lt;/div&gt;
+  &lt;h1&gt;This is &lt;span title="my-name"&gt;Vickery’s&lt;/span&gt; Web Page&lt;/h1&gt;
+  &lt;div id="content"&gt;
+      &lt;p&gt;
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. &lt;span&gt;&lt;span&gt;M&lt;/span&gt;orbi&lt;/span&gt; varius,
+          </div>
+          <p class="standout-block">
+          	<strong>This is terrible!</strong> The only purpose of the “static_background” <span class="tag-name">div</span>
+            is to provide an element for controlling the <em>appearance</em> of the web page. It has no meaningful purpose
+            whatsoever, so a purist would be quick to point out that it should not be present in the XHTML file at all, even
+            though we are, properly, going to control its appearance using CSS. But “our client” asked for the visual
+            effect of having a stationary background for the whole page, and I don’t know how to implement it without this
+            content-free <span class="tag-name">div</span>.
+          </p>
+          <p>
+          	Look at your web page; its appearance should not have changed from what it looked like for Assignment 5. Because
+            the new <span class="tag-name">div</span> has no content, the browser will allocate no space in the window. Its
+            CSS box collapses to nothingness.
+          </p>
+          <p>
+            Make sure everything still validates.
+          </p>
+        </li>
+        <li>
+        	<h5>Use Photoshop to create a background image for the static_background <span class="tag-name">div</span>.</h5>
+          <p>
+          	We went over this in class, and the <a href="../using_photoshop.xhtml">Using Photoshop</a> web page tells how
+            to do it too. The exact width of the image doesn’t matter because it will be tiled horizontally too fill up
+            the <span class="tag-name">div</span>, and the height is actually arbitrary too; I’ll say to use 600 pixels
+            just to be concrete, but feel free to experiment.
+          </p>
+          <p>
+          	Make the gradient a solid color that will complement the background color of your web page at the top of the
+            image, and have it fade to fully transparent towards the bottom. Save the Photoshop file (with a .psd file
+            extension) in your <span class="file-name">images</span> directory (so I can see it when I look at your
+            assignment), and use the “Save for web and devices” panel to save a copy in the same directory as a PNG-24
+            file (with the .png file extension). Use a descriptive name for the file, such as “vertical_gradient.” (Note
+            that if you put a space in the file name, Photoshop will automatically replace it with a hyphen because spaces
+            are more bother than they are worth in file and directory names that are used in URLs.)
+          </p>
+          <p>
+          	Add a CSS rule to the stylesheet that selects the static_background <span class="tag-name">div</span>, with
+            the following properties:
+          </p>
+          <ul>
+          	<li>Do not specify a background color; that needs to have its default value of transparent.</li>
+            <li>The background image is a link to the PNG file you created using Photoshop.</li>
+            <li>The background image must repeat in the X direction only.</li>
+            <li>
+            	The height and width of the element must be set to 100%. (There are other values that would work for the
+              height. If you have time, experiment with this setting.) These values are necessary because the
+              <span class="tag-name">div</span> would otherwise collapse to nothingness, as described above.
+            </li>
+            <li>
+            	The <span class="property-name">position</span> of the element must be set to 
+              <span class="property-value">fixed</span>, and the <span class="property-name">top</span> and
+              <span class="property-name">left</span> property values should both be set to 0.
+            </li>
+          </ul>
+          <p>
+          	At this point, view the web page and verify that the background image appears solid at the top of and across 
+            the full width of the browser window, and that it does not move when you scroll the window vertically. (Or
+            horizontally, for that matter.) But it will appear in front of the content on the web page, and you want it to
+            go in front of the body element, but in back of the content elements.
+          </p>
+        </li>
+        <li>
+        	<h5>Adjust the depth (Z) settings to display the fixed background at its proper depth.</h5>
+          <p>
+          	Set the <span class="property-name">z-index</span> property of the stationary background to -1; this will place
+            it behind the content elements of the page. But it will also put it behind the <span class="tag-name">html</span>
+            and <span class="tag-name">body</span> elements of the page, so set their
+            <span class="property-name">z-index</span> property to -2 to put them behind the stationary background. But
+            that won’t work because they are not “positioned” elements, so set their
+            <span class="property-name">position</span> property to <span class="property-value">relative</span>
+            without specifying a value for <span class="property-name">top</span> property or
+            <span class="property-name">left</span> property, a trick that makes them “positioned” without actually
+            changing their position or flow within the page. (We went over this in class on April 20.)
+          </p>
+        </li>
+        <li>
+        	<h5>Add a horizontal gradient to the <span class="tag-name">h1</span> element.</h5>
+          <p>
+          	Use Photoshop to create a transparent image 800 pixels wide and 25 pixels tall. Add a gradient that is a
+            solid color on the right and transparent on the left, with the solid color being one that complements the
+            background color of the <span class="tag-name">h1</span> element.
+          </p>
+          <p>
+          	Use a CSS rule to add this image as the background of the <span class="tag-name">h1</span>. Have it repeat
+            in the vertical direction, and position its right edge at the right edge of the 
+            <span class="tag-name">h1</span>.
+          </p>
+          <p>
+          	Verify that the appearance is correct.
+          </p>
+        </li>
+        <li>
+        	<h5><em>Optional:</em> add a drop shadow and rounded corners to the <span class="tag-name">h1</span> element.</h5>
+          <p>
+          	CSS3 supports putting rounded corners on boxes using the 
+            <span class="property-name">border-radius</span> property. For boxes that contain text, the radius is normally
+            specifed in <span class="property-value">em</span>s. (For boxes that contain pictures, the radius is normally
+            specified in pixels.)
+          </p>
+          <p>
+          	Current versions of Chrome and Opera will handle <span class="property-name">border-radius</span> properly,
+            but for Safari and Firefox, you will have to use the browser-specific property names,
+            <span class="property-name">-webkit-border-radius</span> and 
+            <span class="property-name">-moz-border-radius</span>, respectively.
+          </p>
+          <p class="standout-block">
+          	The W3C CSS validator will give errors for the -webkit- and -moz- versions of the property names, but browsers
+            that do not recognize them will simply ignore them. Using these browser-specific properties is the one
+            exception to the rule for this course that all code must validate with no XHTML errors or warnings and no
+            CSS errors or warnings. The errors for using -moz- and -webkit- properties, and only these errors, are allowed.
+          </p>
+          <p>
+          	To add a drop shadow, the property name is <span class="property-name">box-shadow</span> property, and
+            there are four values to specify: the offset in the X direction, the offset in the Y direction, the spread
+            of the shadow (bigger values make the shadow bigger), and the color of the shadow. There are -moz- and
+            -webkit- versions of this property also.
+          </p>
+          <p>
+          	Microsoft has announced that Internet Explorer 9 will support CSS3 properties such as these when it becomes
+            available.
+          </p>
+        </li>
+      </ol>
+    </div>
+    <h2>Submission</h2>
+    <div>
+      <p>
+        When you are ready for me to look at your assignment, simply send me an email message to let me
+        know. I’ll manually copy your entire web site to my computer (babbage) and check it out. The full pathname
+        to your web site on babbage will be http://babbage.cs.qc.cuny.edu/Grading/cs081/ followed by your
+        account name.
+      </p>
+      <p>
+        Send your email message to me at: <span class="email">vickery<span class="at" title="Change to
+        @">at</span>babbage.cs.qc.cuny.edu</span> by midnight of the due date.
+      </p>
+      <p class="standout-block">
+        The Subject line of your email message must be: “CS-081 Assignment 6.”
+      </p>
+      <p>
+        Don’t forget to put your name in your email message!
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

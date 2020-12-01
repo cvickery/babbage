@@ -1,0 +1,229 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 4</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 4<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          This assignment builds on the previous one, so if you have not completed <a href="Assignment_03.xhtml">Assignmnent 3</a> yet,
+          do so now even though it is too late to receive full credit for it.
+        </p>
+        <p>
+          This is an exercise in working with text.
+        </p>
+      </div>
+      <h2>Reference Material</h2>
+      <div>
+        <ul>
+          <li>Chapter 2 of the textbook</li>
+          <li>Appendix B of the textbook</li>
+          <li><a href="http://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references">Wikipedia Character Entity List</a></li>
+          <li><a href="http://www.w3.org/TR/html4/sgml/entities.html">Character Entity References in HTML 4</a></li>
+          <li><a href="http://lipsum.com/">Lorem Ipsum Generator</a></li>
+          <li><a href="http://www.w3.org/TR/CSS21/text.html">CSS Chapter on Text</a></li>
+          <li><a href="http://www.w3.org/TR/CSS21/fonts.html">CSS Chapter on Fonts</a></li>
+        </ul>
+      </div>
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+          A big part of working with CSS is figuring out which properties can be used with which elements on a page. For this assignment,
+          you are to explore various text-related properties. But first, you need some text to apply those properties to. Set up your blog&rsquo;s
+          index page so the <span class="tagName">body</span> looks like this:
+        </p>
+        <div class="code-block">
+&lt;body&gt;
+  &lt;h1&gt;(the blog page title)&lt;/h1&gt;
+  &lt;h2&gt;(title of the first blog entry)&lt;/h2&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;h2&gt;(title of the second blog entry)&lt;/h2&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;h2&gt;(title of the third blog entry)&lt;/h2&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;h2&gt;(title of the fourth blog entry)&lt;/h2&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    (links to the home page and the two W3C Validators)
+  &lt;/p&gt;
+&lt;/body&gt;
+        </div>
+        <ol>
+        	<li>
+          	<h5>Fill in the text for the headings and paragraphs.</h5>
+            <p>
+              Pick a general topic for your blog, and use your creativity for the wording of the blog page title (if you didn&rsquo;t already) 
+              and for the titles of the individual blog entries. <strong>Requirement:</strong> Somewhere in text of the various headings you must
+              use at least
+              the following character entities: curly double quotes, apostrophe, and at least one other visible entity; check the list on
+              <a href="http://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references">Wikipedia</a> for ideas. Grammar counts!
+            </p>
+            <p>
+              The last paragraph holds the three links that should already be on the page from the previous assignment. (To the home page and to the
+              two W3C Validators.)
+            </p>
+            <p>
+              Now get some dummy Latin text to fill in those empty paragraphs. Go to the <a href="http://lipsum.com/">Lorem Ipsum Generator</a>
+              website. There are 11 empty paragraphs in the code above, so change the number 5 to 11 in the input box under &ldquo;Where
+              can I get some?&rdquo; heading, and click the &ldquo;Generate Lorem Ipsum&rdquo; button. The page that show up will give you 11
+              paragraphs of dummy Latin text; copy and paste them into the 11 empty paragraphs of the blog index page. I know, it&rsquo;s tedious.
+            </p>
+            <p>
+              Save your web page and check it in the browser to be sure there are no errors and that all the paragraphs are in place and separated
+              from each other. Fix any errors before proceeding.
+            </p>
+          </li>
+          <li>
+          	<h5>Use <span class="attributeName">class</span> and <span class="attributeName">id</span> attributes</h5>
+            <p>
+            	Make the <span class="attributeName">id</span> of the first <span class="tagName">h2</span> be &ldquo;latest-entry&rdquo;. 
+            </p>
+            <p>
+            	Mark the first paragraph after each <span class="tagName">h2</span> with the <span class="attributeName">class</span> value, 
+              &ldquo;lead-paragraph&rdquo;.
+            </p>
+            <p>
+            	Mark the last paragraph (the one with the links in it) with the <span class="attributeName">id</span> of &ldquo;nav-links&rdquo;.
+            </p>
+            <p>
+            	Check your web page using the browser. It should look the same as before; this is a check to make sure you didn&rsquo;t make
+              any mistakes setting up the attributes.
+            </p>
+          </li>
+          <li>
+          	<h5>Adjust the appearance of the page and all the text.</h5>
+            <p>
+            	Edit <span class="fileName">main.css</span>:
+            </p>
+            <ul>
+            	<li>
+              	Add a rule for both the <span class="tagName">html</span> and <span class="tagName">body</span> elements, and set the
+              	background-color and color properties for the page to something easy to read other than black on white. (Make the colors
+                different enough from each other to be easy to read, but watch out for too much contrast. For example, 
+                <span style="background-color:red;color:blue;">pure blue text on
+                a pure red background doesn&rsquo;t work very well.</span> Experiment.
+              </li>
+            	<li>Make the <span class="tagName">h1</span> centered on the page using the <span class="propertyName">text-align</span> property.</li>
+              <li>Use the font named &ldquo;Trajan Pro&rdquo; for the second-level headings if it is available; otherwise use Verdana or
+              some other sans-serif font.</li>
+              <li>Use the font named &ldquo;Comic Sans MS&rdquo; for the text of all the paragraphs; use &ldquo;cursive&rdquo; as the fallback.</li>
+              <li>Make the text in all the paragraphs belonging to the <span class="attributeValue">lead-paragraph</span> class italic.</li>
+              <li>Apply a distinctive color and background color to the element with the <span class="attributeValue">latest-entry</span>.</li>
+              <li>Center the text in the paragraph containing the navigation links.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+      	<p>
+        	Be sure to check your blog page carefully using Firefox: there must be no errors or warnings, and all the CSS rules have to cause
+          their intended effects. To double-check, you can submit your page to the W3C validators to make sure there are no warnings or errors
+          that they can detect either.
+        </p>
+        <p>
+        	Run a link check on your site before submitting the assignment; fix any errors. (Right click in the Files panel on the right,
+          select <span class="menuItem">Check Links</span>, then select <span class="menuItem">Entire Local Site</span> (keyboard shortcut:
+          Control-F8). Fix any broken links.
+        </p>
+        <p>
+          Submit the assignment by midnight of the due date:
+        </p>
+        <ol>
+            <li>
+              To submit this assignment, simply send me an email message telling me that your web page is ready for me
+              to look at: I will copy it from <span class="computerName">Oak</span> to <span
+              class="computerName">Babbage</span>, and check it out there.
+              <p>
+                If your have trouble with the roaming profile feature of the lab, copy your <span class="directoryName">My&nbsp;Website</span> 
+                directory to your <span class="directoryName">H:\</span> drive. Mention that in your email message, and I
+                will copy your <span class="directoryName">My Website</span> directory to <span
+                class="computerName">Babbage</span> from your home directory instead of from your profile directory on <span
+                class="computerName">Oak</span>.
+              </p>
+            </li>
+            <li class="standout-block">Be sure to put your name in the body of your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-081 Assignment 4</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu. (Fix up the 'AT' part.)
+            </li>
+        </ol>
+        <p>
+          See <a href="../../cs081/index.xhtml">the course home page</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

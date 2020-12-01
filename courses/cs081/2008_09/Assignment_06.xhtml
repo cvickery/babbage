@@ -1,0 +1,146 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 6</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />        
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>
+        CS-081 Assignment 6
+      </h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+        	This is a simple assignment: add a table to one of your blog entries.
+        </p>
+      </div>
+      
+      <h2>The Assignment</h2>
+      <div>
+      	<ol>
+        	<li>
+          	<h5>Choose some tabular information to put in your table.</h5>
+            <p class="run-in">
+              The information you put in your table can be anything you want, so long as its natural structure is
+              tabular. One way to decide whether you have made a reasonable choice or not is see whether or not there
+              are natural column headings for the table. For example, in a table of student grades the column headings
+              might be Name, First Exam, Second Exam, etc.; in a monthly calendar, the headings would be the days of the
+              week; in a catalog of your music collection the column headings might be the name of the artist, the title
+              of the item, the recording media type, the genre, your ranking, comments, etc. But a grid of pictures
+              would not have natural column headings unless they were somehow organized by content categories. 
+            </p>
+            <p>
+              For this assignment, there are some side issues: your table must be divided into one or more heading rows,
+              one or more footing rows, and two or more content rows. Furthermore, there must be two cells that merge
+              together in your table (either horizontally or vertically) even if it doesn&rsquo;t really make sense for
+              the information you are putting in the table! (This is an academic exercise, after all.)
+            </p>
+          </li>
+        	<li>
+          	<h5>Set up the table and format it using CSS.</h5>
+            <p class="run-in">
+              You will need to use the following elements to construct your table: <span class="tagName">table</span>,
+              <span class="tagName">thead</span>, <span class="tagName">tfoot</span>, <span
+              class="tagName">tbody</span>, <span class="tagName">tr</span> and <span class="tagName">td</span>.  It is
+              possible to consturct the table without using <span class="tagName">th</span>, but it would make sense to
+              use this element for all the cells inside the <span class="tagName">thead</span> element. You can also use
+              <span class="tagName">th</span> elsewhere, if it makes sense. At least one of your <span
+              class="tagName">td</span> or <span class="tagName">th</span> elements must have a <span
+              class="attributeName">colspan</span> or <span class="attributeName">rowspan</span> attribute. Remember
+              that the footing row(s) come before the body rows when you put the code for the table in the blog entry.
+            </p>
+            <p>
+              Your table must have a <span class="tagName">caption</span>. Format the caption so that it looks good and is
+              positioned in a meaningful way relative to the table itself.
+            </p>
+            <p>
+              Use CSS to format your table. The outside of the table and at least some (if not all) of the table cells
+              must have visible borders. Make sure there is some padding between the cell contents and the borders to
+              make the cells easy to read (assuming you use text or numbers for the cell contents).  Format the heading
+              row(s), the body rows, and the footing row(s) differently from each other. Be sure the table fits within
+              the confines of the blog entry list item that contains it. Be sure the XHTML and CSS all validate using
+              the W3C validators.
+            </p>
+          </li>
+        	<li>
+          	<h5>Optional: Use <span class="tagName">col</span> and/or <span class="tagName">colgroup</span>.</h5>
+            <p class="run-in">
+              For extra credit, format one or more columns of the table differently using either <span
+              class="tagName">col</span> or <span class="tagName">colgroup</span> elements.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          I will check your assignment by copying it from <span class="computerName">Maple</span> to <span class="computerName">Babbage</span>;
+          to submit the assignment, send me an email with your name in the message body saying it is ready for me to look at.
+          Send your email to me by midnight on the due date (November 20). My email address is:
+        </p>
+          <address>Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu</address>
+        <p class="standout_block">
+          The Subject Line of your email must say <span class="codeblock">CS-081&nbsp;Assignment&nbsp;6</span>,
+          exactly like that, in order to avoid my spam filters.
+        </p>
+      </div>
+    </div>
+    <div id="footer">Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="../2008_09/.">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../../cs081">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

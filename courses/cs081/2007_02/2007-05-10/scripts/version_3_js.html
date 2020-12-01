@@ -1,0 +1,30 @@
+//  version_3.js
+
+var theForm   = null;
+var theText   = null;
+var someText  = "Controversy equalizes fools and wise men " +
+                "- and the fools know it."
+window.onload = initialize;
+
+function initialize()
+{
+  theForm = document.getElementById('theForm');
+  theText = document.getElementById('theText');
+  theForm.onsubmit = validateForm;
+}
+
+function validateForm()
+{
+  if (theText.value == "")
+  {
+    alert("You must enter some text.");
+    theText.value = someText;
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+  
+}
+

@@ -1,0 +1,146 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $content_type = "application/xhtml+xml";
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $content_type = "text/html";
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Midterm Exam Topics</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:8397864C-4D66-46C7-839C-A5EE1A749EFD'>
+
+<h1>CS-081 Midterm Exam Topics</h1>
+    <section id="content">
+    <p class="standout-block">
+    	The exam will be based on Chapters 1-3 of the textbook, classroom presentations, and homework assignments
+      1 through 3.
+    </p>
+      <h1>For the midterm exam you should be able to:</h1>
+      <ul>
+        <li>Tell what an Internet Protocol Address (IP Address) is, and how IP Addresses are used when
+        sending messages between devices connected to the Internet.
+        </li>
+        <li>
+          Identify the components of the header portion of an IP message.
+        </li>
+        <li>
+          Explain how port numbers are used during the delivery of IP messages from one program to another.
+        </li>
+        <li>
+          Tell how a client and server program exchange messages over the Internet.
+        </li>
+        <li>
+          Identify the components of a URL.
+        </li>
+        <li>
+          Explain the role played by the Domain Name Service (DNS) in Internet communications.
+        </li>
+        <li>
+          Give the names of the Internet Protocols used for the world wide web, email, and file transfer.
+        </li>
+        <li>
+          Tell what port number is the default for HTTP request messages.
+        </li>
+        <li>
+          Name the two most widely used HTTP servers, what computer systems they run on, and which one we use in
+          the laboratory.
+        </li>
+        <li>
+          Name the five most most-widely used HTTP clients and tell what computer systems they run on.
+        </li>
+        <li>
+          Give the term commonly used for HTTP clients; alternatively, tell what a “browser” is.
+         </li>
+        <li>
+          Tell what is so special about Internet Explorer 9.
+        </li>
+        <li>
+          Tell the difference between HTML and XHTML
+        </li>
+        <li>
+          Identify and/or define various terms related to HTML syntax: element, tag, start tag, end tag, attribute,
+          attribute name, attribute value.
+        </li>
+        <li>
+          Be able to correct syntax errors in XHTML code.
+        </li>
+        <li>
+        	Tell why we are using XHTML instead of HTML for our code in this course.
+        </li>
+        <li>
+          Explain the tree structure of an HTML document and explain how it relates to the nested structure of HTML
+          elements in a document.
+        </li>
+        <li>
+          Explain the tree structure of a file system
+        </li>
+        <li>
+        	Describe two signficant difference between Unix file systems and Windows file systems (case sensitivity
+          and direction of slashes in pathnames); tell which one the World Wide Web is based on.
+        </li>
+        <li>
+        	Define the term <em>Document Root</em> and explain how a server’s Document Root relates to the pathname 
+          part of a URL.
+        </li>
+        <li>
+        	Explain the use of tilde (<code>~</code>) in URLs.
+        </li>
+        <li>
+        	Explain why you have to be logged into a computer to view your web page when using tilde notation.
+        </li>
+        <li>
+        	Explain the “roaming profile” facility used in the lab.
+        </li>
+        <li>
+        	Tell how to submit coding assignments in this course, and what I do when I grade them.
+        </li>
+        <li>
+        	Explain the purpose of <em>Lorem Ipsum</em> text and tell how to get some.
+        </li>
+        <li>
+        	List the HTML elements that are used for headings, paragraphs, and all three types of lists.
+        </li>
+        <li>
+        	Give the syntax rules for constructing lists.
+        </li>
+        <li>
+        	Tell which element of a web page contains the elements that actually appear in the browser window.
+        </li>
+        <li>
+        	Tell what the <span class="tag-name">title</span> element does.
+        </li>
+        <li>
+        	Tell why it is important to use UTF-8 encoding for all web pages.
+        </li>
+        <li>
+        	Give the MIME types for XHTML, plain HTML, and cascading style sheet documents.
+        </li>
+        <li>
+        	Explain what the W3C Validator does.
+        </li>
+      </ul>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML5</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS3</a>
+    </footer>
+  </body>
+</html>

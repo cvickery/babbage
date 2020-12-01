@@ -1,0 +1,200 @@
+<?php
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: application/xhtml+xml");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo "$html_attributes";?>>
+  <head>
+    <title>CS-081 Assignment 6</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="css/assignment_06.css" />
+  </head>
+  <body id='urn:uuid:D8C8B7F7-0CCC-4795-8644-6534E8FCCC15'>
+    <h1>CS-081 Assignment 6</h1>
+    <section id="content">
+    	<section>
+      	<h1>Reading Assignments</h1>
+        <p>
+        	Read Chapters 4, 9, 12 of the textbook.
+        </p>
+        <p>
+        	Read <a href="http://www.alistapart.com/articles/css-positioning-101/">CSS Positioning 101</a> by
+          Noah Stokes.
+        </p>
+      </section>
+      <section>
+        <h1>Coding Assignment</h1>
+        <ol>
+          <li>
+            <h5>Set up a directory for the assignment.</h5>
+            <p>
+              Name the directory <span class="directory-name">Assignment_6</span>, and make it a direct subdirectory of
+              your <span class="directory-name">My Website</span> directory.
+            </p>
+            <p>
+              Add a link to <span class="file-name">Assignment_6/Example_A.xhtml</span> to your <span
+              class="file-name">index.xhtml</span> page; put right after the <span class="tag">h1</span> for the page.
+            </p>
+          </li>
+        	<li>
+          	<h5>Create 12 identical web pages and 13 stylesheets for the assignment.</h5>
+            <p>
+            	The names of the web pages will be: 
+              <span class="file-name">Example_A.xhtml</span>, <span class="file-name">Example_B.xhtml</span>,
+              <span class="file-name">Example_C.xhtml</span>, <span class="file-name">Example_D.xhtml</span>, 
+              <span class="file-name">Example_E.xhtml</span>, <span class="file-name">Example_F.xhtml</span>, 
+              <span class="file-name">Example_G.xhtml</span>, <span class="file-name">Example_H.xhtml</span>,
+              <span class="file-name">Example_H2.xhtml</span>, <span class="file-name">Example_H3.xhtml</span>, 
+              <span class="file-name">Example_I.xhtml</span>, and <span class="file-name">Example_J.xhtml</span>. 
+              These all go in your new <span class="directory-name">Assignement_6</span> directory.
+            </p>
+            <p>
+              The stylesheets all go in your site’s existing <span class="directory-name">css</span> directory. Name one
+              stylesheet <span class="file-name">examples.css</span>, and name the other twelve <span
+              class="file-name">example_a.css</span>, <span class="file-name">example_2.css</span>, etc.
+            </p>
+            <p>
+              Put a link to <span class="file-name">examples.css</span> in all of your new web pages, and add a second
+              link in each web page to the corresponding stylesheet.
+            </p>
+            <p class="standout-block">
+              It will be much more efficient to create just <span class="file-name">Example_A.xhtml</span>, <span
+              class="file-name">examples.css</span>, and <span class="file-name">example_a.css</span>, and get
+              everything working for those three files first, and then to make 11 copies of <span
+              class="file-name">Example_A.xhtml</span> and <span class="file-name">example_a.css</span> with all that
+              framework set up and tested. The alternative would be to create all 25 files, and then to edit each one
+              separately, but that would be very tedious. The following instructions assume you will be working the more
+              efficient way.
+            </p>
+          </li>
+          <li>
+          	<h5>Set up contents of <span class="file-name">Example_A.xhtml</span></h5>
+            <p>
+              Give the <span class="tag">body</span> four children: a <span class="tag">header</span>, a <span
+              class="tag">nav</span>, a <span class="tag">section</span>, and a <span class="tag">footer</span>, in that
+              sequence. Note that when it comes time to style these four elements, you will be able to use simple child
+              selectors, like <code>body>section</code> for these four elements: no need for classes or ids.
+            </p>
+            <p>
+              Put an <span class="tag">h1</span> and a <span class="tag">p</span> inside the <span
+              class="tag">header</span>.  Make the <span class="tag">h1</span> say <code>Example A</code> and make the
+              paragraph say something clever.
+            </p>
+            <p>
+              Put twelve <span class="tag">p</span> elements inside the <span class="tag">nav</span>, and put an <span
+              class="tag">a</span> element inside each <span class="tag">p</span>. Use this code for the first
+              paragraph:
+            </p>
+            <p class="code-block">
+  &lt;p id="current-example">&lt;a href="Example_A.xhtml">Example A&lt;/a>&lt;/p>
+            </p>
+            <p>
+              Make the other 11 paragraphs just like this, except <strong>omit the class attribute from them</strong>,
+              and adjust the text and <span class="attribute-name">href</span> attritbutes so the links go to the
+              appropriate pages.  (Even though the other 11 pages don’t exist yet.)
+            </p>
+            <p>
+            	Leave the <span class="tag">section</span> empty for now, and put the validation links inside the
+              <span class="tag">footer</span>.
+            </p>
+            <p>
+              Go to your web site, click on the link to Assignment 6, and you should see something that looks like the
+              screenshot below.  Note that no stylesheet rules are set up yet.
+            </p>
+            <figure>
+            	<img src="images/assignment_06-1.png" alt="screen shot of unstyled Example A page" />
+            </figure>
+          </li>
+          <li>
+          	<h5>Make 11 copies of <cite>Example A</cite></h5>
+            <p>
+            	Edit each web sheet so it has the correct <span class="tag">title</span>, <span class="tag">h1</span>, and
+              so the correct paragraph has the <span class="attribute-value">current-example</span> class.
+            </p>
+            <p>
+              Verify that you can navigate across the 12 web pages by clicking on the links. There is no point in
+              validating the css yet, but you should validate the xhtml of several of the pages.
+            </p>
+          </li>
+          <li>
+          	<h5>Format Example A</h5>
+            <p>
+              Set up the navigation section so that the links are arranged horizontally; it’s all right to put them
+              on two rows because there are so many of them. Regardless of how many lines there are in the <span 
+              class="tag">header</span> section, the <span class="tag">nav</span> must appear in the same place across web pages. 
+            </p>
+            <p>
+              Implement the other requirements for the assignment as specified in class. Apologies from your absent-minded
+              professor for putting this part of the assignment up only 4 hours before the deadline!
+            </p>
+            <p>
+              Be sure the validation links (in the <span class="tag">footer</span>) remain fixed at the bottom of the web page.
+              The <span class="tag">section</span> for the examples must fill the space between the <span class="tag">nav</span>
+              and the <span class="tag">footer</span>
+            </p>
+            <p>
+            	Put the HTML code from the <cite>A List Apart</cite> article inside the <span class="tag">section</span>, and the
+              corresponding CSS code in the Example A stylesheet.
+            </p>
+          </li>
+          <li>
+          	<h5>Set up and test all 12 examples.</h5>
+            <p>
+              Make sure all 12 web pages look right. Adjust stylesheets as necessary.
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h1>Submit the Assignment</h1>
+        <p>
+          When your page is ready for me to review, send an email message to 
+          <a href="mailto:Christopher.Vickery@qc.cuny.edu?subject=CS-081%20Assignment%206">
+          Christopher.Vickery@qc.cuny.edu</a>
+          with <span class="code-snippet">CS&#x2011;081&#160;Assignment&#160;6</span> as the Subject line.
+          All you have to do is to put your name in the
+          body of the message so that I know who sent the message. I will then copy your website from your profile on
+          the server (oak) in the lab to the web server on babbage, where I will verify that it works correctly.
+        </p>
+        <ul class="standout-block">
+          <li><span class=""></span>
+            The web server on babbage is on a case-sensitive file system. That means that if you don't capitalize file
+            and directory names exactly right, your site will no longer work when it is copied to babbage, even though
+            it may have worked perfectly well in the lab, where the file system is case-insensitive. Be sure you have turned on
+            the “case sensitive link check” option for your site, and run a link check for your site before submitting the
+            assignment.
+          </li>
+          <li>
+            Your site will not be copied to the DocumentRoot on babbage, so any links with absolute pathnames (ones that
+            start with a <span class="file-name">/</span> character) will not work: make sure that all internal
+            links in your site use relative, not absolute, pathnames.
+          </li>
+        </ul>
+      </section>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </footer>
+  </body>
+</html>

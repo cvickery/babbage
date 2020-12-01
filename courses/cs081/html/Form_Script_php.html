@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+                          "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><title>Form_Script.php</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <style type="text/css" media="screen">
+      body {
+        background-color: #ffc;
+        font-family:      sans-serif;
+        color:            #661;
+        margin:           2em;
+        }
+      h1 {
+        text-align:       center;
+        }
+      pre {
+        background-color: #fff;
+        color:            #111;
+        margin:           1em;
+        border:           2px solid red;
+        }
+  </style>
+</head>
+<h1>Form_Script.php</h1>
+<hr>
+<pre>
+&lt;?php
+  if (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"&gt;
+
+&lt;head&gt;
+  
+&lt;title&gt;Form Processing Script: PHP Version&lt;/title&gt;
+
+  &lt;link rel="shortcut icon" href="/favicon.ico" /&gt;
+  &lt;link rel="stylesheet" type="text/css" media="all"
+        href="/courses/css/style-all.css" /&gt;
+  &lt;link rel="stylesheet" type="text/css" media="screen"
+        href="/courses/css/style-screen.css" /&gt;
+&lt;/head&gt;
+  
+&lt;body&gt;
+  
+  &lt;div id="header"&gt;
+    &lt;h1&gt;Form Processing Script: PHP Version&lt;/h1&gt;
+  &lt;/div&gt;
+  
+  &lt;div id="content"&gt;
+&lt;?php
+  $num_get = count($_GET);
+  $num_post = count($_POST);
+  if ($num_get + $num_post == 0)
+  {
+    echo "&lt;h2&gt;No parameters were passed to this script.&lt;/h2&gt;\n";
+  }
+  else
+  {
+    echo "&lt;h2&gt;The Request Method was  ".(($num_get &gt; 0) ? "GET" : "POST")."&lt;/h2&gt;\n";
+    echo "&lt;h3&gt;There were ".($num_get + $num_post)." parameters&lt;/h3&gt;\n";
+    echo "&lt;table summary=\"Parameter Names and Values Passed to This Script\"&gt;\n";
+    echo "&lt;caption&gt;Parameter Names and Values Passed to this Script&lt;/caption&gt;\n";
+    echo "&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Value(s)&lt;/th&gt;&lt;/tr&gt;\n";
+    $params = ($num_get &gt; 0) ? $_GET : $_POST;
+    while ($param = each($params))
+    {
+      if (is_array($param['value']))
+      {
+        $val = $param['value'];
+        $n = count($val);
+        $name = str_replace('&amp;', '&amp;amp;', $param['key']);
+        echo "&lt;tr&gt;&lt;td&gt;$name&lt;/td&gt;&lt;td&gt;\n";
+        while ($value = each($val))
+        {
+          $index = str_replace('&amp;', '&amp;amp;', $value[0]);
+          $thisValue = str_replace('&amp;', '&amp;amp;', $value[1]);            
+          echo "[$index]: $thisValue&lt;br/&gt;\n";
+        }
+        echo "&lt;/td&gt;&lt;/tr&gt;\n";
+      }
+      else
+      {
+        $p = str_replace('&amp;', '&amp;amp;', nl2br($param['value']));
+        echo "&lt;tr&gt;&lt;td&gt;$param[key]&lt;/td&gt;&lt;td&gt;$p&lt;/td&gt;&lt;/tr&gt;\n";
+      }
+    }
+    echo "&lt;/table&gt;\n";
+  }
+?&gt;
+  &lt;/div&gt;
+
+  &lt;div id="footer"&gt;
+    &lt;hr /&gt;
+    &lt;p&gt;&lt;a
+      href="/"&gt;Vickery Home&lt;/a&gt;&amp;nbsp;-&amp;nbsp;&lt;a
+      href="index.php"&gt;CS-081 Home&lt;/a&gt;&amp;nbsp;-&amp;nbsp;&lt;a
+      href="http://validator.w3.org/check?uri=referer"&gt;XHTML&lt;/a&gt;&amp;nbsp;-&amp;nbsp;&lt;a
+      href="http://jigsaw.w3.org/css-validator/check/referer"&gt;CSS&lt;/a&gt;
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><hr></body></html>

@@ -1,0 +1,115 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 8</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 8</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        For this assignment you are to format your list of navigation links so it looks and operates 
+        somewhat like the horizontal one <a href="http://babbage.cs.qc.cuny.edu/081">designed in class</a>.
+      </div>
+
+      <h2>Description</h2>
+      <div>
+        <p>As a minimum, create a background image for the links with a fixed width (such as 150px) with
+        rounded corners on the top. Make sure the anchors fill the list items so the text in the anchors
+        is centered in the images. Use margins and padding to make the list look as much as you can like
+        the links are tabs on the edges of file folders.</p>
+        
+        <p>Optional: Use a different background image for links that are being hovered over and for the
+        link on the "current page".</p>
+        
+        <p>Optional: Use the sliding doors technique so the imges stay properly formed when the user
+        makes text bigger or smaller.</p>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <h3>Test, Verify, and Validate</h3>
+        <p>
+          Carefully test, verify and validate your assignment before submitting it, as described in previous assignments.
+        </p>
+
+        <h3>Save and Submit</h3>
+        <p>
+          When you have tested, verified, and validated your code, be sure log out so your code will be saved to the
+          server, and send me an email message saying your assignment is ready. I will copy it from the server to the
+          Unix computer in my office (babbage), and will check it out from there.
+        </p>
+        <p>
+          My email address is:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout">
+          The Subject Line of your email must say <span
+          class="codeblock">CS-081&nbsp;Assignment&nbsp;8</span>, exactly like that, in order to avoid my spam
+          filters.
+        </p>
+        <p>
+          Always include <span class="codeSnippet">CS-081</span> in the subject line of your email messages to me, even
+          if you are not submitting an assignment, because of the spam filters.
+        </p>
+        <p class="important">
+          Be sure to sign your email so I know who sent it!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+      ?>.&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

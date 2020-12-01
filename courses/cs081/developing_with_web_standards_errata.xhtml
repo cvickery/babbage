@@ -1,0 +1,101 @@
+<?php
+/*  $Id: developing_with_web_standards_errata.xhtml,v 1.1 2010/08/26 04:39:53 vickery Exp vickery $
+ *
+ *  $Log: developing_with_web_standards_errata.xhtml,v $
+ *  Revision 1.1  2010/08/26 04:39:53  vickery
+ *  Initial revision
+ *
+ */
+
+  header("Vary: Accept");
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+      stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+     )
+  {
+      header("Content-type: application/xhtml+xml");
+      header("Last-Modified: ".date('r', filemtime($_SERVER['SCRIPT_FILENAME'])));
+      echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+  }
+  else
+  {
+  header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Errata for Developing with Web Standards</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../css/assignments-print.css" />
+    <style type="text/css">
+      dl {
+        padding:1em;
+        border: 1px solid red;
+        background-color:gray;
+        -moz-border-radius:0.5em;
+        -webkit-border-radius:0.5em;
+        -border-radius_0.5em;
+        -moz-box-shadow:0.5em 0.5em 0.5em black;
+        -webkit-box-shadow:0.5em 0.5em 0.5em black;
+        box-shadow:0.5em 0.5em 0.5em black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Errata for <cite>Developing with Web Standards</cite> by John Allsopp</h1>
+    <dl>
+      <dt>page 59</dt>
+        <dd>
+          <p>
+            The sample code has <span class="attribute-value">warandpeace</span> as the value of the
+            <span class="attribute-name">for</span> attribute of the <span class="tag-name">label</span>
+            tag, but it uses <span class="attribute-value">monkeyinput</span> as the attribute value of
+            the <span class="attribute-name">id</span> attribute of the corresponding 
+            <span class="tag-name">textarea</span> element. The two attribute values have to match.
+          </p>
+          <p>
+            Change the third line from the end of the section on Grouping Controls from “&hellip;usable
+            form&hellip;” to “&hellip;usable a form&hellip;”.   
+          </p>
+        </dd>
+      <dt>page 64</dt>
+        <dd>
+          <p>
+            Third line after the bullet list, change “&hellip;HTML elements&hellip;” to “&hellip;HTML
+            tags&hellip;.”
+          </p>
+        </dd>
+      <dt>page 86</dt>
+      	<dd>The selector in the first box should be <code>div</code>, not <code>dd</code></dd>
+      <dt>page 92</dt>
+      	<dd>The text between the boxes should refer to “unordered” lists instead of “ordered” lists.</dd>
+      <dt>page 93</dt>
+      	<dd>
+        	<p>The second box should have a dot before the word “chapter”.</p>
+          <p>The second number on the last line of the page should be 11, not 12.</p>
+        </dd>
+      <dt>page 95</dt>
+      	<dd>
+          The description of figure 4.4 is either slightly misleading or inaccurate: the background of a box
+          extends through the border. You can see it when the border is not solid.
+        </dd>
+      <dt>page 111</dt>
+      	<dd>
+        	The statement that browsers recognize em units only down to 0.1 is not accurate. They typically
+          differentiate between em units down to four decimal places: what ever it takes to achieve one-pixel
+          resolution on the user's screen.
+        </dd>
+      <dt>page 139</dt>
+      	<dd>
+        	The function <code>getElementById</code> is miscapitalized in two places near the bottom of the page.c
+        </dd>
+    </dl>
+    <div id="footer">
+      <?php echo "Last updated " . date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>

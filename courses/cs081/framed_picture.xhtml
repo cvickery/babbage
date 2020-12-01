@@ -1,0 +1,547 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Creating a Framed Picture</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    <script type="text/javascript" src="scripts/framed_picture.js">
+    </script>
+    <link rel="stylesheet" type="text/css" href="css/framed_picture.css" />
+
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>Creating a Framed Picture</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+
+      <h2>Introduction</h2>
+      <div class="whitebox">
+
+        This page walks you through the process of developing a web page for
+        displaying one picture from a gallery of photographs.  There are
+        lots of photobloggers doing this sort of thing, and they use a
+        variety of techniques to achieve some interesting effects, some of
+        which involve Flash and/or Javascript.  But this page is different:
+        it uses the photo gallery problem as a context for working with
+        background images.
+        
+        <p>The background of a box extends from the outer edges of the
+        box&rsquo;s border inward.  A box can have both a background color
+        and a background image.  The image is in front of the color, so any
+        transparent part of the image will let the background color show
+        through.  For this exercise, we will create a <span
+        class="techTerm" title="Darkening of an image around the edges.">
+        vignette effect</span>.  Normally, vignetting is considered a defect
+        caused by a poor quality lens, but some people like to use it as an
+        artistic effect.  We will pretend a client has asked us to create
+        this effect for a set pictures being displayed.</p>
+
+        <p class="standoutBox"> In a perfect world, XHTML and CSS code that
+        pass the w3.org validation tests will display the same in all
+        browsers.  But the world is not perfect (sorry), and the techniques
+        shown here will produce different results in different browsers. 
+        However, these techniques produce nearly identical results in the
+        current (as of the time of writing) versions of <span
+        class="programName">Internet Explorer</span> (IE), <span
+        class="programName">Firefox</span>, <span
+        class="programName">Opera</span>, and <span
+        class="programName">Safari</span>.  Most notably, the techniques
+        shown here will <em>not</em> produce reasonable results using
+        versions of IE numbered 6 and below.  In the real world, this fact
+        would have to be addressed, possibly by detecting the brand and
+        version of the  user&rsquo;s browser and redirecting those users to
+        a different page with fewer features.</p>
+
+      </div>
+
+      <h2>XHTML Structure</h2>
+      <div class="whitebox">
+
+        The pages in this project will have three main sections: a header to
+        hold the name of the picture, a content section to hold the picture
+        itself, and a footer section that will contain two subsections, one
+        for links for navigating through the gallery and another one for
+        links for validating the markup and stylesheet.  It is natural to
+        use <span class="tagName">div</span>s for each of these sections:
+
+        <div class="codeBlock">
+&lt;div id="header"&gt;
+&lt;/div&gt;
+&lt;div id="content"&gt;
+&lt;/div&gt;
+&lt;div id="footer"&gt;
+  &lt;div id="navigation"&gt;
+  &lt;/div&gt;
+  &lt;div id="validation"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+        </div>
+
+        <p>The content section will contain a picture, a vignette
+        surrounding the picture, and a clickable link for going to the next
+        picture in the gallery.  There are two choices we need to make: (1)
+        should the picture change size when the user changes the size of the
+        <span class="techTerm"
+title="The part of a browser window where web pages are displayed.">viewport</span> and/or the font size for text?
+        (2) Should the vignette get clipped away when the viewport shrinks,
+        or should it always be present?</p>
+
+        <p>For the first choice, our client has said that all pictures in
+        the gallery have to have the same image size, 900&times;566 pixels,
+        so we will to keep the picture size fixed. This decision makes a big
+        difference in how the page is designed, so the material that follows
+        would have to be much different if the picture needed to be
+        re-sizeable.</p>
+        
+        <p>Each picture in the gallery is prepared for the web using a
+        program like <span class="programName">Fireworks</span> or <span
+        class="programName">ImageReady</span> to set the height and width to
+        fit in a canvas with the 900&times;566 dimensions, with areas of the
+        image that do not fill out to one dimension or the other (or both)
+        set to a color that will match the background color of the content
+        <span class="tagName">div</span>.  When the viewport is large enough
+        for the content <span class="tagName">div</span> to exceed the <span
+        class="techTerm" title="For a picture, the width and height of the
+        image, in pixels"> intrinsic size</span> of the picture, the
+        background color of the <span class="tagName">div</span> will show
+        around the picture.  For this project, we will use black as the
+        background color, black as the color of the <span class="techTerm"
+        title="When resizing images to a fixed size, the color used for
+        non-image areas."> matte</span> surrounding the optimized image, and
+        black as the color of the vignette.  You could use any set of
+        matching colors for other effects.</p>
+
+        <p>The second decision is about how the vignette effect is to change
+        when the viewport changes. One possibility is to create a vignette
+        image the same size as the photograph and to place it in front of
+        the picture.  For example, here is <span class="tagName">div</span>
+        with a white background, a 900&times;566 pixel photograph as the
+        background image, and a 900&times;566 pixel vignette <span
+        class="tagName">img</span> as the sole content of the <span
+        class="tagName">div</span>:</p>
+
+        <div id="overflow_div">
+          <img  src="images/borders/vignette_frame_900x566.png"
+                alt="Picture with vignette frame" />
+        </div>
+
+        <p><button id="toggle_overflow">Hide Overflow</button> Click this
+        button to toggle the <span class="propertyName">overflow</span>
+        property of the above <span class="tagName">div</span> between the
+        values, &ldquo;hidden&rdquo; and &ldquo;visible.&rdquo;  When the
+        value is &ldquo;visible&rdquo; you will be able to see the right
+        side of the vignette image extending beyond the photograph when the
+        viewport is narrow.  When the value is &ldquo;hidden&rdquo; you will
+        be able to see that the vignette image does not track the right side
+        of the displayed image.</p>
+        
+        <p><button id="toggle_first_background">Hide Background</button>
+        Click this button to turn the background image for the above <span
+        class="tagName">div</span> off and on so you can see the vignette
+        image more clearly.</p>
+
+        <p>For this project, our client has told us that the above effect is
+        not correct: she wants the vignette to surround whatever part of the
+        picture is visible in the viewport, and the thickness of the
+        vignette is not to change when the user resizes the viewport.  While
+        we might question the client&rsquo;s choice in this matter (but only
+        to ourselves, of course), it gives us a wonderful opportunity to
+        practice working with background repeats and the use of XHTML
+        &ldquo;scaffolding&rdquo; to provide access to elements of a page
+        that need special CSS styling.  (OK, there is no real client
+        involved here, but we will do the design this way anyway.)</p>
+
+        <p>Because neither the size of the photograph nor the thickness of
+        the vignette edges ever changes size, we can use background images
+        for everything.  We will use the photograph as the background image
+        for a <span class="tagName">div</span>, and we will then put four
+        identically-sized <span class="tagName">div</span>s in front of the
+        image <span class="tagName">div</span>, and use repeated copies of
+        four small images on each of these four <span
+        class="tagName">div</span>s to create the four sides of the vignette
+        frame.</p>
+
+        <p>Here is an approximation of the effect we are going to set up:</p>
+        
+        <div id="picture">
+          <div id="top"><div id="right"><div id="bottom"><div id="left">
+          </div></div></div></div>
+        </div>
+        
+        <p><button id="toggle_second_background">Hide Picture</button> Click
+        this button to turn the picture on and off so you can see what the
+        vignette looks like.  Resize your browser&rsquo;s window to see what
+        is happening.</p>
+
+        <p class="standoutBox"><strong>Note:</strong> Before you hide the
+        picture the first time, the background color of the <span
+        class="tagName">div</span> containing the picture is black, which
+        you will be able to see on the right as you make your
+        browser&rsquo;s viewport very wide.  The first time you hide the
+        picture, the background color is changed to white, and remains white
+        until you reload the page, so you can see the shape of the four
+        vignette frame sides.  Note what happens on the right side when the
+        viewport is wide and the background color is white.</p>
+
+        <p>The above is only an approximation of the final effect because
+        the structure of this web page does not match the structure of the
+        web page we are developing as outlined above.</p>
+
+        <p>Here is the scaffolding for creating five <span
+        class="tagName">div</span>s that overlay each other.  The geometry
+        works because none of the <span class="tagName">div</span>s has any
+        content:</p>
+
+        <div class="codeBlock">
+&lt;div id="content"&gt;
+  &lt;div id="top&gt;
+    &lt;div id="right&gt;
+      &lt;div id="bottom"&gt;
+        &lt;div id="left"&gt;
+          &lt;a href="#"&gt;&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt; 
+        </div>
+
+        <p>Without any content in them, these five <span
+        class="tagName">div</span>s will all collapse to nothingness (their
+        heights will be zero) unless we do something to force their heights
+        to have non-zero values.  The <span class="tagName">a</span> tag
+        inside the innermost <span class="tagName">div</span> represents the
+        link to the next picture in the photo gallery.  Because it has no
+        content, it will also collapse to nothingness at this point.  The
+        next section will show how to use CSS to take care of these
+        issues.</p>
+
+        <p>Before styling the page you should add an <span
+        class="tagName">h1</span> tag containing the picture name to the
+        header section of the project, and all the navigation and
+        validations links to the two footer sections.</p>
+
+      </div>
+
+      <h2>Stylesheet Setup</h2>
+      <div class="whitebox">
+
+        <p>While there are sound reasons for starting with a site-wide style
+        sheet and either modifying it or supplementing it with a new sheet
+        for the picture gallery, we will assume here that there is just one
+        blank stylesheet for this project so we can avoid distractions due
+        to settings that come from somewhere else.</p>
+
+        <p>Set up a link to your new stylesheet and initialize the sheet
+        with the following rule:</p>
+        
+        <div class="codeBlock">
+html, body {
+  background-color: red;
+  color:            green;
+  font-family:      sans-serif;
+  margin:           0;
+  height:           100%;
+  }
+        </div>
+
+        <p>The <span class="propertyName">color</span> and <span
+        class="propertyName">background-color</span> properties are there
+        simply so we can tell if they are in effect when we don&rsquo;t
+        expect them to be.</p>
+        
+        <p>The <span class="propertyName">font-family</span> property is a
+        matter of personal preference.  Most people think that sans-serif
+        fonts (like Helvetica and Arial) are easier to read on a screen and
+        that serif fonts (like Times Roman) are easier to read on printed
+        pages.</p>
+        
+        <p>The <span class="propertyName">margin</span> and <span
+        class="propertyName">height</span> properties are very important for
+        getting the page to work correctly.  The margins have to be set to
+        zero because by default most browsers put a margin around the
+        content of web pages, which would show up as a red border around the
+        edges of the viewport. The margin setting is necessary because there
+        is no standard for whether the <span class="tagName">html</span>
+        and/ or <span class="tagName">body</span> should have a margin or
+        not.  Remember, each browser has a default built-in default
+        stylesheet that it uses for displaying page elements in the absence
+        of any other stylesheet rules.</p>
+
+        <p>The <span class="attributeName">height</span> attribute, on the
+        other hand, illustrates a basic CSS rule: by default boxes are made
+        large enough to contain their content, and no larger.  To get the
+        footer <span class="tagName">div</span> to stick to the bottom of
+        the viewport, the browser has to make the height of the <span
+        class="tagName">body</span> match the height of the viewport, no
+        matter how the user decides to resize the browser window.  We will
+        also have to give explicit heights to all three of the top
+        level<span class="tagName">div</span>s in the file to keep them from
+        collapsing to nothingness.</p>
+
+        <p>The following rules will divide the viewport so that the header,
+        content, and footer <span class="tagName">div</span>s together fill
+        the entire height of the viewport.  The background colors will be
+        the ones used for the sample project being developed here: white
+        text on a black background:</p>
+
+        <div class="codeBlock">
+  #header {
+    height:           10%;
+    color:            white;
+    background-color: black;
+    }
+  #content {
+    height:           75%;
+    color:            white;
+    background-color: black;
+    }
+  #footer {
+    height:           15%;
+    color:            white;
+    background-color: black;
+    }
+        </div>
+        
+        <p>With this stylesheet in place, you should be able to view your
+        web page in any of the current browsers and see a black page with
+        the picture name (the <span class="tagName">h1</span> content) at
+        the header at the top and the text for the links in the footer at
+        the bottom, regardless of how you change the size of the
+        browser&rsquo;s window.  The red background assigned to the html and
+        body elements should be completely covered.  (Actually, Opera and
+        Safari both leave a one-pixel high piece of the background showing
+        along the bottom of the viewport.  IE 6 processes this part of the
+        project the same way Firefox does, with no red line at the bottom.) 
+        Practically speaking, you could have set the <span
+        class="propertyName">background-color</span> and <span
+        class="propertyName">color</span> properties to black and white for
+        the html and body tags, but then you wouldn&rsquo;t have seen this
+        &ldquo;interesting&rdquo; red line.</p>
+        
+        <p>Setting an explicit height for the <span
+        class="variableName">content</span> <span class="tagName">div</span>
+        is not sufficient for getting the four vignette borders to show up. 
+        The heights of the four inner <span class="tagName">div</span>s and
+        of the <span class="tagName">a</span> tag must all be set to 100% to
+        make them completely fill their containing boxes without collapsing
+        to nothingness.  There is an example of a rule that includes this
+        property setting for the <span class="variableName">bottom</span>
+        <span class="tagName">div</span> <a
+        href="#bottom_rule">below</a>.</p>
+
+      </div>
+
+      <h2>Background Images</h2>
+      <div class="whitebox">
+
+        <p>Before adding the picture and its vignette to the project, note
+        that background images are made up of pictures with certain
+        &ldquo;intrinsic&rdquo; pixel dimensionalities.  That is, the size
+        of a background image is whatever size is built into the image file,
+        and there is no way to change it.  (In contrast, images that are
+        part of a page&rsquo;s content can have their intrinsic sizes
+        altered in a number of ways.)  There are two CSS properties for
+        placing background images in a box.  The first controls how a
+        background image repeats over the background: horizontally,
+        vertically, in both directions (called &ldquo;tiling&rdquo;) or not
+        at all:</p>
+
+        <p class="center"><img src="images/background-repeat.png" 
+        alt="illustrate background-repeat property" /></p>
+        
+        <p>The second property is the position of the image within the box.
+        The default position is in the top left corner of the box, but
+        (among other options) you can attach a background image to any side
+        of the box, or center it.</p>
+        
+        <h3>Displaying the Photograph</h3>
+
+        <p>For the photograph, it makes sense to center it  as the
+        background image of the <span class="variableName">content</span>
+        <span class="tagName">div</span>, with no tiling:</p>
+
+        <div class="codeBlock">
+#content {
+  background-repeat:    no-repeat;
+  background-position:  center;
+  }
+        </div>
+        
+        <p>But each of the pages in the photo gallery needs to have a
+        different background image for the content <span
+        class="tagName">div</span>.  Rather than create an entire separate
+        stylesheet for each picture with each stylesheet having only one line
+        different from all of the others, we will embed the rule for the
+        background image in the .xhtml file for the picture.  For
+        example:</p>
+
+        <div class="codeBlock">
+&lt;style type="text/css"&gt;
+  #content {
+    background-image: url(../images/harbor.jpg);
+    }
+&lt;/style&gt;
+        </div>
+
+        <div class="standoutBox"><strong>OPTIONAL</strong> If you want to
+        experiment with server-side scripting, the following code will use
+        PHP to generate the name of the background image file based on the
+        name of the .xhtml file that it appears in.  For example, it would
+        insert the above code into a file named <span
+        class="fileName">harbor.xhtml</span>:
+
+          <div class="codeBlock">
+&lt;style type="text/css"&gt;
+  #content {
+    background-image: url(../images/&lt;?php
+      echo str_replace( '.xhtml', '.jpg',
+           basename($_SERVER['SCRIPT_FILENAME']) ); ?&gt;);
+    }
+&lt;/style&gt;
+          </div>
+
+          Be sure there is no space between the first part of the pathname
+          and the &lt; that starts the &lt;?php tag.  The advantage of this
+          approach is that you can use the same code in all the picture
+          files.  You just have to be sure the .xhtml filenames match the
+          .jpg filenames.
+
+        </div>
+
+        <h3>The Vignette Frame</h3>
+
+        <p>The strategy for making the background into a picture frame is to
+        have the top and bottom be very narrow images with their heights
+        equal to the thickness of the frame we want and to make them repeat
+        horizontally across the width of the frame.  Likewise, the left and
+        right sides will be have widths equal to the thickness of the frame,
+        will be very short, and will repeat vertically along he height of
+        the frame.  Practically speaking, &ldquo;very narrow&rdquo; and
+        &ldquo;very short&rdquo; can be as small as one pixel wide or one
+        pixel high, leading to very modestly-sized image files. But
+        one-pixel thick images images are hard to work with, so we will use
+        rectangles with a smaller dimension of 16 pixels instead of just
+        one.  Finally, to create the vignette effect, we will make the frame
+        edges fade to transparency so they will blend with the picture as
+        they go from the outside towards the inside.  For example, if the
+        vignette color is black, these four images could be used:</p>
+
+        <div class="diagram">
+          <span class="boxed">
+          Top:    <img  src="images/borders/top_border.png"
+                        alt="frame_border_pieces.png" /></span>
+          <span class="boxed">
+          Right:  <img  src="images/borders/right_border.png"
+                        alt="frame_border_pieces.png" /></span>
+          <span class="boxed">
+          Bottom: <img  src="images/borders/bottom_border.png"
+                        alt="frame_border_pieces.png" /></span>
+          <span class="boxed">
+          Left:   <img  src="images/borders/left_border.png"
+                        alt="frame_border_pieces.png" /></span>
+        </div>
+
+        <p>To show the significance of a gradient fading to transparency,
+        here are the same four images against a tinted background.  Instead
+        of fading to white, they now fade to pink:</p>
+
+        <div class="diagram">
+          <span class="tinted boxed">
+          Top:    <img  src="images/borders/top_border.png"
+                        alt="frame_border_pieces.png" /></span>
+          <span class="tinted boxed">
+          Right:  <img  src="images/borders/right_border.png"
+                        alt="frame_border_pieces.png" /></span>
+          <span class="tinted boxed">
+          Bottom: <img  src="images/borders/bottom_border.png"
+                        alt="frame_border_pieces.png" /></span>
+          <span class="tinted boxed">
+          Left:   <img  src="images/borders/left_border.png"
+                        alt="frame_border_pieces.png" /></span>
+        </div>
+
+        <p>You can download copies of the four images by right-clicking on
+        them above, or you can go to the <a href="images/borders/">images
+        download page</a>, where you can pick them up along with the SVG
+        files that were used to draw them.  You will also see there copies
+        of the full vignette frame files (SVG and PNG) used in the first
+        example on this web page, which you may want to experiment with. 
+        You can edit the SVG files using the <span
+        class="programName">InkScape</span> program available in the lab. 
+        (You can download the current version of this program for free from
+        the <a href="http://inkscape.org">inkscape.org</a> web site.)</p>
+
+        <p>A final piece of housekeeping is for you to attach each border to
+        the
+        proper edge of its <span class="tagName">div</span>, using the <span
+        class="propertyName">background-position</span> property.  This
+        property defaults to a value of &ldquo;top left&rdquo;, so you
+        really only need to specify it for the bottom and right borders:</p>
+
+        <div id="bottom_rule" class="codeBlock">
+#bottom {
+  height:               100%;
+  background-image:     url(images/borders/bottom_border.png);
+  background-repeat:    repeat-x;
+  background-position:  bottom;
+  }
+        </div>
+
+        <p>But it a good idea to specify it explicitly for all four
+        borders.</p>
+
+      </div>
+
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

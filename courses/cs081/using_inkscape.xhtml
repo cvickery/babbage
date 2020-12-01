@@ -1,0 +1,246 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+<title>Using Inkscape</title>
+
+  
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css" />        
+
+    <style type="text/css" media="all">
+      .withBgColor { background-color:#cfc; }
+      .withPNG {
+        background-image: url(images/lightRedGradient.png);
+        background-repeat:repeat-y;
+      }
+    </style>
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>Using Inkscape</h1>
+  </div>
+  <div id="content">
+    <h2>Introduction</h2>
+    <div class="whitebox">
+      <p>Inkscape is a free drawing program, available from <a href="http://www.inkscape.org">inkscape.org</a>,
+        for creating and editing Scalable Vector Graphics (<a href="http://www.w3.org/Graphics/SVG/About.html">SVG</a>)
+        images. The advantage of working with <span class="techTerm">vector
+        graphics</span> compared to <span class="techTerm">bitmap</span> images
+        is that vector images do not degrade when you change their size. SVG
+        is a standard format for vector graphics that uses XML to represent
+        drawing elements and their attributes. You can display SVG images in
+        any browser by using the <span class="tagName">object</span> (not <span class="tagName">img</span>)
+        tag, but the &ldquo;big three&rdquo; (IE7, Firefox, and Opera) are
+        inconsistent in how they display such images. (Opera is best.) IE6
+        doesn&rsquo;t display them at all. And you cannot use SVG images as
+        backgrounds. But Inkscape lets you export SVG images as Portable Network
+        Graphics (<a href="http://www.w3.org/Graphics/PNG/">PNG</a>) images,
+        which can be used for backgrounds, and that&rsquo;s the technique
+        we will be using here.</p>
+      <p class="withPNG withBgColor">This page walks you through the process
+        of using Inkscape to produce a PNG file that can be used as a background
+        image that fades to transparency from left to right. For example, this
+        paragraph has a pale green background color, and a PNG background image
+        that is pale red on the left and transparent on the right. The paragraph
+        after this one has the same PNG background image, but no background
+        color specified, so the white background of the <span class="tagName">div</span> containing
+        these paragraphs shows through on the right.</p>
+        <p class="withPNG">This is a paragraph with a gradient image for the background,
+        but no background color specified. If you don&rsquo;t see the fading
+        effect, you might need to make your browser window wider. If the red
+        part ends abruptly instead of fading off to the right, you are probably
+        using IE6 instead of Opera, Firefox, or IE7. (Sorry, I don&rsquo;t have
+        a Macintosh for testing the Safari browser.)</p>
+    </div>
+    <h2>Procedure</h2>
+    <div class="whitebox">
+      <ol>
+        <li>  
+          <h5>Start Inkscape, set the document parameters, and save the file.</h5>
+          <p class="runin">There is an Inkscape icon on your desktop when you
+            use one of the lab computers. At home, you can download a free
+            copy from the link at the beginning of this page. When you start
+            the program, you will have a window with a blank &ldquo;document&rdquo; in
+            it. The default size is not appropriate for the gradient we want
+            to work with. Creating images for the web is always a tricky business
+            because the image size you pick might not be well suited for a
+            particular viewer&rsquo;s browser and window size. For the gradient,
+            you can set the height of the image to 1 pixel and let the browser
+            repeat it in the Y (vertical) dimension as needed. But the width
+            has to have a fixed value because there is no way to specify the
+            horizontal fade effect without a width value. Picking the &ldquo;correct&rdquo; width
+            depends on a number of factors, including how sharp a drop-off
+            in opacity you want, the expected resolutions of your viewers&rsquo; screens
+            and the expected sizes of your viewers&rsquo; browser windows.
+            There is no way to control the second and third factors, so the
+            width to choose becomes something of a best guess issue. I&rsquo;m
+            going to suggest 800 pixels, the value used for the gradient in
+            the colored paragraphs in the Introduction.</p>
+          <p>In Inkscape, use <span class="menuItem">File&rarr;Document Properties</span> to
+            open up a panel where you can set a custom document size; make it
+            800 pixels wide and 100 pixels high for now. You will resize the
+            height later, but for now it will help to have more than 1 pixel
+            of height so you can see what you are doing. Note that Inkscape opens
+            a new window for the panels where you make settings like this. You
+            don&rsquo;t need to close the window for the new settings to take
+            effect. The three options in the Border part of the Document Properties
+            panel only affect the appearance of the drawing window; they don&rsquo;t
+            actually put a border on the image you generate, so you can check
+            or uncheck them as you please.</p>
+          <p>Save your new document in the <span class="directoryName">images</span> directory
+            of your web site, using a descriptive name. I like to put the dimensions
+            at the end of the file name; the gradient used on this web page is
+            named <span class="fileName">lightRedGradient_800x1.svg</span>, for
+            example.</p>
+        </li>
+
+        <li>
+        
+          <h5>Create a rectangle and put a gradient on it.</h5>
+          <p class="runin">Go to the toolbar on the left side of the drawing
+            window and select the blue rectangle tool if it is not already selected,
+            and draw a rectangle in your drawing window. It is probably best
+            not to bother trying to draw the rectangle the exact size and position
+            you want using the mouse. Instead, draw the rectangle, and then enter
+            the X, Y, W and H values (0, 0, 800, and 100) in the text boxes in
+            the toolbar above the drawing. Use the <span class="menuItem">View&rarr;Zoom</span> menu
+            to make sure the image fits nicely into the drawing window. Note
+            that the keyboard shortcut for this is just the number 4. If you
+            use Inkscape a lot, its simple keyboard shortcuts can be very convenient
+            to use. After getting the image dimensions and zoom set right, click
+            the gradient tool (just above the eyedropper tool at the bottom of
+            the tool panel on the left side), and drag a gradient from left to
+            right across the rectangle. You can start and/or end outside the
+            rectangle, and can make an angle instead of just a horizontal line
+            if you want to vary the effect. The gradient will probably be shades
+            of gray at this stage, which is fine. Type Control-S to save
+            your work.</p>
+          <p>If you make a mistake, Control-Z will undo whatever you recently did. Editing
+            operations are pretty intuitive: select the arrow tool and click on a rectangle
+            and you can resize it, click on it again and you can rotate it.</p>
+        </li>
+        <li>
+        
+          <h5>Edit the gradient</h5> <p class="runin">To change the color of
+            the rectangle/gradient, be sure the rectangle is selected (click
+            on it), and choose the <span class="menuItem">Object&rarr;Fill and
+            Stroke</span> menu item to open up the Fill and Stroke panel.  Fill
+            is used to tell how to fill in the middle of the rectangle, and stroke
+            is used to tell how to draw a line around it. There are
+            three tabs in the panel, one for fill, one for stroke paint, and
+            one for stroke style. There should be no line around the image for
+            this project, so go to the middle tab and click the square with an
+            X in it to make the stroke disappear. At this point the stroke style
+            become irrelevant.</p>
+          <p> There are two tasks to do: set the color for the rectangle, and
+            possibly to adjust the gradient. Use the left (Fill) tab and note
+            that you can have pick from &ldquo;no&rdquo; (X), &ldquo;solid&rdquo;,
+            &ldquo;linear&rdquo;, &ldquo;radial&rdquo;, &ldquo;pattern&rdquo;,
+            or &ldquo;inherit&rdquo; (?) fill styles. You will use the solid
+            fill style to set the color, and then pick the linear fill style
+            to get back to your gradient again. When you click on the solid fill
+            style, you will see a subpanel that lets you specify the color you
+            want using RGB, HSL, or CMYK numerical values and sliders, or a color
+            wheel. In all cases, there is an RGBA value shown at the bottom where
+            you could type in a hexadecimal color value directly. The fourth
+            byte in the RGBA box is the &ldquo;alpha channel&rdquo; which
+            ranges from totally transparent (0) to totally opaque (255, or hexadecimal
+            FF). For your fill color, you should be sure the A value is FF. Note
+            that you could also have picked the color for your rectangle from
+            the palette of colors displayed along the bottom of the drawing window.</p>
+          <p>Click on the Linear gradient fill style (the third square from the
+            left near the top of the panel), and you will see the gradient line
+            in the drawing window again. Note that it has a box at each end that
+            you can drag to redefine the start and ending points for the gradient.
+            These are called &ldquo;stops&rdquo;, and if you both (a) move the
+            stops and (b) change the color of a gradient, you will define a new
+            gradient. The drop down list in the middle of the Linear gradient
+            list will let you pick what gradient you want to work with. At this
+            point, you probably have just one, which is fine. If by any chance
+            your gradient does not have an alpha value of zero at the right end
+            (i.e., if it does not fade out towards the right, you will need to
+            edit the right stop. If your gradient looks good, you don&rsquo;t
+            need to do anything.</p>
+          <p>But if you do need to edit your gradient, select it from the drop
+            down list in the middle of the Fill and Stroke window, and click
+            the Edit button. Another window opens up, the Gradient Editor. At
+            the top of this window, you will see a drop down list of all the
+            stops in the gradient, in this case just the first and last ones.
+            Each stop is associated with an offset value ranging from 0.0 to
+            1.0; if you drew the gradient from left to right, the left end is
+            at 0.0, and the right end is at 1.0. Be sure you have the right stop
+            selected. There is a slider that will jump to the value 1.0 when
+            you have done this. (The slider itself is disabled because you can&rsquo;t
+            move the two end stops from the 0.0 and 1.0 endpoint positions.)
+            At this point you can just set the RGBA value for that stop in the
+            box at the bottom of this panel. Be sure the RGB values are the same
+            as the basic color for the gradient, and set the alpha value to 0.</p>
+          <p>At this point, your rectangular gradient just look just right! Save
+            your SVG file.</p>
+        </li>
+        <li>
+        
+          <h5>Export your gradient as a PNG image.</h5>
+          <p class="runin">There is a toolbar icon at the top of the drawing
+            window for exporting your drawing as a bitmap file. You can also
+            use the <span class="menuItem">File&rarr;Export</span> menu item,
+            or the Control-Shift-E keyboard shortcut. In any event, you will
+            get a new window for specifying just what you want to export. In
+            the Export Area section select either Page or Drawing, and the filename
+            (at the bottom of the window) will be set to the name of your image
+            file, but with a <span class="fileName">.png</span> extension instead
+            of <span class="fileName">.svg</span>. Getting the numbers right
+            here can be tricky because Inkscape will automatically adjust some
+            of them when you change others. Set both x0 and y0 to 0; set 
+            x1 and y1 to 800 and 1.0 respectively. This should set Width and
+            Height to 800 and 1, and should set the bitmap size to 800x1, probably
+            at 90 dpi (dots per inch). Except for dpi, all numbers need to be
+            exactly right. When they are, click the Export button, and you should
+            now have your new .png file ready to use as a background image in
+            your web page.</p>
+        </li>
+      </ol>
+  </div>
+</div>
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>    </p>
+      <p><em>Last updated
+        <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+          ?>.</em>    </p>
+    </div>
+  </body>
+</html>

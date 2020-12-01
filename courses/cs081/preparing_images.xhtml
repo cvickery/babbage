@@ -1,0 +1,488 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>Preparing Images For The Web</title>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/using_photoshop.css"
+    />
+  </head>
+  <body>
+    <div id="header">
+      <h1>Preparing Images For The Web</h1>
+    </div>
+    <ul id="nav-list">
+      <li><a href="#introduction">Introduction</a></li>
+      <li><a href="#file-formats">File Formats</a></li>
+      <li><a href="#file-size">Image File Size</a></li>
+    </ul>
+    <div id="content">
+      <h2 id="introduction">Introduction</h2>
+      <div>
+        <p>
+          Images are a key element in web sites. Text-only web pages, like this one, are have only color, spacing, and
+          typography to engage their visitors. (Actually, this one has the added element of &ldquo;required reading for
+          the course&rdquo; to attract viewers to it.) But in general, images play critical roles in web pages: they
+          provide design elements that help lift pages out of the drab and boring category, and they can also add
+          content to the site in their own right. (If an article includes a photograph of the author, is that content or
+          a design element? Sometimes the distinction isn&rsquo;t clear.)
+        </p>
+        <p>
+          Sometimes you can get image files for your web site that are free and already suitable for what you want to
+          use them for. For example, you can try <a href="http://images.google.com/" title="Google Images Site">Google
+          Images</a> or a photo sharing site, like <a href="http://www.flickr.com/" title="Flickr Photo
+          Site">Flickr</a>. To avoid copyright problems, most sites with large audiences get their images either by
+          hiring professional photographers or designers, or from &ldquo;stock&rdquo; sites, such as <a
+          href="http://www.istockphoto.com/" title="iStockPhoto Website">iStockPhoto</a>. Stock images are not very
+          expensive, and buying from a stock site guarantees no one will sue you for the use of the photo and/or
+          publishing pictures of a particular person without their consent. The downside to stock photography is that
+          somebody else could buy the same picture for use on their site. There have been some famous competing
+          companies that used the same stock photograph in their print ads. The solution there is to pay more to the
+          stock site, and they will give you exclusive use of a photo. (Or use your own pictures or hire a professional
+          photographer/illustrator.)
+        </p>
+        <p>
+          But however you obtain the image files for your site, there is virtually no likelihood that you will be able
+          to use the images &ldquo;as-is.&rdquo; They will have to be edited in various ways to make them &ldquo;right
+          for the web.&rdquo; There are many excellent programs available for the editing task, including some very good
+          ones that are free. The following list is by no means exhaustive; <a
+          href="http://designer-info.com/">designer-info.com</a> is a site that reviews most of these programs, and many
+          others.
+        </p>
+        <table>
+          <tr>
+            <th>Program</th><th>Notes</th>
+          </tr>
+          <tr>
+            <td>Photoshop</td>
+            <td>An expensive <a href="http://adobe.com">Adobe</a> product that has many more features than what you need
+            to prepare images for the web. But widely considered &ldquo;the standard&rdquo; program for editing image
+            files. The topic of this web page, which introduces only a small subset of the program&rsquo;s
+            features.</td>
+          </tr>
+          <tr>
+            <td>Photoshop Elements</td>
+            <td>Has fewer features than the full Photoshop program, oriented towards amateur photographers. But it costs
+            much less than the full version of Photoshop and may suffice for many web projects.</td>
+          </tr>
+          <tr>
+            <td>Fireworks</td>
+            <td>Another Adobe product, specifically designed for working with web images. Arguably better-suited for web
+            designers than Photoshop, but not as well known. Originally developed by a company named Macromedia, which
+            Adobe bought in 2005. (Macromedia also developed <span class="programName">Dreamweaver</span> and <span
+            class="programName">Flash</span>.)</td>
+          </tr>
+          <tr>
+            <td><a href="http://www.gimp.org" title="GIMP Website">GIMP</a></td>
+            <td>
+              The GNU Image Manipulation Program, an excellent and free alternative to Photoshop.
+            </td>
+          </tr>
+          <tr>
+            <td><a href="http://www.imagemagick.org" title="ImageMagick Website">ImageMagick</a></td>
+            <td>A suite of command line tools suitable for preparing existing images for the web or other purposes.
+            Because it works from the command line, it is great for automating image processing tasks. The
+            &ldquo;identify&rdquo; command alone makes it worth installing the whole suite.</td>
+          </tr>
+          <tr>
+            <td><a href="http://inkscape.org" title="Inkscape Website">Inkscape</a></td>
+            <td>This is another excellent and free program, especially well-suited for web design work. Works in <span
+            class="tech-term" title="represents shapes as mathematical line elements">vector mode</span> (see below)
+            with <span class="tech-term" title="Scalable Vector Graphics">SVG</span> as its internal file format, but
+            can export images as PNG files.</td>
+          </tr>
+          <tr>
+            <td>Illustrator</td>
+            <td>Yet another part of Adobe&rsquo;s expensive &ldquo;Creative Suite&rdquo; of programs. This one is
+            oriented towards vector graphics.</td>
+          </tr>
+        </table>
+      </div>
+
+      <h2 id="file-formats">Image File Formats</h2>
+      <div>
+        <p>
+          There are two ways to store images: vectors and bit maps. A vector image defines shapes by storing the
+          numerical coordinates of lines that make up the outline of the shape. Color fills and gradients are also
+          stored as numerical data as well. For example, this image: <img src="images/using_photoshop-fig-1.png" alt="A
+          shape with a gradient" /> was created as an SVG file, which <a href="images/using_photoshop-fig-1_svg.html"
+          title="Internal Content of SVG file">uses XML to represent lines, arcs, colors, and gradients</a>.
+        </p>
+        <p>
+          Bit maps represent images as arrays of pixel values. For each pixel in the image, these formats store the red,
+          green, and blue color intensities that will be mixed to produce that particular spot of light on the screen.
+          Some bitmap formats also add a fourth &ldquo;channel&rdquo; of information to each pixel to specify its
+          transparency. The image above is actually comes from a bit mapped image image file in the PNG file format.
+          Browsers vary in their support of SVG image files: Internet Explorer 8 does not know what to do with them;
+          Firefox 3 can display them as separate web pages; Opera, Chrome, and Safari can all display them using <span
+          class="tag-name">img</span> tags.)
+        </p>
+        <p>
+          The advantage of vector drawings is that they keep sharp edges when they are resized. The disadvantages are
+          that they cannot be used for (realistic) photographs and that they have to be converted to bit mapped images
+          before they can be used in a web page. A good way to get a sense of the difference between vector and bit
+          mapped graphics is to look at the web site for a program that will convert bit mapped images into vector
+          images, <a href="http://vectormagic.com">Vector Magic</a>.
+        </p>
+        <p>
+          The following table shows a few of the file formats that are used for images. At this time, only the first
+          four can be used reliably in web pages.
+        </p>
+        <table>
+          <tr>
+            <th>Acronym</th><th>Name</th><th>Type</th><th>Compression</th><th>Common Uses</th>
+          </tr>
+          <tr class="ok-for-web">
+            <td>JPEG</td>
+            <td>Joint Photographic Experts Group</td>
+            <td>Bit mapped; no transparency</td>
+            <td>Lossy</td>
+            <td>Photographs</td>
+          </tr>
+          <tr class="ok-for-web">
+            <td>PNG-8</td>
+            <td>Portable Network Graphics</td>
+            <td>Bit mapped; up 8 bits of color information per pixel, used to index into a table of colors stored in the image; supports
+                transparency
+            </td>
+            <td>Lossless</td>
+            <td>Line drawings or photographs.</td>
+          </tr>
+          <tr class="ok-for-web">
+            <td>PNG-24</td>
+            <td>Portable Network Graphics</td>
+            <td>Bit mapped; 24 bits of color information per pixel plus 8 bits of transparency information (&ldquo;RGBA&rdquo;)</td>
+            <td>Lossless</td>
+            <td>Line drawings or photographs. Also used by Fireworks as its &ldquo;native&rdquo; file format by adding metadata.</td>
+          </tr>
+          <tr class="ok-for-web">
+            <td>GIF</td>
+            <td>Graphics Interchange Format</td>
+            <td>Bit mapped; indexed colors; all&ndash;or&ndash;none transparency</td>
+            <td>Lossless</td>
+            <td>Line drawings</td>
+          </tr>
+          <tr>
+            <td>SVG</td>
+            <td>Scalable Vector Graphics</td>
+            <td>Vector</td>
+            <td>Lossless (if compressed)</td>
+            <td>Line drawings</td>
+          </tr>
+          <tr>
+            <td>TIFF</td>
+            <td>Tagged Image File Format</td>
+            <td>Bit mapped</td>
+            <td>Lossless</td>
+            <td>Photographs; can maintain information about image layers; JPEG is a special case of TIFF.</td>
+          </tr>
+          <tr>
+            <td>PSD</td>
+            <td>PhotoShop Document</td>
+            <td>Bit mapped</td>
+            <td>Lossless</td>
+            <td>Photoshop&rsquo;s native file format.</td>
+          </tr>
+          <tr>
+            <td>AI</td>
+            <td>Adobe Illustrator</td>
+            <td>Vector</td>
+            <td>Lossless</td>
+            <td>Illustrator&rsquo;s native file format.</td>
+          </tr>
+        </table>
+      </div>
+
+      <h2 id="file-size">Image File Size</h2>
+      <div>
+        <p>
+          It is critical to edit image files so they will be as small as possible.  The larger the image file, the
+          longer it takes to download it from the server to the user&rsquo;s browser. Without exception, a critical
+          performance goal is to create web pages that download and display as quickly as possible, and image files are
+          a major source of delays in loading web pages over the internet.
+        </p>
+        <p class="side-note">
+          The size of a file is measured in <span class="tech-term" title="8 bits of information">bytes</span>. One
+          kilobyte (1 KB) is approximately one thousand bytes; one megabyte (1 MB) is approximately one million bytes;
+          one gigabyte (1 GB) is approximately one billion bytes. So there are a thousand kilobytes in a megabyte and a
+          thousand megabytes in a gigabyte.
+        </p>
+        <p>
+          There are three ways to reduce the size of an image file: reduce the number of pixels in the image, reduce the
+          number of different colors that can appear at each pixel position, and remove redundant information that does
+          not affect image quality.
+        </p>
+        <h3>Reduce the number of pixels</h3>
+        <p>
+          Image files have an <span class="tech-term" title="width and height, measured in pixels">intrinsic size</span>.
+        </p>
+        <p>
+          For background images, the intrinsic size always determines how large the image will appear on the
+          user&rsquo;s screen. Repeating a background image horizontally and/or vertically can cause multiple copies of
+          a background image to be shown, but each copy will have the image&rsquo;s intrisic size, and there is nothing
+          in CSS (or elsewhere) that you can use to change that fact.
+        </p>
+        <p class="ruled-background">
+          Often, the intrinsic size of a background image is important for achieving the effect you want. For example,
+          the background of this paragraph uses a 22 pixel&ndash;tall image to create a double horizontal line every 22
+          pixels; the intrinsic size determines the spacing between the lines. (The font size was set to 20px and the
+          line-height was set to 1.1 (1.1&times;20 = 22) to get the text to sit evenly on the lines.)
+        </p>
+        <p>
+          But you can often reduce the intrinsic size of background images if they are going to be tiled by the browser.
+          For example, the background image for the previous paragraph is only 1 pixel wide (that is, its intrinsic size
+          is 1&times;22). The browser takes care of generating enough horizontal copies to create the line effect, as
+          well as the number of vertical copies to fill the entire CSS box for the paragraph. The exception to this
+          principle would be if you use a tiny image to tile over a very large area: depending on the speed of the
+          user&rsquo;s computer, the browser might need a lot of time to do the tiling.
+        </p>
+        <p>
+          For foreground images (using the <span class="tag-name">img</span> tag), the browser will display the image
+          using its intrinsic size unless you specify a different size explicitly using the CSS <span
+          class="attribute-name">width</span> or <span class="attribute-name">height</span> attributes.
+        </p>
+        <ul>
+          <li>
+            If you drag an image into your web page using Dreamweaver, the resulting <span class="tag-name">img</span>
+            tag will have <span class="attribute-name">height</span> and <span class="attribute-name">width</span>
+            attributes added to it. Be sure to remove these attributes for two reasons:
+            <ol>
+              <li>
+                They violate the &ldquo;best practices&rdquo; policy that says to put all presentational controls, such
+                as how big an image will appear, in the CSS stylesheet(s) for the document.
+              </li>
+              <li>
+                Specifying both the height and width of an image is almost always a bad idea. The intrinsic size of an
+                image also gives its intrinsic <span class="tech-term" title="length of longer side divided by length of
+                shorter side">aspect ratio</span>.  If you change one dimension, you then have to change the other one
+                in exactly the same proportion in order to prevent distorting the image. If you are going to have the
+                browser change the size of an image from its intrinsic size, t is much better to set the size of just
+                one dimension (either the width or the height) and let the browser calculate the other dimension using
+                the image&rsquo;s intrinsic aspect ratio.
+              </li>
+            </ol>
+          </li>
+          <li>
+            <p>
+              If you make the image file&rsquo;s intrinsic size bigger than it will appear on the web page, it will take
+              longer to download than necessary.
+            </p>
+            <p>
+              Often, you will work with two copies of an image: the one you manipulate using your editing program, and
+              the one you actually display on the web page. These two files will often use different formats, such as
+              PSD for a Photoshop file that you use for editing and a PNG file that you export from Photoshop for use on
+              your web page. The editng file might have a large intrinsic size because that is the way you got it or
+              because it is often more convenient to edit an oversized image to achieve subtle effects and/or just to be
+              able to see what you are doing. When your export the file for the web, be sure to specify a smaller
+              intrinsic size to reduce the number of pixels in the image and thus the file size.
+            </p>
+            <p class="side-note">
+              You can override the intrinsic size of an image using CSS, and the browser with enlarge or shrink the
+              image as necessary.  Shrinking an image will often make it appear sharper than it was before (the user
+              can&rsquo;t see the imperfections because they became smaller along with the rest of the image), but
+              enlarging an image is never a good idea: the browser has to create more pixels than it has, and the new
+              ones can only approximate what should have been there. In many cases, you get a &ldquo;pixelated&rdquo;
+              image with jagged edges and/or fuzzy lines. So there is a trade-off here: if you make an image&rsquo;s
+              intrinsic size larger than needed, it can safely be reduced in size using CSS, but it will take longer to
+              download than necessary.
+            </p>
+          </li>
+        </ul>
+
+        <h3>Reduce the number of bits per pixel</h3>
+        <p>
+          There is some &ldquo;information theory&rdquo; to deal with here. The unit for measuring information is the
+          bit, the amount of uncertainty that is reduced by answering one yes/no question. The two values a bit may have
+          are 0 and 1. The number of bits needed to represent something depends on how many things might need to be
+          represented. If a pixel can be only black or white, only one bit is needed (for example, 0 could mean black
+          and 1 could mean white). But if a pixel can take on any of four colors (or shades of gray), it would take two
+          bits to represent all four colors (for example, 00 could represent black, 01 could represent yellow, 10 could
+          represent pink, and 11 could represent medium sea green). The good thing is that the number of possible colors
+          doubles every time you add one bit: 3 bits can represent 8 colors, 4 bits can represent 16, 5 bits 32, etc. By
+          the time you get to 24 bits (8 for the red intensity, 8 for the green intensity, and 8 more for blue), there
+          are 2<span class="superscript">24</span> different color possibilities&mdash;over 16 million! Computer
+          displays and human eyes normally cannot discriminate among so many different colors. <span class="fffffe">For
+          example, can you see that the text in this sentence has a different color from the rest of the
+          pargraph?</span> (It has a color of #003311 compared to #003300 for the rest of the paragraph.)
+        </p>
+        <p>
+          Different image file formats use different methods to represent the colors of the pixels, but the general rule
+          is that they use the same number of bits for every pixel in the image. If your image has just 32 colors in it,
+          it needs just 5 bits per pixel. If you specify an image format that uses 15 bits per pixel, every pixel will
+          occupy three times as many bits as necessary. The file probably will not be three times as large as it would
+          be with 5 bits per pixel (there is other information in image files besides pixel data), but the larger the
+          intrinsic size of the image, the bigger the waste.
+        </p>
+
+        <h3>Eliminate unneeded and redundant information</h3>
+        <h4>Non-image Information</h4>
+        <p>
+          Image files can contain non-image information that you can take out of the file when you save it for the web.
+          Photoshop will take care of this for you when you use the &ldquo;save for web and devices&rdquo; menu item.
+          But for other image editing programs, you may need to take care of this yourself:
+        </p>
+          <ul>
+            <li>
+              Color Profile. Color profiles tell a device how to translate a pixel&rsquo;s numeric value into an actual
+              color. The standard color profile for images displayed on the web is called sRGB, so there is no need to
+              put the profile information inside the image file. Just be sure to convert any image files into sRGB
+              colors when you save them if your image editor does not do so automatically.
+            </li>
+            <li>
+              EXIF Data. Digital cameras put information inside the pictures they produce, including such information as
+              the shutter speed and aperature, lens information, whether flash was used or not, etc. There is generally
+              no need for including this information in pictures being downloaded to a web page, so it should be
+              stripped out.
+            </li>
+            <li>
+              Other Metadata. Image files can also contain other non-image information, such as the name of the person
+              and/or program who created the image, how to contact the person, and possibly a copyright statement.
+              Except for photographs that belong to someone, it may make sense to remove some of this other information
+              in order to make the image file smaller. But never remove the copyright notice or contact information from
+              someone else&rsquo;s photo before putting it on the web: doing so would make it look like you were trying
+              to defraud that person.
+              <p class="side-note">
+                PNG files often make very good web images, but if you use Fireworks, be sure not to use the PNG file
+                that program uses as its &ldquo;native&rdquo; file format; Fireworks adds tons of housekeeping metadata
+                to its working files. Just use the Optimize option to export a copy of the file optimized for the web.
+                Even if you just export the file as another PNG, Fireworks will strip out all its metadata from the
+                copy, reducing the image file size very significantly.
+              </p>
+            </li>
+          </ul>
+          <h4>Compression</h4>
+          <p>
+            File compression is another mechanism for removing redundant information from an image in order to make the
+            file smaller. There are two kinds of compression: loss-y and loss-less. And example of lossless compression
+            is a zip file: what you get out of the file by compressing it is exactly what was in it orginally, down to
+            the last bit. An example of how lossless compression works to remove redundant information is run-length
+            encoding. If a row of 500 pixels all have the same color, instead of repeating the same color number 500
+            times, the pixels would be stored as the one copy of the color number and a brief code indicating that it
+            should be repeated 500 times. Loss-less encoding is a good thing, and many web servers will automatically
+            zip files that it sends to a browser (provided the browser has indicated that it knows enough to un-zip
+            them).
+          </p>
+          <p>
+            Lossy compression, however, is a different matter. JPEG uses lossy compression to reduce image file size on
+            the presumption that the image will look good enough even if the picture quality is degraded by removing
+            some of the possible colors and/or the number of separate pixel values in the image. And the experts
+            (remember, the E in JPEG stands for &ldquo;experts&rdquo;) are right: many photographs can be subjected to a
+            lot of lossy compression and still look good enough. Some factors affecting how much a picture can be
+            compressed are how big its intrinsic size is (people cannot see as much detail in small pictures at normal
+            viewing distances) and how the colors are distributed across the shapes in the picture. Both edges of
+            objects, like flower petals or text, and expanses of sky are places to look for JPEG artifacts. Your editing
+            program will let you specify the degree of compression you are going to use, while letting your preview the
+            effect on the image. Normally, you enlarge the image on the screen so you can see the effects more clearly,
+            but remember to do a reality check: view the image on the actual web page. You might be surprised how
+            &ldquo;bad&rdquo; an enlarged image can be without showing any problems under normal viewing conditions.
+          </p>
+          <p>
+            Here are three copies of a picture saved using three different levels of compression:
+          </p>
+          <p>
+            <span class="image-holder">
+              <img src="images/daffodils-000.jpg" alt="daffodils" title="maximum compression" /><span class="caption">daffodils-000</span>
+            </span>
+            <span class="image-holder">
+              <img src="images/daffodils-030.jpg" alt="daffodils" title="medimum compression" /><span class="caption">daffodils-030</span>
+            </span>
+            <span class="image-holder">
+              <img src="images/daffodils-100.jpg" alt="daffodils" title="minimum compression" /><span class="caption">daffodils-100</span>
+            </span>
+          </p>
+          <p>
+            Viewed normally, you should be able to see that the first one has some blocks of color in the sky and some
+            added colors in the petals. The Photoshop JPEG compression settings were 0 (most compressed; the number
+            indicates &ldquo;quality&rdquo;), 30, and 100 for the three pictures.  But look at the output from
+            ImageMagic&rsquo;s <span class="program-name">identify</span> command:
+          </p>
+          <p class="image-holder">
+            <img src="images/identify_daffodils.png" alt="output of identify command" />
+          </p>
+          <p>
+            Looking at the file sizes at the end of each line, you can see that the middle image is approximately 1/5
+            the size of the uncompressed version (10.8 KB / 51.1 KB). If you zoom in on the pictures (Firefox: Control
+            +), you can see the JPEG artifacts in the middle image, but probably not at the normal viewing size
+            (Firefox: Control 0).
+          </p>
+
+          <h3>Image Size Summary</h3>
+          <ul>
+            <li>
+              <h4>Number of Pixels</h4>
+              Make the width and height match your needs. But it is okay to let the browser resize an image downward
+              some, especially if the image is used in different sizes: it&rsquo;s better to download one file and
+              resize it in the browser than to download multiple copies of the same image differing only in size. Pixels
+              per inch is irrelevant for web images.
+            </li>
+            <li>
+              <h4>Bits per Pixel</h4>
+              The smaller the number of different colors, the smaller an image can be made.
+            </li>
+            <li>
+              <h4>Eliminate Redundant Information</h4>
+              Take out unnecessary metadata. Use loss-less compression wherever possible. Use lossy (JPEG) compression
+              with an eye on the actual image quality needed.
+            </li>
+            <li>
+              <h4>Choose the Best File Format</h4>
+              <p>
+                When you use the <span class="menu-item">File &mdash;&gt;Save for Web and Devices</span> menu item,
+                Photoshop will give you a panel with a &ldquo;four-up&rdquo; view of the image, and various controls for
+                manipulating the parameters listed above for JPEG, PNG-8, PNG-24, and GIF file formats.
+              </p>
+              <p>
+                There is also a re-size subpanel where you can change the intrinsic size of the image. Experiment with
+                various alternatives in the three option views, using the original view as a referece point. When you
+                get a combination that minimizes file size while retaining an acceptable appearance, you can proceed to
+                save the file. Note that what you do here will have no effect on the original image file you are working
+                with. You can make all the changes you want here, and still go back to editing the original image.
+              </p>
+              <p>
+                There is no simple rule for what file format to use: you have to experiment!
+              </p>
+            </li>
+          </ul>
+      </div>
+    </div>
+    <div id="footer">
+      <div>
+        Copyright &copy; 2009<?php
+        		$yearModified = date("Y", filemtime($_SERVER['SCRIPT_FILENAME']));
+            if ($yearModified != '2009')
+            {
+              echo "&mdash;".$yearModified;
+            }
+           ?>
+        Christopher Vickery. All rights reserved.
+      </div>
+      <a href="../../">Vickery Home</a>&mdash;<a href="../cs081">CS-081 Home</a> &mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>
+

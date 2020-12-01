@@ -1,0 +1,203 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 4</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:4891956D-3F2C-4585-90C6-8981367258F2'>
+
+    <h1>CS-081 Assignment 4</h1>
+
+    <div id="content">
+      <h2>Preparation</h2>
+      <div>
+        <p>
+          This assignment continues the topic of CSS selectors, which are covered in pages 18 through 24 of the textbook.
+        </p>
+        <h3>Reminder:</h3>
+        <ul>
+          <li>
+            See the <a href="http://www.w3.org/TR/2009/WD-css3-selectors-20090310/#selectors">table of selectors
+            in the W3C CSS specification</a> for a list of all selectors. But pay attention to the “First defined
+            in CSS Level” column on the right. CSS Level 3 has not actually been formally adopted yet, and not all
+            browsers support all CSS 3 selectors. It’s all right to use Level 3 selectors, they just might not
+            have any effect in certain browsers.
+          </li>
+          <li>
+            <p>
+              To prepare for this assignment, make the following changes to the XHTML markup of your
+              <span class="file-name">index.xhtml</span> page:
+            </p>
+            <ul>
+              <li>
+                Remove all <span class="attribute-name">class</span> and <span class="attribute-name">id</span> attributes
+                from all elements in the <span class="tag-name">body</span> of the page.
+              </li>
+              <li>
+                Change the structure of the nested lists between the first and second paragraphs so it is triply-nested.
+                Make all three lists <span class="tag-name">ol</span> lists. (Before, the inner list was an unordered
+                list.) Add the new list inside the <em>second</em> item of the inner list, and change the wording to
+                remove the inappropriate references to bullets:
+                <ol>
+                  <li>First item
+                    <ol style="list-style-type:decimal;">
+                      <li>First subitem</li>
+                      <li>Second subitem
+                        <ol style="list-style-type:decimal;">
+                          <li>First sub-subitem</li>
+                          <li>Second sub-subitem</li>
+                          <li>Third sub-subitem</li>
+                        </ol>
+                      </li>
+                    </ol>
+                  </li>
+                  <li>Second item</li>
+                  <li>Third item</li>
+                </ol>
+              </li>
+            </ul>
+          </li>
+          <li>
+            Verify that there are no validation warnings or errors, and check that your web page looks something like
+            this screenshot. Your colors might well be different from these, and you might have selected different
+            words in the first paragraph to have spans. (Only two of the three spanned words show in this screenshot.)
+            <img src="images/Figure_04.1.png" alt="Screenshot of upper part of index page at start of assignment." />
+            <p>
+              Check the bottom of the page: the two validation links should also be in italics:
+            </p>
+            <div>
+              <img src="images/Figure_04.2.png"
+              alt="Screenshot of lower left corner of index page at start of the assignment." />
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+            <h5>Style the spanned elements in the first paragraph.</h5>
+            <p>
+              All <span class="tag-name">span</span> elements in the page (and all <span class="tag-name">a</span>
+              elements) are italic. Select just the <span class="tag-name">span</span> elements that are inside
+              paragraphs, and make the content color blue. The CSS rule should have
+              this selector:
+              <span class="code-snippet">p span</span>. The attribute name is <span class="attribute-name">color</span>,
+              and the attribute value should be <span class="attribute-value">blue</span>. You can pick a different
+              color name, but be sure it is easy to see easily compared to the black text in the rest of the paragraph, and
+              be sure it is dark enough to show up against your pargagraph’s background color.
+            </p>
+            <p>
+              The first letter of the word in the first span in the paragraph is inside a nested span. Make it larger,
+              bold, and red. This will require another CSS rule with <span class="code-snippet">p span span</span>
+              for the selector, and you will have to have set three properties in this rule,
+              <span class="property-name">color</span>, <span class="property-name">font-weight</span>, and
+              <span class="property-name">font-size</span>. Values you could use are
+              <span class="property-value">red</span>, <span class="property-value">bold</span>, and
+              <span class="property-value">1.2em</span> respectively. But feel free to experiment, provided all three
+              properties are applied to the first letter of the first word in the first paragraph.
+            </p>
+            <p>
+              Stop and look at your page, and be sure it has all the correct appearance features and that there are no
+              validation warnings or errors. There is no point in continuing to other parts of the assignment if any of
+              this is not working correctly. Here’s a screenshot of part of the first paragraph at this point:
+            </p>
+            <div>
+              <img src="images/Figure_04.3.png" alt="Screenshot of first paragraph at the end of this step." />
+            </div>
+          </li>
+          <li>
+            <h5>
+              Change the list numbering scheme.
+            </h5>
+            <p>
+              Without changing the XHTML on the web page, add the CSS rules to make the nested lists between the first
+              and second paragraph use lowercase latin letters (a, b, c, &hellip;) for the subitems, and lowercase
+              roman numerals (<em>i, ii, iii, &hellip;</em>) for the sub-subitems:
+            </p>
+            <div>
+              <img src="images/Figure_04.4.png" alt="Screenshot of nested lists with latin letters and roman numerals" />
+            </div>
+            <p>
+              This procedure was covered in class. In case you missed it, here is how to apply the roman numerals to
+              the doubly-nested list.
+            </p>
+            <div class="code-block">
+ol ol ol {
+  list-style-type:lower-roman;
+}
+            </div>
+            <p>
+              With that example to work from, you should be able to figure out how to do the singly-nested list.
+            </p>
+          </li>
+          <li>
+            <h5>Apply padding to all text elements.</h5>
+            <p>
+              To improve legibility, add one-half em of top and bottom padding and one em of left and right padding
+              to all <span class="tag-name">h1</span>,
+              <span class="tag-name">div</span>, and <span class="tag-name">p</span> elements.
+            </p>
+            <p>
+              Add 1em of padding to all four sides of the <span class="tag-name">body</span>.
+            </p>
+            <p>
+              Look at the page carefully to be sure the padding has pulled all the contents away from the edges of their
+              containing boxes.
+            </p>
+            <div>
+              <img src="images/Figure_04.5.png" alt="Screenshot of page with paddings added." />
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you are ready for me to look at your assignment, simply send me an email message to let me
+          know. I’ll manually copy your entire web site to my computer (babbage) and check it out. The full pathname
+          to your web site on babbage will be http://babbage.cs.qc.cuny.edu/Grading/cs081/ followed by your
+          account name.
+        </p>
+        <p>
+          Send your email message to me at: <span class="email">vickery<span class="at" title="Change to
+          @">at</span>babbage.cs.qc.cuny.edu</span> by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-081 Assignment 4.”
+        </p>
+        <p>
+          Don’t forget to put your name in your email message!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

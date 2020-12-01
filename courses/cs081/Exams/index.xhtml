@@ -1,0 +1,190 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Exam Archive</title>
+    <link rel="shortcut icon" type="image/x-icon"
+          href="../../favicon.ico" />
+    <link rel="stylesheet" type="text/css"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          href="../../css/style-screen.css"
+          media="screen" />
+    <link rel="stylesheet"
+          type="text/css"
+          href="../../css/exam_archive.css"
+          media="all" />
+    </head>
+<?php
+
+/*  2007-05-24
+ *  Fixed sequence so semesters are shown in reverse chronological
+ *  order, but exams are in ascending order within each term.
+ */
+
+  //  Globals
+  //  ------------------------------------------------------------
+  $terms = array("02" => "Spring",
+                 "09" => "Fall");
+  $EXAMS_PER_SEMESTER = 2;
+  $num_exams          = $EXAMS_PER_SEMESTER;
+  $current_term       = "";
+
+  //  php generate_link()
+  //  ------------------------------------------------------------
+  /*  Generates date text from a file name in the form
+   *  yyyy-mm_Exam_#.pdf.  Also generates tr, th, and td tags.
+   */
+  function generate_link(&$value, $key)
+  {
+    GLOBAL $terms, $EXAMS_PER_SEMESTER, $num_exams, $current_term;
+    $parts = explode("_", $value);
+    
+    $semester_parts = explode("-", $parts[0]);
+    $year = $semester_parts[0];
+    $semester = $terms[$semester_parts[1]];
+
+    $exam_parts = explode(".", $parts[2]);
+    $which_exam = $parts[1] . "_" . $exam_parts[0];
+
+    if ($parts[0] != $current_term)
+    {
+      while ($num_exams < $EXAMS_PER_SEMESTER)
+      {
+        //  Fill out row.
+        print "    <td></td>\n";
+        $num_exams++;
+      }
+      $num_exams = 0;
+      print "    </tr>\n    <tr>\n";
+      print "      <th scope=\"row\">$semester, $year</th>\n";
+      $current_term = $parts[0];
+    }
+    echo "<td><a href=\"$value\">$which_exam</a></td>\n";
+    $num_exams++;
+  }
+ ?>
+<body>
+<div id="header">
+  <h1>CS-081 Exam Archive</h1>
+</div>
+
+<div id="content">
+  <div class="whitebox">
+
+    <div class="whitebox">
+
+      <p>This is an archive of past exams I have given in this course.  I
+      provide this archive for two reasons: (1) Some people have copies of
+      old exams anyway, so it seems only fair for everyone in the class to
+      have the same material available to them.  (2) Seeing old exams gives
+      you some idea of what kinds of questions I ask on exams.  That is, you
+      can see my personal &ldquo;exam style.&rdquo;</p>
+
+      <div class="standoutBox">
+        <p><strong>A Note of Caution:</strong> <em>Do not
+        try to use these exams as a study guide for this semester&rsquo;s
+        exams.</em>  If you look over the old exams you will see that I do not
+        ask the same questions each time.  The fact is, I don&rsquo;t cover
+        the same material each semester, I don&rsquo;t assign the same
+        projects each semester, and I don&rsquo;t even use the same textbook
+        each semester.  So trying to learn the answers to past exam questions
+        is a very poor strategy for preparing for this semester&rsquo;s
+        exams.  A much better strategy is to study the reading assignments
+        carefully and spend as much time as it takes to work through the
+        assignments and be sure you understand them fully. For these reasons,
+        I do not provide the answers to past exams.</p>
+      
+	      <p><strong>Every term
+  	    some students ignore this advice, and the consequences are generally
+    	  quite grim!</strong></p>
+      </div>
+
+    </div>
+
+    <p><img src="../../../images/pdf16.gif" alt="" /> All documents are in PDF
+    format.</p>
+
+      <?php
+        $dir = opendir(".");
+
+        while ($file = readdir($dir))
+        {
+          //  Extract yyyy-mm_xxx.pdf files; xxx can be anything, but
+          //  should sort exams within a semester in order.  yyyy and mm
+          //  should be year and month (2 for spring, 9 for fall), but
+          //  any numbers will be accepted.
+          if (preg_match("/[0-9]{4}-[0-9]{2}_.*pdf$/i", $file))
+          {
+            $files[] = $file;
+          }
+        }
+        if (count($files) == 0)
+        {
+          echo "<h2>There are no exams in the archive!</h2>";
+        }
+        else
+        {
+          //  Put files in reverse chronological order
+          rsort($files);
+
+          // Put exams for each semester in chronological order.
+          $all_exams = array();
+          $current_semester_str = "";
+          $current_semester_exams = array();
+          foreach ($files as $this_exam)
+          {
+            $this_semester_str = substr($this_exam, 0, 7);
+            if ($this_semester_str != $current_semester_str)
+            {
+              while ($current_semester_exams && 
+                              count($current_semester_exams) > 0)
+              {
+                $all_exams[] = array_pop($current_semester_exams);
+              }
+              $current_semester_str = $this_semester_str;
+              $current_semester_exams = array($this_exam);
+            }
+            else
+            {
+              $current_semester_exams[] = $this_exam;
+            }
+          }
+          //  Pick up earliest semester
+          while ($current_semester_exams && 
+                          count($current_semester_exams) > 0)
+          {
+            $all_exams[] = array_pop($current_semester_exams);
+          }
+
+          reset($all_exams);
+          print "  <table>\n";
+          print "    <tr><th>Semester</th>\n";
+          print "      <th colspan=\"$EXAMS_PER_SEMESTER\">Exams</th>";
+          array_walk($all_exams, "generate_link");
+          print "    </tr>\n";
+          print "  </table>\n";
+        }
+       ?>
+  </div>
+  <div id="footer">
+    <a href="../../../">Vickery&nbsp;Home</a>&nbsp;&mdash;&nbsp;<a
+       href="..">CS-081&nbsp;Home</a>&nbsp;&mdash;&nbsp;<a
+       href="http://validator.w3.org/check?uri=referer">Validate&nbsp;XHTML</a>&nbsp;&mdash;&nbsp;<a
+       href="http://jigsaw.w3.org/css-validator/check/referer">Validate&nbsp;CSS</a>
+  </div>
+</div>
+</body></html>

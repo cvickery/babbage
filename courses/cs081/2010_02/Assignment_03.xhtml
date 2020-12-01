@@ -1,0 +1,219 @@
+<?php
+  header("Vary: Accept");
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+       stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+       stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator") )
+  {
+    $mime_type = "application/xhtml+xml";
+    header("Content-type: $mime_type");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+  }
+  else
+  {
+    $mime_type = "text/html";
+    header("Content-type: $mime_type; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 3</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+  </head>
+  <body id='urn:uuid:96C4BE1F-F4EB-4062-A22C-0C24542A069A'>
+
+    <h1>CS-081 Assignment 3</h1>
+
+    <div id="content">
+      <h2>Preparation</h2>
+      <div>
+      	<p>
+          This assignment deals with CSS selectors, which are covered in pages 18 through 24 of the textbook.
+          (Only six pages: how hard can this be?)
+        </p>
+        <p>
+        	See the <a href="http://www.w3.org/TR/2009/WD-css3-selectors-20090310/#selectors">table of selectors
+          in the W3C CSS specification</a> for a list of all selectors. But pay attention to the “First defined
+          in CSS Level” column on the right. CSS Level 3 has not actually been formally adopted yet, and not all
+          browsers support all CSS 3 selectors. It’s all right to use Level 3 selectors, they just might not
+          have any effect in certain browsers.
+        </p>
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <ol>
+          <li>
+          	<h5>Prepare your web page.</h5>
+            <p>
+            	You need some marked-up content to work with for this assignment. Rather than work with distracting
+              and meaningful content, this step adds some structured elements with meaningless content.
+            </p>
+            <ul>
+							<li>
+                <p>
+                  Go to the web site, <a href="http://www.lipsum.com">lipsum.com</a>, and get eleven paragraphs of 
+                  <em>Lorem Ipsum</em> text as demonstrated in class. That is, go to the part of the page
+                  that has a “Generate Lorem Ipsum” button. Change the number of paragraphs to generate from 5 to
+                  11, and click the button. A new page will appear; copy just the 11 paragraphs of Latin text into your
+                  site’s index page, between the <span class="tag-name">h1</span> element and the <span class="tag-name">div
+                  </span> element containing the validation links.
+                </p>
+                <p>
+                  Unfortunately, lipsum.com does not supply the <span class="tag-name">p</span> tags you need around the
+                  paragraphs. This is easy to do using the built-in keyboard shortcut, Ctrl+Shift+A: Select a paragraph,
+                  press all three keys, and <em>voila!</em>, the text will be wrapped in <span class="tag-name">&lt;p></span>
+                  and <span class="tag-name">&lt;/p></span> tags. (In class I wasn’t sure whether this is a built-in
+                  shortcut or one I added myself: it’s built-in.)
+                </p>
+							</li>
+              <li>
+                Wrap all eleven paragraphs (and nothing else) inside a <span class="tag-name">div</span> element.
+              </li>
+              <li>
+                Your name should appear in the <span class="tag-name">h1</span> element on the page. Put a
+                <span class="tag-name">span</span> element around it. Give this span a 
+                <span class="attribute-name">title</span> attribute with the value,
+                <span class="attribute-value">my-name</span>. The <span class="attribute-name">title</span>
+                attribute causes its value to be shown in a yellow box when the user’s mouse hovers over the element.
+              </li>
+              <li>
+                Pick a word in the middle of the first paragraph of Latin text, and put it inside another
+                <span class="tag-name">span</span>, and then nest the first letter of that word inside
+                another <span class="tag-name">span</span>.
+              </li>
+              <li>
+                Pick two more words in the first paragraph&mdash;one somewhere before and one somewhere after the word
+                you picked in the previous step&mdash;and wrap them in <span class="tag-name">span</span> elements too.
+                But give both these elements a <span class="attribute-name">class</span> attribute with the value
+                <span class="attribute-value">example</span> 
+                (&nbsp;<span class="code-snippet">&lt;span&nbsp;class="example"></span>&nbsp;).
+              </li>
+              <li>
+              	Create an ordered list (<span class="tag-name">ol</span>) between the first and second
+                paragraphs. Put three list items 
+                (<span class="tag-name">li</span>) in the list. Put the text, “First item”, “Second item”, and
+                “Third item” into the three list items, and then put an unordered list 
+                (<span class="tag-name">ul</span>) after the text inside the first list item of the ordered list.
+                Put two list items inside the unordered list, with contents of “A bullet” and “Another bullet”.
+              </li>
+              <li>
+                Create a new file in your <span class="directory-name">css</span> directory, and name it
+                <span class="file-name">assignmentment_03.css</span>. Change the link in your 
+                <span class="file-name">index.xhtml</span> file to point to this new stylesheet instead of the
+                one you used for the previous assignment.
+              </li>
+              <li>
+                <p>
+                	Without adding any rules to your new stylesheet, check your site in Firefox. It should be plain
+                	black text on a white background: a heading, a paragraph of Latin text, the nested list,
+                  ten more paragraphs, and finally two links to the W3C validators.
+                </p>
+                <p>
+                	Here is a screen shot of the top left corner, with the mouse hovering over the student’s name.
+                </p>
+                <div class="figure-frame">
+                	<img src="images/Figure_03.1.png" alt="Screenshot of part of the page with no formatting" />
+                </div>
+                <p>
+                  Make sure both validation links give no errors and no warnings for the page.
+                </p>
+              </li>
+            </ul>
+          </li>
+          <li>
+          	<h5>Select elements by tag name.</h5>
+            <p>
+            	Make the backround color of all <span class="tag-name">body</span> elements MediumSeaGreen:
+            </p>
+            <div class="code-block">
+body {
+  background-color: MediumSeaGreen;
+  }
+            </div>
+            <p>
+            	Hopefully, you still remember how to do this from Assignment 2 and didn’t need the sample code!
+            </p>
+            <p>
+            	Notice three things, here:
+            </p>
+            <ol>
+            	<li>
+              	The instructions say “all <span class="tag-name">body</span> elements” even though there is only
+                one <span class="tag-name">body</span> element on a web page. We’re just being more accurate in
+                our language.
+              </li>
+              <li>
+                The color name is weird. Who ever heard of “MedumSeaGreen” as a color name? The fact is, this was not
+                a W3C valid color name in CSS Level 2, but all browsers recognize this and many other color names, and
+                the W3C decided to allow the <a href="http://www.w3.org/TR/css3-iccprof#x11-color">full list</a> in CSS 3.
+                The list was established as part of the X Window System, developed at MIT in the 1980s. (The curent version
+                of X is known as <span class="program-name">X11</span>.) We will use color names
+                from this list for this assignment, but you will learn to get more control over colors than these arbitrary
+                names allow, later in the semester.
+              </li>
+              <li>
+              	Color names are case-insensitive, an unusual situation on the web. So the color name could have
+                just as well been specified as “mediumseagreen.” But note that you cannot put spaces or hyphens in color
+                names.
+              </li>
+            </ol>
+            <p>
+            	Using three additional rules, provide three different light background colors for all 
+              <span class="tag-name">h1</span>, <span class="tag-name">div</span>, and <span class="tag-name">p</span>
+              elements. Pick names from the X11 color list, such as LightSkyBlue, LightYellow, and LightGray.
+            </p>
+            <p>
+            	Check your page. Be sure the four colors are clearly different from each other and all (except the body)
+              are light enough so the black text and the blue/purple validation links at the bottom of the page show up
+              clearly.
+            </p>
+          </li>
+          <li>
+          	<h5>Select multiple tag names.</h5>
+            <p>
+            	Write one rule that selects all <span class="tag-name">span</span> and all <span class="tag-name">a</span>
+              elements, and makes their <span class="property-name">font-style</span>
+              <span class="code">italic</span>. You use a comma-separated list of tag names as the selector to do
+              this: <span class="code-snippet">span, a</span> or <span class="code-snippet">a, span</span>. Check you
+              web page to be sure all four words inside spans and the two validation links at the bottom are all italic.
+            </p>
+          </li>
+          <li>
+          	<h5 class="not-yet">More to come&hellip; but not until Assignment 4!</h5>
+          </li>
+        </ol>
+      </div>
+
+      <h2>Submit</h2>
+      <div>
+        <p>
+          When you are ready for me to look at your assignment, simply send me an email message to let me
+          know. I’ll copy your entire web site to my computer (babbage) and check it out. The full pathname
+          to your web site on babbage will be http://babbage.cs.qc.cuny.edu/Grading/cs081/ followed by your
+          account name.
+        </p>
+        <p>
+          Send your email message to me at: <span class="email">vickery<span class="at" title="Change to
+          @">at</span>babbage.cs.qc.cuny.edu</span> by midnight of the due date.
+        </p>
+        <p class="standout-block">
+          The Subject line of your email message must be: “CS-081 Assignment 3.”
+        </p>
+        <p>
+          Don’t forget to put your name in your email message!
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../syllabus.xhtml">Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </div>
+  </body>
+</html>

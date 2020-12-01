@@ -1,0 +1,282 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 4</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:40E578DC-B989-4437-A304-6FBB4BA58563'>
+    <h1>CS-081 Assignment 4</h1>
+    <h2>Introduction</h2>
+    <div>
+    	<p>
+      	There are three components to this assignment:
+      </p>
+      <ol>
+      	<li>
+        	Using margins, borders, and padding to control the appearance of the CSS boxes allocated for various element in
+          your term paper.
+        </li>
+        <li>
+        	Using the <span class="tag-name">img</span> to insert photographs into the content of the page.
+        </li>
+        <li>
+        	Using the CSS <span class="property-name">float</span> and <span class="property-name">clear</span> properties to
+          control the positioning of elements on the page.
+        </li>
+      </ol>
+    </div>
+    <h2>Lab Activities.</h2>
+    <div>
+      <ol>
+        <li>
+          <h5>Set up the content of the web page.</h5>
+          <p>
+          	This assignment requires your term paper to have the heading and paragraph structure specified in the web page
+            for <a href="Assignment_03.xhtml">Assignment 3</a>. If your <span class="file-name">index.xhtml</span> does not
+            already have that structure, get it set up correctly before proceeding.
+          </p>
+        </li>
+        <li>
+        	<h5>Set up a stylesheet for this assignment.</h5>
+          <p>
+          	The stylesheet for this assignment is to be named <span class="file-name">assignment_04.css</span>. You may use the
+            stylesheet for Assignment 3 as a starting point, if you wish: in Dreamweaver, duplicate 
+            <span class="file-name">assignment_03.css</span> by selecting it, and typing Ctrl-D. The new file will be named
+            &ldquo;Copy of assignment_03.css,&rdquo; and you can rename it by clicking on it twice (slowly) and typing in the
+            new name.
+          </p>
+          <p>
+          	Feel free to change the various colors that were used in Assignment 3 if you would like to experiment. Also, you
+            no longer have to use the CSS rules for <span class="tag-name">span</span>s and the 
+            <span class="tag-name">div</span> that you used for Assignment 3. But it is okay to leave them in.
+          </p>
+          <p>
+          	Change the link to the stylesheet to point to <span class="file-name">assignment_04.css</span>, and verify that
+            the page still passes both validation tests and that all the CSS rules defined so far still work.
+          </p>
+        </li>
+        <li>
+        	<h5>Add two pictures to your term paper.</h5>
+          <p>
+          	Download the two pictures I am supplying into your site&rsquo;s <span class="directory-name">images</span>
+            directory: <a href="images/big-pipe.jpg">big-pipe.jpg</a> and <a href="images/big-leaf.jpg">big-leaf.jpg</a>.
+          </p>
+          <p>
+          	These are big pictures in two ways: both have large <span class="tech-term"
+            title="The pixel dimensions of an image, stored as part of the image file.">intrinsic sizes</span>
+            (2-3 thousand pixels on each edge), and neither has been very heavily <span class="tech-term"
+            title="For JPEG images, reducing the size of an image file by reducing the number of colors and/or amount of detail.">
+            compressed</span>. If you left-click on these images (instead of right-clicking so you can download them), you should
+            see that it takes an appreciable amount of time for them to appear in your browser window the first time you do so.
+            (After that, the browser keeps them in its &ldquo;cache&rdquo; on your computer&rsquo;s hard drive and avoids downoading
+            them from the server again if possible.
+          </p>
+          <p>
+          	Your first job is to reduce the size of the picture files without impacting their appearances too much. For this, you
+            will have to open the pictures in Photoshop, which is installed on all the computers in the lab. (From the Start
+            menu, go to <span class="menu-item">All Programs &rarr; Adobe Design Premium CS4 &rarr; Adobe Photoshop CS4</span>.
+          </p>
+          <p>
+          	Once you have a picture open, use the <span class="menu-item">File &rarr; Save For Web &amp; Devices &hellip;</span>
+            menu item to open up the big control panel demonstrated in class on October 13. First reduce the intrinsic dimensions
+            of the picture using the image size subpanel in the lower right part of the big panel. Make the larger dimension 
+            450 pixels, making sure the <span class="tech-term"
+            title="The width of a rectangle divided by its height.">aspect ratio</span> 
+            remains unchanged (just don&rsquo;t click on the chain icon linking the height and width). I picked the number 450 as
+            the maximum size at which the pictures will be displayed on a web page. If I knew they would be made larger (by the
+            browser when the CSS <span class="property-name">width</span> or <span class="property-name">height</span> property
+            is greater than that), the value would have to be larger to avoid the image degradation that happens when pictures are
+            enlarged to a fill a rectangle with more pixels than there are in the image file. These are fanatastic pictures (I took
+            them myself), but even I know they don&rsquo;t warrant more than 450 pixels on a side for display in a term paper.
+          </p>
+          <p>
+          	You can experiment with different image file formats (GIF, PNG-8, or PNG-24) in the three &ldquo;experiment&rdquo;
+            panels of the big control panel, but these are photographs, and JPEG will undoubtedly give the best trade-off between
+            image file size and picture quality. Try different compression settings in the three picture panels by clicking on
+            each one and adjusting the JPEG quality in the upper right side of the panel. Use the hand icon you get when you mouse
+            over one of the images to drag an &ldquo;interesting&rdquo; part of the picture into view (like the top of the pipe)
+            so you can see the effect of the compression setting on the level of detail in the image. You may be surprised (or not)
+            at how much you can compress a JPEG image and still retain satisfactory image quality for web pictures. I found that I
+            could not see a difference between quality levels between 0 and 100 for these images at 100% magnification. At higher
+            magnifications, the differences show up, but that doesn't matter if the pictures will never be magnified on your web
+            page. 
+          </p>
+          <p>
+          	Save both pictures in your site&rsquo;s <span class="directory-name">images</span>with new names (so you do not
+            overwrite the precious originals). Chage 
+            <span class="file-name">big-pipe.jpg</span> to <span class="file-name">pipe.jpg</span>, for example.
+          </p>
+          <p>
+          	Now insert two <span class="tag-name">div</span> elements to hold the pictures: one between the second 
+            <span class="tag-name">h2</span> and the paragraph following it, and the other between the third
+            <span class="tag-name">h2</span> and the paragraph following it. Put an <span class="tag-name">img</span>
+            tag inside each div, one for the pipe and one for the leaf. The <span class="attribute-name">alt</span> value
+            should be something meaningful (not empty) for these two images. The reason for putting the images inside divs
+            is to avoid an XHTML validation error: you cannot put an inline element between two block elements.
+          </p>
+          <p>
+          	 <span class="attribute-name">id</span> 
+          </p>
+          <p>
+          	It should look weird, but you should be able to view your web page now and see both pictures; there should be no
+            XHTML and/or CSS validation errors or warnings.
+          </p>
+        </li>
+        <li>
+        	<h5>Use CSS to float the pictures left and right.</h5>
+          <p>
+          	Add a rule to <span class="file-name">assignment_04.css</span> to float one picture to the left and the other
+            one to the right. Actually, the images are inside divs, so the way to do this is to float the divs, and their
+            contents will float with them. Since you put ids on the divs in the previous step, the code will look something
+            like this:
+          </p>
+          <p class="code-block">
+  #pipe-picture {
+    float:right;
+    }
+          </p>
+          <p>
+          	Load the page and observe that the pictures have indeed floated out of the normal flow of the web page and that
+            the headings and paragraphs that follow them in your code now flow around them.
+          </p>
+          <p>
+          	The intrinsic dimensions for the pictures probably looks too large for the web page. But even if you like their
+            sizes, make the pictures smaller. Without adding any more attributes to the XHTML, use CSS to adjust the pipe
+            picture so its height is 200 pixels and the leaf picture so its width is 200 pixels. Reload the page and verify
+            that the pictures get smaller. Be sure your XHTML and CSS still validate perfectly.
+          </p>
+        </li>
+        <li>
+        	<h5>Adjust margins, borders, and padding to improve the appearance of the web page.</h5>
+          <p>
+          	This part of the assignment is somewhat flexible. You must do all of the following adjustments, but you can use
+            different dimensions to create a more pleasing effect. And you may add other adjustments if you would like to 
+            experiment.
+          </p>
+          <ul>
+          	<li>
+            	<h5>Create some space around the text in the paragraphs.</h5>
+              <p>
+              	In general, you can do this step by changing either the margins or the padding for all the paragraphs, but
+                we will use margins for two reasons: one is that the goal here is to move the paragraphs away from the boxes
+                next to them (headings and other paragraphs), and the other is that we will be able to see the effect of
+                adding padding in the next step.
+              </p>
+              <p>
+              	Add a 0.5em margin to the top and bottom of each paragraph, and a 2em margin on their left and right sides.
+                Use Firebug to verify that the total space between paragraphs is just 0.5em because of collapsing margins.
+                (Look at the yellow bars around the paragraphs.)
+              </p>
+            </li>
+            <li>
+            	<h5>Put padding around the content area of the first paragraph after each <span class="tag-name">h2</span>.</h5>
+              <p>
+              	You already have a rule that gives a yellow background on the first paragraph following each level-2
+                heading that you put in for Assignment 3. Now add half an em of padding to those paragraphs, and observe that
+                the space between the text and the edges of the colored background. (Because of the divs we added for this
+                assignment, only one paragraph, the first one of the Introduction, would still be affected by this rule.)
+              </p>
+            </li>
+            <li>
+            	<h5>&ldquo;Pretty up&rdquo; the pictures.</h5>
+              <p>
+              	Use margins to create space between the pictures and the text that wraps around them, as well as between the
+                pictures and the sides of the web browser &ldquo;viewport.&rdquo; Add an em of padding to the divs that hold
+                the pictures, and make their backgrounds white to create a &ldquo;border&rdquo; for the pictures, and add a
+                5 pixel border to the divs, creating a &ldquo;frame&rdquo; for the pictures.
+              </p>
+              <p>
+              	Adjust the size of one of the pictures (or both) and observe that the sizes of the floated divs automatically
+                adjust to the sizes of their contents.
+              </p>
+            </li>
+            <li>
+            	<h5>Limit the extent of the floated divs.</h5>
+              <p>
+              	Set up a rule for all the <span class="tag-name">h3</span> elements so they cancel any floats in effect.
+                (<span class="code-snippet">clear:both</span>) Observe that the level-3 headings always appear below the
+                bottoms of the pictures instead of wrapping around them.
+              </p>
+            </li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+      	Here is a screen shot showing approximately what your web page should look like:
+      </p>
+      <div style="text-align:center;">
+      	<img src="images/assignment_04-1.png" alt="Screenshot of Assignment 4 web site." />
+      </div>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+        Once you have set up your web site and tested that <strong>both the XHTML and CSS links at the bottom of the page give
+        you no warnings and no errors</strong>, log out of your account so your site will be copied to the server. I will copy
+        your site from the server to the computer in my office (babbage) to check it out.
+      </p>
+      <p class="standout-block">
+        Remember: even if your site validates perfectly, you still have to make sure that all the CSS rules actually
+        work as you intended. Testing your web page and fixing any unexpected appearances is a critical component of all
+        the assignments for this course.
+      </p>
+      <p>
+        When you finish your assignment, send me an email message telling me that it is ready. Use
+        <span class="code-snippet">CS-081 Assignment 4</span>
+        as the subject line. Make it look just like that to avoid my spam filters. Send the email to:
+        <span class="variable-name">vickery<span class="at" title="change to @">at</span>babbage.cs.qc.cuny.edu</span>.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../">Course Home Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

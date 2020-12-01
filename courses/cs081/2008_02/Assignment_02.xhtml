@@ -1,0 +1,123 @@
+<?php
+  header("Vary: Accept");
+  if ( (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+
+    <title>CS-081 Assignment 2</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="css/assignments.css"
+    />    
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Assignment 2</h1>
+    </div>
+
+    <div id="content">
+      <h2>Introduction</h2>
+      <div>
+        <p>
+          Use Dreamweaver to set up your web site for the course.
+        </p>
+      </div>
+
+      <h2>The Assignment</h2>
+      <div>
+        <p>
+          Instructions for accessing your lab account are at the <a
+          href="../../TREE_Lab/">TREE Lab Information</a> web page. The assignment for February 14 is to
+          log into your account, to set up the local part of your course web site as demonstrated in
+          class on February 7, and to create an index page for your site based on a template file that I am
+          providing.
+        </p>
+        <p>
+          Get the <span class="fileName">template.xhtml</span> file from the Zip file linked to from
+          the course schedule (<a href="../template.zip">template.zip</a>). Download the zip file,
+          and extract <span class="fileName">template.xhtml</span> into your <span
+          class="directoryName">My Website</span> directory. The, from within Dreamweaver, duplicate
+          the template (type Control-D with the file selected), then rename <span
+          class="fileName">Copy of template.xhtml</span> to <span
+          class="fileName">index.xhtml</span>. (If you double-click on the file name, it will open
+          the file for editing, but if you click twice with a pause between the two clicks the
+          second click will let you edit the file name.) Now you should be able to view the template
+          simply by using the URL, <span class="codeSnippet">http://<span
+          class="tagName">hostname</span>.cs.qc.cuny.edu/~<span
+          class="tagName">accountname</span>/</span>, where <span class="tagName">hostname</span> is
+          the name of the computer you are logged into, and <span class="tagName">accountname</span>
+          is your own account name. Note that the character before your account name is a tilde
+          (upper left corner of the keyboard), not a dash.
+         </p>
+        <p>
+          We will go over questions about the assignment in class on February 14; you will be able
+          to submit this assignment up to one week late for full credit, but I will be giving out
+          another assignment on the 14th, and that one will not be accepted late.
+        </p>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div>
+        <p>
+          When your site is set up and you have tested it, be sure you log off the lab computer so your work will
+          be copied to the server. Then send me an email message telling me your assignment is ready, and I will
+          copy it to my computer (babbage) from the server, and check it out. My email address is:
+        </p>
+        <address>
+          Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu
+        </address>
+        <p class="standout_block">
+          The Subject Line of your email must say <span
+          class="codeblock">CS-081&nbsp;Assignment&nbsp;2</span>, exactly like that, in order to avoid my spam
+          filters.
+        </p>
+        <p>Be sure to sign your email so I know who sent it!</p>
+      </div>
+    </div>
+    <div id="footer">Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>&nbsp;-&nbsp;<a
+        href="../../../">Vickery Home</a>&nbsp;-&nbsp;<a
+        href="./">Course Schedule</a>&nbsp;-&nbsp;<a
+        href="../">CSCI-081 Home Page</a>&nbsp;-&nbsp;<a
+        href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+        href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,128 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 1</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css" />
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>CS-081 Assignment 1<br />Spring 2009</h1>
+    </div>
+    <div id="content">
+      <h2>Introduction</h2>
+      <div class="whitebox">
+        The laboratory facility for the course is not set up yet, so we will use this first part of the course to develop some understanding of
+        how the Internet and the World Wide Web works, and to practice looking at web sites from a developer&rsquo;s perspective.
+      </div>
+      <h2>The Assignment</h2>
+      <div class="whitebox">
+        Read the first five articles in the <a
+        href="http://dev.opera.com/articles/view/1-introduction-to-the-web-standards-cur/" title="Link to Opera/Yahoo
+        Web Standards Curriculum">Opera/Yahoo Web Standards Curriculum</a> (don&rsquo;t panic: each
+        &ldquo;article&rdquo; is quite short), and answers the following questions:
+      <ol>
+        <li>
+          In what year did the Internet as we know it first become operational?
+        </li>
+        <li>
+          What is the relationship between the Internet and the World Wide Web?
+        </li>
+        <li>
+          What code did Tim Berners-Lee first release to the public in 1993 while he was at CERN?
+        </li>
+        <li>
+          What is the name of the organization that Tim Berners-Lee founded at MIT in 1994?
+        </li>
+        <li>
+          Chapter 3 says, &ldquo;Every request/response starts by typing a Universal Resource Locator (URL) into the
+          address bar of your web browser, &hellip;&rdquo; But there is another way to make a URL request besides typing
+          it. What is it?
+        </li>
+        <li>
+          What are the three principle components of a URL, and how are they specified in a URL string?
+        </li>
+        <li>
+          What does DNS stand for, and what role does it play in making Internet requests?
+        </li>
+        <li>
+          What is HTTP, and how does it relate to the World Wide Web?
+        </li>
+        <li>
+          Define the following HTML terms: element, start tag, end tag, attribute, attribute name, attribute value, and element content.
+        </li>
+        <li>
+          What are the three components of a static web page, and what language is used for each?
+        </li>
+        <li>
+          Give the names of 4 different browsers.
+        </li>
+      </ol>
+      </div>
+
+      <h2>Submit The Assignment</h2>
+      <div class="whitebox">
+        Submit the assignment by midnight of the due date:
+        <ol>
+            <li>Put your answers in the <em>body</em> of an email message, <strong>not</strong> in an attachment.</li>
+            <li>Be sure to put your name in your email message!</li>
+            <li>The Subject line must be <span class="code-snippet">CS-081 Assignment 1</span> to avoid my spam filters.</li>
+            <li>
+              Send your email to either Christopher.Vickery<span class="at" title="Change to @">AT</span>qc.cuny.edu or
+              vickery<span class="at" title="Change to @">AT</span>babbage.cs.qc.cuny.edu &mdash; but not to both.
+            </li>
+        </ol>
+        <p>
+          See <a href="../../cs081/index.xhtml">the course home page</a> for grading and late homework policies.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a> &mdash; <a href="../../cs081">CS-081 Home</a> &mdash;
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &mdash;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &mdash;
+      Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,73 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml"))
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Check My Grades</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="../../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="../../css/style-print.css" />        
+
+    <!-- Style for this page only -->
+    <style type="text/css" media="all">
+      form 	{ text-align: center; }
+      p 		{ font-size:	1.2em; }
+    </style>
+  </head>
+
+  <body id='urn:uuid:D57B54D6-DA15-4CB2-8EC8-D2F1B8F20E94'>
+
+    <div id="header">
+      <h1>Check My Grades</h1>
+    </div>
+
+    <div id="content" class="whitebox">
+    
+    	<p>Fill in the information below to see what grades I have recorded for you so far in the course.</p>
+      <p>
+        Be sure to let me know right away about any discrepancies between what you see here and the grades you think I should
+        have recorded.
+      </p>
+
+      <form method="get"
+            action="http://babbage.cs.qc.edu/cgi-bin/check_grades.php">
+        <p>
+          Enter your 4-digit student ID:
+          <input type="text" name="student_id" size="4" />
+        </p>
+        <p>
+          <input type="submit" value="Show Me My Grades for CS-081" />
+          <input type="hidden" name="course" value="081" />
+          <input type="hidden" name="section" value="1T3RA" />
+          <input type="hidden" name="semester" value="2009_09" />
+        </p>
+
+    </form>
+
+    </div>
+
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&nbsp;&mdash;&nbsp;<a
+         href="../../cs343">Course Home</a>&nbsp;&mdash;&nbsp;<a
+         href="../../cs343/2008_09">Fall 2008 Home</a>&nbsp;&mdash;&nbsp;<a
+         href="http://validator.w3.org/check?uri=referer">Validate XHTML</a>&nbsp;&mdash;&nbsp;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">Validate CSS</a>
+    </div>
+  </body>
+</html>

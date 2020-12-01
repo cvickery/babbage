@@ -1,0 +1,257 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 7</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <style media="all" type="text/css">
+      dt {font-weight:bold;font-style:italic;}
+    </style>
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:7C7275BE-3860-4CAB-BEAB-7D7BDC1C28DA'>
+    <h1>CS-081 Assignment 7</h1>
+    <h2>Introduction</h2>
+    <div>
+      <p>
+        In this assignment, you are to &ldquo;flesh out&rdquo; your web site with some dummy content, including a
+        &ldquo;stock&rdquo; image. You will also explore some page layout techniques. In particular, you are to
+        implement a &ldquo;sidebar&rdquo; design for the navigation links.
+      </p>
+    </div>
+    <h2>Lab Activities.</h2>
+    <div>
+      <ol>
+        <li>
+          <h5>Set up a common structure for the three new pages.</h5>
+          <p>
+            At this point the three pages you added for Assignment 6 all consist of an <span class="tag-name">h1</span>,
+            a <span class="tag-name">ul</span> for the list of navigation links, and a <span class="tag-name">p</span>
+            containing the two validation links. Now, on all three of the new pages (not on the term paper):
+          </p>
+          <ol>
+            <li>
+              Wrap the <span class="tag-name">h1</span> element in a <span class="tag-name">div</span> with an
+              <span class="attribute-name">id</span> named <span class="attribute-value">heading</span>
+              (or &ldquo;header.&rdquo;)
+            </li>
+            <li>
+              Give the paragraph containing the validation links an <span class="attribute-name">id</span> named
+              <span class="attribute-value">footing</span> (or &ldquo;footer.&rdquo;)
+            </li>
+            <li>
+              Insert a new <span class="tag-name">div</span> between the navlist and the footer. Give it an
+              <span class="attribute-name">id</span> named <span class="attribute-value">content</span>. You will
+              fill this <span class="tag-name">div</span> with dummy content in the next step.
+            </li>
+            <li>
+              Add a <span class="attribute-name">class</span> attribute with the value
+              <span class="attribute-value">current-page</span> to the <span class="tag-name">a</span> link in the
+              navigation link that goes to the current page of the site.
+            </li>
+          </ol>
+          <p>
+            Of course, it would have been easier to do this as part of Assignment 6: you could have set up one page with
+            this structure, and then duplicated it for the other two. But we didn&rsquo;t.
+          </p>
+        </li>
+        <li>
+          <h5>Add dummy content to the three main pages.</h5>
+          <p>Each page gets it&rsquo;s own structured content:</p>
+          <dl>
+            <dt>The Home Page</dt>
+            <dd>
+              <p>
+                Pretend this is the personal web page for a student. Add some subheadings (at least two), some
+                dummy (Lorem Ipsum) text, (at least 4 paragraphs),
+                and anything else you think a savvy college student might put on his/her home page.
+              </p>
+              <p>
+                Somewhere on the page, include a picture of this student. Go to <a
+                href="http://istockphoto.com">http://istockphoto.com</a>, search for pictures of students, pick one
+                suitable for your web page, click on the &ldquo;download a comp&rdquo; link, and save the file in your
+                site&rsquo;s <span class="directory-name">images</span> folder. Note that you do not need to purchase
+                anything or even to register with iStockphoto to do this. The picture will have a watermark to prevent
+                unauthorized use; you only have to pay them if you want to get a picture without the watermark.  <em>The
+                picture on your home page must have the iStockphoto watermark on it.</em> (There are many good stock
+                photo web sites, but for this assignment, use iStockphoto so I will see the watermark.)
+              </p>
+            </dd>
+            <dt>The Blog Page</dt>
+            <dd>
+              <p>
+                In the content <span class="tag-name">div</span> of the Blog page, put an ordered list. Set up the first
+                <span class="tag-name">li</span> with an <span class="tag-name">h2</span>, a <span
+                class="tag-name">p</span>, a <span class="tag-name">div</span>, and another <span
+                class="tag-name">p</span>, in that order.
+              </p>
+              <ul>
+                <li>
+                  Give the <span class="tag-name">h2</span> the <span class="attribute-name">class</span>
+                  <span class="attribute-value">blog-entry-title</span>.
+                </li>
+                <li>
+                  Give the first <span class="tag-name">p</span> the <span class="attribute-name">class</span>
+                  <span class="attribute-value">blog-entry-dateline</span>.
+                </li>
+                <li>
+                  Give the <span class="tag-name">div</span> the <span class="attribute-name">class</span>
+                  <span class="attribute-value">blog-entry-content</span>.
+                </li>
+                <li>
+                  Give the ending <span class="tag-name">p</span> the <span class="attribute-name">class</span>
+                  <span class="attribute-value">blog-entry-footer</span>.
+                </li>
+              </ul>
+              <p>
+                Fill in the <span class="tag-name">h2</span> content with an English title for a blog entry. Fill in the
+                dateline paragraph with a date in a <span class="tag-name">span</span> and an author&rsquo;s name in
+                another <span class="tag-name">span</span>. Fill in the <span
+                class="attribute-value">blog-entry-content</span> <span class="tag-name">div</span> with two paragraphs
+                of Lorem Ipsum text. Fill in the footer with a 
+                <span class="tech-term" title='&lt;a href="#">&hellip;&lt;/a>'>dummy anchor tag</span> that says, 
+                &ldquo;Read more &hellip;&rdquo;.
+              </p>
+              <ol class="standout-block" style="list-style-position:inside;">
+                <li>
+                  The dummy link goes nowhere. Normally, you would put the value of an <span
+                  class="attribute-name">id</span> after the hash symbol, and the link would take the user to the
+                  element with that <span class="attribute-name">id</span>. With nothing after the hash symbol (or a
+                  nonexistent <span class="attribute-name">id</span>), the link goes nowhere.
+                </li>
+                <li>
+                  The three dots after &ldquo;Read more&rdquo; are called an <em>ellipsis,</em> and are a single Unicode
+                  character. Use the <span class="code-snippet">&amp;hellip;</span> (&ldquo;horizontal ellipsis&rdquo;)
+                  character entity to enter it in the paragraph.
+                </li>
+              </ol>
+              <p>
+                Make sure the blog page has no XHTML errors or warnings, then make 3&ndash;4 copies of the blog entry
+                list item. It&rsquo;s all right to leave them all the same.
+              </p>
+            </dd>
+            <dt>The ePortfolio Page</dt>
+            <dd>
+              <ul>
+              <li>
+                Put a definition list inside the content <span class="tag-name">div</span> of the ePortfolio
+                Page.
+              </li>
+              <li>
+                Put in a <span class="tag-name">dt</span> element containing a link to your term paper.
+              </li>
+              <li>
+                Put in a <span class="tag-name">dd</span> element with a paragraph telling how wonderful your
+                term paper is.
+              </li>
+              <li>
+                Make 3&ndash;4 copies of your dt/dd pair inside your definition list.
+              </li>
+              </ul>
+            </dd>
+          </dl>
+        </li>
+        <li>
+          <h5>Create the navigation list sidebar.</h5>
+          <p>
+            For this assignment, you do not need to make a new stylesheet; you can continue to use
+            <span class="filename">assignment_06.css</span>. Verify that all three web pages and the stylesheet
+            validate using the W3C validators before proceeding.
+          </p>
+          <ul>
+            <li>
+              Add rules to the stylesheet so the navigation list is on the left side of the page. You have a choice of
+              making its width 20% (or so) of the page width, or a fixed number of pixels; about 300px would be a
+              typical width to use. Give the content <span class="tag-name">div</span> a left margin equal to the width
+              of the navigation list. Position the navigation list using the <span class="property-name">float</span>
+              property. (You could use fixed positioning if you prefer.)
+            </li>
+            <li>
+              Make the list items in the navigation list narrower than the list itself, center them within the list, and
+              give them a top/bottom margin so that they are separated from each other.
+            </li>
+            <li>
+              Make the anchors inside the list items in the navigation list fill up their list items by using the <span
+              class="code-snippet">display:block;</span> trick demonstrated in class. Center the text in the anchors,
+              and remove the underlining. Change their background color (and color if you like) when the user hovers
+              over them with the mouse.
+            </li>
+            <li>
+              Make the background color of the link to the current web page have a different appearance from the other
+              two, and make the cursor continue to be a pointer when the mouse hovers over this link.
+            </li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+        Once you have set up your web site and tested that <strong>both the XHTML and CSS links at the bottom of the
+        page give you no warnings and no errors</strong>, log out of your account so your site will be copied to the
+        server. I will copy your site from the server to the computer in my office (babbage) to check it out.
+      </p>
+      <p class="standout-block">
+        Remember: even if your site validates perfectly, you still have to make sure that all the CSS rules actually
+        work as you intended. Testing your web page and fixing any unexpected appearances is a critical component of all
+        the assignments for this course.
+      </p>
+      <p>
+        When you finish your assignment, send me an email message telling me that it is ready. Use
+        <span class="code-snippet">CS-081 Assignment 7</span>
+        as the subject line. Make it look just like that to avoid my spam filters. Send the email to:
+        <span class="variable-name">vickery<span class="at" title="change to @">at</span>babbage.cs.qc.cuny.edu</span>.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../">Course Home Page</a>&mdash;<a
+         href="./">This Semester&rsquo;s Schedule Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

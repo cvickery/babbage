@@ -1,0 +1,216 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 8</title>
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="../../css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="../../css/style-print.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="../../css/assignments.css"
+    />
+    <style media="all" type="text/css">
+      dt {font-weight:bold;font-style:italic;}
+    </style>
+    <script type="text/javascript" src="../../scripts/core.js"></script>
+    <script type="text/javascript" src="../../scripts/round-corners.js"></script>
+  </head>
+
+  <body id='urn:uuid:7BA87C28-3218-4EDD-AA05-EB8A9842BD49'>
+    <h1>CS-081 Assignment 8</h1>
+    <h2>Introduction</h2>
+    <div>
+      <p>
+        This assignment completes your basic web site design. The features to implement are: a horizontal
+          layout of the navigation list; use images for the navigation list items; improve the layouts
+          of the blog and ePortfolio pages; optionally use image sprites in the navigation list.
+      </p>
+    </div>
+    <h2>Lab Activities.</h2>
+    <div>
+      <ol>
+        <li>
+          <h5>Implement horizontal layout for the navigation list.</h5>
+          <p>
+            There are two ways to do this: change the <span class="property-name">display</span> property of the list items to
+            <span class="property-value">inline</span>, or to float them to the left. The problem with the first method is that
+            CSS does not let you set the width of inline elements, so you would not be able to make the links all the same size.
+          </p>
+          <p>
+            Do not worry about getting the margins and padding exactly right for the navigation list,
+              its list items, and the
+            <span class="tag-name">a</span> elements yet. (See the next step.) But do decide how wide
+            you want the list items to be now. Since you will be using an image file for their backgrounds,
+            it makes sense to specify the width in pixels, since that is what you will be dealing with
+            in Photoshop.
+          </p>
+        </li>
+        <li>
+          <h5>Use images for the navigation list items.</h5>
+          <p>
+            Read the description of the optional step at the end before doing this step. If decide to do that
+            optional step, modify the following instructions accordingly.
+          </p>
+          <p>
+            Use Photoshop to create an image file with the same width as the <span class="tag-name">a</span> elements in the
+            navigation list. Create the image with a transparent background. The height is not critical, but make sure it is
+            taller than the text that goes inside the navigation list items.
+          </p>
+          <p>
+            Be sure the Layers &ldquo;palette&rdquo; is visible. You can turn it on or off using the Window menu or by pressing F7.
+          </p>
+          <p>
+            Select the rounded rectangle tool. It shares a toolbar position with the plain rectangle tool, the ellipse tool, the
+            line tool, the polygon tool, and the custom shape tool, so it may take some work to get at it: click and hold on any
+            one of those tool icons until the list of all the alternatives shows up, then select the one you want.
+          </p>
+          <p>
+            Pick a foreground color for one of the three types of navigation tabs you will be using: current page; other page;
+            other page with hover.
+          </p>
+          <p>
+            Be sure the &ldquo;fill pixels&rdquo; tool is selected in the options menu, and draw your rounded rectangle, starting
+            in one of the
+            top corners of the image, and continuing down below the bottom of the image so that you get a shape with rounded corners
+            on the top and square corners at the bottom.
+          </p>
+          <p>
+            Add a layer style to the image: you can do this from the Layers menu, or you can click on
+            the fx icon at the bottom of the layers palette, or you can just double-click on the far
+            right side of the layer in the layers palette. You can experiment with any combination of
+            inner shadow, inner glow, and/or bevel and emboss. You can try others too, but note that
+            drop shadow and outer glow won&rsquo;t work because your shape fills the image, and those
+            two go outside the shape. Note also that inner glow only shows up on dark colors and inner
+            shadow only shows up on light colors. But you can change the color and/or the &ldquo;blend
+            mode&rdquo; of the shadow or glow to make it show up against any color.
+          </p>
+          <p>
+            Save your image file as a PNG-8 image file to preserve the transparency of the corners. Use a meaningful name so you will
+            remember which of the three types of links it will be used for.
+          </p>
+          <p>
+            Repeat everything above for the other two image files, and use these three image files as the backgrounds for the different
+            items in the navigation list. Adjust margins and paddings to get the navigation list to &ldquo;sit on top&rdquo; of each
+            page&rsquo;s contents.
+          </p>
+        </li>
+        <li>
+          <h5>Adjust the layouts of all three web pages.</h5>
+          <p>
+            Adjust the margins, paddings, and borders for all three web pages so that they are clear and align properly with the
+            navigation list that rests on top of their contents.
+          </p>
+          <p>
+          	Make the footer containing the links to the XHTML and CSS validators appear at the very bottom of the web pages 
+            (position:fixed). Make sure the links can be seen, and that they are centered in the middle of the bottom of the page.
+            Be sure the user can see the bottom of the content of each page when scrolling: you will need to add either padding or
+            a margin to the bottom of the content <span class="tag-name">div</span> to accomplish this.
+          </p>
+        </li>
+        <li>
+          <h5>Optional: use image sprites.</h5>
+          <p>
+            Rather than create three separate image files for the three types of navigation links, you can save some effort and improve
+            the download speed of your web page by using &ldquo;CSS image sprites.&rdquo; The idea is to create a single file with all
+            three images in it, stacked either vertically or horizontally. If your image size is 250&times;50, for example, you would
+            start with an image file that is 250&times;150 or 750&times;50.
+          </p>
+          <p>
+            The first key to making this work is to create guidelines to divide the image file into the three parts that you want, and
+            the second key will be to create the three images on separate layers so that the layer style effects can be applied to each
+            sub-image separately.
+          </p>
+          <p>
+            Draw guidelines as demonstrated in class: be sure the rulers are showing around the edge of the workspace (Control-R turns
+            them on and off), and just drag out from inside a ruler to create a guideline. Line it up with the proper pixel dimensions
+            shown in the rulers. Use the View menu to turn on the &ldquo;Snap to &hellip; Guides&rdquo; option. This will help you to
+            draw the images more accurately.
+          </p>
+          <p>
+            Add two layers to the document so there is a total of three. You can use the top item in the Layers menu to do this. In the
+            Layers palette, click on each layer&rsquo;s name and change it to something more meaningful than &ldquo;Layer 1,&rdquo;
+            etc. (This step is not critical for this project, but becomes very important on larger ones.)
+          </p>
+          <p>
+            Now select one foreground color, and draw the rounded rectangle (with square bottoms) for it. Select another foreground
+            color, click on another layer to select it, and draw a second rounded rectangle, and repeat the process for the third
+            layer. Add layer styles to any one of the three images. You can then speed things up by copying the layer style from one
+            layer to the other two. You can do this from the Layer menu by selecting copy and paste from the Layer Style sub-menu.
+            Or you can just drag the layer style from one layer to another in the layers palette while holding down the Alt key.
+          </p>
+          <p>
+            Once you have all three sub-images with their layer styles looking the way you want them,
+              save the entire image file. Be sure to use PNG-8 to create a small file while preserving
+              transparency.
+          </p>
+          <p>
+            Now use this one image file as the background image for all the <span class="tag-name">a</span> elements in the navigation
+            list. But adjust the background position depending on the which image is actually to be displayed.
+          </p>
+        </li>
+      </ol>
+    </div>
+    <h2>Submit The Assignment</h2>
+    <div>
+      <p>
+        Once you have set up your web site and tested that <strong>both the XHTML and CSS links at the bottom of the
+        page give you no warnings and no errors</strong>, log out of your account so your site will be copied to the
+        server. I will copy your site from the server to the computer in my office (babbage) to check it out.
+      </p>
+      <p class="standout-block">
+        Remember: even if your site validates perfectly, you still have to make sure that all the CSS rules actually
+        work as you intended. Testing your web page and fixing any unexpected appearances is a critical component of all
+        the assignments for this course.
+      </p>
+      <p>
+        When you finish your assignment, send me an email message telling me that it is ready. Use
+        <span class="code-snippet">CS-081 Assignment 8</span>
+        as the subject line. Make it look just like that to avoid my spam filters. Send the email to:
+        <span class="variable-name">vickery<span class="at" title="change to @">at</span>babbage.cs.qc.cuny.edu</span>.
+      </p>
+    </div>
+    <div id="footer">
+      <a href="../../../">Vickery Home</a>&mdash;<a
+         href="../">Course Home Page</a>&mdash;<a
+         href="./">This Semester&rsquo;s Schedule Page</a>&mdash;<a
+         href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+         href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last
+         updated <?php echo date("Y-m-d", filemtime('course_calendar.xml')); ?>
+    </div>
+  </body>
+</html>

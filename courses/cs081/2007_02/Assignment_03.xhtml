@@ -1,0 +1,358 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 3</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Assignment 3</h1>
+    </div>
+
+    <div id="content">
+      <h2>Overview</h2>
+      <div class="whitebox">
+        <p>For this assignment you are to construct a web photo gallery. 
+        The index page for your web site will contain a link to the index
+        page of a subdirectory that will house the actual gallery. In the
+        gallery, the index page will show a thumbnail-sized copy of each
+        picture in the gallery, and clicking on the thumbnail will take the
+        user to a separate page that will show the picture in its full size.
+        Each of these pciture pages will have buttons for navigating to the
+        next page in the gallery, the previous page, the thumbnail page, and
+        the web site&rsquo;s home page.</p>
+      </div>
+      
+      <h2>Procedure</h2>
+      <div class="whitebox">
+        <ol>
+        
+          <li>
+          
+            <h5>Collect the pictures for your gallery and prepare them for
+            the web.</h5> <p class="runin">You may use any pictures you
+            want, but I am providing you with <a href="images/">a set of my
+            pictures</a> that you can pick from if you want to use them
+            instead of or in addition to your own.  The pictures you use,
+            including the ones I provide, will undoubtedly vary
+            significantly in terms of file size, image size, file type, and
+            resolution.  You need to process each one to produce two copies:
+            a small version for use as a thumbnail, and a larger version for
+            display on the individual web pages.  Dreamweaver comes with an
+            auxiliary program called <span
+            class="programName">Fireworks</span> that you can use to do this
+            processing.  If you have a copy of <span
+            class="programName">Photoshop</span> available to you, you can
+            use its auxiliary program, <span
+            class="programName">ImageReady</span>, which works very much the
+            same way as <span class="programName">Fireworks</span>.</p>
+            
+            <p class="standoutBox">I am supplying images in three formats:
+            <span class="techTerm"
+            title="Joint Photographic Experts Group">
+            JPEG</span> pictures, <span class="techTerm"
+            title="Portable Network Graphics">PNG</span> images, and <span
+            class="techTerm" title="Shockwave Flash">SWF</span> (Flash)
+            movies.  JPEGs and PNGs can be displayed using <span
+            class="tagName">img</span> tags, but Flash movies are shown
+            using <span class="tagName">object</span> tags.  Displaying
+            Flash movies in this project is optional.</p>
+            
+            <p>When you process your images you need to reduce the file size
+            as much as possible without losing image quality, and have to
+            make some decisions about how they fit in browser windows. 
+            There is no &ldquo;correct&rdquo; way to display pictures on the
+            web, in part because you have no way of knowing the size or
+            <span class="techTerm" title="width divided by height">aspect
+            ratio</span> of a user&rsquo;s browser window.</p>
+
+            <p>So, somewhat arbitrarily, here are the parameters to follow
+            when processing your images: each image must fit inside a
+            rectangular canvas exactly 900 pixels wide and 556 pixels high.
+            These dimensions have an aspect ratio approximating the <a
+            href="http://en.wikipedia.org/wiki/Golden_ratio"
+title="a relationship between height and width known to be visually pleasing">
+            golden ratio</a> and take advantage of reasonably large browser
+            window sizes.  We are explicitly constraining the images to fit
+            in a rectangle with landscape (horizontal) orientation rather
+            than portrait because that&rsquo;s the way (most) computer
+            monitors are oriented; if an image is more vertical than
+            horizontal, constrain its height to 742 pixels.  If an image is
+            smaller than the canvas, do not make it larger (that would
+            degrade the quality of the image), just center it in the
+            canvas.</p>
+
+            <p>For the thumbnails, follow the same procedure as you do for
+            the full sized images, but make the canvas size 100&times;100
+            pixels.  Be sure you don&rsquo;t overwrite your images when you
+            save the thumbnails!  Either put the thumbnails in a
+            subdirectory of your <span class="directoryName">images</span>
+            folder, named <span class="directoryName">thumbnails</span>, or
+            give them special names, like <span
+            class="fileName">peaches-thumb.jpg</span> for the <span
+            class="fileName">peaches.jpg</span> image.</p>
+
+            <p class="standoutBox">Set up just 2-3 images to start with. 
+            Then, after you have the gallery set up and see that the above
+            settings work all right, you can process more images the same
+            way and add them to your gallery.  This way if something needs
+            to be changed you will not lose a lot of time re-processing all
+            your images.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Create the photo gallery directory, add a link to it in your
+            home page, and add the thumbnails to the gallery index
+            page.</h5> <p class="runin">Create a subdirectory of <span
+            class="directoryName">My Web Pages</span> with a meaningful name
+            of your choice, such as <span class="directoryName">Picture
+            Gallery</span>.  In Dreamweaver, create the index page for your
+            gallery using the <span class="menuItem">File->New</span> menu
+            item to create a new page based on your course web page
+            template.</p>
+
+            <p>Make the <span class="tagName">title</span> and <span
+            class="tagName">h1</span> heading for the gallery index page
+            into something clever and meaningful, such as &ldquo;Picture
+            Gallery.&rdquo;  Replace the <span class="tagName">h2</span> in
+            the content section with an <span class="tagName">img</span> tag
+            for each of the thumbnails you have prepared so far.  The <span
+            class="tagName">img</span> tags must have both src and alt
+            attributes, and do not need <span
+            class="attributeName">height</span> or <span
+            class="attributeName">width</span> attributes.  You should add
+            <span class="attributeName">title</span> attributes to them; see
+            below for more information on this.</p>
+
+            <p>Make the footer <span class="tagName">div</span> contain
+            exactly three links: a link to your site&rsquo;s home page, and
+            the two links for validating XHTML and CSS for the page.</p>
+            
+            <p class="standoutBox">Do not worry about formatting this page
+            carefully yet.  The first goal is to get the gallery structure
+            and content set up and working.</p>
+
+            <p>Test your project so far: You should be able to click on a
+            link on the home page to get to the gallery, and you should be
+            able to click on the link at the bottom of the gallery index to
+            get back to the home page.  Both the home page and the gallery
+            index page should pass W3C validation with no errors or warnings
+            for XHTML and CSS.  The gallery index should show the thumbnails
+            you set up in a row.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Set up gallery image pages and link to them from the gallery
+            index page.</h5> <p class="runin">Create a web page based on
+            your course template for one of the pictures you have prepared
+            for your gallery.  Change the title and <span
+            class="tagName">h1</span> heading to match the name of the
+            picture, and replace the contents of the content <span
+            class="tagName">div</span> with an <span
+            class="tagName">img</span> for the full-sized image you
+            prepared.  Put three links in the footer <span
+            class="tagName">div</span>with contents of &ldquo;Previous,
+            &rdquo;&ldquo;Index,&rdquo; and &ldquo;Next.&rdquo;  The middle
+            link goes to the gallery index page, but for now the other two
+            should point nowhere.  (The url for &ldquo;nowhere&rdquo; is
+            <span class="codeSnippet">"#"</span> .)  Put these
+            navigation links in a separate <span class="tagName">div</span>
+            from the two validation links so they will be able to be styled
+            differently later on.
+            Save this web page in your gallery directory using the name of
+            the photo.  For example, the image page for <span
+            class="fileName">peaches.jpg</span> should be <span
+            class="fileName">peaches.xhtml</span>.</p>
+
+            <p>Now go back to the gallery index page, and surround the <span
+            class="tagName">img</span> tag for the first picture with a link
+            to the picture&rsquo;s image page that you just prepared.  Check
+            the site in a browser to be sure all the links you have set up
+            so far work.  At this point set up the <span
+            class="attributeName">title</span> attribute of the image with a
+            title for the picture so the user will see it when they hover
+            over the link.  Since the image tag and the link tag occupy the
+            same box on the page, you could put the <span
+            class="attributeName">title</span> attribute on either one. 
+            (What happens if you put a different title on both?)</p>
+
+            <p>Generate image pages for the other pictures you have prepared
+            so far.  Rather than start fresh from your Dreamweaver template
+            for each one, it is all right to copy the first image file you
+            prepared and then to edit the copies so they have the correct
+            <span class="tagName">title</span> and <span
+            class="tagName">h1</span> tags and the correct <span
+            class="attributeName">src</span> and <span
+            class="attributeName">alt</span> values for the <span
+            class="tagName">img</span> tag.  Fix up the <span
+            class="variableName">Previous</span> and <span
+            class="variableName">Next</span> links on each image page so the
+            images create a cycle that matches the order of the index page
+            thumnails.  The next image after the last is the first and the
+            previous one before the first is the last.</p>
+
+            <p>Test the gallery carefully.  Be sure the correct picture
+            shows up in each image page, that each image page links properly
+            to the previous and next one in the cycle, and to the index page
+            for the gallery.  Be sure each image page validates
+            completely.  Note that the image pages all lay out the same
+            regardless of the actual picture dimensions because of the way
+            the images were processed; you should not have to move the mouse
+            at all to click the Next link for each image, and likewise for
+            the Previous links.</p>
+
+          </li>
+          
+          <li>
+          
+            <h5>Pick a color scheme for your gallery and prepare more
+            images.</h5> <p class="runin">When you created the matte for
+            your pictures, you probably used the default color: white.  And
+            you have had a chance to see your matted pictures against your
+            site template&rsquo;s default background color.  Decide what
+            kind of background you want to use for presenting your
+            pictures.  Some common choices are black, white and gray, and
+            pastels can sometimes be used too.  But avoid saturated colors,
+            because it is likely to affect how the pictures appear.  We are
+            going to design the gallery so the matte blends in with the page
+            background, so pick a background color now and process all your
+            images so they have that color matte.  Your thumbnails may have
+            a matte color that either matches or complements the background
+            color you choose for the gallery index page.</p>
+            
+            <p>Add a picture_gallery.css style sheet to your site&rsquo;s
+            <span class="folderName">css</span> directory and set the <span
+            class="tagName">html</span> and <span
+            class="tagName">body</span> <span
+            class="attributeName">background-color</span> and <span
+            class="attributeName">color</span> properties to your chosen
+            color scheme.  Add a link to this style sheet after the link to
+            the site&rsquo;s main style sheet so you can override the
+            default colors for the site for just those pages inside the
+            gallery.</p>
+
+            <p>Update your gallery so there are several pictures, at least
+            twelve.  <strong>If you do not want to process so many images in
+            Fireworks, it is all right to have just 4-5 different images and
+            to add numbers to their names.  So you could have an image file
+            named <span class="fileName">peaches-1.jpg</span> that is
+            simply  a copy of  <span
+            class="fileName">peaches.jpg</span></strong> But each copy has
+            to have its own image page and own thumbnail.  Make sure all the
+            links on all the image pages work.  Observe what happens when
+            you resize the browser window on both the index page and on the
+            image pages.</p>
+
+          </li>
+          <li>
+          
+            <h5>Style The Picture Pages</h5>
+            <p class="runin">For this part of the assignment, you are to
+            create a design for the picture pages that meets the following
+            requirements:</p>
+            
+            <ol>
+              <li>The name of the picture appears at the top.</li>
+              <li>The previous, index, and navigation links are to be
+              centered on the page, and must use the same size or slightly
+              smaller font as the picture title.</li>
+              <li>The links to the W3.org validators must be about half the
+              size of the navigation links, and must appear centered below
+              them.</li>
+              <li>The image must be centered in the window, and must change
+              size to match the size of the browser&rsquo;s <span
+              class="techTerm"
+      title="The part of the browser window where the page is displayed/">
+              viewport</span>.</li>
+              <li>There must be a background border for image part of the
+              page that includes gradient effects.</li>
+              <li>There image pages must render correctly in the four major
+              browsers (<span class="programName">Internet Explorer</span>,
+              <span class="programName">Firefox</span>, <span
+              class="programName">Opera</span>, and <span
+              class="programName">Safari</span>.</li>
+            </ol>
+            <p>Here is a screenshot of one design that meets these
+            requirements:</p>
+            
+            <p class="center"><img src="picture_frame_screenshot.jpg"
+            alt="Screenshot of an image page" /></p>
+            
+            <p>Working through the various aspects of this part of the
+            assignment requires a bit of work ... and experimentation.  The
+            <a href="../framed_picture.xhtml">second web page for this
+            assignment</a> will guide you through the process.</p>
+
+          </li>
+        </ol>
+
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+
+        <p>When you have completed the assignment and tested it in all the
+        ways listed above, send me an email message that says <span
+        class="codeBlock">CS-081 Assignment 3</span> in the subject line and
+        that contains your real name and account name in the message body. 
+        I will get a copy of your work from the server (<span
+        class="computerName">maple</span>) to look at.</p>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-
+        <a href="./index.xhtml">CS-081</a><br />
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

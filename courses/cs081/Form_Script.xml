@@ -1,0 +1,82 @@
+#! /bin/bash.exe
+
+#  This is way cool: it generates proper content type based on browser's
+#  capabilities.  But the server delivers it as a .sh file, so the browser
+#  doesn't know what to do with it.  You would have to configure Apache
+#  to deliver .sh files as application/xhtml+xml -- in which case you 
+#  wouldn't need the detection code, would you?  Sigh.
+
+echo "$HTTP_ACCEPT" | ./grep 'application/xhtml+xml' > /dev/null
+if [[ $? == 0 ]]
+then
+  echo "Content-Type: application/xml+xhtml"
+  echo ""
+  echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+else
+  echo "Content-type: text/html"
+echo ""
+fi
+echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\""
+echo "  \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"
+echo "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">"
+
+echo "<head><title>Form Processing Script: XML Version</title>";
+echo "<link rel=\"shortcut icon\" href=\"./favicon.ico\" />"
+echo "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\""
+echo "  href=\"..//css/style-all.css\" />"
+echo "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\""
+echo "  href=\"..//css/style-screen.css\" />"
+
+echo "</head><body><div id=\"header\"><h1>Form Processing Script: XML Version</h1>"
+echo "</div><div id=\"content\">"
+case $REQUEST_METHOD in
+
+  POST) echo "<h2>The Request Method was POST</h2>"
+        read QUERY_STRING
+        ;;
+  GET)  echo "<h2>The Request Method was GET</h2>"
+        ;;
+  *)    echo "<h2>There Was No Request Method</h2>"
+        ;;
+esac
+echo "<h3>Query String</h3>"
+echo "<div CLASS='whitebox'><pre>"
+qs="$QUERY_STRING"
+let len=${#qs}
+while (( len > 0 ))
+do
+  localqs=${qs:0:100}
+  localqs=${localqs//&/&amp;}
+  echo "${localqs}"
+  let len=len-100
+  qs=${qs:100}
+done
+
+echo "</pre></div>"
+QUERY_STRING=$(echo "$QUERY_STRING" | tr "+" " ")
+QUERY_STRING=$(echo "$QUERY_STRING" | ./unescape)
+#echo "<fieldset><legend>Debugging</legend>"
+#echo "<div CLASS='whitebox'><pre>$QUERY_STRING</pre></div>"
+#echo "</fieldset>"
+IFS="&"
+set -- $QUERY_STRING
+echo "<h3>There were $# parameters</h3>"
+if [[ $# > 0 ]]
+then
+  echo "<table SUMMARY=\"Parameter names and their values\">"
+  echo "<caption>Parameter Names and Their Values</caption>"
+  echo "<tr><th>Name</th><th>Value</th></tr>"
+  for param in $@
+  do
+    lhs=${param%%=*}
+    rhs=${param#*=}
+    # unescape left ampersands in URL encoded form.
+    echo "<tr><td>${lhs/\%26/&amp;}</td><td>${rhs/\%26/&amp;}</td></tr>"
+  done
+  echo "</table>"
+#else
+#  echo "<fieldset><legend>Debugging</legend>"
+#  echo "<div CLASS='whitebox'><pre>$QUERY_STRING</pre></div>"
+#  echo "</fieldset>"
+fi
+echo "</div></body></html>"

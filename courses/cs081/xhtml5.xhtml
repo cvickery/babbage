@@ -1,0 +1,164 @@
+<?php
+  header("Last-Modified: " . date('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+  $mime_type = "text/html";
+  $html_attributes="lang=\"en\"";
+  $accept_header = isset($_SERVER['HTTP_ACCEPT']) ? 
+    "“{$_SERVER['HTTP_ACCEPT']}”" : " not present.";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml")
+        )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $mime_type = "application/xhtml+xml";
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: application/xhtml+xml");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo $html_attributes; ?>>
+  <head>
+    <title>XHTML5 Setup</title>
+    <link rel="stylesheet" type="text/css" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-screen.css" />
+  </head>
+  <body id='urn:uuid:DD1D08C9-CCF9-453E-A6C7-69F55F526199'>
+    <h1>XHTML5 Setup</h1>
+    <section id="content">
+      <section>
+        <h1>What is this?</h1>
+        <p>
+          HTLML5 can be “serialized” (delivered to browsers) as either HTML or XHTML. The HTML serialization is
+          compatible with the syntax rules for HTML 4 and earlier, whereas the XHTML serialization is based on XML, the
+          Extensible Markup Language, which has very strict syntax rules.
+        </p>
+        <p>
+          The more relaxed rules for HTML are very convenient in many ways, but XHTML has a significant advantage:
+          the browser is obliged to to report any syntax errors it finds and to stop processing the web page whenever
+          if finds one. This is rather draconian behavior on the Web, where the goal is to communicate easily, not to
+          display pedantic errors to a site’s visitors. But adhering to strict syntax rules means that there can be
+          nothing ambiguous about the structure of a page–nothing that different browsers might interpret differently.
+        </p>
+        <p>
+          The audience for this web page is students who are taking college-level web design courses offered by a
+          computer science department. In this context, using XHTML instead of HTML has the additional value of
+          getting students accustomed to strict syntax rules, which are the norm in most coding languages used in
+          computer science.
+        </p>
+      </section>
+      <section>
+        <h1>What about this web page?</h1>
+        <p>
+          We begin with some information about how your browser and this web page interacted. In order for a web
+          page to be XHTML5, it must be delivered to the browser as an XML document using the 
+          <code>application/xml</code> or <code>application/xhtml+xml</code> MIME type. But browsers that do not
+          “understand” these MIME types typically simply display the code of XML documents instead of rendering
+          them as web documents. So this page includes server-side code that tested whether or not your browser announced
+          that it could understand xhtml or xml documents. Based on that test, the page was delivered to you browser
+          as either an XHTML5 document or as a plain HTML document. The next two paragraphs summarize what was found:
+        </p>
+        <p>
+          Your browser’s <code>Accept</code> header was:
+        </p>
+        <code class="computer-output"><?php echo $accept_header; ?></code>
+        
+        <p>
+          This page was delivered with MIME type:
+        </p> 
+        <code class="computer-output">
+          <?php echo $mime_type; ?>
+        </code>
+        <p>
+          And, just to see whether your browser implements common (X)HTML5 elements, here is a how your browser
+          displays an empty HTML5 <span class="tag-name">canvas</span> element, which should show up as a blue-gray
+          rectangle:
+        </p>
+        <canvas style="background-color:#add8e6; border:1px solid green;"></canvas>
+      </section>
+
+      <section>
+      <h1>Top of Document: PHP, DOCTYPE, and <code>html</code> Code</h1>
+      <p>
+        Here is the code you can past into the beginning of an XHTML5 document so that it will actually be delivered
+        as XHTML5 to those browsers that support XHTML, but will fall back to HTML for browsers that do not support
+        XHTML.
+      </p>
+      <p>
+        In order for this code to work, your server must support the PHP server-side scripting language, and your web
+        page must have a file extension that your web server will recognize as one that contains PHP code. If you have
+        PHP installed, <code>.php</code> is undoubtedly a safe file extension. In our lab, our Apache web server has
+        been configured to recognize both <code>.php</code> and <code>.xhtml</code> as extensions for files that contain
+        PHP code. (Note that this web page’s extension is <code>.xhtml</code>.)
+      </p>
+      <p>
+        The last two lines of the code include the usual HTML5 doctype and the <span class="tag">html</span> tag that
+        starts the document proper. The <code>xmlns</code> attribute in the <span class="tag">html</span> tag is
+        needed for the page to be properly recognized as XHTML. Some testing (admittedly not exhaustive) indicates that
+        this attribute has no effect in browsers that do not accept proper XHTML.
+      </p>
+      <div class="code-block">
+&lt;?php
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &amp;&amp;
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &amp;&amp;
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: application/xhtml+xml");
+    echo "&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+?>
+&lt;!DOCTYPE html>
+&lt;html &lt;?php echo "$html_attributes";?>>
+      </div>
+      </section>
+      <section>
+        <h1>Validation Links</h1>
+        <p>
+          All code for this course must pass the W3C validation suites for HTML5 and CSS3 with no errors and no
+          warnings (except that the validator currently issues a warning that HTML5 is experimental; that one warning
+          is acceptable). Paste the following code at the bottom of each of your web pages to give them links to the
+          two validators for easy checking. Note that the code ends with the <span class="tag">/body</span> and
+          <span class="tag">/html</span> tags that are needed to balance the <span class="tag">html</span> tag at the 											          beginning of your web page and the <span class="tag">body</span> tag that comes after the
+          <span class="tag-name">head</span> element of the document.
+        </p>
+        <div class="code-block">
+    &lt;footer>
+      Validators: 
+      &lt;a href="http://validator.w3.org/check?uri=referer">
+        W3C HTML Validator
+      &lt;/a>&#x2014;&lt;a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">
+        W3C CSS Validator
+      &lt;/a>
+    &lt;/footer>
+  &lt;/body>
+&lt;/html>
+        </div>
+      </section>
+    </section>
+    <footer>
+      Validators: 
+      <a href="http://validator.w3.org/check?uri=referer">
+        W3C HTML Validator
+      </a>&#x2014;<a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">
+        W3C CSS Validator
+      </a>
+    </footer>
+  </body>
+</html>

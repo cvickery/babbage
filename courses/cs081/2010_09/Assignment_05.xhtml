@@ -1,0 +1,115 @@
+<?php
+  $html_attributes="lang=\"en\"";
+  if ( array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        (stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml") ||
+         stristr($_SERVER["HTTP_ACCEPT"], "application/xml") )
+       ||
+       (array_key_exists("HTTP_USER_AGENT", $_SERVER) &&
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator"))
+     )
+  {
+    $html_attributes = "xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"";
+    header("Content-type: application/xhtml+xml");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html>
+<html <?php echo "$html_attributes";?>>
+  <head>
+    <title>CS-081 Assignment 5</title>
+    <link rel="shortcut-icon" href="../favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/assignments-print.css" media="print" />
+    <link rel="stylesheet"                 href="css/assignment_04.css" />
+  </head>
+  <body id='urn:uuid:2477EE70-DDE8-4C91-8CC9-8BD77BF46C41'>
+    <h1>CS-081 Assignment 5</h1>
+    <section id="content">
+    	<section>
+      	<h1>Reading Assignments</h1>
+        <p>
+					Continuing to work on material from Chapter 4. We covered the Box Model (pages 106-113) in class, but are not
+          doing much with it yet. This assignment deals with Advanced Selectors, some of which are covered in the
+          book starting on page 117.
+        </p>
+        <p>
+        	The text covers some of the New Selectors available in CSS3, which you will be using in this assignment, in
+          Chapter 12, starting on page 304.
+        </p>
+        <p>
+        	But the definitive specification of all CSS3 selectors is the one shown in class on October 28, the W3C
+          specification at <a href="http://www.w3.org/TR/css3-selectors/">www.w3.org/TR/css3-selectors/</a>.
+        </p>
+      </section>
+      <section>
+        <h1>Coding Assignment</h1>
+        <ol>
+          <li>
+          	<h5>
+              Remove all <span class="attribute-name">class</span> and <span class="attribute-name">id</span>
+              attributes from <span class="file-name">index.xhtml</span>.
+            </h5>
+            <p>
+            	Doing this will “break” most of what you accomplished in <a href="Assignment_04.xhtml">Assignment 4</a>.
+            </p>
+            <p>
+            	Verify that the effects you created in Assignment 4 no longer work.
+            </p>
+          </li>
+          <li>
+          	<h5>
+							Edit the selectors in your stylesheet so that the web page looks the same as it did in Assignment 4.
+            </h5>
+            <p>
+            	There is no strict rule that you have to follow here: you can use any CSS3 selectors you wish so that
+              each rule applies to exactly the same elements as it did when you were able to use classes and ids. The
+              idea is to identify the position in the DOM tree for the elements each rule is to effect, and then to
+              choose selectors to pick just those elements.
+            </p>
+            <p>
+            	Be sure the web page looks exactly the same as it did for Assignment 4 when you finish, and be sure both
+              the XTHML and CSS code validates with no errors and just the one XHTML warning.
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h1>Submit the Assignment</h1>
+        <p>
+          When your page is ready for me to review, send an email message to 
+          <a href="mailto:Christopher.Vickery@qc.cuny.edu?subject=CS-081%20Assignment%205">
+          Christopher.Vickery@qc.cuny.edu</a>
+          with <span class="code-snippet">CS&#x2011;081&#160;Assignment&#160;5</span> as the Subject line.
+          All you have to do is to put your name in the
+          body of the message so that I know who sent the message. I will then copy your website from your profile on
+          the server (oak) in the lab to the web server on babbage, where I will verify that it works correctly.
+        </p>
+        <ul class="standout-block">
+          <li><span class=""></span>
+            The web server on babbage is on a case-sensitive file system. That means that if you don't capitalize file
+            and directory names exactly right, your site will no longer work when it is copied to babbage, even though
+            it may have worked perfectly well in the lab, where the file system is case-insensitive. Be sure the name
+            of you web page is <span class="filename">index.xhtml</span> using all lowercase letters.
+          </li>
+          <li>
+            Your site will not be copied to the DocumentRoot on babbage, so any links with absolute pathnames (ones
+            that start with a <code>/</code> character) will not work: make sure that all internal links in your site
+            use relative, not absolute, pathnames. This is not an issue for this assignment (there are no internal links),
+            but important to keep in mind for future assignments.
+          </li>
+        </ul>
+      </section>
+    </section>
+    <footer>
+      <a href="../syllabus.xhtml">Course Syllabus</a>
+      <a href="./">Schedule</a>
+      <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">CSS</a>
+      <em>Page last updated <?php echo date('Y-m-d', filemtime($_SERVER['SCRIPT_FILENAME'])); ?></em>
+    </footer>
+  </body>
+</html>

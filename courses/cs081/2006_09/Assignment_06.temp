@@ -1,0 +1,498 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+<title>CS-081 Assignment 6</title>
+
+
+<link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css" />
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>CS-081 Assignment 6</h1>
+  </div>
+  <div id="content">
+    <h2>Introduction</h2>
+    <div class="whitebox">
+      <p>This assignment is designed to give you experience working
+      with Tables, Forms, and JavaScript.  The idea is to mimic a data
+      entry web page that allows a user to enter people&rsquo;s names
+      and email addresses into a table.  As each set of information is
+      entered, Javascript code validates that the name fields are
+      filled in, and that the email address (1) is filled in, (2) is a
+      valid email address, and (3) does not duplicate an email address
+      that is already in the data table.</p>
+
+      <p>The version of this assignment that I demonstrated in class
+      has a number of additional features that are <em>not</em>
+      required for this assignment, although you can receive extra
+      credit for any of those features that you do incorporate into
+      your project.</p>
+
+      <p>To accommdate people who want to do extra-credit work for
+      this assignment, it will be graded on a 10-point scale instead
+      of just "not ok" or "ok."  Full credit is a 10, but if you do
+      extra-credit work, you can get more than full credit for the
+      assignment.</p>
+
+      <p>This assignment will count 5% of your course grade; the other
+      assignments will count 1% each.</p>
+
+      <p>It is still all right to work with someone else on this
+      assignment, just like all the others in this course.  If you
+      work together with someone else, leave it one person&rsquo;s
+      account on <span class="computerName">maple</span> and send me
+      an email telling the the account and the names of both people
+      who are submitting the assignment.</p>
+
+      <p>The assignment will be graded on the basis of how well the
+      XHTML, CSS, and JavaScript code are structured, how good the
+      page looks, and how well the page functions &mdash; all in
+      approximately equal proportions.</p>
+
+    </div>
+
+    <h2>Procedure</h2>
+    <div class="whitebox">
+    
+      <h3>Important Note!</h3>
+      
+      <p class="standoutBlock">It is very important that you complete the
+      steps listed below in the order given and that you test your program
+      carefully as you complete each step.  You will receive <em>much</em>
+      more credit for a project that has just a few steps working correctly
+      than for a project with lots of code and features, but which does not
+      work correctly.  To be sure you don&rsquo;t lose the good parts of the
+      assignment while working on a later step, create a subdirectory of
+      your web site named <span class="directoryName">Backups</span> and
+      copy the xhtml, js, and css files for the assignment into that
+      directory each time you get a step working correctly.  To be really
+      careful, you could make a separate subdirectory in Backups for each
+      step you complete, but that is not required.</p>
+
+      <ol>
+        <li>
+
+          <h5>Create a new web page and link it to your site&rsquo;s
+          navigation list.</h5> <p class="runin">Create a web page named
+          <span class="fileName">Assignment_06.xhtml</span> using your
+          Dreamweaver template.  Change the name of the file in the
+          Javascript link in the head from <span
+          class="fileName">template.js</span> to <span
+          class="fileName">assignment_06.js</span>.  Add a link to the new
+          page to the list of navigation links in <span
+          class="fileName">index.xhtml</span>.  Use a descriptive name for
+          the text of the link, such as &ldquo;Dynamic Table Entry.&rdquo;
+          Use this same name for the contents of the <span
+          class="tagName">title</span> and <span class="tagName">h1</span>
+          elements of your new page.</p>
+
+          <p>Test your work and save a copy of your code files in your <span
+          class="directoryName">Backups</span> directory before proceeding
+          to the next step.</p>
+
+        </li>
+        
+        <li>
+        
+          <h5>Set up a <span class="tagName">form</span> and a JavaScript
+          <span class="variableName">onload</span> handler.</h5>
+
+          <p class="runin">Create a form in your web page, and put a a table
+          inside it.  The table is to have two rows: the top row is to have
+          headings that tell what each column is for, and the second row is
+          to contain five input elements: three text boxes and a submit
+          button. The fifth column of the second row will be for dynamically
+          generated error messages. The fourth and fifth columns of the
+          heading row should be joined together using a <span
+          class="attributeName">colspan</span> attribute.  Use CSS in your
+          existing <span class="fileName">screen.css</span> file to format
+          the table nicely, with the contents of the error message cell
+          formatted in a way that it stands out.  Put some text in the error
+          message cell to make sure it looks the way you want, test it, and
+          then add CSS to your stylesheet to make that cell&rsquo;s <span
+          class="attributeName">display</span> attribute have the value <span
+          class="attributeValue">hidden</span>.  Now, when you view the page
+          that cell should simply not appear.</p>
+
+          <p>This form will never actually be submitted; all processing of
+          the information the user enters will be handled completely by
+          JavaScript.  However, you will need to provide an <span
+          class="attributeName">action</span> attribute with an arbitrary
+          value in order for your page&rsquo;s XHTML to validate.  The
+          conventional value to use in this situation is "#".  In class I
+          mentioned using an <span class="variableName">onsubmit</span>
+          attribute to block the page from being submitted, but this is not
+          necessary.  But you should give this form an id so that you can
+          get a reference to it easily from your JavaScript code.</p>
+          
+          <p>Edit your script file for the assignment so that it has an
+          event handler for the <span
+          class="variableName">window.onload</span> event. You may use
+          either a named or anonymous function for this event handler.  In
+          it, get a reference to the form, and set up an event handler for
+          the form&rsquo;s <span class="eventName">onsubmit</span> event. 
+          The event handler is to be a function named <span
+          class="functionName">validate()</span>, and for now, that function
+          is simply to display an alert box that says &ldquo;validate&rdquo;
+          (to verify that the function got called) and then executes a <span
+          class="codeSnippet">return false;</span> statement.  Returning a
+          value of <span class="keywordName">false</span> is what prevents
+          the browser from actually sending the form data to the URL
+          specified in the form&rsquo;s <span
+          class="attributeName">action</span> attribute.</p>
+
+          <p>Test your work and save a copy of your code files in your <span
+          class="directoryName">Backups</span> directory before proceeding
+          to the next step.</p>
+
+        </li>
+        <li>
+        
+          <h5>Verify that the three text fields are not empty when the form
+          is submitted.</h5>
+
+          <p class="runin">In your <span
+          class="functionName">validate()</span> function, check that the
+          values of all three <span class="tagName">input</span> elements
+          are non-empty strings.  If any of them is empty, replace the <span
+          class="attributeName">nodeValue</span> attribute of the error
+          message cell&rsquo;s first child (a text node) with an appropriate
+          error message and set the cell&rsquo;s display attribute&rsquo;s
+          value from <span class="attributeValue">"hidden"</span> to <span
+          class="attributeValue">"visible"</span>.  Whether any field is
+          blank or not, <span class="functionName">validate()</span> is to
+          continue to return a value of <span
+          class="variableValue">false</span> so the form does not get
+          submitted.</p>
+          
+          <p>To make the page work properly, you will need to hide the error
+          message when you start to validate the form.</p>
+
+          <p>Test your work and save a copy of your code files in your <span
+          class="directoryName">Backups</span> directory before proceeding
+          to the next step.</p>
+
+        </li>
+        <li>
+        
+          <h5>Use a regular expression to validate the email address.</h5>
+          
+          <p class="runin">You can google for JavaScript regular expressions
+          for validating email addresses, but I suggest you try writing your
+          own.  Here is the basic setup:</p>
+          
+          <p class="codeBlock">
+  var validEmail = /.*/;
+  var isValid = validEmail.test("anything");  
+          </p>
+          
+          <p>This zippy piece of code will set the variable <span
+          class="variableName">isValid</span> to <span
+          class="keyword">true</span>.  Here&rsquo;s how it does it: the
+          characters between the slashes are the regular expression, which
+          consists of any character (indicated by the period) repeated zero
+          or more times (represented by the asterisk following the period);
+          the second statement executes the regular expression&rsquo;s <span
+          class="functionName">test()</span> function, which returns <span
+          class="keyword">true</span> or <span class="keyword">false</span>
+          depending on whether the string passed to it matches the regular
+          expression or not.  In this case, any string you pass will cause
+          test() to return <span class="keyword">true</span>, even an empty
+          string.  Technically, you don&rsquo;t need a variable to hold the
+          regular expression:</p>
+
+          <p class="codeBlock">
+  var isValid = /.*/.test("some string");
+          </p>
+
+          <p>But there is some overhead in setting up regular expressions,
+          so if you are going to use one multiple times, it&rsquo;s slightly
+          more efficient to set it up once in a variable than to use the
+          second form.</p>
+          
+          <p>So now the issues are (1) what is a valid email address, and
+          (2) how can you use a regular expression to test for one?  A
+          simple-minded rule for a valid email address would be &ldquo;two
+          non-empty strings separated by an @ character.&rdquo; The regular
+          expression to test this rule would be <span
+          class="codeSnippet">/.+@.+/</span>.  Just as an asterisk says
+          &ldquo;zero or more repetitions of the previous character,&rdquo;
+          a plus sign says &ldquo;one or more repetitions.&rdquo;  To get
+          started, I suggest you try using this regular expression and make
+          sure your code will discriminate between valid and invalid email
+          strings based on it, using this code as a starting point:</p>
+          
+          <p class="codeBlock">
+  if (validEmail.test(emailInput.value))
+  {
+    alert("email is valid");
+  }
+          </p>
+
+          <p>I think the following information will be enough for you to
+          construct an elaborate-enough regular expression for validating
+          email addresses: (1) If you want to test for a period,
+          &ldquo;escape&rdquo; it by putting a backslash in front of it. 
+          (2) If you want to test for a limited set of characters rather
+          than just &ldquo;any character&rdquo; as represented by a period,
+          put the characters you are interested in inside square brackets. 
+          (3) You can use special codes to represent common groups of
+          characters. Notably, <span class="codeSnippet">\w</span> matches
+          any digit or any upper case or lower case letter.  (4) Instead of
+          using + or * to specify how many times the previous item must be
+          repeated, you can put minimum and maximum numbers inside curly
+          braces.  (5) Finally, you can force the regular expression to
+          match the beginning and ending of a string by using the ^ and $
+          characters respectively.  Without this feature, the regular
+          expression would treat a string with invalid information (such as
+          spaces) in it as valid if there is a valid substring in the middle
+          somewhere.</p>
+
+          <p>Putting everything in the previous paragraph together, look at
+          these regular expressions and see if you can decode them:</p>
+          
+          <p class="codeBlock">
+  /^$/                  (1)
+  /^[ab]{3,5}$/         (2)
+  /^[\w\.]+-[\w\-]{3,5}/ (3)
+          </p>
+          
+          <h5>Answers: </h5> <p class="runin"> (1) An empty string. (2) A
+          string between 3 and 5 characters long consisting of any mix of
+          the lower case letters 'a' and 'b'.  (3) A string that starts with
+          a mix of one or more letters, digits, or periods, followed by a
+          dash, followed by any mix of 3 to 5 dashes, letters, or digits. 
+          Note that the plus sign has nothing to do with the minus sign that
+          follows it: the plus tells how many times the characters in
+          brackets must appear, but the minus is just a character (hyphen,
+          dash, minus, or whatever you want to call it) that must be present
+          in the string.  Also, note that the  backslash in front of the
+          second dash in the last example is necessary, and is there to let
+          you know that the five rules given above do not cover everything
+          there is to know about regular expressions &mdash; not by a long
+          shot!</p>
+
+          <p>Test your work and save a copy of your code files in your <span
+          class="directoryName">Backups</span> directory before proceeding
+          to the next step.</p>
+
+        </li>
+        <li>
+        
+          <h5>Add a second table and add a row to it each time the user
+          enters a valid set of data in the first table.</h5> <p
+          class="runin">The functions you will need to use are <span
+          class="functionName">document.createElement()</span>, <span
+          class="functionName">document.createTextNode()</span>, and
+          element.<span class="functionName">appendChild()</span> as covered
+          in class.  (For <span class="functionName">appendChild()</span>
+          you need to specify which element the new element is to be
+          appended to.)</p>
+
+          <p>Test your work and save a copy of your code files in your <span
+          class="directoryName">Backups</span> directory before proceeding
+          to the next step.</p>
+
+        </li>
+        <li>
+        
+          <h5>Add a second form to the web page, and append hidden inputs to
+          it for the values in the second table when this form is
+          submitted.</h5> <p class="runin">Set up a function that will be
+          invoked when the user clicks the submit button in the lower form.</p>
+ccv: tell them to set up the form action here and to test against the url:
+there should be no data actually submitted at this point.
+          <p>A hidden input is an input
+          control that isn&rsquo;t displayed on the screen, but that is
+          included in the data that gets submitted with the form.  The data
+          for all the controls in a form get passed to the <span
+          class="variableName">action</span> URL when the form is submitted,
+          but the lower form, as designed, has no input controls, just the
+          submit button.  So in this step, you will append hidden input
+          controls for all the cells in the data table.  The code to set up
+          a hidden input control looks like this:</p>
+          <pre>
+  var newInput    = document.createElement('input');
+  newInput.name   = <span class="variableName">'a_unique_name'</span>;
+  newInput.value  = <span class="variableName">'a_value'</span>;
+  newInput.type   = 'hidden';
+  dataValuesForm.appendChild(newInput);
+          </pre>
+          
+          <p>Since you will not know how many rows there are in the data
+          values table ahead of time, you have no choice but to put code
+          such as the above inside a loop that gets executed once for each
+          row in the data table:</p>
+          
+          <pre>
+  var rows = dataValuesTable.getElementsByTagName('tr');
+  for (var row = 1; row &lt; rows.length; row++)
+  {
+    ...
+  }
+          </pre>
+
+          <p>You could nest another loop inside that one to go through all
+          the <span class="tagName">td</span> elements in each row, or you
+          could just write your code to go through the three data cells in
+          each row separately.  In either event, the problem you need to
+          solve is how to generate a unique name for each cell.  And the
+          easiest solution is probably just to make up a string that
+          consists of the data in the cell plus the row number, such as
+          <span class="codeSnippet">"lastName_" + row</span>.  Remember,
+          when you use + between a string and a number, JavaScript converts
+          the number into a string and concatinates the two strings
+          together.</p>
+          
+          <p>The <span class="variableName">'a_value'</span> string has to
+          be the <span class="variableName">nodeValue</span> of the first
+          child of the <span class="tagName">td</span> you are processing. 
+          So if you had an array of all the <span class="tagName">td</span>
+          cells in a row, you could use an expression like, <span
+          class="codeSnippet">cols[col].firstChild.nodeValue</span> as the
+          expression to assign to <span
+          class="variableName">newInput.value</span>.</p>
+
+          <p>After adding the hidden inputs, submit the form to the
+          following URL: <span
+          class="variableValue">http://babbage.cs.qc.edu/courses/cs081/Form_Script.php</span>.
+          Verify that all the data values from the second table are passed
+          to the server-side script.  You may use either the GET or the POST
+          method; you should experiment with both to make sure you
+          understand the difference between the two.</p>
+
+          <div class="whitebox">
+          
+            <p>Download and run <a
+            href="../Echo_HTTP_Requests.jar">Echo_HTTP_Requests.jar</a> and
+            study the request messages that the browser sends to the
+            server-side script for both the GET and POST methods, and for
+            various characters in the data strings being submitted. 
+            <strong>Note: </strong>You need to have administrator privileges
+            to run this Java program by default.  You can run it by
+            double-clicking on it.  If it starts up but exits a fraction of
+            a second later, the problem is undoubtedly lack of administrator
+            privileges.  (If it doesn&rsquo;t start at all, the problem is
+            probably that you do not have the Java runtime installed on your
+            system.)  The solution to the administrator problem is to run
+            the program from a command line (terminal) window.  Navigate to
+            the directory where the Jar file is, and give this command:</p>
+
+          <p class="codeBlock">
+  java -jar Echo_HTTP_Requests.jar 1024
+          </p>
+
+            <p>This will make the program listen for web requests on port
+            number 1024 instead of 81.  Your system should not require
+            administrative privileges for this.</p>
+
+            <p>Use Echo_HTTP_Requests by directing your browser to <span
+            class="codeSnippet">http://localhost:81</span> or <span
+            class="codeSnippet">http://localhost:1024</span> depending on
+            how you started it.</p>
+
+          </div>
+
+          <p>Test your work and save a copy of your code files in your <span
+          class="directoryName">Backups</span> directory before proceeding
+          to the next step.</p>
+          
+        </li>
+        <li>
+        
+          <h5>Extra Credit: Make sure no duplicate email addresses get
+          entered into your data table.</h5> <p class="runin">To implement
+          this feature, you will have to perform a third test on email
+          addresses (in addition to checking for blanks and to checking for
+          proper form using a regular expression).  Before actually adding a
+          row to the data table, compare each email address already there to
+          the one the user has just supplied in the entry form, and reject
+          the line and display an appropriate message in the error message
+          cell.</p>
+
+        </li>
+
+      </ol>
+
+<h2
+style="color:red;background-color:#ccf;text-align:center;padding:0.5em;border:1px
+solid blue">
+  Assignment Page Under Construction!<br />
+  Latest Changes:
+    <?php echo date("D M j, Y g:m a T", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+</h2>
+
+
+  </div>
+
+  <h2>Submitting the Assignment</h2>
+  <div class="whitebox">
+    <p>Before submitting the assignment, check the following:</p>
+    <ol>
+
+      <li>There must be no tab characters in any of the files in your site,
+      and all lines must be no wider than 80 characters.</li>
+
+      <li>The links to the XHTML and CSS validators at the bottom of your
+      assignment web page must work, and must generate no errors or warnings
+      when validated.  Be careful, because it is easy to miss the warnings
+      generated by the CSS validator &mdash; be sure the message is
+      &ldquo;No error or warning found&rdquo;, not just
+      &ldquo;Congratulations!&rdquo;.</li>
+
+      <li>In Dreamweaver, check your Site&rsquo;s set up to be sure you have
+      &ldquo;Use case-sensitive link checking&rdquo; checked in the Local
+      Info panel of the Site editor for your site.  Then right-click on the
+      site in the Files tab of the Fiels panel on the right side of
+      Dreamweaver, and check links for the entire local site.  Any errors
+      will show up in the Results panel at the bottom of the editing window;
+      be sure to fix them!</li>
+
+    </ol>
+  </div>
+
+  </div>
+  <div id="footer">
+  <hr />
+    <p class="links">
+      <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+      <a href="http://validator.w3.org/check?uri=referer">
+      XHTML</a>&nbsp;-&nbsp;
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+      CSS</a>    </p>
+    <p><em>Last updated
+      <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+    </p>
+</div>
+  </body>
+</html>

@@ -1,0 +1,243 @@
+<?php
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") )
+  {
+    header("Content-type: application/xhtml+xml");
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+
+    <title>CS-081 Assignment 1</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet"
+          type="text/css"
+          media="all"
+          href="/courses/css/style-all.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/courses/css/style-screen.css"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          media="print"
+          href="/courses/css/style-print.css"
+    />
+    
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>CS-081 Assignment 1</h1>
+    </div>
+
+    <div id="content">
+      <h2>Overview</h2>
+      <div class="whitebox">
+        <p>The purposes of this assignment are to familiarize you with the use
+        of the laboratory facilities for the course and to establish
+        standard procedures for developing web projects for the course.</p>
+      </div>
+      
+      <h2>Procedure</h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Log into your account and verify that it is working
+            correctly.</h5>  <p class="inline">Log into any one of the computers in A-205
+            or A-227 using your account name for this course, which consists
+            of the first letter of your first name, your last name, and the
+            digits &ldquo;081&rdquo; all as a single lower-case string. 
+            That is, if your name is "Always A. Good Student", your account
+            name is <em>astudent081</em>.  Use the password given to you in
+            class, and remember that you will be required to change it to
+            something secure the first time you log in.</p>
+
+            <p>The names of the computers are:</p>
+            
+            <table  summary="Lists of computer names in A-205 and A-227."
+                    id="computers">
+            
+              <tr><th>A-205</th><th>A-227</th></tr>
+              <tr><td>birch</td><td>apple</td></tr>
+              <tr><td>cherry</td><td>fir</td></tr>
+              <tr><td>chestnut</td><td>juniper</td></tr>
+              <tr><td>elm</td><td>mimosa</td></tr>
+              <tr><td>ginkgo</td><td>peach</td></tr>
+              <tr><td>hemlock</td><td>pine</td></tr>
+              <tr><td>hickory</td><td>plum</td></tr>
+              <tr><td>&nbsp;</td><td>spruce</td></tr>
+              <tr><td>&nbsp;</td><td>sycamore</td></tr>
+              <tr><td>&nbsp;</td><td>walnut</td></tr>
+            
+            </table>
+            
+            <p>Room 205 is an &ldquo;open lab,&rdquo; which means you can
+            use them any time you want.  The secretaries in the CS
+            Department Office (A-202) will open the lab for you if it is
+            closed.  Room 227 is a closed lab, so you will not be able to
+            sit at the computers in that room to use them.  However, all of
+            the computers are accessible from the Internet.  If you have
+            access to a computer running Windows XP with a broadband
+            connection, you can use <span class="programName">Remote Desktop
+            </span> to log in.  From the Start button, go to Programs, to 
+            Accessories, to Communications, and you will find it.  When it
+            asks you what computer you want to connect to, pick one of the
+            names above and add the domain name &ldquo;.cs.qc.edu&rdquo; to
+            the computer name.  For example, you would log into
+            <em>ginkgo</em> by entering <em>ginkgo.cs.qc.edu</em>.</p>
+
+              <p class="standoutBlock">When you use Remote Desktop, select
+              one of the computers in A-227 so that students who are on
+              campus will be able to use the computers in A-205.  The
+              exception to this rule is from 5:00 to 6:15pm on Tuesdays and
+              Thursdays, when there is a class using room A-227.</p>
+
+            <p>Use <em>Windows Explorer</em> to verify that your &ldquo;My
+            Documents&rdquo; directory contains a directory named &ldquo;My
+            Web Pages.&rdquo;  That directory should already contain a file
+            named <span class="fileName">template.xhtml</span>, which you
+            will be using as a starting point for the web pages you write
+            for this course.</p>
+            
+            <p>Make a copy of <span class="fileName">template.xhtml</span>
+            named <span class="fileName">index.xhtml</span> in the same
+            directory.</p>
+
+            <h5>Log off the computer you used and log into another
+            one.</h5>  <p class="inline">On the second computer, verify that
+            your <span class="fileName">index.xhtml</span> file shows up in
+            your <span class="fileName">My Web Pages </span> directory,
+            indicating that your &ldquo;profile&rdquo; (settings) were
+            successfully copied to the domain server (<span
+            class="computerName">maple</span>) when you logged off the first
+            computer and that they were then copied to the second computer
+            when you logged into it.  If you have any problems with this
+            step, contact Dr. Vickery for help before proceeding with the
+            remainder of the assignment.</p>
+
+          </li>
+          
+          <li>
+
+            <h5>Edit <span class="fileName">index.xhtml</span> and test
+            it.</h5> <p class="inline">Use any text editor to change the
+            <span class="tagName">title</span> and <span
+            class="tagName">h1</span> elements of your <span
+            class="fileName">index.xhtml</span> file from the word
+            &ldquo;Template&rdquo; to your own name.  It would be best to
+            use a programming editor such as <span
+            class="programName">Vim</span>, or even the full web IDE, <span
+            class="programName">Dreamweaver</span>.  However, it is possible
+            to make the change using <span
+            class="programName">Notepad</span>, but you have to put
+            quotation marks around the file name when you save it or Notepad
+            will change the name to a <span
+            class="fileName">index.xhtml.txt</span>, and the web server
+            won&rsquo;t be able to display it properly because of the wrong
+            extension.</p>
+
+            <p>Here are links to some introductory material on the
+            programming editors available to you in this course:</p>
+
+            <ul>
+              <li>
+                <a href="/courses/cs081/using_vim.xhtml">Using
+                Vim</a>
+              </li>
+              <li>
+                <a href="/courses/cs081/using_dreamweaver.xhtml">Using
+                Dreamweaver</a>
+              </li>
+            </ul>
+
+            <p>There are four ways you can try to view your new <span
+            class="fileName">index.xhtml</span> web page in a browser, but
+            only three of them will work!</p>
+            
+            <ol>
+
+              <li>(This is the technique that does <strong>not</strong>
+              work!) Click on the file using Windows Explorer.  Windows
+              recognizes that .xhtml files are web pages and tells the
+              default browser to show the page.  But our template file
+              includes some server-side scripting code written in PHP, and
+              its presence will confuse the browser, which will display a
+              cryptic error message.</li>
+              
+              <li>Start Firefox, and type the URL
+              &ldquo;localhost/~astudent081&rdquo; into the location bar,
+              substituting your own account name for <span
+              class="fileName">astudent081</span>.</li>
+              
+              <li>This technique is the same as the previous one, but
+              substitute the name of the computer you are using for the word
+              &ldquo;localhost&rdquo; in the URL.</li>
+              
+              <li>This technique is the same as the previous one, but enter
+              the Fully Qualified Domain Name (FQDN) for the name of the
+              computer you are using.  The proper FQDN for the computers in
+              the lab is the name of the computer name followed by
+              &ldquo;.cs.qc.cuny.edu&rdquo; (<span
+              class="computerName">ginkgo.cs.qc.cuny.edu</span>, for
+              example), but you can safely leave out the &ldquo;.cuny&rdquo;
+              part if you want to.</li>
+
+            </ol>
+            
+            <p class="standoutBox">Note that only the last technique will
+            work for accessing your web page from another computer, and even
+            that technique will only work while you are logged into the
+            computer whose FQDN you use.</p>
+            
+            <p>Now copy (don&rsquo;t move) your web page from your
+            &ldquo;<span class="directoryName">My Web Pages</span>&rdquo;
+            directory to <span class="directoryName">C:\htdocs</span> and
+            verify that you can view it by specifying just the computer
+            name in the address bar.</p>
+
+          </li>
+          
+        </ol>
+      </div>
+      
+      <h2>Submit the Assignment</h2>
+      <div class="whitebox">
+
+        <p>When you have completed the assignment, send me an email message
+        that says &ldquo;CS-081 Assignment 1&rdquo; in the subject line and
+        that contains your real name and account name in the message body. 
+        I will get a copy of your work from <span
+        class="computerName">maple</span> to look at.</p>
+
+      </div>
+    </div>
+
+    <div id="footer">
+    <hr />
+      <p class="links">
+        <a href="/">Vickery Home</a>&nbsp;-&nbsp;
+        <a href="http://validator.w3.org/check?uri=referer">
+        XHTML</a>&nbsp;-&nbsp;
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        CSS</a>
+      </p>
+      <p><em>Last updated
+        <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME']));
+        ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

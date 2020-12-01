@@ -1,0 +1,380 @@
+<?php
+  header("Vary: Accept");
+  if (  array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+        stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+        stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+      )
+  {
+    header("Content-type: application/xhtml+xml");
+    header("Last-Modified: "
+                    .gmdate('r',filemtime($_SERVER['SCRIPT_FILENAME'])));
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+  }
+  else
+  {
+    header("Content-type: text/html; charset=utf-8");
+  }
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Assignment 2</title>
+    <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="all"
+              href="../../css/style-all.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="screen"
+              href="../../css/style-screen.css" />
+    <link rel="stylesheet"
+              type="text/css"
+              media="print"
+              href="../../css/style-print.css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>
+        CS-081 Assignment 2
+      </h1>
+    </div>
+    <div id="content">
+      <h2>
+        Introduction
+      </h2>
+      <div  class="whitebox">
+        <p>
+          For this assignment you are to set up your web site for the course in the lab and to create a text-only web
+          page, using CSS to manage the page&rsquo;s appearance.
+        </p>
+      </div>
+      <h2>
+        The Assignment
+      </h2>
+      <div class="whitebox">
+        <ol>
+          <li>
+            <h5>Check your account setup in the lab.</h5>
+            <p class="runin">
+              If you have not already done so, follow the instructions in <a
+              href="Assignment_01.xhtml">Assignment 1</a> for logging into your account in the lab.
+            </p>
+            <p>
+              Each computer in the lab has a file named <span class="fileName">template.xhtml</span> in the web
+              server&rsquo;s <span class="techTerm" title="The disk directory that contains a web site.">document
+              root</span>, <span class="pathName">C:\htdocs</span>. This file contains boilerplate code for
+              properly-structured web pages, including the DOCTYPE for XHTML&nbsp;1.1 and basic tags for the contents of
+              a web page that has three sections (<span class="tagName">div</span> tags): a &ldquo;header&rdquo;, a
+              &ldquo;content&rdquo; section, and a &ldquo;footer.&rdquo; By default the header should hold an <span
+              class="tagName">h1</span> tag for the page&rsquo;s title; the footer is a place to put the &ldquo;little
+              stuff&rdquo; that often goes at the bottom of a page, like copyright information (we use it for links to
+              the W3C validators); and the content section is where the actual content of the page goes. There are no
+              strict rules about these three sections, but they can provide a convenient starting point for setting up
+              your pages&rsquo; structure.  </p>
+            <p>
+              Copy <span class="fileName">template.xhtml</span> to the <span
+              class="directoryName">My&nbsp;Website</span> folder that should already be present under
+              the <span class="directoryName">My&nbsp;Documents</span> directory for your account. Rename
+              it to <span
+              class="fileName">index.xhtml</span>. The Apache servers in the lab are configured to use
+              your <span class="directoryName">My&nbsp;Website</span> directory as a secondary document
+              root that can be accessed when you are logged into your account using &ldquo;tilde notation.&rdquo; For
+              example, if your account name is <span class="variableName">astudent81</span>, and you
+              are logged the computer named <span class="computerName">ginkgo</span>, the URL <span 
+              class="URL">http://ginkgo.cs.qc.edu/~astudent81</span> (or <span
+              class="URL">http://ginkgo.cs.qc.edu/~astudent81/</span>) would refer to the contents
+              of your <span class="directoryName">My Website</span> directory.
+            </p>
+            <p>
+              Verify that the URLs <span class="URL">http://ginkgo.cs.qc.edu/template.xhtml</span> and <span
+              class="URL">http://ginkgo.cs.qc.edu/~astudent81</span> both show the same thing when you open them in a
+              web browser (assuming your account name is <span class="variableName">astudent81</span> and you are logged
+              into <span class="computerName">ginkgo</span>).
+            </p>
+          </li>
+          <li>
+            <h5>Set up your web site using <span class="programName">Dreamweaver</span>.</h5>
+            <p class="runin">
+              Open <span class="programName">Dreamweaver</span> (there should be an icon on your desktop: a green circle
+              with a white 'd' in the middle), and select <span class="menuItem">New&nbsp;Site</span> from the <span
+              class="menuName">Site</span> menu. This will bring up a big panel with tabs named &ldquo;Basic&rdquo; and
+              &ldquo;Advanced;&rdquo; select the Advanced tab, and enter a name for your web site in the &ldquo;Site
+              name:&rdquo; text box. (You can use any name you like for your site, but it should be something
+              meaningful, such as &ldquo;My CS-081 Web Site.&rdquo;) Browse to your <span
+              class="directoryName">My&nbsp;Website</span> directory to fill in the &ldquo;Local root folder:&rdquo;
+              box. To fill in the &ldquo;Default images folder:&rdquo; text box, browse to <span
+              class="directoryName">My&nbsp;Website</span> again, create a new directory named <span
+              class="directoryName">images</span> there, and select it. Be sure to select the &ldquo;Links relative to
+              document&rdquo; and &ldquo;Case-sensitive links&rdquo; options.  The other settings on this pane are not
+              important: you can clear the &ldquo;HTTP address:&rdquo; field and leave the Cache option checked.
+            </p>
+            <p>
+              Go to the &ldquo;Remote Info&rdquo; category and set set the Access value to &ldquo;Local/Network&rdquo;.
+              Make the &ldquo;Remote folder:&rdquo; be <span class="codeSnippet">C:\htdocs\</span>. Be sure the
+              &ldquo;Maintain synchronization&rdquo; option is checked, and that the other two options are not checked.
+            </p>
+            <p>
+              Once you click your way out of the site setup wizard, the files panel on the right should show your site
+              using green folders. You should now be able to click on your <span class="fileName">index.xhtml</span>
+              file to open it up in <span class="programName">Dreamweaver&rsquo;s</span> editing pane. In the top left
+              corner of this pane you will see three buttons, labelled &ldquo;Code,&rdquo; &ldquo;Split,&rdquo; and
+              &ldquo;Design.&rdquo; Click on the Code button: the Design and Split views are not reliable enough to use
+              in this course.
+            </p>
+            <p>
+              There is a box where you can type in the web page&rsquo;s title next to the Design button. Type in a
+              meaningful title for your web site&rsquo;s home page. For maximum browser compatibility, I suggest you
+              don&rsquo;t use any punctuation symbols in the title. When you type Enter, you will see that the <span
+              class="tagName">title</span> tag in the document updates with the the title you entered.
+            </p>
+              
+            <p>
+              Now change the contents of the <span class="tagName">h1</span> element in the template to match the web
+              page&rsquo;s title. (The title appears in the browser&rsquo;s title bar; the heading appears as part of
+              the page&rsquo;s content in the web page itself.) Normally, you should make the top-level heading match
+              the page title, but because the heading will appear as part of the web page, you might want to add some
+              punctuation symbols, such as an apostrophe. Note: if you do put an apostrophe in your page heading (such
+              as &ldquo;A Student&rsquo;s Home Page,&rdquo; you have to use an HTML character entity to get it to
+              display reliably. The character entity for an apostrophe is <span class="codeSnippet">&amp;rsquo;</span>
+              (which stands for &ldquo;right single quote.&rdquo;) We went over character entities in class; check your
+              notes if you are not clear on this. The topic is not covered in the textbook, but there are web sites that
+              can help, such as <a href="http://www.sitepoint.com/article/guide-web-character-encoding">this SitePoint
+              article</a>. That article suggests not using character entities because they are a bother to type, but I
+              recommend that you <em>do</em> use them for two reasons: (1) With Dreamweaver&rsquo;s code assistance they
+              are actually easy to remember and easy to type, and (2) character entities are never wrong, but character
+              repertoirs and encodings can easily go wrong. As long as you use a good programmer&rsquo;s editor (such as
+              the code editor in <span class="programName">Dreamweaver</span> or <span
+              class="programName">Notepad++</span>) your web pages should show the characters you type correctly. But if
+              you want your text to look good by using typographically correct quotation symbols, for example, use
+              character entities.
+            </p>
+
+            <p>
+              Now you are ready to test your site setup. Be sure to save your web page to disk (type Control-S), open
+              Firefox, and browse to <span class="URL">http://&lt;computer&gt;.cs.qc.edu/~&lt;accountname&gt;/</span>
+              (use the correct computer name and account name), and you should see your web page with your new title in
+              the browser&rsquo;s title bar and your new heading in the browser window. If not, fix the problem before
+              proceeding.
+            </p>
+
+            <p>
+              Next, browse to <span class="URL">http://&lt;computer&gt;.cs.qc.edu/</span>, which is the document root of
+              your testing server. At this point you should see either a directory listing of <span
+              class="dirctoryName">C:\htdocs</span> or somebody else&rsquo;s web page because you have not
+              &ldquo;published&rdquo; your web page to the testing server yet. To publish your page, right-click on it
+              in the Files panel, and select the &ldquo;Put&rdquo; option. Alternatively, you can click on the blue Put
+              button in the Files panel&rsquo;s tool bar. Reload the browser window (Control-R), and your web page
+              should now show up.
+            </p>
+
+          </li>
+          
+          <li>
+          <h5>Add dummy content to your web page.</h5>
+          <p class="runin">
+            Substitute the following for the contents of the &ldquo;content&rdquo; <span class="tagName">div</span> of
+            your page: Get ten paragraphs of dummy text from <a href="http://lipsum.com">Lipsum.com</a> and paste them
+            below the <span class="tagName">h2</span> heading that is already there. Surround each paragraph with
+            &lt;p&gt; and &lt;/p&gt; tags so they don&rsquo;t all run together when displayed in a browser window. Go
+            back to Lipsom.com and get four sentences of dummy text. Use the first sentence as the content of the
+            existing level-2 heading, insert the second sentence as a second level-2 heading between the third and fouth
+            paragraphs, and insert the other two as level-3 headings between any two pairs of paragraphs that follow the
+            second level-2 heading. Your document structure should end up looking something like this:
+          </p>
+          <div class="codeBlock">
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt; &hellip; &lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="heading"&gt;
+      &lt;h1&gt; &hellip; &lt;/h1&gt;
+    &lt;/div&gt;
+    &lt;div id="content"&gt;
+      &lt;h2&gt; &hellip; &lt;/h2&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+      &lt;h2&gt; &hellip; &lt;/h2&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+      &lt;h3&gt; &hellip; &lt;/h3&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+      &lt;h3&gt; &hellip; &lt;/h3&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+      &lt;p&gt; &hellip; &lt;/p&gt;
+     &lt;/div&gt;
+    &lt;div id="footer"&gt;
+      &hellip;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+          </div>
+          <p class="standoutBox">
+            The structure above uses indentation to show the containment relationship among the XHTML tags. The <span
+            class="tagName">html</span> tag contains the <span class="tagName">head</span> and the <span
+            class="tagName">body</span>, the <span class="tagName">head</span> contains the <span
+            class="tagName">title</span>, etc. But notice that the logical structure of the text is not the same as the
+            structure of the XHTML nodes: the paragraphs are not contained by the headings, and the third-level headings
+            are not contained inside the second-level headings in any way. A new web standard, HTML 5, is being
+            considered that would add tags that can be used to give <a
+            href="http://www.whatwg.org/specs/web-apps/current-work/#headings0">a more meaningful outline structure</a>
+            to documents.
+          </p>
+        </li>
+        <li>
+          <h5>Add a style sheet to your web page.</h5>
+          <p class="runin">
+            The <span class="fileName">template.xhtml</span> file has a link in the head to a stylesheet. The stylesheet
+            might be named either <span class="pathName">css/style-all.css</span> or just <span
+            class="pathName">css/all.css</span> depending on which computer you happen to get it from. (I like the
+            shorter form a little better, but the name doesn&rsquo;t really matter much.) Use <span
+            class="programName">Dreamweaver&rsquo;s</span> <span class="menuItem">File-&gt;New</span> menu item (Control-N)
+            to create a new CSS file (select it from the choices under &ldquo;Blank Page&rdquo;), and type the following
+            rule into it:
+          </p>
+<div class="code_block">
+html, body {
+  margin:           0;
+  padding:          0;
+  background-color: red;
+  color:            white;
+  }
+</div>
+          <p>
+            When you save the file, you will need to create a <span class="directoryName">css</span> directory under
+            <span class="directoryName">My&nbsp;WebSite</span>, and save your stylesheet there. Try your web page using
+            the tilde URL, publish your site to the testing server, and try it there. Make sure the page comes up in all
+            its gaudy glory using both URLs!
+          </p>
+
+        </li>
+        <li>
+          <h5>Look at an example of a web page with alternate style sheets.</h5>
+          <p class="runin">
+            My home page (<a href="http://babbage.cs.qc.edu">http://babbage.cs.qc.edu</a>) now has three alternate style
+            sheets attached to it. Browse to it using Firefox, and use the <span class="menuItem">View-&gt;Page
+            Style</span> menu to try the three alternate style sheets.  As their names indicate (&ldquo;Sizes in
+            percentages,&rdquo; &ldquo;Sizes in ems,&rdquo; and &ldquo;Sizes in pixels&rdquo;), each one uses a
+            different unit of measure for the sizes of the text, picture, and boxes. Select each sheet and observe what
+            happens when you change the size of the text (use the Control_+ and Control_- keys) and/or the size and
+            shape of your browser window.  </p> <p>Unfortunately, Safari and Internet Explorer do not let you use
+            alternate style sheets, but Opera does. Start Opera (the red 'O' icon) and use it see the effects of the
+            alternate sheets using that browser. Changing the text size in Opera is awkward: the keyboard shortcuts make
+            the size jump to plus or minus 100% (I&rsquo;m not sure what they mean by minus 100%!), and you have to use
+            the <span class="menuItem">View-&gt;Zoom</span> menu to change things in smaller increments.
+          </p>
+        </li>
+        <li>
+          <h5>Create three style sheets for your home page and test them.</h5>
+          <p class="runin">
+            Using the information on pages 48-60 of the textbook as a guide, create three different appearances for your
+            web page: a &ldquo;standard&rdquo; appearance, using rules in <span class="fileName">all.css</span>, and two
+            alternates. You can look at the source code for my home page to see how to set up the <span
+            class="tagName">link</span> tags for the stylesheets. You are free to use whatever <span
+            class="propertyName">background-color</span> and <span class="propertyName">color</span> values for the
+            <span class="tagName">html</span>, <span class="tagName">body</span>, and <span class="tagName">div</span>
+            elements of the three sheets that you want, but each stylesheet must use a different color scheme. Then apply
+            different values for the following properties for the h1, h2, h3, and p elements: </p>
+          <ul>
+            <li>font-family</li>
+            <li>font-size</li>
+            <li>font-weight</li>
+            <li>text-align</li>
+            <li>line-height</li>
+            <li>color</li>
+            <li>background-color</li>
+          </ul>
+          <p>
+            Try to make the three views of the page look as different from each other as possible while making each view
+            look internally consistent. For example, you might use sans-serif fonts for the headings and serif for the
+            paragraphs in one sheet, and reverse that arrangement in another one.
+          </p>
+        </li>
+        </ol>
+      </div>
+      <h2>
+        Submit The Assignment
+      </h2>
+      <div class="whitebox">
+        <p>
+          Before you submit the assignment, be sure you perform the following four tests:
+        </p>
+          <ol>
+            <li>
+              <h5>Publish your page and all the style sheets to the server&rsquo;s document root</h5>
+              <p class="run_in">Verify that everything looks right.</p>
+            </li>
+            <li>
+              <h5>
+                Perform a link check on your site to make sure there are no mistakes due to capitalization problems.
+              </h5>
+              <p class="runin">
+                (Remember, you checked the "case-sensitive link checking" option when setting up your site.) Right click
+                on the site folder in Dreamweaver, and select &ldquo;check links&rdquo;. If there are any problems, they
+                will show up in a separate window. Fix them and do another check until there are no problems left.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the XHTML.</h5>
+              <p>
+                You should have been looking at the TIDY and Firebug icons in the Firefox status bar as you were testing
+                your code to be sure they both are green circles with white checkmarks inside them. Now, click on the
+                XHTML link in the footer of your web page to get a full W3C validation check. Fix any warnings (or
+                errors) that the validator reports.
+              </p>
+            </li>
+            <li>
+              <h5>Validate the CSS.</h5>
+              <p class="runin">
+                Once the XTML validates successfully, check the CSS using the other link in the footer of your page.
+                Again, fix any warnings or errors that the validator reports.
+              </p>
+            </li>
+          </ol>
+        <p>
+          A final check before you submit your assigment is to view the page using Internet Explorer instead of Firefox
+          to make sure there are no problems when using that browser. You should also check the page using Opera and
+          Safari. You may ignore minor differences, but correct any big discrepancies.
+        </p>
+        <p>
+          Once you have completely tested and fixed your web page, send me an email message telling me it is ready for
+          me to review.  I will get a copy of your entire site from the copy of your profile that is saved on <span
+          class="computerName">maple</span>, so there is no need to tell me which computer you were working on. Just
+          tell me that the site is ready for me to look at.
+        </p>
+        <p>
+          Send your email to me by midnight of the due date. My email address is: <span class="emailAddress
+          codeBlock">vickery at babbage.cs.qc.edu</span>.
+        </p>
+        <p class="standout_block">
+          <strong>You must use exactly this Subject line for your email to be sure I actually receive it:</strong> <span
+          class="codeBlock">CS-081 Assignment 2</span>. (Include the "CS-081" part in the subject line of <em>all</em>
+          messages you send to me this semester.)
+        </p>
+        <p>
+          If you do not receive an &ldquo;OK, I&rsquo;ll check it out!&rdquo; reply from me within a day or two of
+          submitting the assignment, it means I did not receive it. But I will be sending that acknowledgement manually,
+          so don&rsquo;t resubmit the assignment until I have had a chance to reply to the first one.
+        </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="links">
+        <a href="../../../index.xhtml">Vickery Home Page</a>&nbsp;-&nbsp;<a
+           href="..">CS-081 Home Page</a>&nbsp;-&nbsp;<a
+           href=".">Fall 2007 Course Page</a><br/>
+        <a
+           href="http://validator.w3.org/check?uri=referer">XHTML</a>&nbsp;-&nbsp;<a
+           href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+      </p>
+      <p>
+        <em>Last updated <?php echo date("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</em>
+      </p>
+    </div>
+  </body>
+</html>

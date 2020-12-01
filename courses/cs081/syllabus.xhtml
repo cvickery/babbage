@@ -1,0 +1,319 @@
+<?php
+/*  $Id: syllabus.xhtml,v 1.2 2010/08/26 04:46:48 vickery Exp vickery $
+ *
+ *  $Log: syllabus.xhtml,v $
+ *  Revision 1.2  2010/08/26 04:46:48  vickery
+ *  Changed textbook from Griffin to Allsopp.
+ *
+ *  Revision 1.1  2010/08/26 03:36:00  vickery
+ *  Initial revision
+ */
+
+  $this_dir = opendir('.');
+  $this_link = "";
+  $this_year = "";
+  $this_term = "";
+  while ($dir_entry = readdir($this_dir))
+  {
+    if (is_dir($dir_entry) && preg_match('/(\d{4})_(\d{2})/', $dir_entry, $year_term))
+    {
+      $this_year = $year_term[1];
+      $this_term = ($year_term[2] === '02') ? 'Spring' : 'Fall';
+      $this_link = $dir_entry;
+    }
+  }
+
+  header("Vary: Accept");
+  if (array_key_exists("HTTP_ACCEPT", $_SERVER) &&
+      stristr($_SERVER["HTTP_ACCEPT"], "application/xhtml+xml") ||
+      stristr($_SERVER["HTTP_USER_AGENT"], "W3C_Validator")
+     )
+  {
+      header("Content-type: application/xhtml+xml");
+      header("Last-Modified: ".date('r', filemtime($_SERVER['SCRIPT_FILENAME'])));
+      print ("<?xml version=\"1.0\" encoding=\"utf-8\"
+  ?>
+  \n");
+  }
+  else
+  {
+  header("Content-type: text/html; charset=utf-8");
+  }
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>CS-081 Course Syllabus</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/style-all.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style-screen.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/syllabus.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="../css/style-print.css" />
+  </head>
+  <body id='urn:uuid:B0CABFC9-4502-48F5-AFEE-3CBCF5EBFEF8'>
+    <h1>CS-081: Web Programming</h1>
+    <h1>Syllabus</h1>
+    <?php
+      echo <<<EOT
+      <p id='current-semester-link'>
+        <a href='$this_link'>Link to the Schedule and Assignments for $this_term $this_year</a>
+      </p>
+EOT;
+     ?>
+      <div class="standout-block">
+        <strong>Disclaimer:</strong>
+        This syllabus gives the intended structure and requirements for the course, but
+        is subject to variation from semester to semester depending on the dynamics of student-faculty interaction as
+        well as newsworthy events related to the discipline.
+      </div>
+    <h2>Course Objectives</h2>
+    <div>
+      <p>
+        Students who complete this course successfully will be able to:
+      </p>
+      <ul id="rubrics">
+        <li>
+          Describe the internet technologies used to implement the world wide web.
+        </li>
+        <li>
+          Describe the interactions between web servers and web clients (browsers) using the HTTP protocol.
+        </li>
+        <li>
+          Relate the elements of URLs to the HTTP protocol and to the web server’s file system.
+        </li>
+        <li>
+          Explain the roles of client-side and server-side scripting on the web.
+        </li>
+        <li>
+          Write valid XHTML code to structure the content of web pages.
+        </li>
+        <li>
+          Write valid CSS code to format the presentation of web content.
+        </li>
+        <li>
+          Use Dreamweaver to manage the files and directories for a complete web site.
+        </li>
+        <li>
+          Use Photoshop, Illustrator, or a similar program to prepare and use image files for both decoration and
+          content.
+        </li>
+        <li>
+          Design forms and prepare form data for processing by a server script.
+        </li>
+      </ul>
+    </div>
+    <h2>Instructor</h2>
+    <div>
+      The instructor for the course is Dr. Christopher Vickery. See
+      <a href="../../contact_info.xhtml">Dr. Vickery’s Contact Information and Office Hours</a> for that information.
+    </div>
+    <h2>Course Structure and Assessment</h2>
+    <div>
+      <h3>Classes and Laboratory Assignments</h3>
+      <p>
+        There are two 75 minute class meetings per week. Attendance will not be taken (except at the beginning of the
+        semester to verify your registration for the course), but students who miss class often will probably fail the
+        course.
+      </p>
+      <p>
+        The critical component of the course is the laboratory and associated homework assignments. The department
+        provides the laboratory facility and all necessary software for doing the assignments. The laboratory is run as
+        an open lab; you schedule your own time in the lab any time it is open. The computers in the lab are internet
+        accessible, so it is possible to work on them from outside the lab, although even a high-speed network
+        connection is much less efficient than actually being in the lab. An alternative, if you have access to the
+        necessary software, is to do the laboratory assignments on a computer outside the lab and then to transfer the
+        assignment to your account in the lab for final checking and submission.
+      </p>
+      <p>
+        The class does not meet in the lab, and you will not be tutored on the use of the lab software. Rather, you will
+        be told/shown how to do the assignments, and then will be expected to &ldquo;learn by doing.&rdquo; If this
+        seems like a daunting challenge, a good strategy is to find someone in the course to work with and to schedule
+        your lab time so that you and your partner are there at the same time.
+      </p>
+      <p>
+        While it is all right and even encouraged to collaborate on homework assignments, remember that the sole purpose
+        of the assignments is to help you to master the material in the course. You will receive a little course credit
+        just for handing the assignments in, the vast majority of your course grade will be based on how well you do on
+        the exams, which will test how well you have mastered the concepts and techniques used in the assignments.
+      </p>
+      <p class="standout-block">
+        You must submit your own solution to each assignment, even if it is substantially similar to someone else’s.
+      </p>
+      <p>
+        There is a course discussion board for exchanging questions and answers about the assignments with other
+        students in the course. I monitor the discussion board in case no one in the class has an answer. You can also
+        use the discussion board to help prepare for exams.
+      </p>
+      <p>
+        So there are four resources you can draw on for help in the course:
+      </p>
+      <ol>
+        <li>Attend the classes and do the reading assignments. Get someone’s notes if you miss class.</li>
+        <li>Work on your assignments with someone else in the course.</li>
+        <li>Ask me for help when you get stuck, either during class, during office hours, or by email.</li>
+        <li>Post questions on the discussion board. And answer questions when you can!</li>
+      </ol>
+      <p>
+        You can also ask/google for help from people outside the course, but you need to be careful if you do: people
+        who &ldquo;know web design&rdquo; might tell you to do things differently from the way we do them in this
+        course, and learning those alternate techniques, even if they seem to work, won’t help you master the topics
+        being covered in this course.
+      </p>
+      <p>
+        Expect to spend a lot of time working on the assignments. In themselves, the won’t count much towards your
+        grade in the course, but they are the core of the course, and doing them is the only way to master the material.
+      </p>
+      <h3>Assessing Your Mastery (Exams and Grading)</h3>
+      <p>
+        There will be a midterm and a final exam, each of which will count 40% of your course grade. There
+        is an archive of past exams for the course to let you see my “exam style,” but should not in any way be
+        construed as study-guides for this semester’s exams. Exam questions are a mix of short answer,
+        multiple-choice, and code writing questions. Difficult exams are normally curved to bring the class average
+        up to something in the 75-80 range. (Note: when this happens, class rank on an exam is important.) However,
+        exam scores are never curved downward.
+      </p>
+      <p>
+        The final exam is cumulative in the sense that you need to remember material from earlier in the
+        course in order to understand some of the questions. But specific questions from the midterm are not repeated
+        on the final.
+      </p>
+      <p>
+        Assignments are graded on a simple &ldquo;ok&rdquo;&mdash;&ldquo;not ok&rdquo; scale. An &ldquo;ok&rdquo;
+        is worth two points and a &ldquo;not ok&rdquo; is worth one point towards the assignments portion of your
+        course grade. That means that a perfect score for the assignment part of your course grade (20%) would be
+        2&times;<span class="variable-name">n</span>, where <span class="variable-name">n</span> is the number of
+        assignments actually given during the term. It is possible to receive a grade of &ldquo;good&rdquo; on an
+        assignment, which counts 3 points. Grades of &ldquo;good&rdquo; can offset &ldquo;not ok&rdquo; grades or even
+        give you better than full credit for the assignments part of your course grade (i.e., extra credit).
+      </p>
+      <p>
+        Assignments may be submitted up to one week after the due date for a score of &ldquo;late ok&rdquo; (one point)
+        or &ldquo;late not ok&rdquo; (half a point). After one week, you can submit an assignment for evaluation and
+        feedback, but it will not earn any points.
+      </p>
+      <p class="standout-block">
+        Exam and assignment grades become permanent one week after they have been posted, even if there has been a
+        scoring error.  Be sure to check that your exam was scored correctly and that the correct grade has been
+        recorded (using the &ldquo;Show My Grades&rdquo; form on the course schedule page) as soon as exams are
+        returned.
+      </p>
+      <p>
+        The College has a standard policy for converting course averages into letter grades, which I
+        follow mechanically, with two exceptions: (a) I calculate course averages to one decimal place
+        and round up instead of working with integers. So, for example, the college policy assigns
+        a grade of B+ to a course average between 87 and 90; I interpret that to mean that any score
+        between 86.5 and 89.5 is a B+. (b) Because a grade of C- (or less) cannot be counted towards
+        the computer science minor, I let my personal judgment (based primarily on class attendance
+        and participation) influence how to handle course grades that are just below 71.5. But I do
+        <em>not</em> automatically raise C&ndash; grades to C.
+      </p>
+    </div>
+    <h2>Textbook and Reading Material</h2>
+    <div>
+      <p>
+        The required textbook for the course is <cite>Allsopp, J., Developing With Web Standards, New Riders, 2010. ISBN
+        0-321-64692-4</cite>.
+      </p>
+      <p>
+        The book is written for “anyone who wants to build websites,” but it is not designed as a standard textbook.
+        Rather, it provides good explanations of the material that will also be covered in the class lectures and
+        assignments. It is not self-contained: you will also need other reference material from various sources as
+        you cover the material in the course.
+      </p>
+      <p>
+        The text has some typographical errors (&ldquo;errata&rdquo;), and I have prepared a <a
+        href="./developing_with_web_standards_errata.xhtml">list of the ones I have found</a>.  I suggest you go through
+        the errata list and write in all the needed changes in your copy of the book before you start studying. Let me
+        know if you find more, and I’ll update the list.
+      </p>
+    </div>
+    <h2 id="topics">Topics</h2>
+    <div>
+      <p>
+        Download <a href="CS-081_Course_Outline.pdf">CS-081 Course Outline</a> (PDF) for a full outline of the topics to
+        be covered in the course. The table below lists the class meetings planned for the topics, and the associated
+        reading material.
+      </p>
+      <p>
+        The actual course schedule for this semester, including exam dates and assignments to be handed
+          in, is on <a href="<?php echo $this_link;?>">this semester’s schedule page</a>.
+      </p>
+      <table id="reading-assignments">
+        <tr>
+          <th scope="col">Classes</th>
+          <th scope="col">Topic</th>
+          <th scope="col">Reading Assignment</th>
+        </tr>
+        <tr>
+          <th scope="row">1</th>
+          <td>Course Introduction and Laboratory Facilities</td>
+          <td>
+            <a href="../TREE_Lab/index.xhtml">TREE Lab Information</a>, <a href="using_dreamweaver.xhtml">Dreamweaver
+            Setup</a>, Chapter 1
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">2&mdash;4</th>
+          <td>Web-related Techologies</td>
+          <td>Sections 1-3 of the full <a href="CS-081_Course_Outline.pdf">course outline</a></td>
+        </tr>
+        <tr>
+          <th scope="row">5&mdash;7</th>
+          <td>Text and Links</td>
+          <td>Chapters 2 and 3</td>
+        </tr>
+        <tr>
+          <th scope="row">8&mdash;10</th>
+          <td>Images and preparing images for the web</td>
+          <td>Chapter 4, <a href="preparing_images.xhtml">Preparing Images For The Web</a>,
+          <a href="using_photoshop.xhtml">Using Photoshop To Edit Web Images</a></td>
+        </tr>
+        <tr>
+          <th scope="row">11&mdash;13</th>
+          <td>DOM and JavaScript</td>
+          <td>Chapter 7</td>
+        </tr>
+        <tr>
+          <th scope="row">14</th>
+          <th colspan="2">Midterm Exam</th>
+        </tr>
+        <tr>
+          <th scope="row">15&mdash;20</th>
+          <td>Layout and Positioning</td>
+          <td>Chapter 5</td>
+        </tr>
+        <tr>
+          <th scope="row">21&mdash;22</th>
+          <td>Lists</td>
+          <td>Chapter 6</td>
+        </tr>
+        <tr>
+          <th scope="row">23</th>
+          <td>Tables</td>
+          <td>Chapter 8</td>
+        </tr>
+        <tr>
+          <th scope="row">24&mdash;27</th>
+          <td>Forms Elements and Form Presentation</td>
+          <td>Chapter 9</td>
+        </tr>
+        <tr>
+          <th scope="row">28</th>
+          <td>Dynamic HTML and Dynamic CSS</td>
+          <td>Supplementary Material</td>
+        </tr>
+        <tr>
+          <th scope="row">Finals</th>
+          <th colspan="2">Final Exam</th>
+        </tr>
+      </table>
+    </div>
+
+    <div id="footer">
+      <a  href="../../">Vickery&nbsp;Home</a>&mdash;<a
+          href="http://validator.w3.org/check?uri=referer">XHTML</a>&mdash;<a
+          href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>&mdash;Last updated
+      <?php echo gmdate("Y-m-d", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>
+    </div>
+  </body>
+</html>
